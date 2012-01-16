@@ -10,12 +10,12 @@ Support for AirPlay is planned for next release
 ## DESCRIPTION
 
 Holmes uses the following frameworks:
-- [Cling](http://teleal.org/projects/cling/) for UPnp
-- [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
-- [Guice](http://code.google.com/p/google-guice/) for dependency injection
-- [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end management
-- [EHCache](http://ehcache.org/) for caching
-- [JQueryUI](http://jqueryui.com/) for user interface
+* [Cling](http://teleal.org/projects/cling/) for UPnp
+* [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
+* [Guice](http://code.google.com/p/google-guice/) for dependency injection
+* [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end management
+* [EHCache](http://ehcache.org/) for caching
+* [JQueryUI](http://jqueryui.com/) for user interface (any help from web designer would be appreciated :-) )
 
 This application has been tested on Windows with [VLC](http://www.videolan.org/vlc/) 1.2 beta and Freebox V6 (a french set top box)
  
