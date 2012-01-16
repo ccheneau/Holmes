@@ -22,6 +22,9 @@
 		<fileSet>
 			<directory>${basedir}/src/main/resources</directory>
 			<outputDirectory>/</outputDirectory>
+			<excludes>
+				<exclude>**/dummy.txt</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
 
