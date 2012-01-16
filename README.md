@@ -15,6 +15,7 @@ Holmes uses the following frameworks:
 * [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
 * [Guice](http://code.google.com/p/google-guice/) for dependency injection
 * [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end management
+* [Rome](http://java.net/projects/rome/) for RSS parsing
 * [EHCache](http://ehcache.org/) for caching
 * [JQueryUI](http://jqueryui.com/) for user interface (any help from web designer would be appreciated :-) )
 
