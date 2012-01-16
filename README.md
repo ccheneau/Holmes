@@ -10,6 +10,7 @@ Support for AirPlay is planned for next release
 ## DESCRIPTION
 
 Holmes uses the following frameworks:
+
 * [Cling](http://teleal.org/projects/cling/) for UPnp
 * [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
 * [Guice](http://code.google.com/p/google-guice/) for dependency injection
