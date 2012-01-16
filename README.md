@@ -1,20 +1,20 @@
 Holmes
 ============================
 
-Holmes stands for Home Light Media Server
+Holmes stands for Home Light Media Server.
 
 A Java application that supports UPnp protocol for playing videos, music, pictures and podcasts to compatible devices.
 
-Support for AirPlay is planned for next release
+Support for AirPlay is planned for next release.
 
 ## DESCRIPTION
 
 Holmes uses the following frameworks:
 
-* [Cling](http://teleal.org/projects/cling/) for UPnp
+* [Cling](http://teleal.org/projects/cling/) as UPnp server
 * [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
 * [Guice](http://code.google.com/p/google-guice/) for dependency injection
-* [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end management
+* [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end REST api
 * [Rome](http://java.net/projects/rome/) for RSS parsing
 * [EHCache](http://ehcache.org/) for caching
 * [JQueryUI](http://jqueryui.com/) for user interface (any help from web designer would be appreciated :-) )
@@ -28,11 +28,13 @@ Java 6 and [Apache Maven](http://maven.apache.org/) are required to build this p
 ## INSTALL
 
 Compile using Maven then unzip the archive generated in holmes-package module.
-Run the startup.bat script
+
+Run the startup.bat script.
 
 ## Usage
 
 After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/
+
 (nor localhost or 127.0.0.1 are accepted for the moment)
 
 
