@@ -1,0 +1,226 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.holmes</groupId>
+	<artifactId>holmes-parent</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>ccheneau</id>
+			<name>Cedric Cheneau</name>
+			<email>cedric.cheneau@free.fr</email>
+			<roles>
+				<role>Creator</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.11</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.8</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- netty -->
+			<dependency>
+				<groupId>org.jboss.netty</groupId>
+				<artifactId>netty</artifactId>
+				<version>3.2.7.Final</version>
+			</dependency>
+
+			<!-- slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+
+			<!-- log4j -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.jms</groupId>
+						<artifactId>jms</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.mail</groupId>
+						<artifactId>mail</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.jdmk</groupId>
+						<artifactId>jmxtools</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.jmx</groupId>
+						<artifactId>jmxri</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- xstream -->
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.4.2</version>
+			</dependency>
+
+			<!-- guice -->
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>3.0</version>
+			</dependency>
+
+			<!-- cling -->
+			<dependency>
+				<groupId>org.teleal.cling</groupId>
+				<artifactId>cling-core</artifactId>
+				<version>1.0.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.teleal.cling</groupId>
+				<artifactId>cling-support</artifactId>
+				<version>1.0.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.teleal</groupId>
+				<artifactId>teleal-common</artifactId>
+				<version>1.0.14</version>
+			</dependency>
+
+			<!-- rome -->
+			<dependency>
+				<groupId>rome</groupId>
+				<artifactId>rome</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<!-- jersey -->
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-server</artifactId>
+				<version>1.11</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-core</artifactId>
+				<version>1.11</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-json</artifactId>
+				<version>1.11</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-guice</artifactId>
+				<version>1.11</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.google.inject.extensions</groupId>
+						<artifactId>guice-servlet</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.jersey</groupId>
+						<artifactId>jersey-servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- ehcache -->
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache-core</artifactId>
+				<version>2.5.0</version>
+			</dependency>
+
+			<!-- test dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>4thline.org-repo</id>
+			<url>http://4thline.org/m2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<modules>
+		<module>holmes-core</module>
+		<module>holmes-package</module>
+	</modules>
+</project>

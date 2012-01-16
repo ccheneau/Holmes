@@ -1,0 +1,130 @@
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video
+{
+	border: 0 none;
+	font-size: 100%;
+	margin: 0;
+	outline: 0 none;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+html {
+	overflow-y: scroll;
+	background: #C0C0C0 url('images/bck.png') repeat-x scroll;
+}
+
+body {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	background: transparent no-repeat center top;
+	font-size: 62.5%;
+}
+
+header {
+	display: block;
+	height: 160px;
+	width: 100%;
+}
+
+header h1 {
+	color: #B8C0CB;
+	font-size: 7.2em;
+	letter-spacing: 1pt;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 20px;
+	font-family: Verdana, Geneva, sans-serif;
+	text-shadow: -1px -1px #666666, 1px 1px #FFFFFF, -1px -1px 1px #222222;
+	text-align: center;
+}
+
+#tabs {
+    margin-left: auto;
+    margin-right: auto;
+	width:800px;
+	height: 450px;
+}
+
+#configuration_video_folders {
+    padding-left: 80px;
+    padding-top: 12px;
+}
+
+#configuration_audio_folders {
+    padding-left: 80px;
+    padding-top: 12px;
+}
+
+#configuration_picture_folders {
+    padding-left: 80px;
+    padding-top: 12px;
+}
+
+#configuration_podcasts {
+    padding-left: 80px;
+    padding-top: 12px;
+}
+
+#message {
+	width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#configuration {
+	width: 600px;
+	height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+#configuration_fieldset {
+	height: 100%;
+}
+
+#configuration_legend {
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-weight: bold;
+}
+
+#configuration_table {
+	width: 300px;
+	height: 100%;
+    margin-left: auto;
+    margin-right: auto;	
+}
+
+#configuration_table td{
+	vertical-align: middle;
+}
+
+#configuration_opration {
+	width: 600px;
+	height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;	
+}
+
+#configuration_opration_legend {
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-weight: bold;
+}
+
+#configuration_operation_table {
+	width: 300px;
+	height: 100%;
+    margin-left: auto;
+    margin-right: auto;	
+}
+
+#configuration_operation_table td{
+	padding: 10px;
+	vertical-align: middle;
+}

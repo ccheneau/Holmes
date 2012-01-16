@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>holmes-parent</artifactId>
+		<groupId>net.holmes</groupId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<groupId>net.holmes</groupId>
+	<artifactId>holmes-package</artifactId>
+	<packaging>pom</packaging>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>net.holmes</groupId>
+				<artifactId>holmes-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.holmes</groupId>
+			<artifactId>holmes-core</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>aggregate</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>src/main/assembly/default.xml</descriptor>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
