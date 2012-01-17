@@ -110,26 +110,33 @@ $(document).ready(function() {
 	    $("#select_log_level").addClass("ui-state-default ui-corner-all hover");
 	    $("#btn_submit").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
 	    $("#btn_submit").html($("#btn_submit").html() + "<span class='ui-icon ui-icon-disk'></span>");
+	    $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
+	    $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
 	    $("#configuration_operation_fieldset").addClass("ui-widget ui-widget-content ui-corner-all");
 	    $("#btn_scan_all").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
 	    $("#btn_scan_all").html($("#btn_scan_all").html() + "<span class='ui-icon ui-icon-search'></span>");
+	    
 	    $(".hover").hover(function(){
 			  $(this).addClass("ui-state-hover");
 			   },function(){
 			  $(this).removeClass("ui-state-hover");
-			   });
+		});
+	    
 	    $(".toolbar_hover").hover(function(){
 			  $(this).addClass("toolbar-state-hover");
 			   },function(){
 			  $(this).removeClass("toolbar-state-hover");
-			   });
+		});
 	    
 	    // Initialize data
-	    $.getJSON('/backend/configuration/getConfiguration', function(response) {
-	    		$("#text_server_name").val(response.serverName);
-	    		$("#text_http_server_port").val(response.httpServerPort);
-	    		$("#select_log_level").val(response.logLevel);
-	    	});
+	    function loadConfiguration() {
+		    $.getJSON('/backend/configuration/getConfiguration', function(response) {
+		    		$("#text_server_name").val(response.serverName);
+		    		$("#text_http_server_port").val(response.httpServerPort);
+		    		$("#select_log_level").val(response.logLevel);
+		    });
+	    }
+	    loadConfiguration();
 	    
 	    //Submit handler
 	    $('#btn_submit').click(function() {
@@ -146,7 +153,13 @@ $(document).ready(function() {
 	    					errorMessage(serverResponse.message);
 	    				}
 	    		});
-	    	});
+	    });
+	    
+	    //Reset handler
+	    $('#btn_reset').click(function() {
+	    	closeMessage();
+	    	loadConfiguration();
+	    });
 	    
 	    //Scan all handler
 	    $('#btn_scan_all').click(function() {
@@ -159,14 +172,20 @@ $(document).ready(function() {
 	    					errorMessage(serverResponse.message);
 	    				}
 	    		});
-	    	});	    
+	    });	    
 
 	    function successMessage(message) {
-	    	$("#message").html("<span>" + message + "</span>");
+	    	$("#message").html("<span>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
+	    	$('#close_message').click(function() { closeMessage(); });
 	    }
 
 	    function errorMessage(message) {
-	    	$("#message").html("<span class='ui-state-error-text'>" + message + "</span>");
+	    	$("#message").html("<span class='ui-state-error-text'>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
+	    	$('#close_message').click(function() { closeMessage(); });
 	    }
 
+	    function closeMessage() {
+	    	$('#close_message').unbind();
+	    	$("#message").html("");
+	    }
 	});
