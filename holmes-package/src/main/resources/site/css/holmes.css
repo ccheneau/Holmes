@@ -10,7 +10,7 @@ html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address
 
 html {
 	overflow-y: scroll;
-	background: #C0C0C0 url('images/bck.png') repeat-x scroll;
+	background: #FFFFFF url('images/bck.png') repeat-x scroll;
 }
 
 body {
@@ -25,16 +25,68 @@ header {
 	width: 100%;
 }
 
-header h1 {
+#header {
+    margin-left: auto;
+    margin-right: auto;
+	width:800px;
+	height: 60px;
+}
+
+#title {
+	display:block;
 	color: #B8C0CB;
-	font-size: 7.2em;
+	font-size: 4em;
 	letter-spacing: 1pt;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 20px;
 	font-family: Verdana, Geneva, sans-serif;
-	text-shadow: -1px -1px #666666, 1px 1px #FFFFFF, -1px -1px 1px #222222;
-	text-align: center;
+	font-weight: bold;
+	float: left;
+    margin-left: 60px;
+    margin-top: 5px;
+}
+
+#version {
+	color: white;
+	float: right;
+    margin-top: 40px;
+}
+
+#toolbar {
+    margin-left: auto;
+    margin-right: auto;
+	width:800px;
+	height: 40px;
+}
+
+#toolbar  ul{
+	display:block;
+	list-style-type: none;
+}
+
+.toolbar-state-hover {
+	background-color:#373E47;
+}
+
+#toolbar  li{
+	float:left;
+	height:40px;
+	display: list-item;
+	color:white;
+	text-decoration:none;
+	cursor:pointer;
+}
+
+#toolbar  a{
+	color:white;
+	font-size: 13px;
+	text-decoration:none;
+	cursor:pointer;
+	height:40px;
+}
+
+#toolbar span {
+    display: block;
+    height: 20px;
+    padding:10px;
 }
 
 #tabs {

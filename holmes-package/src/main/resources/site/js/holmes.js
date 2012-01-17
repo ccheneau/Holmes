@@ -118,6 +118,11 @@ $(document).ready(function() {
 			   },function(){
 			  $(this).removeClass("ui-state-hover");
 			   });
+	    $(".toolbar_hover").hover(function(){
+			  $(this).addClass("toolbar-state-hover");
+			   },function(){
+			  $(this).removeClass("toolbar-state-hover");
+			   });
 	    
 	    // Initialize data
 	    $.getJSON('/backend/configuration/getConfiguration', function(response) {
