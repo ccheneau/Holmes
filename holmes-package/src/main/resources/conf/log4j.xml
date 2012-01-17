@@ -22,9 +22,9 @@
 		</filter>
 	</appender>
 	
-	<appender name="FILE" class="org.apache.log4j.FileAppender">
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="${net.holmes.home}/log/holmes.log" />
-		<param name="MaxFileSize" value="100KB" />
+		<param name="MaxFileSize" value="10MB" />
 		<param name="append" value="false"/>
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
@@ -34,7 +34,7 @@
 	</appender>
 
 	<root>
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="STDERR" />
 		<appender-ref ref="FILE" />
