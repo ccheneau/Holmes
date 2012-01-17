@@ -24,6 +24,10 @@
 			<outputDirectory>/</outputDirectory>
 			<excludes>
 				<exclude>**/dummy.txt</exclude>
+				<exclude>**/.gitignore</exclude>
+				<exclude>conf/config.xml</exclude>
+				<exclude>log/holmes.log</exclude>
+				<exclude>media/media.xml</exclude>
 			</excludes>
 		</fileSet>
 	</fileSets>
