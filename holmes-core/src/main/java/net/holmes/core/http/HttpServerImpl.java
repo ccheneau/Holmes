@@ -21,9 +21,7 @@
 */
 package net.holmes.core.http;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
 
 import net.holmes.core.common.IServer;
@@ -81,26 +79,19 @@ public final class HttpServerImpl implements IServer
     {
         logger.info("Starting http server");
 
-        try
-        {
-            int port = configuration.getConfig().getHttpServerPort();
-            InetSocketAddress bindAddress = new InetSocketAddress(InetAddress.getLocalHost(), port);
+        int port = configuration.getConfig().getHttpServerPort();
+        InetSocketAddress bindAddress = new InetSocketAddress(port);
 
-            // Configure the server.
-            bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
+        // Configure the server.
+        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
 
-            // Set up the event pipeline factory.
-            bootstrap.setPipelineFactory(pipelineFactory);
+        // Set up the event pipeline factory.
+        bootstrap.setPipelineFactory(pipelineFactory);
 
-            // Bind and start to accept incoming connections.
-            channel = bootstrap.bind(bindAddress);
+        // Bind and start to accept incoming connections.
+        channel = bootstrap.bind(bindAddress);
 
-            logger.info("Http server bound on " + bindAddress);
-        }
-        catch (UnknownHostException e)
-        {
-            logger.error(e.getMessage(), e);
-        }
+        logger.info("Http server bound on " + bindAddress);
     }
 
     /* (non-Javadoc)

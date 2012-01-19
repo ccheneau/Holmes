@@ -33,7 +33,7 @@ Run the startup.bat script.
 
 After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/
 
-(nor "localhost" or "127.0.0.1" are accepted for the moment)
+("localhost" or "127.0.0.1" are also accepted)
 
 
 ## LICENSE
