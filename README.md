@@ -5,8 +5,6 @@ Holmes stands for Home Light Media Server.
 
 A Java application that supports UPnp protocol for playing videos, music, pictures and podcasts to compatible devices.
 
-Support for AirPlay is planned for next release.
-
 ## DESCRIPTION
 
 Holmes uses the following frameworks:
@@ -17,7 +15,7 @@ Holmes uses the following frameworks:
 * [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end REST api
 * [Rome](http://java.net/projects/rome/) for RSS parsing
 * [EHCache](http://ehcache.org/) for caching
-* [JQueryUI](http://jqueryui.com/) for user interface (any help from web designer would be appreciated :-) )
+* [JQueryUI](http://jqueryui.com/) for user interface
 
 This application has been tested on Windows with [VLC](http://www.videolan.org/vlc/) 1.2 beta and Freebox V6 (a french set top box)
  
@@ -35,7 +33,7 @@ Run the startup.bat script.
 
 After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/
 
-(nor localhost or 127.0.0.1 are accepted for the moment)
+(nor "localhost" or "127.0.0.1" are accepted for the moment)
 
 
 ## LICENSE
