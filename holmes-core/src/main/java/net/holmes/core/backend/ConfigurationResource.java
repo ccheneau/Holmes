@@ -219,7 +219,7 @@ public class ConfigurationResource
     public String editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label, @FormParam("path") String path)
             throws IOException
     {
-        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), true);
+        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
         if (response.getStatus()) mediaService.scanPodcasts(true);
         return mapper.writeValueAsString(response);
     }
