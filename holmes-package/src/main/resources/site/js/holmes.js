@@ -14,82 +14,123 @@ $(document).ready(function() {
 		// Initialize tabs
 		$( "#tabs" ).tabs();
 
-		// Initialize video folders grid
-		$("#list_video_folders").jqGrid({
-			url:'/backend/configuration/getVideoFolders', 
-			colNames:['ID','Label', 'Path'], 
-			colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-			           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-			           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
-			          ], 
-			caption: "Video folders",
-			pager: '#list_video_folders_nav',
-			editurl:"/backend/configuration/editVideoFolder" 
+		// Initialize i18n
+		$.i18n.properties({
+		    name:'messages', 
+		    path:'bundle/',
+		    mode:'both',
+		    callback: function() {
+		    	$(".i18n").each( function(i,elem) {
+		    		if ($(elem).data('msg') != undefined)
+		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
+		    		initPage();
+		    	});
+		    }
 		});
-		$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
-				{search: false}, //options 
-				{height:150, width: 500, reloadAfterSubmit:true, editCaption: "Edit video folder", closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-				{height:150, width: 500, reloadAfterSubmit:true, addCaption: "Add video folder", closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
-				{reloadAfterSubmit:true, closeOnEscape:true, msg: "Delete selected video folder?", afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
-		);
-		
-		//Initialize audio folders grid
-		$("#list_audio_folders").jqGrid({
-			url:'/backend/configuration/getAudioFolders', 
-			colNames:['ID','Label', 'Path'], 
-			colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-			           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-			           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
-			          ], 
-			caption: "Audio folders",
-			pager: '#list_audio_folders_nav', 
-			editurl:"/backend/configuration/editAudioFolder" 
-		});
-		$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
-				{search: false}, //options 
-				{height:150, width: 500, reloadAfterSubmit:true, editCaption: "Edit audio folder", closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-				{height:150, width: 500, reloadAfterSubmit:true, addCaption: "Add audio folder", closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
-				{reloadAfterSubmit:true, closeOnEscape:true, msg: "Delete selected audio folder?", afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
-		);
-		
-		//Initialize picture folders grid
-		$("#list_picture_folders").jqGrid({
-			url:'/backend/configuration/getPictureFolders', 
-			colNames:['ID','Label', 'Path'], 
-			colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-			           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-			           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
-			          ], 
-			caption: "Picture folders",
-			pager: '#list_picture_folders_nav', 
-			editurl:"/backend/configuration/editPictureFolder" 
-		});
-		$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav', 
-				{search: false}, //options 
-				{height:150, width: 500, reloadAfterSubmit:true, editCaption: "Edit picture folder", closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-				{height:150, width: 500, reloadAfterSubmit:true, addCaption: "Add picture folder", closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
-				{reloadAfterSubmit:true, closeOnEscape:true, msg: "Delete selected picture folder?", afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
-		);
-		
-		//Initialize podcasts rid
-		$("#list_podcasts").jqGrid({
-			url:'/backend/configuration/getPodcasts', 
-			colNames:['ID','Label', 'URL'], 
-			colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-			           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-			           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
-			          ], 
-			caption: "Podcast URLs",
-			pager: '#list_podcasts_nav', 
-			editurl:"/backend/configuration/editPodcast" 
-		});
-		$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
-				{search: false}, //options 
-				{height:150, width: 500, reloadAfterSubmit:true, editCaption: "Edit podcast", closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-				{height:150, width: 500, reloadAfterSubmit:true, addCaption: "Add podcast", closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
-				{reloadAfterSubmit:true, closeOnEscape:true, msg: "Delete selected podcast?", afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
-		);
 
+		function initPage()
+		{
+			// Initialize video folders grid
+			$("#list_video_folders").jqGrid({
+				url:'/backend/configuration/getVideoFolders', 
+				colNames:[msg.video.id,msg.video.label, msg.video.path], 
+				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
+				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				          ], 
+				caption: msg.video.folders,
+				pager: '#list_video_folders_nav',
+				editurl:"/backend/configuration/editVideoFolder" 
+			});
+			$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
+					{search: false}, //options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						addCaption: msg.video.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+					{reloadAfterSubmit:true, closeOnEscape:true, 
+						caption: msg.video.delete.caption, msg: msg.video.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+			);
+			
+			//Initialize audio folders grid
+			$("#list_audio_folders").jqGrid({
+				url:'/backend/configuration/getAudioFolders', 
+				colNames:[msg.audio.id,msg.audio.label, msg.audio.path], 
+				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
+				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				          ], 
+				caption: msg.audio.folders,
+				pager: '#list_audio_folders_nav', 
+				editurl:"/backend/configuration/editAudioFolder" 
+			});
+			$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
+					{search: false}, //options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						addCaption: msg.audio.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+					{reloadAfterSubmit:true, closeOnEscape:true, 
+						caption: msg.audio.delete.caption, msg: msg.audio.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+			);
+			
+			//Initialize picture folders grid
+			$("#list_picture_folders").jqGrid({
+				url:'/backend/configuration/getPictureFolders', 
+				colNames:[msg.picture.id,msg.picture.label, msg.picture.path], 
+				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
+				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				          ], 
+				caption: msg.picture.folders,
+				pager: '#list_picture_folders_nav', 
+				editurl:"/backend/configuration/editPictureFolder" 
+			});
+			$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav', 
+					{search: false}, //options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						addCaption: msg.picture.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+					{reloadAfterSubmit:true, closeOnEscape:true, 
+						caption: msg.picture.delete.caption, msg: msg.picture.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+			);
+			
+			//Initialize podcasts grid
+			$("#list_podcasts").jqGrid({
+				url:'/backend/configuration/getPodcasts', 
+				colNames:[msg.podcast.id,msg.podcast.label, msg.podcast.url], 
+				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
+				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				          ], 
+				caption: msg.podcast.folders,
+				pager: '#list_podcasts_nav', 
+				editurl:"/backend/configuration/editPodcast" 
+			});
+			$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
+					{search: false}, //options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
+					{height:150, width: 500, reloadAfterSubmit:true, 
+						addCaption: msg.podcast.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+					{reloadAfterSubmit:true, closeOnEscape:true, 
+						caption: msg.podcast.delete.caption, msg: msg.podcast.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+			);
+
+		}
 		// Callback for edit/add/delete item server response
 	    function getEditResponseData (response) {
 	    	var serverResponse = $.parseJSON(response.responseText);
