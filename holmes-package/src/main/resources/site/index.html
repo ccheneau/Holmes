@@ -24,8 +24,8 @@
 			</div>
 			<div id="toolbar">
 				<ul>
-					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes"><span>Holmes on GitHub</span></a></li>
-					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes/wiki"><span>Wiki</span></a></li>
+					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes"><span class="i18n" data-msg="msg.toolbar.holmesOnGitHub">Holmes on GitHub</span></a></li>
+					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes/wiki"><span class="i18n" data-msg="msg.toolbar.wiki">Wiki</span></a></li>
 				</ul>
 			</div>
     	</header>
@@ -65,37 +65,33 @@
 				<div id="message"></div>
 				<div id="configuration" >
 					<fieldset id="configuration_fieldset">
-						<legend id="configuration_legend">Configuration</legend>
+						<legend id="configuration_legend" class="i18n" data-msg="msg.config.setting">Settings</legend>
 						<table id="configuration_table">
 							<tbody>
 								<tr>
-									<td>Server name</td>
+									<td class="i18n" data-msg="msg.config.serverName">Server name</td>
 									<td><input id="text_server_name" type="text" name="serverName" /></td>
 								</tr>
 								<tr>
-									<td>Http server port</td>
+									<td class="i18n" data-msg="msg.config.httpServerPort">Http server port</td>
 									<td><input id="text_http_server_port" type="text" size="6" name="httpServerPort" /></td>
 								</tr>
 								<tr>
-									<td>Trace level</td>
+									<td class="i18n" data-msg="msg.config.logLevel">Trace level</td>
 									<td>
 										<select id="select_log_level" name="logLevel">
-											<option value="OFF" >No trace</option>
-											<option value="DEBUG">Debug</option>
-											<option value="INFO">Info</option>
-											<option value="WARNING">Warning</option>
-											<option value="ERROR">Error</option>
+											<option value="OFF" class="i18n" data-msg="msg.config.logLevel.off">No trace</option>
+											<option value="DEBUG" class="i18n" data-msg="msg.config.logLevel.debug">Debug</option>
+											<option value="INFO" class="i18n" data-msg="msg.config.logLevel.info">Info</option>
+											<option value="WARNING" class="i18n" data-msg="msg.config.logLevel.warning">Warning</option>
+											<option value="ERROR" class="i18n" data-msg="msg.config.logLevel.error">Error</option>
 										</select> 
 									</td>
 								</tr>
 								<tr>
 									<td colspan="2" align="center">
-										<a id="btn_reset" href="javascript:void(0)">
-											Reset
-										</a>
-										<a id="btn_submit" href="javascript:void(0)">
-											Submit
-										</a>
+										<a id="btn_reset" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.reset">Reset</a>
+										<a id="btn_submit" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.submit">Submit</a>
 									</td>
 								</tr>
 							</tbody>
@@ -104,14 +100,12 @@
 				</div>
 				<div id="configuration_opration" >
 					<fieldset id="configuration_operation_fieldset">
-						<legend id="configuration_opration_legend">Operations</legend>
+						<legend id="configuration_opration_legend" class="i18n" data-msg="msg.config.operations">Operations</legend>
 						<table id="configuration_operation_table">
 							<tbody>
 								<tr>
 									<td align="center">
-										<a id="btn_scan_all" href="javascript:void(0)">
-											Scan all
-										</a>
+										<a id="btn_scan_all" href="javascript:void(0)" class="i18n" data-msg="msg.config.operations.scanAll">Scan all</a>
 									</td>
 								</tr>
 							</tbody>
