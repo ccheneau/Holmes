@@ -53,7 +53,7 @@ public final class UpnpServerImpl implements IServer
 {
 
     /** The logger. */
-    private Logger logger = LoggerFactory.getLogger(UpnpServerImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(UpnpServerImpl.class);
 
     /** The upnp service. */
     private UpnpService upnpService = null;

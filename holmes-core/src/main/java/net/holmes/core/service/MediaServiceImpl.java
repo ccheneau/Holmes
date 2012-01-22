@@ -22,17 +22,9 @@
 package net.holmes.core.service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.UUID;
 
 import net.holmes.core.configuration.ContentFolder;
@@ -43,14 +35,13 @@ import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.model.PodcastContainerNode;
+import net.holmes.core.service.dao.IMediaDao;
 import net.holmes.core.util.DateFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * The Class MediaServiceImpl.
@@ -61,11 +52,9 @@ public final class MediaServiceImpl implements IMediaService
     /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(MediaServiceImpl.class);
 
-    /** The Constant MEDIA_FILE_NAME. */
-    private static final String MEDIA_FILE_NAME = "media.xml";
-
-    /** The node map. */
-    private Map<String, AbstractNode> nodeMap;
+    /** The media dao. */
+    @Inject
+    private IMediaDao mediaDao;
 
     /** The configuration. */
     @Inject
@@ -80,61 +69,6 @@ public final class MediaServiceImpl implements IMediaService
      */
     public MediaServiceImpl()
     {
-        initMap();
-    }
-
-    /**
-     * Inits the map.
-     */
-    private void initMap()
-    {
-        nodeMap = new HashMap<String, AbstractNode>();
-
-        ResourceBundle bundle = ResourceBundle.getBundle("message");
-
-        // Create root node
-        ContainerNode rootNode = new ContainerNode();
-        rootNode.setId(ContentFolder.ROOT_NODE_ID);
-        rootNode.setName(bundle.getString("node.rootNode"));
-        rootNode.setChildNodeIds(new ArrayList<String>());
-        rootNode.getChildNodeIds().add(ContentFolder.ROOT_VIDEO_NODE_ID);
-        rootNode.getChildNodeIds().add(ContentFolder.ROOT_AUDIO_NODE_ID);
-        rootNode.getChildNodeIds().add(ContentFolder.ROOT_PICTURE_NODE_ID);
-        rootNode.getChildNodeIds().add(ContentFolder.ROOT_PODCAST_NODE_ID);
-        nodeMap.put(ContentFolder.ROOT_NODE_ID, rootNode);
-
-        // Create root video node
-        ContainerNode videoNode = new ContainerNode();
-        videoNode.setId(ContentFolder.ROOT_VIDEO_NODE_ID);
-        videoNode.setName(bundle.getString("node.video"));
-        videoNode.setChildNodeIds(new ArrayList<String>());
-        videoNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
-        nodeMap.put(ContentFolder.ROOT_VIDEO_NODE_ID, videoNode);
-
-        // Create root audio node
-        ContainerNode audioNode = new ContainerNode();
-        audioNode.setId(ContentFolder.ROOT_AUDIO_NODE_ID);
-        audioNode.setName(bundle.getString("node.audio"));
-        audioNode.setChildNodeIds(new ArrayList<String>());
-        audioNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
-        nodeMap.put(ContentFolder.ROOT_AUDIO_NODE_ID, audioNode);
-
-        // Create root picture node
-        ContainerNode pictureNode = new ContainerNode();
-        pictureNode.setId(ContentFolder.ROOT_PICTURE_NODE_ID);
-        pictureNode.setName(bundle.getString("node.picture"));
-        pictureNode.setChildNodeIds(new ArrayList<String>());
-        pictureNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
-        nodeMap.put(ContentFolder.ROOT_PICTURE_NODE_ID, pictureNode);
-
-        // Create root podcast node
-        ContainerNode podcastNode = new ContainerNode();
-        podcastNode.setId(ContentFolder.ROOT_PODCAST_NODE_ID);
-        podcastNode.setName(bundle.getString("node.podcast"));
-        podcastNode.setChildNodeIds(new ArrayList<String>());
-        podcastNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
-        nodeMap.put(ContentFolder.ROOT_PODCAST_NODE_ID, podcastNode);
-
     }
 
     /* (non-Javadoc)
@@ -143,70 +77,70 @@ public final class MediaServiceImpl implements IMediaService
     @Override
     public AbstractNode getNode(String nodeId)
     {
-        return nodeMap.get(nodeId);
+        return mediaDao.getNode(nodeId);
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanAll(boolean)
+     * @see net.holmes.core.service.IMediaService#scanAll()
      */
     @Override
-    public synchronized void scanAll(boolean autosave)
+    public synchronized void scanAll()
     {
         scanRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
         scanRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
         scanRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
         scanRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, configuration.getConfig().getPodcasts(), true, null);
 
-        if (autosave) save();
+        mediaDao.flush();
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanVideos(boolean)
+     * @see net.holmes.core.service.IMediaService#scanVideos()
      */
     @Override
-    public void scanVideos(boolean autosave)
+    public void scanVideos()
     {
         scanRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
-        if (autosave) save();
+        mediaDao.flush();
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanAudios(boolean)
+     * @see net.holmes.core.service.IMediaService#scanAudios()
      */
     @Override
-    public void scanAudios(boolean autosave)
+    public void scanAudios()
     {
         scanRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
-        if (autosave) save();
+        mediaDao.flush();
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanPictures(boolean)
+     * @see net.holmes.core.service.IMediaService#scanPictures()
      */
     @Override
-    public void scanPictures(boolean autosave)
+    public void scanPictures()
     {
         scanRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
-        if (autosave) save();
+        mediaDao.flush();
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanPodcasts(boolean)
+     * @see net.holmes.core.service.IMediaService#scanPodcasts()
      */
     @Override
-    public void scanPodcasts(boolean autosave)
+    public void scanPodcasts()
     {
         scanRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, configuration.getConfig().getPodcasts(), true, null);
-        if (autosave) save();
+        mediaDao.flush();
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.service.IMediaService#getNodes()
      */
     @Override
-    public Map<String, AbstractNode> getNodes()
+    public Set<String> getNodeIds()
     {
-        return nodeMap;
+        return mediaDao.getNodeIds();
     }
 
     /**
@@ -222,12 +156,11 @@ public final class MediaServiceImpl implements IMediaService
         if (logger.isDebugEnabled()) logger.debug("[START] scanRootNode rootNodeId:" + rootNodeId);
 
         // Get root node
-        AbstractNode rootNode = nodeMap.get(rootNodeId);
+        AbstractNode rootNode = mediaDao.getNode(rootNodeId);
         if (rootNode instanceof ContainerNode)
         {
             ContainerNode rootContainerNode = (ContainerNode) rootNode;
             List<String> nodesToRemove = new ArrayList<String>();
-            boolean nodeUpdated = false;
 
             // Initialize nodes to remove
             if (rootContainerNode.getChildNodeIds() != null)
@@ -253,8 +186,7 @@ public final class MediaServiceImpl implements IMediaService
                         else
                         {
                             // Add to child nodes
-                            rootContainerNode.getChildNodeIds().add(addedNode.getId());
-                            nodeUpdated = true;
+                            mediaDao.addChildNode(rootContainerNode.getId(), addedNode.getId());
                         }
                     }
                 }
@@ -278,8 +210,7 @@ public final class MediaServiceImpl implements IMediaService
                             else
                             {
                                 // Add to child nodes
-                                rootContainerNode.getChildNodeIds().add(addedNode.getId());
-                                nodeUpdated = true;
+                                mediaDao.addChildNode(rootContainerNode.getId(), addedNode.getId());
                             }
 
                             // Scan child folder
@@ -292,16 +223,12 @@ public final class MediaServiceImpl implements IMediaService
             // Remove obsolete nodes
             if (!nodesToRemove.isEmpty())
             {
-                nodeUpdated = true;
                 for (String nodeId : nodesToRemove)
                 {
                     removeNode(nodeId);
-                    rootContainerNode.getChildNodeIds().remove(nodeId);
+                    mediaDao.removeChildNode(rootContainerNode.getId(), nodeId);
                 }
             }
-
-            // Update parent node version
-            if (nodeUpdated) updateNodeVersion(rootNodeId);
         }
         if (logger.isDebugEnabled()) logger.debug("[END] scanRootNode");
 
@@ -324,7 +251,6 @@ public final class MediaServiceImpl implements IMediaService
         if (files != null)
         {
             AbstractNode addedNode = null;
-            boolean nodeUpdated = false;
             List<String> nodesToRemove = new ArrayList<String>();
 
             // Initialize nodes to remove
@@ -361,8 +287,7 @@ public final class MediaServiceImpl implements IMediaService
                     else
                     {
                         // Adds to child nodes
-                        parentNode.getChildNodeIds().add(addedNode.getId());
-                        nodeUpdated = true;
+                        mediaDao.addChildNode(parentNode.getId(), addedNode.getId());
                     }
 
                     // Scan child folder
@@ -376,16 +301,12 @@ public final class MediaServiceImpl implements IMediaService
             // Remove obsolete nodes
             if (!nodesToRemove.isEmpty())
             {
-                nodeUpdated = true;
                 for (String nodeId : nodesToRemove)
                 {
                     removeNode(nodeId);
-                    parentNode.getChildNodeIds().remove(nodeId);
+                    mediaDao.removeChildNode(parentNode.getId(), nodeId);
                 }
             }
-
-            // Update parent node version
-            if (nodeUpdated) updateNodeVersion(parentNode.getId());
 
         }
         if (logger.isDebugEnabled()) logger.debug("[END] scanFolder");
@@ -407,10 +328,10 @@ public final class MediaServiceImpl implements IMediaService
         for (String nodeId : parentNode.getChildNodeIds())
         {
             // Check if node already exists in container child nodes
-            currentNode = nodeMap.get(nodeId);
+            currentNode = mediaDao.getNode(nodeId);
             if (currentNode != null && currentNode instanceof ContainerNode && name.equals(currentNode.getName()))
             {
-                currentNode.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
+                mediaDao.updateNodeModifiedDate(currentNode.getId(), DateFormat.formatUpnpDate(folder.lastModified()));
                 if (logger.isDebugEnabled()) logger.debug("[END] addContainerNode existing node:" + currentNode);
                 return (ContainerNode) currentNode;
             }
@@ -425,8 +346,8 @@ public final class MediaServiceImpl implements IMediaService
         node.setChildNodeIds(new ArrayList<String>());
         node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
 
-        // Add to node map
-        nodeMap.put(node.getId(), node);
+        // Add the node
+        mediaDao.addNode(node);
 
         if (logger.isDebugEnabled()) logger.debug("[END] addContainerNode added node:" + node);
         return node;
@@ -450,10 +371,10 @@ public final class MediaServiceImpl implements IMediaService
         // Check if node already exists in container child nodes
         for (String nodeId : parentNode.getChildNodeIds())
         {
-            currentNode = nodeMap.get(nodeId);
+            currentNode = mediaDao.getNode(nodeId);
             if (currentNode != null && currentNode instanceof ContentNode && name.equals(currentNode.getName()))
             {
-                currentNode.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
+                mediaDao.updateNodeModifiedDate(currentNode.getId(), DateFormat.formatUpnpDate(file.lastModified()));
                 if (logger.isDebugEnabled()) logger.debug("[END] addContentNode existing node:" + currentNode);
                 return (ContentNode) currentNode;
             }
@@ -475,8 +396,8 @@ public final class MediaServiceImpl implements IMediaService
             node.setId(UUID.randomUUID().toString());
             node.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
 
-            // Add to node map
-            nodeMap.put(node.getId(), node);
+            // Add the node
+            mediaDao.addNode(node);
         }
         if (logger.isDebugEnabled()) logger.debug("[END] addContentNode added node:" + node);
 
@@ -500,7 +421,7 @@ public final class MediaServiceImpl implements IMediaService
         // Check if node already exists in container child nodes
         for (String nodeId : parentNode.getChildNodeIds())
         {
-            currentNode = nodeMap.get(nodeId);
+            currentNode = mediaDao.getNode(nodeId);
             if (currentNode != null && currentNode instanceof PodcastContainerNode && name.equals(currentNode.getName()))
             {
                 if (logger.isDebugEnabled()) logger.debug("[END] addPodcastNode existing node:" + currentNode);
@@ -515,8 +436,8 @@ public final class MediaServiceImpl implements IMediaService
         node.setParentNodeId(parentNode.getId());
         node.setId(UUID.randomUUID().toString());
 
-        // Add to node map
-        nodeMap.put(node.getId(), node);
+        // Add the node
+        mediaDao.addNode(node);
 
         if (logger.isDebugEnabled()) logger.debug("[END] addPodcastNode added node:" + node);
 
@@ -531,7 +452,7 @@ public final class MediaServiceImpl implements IMediaService
     private void removeNode(String nodeId)
     {
         if (logger.isDebugEnabled()) logger.debug("[START] remove node:" + nodeId);
-        AbstractNode node = nodeMap.get(nodeId);
+        AbstractNode node = mediaDao.getNode(nodeId);
         if (node != null)
         {
             if (node instanceof ContainerNode)
@@ -547,120 +468,8 @@ public final class MediaServiceImpl implements IMediaService
             }
 
             // Remove node
-            nodeMap.remove(nodeId);
+            mediaDao.removeNode(nodeId);
         }
         if (logger.isDebugEnabled()) logger.debug("[END] remove node");
-    }
-
-    /**
-     * Update node version and parent node version.
-     *
-     * @param nodeId the node id
-     */
-    private void updateNodeVersion(String nodeId)
-    {
-        AbstractNode node = nodeMap.get(nodeId);
-        if (node != null)
-        {
-            node.incrementVersion();
-            if (node.getParentNodeId() != null)
-            {
-                updateNodeVersion(node.getParentNodeId());
-            }
-        }
-    }
-
-    /**
-     * Gets the x stream.
-     *
-     * @return the x stream
-     */
-    private XStream getXStream()
-    {
-        XStream xs = new XStream(new DomDriver("UTF-8"));
-        xs.alias("container", ContainerNode.class);
-        xs.alias("content", ContentNode.class);
-        xs.alias("contentType", ContentType.class);
-        xs.alias("podcast", PodcastContainerNode.class);
-        return xs;
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.service.MediaService#save()
-     */
-    @Override
-    public void save()
-    {
-        XStream xs = getXStream();
-
-        String mediaPath = configuration.getHomeMediaDirectory();
-        if (mediaPath != null)
-        {
-            String filePath = mediaPath + File.separator + MEDIA_FILE_NAME;
-            File confFile = new File(filePath);
-
-            OutputStream out = null;
-            try
-            {
-                out = new FileOutputStream(confFile);
-                xs.toXML(nodeMap, out);
-            }
-            catch (FileNotFoundException e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-            finally
-            {
-                try
-                {
-                    if (out != null) out.close();
-                }
-                catch (IOException e)
-                {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#load()
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public void load()
-    {
-        XStream xs = getXStream();
-
-        String mediaPath = configuration.getHomeMediaDirectory();
-        if (mediaPath != null)
-        {
-            String filePath = mediaPath + File.separator + MEDIA_FILE_NAME;
-            File confFile = new File(filePath);
-            if (confFile.exists() && confFile.canRead())
-            {
-                InputStream in = null;
-                try
-                {
-                    in = new FileInputStream(confFile);
-                    nodeMap = (Map<String, AbstractNode>) xs.fromXML(in);
-                }
-                catch (FileNotFoundException e)
-                {
-                    logger.error(e.getMessage(), e);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (in != null) in.close();
-                    }
-                    catch (IOException e)
-                    {
-                        logger.error(e.getMessage(), e);
-                    }
-                }
-            }
-        }
     }
 }

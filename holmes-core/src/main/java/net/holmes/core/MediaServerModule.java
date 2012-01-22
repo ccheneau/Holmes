@@ -34,6 +34,8 @@ import net.holmes.core.model.ContentTypeFactoryImpl;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.service.IMediaService;
 import net.holmes.core.service.MediaServiceImpl;
+import net.holmes.core.service.dao.IMediaDao;
+import net.holmes.core.service.dao.XmlMediaDaoImpl;
 import net.holmes.core.upnp.UpnpServerImpl;
 
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -57,6 +59,7 @@ public final class MediaServerModule extends AbstractModule
         bind(IConfiguration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
 
         bind(IMediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
+        bind(IMediaDao.class).to(XmlMediaDaoImpl.class).in(Singleton.class);
 
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
 

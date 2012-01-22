@@ -69,11 +69,11 @@ public class MediaServiceTest extends TestCase
     {
         try
         {
-            mediaService.scanAll(true);
+            mediaService.scanAll();
 
-            assertNotNull(mediaService.getNodes());
-            logger.debug(mediaService.getNodes().toString());
-            assertFalse(mediaService.getNodes().isEmpty());
+            assertNotNull(mediaService.getNodeIds());
+            logger.debug(mediaService.getNodeIds().toString());
+            assertFalse(mediaService.getNodeIds().isEmpty());
         }
         catch (Exception e)
         {
@@ -89,22 +89,22 @@ public class MediaServiceTest extends TestCase
     {
         try
         {
-            mediaService.scanAll(false);
+            mediaService.scanAll();
 
-            assertNotNull(mediaService.getNodes());
+            assertNotNull(mediaService.getNodeIds());
             Collection<String> nodeIds1 = new ArrayList<String>();
-            assertFalse(mediaService.getNodes().isEmpty());
-            for (String id : mediaService.getNodes().keySet())
+            assertFalse(mediaService.getNodeIds().isEmpty());
+            for (String id : mediaService.getNodeIds())
             {
                 nodeIds1.add(id);
             }
 
-            mediaService.scanAll(false);
+            mediaService.scanAll();
 
-            assertNotNull(mediaService.getNodes());
+            assertNotNull(mediaService.getNodeIds());
             Collection<String> nodeIds2 = new ArrayList<String>();
-            assertFalse(mediaService.getNodes().isEmpty());
-            for (String id : mediaService.getNodes().keySet())
+            assertFalse(mediaService.getNodeIds().isEmpty());
+            for (String id : mediaService.getNodeIds())
             {
                 nodeIds2.add(id);
             }

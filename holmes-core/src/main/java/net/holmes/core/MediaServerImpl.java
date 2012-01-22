@@ -62,11 +62,8 @@ public final class MediaServerImpl implements IServer
      */
     public void init()
     {
-        // load medias
-        mediaService.load();
-
-        // Scan and save content nodes
-        mediaService.scanAll(true);
+        // Scan content nodes
+        mediaService.scanAll();
     }
 
     /* (non-Javadoc)

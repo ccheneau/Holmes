@@ -96,7 +96,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 {
 
     /** The logger. */
-    private Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
+    private static Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
     /** The media service. */
     private IMediaService mediaService;

@@ -59,14 +59,14 @@ public class ConfigurationResource
     /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
 
-    /** The AD d_ gri d_ ro w_ operation. */
-    private static String ADD_GRID_ROW_OPERATION = "add";
+    /** The Constant ADD_GRID_ROW_OPERATION. */
+    private static final String ADD_GRID_ROW_OPERATION = "add";
 
-    /** The EDI t_ gri d_ ro w_ operation. */
-    private static String EDIT_GRID_ROW_OPERATION = "edit";
+    /** The Constant EDIT_GRID_ROW_OPERATION. */
+    private static final String EDIT_GRID_ROW_OPERATION = "edit";
 
-    /** The DELET e_ gri d_ ro w_ operation. */
-    private static String DELETE_GRID_ROW_OPERATION = "del";
+    /** The Constant DELETE_GRID_ROW_OPERATION. */
+    private static final String DELETE_GRID_ROW_OPERATION = "del";
 
     /** The configuration. */
     @Inject
@@ -157,7 +157,7 @@ public class ConfigurationResource
             @FormParam("path") String path) throws IOException
     {
         EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
-        if (response.getStatus()) mediaService.scanVideos(true);
+        if (response.getStatus()) mediaService.scanVideos();
         return mapper.writeValueAsString(response);
     }
 
@@ -178,7 +178,7 @@ public class ConfigurationResource
             @FormParam("path") String path) throws IOException
     {
         EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
-        if (response.getStatus()) mediaService.scanAudios(true);
+        if (response.getStatus()) mediaService.scanAudios();
         return mapper.writeValueAsString(response);
     }
 
@@ -199,7 +199,7 @@ public class ConfigurationResource
             @FormParam("path") String path) throws IOException
     {
         EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
-        if (response.getStatus()) mediaService.scanPictures(true);
+        if (response.getStatus()) mediaService.scanPictures();
         return mapper.writeValueAsString(response);
     }
 
@@ -220,7 +220,7 @@ public class ConfigurationResource
             throws IOException
     {
         EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
-        if (response.getStatus()) mediaService.scanPodcasts(true);
+        if (response.getStatus()) mediaService.scanPodcasts();
         return mapper.writeValueAsString(response);
     }
 
@@ -318,7 +318,7 @@ public class ConfigurationResource
         response.setStatus(true);
         response.setErrorCode(ErrorCode.NO_ERROR);
 
-        mediaService.scanAll(true);
+        mediaService.scanAll();
 
         try
         {
