@@ -282,12 +282,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Add content item.
      *
-     * @param parendNodeId the parend node id
+     * @param parentNodeId the parent node id
      * @param contentNode the content node
      * @param didl the didl
      * @return number of items created
      */
-    private int addContentItem(String parendNodeId, ContentNode contentNode, DIDLContent didl)
+    private int addContentItem(String parentNodeId, ContentNode contentNode, DIDLContent didl)
     {
         int itemCount = 0;
         StringBuilder url = new StringBuilder();
@@ -305,7 +305,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
         if (contentNode.getContentType().isVideo())
         {
-            Movie movie = new Movie(contentNode.getId(), parendNodeId, contentNode.getName(), "", res);
+            Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
             if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
             didl.addItem(movie);
@@ -313,7 +313,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
         else if (contentNode.getContentType().isAudio())
         {
-            MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parendNodeId, contentNode.getName(), "", "", "", res);
+            MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
             if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
             didl.addItem(musicTrack);
@@ -321,7 +321,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
         else if (contentNode.getContentType().isImage())
         {
-            Photo photo = new Photo(contentNode.getId(), parendNodeId, contentNode.getName(), "", "", res);
+            Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
             if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
             didl.addItem(photo);
@@ -333,19 +333,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Add container item.
      *
-     * @param parendNodeId the parend node id
+     * @param parentNodeId the parent node id
      * @param containerNode the container node
      * @param didl the didl
      * @return number of items created
      */
-    private int addContainerItem(String parendNodeId, ContainerNode containerNode, DIDLContent didl)
+    private int addContainerItem(String parentNodeId, ContainerNode containerNode, DIDLContent didl)
     {
         if (logger.isDebugEnabled())
         {
             logger.debug("add container item:" + containerNode);
         }
         Integer childCount = containerNode.getChildNodeIds() != null ? containerNode.getChildNodeIds().size() : 0;
-        StorageFolder container = new StorageFolder(containerNode.getId(), parendNodeId, containerNode.getName(), "", childCount, 0L);
+        StorageFolder container = new StorageFolder(containerNode.getId(), parentNodeId, containerNode.getName(), "", childCount, 0L);
         if (containerNode.getModifedDate() != null) container.replaceFirstProperty(new DC.DATE(containerNode.getModifedDate()));
 
         didl.addContainer(container);
@@ -356,18 +356,18 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Add podcast container item.
      *
-     * @param parendNodeId the parend node id
+     * @param parentNodeId the parent node id
      * @param podcastContainerNode the podcast container node
      * @param didl the didl
      * @return number of items created
      */
-    private int addPodcastContainerItem(String parendNodeId, PodcastContainerNode podcastContainerNode, DIDLContent didl)
+    private int addPodcastContainerItem(String parentNodeId, PodcastContainerNode podcastContainerNode, DIDLContent didl)
     {
         if (logger.isDebugEnabled())
         {
             logger.debug("add podcast container item:" + podcastContainerNode);
         }
-        StorageFolder container = new StorageFolder(podcastContainerNode.getId(), parendNodeId, podcastContainerNode.getName(), "", 1, 0L);
+        StorageFolder container = new StorageFolder(podcastContainerNode.getId(), parentNodeId, podcastContainerNode.getName(), "", 1, 0L);
 
         didl.addContainer(container);
 
@@ -377,12 +377,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Add podcast items - Parse RSS feed.
      *
-     * @param parendNodeId the parend node id
+     * @param parentNodeId the parent node id
      * @param browseNode the browse node
      * @param didl the didl
      * @return number of items created
      */
-    private int addPodcastItems(String parendNodeId, PodcastContainerNode browseNode, DIDLContent didl)
+    private int addPodcastItems(String parentNodeId, PodcastContainerNode browseNode, DIDLContent didl)
     {
         int itemCount = 0;
         List<PodcastItemNode> podcastItemNodes = getPodcastItems(browseNode);
@@ -405,7 +405,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     if (feedEntryType.isAudio())
                     {
                         // Add audio item
-                        MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parendNodeId, podcastItemNode.getName(), "", "", "", res);
+                        MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", "", res);
                         if (podcastItemNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
                         didl.addItem(musicTrack);
@@ -414,7 +414,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     else if (feedEntryType.isImage())
                     {
                         // Add image item
-                        Photo photo = new Photo(UUID.randomUUID().toString(), parendNodeId, podcastItemNode.getName(), "", "", res);
+                        Photo photo = new Photo(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", res);
                         if (podcastItemNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
                         didl.addItem(photo);
@@ -424,7 +424,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     else if (feedEntryType.isVideo())
                     {
                         // Add video item
-                        Movie movie = new Movie(UUID.randomUUID().toString(), parendNodeId, podcastItemNode.getName(), "", res);
+                        Movie movie = new Movie(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", res);
                         if (podcastItemNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
                         didl.addItem(movie);
