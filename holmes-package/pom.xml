@@ -7,7 +7,6 @@
 		<version>0.1.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>net.holmes</groupId>
 	<artifactId>holmes-package</artifactId>
 	<packaging>pom</packaging>
 
