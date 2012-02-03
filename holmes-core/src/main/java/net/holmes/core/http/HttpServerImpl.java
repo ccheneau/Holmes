@@ -128,6 +128,7 @@ public final class HttpServerImpl implements IServer
         /* (non-Javadoc)
          * @see org.jboss.netty.channel.ChannelFutureListener#operationComplete(org.jboss.netty.channel.ChannelFuture)
          */
+        @Override
         public void operationComplete(ChannelFuture arg0) throws Exception
         {
             logger.info("Http server stop complete");
@@ -136,19 +137,19 @@ public final class HttpServerImpl implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#init()
+     * @see net.holmes.core.common.IServer#initialize()
      */
     @Override
-    public void init()
+    public void initialize()
     {
 
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#status()
+     * @see net.holmes.core.common.IServer#getStatus()
      */
     @Override
-    public boolean status()
+    public boolean getStatus()
     {
         return channel != null && channel.isBound();
     }
@@ -159,7 +160,7 @@ public final class HttpServerImpl implements IServer
     @Override
     public void restart()
     {
-        if (status()) stop();
+        if (getStatus()) stop();
         start();
     }
 }

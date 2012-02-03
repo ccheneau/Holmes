@@ -28,9 +28,9 @@ public interface IServer
 {
 
     /**
-     * Inits the server.
+     * Initialize.
      */
-    public abstract void init();
+    public abstract void initialize();
 
     /**
      * Start.
@@ -48,9 +48,9 @@ public interface IServer
     public abstract void restart();
 
     /**
-     * Status.
+     * Gets the status.
      *
-     * @return true, if successful
+     * @return the status
      */
-    public abstract boolean status();
+    public abstract boolean getStatus();
 }

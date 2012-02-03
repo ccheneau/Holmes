@@ -58,9 +58,10 @@ public final class MediaServerImpl implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#init()
+     * @see net.holmes.core.common.IServer#initialize()
      */
-    public void init()
+    @Override
+    public void initialize()
     {
         // Scan content nodes
         mediaService.scanAll();
@@ -69,6 +70,7 @@ public final class MediaServerImpl implements IServer
     /* (non-Javadoc)
      * @see net.holmes.core.common.IServer#start()
      */
+    @Override
     public void start()
     {
         httpServer.start();
@@ -78,6 +80,7 @@ public final class MediaServerImpl implements IServer
     /* (non-Javadoc)
      * @see net.holmes.core.common.IServer#stop()
      */
+    @Override
     public void stop()
     {
         httpServer.stop();
@@ -85,12 +88,12 @@ public final class MediaServerImpl implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#status()
+     * @see net.holmes.core.common.IServer#getStatus()
      */
     @Override
-    public boolean status()
+    public boolean getStatus()
     {
-        return httpServer.status() && upnpServer.status();
+        return httpServer.getStatus() && upnpServer.getStatus();
     }
 
     /* (non-Javadoc)
@@ -115,7 +118,7 @@ public final class MediaServerImpl implements IServer
         Injector injector = Guice.createInjector(new MediaServerModule());
 
         IServer mediaServer = injector.getInstance(MediaServerImpl.class);
-        mediaServer.init();
+        mediaServer.initialize();
         mediaServer.start();
 
         Runtime.getRuntime().addShutdownHook(new ShutDownHook(mediaServer));
@@ -143,6 +146,7 @@ public final class MediaServerImpl implements IServer
         /* (non-Javadoc)
          * @see java.lang.Thread#run()
          */
+        @Override
         public void run()
         {
             mediaServer.stop();

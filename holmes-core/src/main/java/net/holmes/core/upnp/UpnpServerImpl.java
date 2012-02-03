@@ -150,18 +150,18 @@ public final class UpnpServerImpl implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#init()
+     * @see net.holmes.core.common.IServer#initialize()
      */
     @Override
-    public void init()
+    public void initialize()
     {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#status()
+     * @see net.holmes.core.common.IServer#getStatus()
      */
     @Override
-    public boolean status()
+    public boolean getStatus()
     {
         return upnpService != null;
     }
@@ -172,7 +172,7 @@ public final class UpnpServerImpl implements IServer
     @Override
     public void restart()
     {
-        if (status()) stop();
+        if (getStatus()) stop();
         start();
     }
 }

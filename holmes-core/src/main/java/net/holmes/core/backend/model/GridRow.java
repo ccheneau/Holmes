@@ -40,14 +40,14 @@ public class GridRow implements Serializable
     private Collection<String> cell;
 
     /**
-     * Instantiates a new jQ grid row.
+     * Instantiates a new grid row.
      */
     public GridRow()
     {
     }
 
     /**
-     * Instantiates a new jQ grid row.
+     * Instantiates a new grid row.
      *
      * @param id the id
      * @param cell the cell

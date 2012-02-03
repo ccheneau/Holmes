@@ -55,12 +55,12 @@ public final class HttpContentHandler implements IHttpRequestHandler
     /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpContentHandler.class);
 
+    /** The Constant PATH. */
+    public final static String PATH = "/content";
+
     /** The media service. */
     @Inject
     private IMediaService mediaService;
-
-    /** The Constant PATH. */
-    public final static String PATH = "/content";
 
     /**
      * Instantiates a new http content handler.
@@ -84,6 +84,7 @@ public final class HttpContentHandler implements IHttpRequestHandler
     /* (non-Javadoc)
      * @see net.holmes.core.http.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
+    @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
     {
         if (logger.isDebugEnabled())

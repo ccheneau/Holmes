@@ -55,12 +55,15 @@ public final class HttpSiteHandler implements IHttpRequestHandler
     /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpSiteHandler.class);
 
+    /** The configuration. */
     @Inject
     private IConfiguration configuration;
 
+    /** The content type factory. */
     @Inject
     private IContentTypeFactory contentTypeFactory;
 
+    /** The home site directory. */
     private String homeSiteDirectory;
 
     /**
@@ -83,6 +86,7 @@ public final class HttpSiteHandler implements IHttpRequestHandler
     /* (non-Javadoc)
      * @see net.holmes.core.http.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
+    @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
     {
         if (logger.isDebugEnabled())

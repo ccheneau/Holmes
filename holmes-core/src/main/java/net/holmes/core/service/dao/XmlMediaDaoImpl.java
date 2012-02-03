@@ -69,11 +69,11 @@ public class XmlMediaDaoImpl implements IMediaDao
     private IConfiguration configuration;
 
     /**
-     * Inits the.
+     * Initialize.
      */
     @Inject
     @SuppressWarnings("unchecked")
-    public void init()
+    public void initialize()
     {
         if (logger.isDebugEnabled()) logger.debug("[START] init()");
 

@@ -67,6 +67,7 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
     /* (non-Javadoc)
      * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
      */
+    @Override
     public ChannelPipeline getPipeline() throws Exception
     {
         if (logger.isDebugEnabled()) logger.debug("[START] getPipeline");
@@ -83,15 +84,12 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
         HttpServerHandler handler = new HttpServerHandler();
 
         // Set handler for streaming contents
-        // contentRequestHandler.initHandler();
         handler.setHttpContentHandler(contentRequestHandler);
 
         // Set handler for back-end REST requests
-        // backendRequestHandler.initHandler();
         handler.setHttpBackendHandler(backendRequestHandler);
 
         // Set handler for admin site requests
-        // siteRequestHandler.initHandler();
         handler.setHttpSiteHandler(siteRequestHandler);
 
         pipeline.addLast("handler", handler);
