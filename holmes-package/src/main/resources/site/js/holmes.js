@@ -20,15 +20,18 @@ $(document).ready(function() {
 		    path:'bundle/',
 		    mode:'both',
 		    callback: function() {
+		    	// HTML internationalization
 		    	$(".i18n").each( function(i,elem) {
 		    		if ($(elem).data('msg') != undefined)
 		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
-		    		initPage();
 		    	});
+		    	// Initialize document
+	    		initializeDocument();
 		    }
 		});
 
-		function initPage()
+		// Initialize document
+		function initializeDocument()
 		{
 			// Initialize video folders grid
 			$("#list_video_folders").jqGrid({
@@ -42,21 +45,26 @@ $(document).ready(function() {
 				pager: '#list_video_folders_nav',
 				editurl:"/backend/configuration/editVideoFolder"
 			});
+			// Video folders navigation options
 			$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
+					// global options
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
-						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, //options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
+					// edit options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+					// add options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.video.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.video.delete.caption, msg: msg.video.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}
 			);
 			
-			//Initialize audio folders grid
+			// Initialize audio folders grid
 			$("#list_audio_folders").jqGrid({
 				url:'/backend/configuration/getAudioFolders', 
 				colNames:[msg.audio.id,msg.audio.label, msg.audio.path], 
@@ -68,21 +76,26 @@ $(document).ready(function() {
 				pager: '#list_audio_folders_nav', 
 				editurl:"/backend/configuration/editAudioFolder" 
 			});
+			// Audio folders navigation options
 			$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
+					// global options
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
-						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, //options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
+					// edit options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+					// add options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.audio.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.audio.delete.caption, msg: msg.audio.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} 
 			);
 			
-			//Initialize picture folders grid
+			// Initialize picture folders grid
 			$("#list_picture_folders").jqGrid({
 				url:'/backend/configuration/getPictureFolders', 
 				colNames:[msg.picture.id,msg.picture.label, msg.picture.path], 
@@ -94,21 +107,26 @@ $(document).ready(function() {
 				pager: '#list_picture_folders_nav', 
 				editurl:"/backend/configuration/editPictureFolder" 
 			});
-			$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav', 
+			// Picture folders navigation options
+			$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav',
+					// global options
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
-						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, //options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
+					// edit options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+					// add options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.picture.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.picture.delete.caption, msg: msg.picture.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}
 			);
 			
-			//Initialize podcasts grid
+			// Initialize pod-casts grid
 			$("#list_podcasts").jqGrid({
 				url:'/backend/configuration/getPodcasts', 
 				colNames:[msg.podcast.id,msg.podcast.label, msg.podcast.url], 
@@ -120,22 +138,28 @@ $(document).ready(function() {
 				pager: '#list_podcasts_nav', 
 				editurl:"/backend/configuration/editPodcast" 
 			});
+			// Pod-cast navigation options
 			$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
+					// global options
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
-						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, //options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
+					// edit options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterEdit:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // edit options 
-					{height:150, width: 500, reloadAfterSubmit:true, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+					// add options
+					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.podcast.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						closeOnEscape:true, closeAfterAdd:true, afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, // add options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.podcast.delete.caption, msg: msg.podcast.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} // del options 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} 
 			);
 
 		}
-		// Callback for edit/add/delete item server response
+		
+		// Callback for edit/add/delete item 
 	    function getEditResponseData (response) {
 	    	var serverResponse = $.parseJSON(response.responseText);
 	    	if (serverResponse.operation == "edit") {
@@ -173,7 +197,7 @@ $(document).ready(function() {
 			  $(this).removeClass("toolbar-state-hover");
 		});
 	    
-	    // Initialize data
+	    // Load configuration data
 	    function loadConfiguration() {
 		    $.getJSON('/backend/configuration/getConfiguration', function(response) {
 		    		$("#text_server_name").val(response.serverName);
@@ -183,7 +207,7 @@ $(document).ready(function() {
 	    }
 	    loadConfiguration();
 	    
-	    //Submit handler
+	    // Submit configuration handler
 	    $('#btn_submit').click(function() {
 	    	$.post('/backend/configuration/editConfiguration',
 	    			{serverName : $("#text_server_name").val(),
@@ -200,13 +224,13 @@ $(document).ready(function() {
 	    		});
 	    });
 	    
-	    //Reset handler
+	    // Reset handler
 	    $('#btn_reset').click(function() {
 	    	closeMessage();
 	    	loadConfiguration();
 	    });
 	    
-	    //Scan all handler
+	    // Scan all media handler
 	    $('#btn_scan_all').click(function() {
 	    	$.post('/backend/configuration/launchScan',
 	    			function(response) {
@@ -219,16 +243,19 @@ $(document).ready(function() {
 	    		});
 	    });	    
 
+	    // Show configuration success message
 	    function successMessage(message) {
 	    	$("#message").html("<span>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
 	    	$('#close_message').click(function() { closeMessage(); });
 	    }
 
+	    // Show configuration error message
 	    function errorMessage(message) {
 	    	$("#message").html("<span class='ui-state-error-text'>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
 	    	$('#close_message').click(function() { closeMessage(); });
 	    }
 
+	    // Close succes/error message
 	    function closeMessage() {
 	    	$('#close_message').unbind();
 	    	$("#message").html("");
