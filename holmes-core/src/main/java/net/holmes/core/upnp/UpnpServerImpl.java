@@ -55,7 +55,7 @@ public final class UpnpServerImpl implements IServer
     /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(UpnpServerImpl.class);
 
-    /** The upnp service. */
+    /** The UPnP service. */
     private UpnpService upnpService = null;
 
     /** The media service. */
@@ -67,7 +67,7 @@ public final class UpnpServerImpl implements IServer
     private IConfiguration configuration;
 
     /**
-     * Instantiates a new upnp server impl.
+     * Instantiates a new UPnP server.
      */
     public UpnpServerImpl()
     {
@@ -101,12 +101,12 @@ public final class UpnpServerImpl implements IServer
     @Override
     public void stop()
     {
-        logger.info("Stopping Upnp server");
+        logger.info("Stopping UPnP server");
         if (upnpService != null)
         {
             upnpService.shutdown();
         }
-        logger.info("Upnp server stop complete");
+        logger.info("UPnP server stop complete");
     }
 
     /**

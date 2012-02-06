@@ -36,11 +36,11 @@ public class LogUtil
 {
 
     /**
-     * Load config.
+     * Load configuration
      */
     public static void loadConfig()
     {
-        // Redirect java.util.logging to log4j
+        // Redirect java.util.logging to slf4j
         SLF4JBridgeHandler.install();
 
         // Configure Log4j
@@ -48,7 +48,7 @@ public class LogUtil
         if (homeDir != null && new File(homeDir).exists())
         {
             String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";
-            if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 30000L);
+            if (new File(logConfig).exists()) DOMConfigurator.configure(logConfig);
         }
     }
 
