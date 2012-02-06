@@ -28,8 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -121,7 +121,7 @@ public class XmlMediaDaoImpl implements IMediaDao
             ContainerNode rootNode = new ContainerNode();
             rootNode.setId(ContentFolder.ROOT_NODE_ID);
             rootNode.setName(bundle.getString("node.rootNode"));
-            rootNode.setChildNodeIds(new ArrayList<String>());
+            rootNode.setChildNodeIds(new LinkedList<String>());
             rootNode.getChildNodeIds().add(ContentFolder.ROOT_VIDEO_NODE_ID);
             rootNode.getChildNodeIds().add(ContentFolder.ROOT_AUDIO_NODE_ID);
             rootNode.getChildNodeIds().add(ContentFolder.ROOT_PICTURE_NODE_ID);
@@ -136,7 +136,7 @@ public class XmlMediaDaoImpl implements IMediaDao
             ContainerNode videoNode = new ContainerNode();
             videoNode.setId(ContentFolder.ROOT_VIDEO_NODE_ID);
             videoNode.setName(bundle.getString("node.video"));
-            videoNode.setChildNodeIds(new ArrayList<String>());
+            videoNode.setChildNodeIds(new LinkedList<String>());
             videoNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
 
             addNode(videoNode);
@@ -148,7 +148,7 @@ public class XmlMediaDaoImpl implements IMediaDao
             ContainerNode audioNode = new ContainerNode();
             audioNode.setId(ContentFolder.ROOT_AUDIO_NODE_ID);
             audioNode.setName(bundle.getString("node.audio"));
-            audioNode.setChildNodeIds(new ArrayList<String>());
+            audioNode.setChildNodeIds(new LinkedList<String>());
             audioNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
 
             addNode(audioNode);
@@ -160,7 +160,7 @@ public class XmlMediaDaoImpl implements IMediaDao
             ContainerNode pictureNode = new ContainerNode();
             pictureNode.setId(ContentFolder.ROOT_PICTURE_NODE_ID);
             pictureNode.setName(bundle.getString("node.picture"));
-            pictureNode.setChildNodeIds(new ArrayList<String>());
+            pictureNode.setChildNodeIds(new LinkedList<String>());
             pictureNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
 
             addNode(pictureNode);
@@ -172,7 +172,7 @@ public class XmlMediaDaoImpl implements IMediaDao
             ContainerNode podcastNode = new ContainerNode();
             podcastNode.setId(ContentFolder.ROOT_PODCAST_NODE_ID);
             podcastNode.setName(bundle.getString("node.podcast"));
-            podcastNode.setChildNodeIds(new ArrayList<String>());
+            podcastNode.setChildNodeIds(new LinkedList<String>());
             podcastNode.setParentNodeId(ContentFolder.ROOT_NODE_ID);
 
             addNode(podcastNode);

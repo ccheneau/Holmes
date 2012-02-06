@@ -23,6 +23,7 @@ package net.holmes.core.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -343,7 +344,7 @@ public final class MediaServiceImpl implements IMediaService
         node.setPath(folder.getAbsolutePath());
         node.setParentNodeId(parentNode.getId());
         node.setId(UUID.randomUUID().toString());
-        node.setChildNodeIds(new ArrayList<String>());
+        node.setChildNodeIds(new LinkedList<String>());
         node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
 
         // Add the node
