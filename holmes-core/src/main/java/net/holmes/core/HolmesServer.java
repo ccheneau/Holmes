@@ -31,17 +31,17 @@ import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
 /**
- * The Class MediaServerImpl.
+ * The Class HolmesServer.
  */
-public final class MediaServerImpl implements IServer
+public final class HolmesServer implements IServer
 {
 
-    /** The http server. */
+    /** The HTTP server. */
     @Inject
     @Named("http")
     private IServer httpServer;
 
-    /** The upnp server. */
+    /** The UPnP server. */
     @Inject
     @Named("upnp")
     private IServer upnpServer;
@@ -53,7 +53,7 @@ public final class MediaServerImpl implements IServer
     /**
      * Instantiates a new media server.
      */
-    public MediaServerImpl()
+    public HolmesServer()
     {
     }
 
@@ -63,7 +63,7 @@ public final class MediaServerImpl implements IServer
     @Override
     public void initialize()
     {
-        // Scan content nodes
+        // Scan all medias
         mediaService.scanAll();
     }
 
@@ -73,6 +73,7 @@ public final class MediaServerImpl implements IServer
     @Override
     public void start()
     {
+        // Start Holmes server
         httpServer.start();
         upnpServer.start();
     }
@@ -83,6 +84,7 @@ public final class MediaServerImpl implements IServer
     @Override
     public void stop()
     {
+        // Stop Holmes server
         httpServer.stop();
         upnpServer.stop();
     }
@@ -102,6 +104,7 @@ public final class MediaServerImpl implements IServer
     @Override
     public void restart()
     {
+        // Restart Holmes server
         upnpServer.restart();
         httpServer.restart();
     }
@@ -113,34 +116,38 @@ public final class MediaServerImpl implements IServer
      */
     public static void main(String[] args)
     {
+        // Load log configuration
         LogUtil.loadConfig();
 
-        Injector injector = Guice.createInjector(new MediaServerModule());
+        // Create Guice injector
+        Injector injector = Guice.createInjector(new HolmesServerModule());
 
-        IServer mediaServer = injector.getInstance(MediaServerImpl.class);
-        mediaServer.initialize();
-        mediaServer.start();
+        // Start Holmes server
+        IServer holmesServer = injector.getInstance(HolmesServer.class);
+        holmesServer.initialize();
+        holmesServer.start();
 
-        Runtime.getRuntime().addShutdownHook(new ShutDownHook(mediaServer));
+        // Add shutdown hook
+        Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
     }
 
     /**
-     * The Class ShutDownHook.
+     * The Class ShutdownHook.
      */
-    private static class ShutDownHook extends Thread
+    private static class ShutdownHook extends Thread
     {
 
-        /** The media server. */
-        IServer mediaServer;
+        /** The Holmes server. */
+        IServer holmesServer;
 
         /**
-         * Instantiates a new shut down hook.
+         * Instantiates a new shutdown hook.
          *
-         * @param mediaServer the media server
+         * @param holmesServer the Holmes server
          */
-        public ShutDownHook(IServer mediaServer)
+        public ShutdownHook(IServer holmesServer)
         {
-            this.mediaServer = mediaServer;
+            this.holmesServer = holmesServer;
         }
 
         /* (non-Javadoc)
@@ -149,7 +156,7 @@ public final class MediaServerImpl implements IServer
         @Override
         public void run()
         {
-            mediaServer.stop();
+            holmesServer.stop();
         }
     }
 }

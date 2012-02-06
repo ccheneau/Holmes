@@ -47,7 +47,7 @@ import com.google.inject.name.Names;
 /**
  * The Class MediaServerModule.
  */
-public final class MediaServerModule extends AbstractModule
+public final class HolmesServerModule extends AbstractModule
 {
 
     /* (non-Javadoc)
