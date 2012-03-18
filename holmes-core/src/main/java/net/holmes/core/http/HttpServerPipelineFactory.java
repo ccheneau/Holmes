@@ -58,15 +58,9 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
     @Named("site")
     private IHttpRequestHandler siteRequestHandler;
 
-    /**
-     * Instantiates a new http server pipeline factory.
-     */
-    {
-    }
-
     /* (non-Javadoc)
-     * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
-     */
+    * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
+    */
     @Override
     public ChannelPipeline getPipeline() throws Exception
     {
