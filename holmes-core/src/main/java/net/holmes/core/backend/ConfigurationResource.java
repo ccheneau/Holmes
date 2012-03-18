@@ -39,7 +39,6 @@ import net.holmes.core.backend.model.ConfigurationResponse;
 import net.holmes.core.backend.model.EditResponse;
 import net.holmes.core.backend.model.GridRow;
 import net.holmes.core.backend.model.ListGridRowsResponse;
-import net.holmes.core.common.ErrorCode;
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.service.IMediaService;
