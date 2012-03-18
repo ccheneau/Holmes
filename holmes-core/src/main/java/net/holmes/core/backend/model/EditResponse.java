@@ -23,7 +23,7 @@ package net.holmes.core.backend.model;
 
 import java.io.Serializable;
 
-import net.holmes.core.common.ErrorCode;
+import net.holmes.core.backend.ErrorCode;
 
 /**
  * The Class EditResponse.
