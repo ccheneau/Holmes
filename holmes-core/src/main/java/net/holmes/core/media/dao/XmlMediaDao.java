@@ -54,6 +54,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class XmlMediaDao implements IMediaDao
 {
+
+    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(XmlMediaDao.class);
 
     /** The Constant MEDIA_FILE_NAME. */
@@ -180,7 +182,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#getNode(java.lang.String)
+     * @see net.holmes.core.media.dao.IMediaDao#getNode(java.lang.String)
      */
     @Override
     public AbstractNode getNode(String nodeId)
@@ -189,7 +191,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#addNode(net.holmes.core.model.AbstractNode)
+     * @see net.holmes.core.media.dao.IMediaDao#addNode(net.holmes.core.model.AbstractNode)
      */
     @Override
     public void addNode(AbstractNode node)
@@ -198,7 +200,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#removeNode(java.lang.String)
+     * @see net.holmes.core.media.dao.IMediaDao#removeNode(java.lang.String)
      */
     @Override
     public void removeNode(String nodeId)
@@ -207,7 +209,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#getNodeIds()
+     * @see net.holmes.core.media.dao.IMediaDao#getNodeIds()
      */
     @Override
     public Set<String> getNodeIds()
@@ -216,7 +218,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#flush()
+     * @see net.holmes.core.media.dao.IMediaDao#flush()
      */
     @Override
     public void flush()
@@ -269,7 +271,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#addChildNode(java.lang.String, java.lang.String)
+     * @see net.holmes.core.media.dao.IMediaDao#addChildNode(java.lang.String, java.lang.String)
      */
     @Override
     public void addChildNode(String containerNodeId, String childNodeId)
@@ -281,7 +283,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#removeChildNode(java.lang.String, java.lang.String)
+     * @see net.holmes.core.media.dao.IMediaDao#removeChildNode(java.lang.String, java.lang.String)
      */
     @Override
     public void removeChildNode(String containerNodeId, String childNodeId)
@@ -293,7 +295,7 @@ public class XmlMediaDao implements IMediaDao
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.dao.IMediaDao#updateNodeModifiedDate(java.lang.String, java.lang.String)
+     * @see net.holmes.core.media.dao.IMediaDao#updateNodeModifiedDate(java.lang.String, java.lang.String)
      */
     @Override
     public void updateNodeModifiedDate(String nodeId, String date)

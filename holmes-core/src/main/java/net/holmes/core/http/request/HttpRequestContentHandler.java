@@ -52,6 +52,8 @@ import com.google.inject.Inject;
  */
 public final class HttpRequestContentHandler implements IHttpRequestHandler
 {
+
+    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
     /** The Constant PATH. */
@@ -64,14 +66,13 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler
     /**
      * Instantiates a new HTTP content handler.
      *
-     * @param mediaService the media service
      */
     public HttpRequestContentHandler()
     {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.http.IHttpRequestHandler#initHandler()
+     * @see net.holmes.core.http.request.IHttpRequestHandler#initHandler()
      */
     @Override
     @Inject
@@ -80,7 +81,7 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.http.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
+     * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException

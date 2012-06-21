@@ -86,6 +86,7 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
         // Set handler for admin site requests
         handler.setHttpSiteHandler(siteRequestHandler);
 
+        // Add handler
         pipeline.addLast("handler", handler);
 
         if (logger.isDebugEnabled()) logger.debug("[END] getPipeline");

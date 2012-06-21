@@ -215,5 +215,4 @@ public final class Configuration implements Serializable
     {
         this.pictureFolders = pictureFolders;
     }
-
 }

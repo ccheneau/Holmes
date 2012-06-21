@@ -51,6 +51,8 @@ import com.google.inject.Inject;
  */
 public final class UpnpServer implements IServer
 {
+
+    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
     /** The UPnP service. */
@@ -72,7 +74,7 @@ public final class UpnpServer implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#start()
+     * @see net.holmes.core.IServer#start()
      */
     @Override
     public void start()
@@ -94,7 +96,7 @@ public final class UpnpServer implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#stop()
+     * @see net.holmes.core.IServer#stop()
      */
     @Override
     public void stop()
@@ -156,7 +158,7 @@ public final class UpnpServer implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#getStatus()
+     * @see net.holmes.core.IServer#getStatus()
      */
     @Override
     public boolean getStatus()
@@ -165,7 +167,7 @@ public final class UpnpServer implements IServer
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#restart()
+     * @see net.holmes.core.IServer#restart()
      */
     @Override
     public void restart()

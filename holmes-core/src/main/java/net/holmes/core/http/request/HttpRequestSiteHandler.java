@@ -52,6 +52,8 @@ import com.google.inject.Inject;
  */
 public final class HttpRequestSiteHandler implements IHttpRequestHandler
 {
+
+    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
 
     /** The configuration. */
@@ -73,7 +75,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.http.IHttpRequestHandler#initHandler()
+     * @see net.holmes.core.http.request.IHttpRequestHandler#initHandler()
      */
     @Override
     @Inject
@@ -83,7 +85,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.http.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
+     * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException

@@ -49,6 +49,8 @@ import com.google.inject.Inject;
  */
 public final class MediaService implements IMediaService
 {
+
+    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
 
     /** The media DAO. */
@@ -71,7 +73,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#getNode(java.lang.String)
+     * @see net.holmes.core.media.IMediaService#getNode(java.lang.String)
      */
     @Override
     public AbstractNode getNode(String nodeId)
@@ -80,7 +82,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanAll()
+     * @see net.holmes.core.media.IMediaService#scanAll()
      */
     @Override
     public synchronized void scanAll()
@@ -94,7 +96,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanVideos()
+     * @see net.holmes.core.media.IMediaService#scanVideos()
      */
     @Override
     public void scanVideos()
@@ -104,7 +106,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanAudios()
+     * @see net.holmes.core.media.IMediaService#scanAudios()
      */
     @Override
     public void scanAudios()
@@ -114,7 +116,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanPictures()
+     * @see net.holmes.core.media.IMediaService#scanPictures()
      */
     @Override
     public void scanPictures()
@@ -124,7 +126,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#scanPodcasts()
+     * @see net.holmes.core.media.IMediaService#scanPodcasts()
      */
     @Override
     public void scanPodcasts()
@@ -134,7 +136,7 @@ public final class MediaService implements IMediaService
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.service.IMediaService#getNodes()
+     * @see net.holmes.core.media.IMediaService#getNodeIds()
      */
     @Override
     public Set<String> getNodeIds()
