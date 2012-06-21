@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.service.dao;
+package net.holmes.core.media.dao;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,11 +52,9 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 /**
  * The Class XmlMediaDaoImpl.
  */
-public class XmlMediaDaoImpl implements IMediaDao
+public class XmlMediaDao implements IMediaDao
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(XmlMediaDaoImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(XmlMediaDao.class);
 
     /** The Constant MEDIA_FILE_NAME. */
     private static final String MEDIA_FILE_NAME = "media.xml";

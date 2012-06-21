@@ -19,52 +19,29 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.configuration;
+package net.holmes.core.http.request;
+
+
+import org.jboss.netty.channel.Channel;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
 /**
- * The Interface IConfiguration.
+ * The Interface IHttpRequestHandler.
  */
-public interface IConfiguration
+public interface IHttpRequestHandler
 {
 
     /**
-     * Save configuration.
+     * Process request.
+     *
+     * @param request the request
+     * @param channel the channel
+     * @throws HttpRequestException the http request exception
      */
-    public abstract void saveConfig();
+    public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
 
     /**
-     * Gets the configuration .
-     *
-     * @return the configuration 
+     * Inits the handler.
      */
-    public abstract Configuration getConfig();
-
-    /**
-     * Gets the home directory.
-     *
-     * @return the home directory
-     */
-    public abstract String getHomeDirectory();
-
-    /**
-     * Gets the home configuration directory.
-     *
-     * @return the home configuration directory
-     */
-    public abstract String getHomeConfigDirectory();
-
-    /**
-     * Gets the home media directory.
-     *
-     * @return the home media directory
-     */
-    public abstract String getHomeMediaDirectory();
-
-    /**
-     * Gets the home site directory.
-     *
-     * @return the home site directory
-     */
-    public abstract String getHomeSiteDirectory();
-
+    public abstract void initHandler();
 }

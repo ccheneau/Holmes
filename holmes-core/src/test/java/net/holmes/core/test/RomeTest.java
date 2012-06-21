@@ -44,8 +44,6 @@ import com.sun.syndication.io.XmlReader;
  */
 public class RomeTest extends TestCase
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(RomeTest.class);
 
     /**

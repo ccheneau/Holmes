@@ -26,7 +26,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.service.IMediaService;
+import net.holmes.core.media.IMediaService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,8 +42,6 @@ import com.google.inject.Injector;
  */
 public class MediaServiceTest extends TestCase
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(MediaServiceTest.class);
 
     /** The media service. */

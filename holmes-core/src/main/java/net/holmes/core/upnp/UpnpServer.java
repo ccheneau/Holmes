@@ -23,9 +23,9 @@ package net.holmes.core.upnp;
 
 import java.io.IOException;
 
-import net.holmes.core.common.IServer;
+import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.service.IMediaService;
+import net.holmes.core.media.IMediaService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +49,9 @@ import com.google.inject.Inject;
 /**
  * The Class UpnpServerImpl.
  */
-public final class UpnpServerImpl implements IServer
+public final class UpnpServer implements IServer
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(UpnpServerImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
     /** The UPnP service. */
     private UpnpService upnpService = null;
@@ -69,7 +67,7 @@ public final class UpnpServerImpl implements IServer
     /**
      * Instantiates a new UPnP server.
      */
-    public UpnpServerImpl()
+    public UpnpServer()
     {
     }
 

@@ -30,8 +30,6 @@ import net.holmes.core.backend.ErrorCode;
  */
 public class EditResponse implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 4829835251156005404L;
 
     /** The status. */

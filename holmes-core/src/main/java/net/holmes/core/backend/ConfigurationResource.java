@@ -41,7 +41,7 @@ import net.holmes.core.backend.model.GridRow;
 import net.holmes.core.backend.model.ListGridRowsResponse;
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.service.IMediaService;
+import net.holmes.core.media.IMediaService;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -55,7 +55,6 @@ import com.google.inject.Inject;
 @Path("/backend/configuration")
 public class ConfigurationResource
 {
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
 
     /** The Constant ADD_GRID_ROW_OPERATION. */

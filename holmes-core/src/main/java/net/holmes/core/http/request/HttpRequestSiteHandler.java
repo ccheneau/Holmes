@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.http;
+package net.holmes.core.http.request;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,6 +28,7 @@ import java.io.RandomAccessFile;
 import java.util.Map.Entry;
 
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.http.HttpServer;
 import net.holmes.core.model.IContentTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -49,11 +50,9 @@ import com.google.inject.Inject;
 /**
  * The Class HttpSiteHandler.
  */
-public final class HttpSiteHandler implements IHttpRequestHandler
+public final class HttpRequestSiteHandler implements IHttpRequestHandler
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(HttpSiteHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
 
     /** The configuration. */
     @Inject
@@ -69,7 +68,7 @@ public final class HttpSiteHandler implements IHttpRequestHandler
     /**
      * Instantiates a new http site handler.
      */
-    public HttpSiteHandler()
+    public HttpRequestSiteHandler()
     {
     }
 
@@ -132,7 +131,7 @@ public final class HttpSiteHandler implements IHttpRequestHandler
             // Compute HttpHeader
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, fileLength);
-            response.setHeader(HttpHeaders.Names.SERVER, HttpServerImpl.HTTP_SERVER_NAME);
+            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             String contentType = contentTypeFactory.getContentType(fileName).getContentType();
             if (contentType != null)
             {

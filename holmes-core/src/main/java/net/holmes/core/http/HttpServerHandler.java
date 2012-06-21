@@ -23,6 +23,11 @@ package net.holmes.core.http;
 
 import java.io.IOException;
 
+import net.holmes.core.http.request.HttpRequestBackendHandler;
+import net.holmes.core.http.request.HttpRequestContentHandler;
+import net.holmes.core.http.request.HttpRequestException;
+import net.holmes.core.http.request.IHttpRequestHandler;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -48,21 +53,19 @@ import org.slf4j.LoggerFactory;
  */
 public final class HttpServerHandler extends SimpleChannelUpstreamHandler
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 
-    /** The http content handler. */
+    /** The Http content handler. */
     private IHttpRequestHandler httpContentHandler;
 
-    /** The http site handler. */
+    /** The Http site handler. */
     private IHttpRequestHandler httpSiteHandler;
 
-    /** The http backend handler. */
+    /** The Http backend handler. */
     private IHttpRequestHandler httpBackendHandler;
 
     /**
-     * Sets the http content handler.
+     * Sets the Http content handler.
      *
      * @param httpContentHandler the new http content handler
      */
@@ -104,11 +107,11 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
 
         try
         {
-            if (decoder.getPath().equals(HttpContentHandler.PATH))
+            if (decoder.getPath().equals(HttpRequestContentHandler.PATH))
             {
                 httpContentHandler.processRequest(request, e.getChannel());
             }
-            else if (decoder.getPath().startsWith(HttpBackendHandler.PATH))
+            else if (decoder.getPath().startsWith(HttpRequestBackendHandler.PATH))
             {
                 httpBackendHandler.processRequest(request, e.getChannel());
             }
@@ -161,6 +164,7 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
      */
     private void sendError(ChannelHandlerContext context, HttpResponseStatus status)
     {
+        // Build response
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
         response.setHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
         ChannelBuffer buffer = ChannelBuffers.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);

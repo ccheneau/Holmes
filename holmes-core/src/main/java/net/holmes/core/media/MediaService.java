@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.service;
+package net.holmes.core.media;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ import java.util.UUID;
 
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.media.dao.IMediaDao;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContainerNode;
 import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.model.PodcastContainerNode;
-import net.holmes.core.service.dao.IMediaDao;
 import net.holmes.core.util.DateFormat;
 
 import org.slf4j.Logger;
@@ -47,13 +47,11 @@ import com.google.inject.Inject;
 /**
  * The Class MediaServiceImpl.
  */
-public final class MediaServiceImpl implements IMediaService
+public final class MediaService implements IMediaService
 {
+    private static Logger logger = LoggerFactory.getLogger(MediaService.class);
 
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(MediaServiceImpl.class);
-
-    /** The media dao. */
+    /** The media DAO. */
     @Inject
     private IMediaDao mediaDao;
 
@@ -68,7 +66,7 @@ public final class MediaServiceImpl implements IMediaService
     /**
      * Instantiates a new media service impl.
      */
-    public MediaServiceImpl()
+    public MediaService()
     {
     }
 

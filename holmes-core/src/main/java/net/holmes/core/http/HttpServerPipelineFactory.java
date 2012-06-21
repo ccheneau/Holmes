@@ -21,6 +21,8 @@
 */
 package net.holmes.core.http;
 
+import net.holmes.core.http.request.IHttpRequestHandler;
+
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -39,8 +41,6 @@ import com.google.inject.name.Named;
  */
 public final class HttpServerPipelineFactory implements ChannelPipelineFactory
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpServerPipelineFactory.class);
 
     /** The content request handler. */
@@ -48,7 +48,7 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
     @Named("content")
     private IHttpRequestHandler contentRequestHandler;
 
-    /** The backend request handler. */
+    /** The back-end request handler. */
     @Inject
     @Named("backend")
     private IHttpRequestHandler backendRequestHandler;

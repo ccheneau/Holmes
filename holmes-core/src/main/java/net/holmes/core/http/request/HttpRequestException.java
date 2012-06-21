@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.http;
+package net.holmes.core.http.request;
 
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
@@ -28,13 +28,13 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
  */
 public final class HttpRequestException extends Exception
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1022835130881123877L;
 
     /** The status. */
     HttpResponseStatus status;
 
     /**
-     * Instantiates a new HTTP request exception.
+     * Instantiates a new Http request exception.
      *
      * @param message the message
      * @param status the status

@@ -19,16 +19,17 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.http;
+package net.holmes.core.http.request;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Map.Entry;
 
+import net.holmes.core.http.HttpServer;
+import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
-import net.holmes.core.service.IMediaService;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -49,11 +50,9 @@ import com.google.inject.Inject;
 /**
  * The Class HttpContentHandler.
  */
-public final class HttpContentHandler implements IHttpRequestHandler
+public final class HttpRequestContentHandler implements IHttpRequestHandler
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(HttpContentHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
     /** The Constant PATH. */
     public final static String PATH = "/content";
@@ -63,11 +62,11 @@ public final class HttpContentHandler implements IHttpRequestHandler
     private IMediaService mediaService;
 
     /**
-     * Instantiates a new http content handler.
+     * Instantiates a new HTTP content handler.
      *
      * @param mediaService the media service
      */
-    public HttpContentHandler()
+    public HttpRequestContentHandler()
     {
     }
 
@@ -78,7 +77,6 @@ public final class HttpContentHandler implements IHttpRequestHandler
     @Inject
     public void initHandler()
     {
-
     }
 
     /* (non-Javadoc)
@@ -163,7 +161,7 @@ public final class HttpContentHandler implements IHttpRequestHandler
                 throw new HttpRequestException("Invalid start offset", HttpResponseStatus.BAD_REQUEST);
             }
 
-            response.setHeader(HttpHeaders.Names.SERVER, HttpServerImpl.HTTP_SERVER_NAME);
+            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
             if (logger.isDebugEnabled())
             {

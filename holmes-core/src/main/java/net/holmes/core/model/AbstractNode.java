@@ -30,12 +30,16 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
 {
     private static final long serialVersionUID = 5909549322056486631L;
 
+    /** The Constant TYPE_CONTAINER. */
     public final static String TYPE_CONTAINER = "container";
 
+    /** The Constant TYPE_CONTENT. */
     public final static String TYPE_CONTENT = "content";
 
+    /** The Constant TYPE_PODCAST. */
     public final static String TYPE_PODCAST = "podcastContainer";
 
+    /** The Constant TYPE_PODCAST_ITEM. */
     public final static String TYPE_PODCAST_ITEM = "podcastItem";
 
     /** The id. */
@@ -152,6 +156,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @Override
     public int compareTo(AbstractNode o)
     {
         if (this.getType().equals(o.getType())) return this.name.compareTo(o.name);

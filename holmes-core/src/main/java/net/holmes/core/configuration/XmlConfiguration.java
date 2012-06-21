@@ -41,11 +41,9 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 /**
  * The Class XmlConfigurationImpl.
  */
-public final class XmlConfigurationImpl implements IConfiguration
+public final class XmlConfiguration implements IConfiguration
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(XmlConfigurationImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     /** The Constant CONF_FILE_NAME. */
     private static final String CONF_FILE_NAME = "config.xml";
@@ -62,13 +60,13 @@ public final class XmlConfigurationImpl implements IConfiguration
     /** The Constant DEFAULT_HTTP_PORT. */
     private static final int DEFAULT_HTTP_PORT = 8085;
 
-    /** The config. */
+    /** The configuration. */
     private Configuration config = null;
 
     /**
      * Instantiates a new configuration.
      */
-    public XmlConfigurationImpl()
+    public XmlConfiguration()
     {
         loadConfig();
     }
@@ -197,6 +195,7 @@ public final class XmlConfigurationImpl implements IConfiguration
     /* (non-Javadoc)
      * @see net.holmes.core.configuration.IConfiguration#getHomeConfigDirectory()
      */
+    @Override
     public String getHomeConfigDirectory()
     {
         return getHomeSubDirectory(HOME_CONF_FOLDER);

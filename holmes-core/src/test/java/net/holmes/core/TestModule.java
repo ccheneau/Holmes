@@ -22,13 +22,13 @@
 package net.holmes.core;
 
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.XmlConfigurationImpl;
-import net.holmes.core.model.ContentTypeFactoryImpl;
+import net.holmes.core.configuration.XmlConfiguration;
+import net.holmes.core.media.IMediaService;
+import net.holmes.core.media.MediaService;
+import net.holmes.core.media.dao.IMediaDao;
+import net.holmes.core.media.dao.XmlMediaDao;
+import net.holmes.core.model.ContentTypeFactory;
 import net.holmes.core.model.IContentTypeFactory;
-import net.holmes.core.service.IMediaService;
-import net.holmes.core.service.MediaServiceImpl;
-import net.holmes.core.service.dao.IMediaDao;
-import net.holmes.core.service.dao.XmlMediaDaoImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -45,12 +45,12 @@ public class TestModule extends AbstractModule
     @Override
     protected void configure()
     {
-        bind(IConfiguration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
+        bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
-        bind(IMediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
-        bind(IMediaDao.class).to(XmlMediaDaoImpl.class).in(Singleton.class);
+        bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
+        bind(IMediaDao.class).to(XmlMediaDao.class).in(Singleton.class);
 
-        bind(IContentTypeFactory.class).to(ContentTypeFactoryImpl.class).in(Singleton.class);
+        bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
 
     }
 

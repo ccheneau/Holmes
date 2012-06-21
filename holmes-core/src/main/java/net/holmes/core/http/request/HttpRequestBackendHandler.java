@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.http;
+package net.holmes.core.http.request;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -66,11 +66,9 @@ import com.sun.jersey.spi.container.WebApplicationFactory;
 /**
  * The Class HttpBackendHandler.
  */
-public final class HttpBackendHandler implements IHttpRequestHandler
+public final class HttpRequestBackendHandler implements IHttpRequestHandler
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(HttpBackendHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestBackendHandler.class);
 
     /** The Constant PATH. */
     public final static String PATH = "/backend/";
@@ -86,7 +84,7 @@ public final class HttpBackendHandler implements IHttpRequestHandler
      * Instantiates a new http backend handler.
      *
      */
-    public HttpBackendHandler()
+    public HttpRequestBackendHandler()
     {
     }
 
@@ -118,6 +116,7 @@ public final class HttpBackendHandler implements IHttpRequestHandler
     /* (non-Javadoc)
      * @see net.holmes.core.http.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
+    @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
     {
         if (logger.isDebugEnabled())

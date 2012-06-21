@@ -40,8 +40,6 @@ import com.google.inject.Injector;
  */
 public class ContentTypeTest extends TestCase
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(ContentTypeTest.class);
 
     /** The content type factory. */

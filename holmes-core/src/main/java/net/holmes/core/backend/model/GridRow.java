@@ -29,8 +29,6 @@ import java.util.Collection;
  */
 public class GridRow implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -7055943024207235434L;
 
     /** The id. */

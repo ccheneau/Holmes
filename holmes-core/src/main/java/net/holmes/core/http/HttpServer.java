@@ -24,7 +24,7 @@ package net.holmes.core.http;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import net.holmes.core.common.IServer;
+import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
@@ -41,11 +41,9 @@ import com.google.inject.Inject;
 /**
  * The Class HttpServerImpl.
  */
-public final class HttpServerImpl implements IServer
+public final class HttpServer implements IServer
 {
-
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(HttpServerImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     /** The Constant HTTP_SERVER_NAME. */
     public static final String HTTP_SERVER_NAME = "Holmes http server";
@@ -67,7 +65,7 @@ public final class HttpServerImpl implements IServer
     /**
      * Instantiates a new http server impl.
      */
-    public HttpServerImpl()
+    public HttpServer()
     {
     }
 
@@ -77,7 +75,7 @@ public final class HttpServerImpl implements IServer
     @Override
     public void start()
     {
-        logger.info("Starting http server");
+        logger.info("Starting Http server");
 
         int port = configuration.getConfig().getHttpServerPort();
         InetSocketAddress bindAddress = new InetSocketAddress(port);
@@ -133,7 +131,6 @@ public final class HttpServerImpl implements IServer
         {
             logger.info("Http server stop complete");
         }
-
     }
 
     /* (non-Javadoc)
@@ -142,7 +139,6 @@ public final class HttpServerImpl implements IServer
     @Override
     public void initialize()
     {
-
     }
 
     /* (non-Javadoc)

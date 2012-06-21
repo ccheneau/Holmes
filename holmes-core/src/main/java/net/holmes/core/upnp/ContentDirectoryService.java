@@ -32,13 +32,13 @@ import java.util.List;
 import java.util.UUID;
 
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContainerNode;
 import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.PodcastContainerNode;
 import net.holmes.core.model.PodcastItemNode;
-import net.holmes.core.service.IMediaService;
 import net.holmes.core.util.DateFormat;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -94,8 +94,6 @@ import com.sun.syndication.io.XmlReader;
         @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
 public final class ContentDirectoryService extends AbstractContentDirectoryService
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
     /** The media service. */
@@ -233,6 +231,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /* (non-Javadoc)
      * @see org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService#search(java.lang.String, java.lang.String, java.lang.String, org.teleal.cling.model.types.UnsignedIntegerFourBytes, org.teleal.cling.model.types.UnsignedIntegerFourBytes, java.lang.String)
      */
+    @Override
     @UpnpAction(out = { @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
             @UpnpOutputArgument(name = "NumberReturned", stateVariable = "A_ARG_TYPE_Count", getterName = "getCount"),
             @UpnpOutputArgument(name = "TotalMatches", stateVariable = "A_ARG_TYPE_Count", getterName = "getTotalMatches"),

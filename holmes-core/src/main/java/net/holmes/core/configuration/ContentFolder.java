@@ -28,8 +28,6 @@ import java.io.Serializable;
  */
 public final class ContentFolder implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -476678562488489847L;
 
     /** The Constant ROOT_NODE_ID. */

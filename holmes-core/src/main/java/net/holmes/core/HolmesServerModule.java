@@ -21,22 +21,21 @@
 */
 package net.holmes.core;
 
-import net.holmes.core.common.IServer;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.XmlConfigurationImpl;
-import net.holmes.core.http.HttpBackendHandler;
-import net.holmes.core.http.HttpContentHandler;
-import net.holmes.core.http.HttpServerImpl;
+import net.holmes.core.configuration.XmlConfiguration;
+import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
-import net.holmes.core.http.HttpSiteHandler;
-import net.holmes.core.http.IHttpRequestHandler;
-import net.holmes.core.model.ContentTypeFactoryImpl;
+import net.holmes.core.http.request.HttpRequestBackendHandler;
+import net.holmes.core.http.request.HttpRequestContentHandler;
+import net.holmes.core.http.request.HttpRequestSiteHandler;
+import net.holmes.core.http.request.IHttpRequestHandler;
+import net.holmes.core.media.IMediaService;
+import net.holmes.core.media.MediaService;
+import net.holmes.core.media.dao.IMediaDao;
+import net.holmes.core.media.dao.XmlMediaDao;
+import net.holmes.core.model.ContentTypeFactory;
 import net.holmes.core.model.IContentTypeFactory;
-import net.holmes.core.service.IMediaService;
-import net.holmes.core.service.MediaServiceImpl;
-import net.holmes.core.service.dao.IMediaDao;
-import net.holmes.core.service.dao.XmlMediaDaoImpl;
-import net.holmes.core.upnp.UpnpServerImpl;
+import net.holmes.core.upnp.UpnpServer;
 
 import org.jboss.netty.channel.ChannelPipelineFactory;
 
@@ -56,21 +55,21 @@ public final class HolmesServerModule extends AbstractModule
     @Override
     protected void configure()
     {
-        bind(IConfiguration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
+        bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
-        bind(IMediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
-        bind(IMediaDao.class).to(XmlMediaDaoImpl.class).in(Singleton.class);
+        bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
+        bind(IMediaDao.class).to(XmlMediaDao.class).in(Singleton.class);
 
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
 
-        bind(IContentTypeFactory.class).to(ContentTypeFactoryImpl.class).in(Singleton.class);
+        bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
 
-        bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServerImpl.class).in(Singleton.class);
-        bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServerImpl.class).in(Singleton.class);
+        bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
+        bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
 
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpSiteHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpRequestContentHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpRequestBackendHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpRequestSiteHandler.class);
     }
 
 }

@@ -28,8 +28,6 @@ import java.io.Serializable;
  */
 public class ConfigurationResponse implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 337172491421293170L;
 
     /** The server name. */

@@ -19,28 +19,61 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.http;
+package net.holmes.core.media;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import java.util.Set;
+
+import net.holmes.core.model.AbstractNode;
 
 /**
- * The Interface IHttpRequestHandler.
+ * The Interface IMediaService.
  */
-public interface IHttpRequestHandler
+public interface IMediaService
 {
 
     /**
-     * Process request.
+     * Get a specific node. Return null is not found
      *
-     * @param request the request
-     * @param channel the channel
-     * @throws HttpRequestException the http request exception
+     * @param nodeId the node id
+     * @return the node
      */
-    public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
+    public abstract AbstractNode getNode(String nodeId);
 
     /**
-     * Inits the handler.
+     * Gets the node ids.
+     *
+     * @return the node ids
      */
-    public abstract void initHandler();
+    public abstract Set<String> getNodeIds();
+
+    /**
+     * Scan all media.
+     * 
+     */
+    public abstract void scanAll();
+
+    /**
+     * Scan videos.
+     *
+     */
+    public abstract void scanVideos();
+
+    /**
+     * Scan audios.
+     *
+     */
+    public abstract void scanAudios();
+
+    /**
+     * Scan pictures.
+     *
+     */
+    public abstract void scanPictures();
+
+    /**
+     * Scan podcasts.
+     *
+     */
+    public abstract void scanPodcasts();
+
 }

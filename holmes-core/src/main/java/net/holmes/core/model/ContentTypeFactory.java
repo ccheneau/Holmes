@@ -31,21 +31,18 @@ import org.slf4j.LoggerFactory;
 /**
  * A factory for creating ContentType objects.
  */
-public final class ContentTypeFactoryImpl implements IContentTypeFactory
+public final class ContentTypeFactory implements IContentTypeFactory
 {
+    private static Logger logger = LoggerFactory.getLogger(ContentTypeFactory.class);
 
-    /** The logger. */
-    private static Logger logger = LoggerFactory.getLogger(ContentTypeFactoryImpl.class);
-
-    /** The props. */
+    /** The properties. */
     private Properties props = null;
 
     /**
      * Instantiates a new content type factory.
      */
-    public ContentTypeFactoryImpl()
+    public ContentTypeFactory()
     {
-
         // Load mime types property file
         props = new Properties();
         InputStream in = null;

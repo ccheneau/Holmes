@@ -21,8 +21,7 @@
 */
 package net.holmes.core;
 
-import net.holmes.core.common.IServer;
-import net.holmes.core.service.IMediaService;
+import net.holmes.core.media.IMediaService;
 import net.holmes.core.util.LogUtil;
 
 import com.google.inject.Guice;
@@ -36,7 +35,7 @@ import com.google.inject.name.Named;
 public final class HolmesServer implements IServer
 {
 
-    /** The HTTP server. */
+    /** The Http server. */
     @Inject
     @Named("http")
     private IServer httpServer;

@@ -29,8 +29,6 @@ import java.util.Collection;
  */
 public class ListGridRowsResponse implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 936714380923230317L;
 
     /** The page. */

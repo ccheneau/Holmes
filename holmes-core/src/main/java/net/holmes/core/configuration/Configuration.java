@@ -32,8 +32,6 @@ import net.holmes.core.util.LogUtil;
  */
 public final class Configuration implements Serializable
 {
-
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1607439493422835211L;
 
     /** The Constant DEFAULT_SERVER_NAME. */
@@ -45,7 +43,7 @@ public final class Configuration implements Serializable
     /** The server name. */
     private String serverName;
 
-    /** The http server port. */
+    /** The Http server port. */
     private Integer httpServerPort;
 
     /** The log level. */
