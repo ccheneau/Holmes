@@ -64,7 +64,7 @@ import com.sun.jersey.spi.container.WebApplication;
 import com.sun.jersey.spi.container.WebApplicationFactory;
 
 /**
- * The Class HttpBackendHandler.
+ * The Class HttpRequestBackendHandler.
  */
 public final class HttpRequestBackendHandler implements IHttpRequestHandler
 {

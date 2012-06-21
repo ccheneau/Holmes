@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 /**
- * The Class HttpSiteHandler.
+ * The Class HttpRequestSiteHandler.
  */
 public final class HttpRequestSiteHandler implements IHttpRequestHandler
 {

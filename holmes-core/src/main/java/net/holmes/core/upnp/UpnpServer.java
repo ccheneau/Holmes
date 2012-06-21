@@ -47,7 +47,7 @@ import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
 import com.google.inject.Inject;
 
 /**
- * The Class UpnpServerImpl.
+ * The Class UpnpServer.
  */
 public final class UpnpServer implements IServer
 {

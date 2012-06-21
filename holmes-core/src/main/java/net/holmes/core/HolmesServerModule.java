@@ -44,7 +44,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 /**
- * The Class MediaServerModule.
+ * The Class HolmesServerModule.
  */
 public final class HolmesServerModule extends AbstractModule
 {

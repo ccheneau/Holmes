@@ -39,7 +39,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
- * The Class XmlConfigurationImpl.
+ * The Class XmlConfiguration.
  */
 public final class XmlConfiguration implements IConfiguration
 {

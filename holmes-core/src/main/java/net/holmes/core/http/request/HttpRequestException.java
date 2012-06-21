@@ -24,7 +24,7 @@ package net.holmes.core.http.request;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * The Class HttpRequestException.
+ * The Class HttpRequestContentHandler.
  */
 public final class HttpRequestException extends Exception
 {

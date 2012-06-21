@@ -55,7 +55,7 @@ public final class ContentFolder implements Serializable
     private String path;
 
     /**
-     * Instantiates a new configuration directory.
+     * Instantiates a new content folder.
      *
      * @param id the id
      * @param label the label

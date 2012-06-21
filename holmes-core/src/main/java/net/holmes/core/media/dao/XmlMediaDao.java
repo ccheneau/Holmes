@@ -50,7 +50,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
- * The Class XmlMediaDaoImpl.
+ * The Class XmlMediaDao.
  */
 public class XmlMediaDao implements IMediaDao
 {

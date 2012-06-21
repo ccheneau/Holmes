@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 /**
- * The Class MediaServiceImpl.
+ * The Class MediaService.
  */
 public final class MediaService implements IMediaService
 {
