@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 
 import net.holmes.core.util.LogUtil;
+import net.holmes.core.util.SystemProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,9 +176,9 @@ public final class XmlConfiguration implements IConfiguration
     public String getHomeDirectory()
     {
         String homePath = null;
-        if (System.getProperty("net.holmes.home") != null)
+        if (System.getProperty(SystemProperties.HOLMES_HOME) != null)
         {
-            homePath = checkPath(System.getProperty("net.holmes.home"));
+            homePath = checkPath(System.getProperty(SystemProperties.HOLMES_HOME));
         }
 
         if (homePath != null)
@@ -189,7 +190,7 @@ public final class XmlConfiguration implements IConfiguration
             }
         }
 
-        throw new RuntimeException("net.holmes.home variable not defined or incorrect");
+        throw new RuntimeException(SystemProperties.HOLMES_HOME + " variable not defined or incorrect");
     }
 
     /* (non-Javadoc)
