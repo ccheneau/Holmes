@@ -22,7 +22,6 @@
 package net.holmes.core.backend;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,11 +40,6 @@ import net.holmes.core.backend.model.GridRow;
 import net.holmes.core.backend.model.ListGridRowsResponse;
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.media.IMediaService;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -55,8 +49,6 @@ import com.google.inject.Inject;
 @Path("/backend/configuration")
 public class ConfigurationResource
 {
-    private static Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
-
     /** The Constant ADD_GRID_ROW_OPERATION. */
     private static final String ADD_GRID_ROW_OPERATION = "add";
 
@@ -70,72 +62,56 @@ public class ConfigurationResource
     @Inject
     private IConfiguration configuration;
 
-    /** The media service. */
-    @Inject
-    private IMediaService mediaService;
-
-    /** The mapper. */
-    @Inject
-    private ObjectMapper mapper;
-
     /**
      * Gets the video folders.
      *
      * @return the video folders
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @GET
     @Path("/getVideoFolders")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getVideoFolders() throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListGridRowsResponse getVideoFolders()
     {
-        ListGridRowsResponse response = getConfigurationFolders(configuration.getConfig().getVideoFolders());
-        return mapper.writeValueAsString(response);
+        return getConfigurationFolders(configuration.getConfig().getVideoFolders());
     }
 
     /**
      * Gets the audio folders.
      *
      * @return the audio folders
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @GET
     @Path("/getAudioFolders")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getAudioFolders() throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListGridRowsResponse getAudioFolders()
     {
-        ListGridRowsResponse response = getConfigurationFolders(configuration.getConfig().getAudioFolders());
-        return mapper.writeValueAsString(response);
+        return getConfigurationFolders(configuration.getConfig().getAudioFolders());
     }
 
     /**
      * Gets the picture folders.
      *
      * @return the picture folders
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @GET
     @Path("/getPictureFolders")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getPictureFolders() throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListGridRowsResponse getPictureFolders()
     {
-        ListGridRowsResponse response = getConfigurationFolders(configuration.getConfig().getPictureFolders());
-        return mapper.writeValueAsString(response);
+        return getConfigurationFolders(configuration.getConfig().getPictureFolders());
     }
 
     /**
      * Gets the podcasts.
      *
      * @return the podcasts
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @GET
     @Path("/getPodcasts")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getPodcasts() throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListGridRowsResponse getPodcasts()
     {
-        ListGridRowsResponse response = getConfigurationFolders(configuration.getConfig().getPodcasts());
-        return mapper.writeValueAsString(response);
+        return getConfigurationFolders(configuration.getConfig().getPodcasts());
     }
 
     /**
@@ -146,17 +122,14 @@ public class ConfigurationResource
      * @param label the label
      * @param path the path
      * @return the string
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @POST
     @Path("/editVideoFolder")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
-            @FormParam("path") String path) throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public EditResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+            @FormParam("path") String path)
     {
-        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
-        if (response.getStatus()) mediaService.scanVideos();
-        return mapper.writeValueAsString(response);
+        return editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
     }
 
     /**
@@ -167,17 +140,14 @@ public class ConfigurationResource
      * @param label the label
      * @param path the path
      * @return the string
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @POST
     @Path("/editAudioFolder")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
-            @FormParam("path") String path) throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public EditResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+            @FormParam("path") String path)
     {
-        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
-        if (response.getStatus()) mediaService.scanAudios();
-        return mapper.writeValueAsString(response);
+        return editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
     }
 
     /**
@@ -188,17 +158,14 @@ public class ConfigurationResource
      * @param label the label
      * @param path the path
      * @return the string
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @POST
     @Path("/editPictureFolder")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
-            @FormParam("path") String path) throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public EditResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+            @FormParam("path") String path)
     {
-        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
-        if (response.getStatus()) mediaService.scanPictures();
-        return mapper.writeValueAsString(response);
+        return editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
     }
 
     /**
@@ -209,17 +176,14 @@ public class ConfigurationResource
      * @param label the label
      * @param path the path
      * @return the string
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     @POST
     @Path("/editPodcast")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label, @FormParam("path") String path)
-            throws IOException
+    @Produces(MediaType.APPLICATION_JSON)
+    public EditResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+            @FormParam("path") String path)
     {
-        EditResponse response = editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
-        if (response.getStatus()) mediaService.scanPodcasts();
-        return mapper.writeValueAsString(response);
+        return editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
     }
 
     /**
@@ -229,24 +193,15 @@ public class ConfigurationResource
      */
     @GET
     @Path("/getConfiguration")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getConfiguration()
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationResponse getConfiguration()
     {
-        String result = null;
         ConfigurationResponse response = new ConfigurationResponse();
         response.setHttpServerPort(configuration.getConfig().getHttpServerPort());
         response.setServerName(configuration.getConfig().getServerName());
         response.setLogLevel(configuration.getConfig().getLogLevel());
 
-        try
-        {
-            result = mapper.writeValueAsString(response);
-        }
-        catch (IOException e)
-        {
-            logger.error(e.getMessage(), e);
-        }
-        return result;
+        return response;
     }
 
     /**
@@ -259,11 +214,10 @@ public class ConfigurationResource
      */
     @POST
     @Path("/editConfiguration")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
+    @Produces(MediaType.APPLICATION_JSON)
+    public EditResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
             @FormParam("logLevel") String logLevel)
     {
-        String result = null;
         EditResponse response = new EditResponse();
         response.setStatus(true);
         response.setErrorCode(ErrorCode.NO_ERROR);
@@ -290,43 +244,7 @@ public class ConfigurationResource
             configuration.getConfig().setLogLevel(logLevel.trim());
             configuration.saveConfig();
         }
-        try
-        {
-            result = mapper.writeValueAsString(response);
-        }
-        catch (IOException e)
-        {
-            logger.error(e.getMessage(), e);
-        }
-        return result;
-    }
-
-    /**
-     * Launch scan.
-     *
-     * @return the string
-     */
-    @POST
-    @Path("/launchScan")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String launchScan()
-    {
-        String result = null;
-        EditResponse response = new EditResponse();
-        response.setStatus(true);
-        response.setErrorCode(ErrorCode.NO_ERROR);
-
-        mediaService.scanAll();
-
-        try
-        {
-            result = mapper.writeValueAsString(response);
-        }
-        catch (IOException e)
-        {
-            logger.error(e.getMessage(), e);
-        }
-        return result;
+        return response;
     }
 
     /**

@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.holmes.core.backend.ConfigurationResource;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.buffer.ChannelBufferOutputStream;
@@ -53,8 +51,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.sun.jersey.api.core.ClassNamesResourceConfig;
+import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.header.InBoundHeaders;
 import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 import com.sun.jersey.spi.container.ContainerRequest;
@@ -102,13 +101,14 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
         if (application == null)
         {
             application = WebApplicationFactory.createWebApplication();
-            Map<String, Object> props = new HashMap<String, Object>();
-            String[] resources = new String[] { ConfigurationResource.class.getName() };
-            props.put(ClassNamesResourceConfig.PROPERTY_CLASSNAMES, resources);
-
-            ResourceConfig rcf = new ClassNamesResourceConfig(props);
             if (!application.isInitiated())
             {
+                Map<String, Object> props = new HashMap<String, Object>();
+
+                props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
+                props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+
+                ResourceConfig rcf = new PackagesResourceConfig(props);
                 application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
             }
         }
