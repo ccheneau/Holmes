@@ -48,7 +48,7 @@ $(document).ready(function() {
 			// Video folders navigation options
 			$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
 					// global options
-					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
+					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
 					// edit options
 					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
@@ -60,7 +60,7 @@ $(document).ready(function() {
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
-						caption: msg.video.delete.caption, msg: msg.video.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						caption: msg.video.remove.caption, msg: msg.video.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}
 			);
 			
@@ -79,7 +79,7 @@ $(document).ready(function() {
 			// Audio folders navigation options
 			$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
 					// global options
-					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
+					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
 					// edit options
 					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
@@ -91,7 +91,7 @@ $(document).ready(function() {
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
-						caption: msg.audio.delete.caption, msg: msg.audio.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						caption: msg.audio.remove.caption, msg: msg.audio.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} 
 			);
 			
@@ -110,7 +110,7 @@ $(document).ready(function() {
 			// Picture folders navigation options
 			$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav',
 					// global options
-					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
+					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
 					// edit options
 					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
@@ -122,7 +122,7 @@ $(document).ready(function() {
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
-						caption: msg.picture.delete.caption, msg: msg.picture.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						caption: msg.picture.remove.caption, msg: msg.picture.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}
 			);
 			
@@ -141,7 +141,7 @@ $(document).ready(function() {
 			// Pod-cast navigation options
 			$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
 					// global options
-					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.delete, 
+					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
 					// edit options
 					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
@@ -153,7 +153,7 @@ $(document).ready(function() {
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
-						caption: msg.podcast.delete.caption, msg: msg.podcast.delete.msg, bSubmit: msg.button.delete, bCancel: msg.button.cancel, 
+						caption: msg.podcast.remove.caption, msg: msg.podcast.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}} 
 			);
 
@@ -181,9 +181,6 @@ $(document).ready(function() {
 	    $("#btn_submit").html($("#btn_submit").html() + "<span class='ui-icon ui-icon-disk'></span>");
 	    $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
 	    $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
-	    $("#configuration_operation_fieldset").addClass("ui-widget ui-widget-content ui-corner-all");
-	    $("#btn_scan_all").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
-	    $("#btn_scan_all").html($("#btn_scan_all").html() + "<span class='ui-icon ui-icon-search'></span>");
 	    
 	    $(".hover").hover(function(){
 			  $(this).addClass("ui-state-hover");
@@ -215,8 +212,7 @@ $(document).ready(function() {
 	    				logLevel : $("#select_log_level").val()
 	    			},
 	    			function(response) {
-	    				var serverResponse = $.parseJSON(response);
-	    				if (serverResponse.status){
+	    				if (response.status){
 	    					successMessage('Configuration saved');
 	    				} else {
 	    					errorMessage(serverResponse.message);
@@ -230,19 +226,6 @@ $(document).ready(function() {
 	    	loadConfiguration();
 	    });
 	    
-	    // Scan all media handler
-	    $('#btn_scan_all').click(function() {
-	    	$.post('/backend/configuration/launchScan',
-	    			function(response) {
-	    				var serverResponse = $.parseJSON(response);
-	    				if (serverResponse.status){
-	    					successMessage('Scan performed successfully');
-	    				} else {
-	    					errorMessage(serverResponse.message);
-	    				}
-	    		});
-	    });	    
-
 	    // Show configuration success message
 	    function successMessage(message) {
 	    	$("#message").html("<span>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
