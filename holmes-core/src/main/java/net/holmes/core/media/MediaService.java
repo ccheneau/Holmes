@@ -102,12 +102,13 @@ public final class MediaService implements IMediaService
     @Override
     public AbstractNode getNode(String nodeId)
     {
-        if (logger.isDebugEnabled()) logger.debug("[...] getNode nodeId:" + nodeId);
+        AbstractNode node = null;
+        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:" + nodeId);
 
         if (rootNodes.get(nodeId) != null)
         {
             // root node
-            return getRootNode(nodeId, rootNodes.get(nodeId));
+            node = getRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null)
         {
@@ -117,28 +118,30 @@ public final class MediaService implements IMediaService
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0]))
                 {
                     // podcast node
-                    return getPodcastNode("", nodeParams[1]);
+                    node = getPodcastContainerNode("", nodeParams[1]);
                 }
                 else
                 {
-                    File node = new File(nodeParams[1]);
-                    if (node.exists() && node.canRead() && !node.isHidden())
+                    File nodeFile = new File(nodeParams[1]);
+                    if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden())
                     {
-                        if (node.isFile())
+                        if (nodeFile.isFile())
                         {
                             // content node
-                            return getContentNode(nodeId, node, nodeParams[0]);
+                            node = getContentNode(nodeId, nodeFile, nodeParams[0]);
                         }
-                        else if (node.isDirectory())
+                        else if (nodeFile.isDirectory())
                         {
                             // container node
-                            return getContainerNode(nodeId, node.getName(), node);
+                            node = getContainerNode(nodeId, nodeFile.getName(), nodeFile);
                         }
                     }
                 }
             }
         }
-        return null;
+
+        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:" + node);
+        return node;
     }
 
     /* (non-Javadoc)
@@ -147,30 +150,32 @@ public final class MediaService implements IMediaService
     @Override
     public List<AbstractNode> getChildNodes(AbstractNode parentNode)
     {
+        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
+
+        List<AbstractNode> childNodes = null;
         if (ContentFolder.ROOT_NODE_ID.equals(parentNode.getId()))
         {
-            List<AbstractNode> childNodes = new ArrayList<AbstractNode>();
+            childNodes = new ArrayList<AbstractNode>();
             childNodes.add(getRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, rootNodes.get(ContentFolder.ROOT_AUDIO_NODE_ID)));
             childNodes.add(getRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, rootNodes.get(ContentFolder.ROOT_VIDEO_NODE_ID)));
             childNodes.add(getRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, rootNodes.get(ContentFolder.ROOT_PICTURE_NODE_ID)));
             childNodes.add(getRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, rootNodes.get(ContentFolder.ROOT_PODCAST_NODE_ID)));
-            return childNodes;
         }
         else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId()))
         {
-            return getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
+            childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
         }
         else if (ContentFolder.ROOT_VIDEO_NODE_ID.equals(parentNode.getId()))
         {
-            return getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
+            childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
         }
         else if (ContentFolder.ROOT_PICTURE_NODE_ID.equals(parentNode.getId()))
         {
-            return getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
+            childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
         }
         else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId()))
         {
-            return getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
+            childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null)
         {
@@ -180,7 +185,7 @@ public final class MediaService implements IMediaService
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0]))
                 {
                     // podcast items
-                    return getPodcastItems(nodeParams[1]);
+                    childNodes = getPodcastItems(nodeParams[1]);
                 }
                 else
                 {
@@ -188,13 +193,14 @@ public final class MediaService implements IMediaService
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden())
                     {
                         // container items
-                        return getContainerItems(node, nodeParams[0]);
+                        childNodes = getContainerItems(node, nodeParams[0]);
                     }
                 }
             }
-
         }
-        return null;
+
+        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :" + childNodes);
+        return childNodes;
     }
 
     /**
@@ -215,7 +221,7 @@ public final class MediaService implements IMediaService
                 // Add podcast nodes
                 for (ContentFolder contentFolder : contentFolders)
                 {
-                    nodes.add(getPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
+                    nodes.add(getPodcastContainerNode(contentFolder.getLabel(), contentFolder.getPath()));
                 }
             }
             else
@@ -234,7 +240,6 @@ public final class MediaService implements IMediaService
             }
         }
         return nodes;
-
     }
 
     /**
@@ -248,7 +253,6 @@ public final class MediaService implements IMediaService
     {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         File[] files = folder.listFiles();
-
         if (files != null)
         {
             AbstractNode addedNode = null;
@@ -270,11 +274,7 @@ public final class MediaService implements IMediaService
                         addedNode = getContentNode(nodeId.toString(), file, mediaType);
                     }
                 }
-
-                if (addedNode != null)
-                {
-                    nodes.add(addedNode);
-                }
+                if (addedNode != null) nodes.add(addedNode);
             }
         }
         return nodes;
@@ -404,7 +404,6 @@ public final class MediaService implements IMediaService
         node.setPath(folder.getAbsolutePath());
         node.setId(nodeId);
         node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
-
         return node;
     }
 
@@ -431,28 +430,25 @@ public final class MediaService implements IMediaService
             node.setSize(file.length());
             node.setId(nodeId);
             node.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
-
         }
         return node;
     }
 
     /**
-     * Get a pod-cast node.
+     * Get a pod-cast container node.
      *
      * @param name the name
      * @param url the url
      * @return the podcast container node
      */
-    private PodcastContainerNode getPodcastNode(String name, String url)
+    private PodcastContainerNode getPodcastContainerNode(String name, String url)
     {
         PodcastContainerNode node = new PodcastContainerNode();
-
         StringBuilder nodeId = new StringBuilder();
         nodeId.append(ContentType.TYPE_PODCAST).append("|").append(url);
         node.setId(nodeId.toString());
         node.setName(name);
         node.setUrl(url);
-
         return node;
     }
 

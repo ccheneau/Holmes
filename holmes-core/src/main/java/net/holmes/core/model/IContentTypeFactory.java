@@ -26,7 +26,6 @@ package net.holmes.core.model;
  */
 public interface IContentTypeFactory
 {
-
     /**
      * Gets the content type.
      *

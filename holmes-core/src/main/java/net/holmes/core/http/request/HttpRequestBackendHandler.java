@@ -244,5 +244,4 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
             channel.write(response).addListener(ChannelFutureListener.CLOSE);
         }
     }
-
 }

@@ -30,7 +30,6 @@ import net.holmes.core.model.AbstractNode;
  */
 public interface IMediaService
 {
-
     /**
      * Get a specific node. Return null is not found
      *
@@ -46,5 +45,4 @@ public interface IMediaService
      * @return the child nodes
      */
     public List<AbstractNode> getChildNodes(AbstractNode parentNode);
-
 }

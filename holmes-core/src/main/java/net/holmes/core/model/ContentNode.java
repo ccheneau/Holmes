@@ -106,5 +106,4 @@ public final class ContentNode extends AbstractNode
         builder.append("]");
         return builder.toString();
     }
-
 }

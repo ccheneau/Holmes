@@ -178,5 +178,4 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         builder.append("]");
         return builder.toString();
     }
-
 }

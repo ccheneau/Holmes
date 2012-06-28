@@ -59,5 +59,4 @@ public interface IConfiguration
      * @return the home site directory
      */
     public abstract String getHomeSiteDirectory();
-
 }

@@ -95,7 +95,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     public ContentDirectoryService()
     {
-
         super( // search caps
                 Arrays.asList("dc:title"),
                 // sort caps
@@ -194,7 +193,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         itemCount += addPodcastItems(objectID, (PodcastContainerNode) browseNode, didl);
                     }
                 }
-
                 return new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
             }
 
@@ -220,7 +218,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
             @UpnpInputArgument(name = "SortCriteria") String orderBy) throws ContentDirectoryException
     {
-
         SortCriterion[] orderByCriteria;
         try
         {
@@ -243,7 +240,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         {
             throw new ContentDirectoryException(ErrorCode.ACTION_FAILED, ex.toString());
         }
-
     }
 
     /* (non-Javadoc)
@@ -418,5 +414,4 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
         return itemCount;
     }
-
 }

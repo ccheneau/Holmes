@@ -26,7 +26,6 @@ package net.holmes.core;
  */
 public interface IServer
 {
-
     /**
      * Initialize server.
      */

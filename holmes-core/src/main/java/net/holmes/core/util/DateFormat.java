@@ -29,7 +29,6 @@ import java.util.Calendar;
  */
 public class DateFormat
 {
-
     private static String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     /**
@@ -44,5 +43,4 @@ public class DateFormat
         cal.setTimeInMillis(timestamp);
         return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());
     }
-
 }

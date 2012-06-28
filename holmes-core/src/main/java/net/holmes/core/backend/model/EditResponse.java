@@ -157,5 +157,4 @@ public class EditResponse implements Serializable
         this.errorCode = errorCode.code();
         this.message = errorCode.message();
     }
-
 }

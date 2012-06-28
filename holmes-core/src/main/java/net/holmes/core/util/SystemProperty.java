@@ -26,7 +26,6 @@ package net.holmes.core.util;
  */
 public enum SystemProperty
 {
-
     /** The holmes home. */
     HOLMES_HOME("net.holmes.home");
 

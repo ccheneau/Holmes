@@ -98,5 +98,4 @@ public class ConfigurationResponse implements Serializable
     {
         this.logLevel = logLevel;
     }
-
 }

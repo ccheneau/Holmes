@@ -122,5 +122,4 @@ public class ListGridRowsResponse implements Serializable
     {
         this.rows = rows;
     }
-
 }

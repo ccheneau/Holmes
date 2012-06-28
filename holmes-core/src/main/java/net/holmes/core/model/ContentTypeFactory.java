@@ -74,7 +74,6 @@ public final class ContentTypeFactory implements IContentTypeFactory
     @Override
     public ContentType getContentType(String fileName)
     {
-
         // Get file extension
         String ext = "";
         int mid = fileName.lastIndexOf(".");

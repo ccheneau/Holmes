@@ -33,7 +33,6 @@ import com.google.inject.name.Named;
  */
 public final class HolmesServer implements IServer
 {
-
     /** The Http server. */
     @Inject
     @Named("http")
@@ -128,7 +127,6 @@ public final class HolmesServer implements IServer
      */
     private static class ShutdownHook extends Thread
     {
-
         /** The Holmes server. */
         IServer holmesServer;
 

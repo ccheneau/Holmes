@@ -126,7 +126,6 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
         }
 
         if (logger.isDebugEnabled()) logger.debug("[END] messageReceived");
-
     }
 
     /* (non-Javadoc)

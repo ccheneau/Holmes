@@ -104,5 +104,4 @@ public final class PodcastItemNode extends AbstractNode
     {
         this.url = url;
     }
-
 }

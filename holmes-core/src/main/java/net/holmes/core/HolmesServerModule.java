@@ -47,7 +47,6 @@ import com.google.inject.name.Names;
  */
 public final class HolmesServerModule extends AbstractModule
 {
-
     /* (non-Javadoc)
      * @see com.google.inject.AbstractModule#configure()
      */
@@ -70,5 +69,4 @@ public final class HolmesServerModule extends AbstractModule
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpRequestBackendHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpRequestSiteHandler.class);
     }
-
 }

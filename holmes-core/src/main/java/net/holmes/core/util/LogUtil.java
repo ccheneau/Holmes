@@ -34,7 +34,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  */
 public class LogUtil
 {
-
     /**
      * Load configuration
      */

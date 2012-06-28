@@ -144,5 +144,4 @@ public final class ContentFolder implements Serializable
         builder.append("]");
         return builder.toString();
     }
-
 }

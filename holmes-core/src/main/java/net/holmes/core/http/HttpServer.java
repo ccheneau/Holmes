@@ -106,7 +106,6 @@ public final class HttpServer implements IServer
         channel.close();
         cf.awaitUninterruptibly();
         bootstrap.getFactory().releaseExternalResources();
-
     }
 
     /**

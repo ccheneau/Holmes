@@ -51,8 +51,6 @@ import com.google.inject.Inject;
  */
 public final class UpnpServer implements IServer
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
     /** The UPnP service. */
@@ -92,7 +90,6 @@ public final class UpnpServer implements IServer
         {
             logger.error(e.getMessage(), e);
         }
-
     }
 
     /* (non-Javadoc)
