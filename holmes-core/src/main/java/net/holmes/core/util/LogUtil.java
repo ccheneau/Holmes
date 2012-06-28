@@ -24,8 +24,6 @@ package net.holmes.core.util;
 import java.io.File;
 import java.util.logging.Logger;
 
-import net.holmes.core.util.SystemProperties;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -46,7 +44,7 @@ public class LogUtil
         SLF4JBridgeHandler.install();
 
         // Configure Log4j
-        String homeDir = System.getProperty(SystemProperties.HOLMES_HOME);
+        String homeDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
         if (homeDir != null && new File(homeDir).exists())
         {
             String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";

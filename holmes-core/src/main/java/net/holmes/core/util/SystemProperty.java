@@ -22,11 +22,34 @@
 package net.holmes.core.util;
 
 /**
- * The Class SystemProperties.
+ * The Enum SystemProperty.
  */
-public class SystemProperties
+public enum SystemProperty
 {
 
-    /** The Constant HOLMES_HOME. */
-    public static final String HOLMES_HOME = "net.holmes.home";
+    /** The holmes home. */
+    HOLMES_HOME("net.holmes.home");
+
+    /** The value. */
+    private String value;
+
+    /**
+     * Instantiates a new system property.
+     *
+     * @param value the value
+     */
+    SystemProperty(String value)
+    {
+        this.value = value;
+    }
+
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
+    public String getValue()
+    {
+        return value;
+    }
 }
