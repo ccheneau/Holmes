@@ -410,7 +410,7 @@ public class ConfigurationResource
      * Validate path.
      *
      * @param path the path
-     * @param isPath the is path
+     * @param isPath file path (true) or url (false)
      * @return the error code
      */
     private ErrorCode validatePath(String path, boolean isPath)
