@@ -25,8 +25,6 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.XmlConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.media.dao.IMediaDao;
-import net.holmes.core.media.dao.XmlMediaDao;
 import net.holmes.core.model.ContentTypeFactory;
 import net.holmes.core.model.IContentTypeFactory;
 
@@ -48,7 +46,6 @@ public class TestModule extends AbstractModule
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-        bind(IMediaDao.class).to(XmlMediaDao.class).in(Singleton.class);
 
         bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
 

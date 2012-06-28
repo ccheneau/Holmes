@@ -21,7 +21,6 @@
 */
 package net.holmes.core;
 
-import net.holmes.core.media.IMediaService;
 import net.holmes.core.util.LogUtil;
 
 import com.google.inject.Guice;
@@ -45,10 +44,6 @@ public final class HolmesServer implements IServer
     @Named("upnp")
     private IServer upnpServer;
 
-    /** The media service. */
-    @Inject
-    private IMediaService mediaService;
-
     /**
      * Instantiates a new media server.
      */
@@ -62,8 +57,6 @@ public final class HolmesServer implements IServer
     @Override
     public void initialize()
     {
-        // Scan all medias
-        mediaService.scanAll();
     }
 
     /* (non-Javadoc)

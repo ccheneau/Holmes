@@ -67,8 +67,6 @@ import com.sun.jersey.spi.container.WebApplicationFactory;
  */
 public final class HttpRequestBackendHandler implements IHttpRequestHandler
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpRequestBackendHandler.class);
 
     /** The Constant PATH. */

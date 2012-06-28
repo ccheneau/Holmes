@@ -43,8 +43,6 @@ import com.google.inject.Inject;
  */
 public final class HttpServer implements IServer
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     /** The Constant HTTP_SERVER_NAME. */

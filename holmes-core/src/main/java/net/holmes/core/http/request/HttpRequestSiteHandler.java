@@ -52,8 +52,6 @@ import com.google.inject.Inject;
  */
 public final class HttpRequestSiteHandler implements IHttpRequestHandler
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
 
     /** The configuration. */

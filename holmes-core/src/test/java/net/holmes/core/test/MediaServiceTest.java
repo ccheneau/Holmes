@@ -21,15 +21,11 @@
 */
 package net.holmes.core.test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import net.holmes.core.media.IMediaService;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,60 +55,4 @@ public class MediaServiceTest extends TestCase
         injector.injectMembers(this);
     }
 
-    /**
-     * Test scan all.
-     */
-    @Test
-    public void testScanAll()
-    {
-        try
-        {
-            mediaService.scanAll();
-
-            assertNotNull(mediaService.getNodeIds());
-            logger.debug(mediaService.getNodeIds().toString());
-            assertFalse(mediaService.getNodeIds().isEmpty());
-        }
-        catch (Exception e)
-        {
-            fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Test scan all twice.
-     */
-    @Test
-    public void testScanAllTwice()
-    {
-        try
-        {
-            mediaService.scanAll();
-
-            assertNotNull(mediaService.getNodeIds());
-            Collection<String> nodeIds1 = new ArrayList<String>();
-            assertFalse(mediaService.getNodeIds().isEmpty());
-            for (String id : mediaService.getNodeIds())
-            {
-                nodeIds1.add(id);
-            }
-
-            mediaService.scanAll();
-
-            assertNotNull(mediaService.getNodeIds());
-            Collection<String> nodeIds2 = new ArrayList<String>();
-            assertFalse(mediaService.getNodeIds().isEmpty());
-            for (String id : mediaService.getNodeIds())
-            {
-                nodeIds2.add(id);
-            }
-
-            assertTrue(nodeIds1.containsAll(nodeIds2));
-            assertTrue(nodeIds2.containsAll(nodeIds1));
-        }
-        catch (Exception e)
-        {
-            fail(e.getMessage());
-        }
-    }
 }

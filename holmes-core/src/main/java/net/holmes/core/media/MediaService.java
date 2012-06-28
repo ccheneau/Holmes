@@ -22,40 +22,47 @@
 package net.holmes.core.media;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.media.dao.IMediaDao;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContainerNode;
 import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.model.PodcastContainerNode;
+import net.holmes.core.model.PodcastItemNode;
 import net.holmes.core.util.DateFormat;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.sun.syndication.feed.synd.SyndEnclosure;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 
 /**
  * The Class MediaService.
  */
 public final class MediaService implements IMediaService
 {
-
-    /** The logger. */
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
-
-    /** The media DAO. */
-    @Inject
-    private IMediaDao mediaDao;
 
     /** The configuration. */
     @Inject
@@ -65,11 +72,28 @@ public final class MediaService implements IMediaService
     @Inject
     private IContentTypeFactory contentTypeFactory;
 
+    /** The cache manager. */
+    @Inject
+    private CacheManager cacheManager;
+
+    /** The bundle. */
+    private ResourceBundle bundle;
+
+    /** The root nodes. */
+    private Map<String, String> rootNodes;
+
     /**
-     * Instantiates a new media service impl.
+     * Instantiates a new media service.
      */
     public MediaService()
     {
+        bundle = ResourceBundle.getBundle("message");
+        rootNodes = new HashMap<String, String>();
+        rootNodes.put(ContentFolder.ROOT_NODE_ID, "node.rootNode");
+        rootNodes.put(ContentFolder.ROOT_AUDIO_NODE_ID, "node.audio");
+        rootNodes.put(ContentFolder.ROOT_VIDEO_NODE_ID, "node.video");
+        rootNodes.put(ContentFolder.ROOT_PICTURE_NODE_ID, "node.picture");
+        rootNodes.put(ContentFolder.ROOT_PODCAST_NODE_ID, "node.podcast");
     }
 
     /* (non-Javadoc)
@@ -78,310 +102,322 @@ public final class MediaService implements IMediaService
     @Override
     public AbstractNode getNode(String nodeId)
     {
-        return mediaDao.getNode(nodeId);
-    }
+        if (logger.isDebugEnabled()) logger.debug("[...] getNode nodeId:" + nodeId);
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#scanAll()
-     */
-    @Override
-    public synchronized void scanAll()
-    {
-        scanRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
-        scanRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
-        scanRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
-        scanRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, configuration.getConfig().getPodcasts(), true, null);
-
-        mediaDao.flush();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#scanVideos()
-     */
-    @Override
-    public void scanVideos()
-    {
-        scanRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
-        mediaDao.flush();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#scanAudios()
-     */
-    @Override
-    public void scanAudios()
-    {
-        scanRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
-        mediaDao.flush();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#scanPictures()
-     */
-    @Override
-    public void scanPictures()
-    {
-        scanRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
-        mediaDao.flush();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#scanPodcasts()
-     */
-    @Override
-    public void scanPodcasts()
-    {
-        scanRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, configuration.getConfig().getPodcasts(), true, null);
-        mediaDao.flush();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#getNodeIds()
-     */
-    @Override
-    public Set<String> getNodeIds()
-    {
-        return mediaDao.getNodeIds();
-    }
-
-    /**
-      * Scan a root node.
-      *
-      * @param rootNodeId the root node id
-      * @param contentFolders the content folders
-      * @param podcast the podcast
-      * @param mediaType the media type
-      */
-    private void scanRootNode(String rootNodeId, List<ContentFolder> contentFolders, boolean podcast, String mediaType)
-    {
-        if (logger.isDebugEnabled()) logger.debug("[START] scanRootNode rootNodeId:" + rootNodeId);
-
-        // Get root node
-        AbstractNode rootNode = mediaDao.getNode(rootNodeId);
-        if (rootNode instanceof ContainerNode)
+        if (rootNodes.get(nodeId) != null)
         {
-            ContainerNode rootContainerNode = (ContainerNode) rootNode;
-            List<String> nodesToRemove = new ArrayList<String>();
-
-            // Initialize nodes to remove
-            if (rootContainerNode.getChildNodeIds() != null)
+            // root node
+            return getRootNode(nodeId, rootNodes.get(nodeId));
+        }
+        else if (nodeId != null)
+        {
+            String[] nodeParams = nodeId.split("|");
+            if (nodeParams != null && nodeParams.length == 2)
             {
-                for (String nodeId : rootContainerNode.getChildNodeIds())
-                    nodesToRemove.add(nodeId);
-            }
-
-            if (contentFolders != null && !contentFolders.isEmpty())
-            {
-                if (podcast)
+                if (ContentType.TYPE_PODCAST.equals(nodeParams[0]))
                 {
-                    PodcastContainerNode addedNode = null;
-                    // Add podcast nodes
-                    for (ContentFolder contentFolder : contentFolders)
-                    {
-                        addedNode = addPodcastNode(contentFolder.getLabel(), contentFolder.getPath(), rootContainerNode);
-                        if (rootContainerNode.getChildNodeIds().contains(addedNode.getId()))
-                        {
-                            // Node already exist => do not remove it
-                            nodesToRemove.remove(addedNode.getId());
-                        }
-                        else
-                        {
-                            // Add to child nodes
-                            mediaDao.addChildNode(rootContainerNode.getId(), addedNode.getId());
-                        }
-                    }
+                    // podcast node
+                    return getPodcastNode("", nodeParams[1]);
                 }
                 else
                 {
-                    ContainerNode addedNode = null;
-                    // Add container nodes
-                    for (ContentFolder contentFolder : contentFolders)
+                    File node = new File(nodeParams[1]);
+                    if (node.exists() && node.canRead() && !node.isHidden())
                     {
-                        addedNode = null;
-                        File file = new File(contentFolder.getPath());
-                        if (file.exists() && file.isDirectory() && file.canRead())
+                        if (node.isFile())
                         {
-                            // Add container node
-                            addedNode = addContainerNode(contentFolder.getLabel(), file, rootContainerNode);
-                            if (rootContainerNode.getChildNodeIds().contains(addedNode.getId()))
-                            {
-                                // Node already exist => do not remove it
-                                nodesToRemove.remove(addedNode.getId());
-                            }
-                            else
-                            {
-                                // Add to child nodes
-                                mediaDao.addChildNode(rootContainerNode.getId(), addedNode.getId());
-                            }
-
-                            // Scan child folder
-                            scanFolder(file, addedNode, true, mediaType);
+                            // content node
+                            return getContentNode(nodeId, node, nodeParams[0]);
+                        }
+                        else if (node.isDirectory())
+                        {
+                            // container node
+                            return getContainerNode(nodeId, node.getName(), node);
                         }
                     }
                 }
-
             }
-            // Remove obsolete nodes
-            if (!nodesToRemove.isEmpty())
+        }
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.media.IMediaService#getChildNodes(net.holmes.core.model.AbstractNode)
+     */
+    @Override
+    public List<AbstractNode> getChildNodes(AbstractNode parentNode)
+    {
+        if (ContentFolder.ROOT_NODE_ID.equals(parentNode.getId()))
+        {
+            List<AbstractNode> childNodes = new ArrayList<AbstractNode>();
+            childNodes.add(getRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, rootNodes.get(ContentFolder.ROOT_AUDIO_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, rootNodes.get(ContentFolder.ROOT_VIDEO_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, rootNodes.get(ContentFolder.ROOT_PICTURE_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, rootNodes.get(ContentFolder.ROOT_PODCAST_NODE_ID)));
+            return childNodes;
+        }
+        else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId()))
+        {
+            return getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
+        }
+        else if (ContentFolder.ROOT_VIDEO_NODE_ID.equals(parentNode.getId()))
+        {
+            return getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
+        }
+        else if (ContentFolder.ROOT_PICTURE_NODE_ID.equals(parentNode.getId()))
+        {
+            return getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
+        }
+        else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId()))
+        {
+            return getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
+        }
+        else if (parentNode.getId() != null)
+        {
+            String[] nodeParams = parentNode.getId().split("|");
+            if (nodeParams != null && nodeParams.length == 2)
             {
-                for (String nodeId : nodesToRemove)
+                if (ContentType.TYPE_PODCAST.equals(nodeParams[0]))
                 {
-                    removeNode(nodeId);
-                    mediaDao.removeChildNode(rootContainerNode.getId(), nodeId);
+                    // podcast items
+                    return getPodcastItems(nodeParams[1]);
+                }
+                else
+                {
+                    File node = new File(nodeParams[1]);
+                    if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden())
+                    {
+                        // container items
+                        return getContainerItems(node, nodeParams[0]);
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
+
+    /**
+     * Gets childs of a root node.
+     *
+     * @param contentFolders the content folders
+     * @param podcast the podcast
+     * @param mediaType the media type
+     * @return the child root nodes
+     */
+    private List<AbstractNode> getChildRootNodes(List<ContentFolder> contentFolders, boolean podcast, String mediaType)
+    {
+        List<AbstractNode> nodes = new ArrayList<AbstractNode>();
+        if (contentFolders != null && !contentFolders.isEmpty())
+        {
+            if (podcast)
+            {
+                // Add podcast nodes
+                for (ContentFolder contentFolder : contentFolders)
+                {
+                    nodes.add(getPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
+                }
+            }
+            else
+            {
+                // Add container nodes
+                for (ContentFolder contentFolder : contentFolders)
+                {
+                    File file = new File(contentFolder.getPath());
+                    if (file.exists() && file.isDirectory() && file.canRead())
+                    {
+                        StringBuilder nodeId = new StringBuilder();
+                        nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
+                        nodes.add(getContainerNode(nodeId.toString(), contentFolder.getLabel(), file));
+                    }
                 }
             }
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] scanRootNode");
+        return nodes;
 
     }
 
     /**
-     * Scan a specific folder.
+     * Gets container items.
      *
      * @param folder the folder
-     * @param parentNode the parent node
-     * @param recursive the recursive
      * @param mediaType the media type
+     * @return the list
      */
-    private void scanFolder(File folder, ContainerNode parentNode, boolean recursive, String mediaType)
+    private List<AbstractNode> getContainerItems(File folder, String mediaType)
     {
-        if (logger.isDebugEnabled()) logger.debug("[START] scanFolder folder:" + folder + " parentNodeId:" + parentNode.getId());
-
+        List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         File[] files = folder.listFiles();
 
         if (files != null)
         {
             AbstractNode addedNode = null;
-            List<String> nodesToRemove = new ArrayList<String>();
-
-            // Initialize nodes to remove
-            if (parentNode.getChildNodeIds() != null)
-            {
-                for (String nodeId : parentNode.getChildNodeIds())
-                    nodesToRemove.add(nodeId);
-            }
-
             for (File file : files)
             {
                 addedNode = null;
                 if (file.canRead() && !file.isHidden())
                 {
+                    StringBuilder nodeId = new StringBuilder();
+                    nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
                     if (file.isDirectory())
                     {
                         // Add container node
-                        addedNode = addContainerNode(file.getName(), file, parentNode);
+                        addedNode = getContainerNode(nodeId.toString(), file.getName(), file);
                     }
                     else
                     {
                         // Add content node
-                        addedNode = addContentNode(file, parentNode, mediaType);
+                        addedNode = getContentNode(nodeId.toString(), file, mediaType);
                     }
                 }
 
                 if (addedNode != null)
                 {
-                    if (parentNode.getChildNodeIds().contains(addedNode.getId()))
-                    {
-                        // Node already exist => do not remove it
-                        nodesToRemove.remove(addedNode.getId());
-                    }
-                    else
-                    {
-                        // Adds to child nodes
-                        mediaDao.addChildNode(parentNode.getId(), addedNode.getId());
-                    }
-
-                    // Scan child folder
-                    if (addedNode != null && addedNode instanceof ContainerNode && recursive)
-                    {
-                        scanFolder(file, (ContainerNode) addedNode, true, mediaType);
-                    }
+                    nodes.add(addedNode);
                 }
             }
-
-            // Remove obsolete nodes
-            if (!nodesToRemove.isEmpty())
-            {
-                for (String nodeId : nodesToRemove)
-                {
-                    removeNode(nodeId);
-                    mediaDao.removeChildNode(parentNode.getId(), nodeId);
-                }
-            }
-
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] scanFolder");
+        return nodes;
     }
 
     /**
-     * Add a container node. If node already exists, returns existing one
+     * Gets the podcast items.
      *
-     * @param name the name
-     * @param folder the folder
-     * @param parentNode the parent node
-     * @return the container node
+     * @param url the url
+     * @return the podcast items
      */
-    private ContainerNode addContainerNode(String name, File folder, ContainerNode parentNode)
+    @SuppressWarnings("unchecked")
+    private List<AbstractNode> getPodcastItems(String url)
     {
-        if (logger.isDebugEnabled()) logger.debug("[START] addContainerNode folder:" + folder + " parentNodeId:" + parentNode.getId());
+        List<AbstractNode> podcastItemNodes = null;
+        Cache podcastItemsCache = cacheManager.getCache("podcastItems");
 
-        AbstractNode currentNode = null;
-        for (String nodeId : parentNode.getChildNodeIds())
+        // Try to read items from cache
+        if (podcastItemsCache.get(url) == null)
         {
-            // Check if node already exists in container child nodes
-            currentNode = mediaDao.getNode(nodeId);
-            if (currentNode != null && currentNode instanceof ContainerNode && name.equals(currentNode.getName()))
+            // No items in cache, read them from RSS feed
+            XmlReader reader = null;
+            URL feedSource;
+            try
             {
-                mediaDao.updateNodeModifiedDate(currentNode.getId(), DateFormat.formatUpnpDate(folder.lastModified()));
-                if (logger.isDebugEnabled()) logger.debug("[END] addContainerNode existing node:" + currentNode);
-                return (ContainerNode) currentNode;
+                // Get RSS feed entries
+                feedSource = new URL(url);
+                reader = new XmlReader(feedSource);
+                SyndFeed feed = new SyndFeedInput().build(reader);
+                List<SyndEntry> rssEntries = feed.getEntries();
+                if (rssEntries != null && !rssEntries.isEmpty())
+                {
+                    podcastItemNodes = new ArrayList<AbstractNode>();
+                    for (SyndEntry rssEntry : rssEntries)
+                    {
+                        if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty())
+                        {
+                            for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures())
+                            {
+                                PodcastItemNode podcastItemNode = new PodcastItemNode();
+                                podcastItemNode.setId(UUID.randomUUID().toString());
+                                podcastItemNode.setName(rssEntry.getTitle());
+                                if (rssEntry.getPublishedDate() != null)
+                                {
+                                    podcastItemNode.setModifedDate(DateFormat.formatUpnpDate(rssEntry.getPublishedDate().getTime()));
+                                }
+                                if (enclosure.getType() != null)
+                                {
+                                    podcastItemNode.setContentType(new ContentType(enclosure.getType()));
+                                }
+                                podcastItemNode.setSize(enclosure.getLength());
+                                podcastItemNode.setUrl(enclosure.getUrl());
+
+                                podcastItemNodes.add(podcastItemNode);
+                            }
+                        }
+                    }
+                }
             }
+            catch (MalformedURLException e)
+            {
+                logger.error(e.getMessage(), e);
+            }
+            catch (IOException e)
+            {
+                logger.error(e.getMessage(), e);
+            }
+            catch (IllegalArgumentException e)
+            {
+                logger.error(e.getMessage(), e);
+            }
+            catch (FeedException e)
+            {
+                logger.error(e.getMessage(), e);
+            }
+            finally
+            {
+                // Close reader
+                try
+                {
+                    if (reader != null) reader.close();
+                }
+                catch (IOException e)
+                {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+
+            // Add items to cache
+            podcastItemsCache.put(new Element(url, podcastItemNodes));
         }
+        else
+        {
+            // Get items from cache
+            podcastItemNodes = (List<AbstractNode>) (podcastItemsCache.get(url).getValue());
+        }
+        return podcastItemNodes;
+    }
 
-        // Node not found, create a new one
+    /**
+     * Gets the root node.
+     *
+     * @param nodeId the node id
+     * @param bundleKey the bundle key
+     * @return the root node
+     */
+    private ContainerNode getRootNode(String nodeId, String bundleKey)
+    {
         ContainerNode node = new ContainerNode();
-        node.setName(name);
-        node.setPath(folder.getAbsolutePath());
-        node.setParentNodeId(parentNode.getId());
-        node.setId(UUID.randomUUID().toString());
-        node.setChildNodeIds(new LinkedList<String>());
-        node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
-
-        // Add the node
-        mediaDao.addNode(node);
-
-        if (logger.isDebugEnabled()) logger.debug("[END] addContainerNode added node:" + node);
+        node.setId(nodeId);
+        node.setName(bundle.getString(bundleKey));
         return node;
     }
 
     /**
-     * Add a content node. If node already exists, returns existing one
+     * Gets the container node.
      *
+     * @param nodeId the node id
+     * @param name the name
+     * @param folder the folder
+     * @return the container node
+     */
+    private ContainerNode getContainerNode(String nodeId, String name, File folder)
+    {
+        ContainerNode node = new ContainerNode();
+        node.setName(name);
+        node.setPath(folder.getAbsolutePath());
+        node.setId(nodeId);
+        node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
+
+        return node;
+    }
+
+    /**
+     * Get a content node.
+     *
+     * @param nodeId the node id
      * @param file the file
-     * @param parentNode the parent node
      * @param mediaType the media type (video, audio, image)
      * @return the content node
      */
-    private ContentNode addContentNode(File file, ContainerNode parentNode, String mediaType)
+    private ContentNode getContentNode(String nodeId, File file, String mediaType)
     {
-        if (logger.isDebugEnabled()) logger.debug("[START] addContentNode file:" + file + " parentNodeId:" + parentNode.getId());
-
-        String name = file.getName();
-        AbstractNode currentNode = null;
-
-        // Check if node already exists in container child nodes
-        for (String nodeId : parentNode.getChildNodeIds())
-        {
-            currentNode = mediaDao.getNode(nodeId);
-            if (currentNode != null && currentNode instanceof ContentNode && name.equals(currentNode.getName()))
-            {
-                mediaDao.updateNodeModifiedDate(currentNode.getId(), DateFormat.formatUpnpDate(file.lastModified()));
-                if (logger.isDebugEnabled()) logger.debug("[END] addContentNode existing node:" + currentNode);
-                return (ContentNode) currentNode;
-            }
-        }
-
-        // Node not found, create a new one
         ContentNode node = null;
 
         // Check content type
@@ -391,86 +427,33 @@ public final class MediaService implements IMediaService
             node = new ContentNode();
             node.setName(file.getName());
             node.setPath(file.getAbsolutePath());
-            node.setParentNodeId(parentNode.getId());
             node.setContentType(contentType);
             node.setSize(file.length());
-            node.setId(UUID.randomUUID().toString());
+            node.setId(nodeId);
             node.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
 
-            // Add the node
-            mediaDao.addNode(node);
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] addContentNode added node:" + node);
-
         return node;
     }
 
     /**
-     * Add a pod-cast node. If node already exists, returns existing one
+     * Get a pod-cast node.
      *
      * @param name the name
      * @param url the url
-     * @param parentNode the parent node
      * @return the podcast container node
      */
-    private PodcastContainerNode addPodcastNode(String name, String url, ContainerNode parentNode)
+    private PodcastContainerNode getPodcastNode(String name, String url)
     {
-        if (logger.isDebugEnabled()) logger.debug("[START] addPodcastNode url:" + url + " parentNodeId:" + parentNode.getId());
-
-        AbstractNode currentNode = null;
-
-        // Check if node already exists in container child nodes
-        for (String nodeId : parentNode.getChildNodeIds())
-        {
-            currentNode = mediaDao.getNode(nodeId);
-            if (currentNode != null && currentNode instanceof PodcastContainerNode && name.equals(currentNode.getName()))
-            {
-                if (logger.isDebugEnabled()) logger.debug("[END] addPodcastNode existing node:" + currentNode);
-                return (PodcastContainerNode) currentNode;
-            }
-        }
-
-        // Node not found, create a new one
         PodcastContainerNode node = new PodcastContainerNode();
+
+        StringBuilder nodeId = new StringBuilder();
+        nodeId.append(ContentType.TYPE_PODCAST).append("|").append(url);
+        node.setId(nodeId.toString());
         node.setName(name);
         node.setUrl(url);
-        node.setParentNodeId(parentNode.getId());
-        node.setId(UUID.randomUUID().toString());
-
-        // Add the node
-        mediaDao.addNode(node);
-
-        if (logger.isDebugEnabled()) logger.debug("[END] addPodcastNode added node:" + node);
 
         return node;
     }
 
-    /**
-     * Remove node and its child nodes.
-     *
-     * @param nodeId the node id
-     */
-    private void removeNode(String nodeId)
-    {
-        if (logger.isDebugEnabled()) logger.debug("[START] remove node:" + nodeId);
-        AbstractNode node = mediaDao.getNode(nodeId);
-        if (node != null)
-        {
-            if (node instanceof ContainerNode)
-            {
-                // Remove child nodes
-                if (((ContainerNode) node).getChildNodeIds() != null)
-                {
-                    for (String childNodeId : ((ContainerNode) node).getChildNodeIds())
-                    {
-                        removeNode(childNodeId);
-                    }
-                }
-            }
-
-            // Remove node
-            mediaDao.removeNode(nodeId);
-        }
-        if (logger.isDebugEnabled()) logger.debug("[END] remove node");
-    }
 }

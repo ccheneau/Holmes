@@ -21,12 +21,8 @@
 */
 package net.holmes.core.upnp;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -39,10 +35,6 @@ import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.PodcastContainerNode;
 import net.holmes.core.model.PodcastItemNode;
-import net.holmes.core.util.DateFormat;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,13 +63,6 @@ import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.model.item.Photo;
 import org.teleal.common.util.MimeType;
 
-import com.sun.syndication.feed.synd.SyndEnclosure;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
-
 /**
  * The Class ContentDirectoryService.
  */
@@ -105,9 +90,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /** The local ip. */
     private String localIp;
 
-    /** The cache manager. */
-    private CacheManager cacheManager;
-
     /**
      * Instantiates a new content directory.
      */
@@ -126,8 +108,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         {
             logger.error(e.getMessage(), e);
         }
-
-        cacheManager = new CacheManager();
     }
 
     /**
@@ -188,25 +168,23 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     {
                         ContainerNode browseContainer = (ContainerNode) browseNode;
                         if (logger.isDebugEnabled()) logger.debug("browse container node:" + browseContainer);
-                        if (browseContainer.getChildNodeIds() != null && !browseContainer.getChildNodeIds().isEmpty())
+                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                        if (childNodes != null && !childNodes.isEmpty())
                         {
-                            for (String nodeId : browseContainer.getChildNodeIds())
+                            for (AbstractNode node : childNodes)
                             {
-                                if (logger.isDebugEnabled()) logger.debug("add node:" + nodeId);
-                                if (mediaService.getNode(nodeId) != null)
+                                if (logger.isDebugEnabled()) logger.debug("add node:" + node);
+                                if (node instanceof ContentNode)
                                 {
-                                    if (mediaService.getNode(nodeId) instanceof ContentNode)
-                                    {
-                                        itemCount += addContentItem(objectID, (ContentNode) mediaService.getNode(nodeId), didl);
-                                    }
-                                    else if (mediaService.getNode(nodeId) instanceof ContainerNode)
-                                    {
-                                        itemCount += addContainerItem(objectID, (ContainerNode) mediaService.getNode(nodeId), didl);
-                                    }
-                                    else if (mediaService.getNode(nodeId) instanceof PodcastContainerNode)
-                                    {
-                                        itemCount += addPodcastContainerItem(objectID, (PodcastContainerNode) mediaService.getNode(nodeId), didl);
-                                    }
+                                    itemCount += addContentItem(objectID, (ContentNode) node, didl);
+                                }
+                                else if (node instanceof ContainerNode)
+                                {
+                                    itemCount += addContainerItem(objectID, (ContainerNode) node, didl);
+                                }
+                                else if (node instanceof PodcastContainerNode)
+                                {
+                                    itemCount += addPodcastContainerItem(objectID, (PodcastContainerNode) node, didl);
                                 }
                             }
                         }
@@ -343,7 +321,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         {
             logger.debug("add container item:" + containerNode);
         }
-        Integer childCount = containerNode.getChildNodeIds() != null ? containerNode.getChildNodeIds().size() : 0;
+        List<AbstractNode> childNodes = mediaService.getChildNodes(containerNode);
+        Integer childCount = childNodes != null ? childNodes.size() : 0;
         StorageFolder container = new StorageFolder(containerNode.getId(), parentNodeId, containerNode.getName(), "", childCount, 0L);
         if (containerNode.getModifedDate() != null) container.replaceFirstProperty(new DC.DATE(containerNode.getModifedDate()));
 
@@ -384,50 +363,55 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private int addPodcastItems(String parentNodeId, PodcastContainerNode browseNode, DIDLContent didl)
     {
         int itemCount = 0;
-        List<PodcastItemNode> podcastItemNodes = getPodcastItems(browseNode);
-        if (podcastItemNodes != null && !podcastItemNodes.isEmpty())
+        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+        if (childNodes != null && !childNodes.isEmpty())
         {
-            for (PodcastItemNode podcastItemNode : podcastItemNodes)
+            PodcastItemNode podcastItemNode = null;
+            for (AbstractNode node : childNodes)
             {
-                ContentType feedEntryType = null;
-                MimeType mimeType = null;
-                Res res = null;
-                feedEntryType = podcastItemNode.getContentType();
-                if (feedEntryType.isMedia())
+                if (node instanceof PodcastItemNode)
                 {
-                    mimeType = new MimeType(feedEntryType.getType(), feedEntryType.getSubType());
-                    res = new Res(mimeType, podcastItemNode.getSize(), podcastItemNode.getUrl());
-                    if (logger.isDebugEnabled())
+                    podcastItemNode = (PodcastItemNode) node;
+                    ContentType feedEntryType = null;
+                    MimeType mimeType = null;
+                    Res res = null;
+                    feedEntryType = podcastItemNode.getContentType();
+                    if (feedEntryType.isMedia())
                     {
-                        logger.debug("add podcast item:" + podcastItemNode.getName() + " " + podcastItemNode.getUrl());
-                    }
-                    if (feedEntryType.isAudio())
-                    {
-                        // Add audio item
-                        MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", "", res);
-                        if (podcastItemNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
+                        mimeType = new MimeType(feedEntryType.getType(), feedEntryType.getSubType());
+                        res = new Res(mimeType, podcastItemNode.getSize(), podcastItemNode.getUrl());
+                        if (logger.isDebugEnabled())
+                        {
+                            logger.debug("add podcast item:" + podcastItemNode.getName() + " " + podcastItemNode.getUrl());
+                        }
+                        if (feedEntryType.isAudio())
+                        {
+                            // Add audio item
+                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", "", res);
+                            if (podcastItemNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
-                        didl.addItem(musicTrack);
-                        itemCount++;
-                    }
-                    else if (feedEntryType.isImage())
-                    {
-                        // Add image item
-                        Photo photo = new Photo(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", res);
-                        if (podcastItemNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
+                            didl.addItem(musicTrack);
+                            itemCount++;
+                        }
+                        else if (feedEntryType.isImage())
+                        {
+                            // Add image item
+                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", res);
+                            if (podcastItemNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
-                        didl.addItem(photo);
-                        itemCount++;
+                            didl.addItem(photo);
+                            itemCount++;
 
-                    }
-                    else if (feedEntryType.isVideo())
-                    {
-                        // Add video item
-                        Movie movie = new Movie(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", res);
-                        if (podcastItemNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
+                        }
+                        else if (feedEntryType.isVideo())
+                        {
+                            // Add video item
+                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", res);
+                            if (podcastItemNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
 
-                        didl.addItem(movie);
-                        itemCount++;
+                            didl.addItem(movie);
+                            itemCount++;
+                        }
                     }
                 }
             }
@@ -435,98 +419,4 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         return itemCount;
     }
 
-    /**
-     * Gets the podcast items from RSS feed.
-     *
-     * @param browseNode the browse node
-     * @return the RSS feed items
-     */
-    @SuppressWarnings("unchecked")
-    private List<PodcastItemNode> getPodcastItems(PodcastContainerNode browseNode)
-    {
-        List<PodcastItemNode> podcastItemNodes = null;
-        Cache podcastItemsCache = cacheManager.getCache("podcastItems");
-
-        // Try to read items from cache
-        if (podcastItemsCache.get(browseNode.getId()) == null)
-        {
-            // No items in cache, read them from RSS feed
-            String url = browseNode.getUrl();
-            XmlReader reader = null;
-            URL feedSource;
-            try
-            {
-                // Get RSS feed entries
-                feedSource = new URL(url);
-                reader = new XmlReader(feedSource);
-                SyndFeed feed = new SyndFeedInput().build(reader);
-                List<SyndEntry> rssEntries = feed.getEntries();
-                if (rssEntries != null && !rssEntries.isEmpty())
-                {
-                    podcastItemNodes = new ArrayList<PodcastItemNode>();
-                    for (SyndEntry rssEntry : rssEntries)
-                    {
-                        if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty())
-                        {
-                            for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures())
-                            {
-                                PodcastItemNode podcastItemNode = new PodcastItemNode();
-                                podcastItemNode.setId(UUID.randomUUID().toString());
-                                podcastItemNode.setName(rssEntry.getTitle());
-                                if (rssEntry.getPublishedDate() != null)
-                                {
-                                    podcastItemNode.setModifedDate(DateFormat.formatUpnpDate(rssEntry.getPublishedDate().getTime()));
-                                }
-                                if (enclosure.getType() != null)
-                                {
-                                    podcastItemNode.setContentType(new ContentType(enclosure.getType()));
-                                }
-                                podcastItemNode.setSize(enclosure.getLength());
-                                podcastItemNode.setUrl(enclosure.getUrl());
-
-                                podcastItemNodes.add(podcastItemNode);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (MalformedURLException e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-            catch (IOException e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-            catch (IllegalArgumentException e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-            catch (FeedException e)
-            {
-                logger.error(e.getMessage(), e);
-            }
-            finally
-            {
-                // Close reader
-                try
-                {
-                    if (reader != null) reader.close();
-                }
-                catch (IOException e)
-                {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-
-            // Add items to cache
-            podcastItemsCache.put(new Element(browseNode.getId(), podcastItemNodes));
-        }
-        else
-        {
-            // Get items from cache
-            podcastItemNodes = (List<PodcastItemNode>) (podcastItemsCache.get(browseNode.getId()).getValue());
-        }
-        return podcastItemNodes;
-    }
 }

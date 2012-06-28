@@ -31,11 +31,10 @@ import net.holmes.core.http.request.HttpRequestSiteHandler;
 import net.holmes.core.http.request.IHttpRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.media.dao.IMediaDao;
-import net.holmes.core.media.dao.XmlMediaDao;
 import net.holmes.core.model.ContentTypeFactory;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.upnp.UpnpServer;
+import net.sf.ehcache.CacheManager;
 
 import org.jboss.netty.channel.ChannelPipelineFactory;
 
@@ -58,7 +57,7 @@ public final class HolmesServerModule extends AbstractModule
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-        bind(IMediaDao.class).to(XmlMediaDao.class).in(Singleton.class);
+        bind(CacheManager.class).to(CacheManager.class);
 
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
 

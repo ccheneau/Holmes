@@ -21,9 +21,6 @@
 */
 package net.holmes.core.model;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
  * The Class ContainerNode.
  */
@@ -31,35 +28,12 @@ public final class ContainerNode extends AbstractNode
 {
     private static final long serialVersionUID = 8129761596085917631L;
 
-    /** The child node ids. */
-    private LinkedList<String> childNodeIds;
-
     /**
      * Instantiates a new container node.
      */
     public ContainerNode()
     {
         type = TYPE_CONTAINER;
-    }
-
-    /**
-     * Gets the child node ids.
-     *
-     * @return the child node ids
-     */
-    public Collection<String> getChildNodeIds()
-    {
-        return childNodeIds;
-    }
-
-    /**
-     * Sets the child node ids.
-     *
-     * @param childNodeIds the new child node ids
-     */
-    public void setChildNodeIds(LinkedList<String> childNodeIds)
-    {
-        this.childNodeIds = childNodeIds;
     }
 
     /* (non-Javadoc)
@@ -70,17 +44,12 @@ public final class ContainerNode extends AbstractNode
     {
         StringBuilder builder = new StringBuilder();
         builder.append("ContainerNode [childNodeIds=");
-        builder.append(childNodeIds);
         builder.append(", id=");
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", parentNodeId=");
-        builder.append(parentNodeId);
         builder.append(", path=");
         builder.append(path);
-        builder.append(", version=");
-        builder.append(version);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

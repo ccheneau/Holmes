@@ -21,7 +21,7 @@
 */
 package net.holmes.core.media;
 
-import java.util.Set;
+import java.util.List;
 
 import net.holmes.core.model.AbstractNode;
 
@@ -40,40 +40,11 @@ public interface IMediaService
     public abstract AbstractNode getNode(String nodeId);
 
     /**
-     * Gets the node ids.
+     * Gets the child nodes.
      *
-     * @return the node ids
+     * @param parentNode the parent node
+     * @return the child nodes
      */
-    public abstract Set<String> getNodeIds();
-
-    /**
-     * Scan all media.
-     * 
-     */
-    public abstract void scanAll();
-
-    /**
-     * Scan videos.
-     *
-     */
-    public abstract void scanVideos();
-
-    /**
-     * Scan audios.
-     *
-     */
-    public abstract void scanAudios();
-
-    /**
-     * Scan pictures.
-     *
-     */
-    public abstract void scanPictures();
-
-    /**
-     * Scan podcasts.
-     *
-     */
-    public abstract void scanPodcasts();
+    public List<AbstractNode> getChildNodes(AbstractNode parentNode);
 
 }

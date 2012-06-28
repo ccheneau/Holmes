@@ -33,7 +33,7 @@ public interface IConfiguration
     public abstract void saveConfig();
 
     /**
-     * Gets the configuration .
+     * Gets the configuration.
      *
      * @return the configuration 
      */
@@ -52,13 +52,6 @@ public interface IConfiguration
      * @return the home configuration directory
      */
     public abstract String getHomeConfigDirectory();
-
-    /**
-     * Gets the home media directory.
-     *
-     * @return the home media directory
-     */
-    public abstract String getHomeMediaDirectory();
 
     /**
      * Gets the home site directory.

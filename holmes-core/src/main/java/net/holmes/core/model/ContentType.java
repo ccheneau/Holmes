@@ -39,6 +39,9 @@ public final class ContentType implements Serializable
     /** The Constant TYPE_IMAGE. */
     public final static String TYPE_IMAGE = "image";
 
+    /** The Constant TYPE_PODCAST. */
+    public final static String TYPE_PODCAST = "podcast";
+
     /** The type. */
     private String type;
 

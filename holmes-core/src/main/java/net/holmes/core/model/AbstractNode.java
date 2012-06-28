@@ -48,14 +48,8 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
     /** The name. */
     protected String name;
 
-    /** The parent node id. */
-    protected String parentNodeId;
-
     /** The path. */
     protected String path;
-
-    /** The version. */
-    protected int version;
 
     /** The modifed date. */
     protected String modifedDate;
@@ -104,26 +98,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
     }
 
     /**
-     * Gets the parent node id.
-     *
-     * @return the parent node id
-     */
-    public String getParentNodeId()
-    {
-        return parentNodeId;
-    }
-
-    /**
-     * Sets the parent node id.
-     *
-     * @param parentNodeId the new parent node id
-     */
-    public void setParentNodeId(String parentNodeId)
-    {
-        this.parentNodeId = parentNodeId;
-    }
-
-    /**
      * Gets the path.
      *
      * @return the path
@@ -165,34 +139,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
     }
 
     /**
-     * Gets the version.
-     *
-     * @return the version
-     */
-    public int getVersion()
-    {
-        return version;
-    }
-
-    /**
-     * Sets the version.
-     *
-     * @param version the new version
-     */
-    public void setVersion(int version)
-    {
-        this.version = version;
-    }
-
-    /**
-     * Increment version.
-     */
-    public void incrementVersion()
-    {
-        this.version++;
-    }
-
-    /**
      * Gets the modifed date.
      *
      * @return the modifed date
@@ -223,13 +169,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", parentNodeId=");
-        builder.append(parentNodeId);
         builder.append(", path=");
         builder.append(path);
         builder.append(", version=");
-        builder.append(version);
-        builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");
         builder.append(type);

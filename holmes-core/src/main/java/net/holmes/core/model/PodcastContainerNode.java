@@ -72,12 +72,8 @@ public final class PodcastContainerNode extends AbstractNode
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", parentNodeId=");
-        builder.append(parentNodeId);
         builder.append(", path=");
         builder.append(path);
-        builder.append(", version=");
-        builder.append(version);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

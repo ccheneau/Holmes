@@ -34,10 +34,10 @@ public final class ContentFolder implements Serializable
     public static final String ROOT_NODE_ID = "0";
 
     /** The Constant ROOT_VIDEO_NODE_ID. */
-    public static final String ROOT_VIDEO_NODE_ID = "1_VIDEO";
+    public static final String ROOT_VIDEO_NODE_ID = "1_VIDEOS";
 
     /** The Constant ROOT_PICTURE_NODE_ID. */
-    public static final String ROOT_PICTURE_NODE_ID = "2_PICUTRES";
+    public static final String ROOT_PICTURE_NODE_ID = "2_PICTURES";
 
     /** The Constant ROOT_AUDIO_NODE_ID. */
     public static final String ROOT_AUDIO_NODE_ID = "3_AUDIOS";
@@ -135,7 +135,7 @@ public final class ContentFolder implements Serializable
     public String toString()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("ConfigurationDirectory [id=");
+        builder.append("ContentFolder [id=");
         builder.append(id);
         builder.append(", label=");
         builder.append(label);

@@ -31,7 +31,7 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 
 import net.holmes.core.util.LogUtil;
-import net.holmes.core.util.SystemProperties;
+import net.holmes.core.util.SystemProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +51,6 @@ public final class XmlConfiguration implements IConfiguration
 
     /** The Constant HOME_CONF_FOLDER. */
     private static final String HOME_CONF_FOLDER = "conf";
-
-    /** The Constant HOME_MEDIA_FOLDER. */
-    private static final String HOME_MEDIA_FOLDER = "media";
 
     /** The Constant HOME_MEDIA_FOLDER. */
     private static final String HOME_SITE_FOLDER = "site";
@@ -176,9 +173,9 @@ public final class XmlConfiguration implements IConfiguration
     public String getHomeDirectory()
     {
         String homePath = null;
-        if (System.getProperty(SystemProperties.HOLMES_HOME) != null)
+        if (System.getProperty(SystemProperty.HOLMES_HOME.getValue()) != null)
         {
-            homePath = checkPath(System.getProperty(SystemProperties.HOLMES_HOME));
+            homePath = checkPath(System.getProperty(SystemProperty.HOLMES_HOME.getValue()));
         }
 
         if (homePath != null)
@@ -190,7 +187,7 @@ public final class XmlConfiguration implements IConfiguration
             }
         }
 
-        throw new RuntimeException(SystemProperties.HOLMES_HOME + " variable not defined or incorrect");
+        throw new RuntimeException(SystemProperty.HOLMES_HOME.getValue() + " variable not defined or incorrect");
     }
 
     /* (non-Javadoc)
@@ -200,15 +197,6 @@ public final class XmlConfiguration implements IConfiguration
     public String getHomeConfigDirectory()
     {
         return getHomeSubDirectory(HOME_CONF_FOLDER);
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHomeMediaDirectory()
-     */
-    @Override
-    public String getHomeMediaDirectory()
-    {
-        return getHomeSubDirectory(HOME_MEDIA_FOLDER);
     }
 
     /* (non-Javadoc)
