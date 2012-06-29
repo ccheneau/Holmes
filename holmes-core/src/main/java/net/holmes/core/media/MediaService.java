@@ -35,12 +35,12 @@ import java.util.UUID;
 import net.holmes.core.configuration.ContentFolder;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.model.AbstractNode;
-import net.holmes.core.model.ContainerNode;
 import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
+import net.holmes.core.model.FolderNode;
 import net.holmes.core.model.IContentTypeFactory;
-import net.holmes.core.model.PodcastContainerNode;
 import net.holmes.core.model.PodcastItemNode;
+import net.holmes.core.model.PodcastNode;
 import net.holmes.core.util.DateFormat;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -118,7 +118,7 @@ public final class MediaService implements IMediaService
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0]))
                 {
                     // podcast node
-                    node = getPodcastContainerNode("", nodeParams[1]);
+                    node = getPodcastNode("", nodeParams[1]);
                 }
                 else
                 {
@@ -132,8 +132,8 @@ public final class MediaService implements IMediaService
                         }
                         else if (nodeFile.isDirectory())
                         {
-                            // container node
-                            node = getContainerNode(nodeId, nodeFile.getName(), nodeFile);
+                            // folder node
+                            node = getFolderNode(nodeId, nodeFile.getName(), nodeFile);
                         }
                     }
                 }
@@ -192,8 +192,8 @@ public final class MediaService implements IMediaService
                     File node = new File(nodeParams[1]);
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden())
                     {
-                        // container items
-                        childNodes = getContainerItems(node, nodeParams[0]);
+                        // folder items
+                        childNodes = getFolderItems(node, nodeParams[0]);
                     }
                 }
             }
@@ -221,12 +221,12 @@ public final class MediaService implements IMediaService
                 // Add podcast nodes
                 for (ContentFolder contentFolder : contentFolders)
                 {
-                    nodes.add(getPodcastContainerNode(contentFolder.getLabel(), contentFolder.getPath()));
+                    nodes.add(getPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
                 }
             }
             else
             {
-                // Add container nodes
+                // Add folder nodes
                 for (ContentFolder contentFolder : contentFolders)
                 {
                     File file = new File(contentFolder.getPath());
@@ -234,7 +234,7 @@ public final class MediaService implements IMediaService
                     {
                         StringBuilder nodeId = new StringBuilder();
                         nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
-                        nodes.add(getContainerNode(nodeId.toString(), contentFolder.getLabel(), file));
+                        nodes.add(getFolderNode(nodeId.toString(), contentFolder.getLabel(), file));
                     }
                 }
             }
@@ -243,38 +243,38 @@ public final class MediaService implements IMediaService
     }
 
     /**
-     * Gets container items.
+     * Gets folder items.
      *
      * @param folder the folder
      * @param mediaType the media type
      * @return the list
      */
-    private List<AbstractNode> getContainerItems(File folder, String mediaType)
+    private List<AbstractNode> getFolderItems(File folder, String mediaType)
     {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         File[] files = folder.listFiles();
         if (files != null)
         {
-            AbstractNode addedNode = null;
+            AbstractNode node = null;
             for (File file : files)
             {
-                addedNode = null;
+                node = null;
                 if (file.canRead() && !file.isHidden())
                 {
                     StringBuilder nodeId = new StringBuilder();
                     nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
                     if (file.isDirectory())
                     {
-                        // Add container node
-                        addedNode = getContainerNode(nodeId.toString(), file.getName(), file);
+                        // Add folder node
+                        node = getFolderNode(nodeId.toString(), file.getName(), file);
                     }
                     else
                     {
                         // Add content node
-                        addedNode = getContentNode(nodeId.toString(), file, mediaType);
+                        node = getContentNode(nodeId.toString(), file, mediaType);
                     }
                 }
-                if (addedNode != null) nodes.add(addedNode);
+                if (node != null) nodes.add(node);
             }
         }
         return nodes;
@@ -381,28 +381,28 @@ public final class MediaService implements IMediaService
      * @param bundleKey the bundle key
      * @return the root node
      */
-    private ContainerNode getRootNode(String nodeId, String bundleKey)
+    private FolderNode getRootNode(String nodeId, String bundleKey)
     {
-        ContainerNode node = new ContainerNode();
+        FolderNode node = new FolderNode();
         node.setId(nodeId);
         node.setName(bundle.getString(bundleKey));
         return node;
     }
 
     /**
-     * Gets the container node.
+     * Gets the folder node.
      *
      * @param nodeId the node id
      * @param name the name
      * @param folder the folder
-     * @return the container node
+     * @return the folder node
      */
-    private ContainerNode getContainerNode(String nodeId, String name, File folder)
+    private FolderNode getFolderNode(String nodeId, String name, File folder)
     {
-        ContainerNode node = new ContainerNode();
+        FolderNode node = new FolderNode();
+        node.setId(nodeId);
         node.setName(name);
         node.setPath(folder.getAbsolutePath());
-        node.setId(nodeId);
         node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
         return node;
     }
@@ -424,26 +424,26 @@ public final class MediaService implements IMediaService
         if (contentType != null && contentType.getType().equals(mediaType))
         {
             node = new ContentNode();
+            node.setId(nodeId);
             node.setName(file.getName());
             node.setPath(file.getAbsolutePath());
             node.setContentType(contentType);
             node.setSize(file.length());
-            node.setId(nodeId);
             node.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
         }
         return node;
     }
 
     /**
-     * Get a pod-cast container node.
+     * Get a pod-cast node.
      *
      * @param name the name
      * @param url the url
-     * @return the podcast container node
+     * @return the podcast node
      */
-    private PodcastContainerNode getPodcastContainerNode(String name, String url)
+    private PodcastNode getPodcastNode(String name, String url)
     {
-        PodcastContainerNode node = new PodcastContainerNode();
+        PodcastNode node = new PodcastNode();
         StringBuilder nodeId = new StringBuilder();
         nodeId.append(ContentType.TYPE_PODCAST).append("|").append(url);
         node.setId(nodeId.toString());

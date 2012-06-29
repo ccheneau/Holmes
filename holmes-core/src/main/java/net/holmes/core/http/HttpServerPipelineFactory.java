@@ -37,7 +37,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 /**
- * A factory for creating HttpServerPipeline objects.
+ * A factory for creating ChannelPipeline objects.
  */
 public final class HttpServerPipelineFactory implements ChannelPipelineFactory
 {

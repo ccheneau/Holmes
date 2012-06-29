@@ -30,11 +30,11 @@ import java.util.UUID;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
-import net.holmes.core.model.ContainerNode;
 import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
-import net.holmes.core.model.PodcastContainerNode;
+import net.holmes.core.model.FolderNode;
 import net.holmes.core.model.PodcastItemNode;
+import net.holmes.core.model.PodcastNode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,10 +163,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
                 if (browseNode != null)
                 {
-                    if (browseNode instanceof ContainerNode)
+                    if (browseNode instanceof FolderNode)
                     {
-                        ContainerNode browseContainer = (ContainerNode) browseNode;
-                        if (logger.isDebugEnabled()) logger.debug("browse container node:" + browseContainer);
+                        if (logger.isDebugEnabled()) logger.debug("browse folder node:" + browseNode);
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
                         if (childNodes != null && !childNodes.isEmpty())
                         {
@@ -177,20 +176,20 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                 {
                                     itemCount += addContentItem(objectID, (ContentNode) node, didl);
                                 }
-                                else if (node instanceof ContainerNode)
+                                else if (node instanceof FolderNode)
                                 {
-                                    itemCount += addContainerItem(objectID, (ContainerNode) node, didl);
+                                    itemCount += addFolderItem(objectID, (FolderNode) node, didl);
                                 }
-                                else if (node instanceof PodcastContainerNode)
+                                else if (node instanceof PodcastNode)
                                 {
-                                    itemCount += addPodcastContainerItem(objectID, (PodcastContainerNode) node, didl);
+                                    itemCount += addPodcastItem(objectID, (PodcastNode) node, didl);
                                 }
                             }
                         }
                     }
-                    else if (browseNode instanceof PodcastContainerNode)
+                    else if (browseNode instanceof PodcastNode)
                     {
-                        itemCount += addPodcastItems(objectID, (PodcastContainerNode) browseNode, didl);
+                        itemCount += addPodcastItems(objectID, (PodcastNode) browseNode, didl);
                     }
                 }
                 return new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
@@ -304,46 +303,46 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Add container item.
+     * Add folder item.
      *
      * @param parentNodeId the parent node id
-     * @param containerNode the container node
+     * @param folderNode the folder node
      * @param didl the didl
      * @return number of items created
      */
-    private int addContainerItem(String parentNodeId, ContainerNode containerNode, DIDLContent didl)
+    private int addFolderItem(String parentNodeId, FolderNode folderNode, DIDLContent didl)
     {
         if (logger.isDebugEnabled())
         {
-            logger.debug("add container item:" + containerNode);
+            logger.debug("add folder node:" + folderNode);
         }
-        List<AbstractNode> childNodes = mediaService.getChildNodes(containerNode);
+        List<AbstractNode> childNodes = mediaService.getChildNodes(folderNode);
         Integer childCount = childNodes != null ? childNodes.size() : 0;
-        StorageFolder container = new StorageFolder(containerNode.getId(), parentNodeId, containerNode.getName(), "", childCount, 0L);
-        if (containerNode.getModifedDate() != null) container.replaceFirstProperty(new DC.DATE(containerNode.getModifedDate()));
+        StorageFolder folder = new StorageFolder(folderNode.getId(), parentNodeId, folderNode.getName(), "", childCount, 0L);
+        if (folderNode.getModifedDate() != null) folder.replaceFirstProperty(new DC.DATE(folderNode.getModifedDate()));
 
-        didl.addContainer(container);
+        didl.addContainer(folder);
 
         return 1;
     }
 
     /**
-     * Add podcast container item.
+     * Add podcast item.
      *
      * @param parentNodeId the parent node id
-     * @param podcastContainerNode the podcast container node
+     * @param podcastNode the podcast node
      * @param didl the didl
      * @return number of items created
      */
-    private int addPodcastContainerItem(String parentNodeId, PodcastContainerNode podcastContainerNode, DIDLContent didl)
+    private int addPodcastItem(String parentNodeId, PodcastNode podcastNode, DIDLContent didl)
     {
         if (logger.isDebugEnabled())
         {
-            logger.debug("add podcast container item:" + podcastContainerNode);
+            logger.debug("add podcast item:" + podcastNode);
         }
-        StorageFolder container = new StorageFolder(podcastContainerNode.getId(), parentNodeId, podcastContainerNode.getName(), "", 1, 0L);
+        StorageFolder folder = new StorageFolder(podcastNode.getId(), parentNodeId, podcastNode.getName(), "", 1, 0L);
 
-        didl.addContainer(container);
+        didl.addContainer(folder);
 
         return 1;
     }
@@ -356,7 +355,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @param didl the didl
      * @return number of items created
      */
-    private int addPodcastItems(String parentNodeId, PodcastContainerNode browseNode, DIDLContent didl)
+    private int addPodcastItems(String parentNodeId, PodcastNode browseNode, DIDLContent didl)
     {
         int itemCount = 0;
         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
