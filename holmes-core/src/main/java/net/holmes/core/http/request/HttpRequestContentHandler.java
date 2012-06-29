@@ -47,26 +47,15 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-/**
- * The Class HttpRequestContentHandler.
- */
-public final class HttpRequestContentHandler implements IHttpRequestHandler
-{
+public final class HttpRequestContentHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
-    /** The Constant PATH. */
     public final static String PATH = "/content";
 
-    /** The media service. */
     @Inject
     private IMediaService mediaService;
 
-    /**
-     * Instantiates a new HTTP content handler.
-     *
-     */
-    public HttpRequestContentHandler()
-    {
+    public HttpRequestContentHandler() {
     }
 
     /* (non-Javadoc)
@@ -74,54 +63,44 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler
      */
     @Override
     @Inject
-    public void initHandler()
-    {
+    public void initHandler() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
-    {
-        if (logger.isDebugEnabled())
-        {
+    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+        if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders())
-            {
+            for (Entry<String, String> entry : request.getHeaders()) {
                 logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
             }
         }
 
-        try
-        {
+        try {
             // Get content node
             ContentNode node = getContentNode(request.getUri());
-            if (node == null)
-            {
+            if (node == null) {
                 throw new HttpRequestException("Invalid node", HttpResponseStatus.NOT_FOUND);
             }
 
             // Check node
             File file = new File(node.getPath());
-            if (!file.exists())
-            {
+            if (!file.exists()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
             }
-            if (!file.isFile() || !file.canRead() || file.isHidden())
-            {
+            if (!file.isFile() || !file.canRead() || file.isHidden()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
             }
 
             // Get startOffset
             long startOffset = 0;
             String range = request.getHeader(HttpHeaders.Names.RANGE);
-            if (range != null)
-            {
+            if (range != null) {
                 String[] token = range.split("=|-");
-                if (token != null && token.length > 1 && token[0].equals("bytes"))
-                {
+                if (token != null && token.length > 1 && token[0].equals("bytes")) {
                     startOffset = Long.parseLong(token[1]);
                 }
                 if (logger.isDebugEnabled()) logger.debug("startOffset: " + startOffset);
@@ -130,43 +109,36 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler
             // Get file descriptor
             RandomAccessFile raf;
             long fileLength = 0;
-            try
-            {
+            try {
                 raf = new RandomAccessFile(file, "r");
                 fileLength = raf.length();
             }
-            catch (IOException e)
-            {
+            catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
             }
 
             // Build response header
             HttpResponse response = null;
-            if (startOffset == 0)
-            {
+            if (startOffset == 0) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
                 HttpHeaders.setContentLength(response, fileLength);
                 response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getContentType().getContentType());
                 response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, "bytes");
             }
-            else if (startOffset > 0 && startOffset < fileLength)
-            {
+            else if (startOffset > 0 && startOffset < fileLength) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PARTIAL_CONTENT);
                 HttpHeaders.setContentLength(response, fileLength - startOffset);
                 response.setHeader(HttpHeaders.Names.CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
             }
-            else
-            {
+            else {
                 throw new HttpRequestException("Invalid start offset", HttpResponseStatus.BAD_REQUEST);
             }
 
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            if (logger.isDebugEnabled())
-            {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Response: " + response);
-                for (Entry<String, String> entry : response.getHeaders())
-                {
+                for (Entry<String, String> entry : response.getHeaders()) {
                     logger.debug("Response header: " + entry.getKey() + " ==> " + entry.getValue());
                 }
             }
@@ -176,48 +148,35 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler
 
             // Write the content.
             ChannelFuture writeFuture = null;
-            try
-            {
+            try {
                 writeFuture = channel.write(new ChunkedFile(raf, startOffset, fileLength - startOffset, 8192));
             }
-            catch (IOException e)
-            {
+            catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
             }
 
             // Decide whether to close the connection or not.
-            if (!HttpHeaders.isKeepAlive(request))
-            {
+            if (!HttpHeaders.isKeepAlive(request)) {
                 // Close the connection when the whole content is written out.
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
         }
-        finally
-        {
+        finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
 
-    /**
-     * Get content node from uri.
-     *
-     * @param uri the uri
-     * @return the content node
-     */
-    private ContentNode getContentNode(String uri)
-    {
+    private ContentNode getContentNode(String uri) {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
         String contentId = decoder.getParameters().get("id").get(0);
 
         if (logger.isDebugEnabled()) logger.debug("file Id :" + contentId);
 
-        if (contentId != null)
-        {
+        if (contentId != null) {
             AbstractNode node = mediaService.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :" + node);
-            if (node != null && node.getType().equals(ContentNode.TYPE_CONTENT) && node instanceof ContentNode)
-            {
+            if (node != null && node.getType().equals(ContentNode.TYPE_CONTENT) && node instanceof ContentNode) {
                 contentNode = (ContentNode) node;
             }
         }

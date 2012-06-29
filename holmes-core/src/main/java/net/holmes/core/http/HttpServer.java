@@ -38,43 +38,28 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-/**
- * The Class HttpServer.
- */
-public final class HttpServer implements IServer
-{
+public final class HttpServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
-    /** The Constant HTTP_SERVER_NAME. */
     public static final String HTTP_SERVER_NAME = "Holmes http server";
 
-    /** The channel. */
     private Channel channel = null;
-
-    /** The bootstrap. */
     private ServerBootstrap bootstrap = null;
 
-    /** The pipeline factory. */
     @Inject
     private ChannelPipelineFactory pipelineFactory;
 
-    /** The configuration. */
     @Inject
     private IConfiguration configuration;
 
-    /**
-     * Instantiates a new http server impl.
-     */
-    public HttpServer()
-    {
+    public HttpServer() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#start()
      */
     @Override
-    public void start()
-    {
+    public void start() {
         logger.info("Starting Http server");
 
         int port = configuration.getConfig().getHttpServerPort();
@@ -96,8 +81,7 @@ public final class HttpServer implements IServer
      * @see net.holmes.core.IServer#stop()
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         logger.info("Stopping http server");
 
         ChannelFuture cf = channel.getCloseFuture();
@@ -119,15 +103,13 @@ public final class HttpServer implements IServer
      *
      * @see ServerChannelFutureEvent
      */
-    private class ServerChannelFutureListener implements ChannelFutureListener
-    {
+    private class ServerChannelFutureListener implements ChannelFutureListener {
 
         /* (non-Javadoc)
          * @see org.jboss.netty.channel.ChannelFutureListener#operationComplete(org.jboss.netty.channel.ChannelFuture)
          */
         @Override
-        public void operationComplete(ChannelFuture arg0) throws Exception
-        {
+        public void operationComplete(ChannelFuture arg0) throws Exception {
             logger.info("Http server stop complete");
         }
     }
@@ -136,16 +118,14 @@ public final class HttpServer implements IServer
      * @see net.holmes.core.IServer#initialize()
      */
     @Override
-    public void initialize()
-    {
+    public void initialize() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#getStatus()
      */
     @Override
-    public boolean getStatus()
-    {
+    public boolean getStatus() {
         return channel != null && channel.isBound();
     }
 
@@ -153,8 +133,7 @@ public final class HttpServer implements IServer
      * @see net.holmes.core.IServer#restart()
      */
     @Override
-    public void restart()
-    {
+    public void restart() {
         if (getStatus()) stop();
         start();
     }

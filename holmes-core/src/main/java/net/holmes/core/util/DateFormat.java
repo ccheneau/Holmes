@@ -24,21 +24,10 @@ package net.holmes.core.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/**
- * The Class DateFormat.
- */
-public class DateFormat
-{
+public class DateFormat {
     private static String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
-    /**
-     * Format upnp date.
-     *
-     * @param timestamp the timestamp
-     * @return the string
-     */
-    public static String formatUpnpDate(long timestamp)
-    {
+    public static String formatUpnpDate(long timestamp) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
         return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());

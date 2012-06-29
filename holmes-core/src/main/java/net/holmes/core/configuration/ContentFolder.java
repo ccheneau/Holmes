@@ -23,108 +23,46 @@ package net.holmes.core.configuration;
 
 import java.io.Serializable;
 
-/**
- * The Class ContentFolder.
- */
-public final class ContentFolder implements Serializable
-{
+public final class ContentFolder implements Serializable {
     private static final long serialVersionUID = -476678562488489847L;
 
-    /** The Constant ROOT_NODE_ID. */
     public static final String ROOT_NODE_ID = "0";
-
-    /** The Constant ROOT_VIDEO_NODE_ID. */
     public static final String ROOT_VIDEO_NODE_ID = "1_VIDEOS";
-
-    /** The Constant ROOT_PICTURE_NODE_ID. */
     public static final String ROOT_PICTURE_NODE_ID = "2_PICTURES";
-
-    /** The Constant ROOT_AUDIO_NODE_ID. */
     public static final String ROOT_AUDIO_NODE_ID = "3_AUDIOS";
-
-    /** The Constant ROOT_PODCAST_NODE_ID. */
     public static final String ROOT_PODCAST_NODE_ID = "4_PODCASTS";
 
-    /** The id. */
     private String id;
-
-    /** The label. */
     private String label;
-
-    /** The path. */
     private String path;
 
-    /**
-     * Instantiates a new content folder.
-     *
-     * @param id the id
-     * @param label the label
-     * @param path the path
-     */
-    public ContentFolder(String id, String label, String path)
-    {
+    public ContentFolder(String id, String label, String path) {
         this.id = id;
         this.label = label;
         this.path = path;
     }
 
-    /**
-     * Gets the id.
-     *
-     * @return the id
-     */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    /**
-     * Sets the id.
-     *
-     * @param id the new id
-     */
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Gets the label.
-     *
-     * @return the label
-     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return label;
     }
 
-    /**
-     * Sets the label.
-     *
-     * @param label the new label
-     */
-    public void setLabel(String label)
-    {
+    public void setLabel(String label) {
         this.label = label;
     }
 
-    /**
-     * Gets the path.
-     *
-     * @return the path
-     */
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    /**
-     * Sets the path.
-     *
-     * @param path the new path
-     */
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
@@ -132,8 +70,7 @@ public final class ContentFolder implements Serializable
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("ContentFolder [id=");
         builder.append(id);

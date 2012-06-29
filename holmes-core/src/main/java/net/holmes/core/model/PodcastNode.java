@@ -21,41 +21,20 @@
 */
 package net.holmes.core.model;
 
-/**
- * The Class PodcastNode.
- */
-public final class PodcastNode extends AbstractNode
-{
+public final class PodcastNode extends AbstractNode {
     private static final long serialVersionUID = 1970454850754589123L;
 
-    /** The url. */
     private String url;
 
-    /**
-     * Instantiates a new podcast node.
-     */
-    public PodcastNode()
-    {
+    public PodcastNode() {
         type = TYPE_PODCAST;
     }
 
-    /**
-     * Gets the url.
-     *
-     * @return the url
-     */
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
-    /**
-     * Sets the url.
-     *
-     * @param url the new url
-     */
-    public void setUrl(String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -63,8 +42,7 @@ public final class PodcastNode extends AbstractNode
      * @see net.holmes.core.model.AbstractNode#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("PodcastNode [url=");
         builder.append(url);

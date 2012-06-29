@@ -21,42 +21,15 @@
 */
 package net.holmes.core.configuration;
 
-/**
- * The Interface IConfiguration.
- */
-public interface IConfiguration
-{
+public interface IConfiguration {
 
-    /**
-     * Save configuration.
-     */
     public abstract void saveConfig();
 
-    /**
-     * Gets the configuration.
-     *
-     * @return the configuration 
-     */
     public abstract Configuration getConfig();
 
-    /**
-     * Gets the home directory.
-     *
-     * @return the home directory
-     */
     public abstract String getHomeDirectory();
 
-    /**
-     * Gets the home configuration directory.
-     *
-     * @return the home configuration directory
-     */
     public abstract String getHomeConfigDirectory();
 
-    /**
-     * Gets the home site directory.
-     *
-     * @return the home site directory
-     */
     public abstract String getHomeSiteDirectory();
 }

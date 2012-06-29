@@ -36,24 +36,17 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-/**
- * A factory for creating ChannelPipeline objects.
- */
-public final class HttpServerPipelineFactory implements ChannelPipelineFactory
-{
+public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
     private static Logger logger = LoggerFactory.getLogger(HttpServerPipelineFactory.class);
 
-    /** The content request handler. */
     @Inject
     @Named("content")
     private IHttpRequestHandler contentRequestHandler;
 
-    /** The back-end request handler. */
     @Inject
     @Named("backend")
     private IHttpRequestHandler backendRequestHandler;
 
-    /** The site request handler. */
     @Inject
     @Named("site")
     private IHttpRequestHandler siteRequestHandler;
@@ -62,8 +55,7 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory
     * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
     */
     @Override
-    public ChannelPipeline getPipeline() throws Exception
-    {
+    public ChannelPipeline getPipeline() throws Exception {
         if (logger.isDebugEnabled()) logger.debug("[START] getPipeline");
 
         // Create a default pipeline implementation.

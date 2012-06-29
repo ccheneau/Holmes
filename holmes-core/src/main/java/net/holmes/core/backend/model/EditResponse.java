@@ -25,135 +25,56 @@ import java.io.Serializable;
 
 import net.holmes.core.backend.ErrorCode;
 
-/**
- * The Class EditResponse.
- */
-public class EditResponse implements Serializable
-{
+public class EditResponse implements Serializable {
     private static final long serialVersionUID = 4829835251156005404L;
 
-    /** The status. */
     private boolean status;
-
-    /** The message. */
     private String message;
-
-    /** The id. */
     private String id;
-
-    /** The operation. */
     private String operation;
-
-    /** The error code. */
     private int errorCode;
 
-    /**
-     * Gets the status.
-     *
-     * @return the status
-     */
-    public boolean getStatus()
-    {
+    public boolean getStatus() {
         return status;
     }
 
-    /**
-     * Sets the status.
-     *
-     * @param status the new status
-     */
-    public void setStatus(boolean status)
-    {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    /**
-     * Gets the message.
-     *
-     * @return the message
-     */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
-    /**
-     * Sets the message.
-     *
-     * @param message the new message
-     */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    /**
-     * Gets the id.
-     *
-     * @return the id
-     */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    /**
-     * Sets the id.
-     *
-     * @param id the new id
-     */
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Gets the operation.
-     *
-     * @return the operation
-     */
-    public String getOperation()
-    {
+    public String getOperation() {
         return operation;
     }
 
-    /**
-     * Sets the operation.
-     *
-     * @param operation the new operation
-     */
-    public void setOperation(String operation)
-    {
+    public void setOperation(String operation) {
         this.operation = operation;
     }
 
-    /**
-     * Gets the error code.
-     *
-     * @return the error code
-     */
-    public int getErrorCode()
-    {
+    public int getErrorCode() {
         return errorCode;
     }
 
-    /**
-     * Sets the error code.
-     *
-     * @param errorCode the new error code
-     */
-    public void setErrorCode(int errorCode)
-    {
+    public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
     }
 
-    /**
-     * Sets the error code.
-     *
-     * @param errorCode the new error code
-     */
-    public void setErrorCode(ErrorCode errorCode)
-    {
+    public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode.code();
         this.message = errorCode.message();
     }

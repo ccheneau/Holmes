@@ -24,102 +24,43 @@ package net.holmes.core.backend.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-/**
- * The Class ListGridRowsResponse.
- */
-public class ListGridRowsResponse implements Serializable
-{
+public class ListGridRowsResponse implements Serializable {
     private static final long serialVersionUID = 936714380923230317L;
 
-    /** The page. */
     private int page;
-
-    /** The total. */
     private int total;
-
-    /** The records. */
     private int records;
-
-    /** The rows. */
     private Collection<GridRow> rows;
 
-    /**
-     * Gets the page.
-     *
-     * @return the page
-     */
-    public int getPage()
-    {
+    public int getPage() {
         return page;
     }
 
-    /**
-     * Sets the page.
-     *
-     * @param page the new page
-     */
-    public void setPage(int page)
-    {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    /**
-     * Gets the total.
-     *
-     * @return the total
-     */
-    public int getTotal()
-    {
+    public int getTotal() {
         return total;
     }
 
-    /**
-     * Sets the total.
-     *
-     * @param total the new total
-     */
-    public void setTotal(int total)
-    {
+    public void setTotal(int total) {
         this.total = total;
     }
 
-    /**
-     * Gets the records.
-     *
-     * @return the records
-     */
-    public int getRecords()
-    {
+    public int getRecords() {
         return records;
     }
 
-    /**
-     * Sets the records.
-     *
-     * @param records the new records
-     */
-    public void setRecords(int records)
-    {
+    public void setRecords(int records) {
         this.records = records;
     }
 
-    /**
-     * Gets the rows.
-     *
-     * @return the rows
-     */
-    public Collection<GridRow> getRows()
-    {
+    public Collection<GridRow> getRows() {
         return rows;
     }
 
-    /**
-     * Sets the rows.
-     *
-     * @param rows the new rows
-     */
-    public void setRows(Collection<GridRow> rows)
-    {
+    public void setRows(Collection<GridRow> rows) {
         this.rows = rows;
     }
 }

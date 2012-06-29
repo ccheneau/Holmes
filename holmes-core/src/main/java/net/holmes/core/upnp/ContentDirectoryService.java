@@ -63,9 +63,6 @@ import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.model.item.Photo;
 import org.teleal.common.util.MimeType;
 
-/**
- * The Class ContentDirectoryService.
- */
 @UpnpStateVariables({ @UpnpStateVariable(name = "A_ARG_TYPE_ObjectID", sendEvents = false, datatype = "string"),
         @UpnpStateVariable(name = "A_ARG_TYPE_Result", sendEvents = false, datatype = "string"),
         @UpnpStateVariable(name = "A_ARG_TYPE_BrowseFlag", sendEvents = false, datatype = "string", allowedValuesEnum = BrowseFlag.class),
@@ -77,55 +74,31 @@ import org.teleal.common.util.MimeType;
         @UpnpStateVariable(name = "A_ARG_TYPE_Count", sendEvents = false, datatype = "ui4"),
         @UpnpStateVariable(name = "A_ARG_TYPE_UpdateID", sendEvents = false, datatype = "ui4"),
         @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
-public final class ContentDirectoryService extends AbstractContentDirectoryService
-{
+public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
-    /** The media service. */
     private IMediaService mediaService;
-
-    /** The configuration. */
     private IConfiguration configuration;
-
-    /** The local ip. */
     private String localIp;
 
-    /**
-     * Instantiates a new content directory.
-     */
-    public ContentDirectoryService()
-    {
+    public ContentDirectoryService() {
         super( // search caps
                 Arrays.asList("dc:title"),
                 // sort caps
                 Arrays.asList("dc:title"));
-        try
-        {
+        try {
             this.localIp = InetAddress.getLocalHost().getHostAddress();
         }
-        catch (UnknownHostException e)
-        {
+        catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
         }
     }
 
-    /**
-     * Sets the media service.
-     *
-     * @param mediaService the new media service
-     */
-    public void setMediaService(IMediaService mediaService)
-    {
+    public void setMediaService(IMediaService mediaService) {
         this.mediaService = mediaService;
     }
 
-    /**
-     * Sets the configuration.
-     *
-     * @param configuration the new configuration
-     */
-    public void setConfiguration(IConfiguration configuration)
-    {
+    public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -134,61 +107,47 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     @Override
     public BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults, SortCriterion[] orderby)
-            throws ContentDirectoryException
-    {
-        try
-        {
-            if (logger.isDebugEnabled())
-            {
+            throws ContentDirectoryException {
+        try {
+            if (logger.isDebugEnabled()) {
                 logger.debug("[START] browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " filter=" + filter
                         + " indice=" + firstResult + " nbresults=" + maxResults);
 
-                try
-                {
+                try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
                     logger.debug("RequestFrom agent: " + userAgent);
                 }
-                catch (NullPointerException ex)
-                {
+                catch (NullPointerException ex) {
                     logger.debug("RequestFrom agent: Anonymous");
                 }
             }
             int itemCount = 0;
-            if (browseFlag == BrowseFlag.DIRECT_CHILDREN)
-            {
+            if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 DIDLContent didl = new DIDLContent();
 
                 AbstractNode browseNode = mediaService.getNode(objectID);
                 logger.debug("browse node:" + browseNode);
 
-                if (browseNode != null)
-                {
-                    if (browseNode instanceof FolderNode)
-                    {
+                if (browseNode != null) {
+                    if (browseNode instanceof FolderNode) {
                         if (logger.isDebugEnabled()) logger.debug("browse folder node:" + browseNode);
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                        if (childNodes != null && !childNodes.isEmpty())
-                        {
-                            for (AbstractNode node : childNodes)
-                            {
+                        if (childNodes != null && !childNodes.isEmpty()) {
+                            for (AbstractNode node : childNodes) {
                                 if (logger.isDebugEnabled()) logger.debug("add node:" + node);
-                                if (node instanceof ContentNode)
-                                {
+                                if (node instanceof ContentNode) {
                                     itemCount += addContentItem(objectID, (ContentNode) node, didl);
                                 }
-                                else if (node instanceof FolderNode)
-                                {
+                                else if (node instanceof FolderNode) {
                                     itemCount += addFolderItem(objectID, (FolderNode) node, didl);
                                 }
-                                else if (node instanceof PodcastNode)
-                                {
+                                else if (node instanceof PodcastNode) {
                                     itemCount += addPodcastItem(objectID, (PodcastNode) node, didl);
                                 }
                             }
                         }
                     }
-                    else if (browseNode instanceof PodcastNode)
-                    {
+                    else if (browseNode instanceof PodcastNode) {
                         itemCount += addPodcastItems(objectID, (PodcastNode) browseNode, didl);
                     }
                 }
@@ -196,8 +155,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             }
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
         }
         throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS);
@@ -215,28 +173,22 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             @UpnpInputArgument(name = "Filter") String filter,
             @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") String orderBy) throws ContentDirectoryException
-    {
+            @UpnpInputArgument(name = "SortCriteria") String orderBy) throws ContentDirectoryException {
         SortCriterion[] orderByCriteria;
-        try
-        {
+        try {
             orderByCriteria = SortCriterion.valueOf(orderBy);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA, ex.toString());
         }
 
-        try
-        {
+        try {
             return search(objectId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria);
         }
-        catch (ContentDirectoryException ex)
-        {
+        catch (ContentDirectoryException ex) {
             throw ex;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new ContentDirectoryException(ErrorCode.ACTION_FAILED, ex.toString());
         }
     }
@@ -246,53 +198,39 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     @Override
     public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy)
-            throws ContentDirectoryException
-    {
+            throws ContentDirectoryException {
         return super.search(containerId, searchCriteria, filter, firstResult, maxResults, orderBy);
     }
 
-    /**
-     * Add content item.
-     *
-     * @param parentNodeId the parent node id
-     * @param contentNode the content node
-     * @param didl the didl
-     * @return number of items created
-     */
-    private int addContentItem(String parentNodeId, ContentNode contentNode, DIDLContent didl)
-    {
+    private int addContentItem(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
         int itemCount = 0;
         StringBuilder url = new StringBuilder();
         url.append("http://").append(localIp).append(":").append(configuration.getConfig().getHttpServerPort());
         url.append("/content?id=");
         url.append(contentNode.getId());
 
-        if (logger.isDebugEnabled())
-        {
+        if (logger.isDebugEnabled()) {
             logger.debug("add content item:" + contentNode);
             logger.debug("url:" + url);
         }
         MimeType mimeType = new MimeType(contentNode.getContentType().getType(), contentNode.getContentType().getSubType());
         Res res = new Res(mimeType, contentNode.getSize(), url.toString());
 
-        if (contentNode.getContentType().isVideo())
-        {
+        if (contentNode.getContentType().isVideo()) {
             Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
             if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
             didl.addItem(movie);
             itemCount++;
         }
-        else if (contentNode.getContentType().isAudio())
-        {
+        else if (contentNode.getContentType().isAudio()) {
             MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
             if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
             didl.addItem(musicTrack);
             itemCount++;
         }
-        else if (contentNode.getContentType().isImage())
-        {
+        else if (contentNode.getContentType().isImage()) {
             Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
             if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
 
@@ -302,18 +240,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         return itemCount;
     }
 
-    /**
-     * Add folder item.
-     *
-     * @param parentNodeId the parent node id
-     * @param folderNode the folder node
-     * @param didl the didl
-     * @return number of items created
-     */
-    private int addFolderItem(String parentNodeId, FolderNode folderNode, DIDLContent didl)
-    {
-        if (logger.isDebugEnabled())
-        {
+    private int addFolderItem(String parentNodeId, FolderNode folderNode, DIDLContent didl) {
+        if (logger.isDebugEnabled()) {
             logger.debug("add folder node:" + folderNode);
         }
         List<AbstractNode> childNodes = mediaService.getChildNodes(folderNode);
@@ -326,18 +254,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         return 1;
     }
 
-    /**
-     * Add podcast item.
-     *
-     * @param parentNodeId the parent node id
-     * @param podcastNode the podcast node
-     * @param didl the didl
-     * @return number of items created
-     */
-    private int addPodcastItem(String parentNodeId, PodcastNode podcastNode, DIDLContent didl)
-    {
-        if (logger.isDebugEnabled())
-        {
+    private int addPodcastItem(String parentNodeId, PodcastNode podcastNode, DIDLContent didl) {
+        if (logger.isDebugEnabled()) {
             logger.debug("add podcast item:" + podcastNode);
         }
         StorageFolder folder = new StorageFolder(podcastNode.getId(), parentNodeId, podcastNode.getName(), "", 1, 0L);
@@ -347,40 +265,25 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         return 1;
     }
 
-    /**
-     * Add podcast items - Parse RSS feed.
-     *
-     * @param parentNodeId the parent node id
-     * @param browseNode the browse node
-     * @param didl the didl
-     * @return number of items created
-     */
-    private int addPodcastItems(String parentNodeId, PodcastNode browseNode, DIDLContent didl)
-    {
+    private int addPodcastItems(String parentNodeId, PodcastNode browseNode, DIDLContent didl) {
         int itemCount = 0;
         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-        if (childNodes != null && !childNodes.isEmpty())
-        {
+        if (childNodes != null && !childNodes.isEmpty()) {
             PodcastItemNode podcastItemNode = null;
-            for (AbstractNode node : childNodes)
-            {
-                if (node instanceof PodcastItemNode)
-                {
+            for (AbstractNode node : childNodes) {
+                if (node instanceof PodcastItemNode) {
                     podcastItemNode = (PodcastItemNode) node;
                     ContentType feedEntryType = null;
                     MimeType mimeType = null;
                     Res res = null;
                     feedEntryType = podcastItemNode.getContentType();
-                    if (feedEntryType.isMedia())
-                    {
+                    if (feedEntryType.isMedia()) {
                         mimeType = new MimeType(feedEntryType.getType(), feedEntryType.getSubType());
                         res = new Res(mimeType, podcastItemNode.getSize(), podcastItemNode.getUrl());
-                        if (logger.isDebugEnabled())
-                        {
+                        if (logger.isDebugEnabled()) {
                             logger.debug("add podcast item:" + podcastItemNode.getName() + " " + podcastItemNode.getUrl());
                         }
-                        if (feedEntryType.isAudio())
-                        {
+                        if (feedEntryType.isAudio()) {
                             // Add audio item
                             MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", "", res);
                             if (podcastItemNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
@@ -388,8 +291,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                             didl.addItem(musicTrack);
                             itemCount++;
                         }
-                        else if (feedEntryType.isImage())
-                        {
+                        else if (feedEntryType.isImage()) {
                             // Add image item
                             Photo photo = new Photo(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", "", res);
                             if (podcastItemNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));
@@ -398,8 +300,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                             itemCount++;
 
                         }
-                        else if (feedEntryType.isVideo())
-                        {
+                        else if (feedEntryType.isVideo()) {
                             // Add video item
                             Movie movie = new Movie(UUID.randomUUID().toString(), parentNodeId, podcastItemNode.getName(), "", res);
                             if (podcastItemNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastItemNode.getModifedDate()));

@@ -42,17 +42,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
-/**
- * The Class HolmesServerModule.
- */
-public final class HolmesServerModule extends AbstractModule
-{
+public final class HolmesServerModule extends AbstractModule {
     /* (non-Javadoc)
      * @see com.google.inject.AbstractModule#configure()
      */
     @Override
-    protected void configure()
-    {
+    protected void configure() {
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);

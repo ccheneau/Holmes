@@ -21,35 +21,14 @@
 */
 package net.holmes.core;
 
-/**
- * The Interface IServer.
- */
-public interface IServer
-{
-    /**
-     * Initialize server.
-     */
+public interface IServer {
     public abstract void initialize();
 
-    /**
-     * Start server.
-     */
     public abstract void start();
 
-    /**
-     * Stop server.
-     */
     public abstract void stop();
 
-    /**
-     * Restart server.
-     */
     public abstract void restart();
 
-    /**
-     * Gets the status.
-     *
-     * @return the status
-     */
     public abstract boolean getStatus();
 }

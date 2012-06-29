@@ -28,42 +28,30 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
-/**
- * The Class HolmesServer.
- */
-public final class HolmesServer implements IServer
-{
-    /** The Http server. */
+public final class HolmesServer implements IServer {
     @Inject
     @Named("http")
     private IServer httpServer;
 
-    /** The UPnP server. */
     @Inject
     @Named("upnp")
     private IServer upnpServer;
 
-    /**
-     * Instantiates a new media server.
-     */
-    public HolmesServer()
-    {
+    public HolmesServer() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#initialize()
      */
     @Override
-    public void initialize()
-    {
+    public void initialize() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#start()
      */
     @Override
-    public void start()
-    {
+    public void start() {
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
@@ -73,8 +61,7 @@ public final class HolmesServer implements IServer
      * @see net.holmes.core.IServer#stop()
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         // Stop Holmes server
         httpServer.stop();
         upnpServer.stop();
@@ -84,8 +71,7 @@ public final class HolmesServer implements IServer
      * @see net.holmes.core.IServer#getStatus()
      */
     @Override
-    public boolean getStatus()
-    {
+    public boolean getStatus() {
         return httpServer.getStatus() && upnpServer.getStatus();
     }
 
@@ -93,20 +79,13 @@ public final class HolmesServer implements IServer
      * @see net.holmes.core.IServer#restart()
      */
     @Override
-    public void restart()
-    {
+    public void restart() {
         // Restart Holmes server
         upnpServer.restart();
         httpServer.restart();
     }
 
-    /**
-     * The main method.
-     *
-     * @param args the arguments
-     */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Load log configuration
         LogUtil.loadConfig();
 
@@ -122,21 +101,10 @@ public final class HolmesServer implements IServer
         Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
     }
 
-    /**
-     * The Class ShutdownHook.
-     */
-    private static class ShutdownHook extends Thread
-    {
-        /** The Holmes server. */
+    private static class ShutdownHook extends Thread {
         IServer holmesServer;
 
-        /**
-         * Instantiates a new shutdown hook.
-         *
-         * @param holmesServer the Holmes server
-         */
-        public ShutdownHook(IServer holmesServer)
-        {
+        public ShutdownHook(IServer holmesServer) {
             this.holmesServer = holmesServer;
         }
 
@@ -144,8 +112,7 @@ public final class HolmesServer implements IServer
          * @see java.lang.Thread#run()
          */
         @Override
-        public void run()
-        {
+        public void run() {
             holmesServer.stop();
         }
     }

@@ -21,24 +21,15 @@
 */
 package net.holmes.core.model;
 
-/**
- * The Class FolderNode.
- */
-public final class FolderNode extends AbstractNode
-{
+public final class FolderNode extends AbstractNode {
     private static final long serialVersionUID = 8129761596085917631L;
 
-    /**
-     * Instantiates a new folder node.
-     */
-    public FolderNode()
-    {
+    public FolderNode() {
         type = TYPE_FOLDER;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("FolderNode [id=");
         builder.append(id);

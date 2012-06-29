@@ -21,64 +21,29 @@
 */
 package net.holmes.core.model;
 
-/**
- * The Class ContentNode.
- */
-public final class ContentNode extends AbstractNode
-{
+public final class ContentNode extends AbstractNode {
     private static final long serialVersionUID = 7636797693582850834L;
 
-    /** The content type. */
     private ContentType contentType;
-
-    /** The size. */
     private Long size;
 
-    /**
-     * Instantiates a new content node.
-     */
-    public ContentNode()
-    {
+    public ContentNode() {
         type = TYPE_CONTENT;
     }
 
-    /**
-     * Gets the content type.
-     *
-     * @return the content type
-     */
-    public ContentType getContentType()
-    {
+    public ContentType getContentType() {
         return contentType;
     }
 
-    /**
-     * Sets the content type.
-     *
-     * @param contentType the new content type
-     */
-    public void setContentType(ContentType contentType)
-    {
+    public void setContentType(ContentType contentType) {
         this.contentType = contentType;
     }
 
-    /**
-     * Gets the size.
-     *
-     * @return the size
-     */
-    public Long getSize()
-    {
+    public Long getSize() {
         return size;
     }
 
-    /**
-     * Sets the size.
-     *
-     * @param size the new size
-     */
-    public void setSize(Long size)
-    {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -86,8 +51,7 @@ public final class ContentNode extends AbstractNode
      * @see net.holmes.core.model.AbstractNode#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("ContentNode [contentType=");
         builder.append(contentType);

@@ -62,29 +62,17 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 import com.sun.jersey.spi.container.WebApplicationFactory;
 
-/**
- * The Class HttpRequestBackendHandler.
- */
-public final class HttpRequestBackendHandler implements IHttpRequestHandler
-{
+public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestBackendHandler.class);
 
-    /** The Constant PATH. */
     public final static String PATH = "/backend/";
 
-    /** The application. */
     private WebApplication application;
 
-    /** The injector. */
     @Inject
     private Injector injector;
 
-    /**
-     * Instantiates a new http backend handler.
-     *
-     */
-    public HttpRequestBackendHandler()
-    {
+    public HttpRequestBackendHandler() {
     }
 
     /* (non-Javadoc)
@@ -92,15 +80,12 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
      */
     @Override
     @Inject
-    public void initHandler()
-    {
+    public void initHandler() {
         if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
 
-        if (application == null)
-        {
+        if (application == null) {
             application = WebApplicationFactory.createWebApplication();
-            if (!application.isInitiated())
-            {
+            if (!application.isInitiated()) {
                 Map<String, Object> props = new HashMap<String, Object>();
 
                 props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
@@ -117,36 +102,28 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
      * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
-    {
-        if (logger.isDebugEnabled())
-        {
+    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+        if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders())
-            {
+            for (Entry<String, String> entry : request.getHeaders()) {
                 logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
             }
 
-            if (request.getMethod().equals(HttpMethod.POST))
-            {
+            if (request.getMethod().equals(HttpMethod.POST)) {
                 ChannelBuffer content = request.getContent();
-                if (content.readable())
-                {
+                if (content.readable()) {
                     QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + content.toString(Charset.forName("utf-8")));
                     Map<String, List<String>> params = queryStringDecoder.getParameters();
-                    if (params != null)
-                    {
-                        for (String paramKey : params.keySet())
-                        {
+                    if (params != null) {
+                        for (String paramKey : params.keySet()) {
                             logger.debug("Post parameter: " + paramKey + " => " + params.get(paramKey));
                         }
                     }
                 }
             }
         }
-        try
-        {
+        try {
             String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + PATH;
             final URI baseUri = new URI(base);
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
@@ -156,57 +133,33 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
 
             application.handleRequest(cRequest, new BackendResponseWriter(channel));
         }
-        catch (URISyntaxException e)
-        {
+        catch (URISyntaxException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        finally
-        {
+        finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
 
-    /**
-     * Gets the headers.
-     *
-     * @param request the request
-     * @return the headers
-     */
-    private InBoundHeaders getHeaders(HttpRequest request)
-    {
+    private InBoundHeaders getHeaders(HttpRequest request) {
         InBoundHeaders headers = new InBoundHeaders();
 
-        for (String name : request.getHeaderNames())
-        {
+        for (String name : request.getHeaderNames()) {
             headers.put(name, request.getHeaders(name));
         }
 
         return headers;
     }
 
-    /**
-     * The Class BackendResponseWriter.
-     */
-    private final static class BackendResponseWriter implements ContainerResponseWriter
-    {
+    private final static class BackendResponseWriter implements ContainerResponseWriter {
 
-        /** The channel. */
         private final Channel channel;
-
-        /** The response. */
         private HttpResponse response;
 
-        /**
-         * Instantiates a new backend response writer.
-         *
-         * @param channel the channel
-         */
-        private BackendResponseWriter(Channel channel)
-        {
+        private BackendResponseWriter(Channel channel) {
             this.channel = channel;
         }
 
@@ -214,13 +167,11 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
          * @see com.sun.jersey.spi.container.ContainerResponseWriter#writeStatusAndHeaders(long, com.sun.jersey.spi.container.ContainerResponse)
          */
         @Override
-        public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException
-        {
+        public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException {
             // Set http headers
             response = new DefaultHttpResponse(HttpVersion.HTTP_1_0, HttpResponseStatus.valueOf(cResponse.getStatus()));
 
-            for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet())
-            {
+            for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = new ArrayList<String>();
                 for (Object v : headerEntry.getValue())
                     values.add(ContainerResponse.getHeaderValue(v));
@@ -237,8 +188,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler
          * @see com.sun.jersey.spi.container.ContainerResponseWriter#finish()
          */
         @Override
-        public void finish() throws IOException
-        {
+        public void finish() throws IOException {
             // Streaming is not supported. Entire response will be written
             // downstream once finish() is called.
             channel.write(response).addListener(ChannelFutureListener.CLOSE);

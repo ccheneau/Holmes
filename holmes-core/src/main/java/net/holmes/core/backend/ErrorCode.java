@@ -21,11 +21,7 @@
 */
 package net.holmes.core.backend;
 
-/**
- * The Enum ErrorCode.
- */
-public enum ErrorCode
-{
+public enum ErrorCode {
     NO_ERROR(0, "OK"), //
     FOLDER_ALREADY_EXISTS(1, "This folder already exists"), //
     UNKNOWN_FOLDER(2, "Unkonwn folder"), //
@@ -39,41 +35,19 @@ public enum ErrorCode
     EMPTY_HTTP_SERVER_PORT(10, "Http server port is not defined"), //
     EMPTY_LOG_LEVEL(11, "Trace level is not defined");
 
-    /** The code. */
     private final int code;
-
-    /** The message. */
     private String message;
 
-    /**
-     * Instantiates a new error code.
-     *
-     * @param code the code
-     * @param message the message
-     */
-    ErrorCode(int code, String message)
-    {
+    ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    /**
-     * Code.
-     *
-     * @return the int
-     */
-    public int code()
-    {
+    public int code() {
         return this.code;
     }
 
-    /**
-     * Message.
-     *
-     * @return the string
-     */
-    public String message()
-    {
+    public String message() {
         return this.message;
     }
 }

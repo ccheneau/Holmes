@@ -47,29 +47,18 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-/**
- * The Class HttpRequestSiteHandler.
- */
-public final class HttpRequestSiteHandler implements IHttpRequestHandler
-{
+public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
 
-    /** The configuration. */
     @Inject
     private IConfiguration configuration;
 
-    /** The content type factory. */
     @Inject
     private IContentTypeFactory contentTypeFactory;
 
-    /** The home site directory. */
     private String homeSiteDirectory;
 
-    /**
-     * Instantiates a new http site handler.
-     */
-    public HttpRequestSiteHandler()
-    {
+    public HttpRequestSiteHandler() {
     }
 
     /* (non-Javadoc)
@@ -77,8 +66,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
      */
     @Override
     @Inject
-    public void initHandler()
-    {
+    public void initHandler() {
         homeSiteDirectory = configuration.getHomeSiteDirectory();
     }
 
@@ -86,14 +74,11 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
      * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException
-    {
-        if (logger.isDebugEnabled())
-        {
+    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+        if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders())
-            {
+            for (Entry<String, String> entry : request.getHeaders()) {
                 logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
             }
         }
@@ -101,13 +86,11 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.getPath();
-        if (fileName.equals("/"))
-        {
+        if (fileName.equals("/")) {
             fileName = "/index.html";
         }
 
-        if (fileName == null || fileName.trim().isEmpty())
-        {
+        if (fileName == null || fileName.trim().isEmpty()) {
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
 
@@ -115,12 +98,10 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
 
         if (logger.isDebugEnabled()) logger.debug("file path:" + filePath);
 
-        try
-        {
+        try {
             // Get file
             File file = new File(filePath);
-            if (file == null || !file.exists() || !file.canRead() || file.isHidden())
-            {
+            if (file == null || !file.exists() || !file.canRead() || file.isHidden()) {
                 logger.warn("resource not found:" + fileName);
                 throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
             }
@@ -133,8 +114,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
             HttpHeaders.setContentLength(response, fileLength);
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             String contentType = contentTypeFactory.getContentType(fileName).getContentType();
-            if (contentType != null)
-            {
+            if (contentType != null) {
                 response.setHeader(HttpHeaders.Names.CONTENT_TYPE, contentTypeFactory.getContentType(fileName).getContentType());
             }
 
@@ -145,24 +125,20 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler
             ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, 0, fileLength, 8192));
 
             // Decide whether to close the connection or not.
-            if (!HttpHeaders.isKeepAlive(request))
-            {
+            if (!HttpHeaders.isKeepAlive(request)) {
                 // Close the connection when the whole content is written out.
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
         }
-        catch (FileNotFoundException fnfe)
-        {
+        catch (FileNotFoundException fnfe) {
             logger.warn("resource not found:" + fileName);
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             logger.error(e.getMessage(), e);
             throw new HttpRequestException("", HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
-        finally
-        {
+        finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }

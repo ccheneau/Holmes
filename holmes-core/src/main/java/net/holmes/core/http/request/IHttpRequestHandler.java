@@ -21,27 +21,11 @@
 */
 package net.holmes.core.http.request;
 
-
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-/**
- * The Interface IHttpRequestHandler.
- */
-public interface IHttpRequestHandler
-{
-
-    /**
-     * Process request.
-     *
-     * @param request the request
-     * @param channel the channel
-     * @throws HttpRequestException the http request exception
-     */
+public interface IHttpRequestHandler {
     public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
 
-    /**
-     * Inits the handler.
-     */
     public abstract void initHandler();
 }

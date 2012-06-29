@@ -46,48 +46,34 @@ import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
 
 import com.google.inject.Inject;
 
-/**
- * The Class UpnpServer.
- */
-public final class UpnpServer implements IServer
-{
+public final class UpnpServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
-    /** The UPnP service. */
     private UpnpService upnpService = null;
 
-    /** The media service. */
     @Inject
     private IMediaService mediaService;
 
-    /** The configuration. */
     @Inject
     private IConfiguration configuration;
 
-    /**
-     * Instantiates a new UPnP server.
-     */
-    public UpnpServer()
-    {
+    public UpnpServer() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#start()
      */
     @Override
-    public void start()
-    {
+    public void start() {
         logger.info("Starting Upnp server");
-        try
-        {
+        try {
             upnpService = new UpnpServiceImpl();
 
             // Add the bound local device to the registry
             LocalDevice localDevice = createDevice();
             upnpService.getRegistry().addDevice(localDevice);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
     }
@@ -96,27 +82,16 @@ public final class UpnpServer implements IServer
      * @see net.holmes.core.IServer#stop()
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         logger.info("Stopping UPnP server");
-        if (upnpService != null)
-        {
+        if (upnpService != null) {
             upnpService.shutdown();
         }
         logger.info("UPnP server stop complete");
     }
 
-    /**
-     * Creates the device.
-     *
-     * @return the local device
-     * @throws ValidationException the validation exception
-     * @throws LocalServiceBindingException the local service binding exception
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private LocalDevice createDevice() throws ValidationException, LocalServiceBindingException, IOException
-    {
+    private LocalDevice createDevice() throws ValidationException, LocalServiceBindingException, IOException {
         // Device identity
         DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Holmes UPnP Server"));
 
@@ -150,16 +125,14 @@ public final class UpnpServer implements IServer
      * @see net.holmes.core.common.IServer#initialize()
      */
     @Override
-    public void initialize()
-    {
+    public void initialize() {
     }
 
     /* (non-Javadoc)
      * @see net.holmes.core.IServer#getStatus()
      */
     @Override
-    public boolean getStatus()
-    {
+    public boolean getStatus() {
         return upnpService != null;
     }
 
@@ -167,8 +140,7 @@ public final class UpnpServer implements IServer
      * @see net.holmes.core.IServer#restart()
      */
     @Override
-    public void restart()
-    {
+    public void restart() {
         if (getStatus()) stop();
         start();
     }

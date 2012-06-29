@@ -28,41 +28,27 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A factory for creating ContentType objects.
- */
-public final class ContentTypeFactory implements IContentTypeFactory
-{
+public final class ContentTypeFactory implements IContentTypeFactory {
     private static Logger logger = LoggerFactory.getLogger(ContentTypeFactory.class);
 
-    /** The properties. */
-    private Properties props = null;
+    private Properties properties = null;
 
-    /**
-     * Instantiates a new content type factory.
-     */
-    public ContentTypeFactory()
-    {
-        // Load mime types property file
-        props = new Properties();
+    public ContentTypeFactory() {
+        // Load mime types from property file
+        properties = new Properties();
         InputStream in = null;
-        try
-        {
+        try {
             in = this.getClass().getResourceAsStream("/mimetypes.properties");
-            props.load(in);
+            properties.load(in);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-        finally
-        {
-            try
-            {
+        finally {
+            try {
                 if (in != null) in.close();
             }
-            catch (IOException e)
-            {
+            catch (IOException e) {
                 // Nothing
             }
         }
@@ -72,15 +58,14 @@ public final class ContentTypeFactory implements IContentTypeFactory
      * @see net.holmes.core.model.IContentTypeFactory#getContentType(java.lang.String)
      */
     @Override
-    public ContentType getContentType(String fileName)
-    {
+    public ContentType getContentType(String fileName) {
         // Get file extension
         String ext = "";
         int mid = fileName.lastIndexOf(".");
         ext = fileName.substring(mid + 1, fileName.length());
 
         // Get content type
-        String mimeType = props.getProperty(ext);
+        String mimeType = properties.getProperty(ext);
         ContentType contentType = null;
         if (mimeType != null) contentType = new ContentType(mimeType);
 

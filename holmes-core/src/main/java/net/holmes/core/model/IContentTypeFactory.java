@@ -21,17 +21,6 @@
 */
 package net.holmes.core.model;
 
-/**
- * A factory for creating IContentType objects.
- */
-public interface IContentTypeFactory
-{
-    /**
-     * Gets the content type.
-     *
-     * @param fileName the file name
-     * @return the content type
-     */
+public interface IContentTypeFactory {
     public abstract ContentType getContentType(String fileName);
-
 }

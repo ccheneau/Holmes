@@ -29,35 +29,20 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-/**
- * The Class LogUtil.
- */
-public class LogUtil
-{
-    /**
-     * Load configuration
-     */
-    public static void loadConfig()
-    {
+public class LogUtil {
+    public static void loadConfig() {
         // Redirect java.util.logging to slf4j
         SLF4JBridgeHandler.install();
 
         // Configure Log4j
         String homeDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
-        if (homeDir != null && new File(homeDir).exists())
-        {
+        if (homeDir != null && new File(homeDir).exists()) {
             String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configure(logConfig);
         }
     }
 
-    /**
-     * Sets the level.
-     *
-     * @param level the new level
-     */
-    public static void setLevel(String level)
-    {
+    public static void setLevel(String level) {
         // Set level to java.util.logging
         java.util.logging.Level julLevel = java.util.logging.Level.OFF;
         if (level.equalsIgnoreCase("debug")) julLevel = java.util.logging.Level.FINE;

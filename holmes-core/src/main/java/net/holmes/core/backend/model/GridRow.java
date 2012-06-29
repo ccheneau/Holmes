@@ -24,75 +24,33 @@ package net.holmes.core.backend.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-/**
- * The Class GridRow.
- */
-public class GridRow implements Serializable
-{
+public class GridRow implements Serializable {
     private static final long serialVersionUID = -7055943024207235434L;
 
-    /** The id. */
     private String id;
-
-    /** The cell. */
     private Collection<String> cell;
 
-    /**
-     * Instantiates a new grid row.
-     */
-    public GridRow()
-    {
+    public GridRow() {
     }
 
-    /**
-     * Instantiates a new grid row.
-     *
-     * @param id the id
-     * @param cell the cell
-     */
-    public GridRow(String id, Collection<String> cell)
-    {
+    public GridRow(String id, Collection<String> cell) {
         this.id = id;
         this.cell = cell;
     }
 
-    /**
-      * Gets the id.
-      *
-      * @return the id
-      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    /**
-     * Sets the id.
-     *
-     * @param id the new id
-     */
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Gets the cell.
-     *
-     * @return the cell
-     */
-    public Collection<String> getCell()
-    {
+    public Collection<String> getCell() {
         return cell;
     }
 
-    /**
-     * Sets the cell.
-     *
-     * @param cell the new cell
-     */
-    public void setCell(Collection<String> cell)
-    {
+    public void setCell(Collection<String> cell) {
         this.cell = cell;
     }
 }

@@ -23,79 +23,34 @@ package net.holmes.core.backend.model;
 
 import java.io.Serializable;
 
-/**
- * The Class ConfigurationResponse.
- */
-public class ConfigurationResponse implements Serializable
-{
+public class ConfigurationResponse implements Serializable {
     private static final long serialVersionUID = 337172491421293170L;
 
-    /** The server name. */
     private String serverName;
-
-    /** The http server port. */
     private Integer httpServerPort;
-
-    /** The log level. */
     private String logLevel;
 
-    /**
-     * Gets the server name.
-     *
-     * @return the server name
-     */
-    public String getServerName()
-    {
+    public String getServerName() {
         return serverName;
     }
 
-    /**
-     * Sets the server name.
-     *
-     * @param serverName the new server name
-     */
-    public void setServerName(String serverName)
-    {
+    public void setServerName(String serverName) {
         this.serverName = serverName;
     }
 
-    /**
-     * Gets the http server port.
-     *
-     * @return the http server port
-     */
-    public Integer getHttpServerPort()
-    {
+    public Integer getHttpServerPort() {
         return httpServerPort;
     }
 
-    /**
-     * Sets the http server port.
-     *
-     * @param httpServerPort the new http server port
-     */
-    public void setHttpServerPort(Integer httpServerPort)
-    {
+    public void setHttpServerPort(Integer httpServerPort) {
         this.httpServerPort = httpServerPort;
     }
 
-    /**
-     * Gets the log level.
-     *
-     * @return the log level
-     */
-    public String getLogLevel()
-    {
+    public String getLogLevel() {
         return logLevel;
     }
 
-    /**
-     * Sets the log level.
-     *
-     * @param logLevel the new log level
-     */
-    public void setLogLevel(String logLevel)
-    {
+    public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 }

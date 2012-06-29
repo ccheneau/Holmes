@@ -25,24 +25,8 @@ import java.util.List;
 
 import net.holmes.core.model.AbstractNode;
 
-/**
- * The Interface IMediaService.
- */
-public interface IMediaService
-{
-    /**
-     * Get a specific node. Return null is not found
-     *
-     * @param nodeId the node id
-     * @return the node
-     */
+public interface IMediaService {
     public abstract AbstractNode getNode(String nodeId);
 
-    /**
-     * Gets the child nodes.
-     *
-     * @param parentNode the parent node
-     * @return the child nodes
-     */
     public List<AbstractNode> getChildNodes(AbstractNode parentNode);
 }

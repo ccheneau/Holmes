@@ -48,49 +48,22 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * The Class HttpServerHandler.
- */
-public final class HttpServerHandler extends SimpleChannelUpstreamHandler
-{
+public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 
-    /** The Http content handler. */
     private IHttpRequestHandler httpContentHandler;
-
-    /** The Http site handler. */
     private IHttpRequestHandler httpSiteHandler;
-
-    /** The Http backend handler. */
     private IHttpRequestHandler httpBackendHandler;
 
-    /**
-     * Sets the Http content handler.
-     *
-     * @param httpContentHandler the new http content handler
-     */
-    public void setHttpContentHandler(IHttpRequestHandler httpContentHandler)
-    {
+    public void setHttpContentHandler(IHttpRequestHandler httpContentHandler) {
         this.httpContentHandler = httpContentHandler;
     }
 
-    /**
-     * Sets the http site handler.
-     *
-     * @param httpSiteHandler the new http site handler
-     */
-    public void setHttpSiteHandler(IHttpRequestHandler httpSiteHandler)
-    {
+    public void setHttpSiteHandler(IHttpRequestHandler httpSiteHandler) {
         this.httpSiteHandler = httpSiteHandler;
     }
 
-    /**
-     * Sets the http backend handler.
-     *
-     * @param httpBackendHandler the new http backend handler
-     */
-    public void setHttpBackendHandler(IHttpRequestHandler httpBackendHandler)
-    {
+    public void setHttpBackendHandler(IHttpRequestHandler httpBackendHandler) {
         this.httpBackendHandler = httpBackendHandler;
     }
 
@@ -98,30 +71,24 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
      * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#messageReceived(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.MessageEvent)
      */
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws IOException
-    {
+    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws IOException {
         if (logger.isDebugEnabled()) logger.debug("[START] messageReceived event:" + e);
 
         HttpRequest request = (HttpRequest) e.getMessage();
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
 
-        try
-        {
-            if (decoder.getPath().equals(HttpRequestContentHandler.PATH))
-            {
+        try {
+            if (decoder.getPath().equals(HttpRequestContentHandler.PATH)) {
                 httpContentHandler.processRequest(request, e.getChannel());
             }
-            else if (decoder.getPath().startsWith(HttpRequestBackendHandler.PATH))
-            {
+            else if (decoder.getPath().startsWith(HttpRequestBackendHandler.PATH)) {
                 httpBackendHandler.processRequest(request, e.getChannel());
             }
-            else
-            {
+            else {
                 httpSiteHandler.processRequest(request, e.getChannel());
             }
         }
-        catch (HttpRequestException ex)
-        {
+        catch (HttpRequestException ex) {
             sendError(ctx, ex.getStatus());
         }
 
@@ -132,20 +99,16 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
      * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#exceptionCaught(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.ExceptionEvent)
      */
     @Override
-    public void exceptionCaught(ChannelHandlerContext context, ExceptionEvent event) throws Exception
-    {
+    public void exceptionCaught(ChannelHandlerContext context, ExceptionEvent event) throws Exception {
         Channel channel = event.getChannel();
         Throwable cause = event.getCause();
-        if (cause instanceof TooLongFrameException)
-        {
+        if (cause instanceof TooLongFrameException) {
             sendError(context, HttpResponseStatus.BAD_REQUEST);
             return;
         }
 
-        if (channel.isConnected() && !event.getFuture().isSuccess())
-        {
-            if (logger.isDebugEnabled())
-            {
+        if (channel.isConnected() && !event.getFuture().isSuccess()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("isCancelled " + event.getFuture().isCancelled());
                 logger.debug("isDone " + event.getFuture().isDone());
                 logger.debug("isSuccess " + event.getFuture().isSuccess());
@@ -155,14 +118,7 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler
         }
     }
 
-    /**
-     * Send error.
-     *
-     * @param context the context
-     * @param status the status
-     */
-    private void sendError(ChannelHandlerContext context, HttpResponseStatus status)
-    {
+    private void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
         // Build response
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
         response.setHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
