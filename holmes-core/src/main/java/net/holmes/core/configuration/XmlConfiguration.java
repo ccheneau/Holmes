@@ -62,7 +62,6 @@ public final class XmlConfiguration implements IConfiguration {
         XStream xs = getXStream();
 
         String confPath = getHomeConfigDirectory();
-        logger.info("Read config in directory: " + confPath);
         if (confPath != null) {
             String filePath = confPath + File.separator + CONF_FILE_NAME;
             File confFile = new File(filePath);
@@ -139,19 +138,14 @@ public final class XmlConfiguration implements IConfiguration {
      */
     @Override
     public String getHomeDirectory() {
-        String homePath = null;
-        if (System.getProperty(SystemProperty.HOLMES_HOME.getValue()) != null) {
-            homePath = checkPath(System.getProperty(SystemProperty.HOLMES_HOME.getValue()));
-        }
-
-        if (homePath != null) {
-            File homeDir = new File(homePath);
-            if (homeDir.exists() && homeDir.isDirectory() && homeDir.canWrite()) {
-                return homePath;
+        String homeDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
+        if (homeDirectory != null) {
+            File fPath = new File(homeDirectory);
+            if (fPath.exists() && fPath.isDirectory() && fPath.canWrite()) {
+                return homeDirectory;
             }
         }
-
-        throw new RuntimeException(SystemProperty.HOLMES_HOME.getValue() + " variable not defined or incorrect");
+        throw new RuntimeException(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
     }
 
     /* (non-Javadoc)
@@ -178,14 +172,6 @@ public final class XmlConfiguration implements IConfiguration {
         }
         if (confDir.exists() && confDir.isDirectory() && confDir.canWrite()) {
             return homeSubDirectory;
-        }
-        return null;
-    }
-
-    private String checkPath(String path) {
-        File fPath = new File(path);
-        if (fPath.exists() && fPath.isDirectory() && fPath.canWrite()) {
-            return path;
         }
         return null;
     }
