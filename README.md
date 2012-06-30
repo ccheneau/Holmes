@@ -17,7 +17,7 @@ Holmes uses the following frameworks:
 * [EHCache](http://ehcache.org/) for caching
 * [JQueryUI](http://jqueryui.com/) for user interface
 
-This application has been tested on Windows with [VLC](http://www.videolan.org/vlc/) 1.2 beta and Freebox V6 (a french set top box)
+This application has been tested on Windows with [VLC](http://www.videolan.org/vlc/) 2.0.1 and Freebox V6 (a french set top box)
  
 ## REQUIREMENTS
 
@@ -32,9 +32,6 @@ Run the startup.bat script.
 ## Usage
 
 After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/
-
-("localhost" or "127.0.0.1" are also accepted)
-
 
 ## LICENSE
 
