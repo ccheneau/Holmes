@@ -115,15 +115,8 @@ public final class HttpServer implements IServer {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.IServer#initialize()
-     */
-    @Override
-    public void initialize() {
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#getStatus()
-     */
+    * @see net.holmes.core.IServer#getStatus()
+    */
     @Override
     public boolean getStatus() {
         return channel != null && channel.isBound();

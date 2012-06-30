@@ -41,13 +41,6 @@ public final class HolmesServer implements IServer {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.IServer#initialize()
-     */
-    @Override
-    public void initialize() {
-    }
-
-    /* (non-Javadoc)
      * @see net.holmes.core.IServer#start()
      */
     @Override
@@ -94,7 +87,6 @@ public final class HolmesServer implements IServer {
 
         // Start Holmes server
         IServer holmesServer = injector.getInstance(HolmesServer.class);
-        holmesServer.initialize();
         holmesServer.start();
 
         // Add shutdown hook

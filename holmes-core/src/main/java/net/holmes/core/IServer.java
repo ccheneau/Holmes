@@ -22,7 +22,6 @@
 package net.holmes.core;
 
 public interface IServer {
-    public abstract void initialize();
 
     public abstract void start();
 

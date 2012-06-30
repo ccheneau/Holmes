@@ -87,7 +87,7 @@ public final class UpnpServer implements IServer {
         if (upnpService != null) {
             upnpService.shutdown();
         }
-        logger.info("UPnP server stop complete");
+        logger.info("UPnP server stopped");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -119,13 +119,6 @@ public final class UpnpServer implements IServer {
         services[0] = contentDirectoryService;
         services[1] = connectionService;
         return new LocalDevice(identity, type, details, services);
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.common.IServer#initialize()
-     */
-    @Override
-    public void initialize() {
     }
 
     /* (non-Javadoc)
