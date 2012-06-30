@@ -93,7 +93,7 @@ public final class MediaService implements IMediaService {
 
         if (rootNodes.get(nodeId) != null) {
             // root node
-            node = getFolderNode(nodeId, rootNodes.get(nodeId));
+            node = getRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null) {
             String[] nodeParams = nodeId.split("|");
@@ -132,10 +132,10 @@ public final class MediaService implements IMediaService {
         List<AbstractNode> childNodes = null;
         if (ContentFolder.ROOT_NODE_ID.equals(parentNode.getId())) {
             childNodes = new ArrayList<AbstractNode>();
-            childNodes.add(getFolderNode(ContentFolder.ROOT_AUDIO_NODE_ID, rootNodes.get(ContentFolder.ROOT_AUDIO_NODE_ID)));
-            childNodes.add(getFolderNode(ContentFolder.ROOT_VIDEO_NODE_ID, rootNodes.get(ContentFolder.ROOT_VIDEO_NODE_ID)));
-            childNodes.add(getFolderNode(ContentFolder.ROOT_PICTURE_NODE_ID, rootNodes.get(ContentFolder.ROOT_PICTURE_NODE_ID)));
-            childNodes.add(getFolderNode(ContentFolder.ROOT_PODCAST_NODE_ID, rootNodes.get(ContentFolder.ROOT_PODCAST_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, rootNodes.get(ContentFolder.ROOT_AUDIO_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, rootNodes.get(ContentFolder.ROOT_VIDEO_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, rootNodes.get(ContentFolder.ROOT_PICTURE_NODE_ID)));
+            childNodes.add(getRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, rootNodes.get(ContentFolder.ROOT_PODCAST_NODE_ID)));
         }
         else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
@@ -153,14 +153,14 @@ public final class MediaService implements IMediaService {
             String[] nodeParams = parentNode.getId().split("|");
             if (nodeParams != null && nodeParams.length == 2) {
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0])) {
-                    // podcast items
-                    childNodes = getPodcastItems(nodeParams[1]);
+                    // get podcast child nodes
+                    childNodes = getPodcastChildNodes(nodeParams[1]);
                 }
                 else {
                     File node = new File(nodeParams[1]);
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
-                        // folder items
-                        childNodes = getFolderItems(node, nodeParams[0]);
+                        // get folder child nodes
+                        childNodes = getFolderChildNodes(node, nodeParams[0]);
                     }
                 }
             }
@@ -194,7 +194,7 @@ public final class MediaService implements IMediaService {
         return nodes;
     }
 
-    private List<AbstractNode> getFolderItems(File folder, String mediaType) {
+    private List<AbstractNode> getFolderChildNodes(File folder, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         File[] files = folder.listFiles();
         if (files != null) {
@@ -220,7 +220,7 @@ public final class MediaService implements IMediaService {
     }
 
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastItems(String url) {
+    private List<AbstractNode> getPodcastChildNodes(String url) {
         List<AbstractNode> podcastItemNodes = null;
         Cache podcastItemsCache = cacheManager.getCache("podcastItems");
 
@@ -290,7 +290,7 @@ public final class MediaService implements IMediaService {
         return podcastItemNodes;
     }
 
-    private FolderNode getFolderNode(String nodeId, String bundleKey) {
+    private FolderNode getRootNode(String nodeId, String bundleKey) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
         node.setName(bundle.getString(bundleKey));
