@@ -107,4 +107,25 @@ public final class Configuration implements Serializable {
     public void setPictureFolders(LinkedList<ContentFolder> pictureFolders) {
         this.pictureFolders = pictureFolders;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Configuration [serverName=");
+        builder.append(serverName);
+        builder.append(", httpServerPort=");
+        builder.append(httpServerPort);
+        builder.append(", logLevel=");
+        builder.append(logLevel);
+        builder.append(", videoFolders=");
+        builder.append(videoFolders);
+        builder.append(", pictureFolders=");
+        builder.append(pictureFolders);
+        builder.append(", audioFolders=");
+        builder.append(audioFolders);
+        builder.append(", podcasts=");
+        builder.append(podcasts);
+        builder.append("]");
+        return builder.toString();
+    }
 }
