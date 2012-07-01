@@ -22,6 +22,8 @@
 package net.holmes.core.configuration;
 
 public interface IConfiguration {
+    public static final String HOME_CONF_FOLDER = "conf";
+    public static final String HOME_SITE_FOLDER = "site";
 
     public abstract void saveConfig();
 

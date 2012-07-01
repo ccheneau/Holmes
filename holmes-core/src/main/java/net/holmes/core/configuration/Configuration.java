@@ -32,6 +32,7 @@ public final class Configuration implements Serializable {
 
     private static final String DEFAULT_SERVER_NAME = "Holmes";
     private static final String DEFAULT_LOG_LEVEL = "INFO";
+    private static final int DEFAULT_HTTP_PORT = 8085;
 
     private String serverName;
     private Integer httpServerPort;
@@ -55,7 +56,12 @@ public final class Configuration implements Serializable {
     }
 
     public Integer getHttpServerPort() {
-        return httpServerPort;
+        if (httpServerPort == null) {
+            return DEFAULT_HTTP_PORT;
+        }
+        else {
+            return httpServerPort;
+        }
     }
 
     public void setHttpServerPort(Integer httpServerPort) {

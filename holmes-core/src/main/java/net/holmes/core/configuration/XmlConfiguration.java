@@ -43,9 +43,6 @@ public final class XmlConfiguration implements IConfiguration {
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
-    private static final String HOME_CONF_FOLDER = "conf";
-    private static final String HOME_SITE_FOLDER = "site";
-    private static final int DEFAULT_HTTP_PORT = 8085;
 
     private Configuration config = null;
 
@@ -89,7 +86,6 @@ public final class XmlConfiguration implements IConfiguration {
         if (config.getAudioFolders() == null) config.setAudioFolders(new LinkedList<ContentFolder>());
         if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ContentFolder>());
         if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ContentFolder>());
-        if (config.getHttpServerPort() == null) config.setHttpServerPort(DEFAULT_HTTP_PORT);
 
         LogUtil.setLevel(config.getLogLevel());
     }
