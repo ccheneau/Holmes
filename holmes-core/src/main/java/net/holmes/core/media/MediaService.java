@@ -25,7 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,6 @@ import net.holmes.core.model.FolderNode;
 import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.model.PodcastItemNode;
 import net.holmes.core.model.PodcastNode;
-import net.holmes.core.util.DateFormat;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -59,6 +60,8 @@ import com.sun.syndication.io.XmlReader;
 
 public final class MediaService implements IMediaService {
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
+
+    private static String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     @Inject
     private IConfiguration configuration;
@@ -244,7 +247,7 @@ public final class MediaService implements IMediaService {
                                 podcastItemNode.setId(UUID.randomUUID().toString());
                                 podcastItemNode.setName(rssEntry.getTitle());
                                 if (rssEntry.getPublishedDate() != null) {
-                                    podcastItemNode.setModifedDate(DateFormat.formatUpnpDate(rssEntry.getPublishedDate().getTime()));
+                                    podcastItemNode.setModifedDate(formatUpnpDate(rssEntry.getPublishedDate().getTime()));
                                 }
                                 if (enclosure.getType() != null) {
                                     podcastItemNode.setContentType(new ContentType(enclosure.getType()));
@@ -302,7 +305,7 @@ public final class MediaService implements IMediaService {
         node.setId(nodeId);
         node.setName(name);
         node.setPath(folder.getAbsolutePath());
-        node.setModifedDate(DateFormat.formatUpnpDate(folder.lastModified()));
+        node.setModifedDate(formatUpnpDate(folder.lastModified()));
         return node;
     }
 
@@ -318,7 +321,7 @@ public final class MediaService implements IMediaService {
             node.setPath(file.getAbsolutePath());
             node.setContentType(contentType);
             node.setSize(file.length());
-            node.setModifedDate(DateFormat.formatUpnpDate(file.lastModified()));
+            node.setModifedDate(formatUpnpDate(file.lastModified()));
         }
         return node;
     }
@@ -332,4 +335,11 @@ public final class MediaService implements IMediaService {
         node.setUrl(url);
         return node;
     }
+
+    private String formatUpnpDate(long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());
+    }
+
 }
