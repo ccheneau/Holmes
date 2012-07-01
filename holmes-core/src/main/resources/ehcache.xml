@@ -4,7 +4,6 @@
 
 	<cache name="podcastItems" 
 		maxElementsInMemory="500" 
-		maxElementsOnDisk="500"
 		eternal="false" 
 		overflowToDisk="false" 
 		diskSpoolBufferSizeMB="20"
