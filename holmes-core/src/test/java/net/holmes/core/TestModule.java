@@ -22,7 +22,7 @@
 package net.holmes.core;
 
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.XmlConfiguration;
+import net.holmes.core.configuration.TestConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.model.ContentTypeFactory;
@@ -34,16 +34,14 @@ import com.google.inject.Singleton;
 /**
  * The Class TestModule.
  */
-public class TestModule extends AbstractModule
-{
+public class TestModule extends AbstractModule {
 
     /* (non-Javadoc)
      * @see com.google.inject.AbstractModule#configure()
      */
     @Override
-    protected void configure()
-    {
-        bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
+    protected void configure() {
+        bind(IConfiguration.class).to(TestConfiguration.class).in(Singleton.class);
 
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
 

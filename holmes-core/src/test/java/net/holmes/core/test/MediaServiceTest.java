@@ -21,11 +21,17 @@
 */
 package net.holmes.core.test;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
+import net.holmes.core.configuration.ContentFolder;
+import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
+import net.holmes.core.model.AbstractNode;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,26 +39,124 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-/**
- * The Class MediaServiceTest.
- */
-public class MediaServiceTest extends TestCase
-{
+public class MediaServiceTest extends TestCase {
     private static Logger logger = LoggerFactory.getLogger(MediaServiceTest.class);
 
-    /** The media service. */
     @Inject
     private IMediaService mediaService;
+
+    @Inject
+    private IConfiguration configuration;
 
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
     }
 
+    @Test
+    public void testMediaService() {
+        logger.debug(configuration.getConfig().toString());
+    }
+
+    @Test
+    public void testGetRootNode() {
+        AbstractNode node = mediaService.getNode(ContentFolder.ROOT_NODE_ID);
+        assertNotNull(node);
+        logger.debug(node.toString());
+
+        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        logger.debug(childNodes.toString());
+    }
+
+    @Test
+    public void testGetRootVideoNode() {
+        AbstractNode node = mediaService.getNode(ContentFolder.ROOT_VIDEO_NODE_ID);
+        assertNotNull(node);
+        logger.debug(node.toString());
+
+        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        logger.debug(childNodes.toString());
+
+        for (AbstractNode childNode : childNodes) {
+            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
+            assertNotNull(nodes);
+            assertFalse(nodes.isEmpty());
+            for (AbstractNode iNode : nodes) {
+                logger.debug(iNode.toString());
+            }
+        }
+
+    }
+
+    @Test
+    public void testGetRootAudioNode() {
+        AbstractNode node = mediaService.getNode(ContentFolder.ROOT_AUDIO_NODE_ID);
+        assertNotNull(node);
+        logger.debug(node.toString());
+
+        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        logger.debug(childNodes.toString());
+
+        for (AbstractNode childNode : childNodes) {
+            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
+            assertNotNull(nodes);
+            assertFalse(nodes.isEmpty());
+            for (AbstractNode iNode : nodes) {
+                logger.debug(iNode.toString());
+            }
+        }
+    }
+
+    @Test
+    public void testGetRootPictureNode() {
+        AbstractNode node = mediaService.getNode(ContentFolder.ROOT_PICTURE_NODE_ID);
+        assertNotNull(node);
+        logger.debug(node.toString());
+
+        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        logger.debug(childNodes.toString());
+
+        for (AbstractNode childNode : childNodes) {
+            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
+            assertNotNull(nodes);
+            assertFalse(nodes.isEmpty());
+            for (AbstractNode iNode : nodes) {
+                logger.debug(iNode.toString());
+            }
+        }
+    }
+
+    @Test
+    public void testGetRootPodcastNode() {
+        AbstractNode node = mediaService.getNode(ContentFolder.ROOT_PODCAST_NODE_ID);
+        assertNotNull(node);
+        logger.debug(node.toString());
+
+        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        logger.debug(childNodes.toString());
+
+        for (AbstractNode childNode : childNodes) {
+            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
+            assertNotNull(nodes);
+            assertFalse(nodes.isEmpty());
+            for (AbstractNode iNode : nodes) {
+                logger.debug(iNode.toString());
+            }
+        }
+    }
 }

@@ -55,4 +55,25 @@ public final class PodcastItemNode extends AbstractNode {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PodcastItemNode [contentType=");
+        builder.append(contentType);
+        builder.append(", size=");
+        builder.append(size);
+        builder.append(", url=");
+        builder.append(url);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", modifedDate=");
+        builder.append(modifedDate);
+        builder.append(", type=");
+        builder.append(type);
+        builder.append("]");
+        return builder.toString();
+    }
 }

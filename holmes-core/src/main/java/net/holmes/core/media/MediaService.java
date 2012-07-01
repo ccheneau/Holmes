@@ -69,7 +69,6 @@ public final class MediaService implements IMediaService {
     @Inject
     private IContentTypeFactory contentTypeFactory;
 
-    @Inject
     private CacheManager cacheManager;
 
     private ResourceBundle bundle;
@@ -78,6 +77,7 @@ public final class MediaService implements IMediaService {
 
     public MediaService() {
         bundle = ResourceBundle.getBundle("message");
+        cacheManager = CacheManager.create();
         rootNodes = new HashMap<String, String>();
         rootNodes.put(ContentFolder.ROOT_NODE_ID, "node.rootNode");
         rootNodes.put(ContentFolder.ROOT_AUDIO_NODE_ID, "node.audio");
@@ -99,7 +99,7 @@ public final class MediaService implements IMediaService {
             node = getRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null) {
-            String[] nodeParams = nodeId.split("|");
+            String[] nodeParams = nodeId.split("\\|");
             if (nodeParams != null && nodeParams.length == 2) {
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0])) {
                     // podcast node
@@ -149,11 +149,11 @@ public final class MediaService implements IMediaService {
         else if (ContentFolder.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
         }
-        else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
+        else if (ContentFolder.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
-            String[] nodeParams = parentNode.getId().split("|");
+            String[] nodeParams = parentNode.getId().split("\\|");
             if (nodeParams != null && nodeParams.length == 2) {
                 if (ContentType.TYPE_PODCAST.equals(nodeParams[0])) {
                     // get podcast child nodes
