@@ -47,6 +47,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+/**
+ * Handler to serve contents (i.e. videos, audios or pictures) to UPnP media renderer
+ */
 public final class HttpRequestContentHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
@@ -71,6 +74,8 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+
+        // Debug
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             logger.debug("Request uri: " + request.getUri());
@@ -166,6 +171,9 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
         }
     }
 
+    /**
+     * Get content node from {@link net.holmes.core.media.IMediaService} 
+     */
     private ContentNode getContentNode(String uri) {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);

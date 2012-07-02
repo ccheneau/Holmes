@@ -62,6 +62,9 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 import com.sun.jersey.spi.container.WebApplicationFactory;
 
+/**
+ * Handler for backend requests from Holmes administration site
+ */
 public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestBackendHandler.class);
 
@@ -83,9 +86,12 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     public void initHandler() {
         if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
 
+        // Jersey integration
         if (application == null) {
             application = WebApplicationFactory.createWebApplication();
             if (!application.isInitiated()) {
+
+                // Initialize web application and Guice
                 Map<String, Object> props = new HashMap<String, Object>();
 
                 props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
@@ -103,6 +109,8 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+
+        // Debug log
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             logger.debug("Request uri: " + request.getUri());
@@ -124,10 +132,13 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
             }
         }
         try {
+
+            // Define base URL
             String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + PATH;
             final URI baseUri = new URI(base);
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
 
+            // Process request
             final ContainerRequest cRequest = new ContainerRequest(application, request.getMethod().getName(), baseUri, requestUri, getHeaders(request),
                     new ChannelBufferInputStream(request.getContent()));
 
@@ -154,6 +165,10 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
         return headers;
     }
 
+    /**
+     * Response writer for backend requests     
+     *
+     */
     private final static class BackendResponseWriter implements ContainerResponseWriter {
 
         private final Channel channel;

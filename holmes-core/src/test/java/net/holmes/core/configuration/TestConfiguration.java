@@ -10,14 +10,14 @@ public class TestConfiguration implements IConfiguration {
 
     public TestConfiguration() {
         config = new Configuration();
-        config.setVideoFolders(new LinkedList<ContentFolder>());
+        config.setVideoFolders(new LinkedList<ConfigurationNode>());
         config.getVideoFolders().add(getTestContentFolder("videosTest", "/videosTest/"));
-        config.setAudioFolders(new LinkedList<ContentFolder>());
+        config.setAudioFolders(new LinkedList<ConfigurationNode>());
         config.getAudioFolders().add(getTestContentFolder("audiosTest", "/audiosTest/"));
-        config.setPictureFolders(new LinkedList<ContentFolder>());
+        config.setPictureFolders(new LinkedList<ConfigurationNode>());
         config.getPictureFolders().add(getTestContentFolder("imagesTest", "/imagesTest/"));
-        config.setPodcasts(new LinkedList<ContentFolder>());
-        config.getPodcasts().add(new ContentFolder("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
+        config.setPodcasts(new LinkedList<ConfigurationNode>());
+        config.getPodcasts().add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
     }
 
     @Override
@@ -44,13 +44,13 @@ public class TestConfiguration implements IConfiguration {
         return null;
     }
 
-    private ContentFolder getTestContentFolder(String label, String path) {
-        ContentFolder contentFolder = null;
+    private ConfigurationNode getTestContentFolder(String label, String path) {
+        ConfigurationNode contentFolder = null;
 
         URL rs = this.getClass().getResource(path);
         if (rs != null) {
             String fpath = new File(rs.getFile()).getAbsolutePath();
-            contentFolder = new ContentFolder(label, label, fpath);
+            contentFolder = new ConfigurationNode(label, label, fpath);
         }
 
         return contentFolder;

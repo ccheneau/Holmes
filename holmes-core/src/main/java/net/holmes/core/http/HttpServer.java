@@ -38,6 +38,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+/**
+ * HTTP server main class  
+ */
 public final class HttpServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
@@ -60,7 +63,7 @@ public final class HttpServer implements IServer {
      */
     @Override
     public void start() {
-        logger.info("Starting Http server");
+        logger.info("Starting HTTP server");
 
         int port = configuration.getConfig().getHttpServerPort();
         InetSocketAddress bindAddress = new InetSocketAddress(port);
@@ -74,7 +77,7 @@ public final class HttpServer implements IServer {
         // Bind and start to accept incoming connections.
         channel = bootstrap.bind(bindAddress);
 
-        logger.info("Http server bound on " + bindAddress);
+        logger.info("HTTP server bound on " + bindAddress);
     }
 
     /* (non-Javadoc)
@@ -82,7 +85,7 @@ public final class HttpServer implements IServer {
      */
     @Override
     public void stop() {
-        logger.info("Stopping http server");
+        logger.info("Stopping HTTP server");
 
         ChannelFuture cf = channel.getCloseFuture();
         cf.addListener(new ServerChannelFutureListener());
@@ -90,6 +93,8 @@ public final class HttpServer implements IServer {
         channel.close();
         cf.awaitUninterruptibly();
         bootstrap.getFactory().releaseExternalResources();
+
+        logger.info("HTTP server stopped");
     }
 
     /**

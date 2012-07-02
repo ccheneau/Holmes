@@ -23,7 +23,19 @@ package net.holmes.core.configuration;
 
 import java.io.Serializable;
 
-public final class ContentFolder implements Serializable {
+/**
+ * A ConfigurationNode may represent:
+ * <ul>
+ * <li>Holmes root node: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_NODE_ID} </li>
+ * <li>root node for video folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_VIDEO_NODE_ID} </li>
+ * <li>root node for audio folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_AUDIO_NODE_ID} </li>
+ * <li>root node for picture folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PICTURE_NODE_ID} </li>
+ * <li>root node for pod-cast URLs: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PODCAST_NODE_ID} </li>
+ * <li>video / audio / picture folders defined in {@link net.holmes.core.configuration.Configuration} </li>
+ * <li>pod-cast URLs defined in {@link net.holmes.core.configuration.Configuration} </li>
+  *</ul>
+ */
+public final class ConfigurationNode implements Serializable {
     private static final long serialVersionUID = -476678562488489847L;
 
     public static final String ROOT_NODE_ID = "0";
@@ -36,7 +48,7 @@ public final class ContentFolder implements Serializable {
     private String label;
     private String path;
 
-    public ContentFolder(String id, String label, String path) {
+    public ConfigurationNode(String id, String label, String path) {
         this.id = id;
         this.label = label;
         this.path = path;

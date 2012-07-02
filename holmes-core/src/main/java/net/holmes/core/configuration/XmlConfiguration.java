@@ -82,10 +82,10 @@ public final class XmlConfiguration implements IConfiguration {
             }
         }
         if (config == null) config = new Configuration();
-        if (config.getVideoFolders() == null) config.setVideoFolders(new LinkedList<ContentFolder>());
-        if (config.getAudioFolders() == null) config.setAudioFolders(new LinkedList<ContentFolder>());
-        if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ContentFolder>());
-        if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ContentFolder>());
+        if (config.getVideoFolders() == null) config.setVideoFolders(new LinkedList<ConfigurationNode>());
+        if (config.getAudioFolders() == null) config.setAudioFolders(new LinkedList<ConfigurationNode>());
+        if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ConfigurationNode>());
+        if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ConfigurationNode>());
 
         LogUtil.setLevel(config.getLogLevel());
     }
@@ -175,7 +175,7 @@ public final class XmlConfiguration implements IConfiguration {
     private XStream getXStream() {
         XStream xs = new XStream(new DomDriver("UTF-8"));
         xs.alias("config", Configuration.class);
-        xs.alias("contentFolder", ContentFolder.class);
+        xs.alias("node", ConfigurationNode.class);
 
         return xs;
     }

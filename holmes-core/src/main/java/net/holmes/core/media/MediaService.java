@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import net.holmes.core.configuration.ContentFolder;
+import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
@@ -79,11 +79,11 @@ public final class MediaService implements IMediaService {
         bundle = ResourceBundle.getBundle("message");
         cacheManager = CacheManager.create();
         rootNodes = new HashMap<String, String>();
-        rootNodes.put(ContentFolder.ROOT_NODE_ID, "node.rootNode");
-        rootNodes.put(ContentFolder.ROOT_AUDIO_NODE_ID, "node.audio");
-        rootNodes.put(ContentFolder.ROOT_VIDEO_NODE_ID, "node.video");
-        rootNodes.put(ContentFolder.ROOT_PICTURE_NODE_ID, "node.picture");
-        rootNodes.put(ContentFolder.ROOT_PODCAST_NODE_ID, "node.podcast");
+        rootNodes.put(ConfigurationNode.ROOT_NODE_ID, "node.rootNode");
+        rootNodes.put(ConfigurationNode.ROOT_AUDIO_NODE_ID, "node.audio");
+        rootNodes.put(ConfigurationNode.ROOT_VIDEO_NODE_ID, "node.video");
+        rootNodes.put(ConfigurationNode.ROOT_PICTURE_NODE_ID, "node.picture");
+        rootNodes.put(ConfigurationNode.ROOT_PODCAST_NODE_ID, "node.podcast");
     }
 
     /* (non-Javadoc)
@@ -133,23 +133,23 @@ public final class MediaService implements IMediaService {
         if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
 
         List<AbstractNode> childNodes = null;
-        if (ContentFolder.ROOT_NODE_ID.equals(parentNode.getId())) {
+        if (ConfigurationNode.ROOT_NODE_ID.equals(parentNode.getId())) {
             childNodes = new ArrayList<AbstractNode>();
-            childNodes.add(getRootNode(ContentFolder.ROOT_AUDIO_NODE_ID, rootNodes.get(ContentFolder.ROOT_AUDIO_NODE_ID)));
-            childNodes.add(getRootNode(ContentFolder.ROOT_VIDEO_NODE_ID, rootNodes.get(ContentFolder.ROOT_VIDEO_NODE_ID)));
-            childNodes.add(getRootNode(ContentFolder.ROOT_PICTURE_NODE_ID, rootNodes.get(ContentFolder.ROOT_PICTURE_NODE_ID)));
-            childNodes.add(getRootNode(ContentFolder.ROOT_PODCAST_NODE_ID, rootNodes.get(ContentFolder.ROOT_PODCAST_NODE_ID)));
+            childNodes.add(getRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_AUDIO_NODE_ID)));
+            childNodes.add(getRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_VIDEO_NODE_ID)));
+            childNodes.add(getRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PICTURE_NODE_ID)));
+            childNodes.add(getRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PODCAST_NODE_ID)));
         }
-        else if (ContentFolder.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
+        else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
         }
-        else if (ContentFolder.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
+        else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
         }
-        else if (ContentFolder.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
+        else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
         }
-        else if (ContentFolder.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
+        else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
@@ -173,18 +173,18 @@ public final class MediaService implements IMediaService {
         return childNodes;
     }
 
-    private List<AbstractNode> getChildRootNodes(List<ContentFolder> contentFolders, boolean podcast, String mediaType) {
+    private List<AbstractNode> getChildRootNodes(List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         if (contentFolders != null && !contentFolders.isEmpty()) {
             if (podcast) {
                 // Add podcast nodes
-                for (ContentFolder contentFolder : contentFolders) {
+                for (ConfigurationNode contentFolder : contentFolders) {
                     nodes.add(getPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
                 }
             }
             else {
                 // Add folder nodes
-                for (ContentFolder contentFolder : contentFolders) {
+                for (ConfigurationNode contentFolder : contentFolders) {
                     File file = new File(contentFolder.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         StringBuilder nodeId = new StringBuilder();

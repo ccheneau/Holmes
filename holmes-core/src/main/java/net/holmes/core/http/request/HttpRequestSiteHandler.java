@@ -47,6 +47,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+/**
+ * Handler to serve pages of Holmes administration site
+ */
 public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
 

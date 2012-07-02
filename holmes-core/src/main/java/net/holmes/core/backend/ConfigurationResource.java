@@ -38,11 +38,18 @@ import net.holmes.core.backend.model.ConfigurationResponse;
 import net.holmes.core.backend.model.EditResponse;
 import net.holmes.core.backend.model.GridRow;
 import net.holmes.core.backend.model.ListGridRowsResponse;
-import net.holmes.core.configuration.ContentFolder;
+import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 
 import com.google.inject.Inject;
 
+/**
+ * Back-end REST resource for:
+ * <ul>
+ * <li>add / update / delete configuration nodes</li>
+ * <li>edit global configuration</li>
+ *</ul>
+ */
 @Path("/backend/configuration")
 public class ConfigurationResource {
 
@@ -53,6 +60,9 @@ public class ConfigurationResource {
     @Inject
     private IConfiguration configuration;
 
+    /**
+     * Get video configuration folders
+     */
     @GET
     @Path("/getVideoFolders")
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +70,9 @@ public class ConfigurationResource {
         return getConfigurationFolders(configuration.getConfig().getVideoFolders());
     }
 
+    /**
+     * Get audio configuration folders
+     */
     @GET
     @Path("/getAudioFolders")
     @Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +80,9 @@ public class ConfigurationResource {
         return getConfigurationFolders(configuration.getConfig().getAudioFolders());
     }
 
+    /**
+     * Get picture configuration folders
+     */
     @GET
     @Path("/getPictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +90,9 @@ public class ConfigurationResource {
         return getConfigurationFolders(configuration.getConfig().getPictureFolders());
     }
 
+    /**
+     * Get pod-casts 
+     */
     @GET
     @Path("/getPodcasts")
     @Produces(MediaType.APPLICATION_JSON)
@@ -81,6 +100,9 @@ public class ConfigurationResource {
         return getConfigurationFolders(configuration.getConfig().getPodcasts());
     }
 
+    /**
+     * Edit video configuration folder
+     */
     @POST
     @Path("/editVideoFolder")
     @Produces(MediaType.APPLICATION_JSON)
@@ -89,6 +111,9 @@ public class ConfigurationResource {
         return editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
     }
 
+    /**
+     * Edit audio configuration folder
+     */
     @POST
     @Path("/editAudioFolder")
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,6 +122,9 @@ public class ConfigurationResource {
         return editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
     }
 
+    /**
+     * Edit picture configuration folder
+     */
     @POST
     @Path("/editPictureFolder")
     @Produces(MediaType.APPLICATION_JSON)
@@ -105,6 +133,9 @@ public class ConfigurationResource {
         return editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
     }
 
+    /**
+     * Edit pod-cast
+     */
     @POST
     @Path("/editPodcast")
     @Produces(MediaType.APPLICATION_JSON)
@@ -113,18 +144,24 @@ public class ConfigurationResource {
         return editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
     }
 
+    /**
+     * Get global configuration
+     */
     @GET
     @Path("/getConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationResponse getConfiguration() {
         ConfigurationResponse response = new ConfigurationResponse();
         response.setHttpServerPort(configuration.getConfig().getHttpServerPort());
-        response.setServerName(configuration.getConfig().getServerName());
+        response.setServerName(configuration.getConfig().getUpnpServerName());
         response.setLogLevel(configuration.getConfig().getLogLevel());
 
         return response;
     }
 
+    /**
+     * Edit global configuration
+     */
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
@@ -134,6 +171,7 @@ public class ConfigurationResource {
         response.setStatus(true);
         response.setErrorCode(ErrorCode.NO_ERROR);
 
+        // Validate configuration
         if (serverName == null || serverName.trim().length() == 0) {
             response.setStatus(false);
             response.setErrorCode(ErrorCode.EMPTY_SERVER_NAME);
@@ -147,7 +185,8 @@ public class ConfigurationResource {
             response.setErrorCode(ErrorCode.EMPTY_LOG_LEVEL);
         }
         else {
-            configuration.getConfig().setServerName(serverName.trim());
+            // Save configuration
+            configuration.getConfig().setUpnpServerName(serverName.trim());
             configuration.getConfig().setHttpServerPort(httpServerPort);
             configuration.getConfig().setLogLevel(logLevel.trim());
             configuration.saveConfig();
@@ -155,7 +194,10 @@ public class ConfigurationResource {
         return response;
     }
 
-    private ListGridRowsResponse getConfigurationFolders(List<ContentFolder> folders) {
+    /**
+     * Get configuration folders
+     */
+    private ListGridRowsResponse getConfigurationFolders(List<ConfigurationNode> folders) {
         ListGridRowsResponse response = new ListGridRowsResponse();
         response.setPage(1);
         response.setTotal(1);
@@ -163,7 +205,7 @@ public class ConfigurationResource {
 
         Collection<GridRow> rows = new ArrayList<GridRow>();
         Collection<String> cell = null;
-        for (ContentFolder folder : folders) {
+        for (ConfigurationNode folder : folders) {
             cell = new ArrayList<String>();
             cell.add(folder.getId());
             cell.add(folder.getLabel());
@@ -175,7 +217,10 @@ public class ConfigurationResource {
         return response;
     }
 
-    private EditResponse editFolder(String operation, String id, String label, String path, List<ContentFolder> folders, boolean isPath) {
+    /**
+     * Edit configuration folder
+     */
+    private EditResponse editFolder(String operation, String id, String label, String path, List<ConfigurationNode> folders, boolean isPath) {
         EditResponse response = new EditResponse();
         response.setStatus(true);
         response.setOperation(operation);
@@ -184,8 +229,8 @@ public class ConfigurationResource {
 
         if (ADD_GRID_ROW_OPERATION.equals(operation)) {
             // Checks this folders does not exists
-            ContentFolder existingFolder = null;
-            for (ContentFolder folder : folders) {
+            ConfigurationNode existingFolder = null;
+            for (ConfigurationNode folder : folders) {
                 if (folder.getLabel().equals(label)) existingFolder = folder;
                 else if (folder.getPath().equals(path)) existingFolder = folder;
             }
@@ -193,7 +238,7 @@ public class ConfigurationResource {
                 ErrorCode validate = validatePath(path, isPath);
                 if (validate.code() == 0) {
                     // Adds a new folder
-                    ContentFolder configDirectory = new ContentFolder(UUID.randomUUID().toString(), label, path);
+                    ConfigurationNode configDirectory = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
                     folders.add(configDirectory);
                     response.setId(configDirectory.getId());
                 }
@@ -211,9 +256,9 @@ public class ConfigurationResource {
         }
         else if (EDIT_GRID_ROW_OPERATION.equals(operation)) {
             // Checks this folders exists
-            ContentFolder existingFolder = null;
+            ConfigurationNode existingFolder = null;
             boolean duplicated = false;
-            for (ContentFolder folder : folders) {
+            for (ConfigurationNode folder : folders) {
                 if (folder.getId().equals(id)) existingFolder = folder;
                 else {
                     if (folder.getLabel().equals(label)) duplicated = true;
@@ -248,8 +293,8 @@ public class ConfigurationResource {
         }
         else if (DELETE_GRID_ROW_OPERATION.equals(operation)) {
             // Checks this folders exists
-            ContentFolder existingFolder = null;
-            for (ContentFolder folder : folders) {
+            ConfigurationNode existingFolder = null;
+            for (ConfigurationNode folder : folders) {
                 if (folder.getId().equals(id)) existingFolder = folder;
             }
             if (existingFolder != null) {
@@ -274,15 +319,15 @@ public class ConfigurationResource {
         return response;
     }
 
+    /**
+     * Validate path or URL
+     */
     private ErrorCode validatePath(String path, boolean isPath) {
         if (isPath) {
             // Validate path
             File file = new File(path);
             if (!file.exists()) {
                 return ErrorCode.PATH_NOT_EXIST;
-            }
-            else if (!file.canRead() || file.isHidden()) {
-                return ErrorCode.PATH_NOT_READABLE;
             }
             else if (!file.canRead() || file.isHidden()) {
                 return ErrorCode.PATH_NOT_READABLE;

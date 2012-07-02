@@ -25,7 +25,15 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public interface IHttpRequestHandler {
+
+    /**
+     * Initialize handler
+     */
+    public abstract void initHandler();
+
+    /**
+     * Process request
+     */
     public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
 
-    public abstract void initHandler();
 }

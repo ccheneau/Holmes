@@ -27,32 +27,45 @@ import java.util.List;
 
 import net.holmes.core.util.LogUtil;
 
+/**
+ * Holmes configuration contains:
+ * <ul>
+ * <li>UPnP server name</li>
+ * <li>HTTP server port</li>
+ * <li>log level</li>
+ * <li>video folders</li>
+ * <li>audio folders</li>
+ * <li>picture folder</li>
+ * <li>pod-cast URLs</li>
+ * </ul>
+ *
+ */
 public final class Configuration implements Serializable {
     private static final long serialVersionUID = 1607439493422835211L;
 
-    private static final String DEFAULT_SERVER_NAME = "Holmes";
+    private static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     private static final String DEFAULT_LOG_LEVEL = "INFO";
     private static final int DEFAULT_HTTP_PORT = 8085;
 
-    private String serverName;
+    private String upnpServerName;
     private Integer httpServerPort;
     private String logLevel;
-    private LinkedList<ContentFolder> videoFolders;
-    private LinkedList<ContentFolder> pictureFolders;
-    private LinkedList<ContentFolder> audioFolders;
-    private LinkedList<ContentFolder> podcasts;
+    private LinkedList<ConfigurationNode> videoFolders;
+    private LinkedList<ConfigurationNode> pictureFolders;
+    private LinkedList<ConfigurationNode> audioFolders;
+    private LinkedList<ConfigurationNode> podcasts;
 
-    public String getServerName() {
-        if (serverName == null || serverName.trim().length() == 0) {
-            return DEFAULT_SERVER_NAME;
+    public String getUpnpServerName() {
+        if (upnpServerName == null || upnpServerName.trim().length() == 0) {
+            return DEFAULT_UPNP_SERVER_NAME;
         }
         else {
-            return serverName;
+            return upnpServerName;
         }
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
+    public void setUpnpServerName(String upnpServerName) {
+        this.upnpServerName = upnpServerName;
     }
 
     public Integer getHttpServerPort() {
@@ -82,43 +95,43 @@ public final class Configuration implements Serializable {
         LogUtil.setLevel(logLevel);
     }
 
-    public List<ContentFolder> getVideoFolders() {
+    public List<ConfigurationNode> getVideoFolders() {
         return videoFolders;
     }
 
-    public void setVideoFolders(LinkedList<ContentFolder> videoFolders) {
+    public void setVideoFolders(LinkedList<ConfigurationNode> videoFolders) {
         this.videoFolders = videoFolders;
     }
 
-    public List<ContentFolder> getPodcasts() {
+    public List<ConfigurationNode> getPodcasts() {
         return podcasts;
     }
 
-    public void setPodcasts(LinkedList<ContentFolder> podcasts) {
+    public void setPodcasts(LinkedList<ConfigurationNode> podcasts) {
         this.podcasts = podcasts;
     }
 
-    public List<ContentFolder> getAudioFolders() {
+    public List<ConfigurationNode> getAudioFolders() {
         return audioFolders;
     }
 
-    public void setAudioFolders(LinkedList<ContentFolder> audioFolders) {
+    public void setAudioFolders(LinkedList<ConfigurationNode> audioFolders) {
         this.audioFolders = audioFolders;
     }
 
-    public List<ContentFolder> getPictureFolders() {
+    public List<ConfigurationNode> getPictureFolders() {
         return pictureFolders;
     }
 
-    public void setPictureFolders(LinkedList<ContentFolder> pictureFolders) {
+    public void setPictureFolders(LinkedList<ConfigurationNode> pictureFolders) {
         this.pictureFolders = pictureFolders;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Configuration [serverName=");
-        builder.append(serverName);
+        builder.append("Configuration [upnpServerName=");
+        builder.append(upnpServerName);
         builder.append(", httpServerPort=");
         builder.append(httpServerPort);
         builder.append(", logLevel=");

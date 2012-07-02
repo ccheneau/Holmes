@@ -72,7 +72,7 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
         // Set handler for streaming contents
         handler.setHttpContentHandler(contentRequestHandler);
 
-        // Set handler for back-end REST requests
+        // Set handler for backend REST requests
         handler.setHttpBackendHandler(backendRequestHandler);
 
         // Set handler for admin site requests

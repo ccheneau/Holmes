@@ -48,6 +48,9 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
+ */
 public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 

@@ -22,16 +22,38 @@
 package net.holmes.core.configuration;
 
 public interface IConfiguration {
+    /**
+     * Location of configuration folder relative to Holmes home directory
+     */
     public static final String HOME_CONF_FOLDER = "conf";
+
+    /**
+     * Location of site folder relative to Holmes home directory
+     */
     public static final String HOME_SITE_FOLDER = "site";
 
+    /**
+     * Save configuration
+     */
     public abstract void saveConfig();
 
+    /**
+     * Get {@link net.holmes.core.configuration.Configuration} 
+     */
     public abstract Configuration getConfig();
 
+    /**
+     * Get Holmes home directory
+     */
     public abstract String getHomeDirectory();
 
+    /**
+     * Get directory that contains Holmes configuration (log file and {@link net.holmes.core.configuration.Configuration} file)
+     */
     public abstract String getHomeConfigDirectory();
 
+    /**
+     * Get directory that contains sources for Holmes administration site
+     */
     public abstract String getHomeSiteDirectory();
 }
