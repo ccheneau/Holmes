@@ -84,18 +84,13 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.6.5</version>
+				<version>1.6.6</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.5</version>
+				<version>1.6.6</version>
 				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jul-to-slf4j</artifactId>
-				<version>1.6.5</version>
 			</dependency>
 
 			<!-- log4j -->
@@ -152,6 +147,12 @@
 				<groupId>org.teleal</groupId>
 				<artifactId>teleal-common</artifactId>
 				<version>1.0.14</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.sun</groupId>
+						<artifactId>tools</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- rome -->
@@ -165,22 +166,22 @@
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>1.13-b01</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-core</artifactId>
-				<version>1.13-b01</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-json</artifactId>
-				<version>1.13-b01</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-guice</artifactId>
-				<version>1.13-b01</version>
+				<version>1.13</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.google.inject.extensions</groupId>
@@ -197,7 +198,7 @@
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
-				<version>1.9.7</version>
+				<version>1.9.8</version>
 			</dependency>
 
 			<!-- ehcache -->
