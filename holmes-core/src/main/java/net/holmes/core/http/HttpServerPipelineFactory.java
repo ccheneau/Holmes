@@ -21,8 +21,7 @@
 */
 package net.holmes.core.http;
 
-import net.holmes.core.http.request.IHttpRequestHandler;
-
+import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -40,16 +39,8 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
     private static Logger logger = LoggerFactory.getLogger(HttpServerPipelineFactory.class);
 
     @Inject
-    @Named("content")
-    private IHttpRequestHandler contentRequestHandler;
-
-    @Inject
-    @Named("backend")
-    private IHttpRequestHandler backendRequestHandler;
-
-    @Inject
-    @Named("site")
-    private IHttpRequestHandler siteRequestHandler;
+    @Named("http")
+    private ChannelHandler httpServerHandler;
 
     /* (non-Javadoc)
     * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
@@ -67,19 +58,8 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
         pipeline.addLast("encoder", new HttpResponseEncoder());
         pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
 
-        HttpServerHandler handler = new HttpServerHandler();
-
-        // Set handler for streaming contents
-        handler.setHttpContentHandler(contentRequestHandler);
-
-        // Set handler for backend REST requests
-        handler.setHttpBackendHandler(backendRequestHandler);
-
-        // Set handler for admin site requests
-        handler.setHttpSiteHandler(siteRequestHandler);
-
-        // Add handler
-        pipeline.addLast("handler", handler);
+        // Add http server handler
+        pipeline.addLast("handler", httpServerHandler);
 
         if (logger.isDebugEnabled()) logger.debug("[END] getPipeline");
         return pipeline;

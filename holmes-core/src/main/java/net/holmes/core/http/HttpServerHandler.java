@@ -48,27 +48,26 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
  */
 public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 
-    private IHttpRequestHandler httpContentHandler;
-    private IHttpRequestHandler httpSiteHandler;
-    private IHttpRequestHandler httpBackendHandler;
+    @Inject
+    @Named("content")
+    private IHttpRequestHandler contentRequestHandler;
 
-    public void setHttpContentHandler(IHttpRequestHandler httpContentHandler) {
-        this.httpContentHandler = httpContentHandler;
-    }
+    @Inject
+    @Named("backend")
+    private IHttpRequestHandler backendRequestHandler;
 
-    public void setHttpSiteHandler(IHttpRequestHandler httpSiteHandler) {
-        this.httpSiteHandler = httpSiteHandler;
-    }
-
-    public void setHttpBackendHandler(IHttpRequestHandler httpBackendHandler) {
-        this.httpBackendHandler = httpBackendHandler;
-    }
+    @Inject
+    @Named("site")
+    private IHttpRequestHandler siteRequestHandler;
 
     /* (non-Javadoc)
      * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#messageReceived(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.MessageEvent)
@@ -82,13 +81,13 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
 
         try {
             if (decoder.getPath().equals(HttpRequestContentHandler.PATH)) {
-                httpContentHandler.processRequest(request, e.getChannel());
+                contentRequestHandler.processRequest(request, e.getChannel());
             }
             else if (decoder.getPath().startsWith(HttpRequestBackendHandler.PATH)) {
-                httpBackendHandler.processRequest(request, e.getChannel());
+                backendRequestHandler.processRequest(request, e.getChannel());
             }
             else {
-                httpSiteHandler.processRequest(request, e.getChannel());
+                siteRequestHandler.processRequest(request, e.getChannel());
             }
         }
         catch (HttpRequestException ex) {
