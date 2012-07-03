@@ -126,7 +126,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 DIDLContent didl = new DIDLContent();
 
                 AbstractNode browseNode = mediaService.getNode(objectID);
-                logger.debug("browse node:" + browseNode);
+                if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
                 if (browseNode != null) {
                     if (browseNode instanceof FolderNode) {
@@ -209,9 +209,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     /**
      * Adds content to didl
-     * @param parentNodeId
-     * @param contentNode
-     * @param didl
      */
     private void addContent(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
         StringBuilder url = new StringBuilder();
@@ -231,30 +228,24 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             // Adds video
             Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
             if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
-
             didl.addItem(movie);
         }
         else if (contentNode.getContentType().isAudio()) {
             // Adds audio track
             MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
             if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
-
             didl.addItem(musicTrack);
         }
         else if (contentNode.getContentType().isImage()) {
             // Adds image
             Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
             if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
-
             didl.addItem(photo);
         }
     }
 
     /**
      * Adds folder to didl
-     * @param parentNodeId
-     * @param folderNode
-     * @param didl
      */
     private void addFolder(String parentNodeId, FolderNode folderNode, DIDLContent didl) {
         if (logger.isDebugEnabled()) logger.debug("add folder node:" + folderNode);
@@ -269,9 +260,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     /**
      * Add pod-cast to didl
-     * @param parentNodeId
-     * @param podcastNode
-     * @param didl
      */
     private void addPodcast(String parentNodeId, PodcastNode podcastNode, DIDLContent didl) {
         if (logger.isDebugEnabled()) logger.debug("add podcast item:" + podcastNode);
@@ -283,8 +271,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     /**
      * Adds pod-cast items to didl
-     * @param parentNode
-     * @param didl
      * @return the number of added items
      */
     private int addPodcastItems(PodcastNode parentNode, DIDLContent didl) {
