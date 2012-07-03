@@ -118,21 +118,4 @@ public final class HttpServer implements IServer {
             logger.info("Http server stop complete");
         }
     }
-
-    /* (non-Javadoc)
-    * @see net.holmes.core.IServer#getStatus()
-    */
-    @Override
-    public boolean getStatus() {
-        return channel != null && channel.isBound();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#restart()
-     */
-    @Override
-    public void restart() {
-        if (getStatus()) stop();
-        start();
-    }
 }

@@ -60,24 +60,6 @@ public final class HolmesServer implements IServer {
         upnpServer.stop();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#getStatus()
-     */
-    @Override
-    public boolean getStatus() {
-        return httpServer.getStatus() && upnpServer.getStatus();
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#restart()
-     */
-    @Override
-    public void restart() {
-        // Restart Holmes server
-        upnpServer.restart();
-        httpServer.restart();
-    }
-
     public static void main(String[] args) {
         // Load log configuration
         LogUtil.loadConfig();

@@ -27,7 +27,4 @@ public interface IServer {
 
     public abstract void stop();
 
-    public abstract void restart();
-
-    public abstract boolean getStatus();
 }

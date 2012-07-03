@@ -120,21 +120,4 @@ public final class UpnpServer implements IServer {
         services[1] = connectionService;
         return new LocalDevice(identity, type, details, services);
     }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#getStatus()
-     */
-    @Override
-    public boolean getStatus() {
-        return upnpService != null;
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#restart()
-     */
-    @Override
-    public void restart() {
-        if (getStatus()) stop();
-        start();
-    }
 }
