@@ -22,6 +22,7 @@
 package net.holmes.core.util;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -42,16 +43,12 @@ public class LogUtil {
 
     public static void setLevel(String level) {
         // Set level to java.util.logging
-        // java.util.logging.Level julLevel = java.util.logging.Level.OFF;
-        // if (level.equalsIgnoreCase("debug")) julLevel =
-        // java.util.logging.Level.FINE;
-        // else if (level.equalsIgnoreCase("info")) julLevel =
-        // java.util.logging.Level.INFO;
-        // else if (level.equalsIgnoreCase("warn")) julLevel =
-        // java.util.logging.Level.WARNING;
-        // else if (level.equalsIgnoreCase("error")) julLevel =
-        // java.util.logging.Level.SEVERE;
-        // Logger.getLogger("").setLevel(julLevel);
+        java.util.logging.Level julLevel = java.util.logging.Level.OFF;
+        if (level.equalsIgnoreCase("debug")) julLevel = java.util.logging.Level.FINE;
+        else if (level.equalsIgnoreCase("info")) julLevel = java.util.logging.Level.INFO;
+        else if (level.equalsIgnoreCase("warn")) julLevel = java.util.logging.Level.WARNING;
+        else if (level.equalsIgnoreCase("error")) julLevel = java.util.logging.Level.SEVERE;
+        Logger.getLogger("").setLevel(julLevel);
 
         // Set log4j level
         LogManager.getLoggerRepository().setThreshold(Level.toLevel(level));
