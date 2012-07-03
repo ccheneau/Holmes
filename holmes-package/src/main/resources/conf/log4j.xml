@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration threshold="info" xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration threshold="error" xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
@@ -34,7 +34,7 @@
 	</appender>
 
 	<root>
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="STDERR" />
 		<appender-ref ref="FILE" />
