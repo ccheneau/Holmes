@@ -74,6 +74,14 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     }
 
     /* (non-Javadoc)
+     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
+     */
+    @Override
+    public boolean canProcess(String requestPath) {
+        return true;
+    }
+
+    /* (non-Javadoc)
      * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override

@@ -32,6 +32,11 @@ public interface IHttpRequestHandler {
     public abstract void initHandler();
 
     /**
+     * Check if handler can process request
+     */
+    public boolean canProcess(String requestPath);
+
+    /**
      * Process request
      */
     public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;

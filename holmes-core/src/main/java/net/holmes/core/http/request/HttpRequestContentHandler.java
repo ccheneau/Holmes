@@ -53,7 +53,7 @@ import com.google.inject.Inject;
 public final class HttpRequestContentHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
-    public final static String PATH = "/content";
+    public final static String REQUEST_PATH = "/content";
 
     @Inject
     private IMediaService mediaService;
@@ -67,6 +67,14 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
     @Override
     @Inject
     public void initHandler() {
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
+     */
+    @Override
+    public boolean canProcess(String requestPath) {
+        return requestPath.startsWith(REQUEST_PATH);
     }
 
     /* (non-Javadoc)

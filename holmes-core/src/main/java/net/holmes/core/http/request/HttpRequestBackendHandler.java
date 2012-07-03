@@ -68,7 +68,7 @@ import com.sun.jersey.spi.container.WebApplicationFactory;
 public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestBackendHandler.class);
 
-    public final static String PATH = "/backend/";
+    private final static String REQUEST_PATH = "/backend/";
 
     private WebApplication application;
 
@@ -105,6 +105,14 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     }
 
     /* (non-Javadoc)
+     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
+     */
+    @Override
+    public boolean canProcess(String requestPath) {
+        return requestPath.startsWith(REQUEST_PATH);
+    }
+
+    /* (non-Javadoc)
      * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
      */
     @Override
@@ -134,7 +142,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
         try {
 
             // Define base URL
-            String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + PATH;
+            String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + REQUEST_PATH;
             final URI baseUri = new URI(base);
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
 

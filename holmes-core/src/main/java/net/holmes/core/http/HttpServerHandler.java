@@ -23,8 +23,6 @@ package net.holmes.core.http;
 
 import java.io.IOException;
 
-import net.holmes.core.http.request.HttpRequestBackendHandler;
-import net.holmes.core.http.request.HttpRequestContentHandler;
 import net.holmes.core.http.request.HttpRequestException;
 import net.holmes.core.http.request.IHttpRequestHandler;
 
@@ -80,10 +78,10 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
 
         try {
-            if (decoder.getPath().equals(HttpRequestContentHandler.PATH)) {
+            if (contentRequestHandler.canProcess(decoder.getPath())) {
                 contentRequestHandler.processRequest(request, e.getChannel());
             }
-            else if (decoder.getPath().startsWith(HttpRequestBackendHandler.PATH)) {
+            else if (backendRequestHandler.canProcess(decoder.getPath())) {
                 backendRequestHandler.processRequest(request, e.getChannel());
             }
             else {
