@@ -24,12 +24,12 @@ package net.holmes.core.http.request;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Map.Entry;
 
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
+import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -86,10 +86,7 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
         // Debug
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
-            logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders()) {
-                logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
-            }
+            LogUtil.debugHttpRequest(logger, request);
         }
 
         try {
@@ -146,15 +143,9 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
             else {
                 throw new HttpRequestException("Invalid start offset", HttpResponseStatus.BAD_REQUEST);
             }
-
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("Response: " + response);
-                for (Entry<String, String> entry : response.getHeaders()) {
-                    logger.debug("Response header: " + entry.getKey() + " ==> " + entry.getValue());
-                }
-            }
+            LogUtil.debugHttpResponse(logger, response);
 
             // Write the header.
             channel.write(response);

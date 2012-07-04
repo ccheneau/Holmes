@@ -25,12 +25,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -40,12 +41,10 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,23 +120,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
         // Debug log
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
-            logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders()) {
-                logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
-            }
-
-            if (request.getMethod().equals(HttpMethod.POST)) {
-                ChannelBuffer content = request.getContent();
-                if (content.readable()) {
-                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + content.toString(Charset.forName("utf-8")));
-                    Map<String, List<String>> params = queryStringDecoder.getParameters();
-                    if (params != null) {
-                        for (String paramKey : params.keySet()) {
-                            logger.debug("Post parameter: " + paramKey + " => " + params.get(paramKey));
-                        }
-                    }
-                }
-            }
+            LogUtil.debugHttpRequest(logger, request);
         }
         try {
 

@@ -25,11 +25,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Map.Entry;
 
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.model.IContentTypeFactory;
+import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -59,8 +59,6 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     @Inject
     private IContentTypeFactory contentTypeFactory;
 
-    private String homeSiteDirectory;
-
     public HttpRequestSiteHandler() {
     }
 
@@ -70,7 +68,6 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     @Override
     @Inject
     public void initHandler() {
-        homeSiteDirectory = configuration.getHomeSiteDirectory();
     }
 
     /* (non-Javadoc)
@@ -88,10 +85,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
-            logger.debug("Request uri: " + request.getUri());
-            for (Entry<String, String> entry : request.getHeaders()) {
-                logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
-            }
+            LogUtil.debugHttpRequest(logger, request);
         }
 
         // Get file name
@@ -105,7 +99,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
 
-        String filePath = homeSiteDirectory + fileName;
+        String filePath = configuration.getHomeSiteDirectory() + fileName;
 
         if (logger.isDebugEnabled()) logger.debug("file path:" + filePath);
 
@@ -113,16 +107,16 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             // Get file
             File file = new File(filePath);
             if (file == null || !file.exists() || !file.canRead() || file.isHidden()) {
-                logger.warn("resource not found:" + fileName);
+                if (logger.isWarnEnabled()) logger.warn("resource not found:" + fileName);
                 throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
             }
 
+            // Read the file
             RandomAccessFile raf = new RandomAccessFile(file, "r");
-            long fileLength = raf.length();
 
             // Compute HttpHeader
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-            HttpHeaders.setContentLength(response, fileLength);
+            HttpHeaders.setContentLength(response, raf.length());
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             String contentType = contentTypeFactory.getContentType(fileName).getContentType();
             if (contentType != null) {
@@ -132,8 +126,8 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             // Write the header.
             channel.write(response);
 
-            // Write the content.
-            ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, 0, fileLength, 8192));
+            // Write the file.
+            ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, 0, raf.length(), 8192));
 
             // Decide whether to close the connection or not.
             if (!HttpHeaders.isKeepAlive(request)) {
@@ -142,11 +136,11 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             }
         }
         catch (FileNotFoundException fnfe) {
-            logger.warn("resource not found:" + fileName);
+            if (logger.isWarnEnabled()) logger.warn("resource not found:" + fileName);
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
         catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
             throw new HttpRequestException("", HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
         finally {
