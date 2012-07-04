@@ -99,18 +99,19 @@ public final class MediaService implements IMediaService {
             node = getRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null) {
-            String[] nodeParams = nodeId.split("\\|");
-            if (nodeParams != null && nodeParams.length == 2) {
-                if (ContentType.TYPE_PODCAST.equals(nodeParams[0])) {
+            // Get node parameters
+            NodeParams nodeParams = new NodeParams(nodeId);
+            if (nodeParams.isValid()) {
+                if (ContentType.TYPE_PODCAST.equals(nodeParams.getType())) {
                     // podcast node
-                    node = getPodcastNode("", nodeParams[1]);
+                    node = getPodcastNode("", nodeParams.getPath());
                 }
                 else {
-                    File nodeFile = new File(nodeParams[1]);
+                    File nodeFile = new File(nodeParams.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
                             // content node
-                            node = getContentNode(nodeId, nodeFile, nodeParams[0]);
+                            node = getContentNode(nodeId, nodeFile, nodeParams.getType());
                         }
                         else if (nodeFile.isDirectory()) {
                             // folder node
@@ -134,6 +135,7 @@ public final class MediaService implements IMediaService {
 
         List<AbstractNode> childNodes = null;
         if (ConfigurationNode.ROOT_NODE_ID.equals(parentNode.getId())) {
+            // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
             childNodes = new ArrayList<AbstractNode>();
             childNodes.add(getRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_AUDIO_NODE_ID)));
             childNodes.add(getRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_VIDEO_NODE_ID)));
@@ -141,29 +143,34 @@ public final class MediaService implements IMediaService {
             childNodes.add(getRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PODCAST_NODE_ID)));
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
+            // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
             childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
         }
         else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
+            // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
             childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
         }
         else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
+            // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
             childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
         }
         else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
+            // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
             childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
-            String[] nodeParams = parentNode.getId().split("\\|");
-            if (nodeParams != null && nodeParams.length == 2) {
-                if (ContentType.TYPE_PODCAST.equals(nodeParams[0])) {
+            // Get node parameters
+            NodeParams nodeParams = new NodeParams(parentNode.getId());
+            if (nodeParams.isValid()) {
+                if (ContentType.TYPE_PODCAST.equals(nodeParams.getType())) {
                     // get podcast child nodes
-                    childNodes = getPodcastChildNodes(nodeParams[1]);
+                    childNodes = getPodcastChildNodes(nodeParams.getPath());
                 }
                 else {
-                    File node = new File(nodeParams[1]);
+                    File node = new File(nodeParams.getPath());
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
                         // get folder child nodes
-                        childNodes = getFolderChildNodes(node, nodeParams[0]);
+                        childNodes = getFolderChildNodes(node, nodeParams.getType());
                     }
                 }
             }
@@ -173,6 +180,9 @@ public final class MediaService implements IMediaService {
         return childNodes;
     }
 
+    /**
+     * Get childs of a root node
+     */
     private List<AbstractNode> getChildRootNodes(List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         if (contentFolders != null && !contentFolders.isEmpty()) {
@@ -197,6 +207,9 @@ public final class MediaService implements IMediaService {
         return nodes;
     }
 
+    /**
+     * Get childs of a folder node
+     */
     private List<AbstractNode> getFolderChildNodes(File folder, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         File[] files = folder.listFiles();
@@ -222,6 +235,11 @@ public final class MediaService implements IMediaService {
         return nodes;
     }
 
+    /**
+     * Get childs of a pod-cast node
+     * A pod-cast is a RSS feed URL
+     * @return contents parsed from RSS feed
+     */
     @SuppressWarnings("unchecked")
     private List<AbstractNode> getPodcastChildNodes(String url) {
         List<AbstractNode> podcastItemNodes = null;
@@ -342,4 +360,31 @@ public final class MediaService implements IMediaService {
         return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());
     }
 
+    /**
+     * Node parameters for nodes having id with format "nodeType|Path or Url" 
+     */
+    private class NodeParams {
+        private String nodeType = null;;
+        private String nodePath = null;
+
+        public NodeParams(String nodeId) {
+            String[] nodeParams = nodeId.split("\\|");
+            if (nodeParams != null && nodeParams.length == 2) {
+                nodeType = nodeParams[0];
+                nodePath = nodeParams[1];
+            }
+        }
+
+        public boolean isValid() {
+            return nodeType != null && nodePath != null;
+        }
+
+        public String getType() {
+            return this.nodeType;
+        }
+
+        public String getPath() {
+            return this.getPath();
+        }
+    }
 }
