@@ -49,14 +49,18 @@ public final class HolmesServerModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+        // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
 
+        // Bind media service
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
         bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
 
+        // Bind servers
         bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
 
+        // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
         bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpServerHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpRequestContentHandler.class);
