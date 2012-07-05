@@ -2,7 +2,7 @@
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
 	monitoring="autodetect" dynamicConfig="true">
 
-	<cache name="podcastItems" 
+	<cache name="podcastEntries" 
 		maxElementsInMemory="500" 
 		eternal="false" 
 		overflowToDisk="false" 

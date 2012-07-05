@@ -87,7 +87,7 @@ public final class XmlConfiguration implements IConfiguration {
         if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ConfigurationNode>());
         if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ConfigurationNode>());
 
-        LogUtil.setLevel(config.getLogLevel());
+        LogUtil.setLogLevel(config.getLogLevel());
     }
 
     /* (non-Javadoc)

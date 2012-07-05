@@ -41,7 +41,7 @@ import net.holmes.core.model.ContentNode;
 import net.holmes.core.model.ContentType;
 import net.holmes.core.model.FolderNode;
 import net.holmes.core.model.IContentTypeFactory;
-import net.holmes.core.model.PodcastItemNode;
+import net.holmes.core.model.PodcastEntryNode;
 import net.holmes.core.model.PodcastNode;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -53,7 +53,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
@@ -96,7 +95,7 @@ public final class MediaService implements IMediaService {
 
         if (rootNodes.get(nodeId) != null) {
             // root node
-            node = getRootNode(nodeId, rootNodes.get(nodeId));
+            node = buildRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null) {
             // Get node parameters
@@ -104,18 +103,18 @@ public final class MediaService implements IMediaService {
             if (nodeParams.isValid()) {
                 if (ContentType.TYPE_PODCAST.equals(nodeParams.getType())) {
                     // podcast node
-                    node = getPodcastNode("", nodeParams.getPath());
+                    node = buildPodcastNode("", nodeParams.getPath());
                 }
                 else {
                     File nodeFile = new File(nodeParams.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
                             // content node
-                            node = getContentNode(nodeId, nodeFile, nodeParams.getType());
+                            node = buildContentNode(nodeId, nodeFile, nodeParams.getType());
                         }
                         else if (nodeFile.isDirectory()) {
                             // folder node
-                            node = getFolderNode(nodeId, nodeFile.getName(), nodeFile);
+                            node = buildFolderNode(nodeId, nodeFile.getName(), nodeFile);
                         }
                     }
                 }
@@ -137,10 +136,10 @@ public final class MediaService implements IMediaService {
         if (ConfigurationNode.ROOT_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
             childNodes = new ArrayList<AbstractNode>();
-            childNodes.add(getRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_AUDIO_NODE_ID)));
-            childNodes.add(getRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_VIDEO_NODE_ID)));
-            childNodes.add(getRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PICTURE_NODE_ID)));
-            childNodes.add(getRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PODCAST_NODE_ID)));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_AUDIO_NODE_ID)));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_VIDEO_NODE_ID)));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PICTURE_NODE_ID)));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PODCAST_NODE_ID)));
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
@@ -189,7 +188,7 @@ public final class MediaService implements IMediaService {
             if (podcast) {
                 // Add podcast nodes
                 for (ConfigurationNode contentFolder : contentFolders) {
-                    nodes.add(getPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
+                    nodes.add(buildPodcastNode(contentFolder.getLabel(), contentFolder.getPath()));
                 }
             }
             else {
@@ -199,7 +198,7 @@ public final class MediaService implements IMediaService {
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         StringBuilder nodeId = new StringBuilder();
                         nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
-                        nodes.add(getFolderNode(nodeId.toString(), contentFolder.getLabel(), file));
+                        nodes.add(buildFolderNode(nodeId.toString(), contentFolder.getLabel(), file));
                     }
                 }
             }
@@ -222,11 +221,11 @@ public final class MediaService implements IMediaService {
                     nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
                     if (file.isDirectory()) {
                         // Add folder node
-                        node = getFolderNode(nodeId.toString(), file.getName(), file);
+                        node = buildFolderNode(nodeId.toString(), file.getName(), file);
                     }
                     else {
                         // Add content node
-                        node = getContentNode(nodeId.toString(), file, mediaType);
+                        node = buildContentNode(nodeId.toString(), file, mediaType);
                     }
                 }
                 if (node != null) nodes.add(node);
@@ -238,42 +237,41 @@ public final class MediaService implements IMediaService {
     /**
      * Get childs of a pod-cast node
      * A pod-cast is a RSS feed URL
-     * @return contents parsed from RSS feed
+     * @return entries parsed from RSS feed
      */
     @SuppressWarnings("unchecked")
     private List<AbstractNode> getPodcastChildNodes(String url) {
-        List<AbstractNode> podcastItemNodes = null;
-        Cache podcastItemsCache = cacheManager.getCache("podcastItems");
+        List<AbstractNode> podcastEntryNodes = null;
+        Cache podcastEntriesCache = cacheManager.getCache("podcastEntries");
 
-        // Try to read items from cache
-        if (podcastItemsCache.get(url) == null) {
-            // No items in cache, read them from RSS feed
+        // Try to read entries from cache
+        if (podcastEntriesCache.get(url) == null) {
+            // No entries in cache, read them from RSS feed
             XmlReader reader = null;
-            URL feedSource;
             try {
                 // Get RSS feed entries
-                feedSource = new URL(url);
+                URL feedSource = new URL(url);
                 reader = new XmlReader(feedSource);
-                SyndFeed feed = new SyndFeedInput().build(reader);
-                List<SyndEntry> rssEntries = feed.getEntries();
+                List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                 if (rssEntries != null && !rssEntries.isEmpty()) {
-                    podcastItemNodes = new ArrayList<AbstractNode>();
+                    podcastEntryNodes = new ArrayList<AbstractNode>();
                     for (SyndEntry rssEntry : rssEntries) {
+                        // Add node for each feed entries
                         if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
                             for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                                PodcastItemNode podcastItemNode = new PodcastItemNode();
-                                podcastItemNode.setId(UUID.randomUUID().toString());
-                                podcastItemNode.setName(rssEntry.getTitle());
+                                PodcastEntryNode podcastEntryNode = new PodcastEntryNode();
+                                podcastEntryNode.setId(UUID.randomUUID().toString());
+                                podcastEntryNode.setName(rssEntry.getTitle());
                                 if (rssEntry.getPublishedDate() != null) {
-                                    podcastItemNode.setModifedDate(formatUpnpDate(rssEntry.getPublishedDate().getTime()));
+                                    podcastEntryNode.setModifedDate(formatUpnpDate(rssEntry.getPublishedDate().getTime()));
                                 }
                                 if (enclosure.getType() != null) {
-                                    podcastItemNode.setContentType(new ContentType(enclosure.getType()));
+                                    podcastEntryNode.setContentType(new ContentType(enclosure.getType()));
                                 }
-                                podcastItemNode.setSize(enclosure.getLength());
-                                podcastItemNode.setUrl(enclosure.getUrl());
+                                podcastEntryNode.setSize(enclosure.getLength());
+                                podcastEntryNode.setUrl(enclosure.getUrl());
 
-                                podcastItemNodes.add(podcastItemNode);
+                                podcastEntryNodes.add(podcastEntryNode);
                             }
                         }
                     }
@@ -292,7 +290,7 @@ public final class MediaService implements IMediaService {
                 logger.error(e.getMessage(), e);
             }
             finally {
-                // Close reader
+                // Close the reader
                 try {
                     if (reader != null) reader.close();
                 }
@@ -300,25 +298,24 @@ public final class MediaService implements IMediaService {
                     logger.error(e.getMessage(), e);
                 }
             }
-
-            // Add items to cache
-            podcastItemsCache.put(new Element(url, podcastItemNodes));
+            // Add entries to cache
+            podcastEntriesCache.put(new Element(url, podcastEntryNodes));
         }
         else {
-            // Get items from cache
-            podcastItemNodes = (List<AbstractNode>) (podcastItemsCache.get(url).getValue());
+            // Get entries from cache
+            podcastEntryNodes = (List<AbstractNode>) (podcastEntriesCache.get(url).getValue());
         }
-        return podcastItemNodes;
+        return podcastEntryNodes;
     }
 
-    private FolderNode getRootNode(String nodeId, String bundleKey) {
+    private FolderNode buildRootNode(String nodeId, String bundleKey) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
         node.setName(bundle.getString(bundleKey));
         return node;
     }
 
-    private FolderNode getFolderNode(String nodeId, String name, File folder) {
+    private FolderNode buildFolderNode(String nodeId, String name, File folder) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
         node.setName(name);
@@ -327,7 +324,7 @@ public final class MediaService implements IMediaService {
         return node;
     }
 
-    private ContentNode getContentNode(String nodeId, File file, String mediaType) {
+    private ContentNode buildContentNode(String nodeId, File file, String mediaType) {
         ContentNode node = null;
 
         // Check content type
@@ -344,7 +341,7 @@ public final class MediaService implements IMediaService {
         return node;
     }
 
-    private PodcastNode getPodcastNode(String name, String url) {
+    private PodcastNode buildPodcastNode(String name, String url) {
         PodcastNode node = new PodcastNode();
         StringBuilder nodeId = new StringBuilder();
         nodeId.append(ContentType.TYPE_PODCAST).append("|").append(url);
@@ -384,7 +381,7 @@ public final class MediaService implements IMediaService {
         }
 
         public String getPath() {
-            return this.getPath();
+            return this.nodePath;
         }
     }
 }

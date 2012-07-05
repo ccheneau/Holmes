@@ -26,16 +26,10 @@ import java.io.Serializable;
 public abstract class AbstractNode implements Comparable<AbstractNode>, Serializable {
     private static final long serialVersionUID = 5909549322056486631L;
 
-    public final static String TYPE_FOLDER = "folder";
-    public final static String TYPE_CONTENT = "content";
-    public final static String TYPE_PODCAST = "podcast";
-    public final static String TYPE_PODCAST_ITEM = "podcastItem";
-
     protected String id;
     protected String name;
-    protected String path;
     protected String modifedDate;
-    protected String type;
+    protected NodeType type;
 
     public String getId() {
         return id;
@@ -53,15 +47,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         this.name = name;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getType() {
+    public NodeType getType() {
         return type;
     }
 
@@ -70,8 +56,8 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
      */
     @Override
     public int compareTo(AbstractNode o) {
-        if (this.getType().equals(o.getType())) return this.name.compareTo(o.name);
-        else if (this.getType().equals(TYPE_FOLDER)) return -1;
+        if (this.getType() == o.getType()) return this.name.compareTo(o.name);
+        else if (this.getType() == NodeType.TYPE_FOLDER) return -1;
         else return 1;
     }
 
@@ -90,8 +76,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

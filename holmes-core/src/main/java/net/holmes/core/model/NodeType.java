@@ -21,40 +21,26 @@
 */
 package net.holmes.core.model;
 
-public final class PodcastNode extends AbstractNode {
-    private static final long serialVersionUID = 1970454850754589123L;
+public enum NodeType {
 
-    private String url;
+    TYPE_FOLDER("folder"), //
+    TYPE_CONTENT("content"), //
+    TYPE_PODCAST("podcast"), //
+    TYPE_PODCAST_ENTRY("podcastEntry");
 
-    public PodcastNode() {
-        type = NodeType.TYPE_PODCAST;
+    private String value;
+
+    NodeType(String value) {
+        this.value = value;
     }
 
-    public String getUrl() {
-        return url;
+    public String getValue() {
+        return this.value;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.model.AbstractNode#toString()
-     */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PodcastNode [url=");
-        builder.append(url);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append("]");
-        return builder.toString();
+        return this.value;
     }
+
 }

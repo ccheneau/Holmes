@@ -92,7 +92,7 @@ public final class Configuration implements Serializable {
 
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
-        LogUtil.setLevel(logLevel);
+        LogUtil.setLogLevel(logLevel);
     }
 
     public List<ConfigurationNode> getVideoFolders() {

@@ -50,7 +50,7 @@ public class LogUtil {
         }
     }
 
-    public static void setLevel(String level) {
+    public static void setLogLevel(String level) {
         // Set level to java.util.logging
         java.util.logging.Level julLevel = java.util.logging.Level.OFF;
         if (level.equalsIgnoreCase("debug")) julLevel = java.util.logging.Level.FINE;

@@ -26,9 +26,10 @@ public final class ContentNode extends AbstractNode {
 
     private ContentType contentType;
     private Long size;
+    private String path;
 
     public ContentNode() {
-        type = TYPE_CONTENT;
+        type = NodeType.TYPE_CONTENT;
     }
 
     public ContentType getContentType() {
@@ -45,6 +46,14 @@ public final class ContentNode extends AbstractNode {
 
     public void setSize(Long size) {
         this.size = size;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /* (non-Javadoc)

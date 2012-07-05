@@ -25,7 +25,17 @@ public final class FolderNode extends AbstractNode {
     private static final long serialVersionUID = 8129761596085917631L;
 
     public FolderNode() {
-        type = TYPE_FOLDER;
+        type = NodeType.TYPE_FOLDER;
+    }
+
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @Override
@@ -44,5 +54,4 @@ public final class FolderNode extends AbstractNode {
         builder.append("]");
         return builder.toString();
     }
-
 }

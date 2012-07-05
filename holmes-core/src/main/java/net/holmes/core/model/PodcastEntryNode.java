@@ -21,15 +21,15 @@
 */
 package net.holmes.core.model;
 
-public final class PodcastItemNode extends AbstractNode {
+public final class PodcastEntryNode extends AbstractNode {
     private static final long serialVersionUID = -8336088869310788944L;
 
     private ContentType contentType;
     private Long size;
     private String url;
 
-    public PodcastItemNode() {
-        type = TYPE_PODCAST_ITEM;
+    public PodcastEntryNode() {
+        type = NodeType.TYPE_PODCAST_ENTRY;
     }
 
     public ContentType getContentType() {
@@ -59,7 +59,7 @@ public final class PodcastItemNode extends AbstractNode {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("PodcastItemNode [contentType=");
+        builder.append("PodcastEntryNode [contentType=");
         builder.append(contentType);
         builder.append(", size=");
         builder.append(size);
