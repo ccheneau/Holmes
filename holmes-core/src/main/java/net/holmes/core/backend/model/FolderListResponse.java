@@ -24,13 +24,13 @@ package net.holmes.core.backend.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-public class ListGridRowsResponse implements Serializable {
+public class FolderListResponse implements Serializable {
     private static final long serialVersionUID = 936714380923230317L;
 
     private int page;
     private int total;
     private int records;
-    private Collection<GridRow> rows;
+    private Collection<Folder> folders;
 
     public int getPage() {
         return page;
@@ -56,11 +56,11 @@ public class ListGridRowsResponse implements Serializable {
         this.records = records;
     }
 
-    public Collection<GridRow> getRows() {
-        return rows;
+    public Collection<Folder> getFolders() {
+        return folders;
     }
 
-    public void setRows(Collection<GridRow> rows) {
-        this.rows = rows;
+    public void setFolders(Collection<Folder> folders) {
+        this.folders = folders;
     }
 }

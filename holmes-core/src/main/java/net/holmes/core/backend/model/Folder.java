@@ -22,32 +22,20 @@
 package net.holmes.core.backend.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 
-import net.holmes.core.backend.ErrorCode;
+public class Folder implements Serializable {
+    private static final long serialVersionUID = -7055943024207235434L;
 
-public class EditResponse implements Serializable {
-    private static final long serialVersionUID = 4829835251156005404L;
-
-    private boolean status;
-    private String message;
     private String id;
-    private String operation;
-    private int errorCode;
+    private Collection<String> cell;
 
-    public boolean getStatus() {
-        return status;
+    public Folder() {
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public Folder(String id, Collection<String> cell) {
+        this.id = id;
+        this.cell = cell;
     }
 
     public String getId() {
@@ -58,24 +46,11 @@ public class EditResponse implements Serializable {
         this.id = id;
     }
 
-    public String getOperation() {
-        return operation;
+    public Collection<String> getCell() {
+        return cell;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode.code();
-        this.message = errorCode.message();
+    public void setCell(Collection<String> cell) {
+        this.cell = cell;
     }
 }

@@ -35,9 +35,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.model.ConfigurationResponse;
-import net.holmes.core.backend.model.EditResponse;
-import net.holmes.core.backend.model.GridRow;
-import net.holmes.core.backend.model.ListGridRowsResponse;
+import net.holmes.core.backend.model.EditFolderResponse;
+import net.holmes.core.backend.model.Folder;
+import net.holmes.core.backend.model.FolderListResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 
@@ -66,7 +66,7 @@ public class ConfigurationResource {
     @GET
     @Path("/getVideoFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ListGridRowsResponse getVideoFolders() {
+    public FolderListResponse getVideoFolders() {
         return getConfigurationFolders(configuration.getConfig().getVideoFolders());
     }
 
@@ -76,7 +76,7 @@ public class ConfigurationResource {
     @GET
     @Path("/getAudioFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ListGridRowsResponse getAudioFolders() {
+    public FolderListResponse getAudioFolders() {
         return getConfigurationFolders(configuration.getConfig().getAudioFolders());
     }
 
@@ -86,7 +86,7 @@ public class ConfigurationResource {
     @GET
     @Path("/getPictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ListGridRowsResponse getPictureFolders() {
+    public FolderListResponse getPictureFolders() {
         return getConfigurationFolders(configuration.getConfig().getPictureFolders());
     }
 
@@ -96,7 +96,7 @@ public class ConfigurationResource {
     @GET
     @Path("/getPodcasts")
     @Produces(MediaType.APPLICATION_JSON)
-    public ListGridRowsResponse getPodcasts() {
+    public FolderListResponse getPodcasts() {
         return getConfigurationFolders(configuration.getConfig().getPodcasts());
     }
 
@@ -106,7 +106,7 @@ public class ConfigurationResource {
     @POST
     @Path("/editVideoFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditFolderResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
         return editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
     }
@@ -117,7 +117,7 @@ public class ConfigurationResource {
     @POST
     @Path("/editAudioFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditFolderResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
         return editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
     }
@@ -128,7 +128,7 @@ public class ConfigurationResource {
     @POST
     @Path("/editPictureFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditFolderResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
         return editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
     }
@@ -139,7 +139,7 @@ public class ConfigurationResource {
     @POST
     @Path("/editPodcast")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditFolderResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
         return editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
     }
@@ -165,9 +165,9 @@ public class ConfigurationResource {
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
+    public EditFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
             @FormParam("logLevel") String logLevel) {
-        EditResponse response = new EditResponse();
+        EditFolderResponse response = new EditFolderResponse();
         response.setStatus(true);
         response.setErrorCode(ErrorCode.NO_ERROR);
 
@@ -197,31 +197,31 @@ public class ConfigurationResource {
     /**
      * Get configuration folders
      */
-    private ListGridRowsResponse getConfigurationFolders(List<ConfigurationNode> folders) {
-        ListGridRowsResponse response = new ListGridRowsResponse();
+    private FolderListResponse getConfigurationFolders(List<ConfigurationNode> configFolders) {
+        FolderListResponse response = new FolderListResponse();
         response.setPage(1);
         response.setTotal(1);
-        response.setRecords(folders.size());
+        response.setRecords(configFolders.size());
 
-        Collection<GridRow> rows = new ArrayList<GridRow>();
+        Collection<Folder> folders = new ArrayList<Folder>();
         Collection<String> cell = null;
-        for (ConfigurationNode folder : folders) {
+        for (ConfigurationNode folder : configFolders) {
             cell = new ArrayList<String>();
             cell.add(folder.getId());
             cell.add(folder.getLabel());
             cell.add(folder.getPath());
-            rows.add(new GridRow(folder.getId(), cell));
+            folders.add(new Folder(folder.getId(), cell));
         }
 
-        response.setRows(rows);
+        response.setFolders(folders);
         return response;
     }
 
     /**
      * Edit configuration folder
      */
-    private EditResponse editFolder(String operation, String id, String label, String path, List<ConfigurationNode> folders, boolean isPath) {
-        EditResponse response = new EditResponse();
+    private EditFolderResponse editFolder(String operation, String id, String label, String path, List<ConfigurationNode> folders, boolean isPath) {
+        EditFolderResponse response = new EditFolderResponse();
         response.setStatus(true);
         response.setOperation(operation);
         response.setId(id);
