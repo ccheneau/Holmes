@@ -60,7 +60,7 @@ import com.sun.syndication.io.XmlReader;
 public final class MediaService implements IMediaService {
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
 
-    private static String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     @Inject
     private IConfiguration configuration;
@@ -98,19 +98,19 @@ public final class MediaService implements IMediaService {
             node = buildRootNode(nodeId, rootNodes.get(nodeId));
         }
         else if (nodeId != null) {
-            // Get node parameters
-            NodeParams nodeParams = new NodeParams(nodeId);
-            if (nodeParams.isValid()) {
-                if (ContentType.TYPE_PODCAST.equals(nodeParams.getType())) {
+            // Get node id
+            NodeId id = new NodeId(nodeId);
+            if (id.isValid()) {
+                if (ContentType.TYPE_PODCAST.equals(id.getType())) {
                     // podcast node
-                    node = buildPodcastNode("", nodeParams.getPath());
+                    node = buildPodcastNode("", id.getPath());
                 }
                 else {
-                    File nodeFile = new File(nodeParams.getPath());
+                    File nodeFile = new File(id.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
                             // content node
-                            node = buildContentNode(nodeId, nodeFile, nodeParams.getType());
+                            node = buildContentNode(nodeId, nodeFile, id.getType());
                         }
                         else if (nodeFile.isDirectory()) {
                             // folder node
@@ -158,18 +158,18 @@ public final class MediaService implements IMediaService {
             childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
-            // Get node parameters
-            NodeParams nodeParams = new NodeParams(parentNode.getId());
-            if (nodeParams.isValid()) {
-                if (ContentType.TYPE_PODCAST.equals(nodeParams.getType())) {
+            // Get node id
+            NodeId id = new NodeId(parentNode.getId());
+            if (id.isValid()) {
+                if (ContentType.TYPE_PODCAST.equals(id.getType())) {
                     // get podcast child nodes
-                    childNodes = getPodcastChildNodes(nodeParams.getPath());
+                    childNodes = getPodcastChildNodes(id.getPath());
                 }
                 else {
-                    File node = new File(nodeParams.getPath());
+                    File node = new File(id.getPath());
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
                         // get folder child nodes
-                        childNodes = getFolderChildNodes(node, nodeParams.getType());
+                        childNodes = getFolderChildNodes(node, id.getType());
                     }
                 }
             }
@@ -196,9 +196,8 @@ public final class MediaService implements IMediaService {
                 for (ConfigurationNode contentFolder : contentFolders) {
                     File file = new File(contentFolder.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
-                        StringBuilder nodeId = new StringBuilder();
-                        nodeId.append(mediaType).append("|").append(file.getAbsolutePath());
-                        nodes.add(buildFolderNode(nodeId.toString(), contentFolder.getLabel(), file));
+                        NodeId id = new NodeId(mediaType, file.getAbsolutePath());
+                        nodes.add(buildFolderNode(id.getNodeId(), contentFolder.getLabel(), file));
                     }
                 }
             }
@@ -343,9 +342,8 @@ public final class MediaService implements IMediaService {
 
     private PodcastNode buildPodcastNode(String name, String url) {
         PodcastNode node = new PodcastNode();
-        StringBuilder nodeId = new StringBuilder();
-        nodeId.append(ContentType.TYPE_PODCAST).append("|").append(url);
-        node.setId(nodeId.toString());
+        NodeId id = new NodeId(ContentType.TYPE_PODCAST, url);
+        node.setId(id.getNodeId());
         node.setName(name);
         node.setUrl(url);
         return node;
@@ -360,16 +358,23 @@ public final class MediaService implements IMediaService {
     /**
      * Node parameters for nodes having id with format "nodeType|Path or Url" 
      */
-    private class NodeParams {
+    private class NodeId {
         private String nodeType = null;;
         private String nodePath = null;
 
-        public NodeParams(String nodeId) {
-            String[] nodeParams = nodeId.split("\\|");
+        private static final String SEPARATOR = "|";
+
+        public NodeId(String nodeId) {
+            String[] nodeParams = nodeId.split("\\" + SEPARATOR);
             if (nodeParams != null && nodeParams.length == 2) {
-                nodeType = nodeParams[0];
-                nodePath = nodeParams[1];
+                this.nodeType = nodeParams[0];
+                this.nodePath = nodeParams[1];
             }
+        }
+
+        public NodeId(String nodeType, String nodePath) {
+            this.nodeType = nodeType;
+            this.nodePath = nodePath;
         }
 
         public boolean isValid() {
@@ -382,6 +387,12 @@ public final class MediaService implements IMediaService {
 
         public String getPath() {
             return this.nodePath;
+        }
+
+        public String getNodeId() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.nodeType).append(SEPARATOR).append(this.nodePath);
+            return sb.toString();
         }
     }
 }
