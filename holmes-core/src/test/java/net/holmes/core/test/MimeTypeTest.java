@@ -23,8 +23,8 @@ package net.holmes.core.test;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.model.ContentType;
-import net.holmes.core.model.IContentTypeFactory;
+import net.holmes.core.util.IMimeTypeFactory;
+import net.holmes.core.util.MimeType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,67 +35,55 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-/**
- * The Class ContentTypeTest.
- */
-public class ContentTypeTest extends TestCase
-{
-    private static Logger logger = LoggerFactory.getLogger(ContentTypeTest.class);
+public class MimeTypeTest extends TestCase {
+    private static Logger logger = LoggerFactory.getLogger(MimeTypeTest.class);
 
-    /** The content type factory. */
     @Inject
-    private IContentTypeFactory contentTypeFactory;
+    private IMimeTypeFactory mimeTypeFactory;
 
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
     }
 
     /**
-     * Test content type.
+     * Test mime type.
      */
     @Test
-    public void testContentType()
-    {
-        try
-        {
+    public void testMimeType() {
+        try {
             String fileName = "movie.avi";
 
-            ContentType contentType = contentTypeFactory.getContentType(fileName);
+            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
 
-            assertNotNull(contentType);
-            logger.debug(contentType.toString());
-            assertEquals("video", contentType.getType());
-            assertEquals("video/x-msvideo", contentType.getContentType());
+            assertNotNull(mimeType);
+            logger.debug(mimeType.toString());
+            assertEquals("video", mimeType.getType());
+            assertEquals("video/x-msvideo", mimeType.getMimeType());
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
     /**
-     * Test wrong content type.
+     * Test wrong mime type.
      */
     @Test
-    public void testWrongContentType()
-    {
-        try
-        {
+    public void testWrongMimeType() {
+        try {
             String fileName = "movie.blabla";
 
-            ContentType contentType = contentTypeFactory.getContentType(fileName);
+            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
 
-            assertNull(contentType);
+            assertNull(mimeType);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             fail(e.getMessage());
         }
     }

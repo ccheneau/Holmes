@@ -32,9 +32,9 @@ import net.holmes.core.http.request.HttpRequestSiteHandler;
 import net.holmes.core.http.request.IHttpRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.model.ContentTypeFactory;
-import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.util.MimeTypeFactory;
+import net.holmes.core.util.IMimeTypeFactory;
 
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -54,7 +54,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind media service
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-        bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
+        bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
 
         // Bind servers
         bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);

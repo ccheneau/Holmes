@@ -28,7 +28,7 @@ import java.io.RandomAccessFile;
 
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.model.IContentTypeFactory;
+import net.holmes.core.util.IMimeTypeFactory;
 import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.channel.Channel;
@@ -57,7 +57,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     private IConfiguration configuration;
 
     @Inject
-    private IContentTypeFactory contentTypeFactory;
+    private IMimeTypeFactory mimeTypeFactory;
 
     public HttpRequestSiteHandler() {
     }
@@ -118,9 +118,9 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
-            String contentType = contentTypeFactory.getContentType(fileName).getContentType();
-            if (contentType != null) {
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, contentTypeFactory.getContentType(fileName).getContentType());
+            String mimeType = mimeTypeFactory.getMimeType(fileName).getMimeType();
+            if (mimeType != null) {
+                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType);
             }
 
             // Write the header.

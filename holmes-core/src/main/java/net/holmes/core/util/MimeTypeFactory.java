@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +28,12 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ContentTypeFactory implements IContentTypeFactory {
-    private static Logger logger = LoggerFactory.getLogger(ContentTypeFactory.class);
+public final class MimeTypeFactory implements IMimeTypeFactory {
+    private static Logger logger = LoggerFactory.getLogger(MimeTypeFactory.class);
 
     private Properties properties = null;
 
-    public ContentTypeFactory() {
+    public MimeTypeFactory() {
         // Load mime types from property file
         properties = new Properties();
         InputStream in = null;
@@ -55,20 +55,19 @@ public final class ContentTypeFactory implements IContentTypeFactory {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.model.IContentTypeFactory#getContentType(java.lang.String)
+     * @see net.holmes.core.util.IMimeTypeFactory#getMimeType(java.lang.String)
      */
     @Override
-    public ContentType getContentType(String fileName) {
+    public MimeType getMimeType(String fileName) {
         // Get file extension
         String ext = "";
         int mid = fileName.lastIndexOf(".");
         ext = fileName.substring(mid + 1, fileName.length());
 
-        // Get content type
-        String mimeType = properties.getProperty(ext);
-        ContentType contentType = null;
-        if (mimeType != null) contentType = new ContentType(mimeType);
+        // Get mime type
+        MimeType mimeType = null;
+        if (properties.getProperty(ext) != null) mimeType = new MimeType(properties.getProperty(ext));
 
-        return contentType;
+        return mimeType;
     }
 }

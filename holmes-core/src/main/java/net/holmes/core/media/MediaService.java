@@ -38,11 +38,11 @@ import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
-import net.holmes.core.model.ContentType;
 import net.holmes.core.model.FolderNode;
-import net.holmes.core.model.IContentTypeFactory;
 import net.holmes.core.model.PodcastEntryNode;
 import net.holmes.core.model.PodcastNode;
+import net.holmes.core.util.IMimeTypeFactory;
+import net.holmes.core.util.MimeType;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -66,7 +66,7 @@ public final class MediaService implements IMediaService {
     private IConfiguration configuration;
 
     @Inject
-    private IContentTypeFactory contentTypeFactory;
+    private IMimeTypeFactory mimeTypeFactory;
 
     private CacheManager cacheManager;
 
@@ -101,7 +101,7 @@ public final class MediaService implements IMediaService {
             // Get node id
             NodeId id = new NodeId(nodeId);
             if (id.isValid()) {
-                if (ContentType.TYPE_PODCAST.equals(id.getType())) {
+                if (MimeType.TYPE_PODCAST.equals(id.getType())) {
                     // podcast node
                     node = buildPodcastNode("", id.getPath());
                 }
@@ -143,15 +143,15 @@ public final class MediaService implements IMediaService {
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, ContentType.TYPE_AUDIO);
+            childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, MimeType.TYPE_AUDIO);
         }
         else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, ContentType.TYPE_VIDEO);
+            childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, MimeType.TYPE_VIDEO);
         }
         else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, ContentType.TYPE_IMAGE);
+            childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, MimeType.TYPE_IMAGE);
         }
         else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
@@ -161,7 +161,7 @@ public final class MediaService implements IMediaService {
             // Get node id
             NodeId id = new NodeId(parentNode.getId());
             if (id.isValid()) {
-                if (ContentType.TYPE_PODCAST.equals(id.getType())) {
+                if (MimeType.TYPE_PODCAST.equals(id.getType())) {
                     // get podcast child nodes
                     childNodes = getPodcastChildNodes(id.getPath());
                 }
@@ -265,7 +265,7 @@ public final class MediaService implements IMediaService {
                                     podcastEntryNode.setModifedDate(formatUpnpDate(rssEntry.getPublishedDate().getTime()));
                                 }
                                 if (enclosure.getType() != null) {
-                                    podcastEntryNode.setContentType(new ContentType(enclosure.getType()));
+                                    podcastEntryNode.setMimeType(new MimeType(enclosure.getType()));
                                 }
                                 podcastEntryNode.setSize(enclosure.getLength());
                                 podcastEntryNode.setUrl(enclosure.getUrl());
@@ -326,14 +326,14 @@ public final class MediaService implements IMediaService {
     private ContentNode buildContentNode(String nodeId, File file, String mediaType) {
         ContentNode node = null;
 
-        // Check content type
-        ContentType contentType = contentTypeFactory.getContentType(file.getName());
-        if (contentType != null && contentType.getType().equals(mediaType)) {
+        // Check mime type
+        MimeType mimeType = mimeTypeFactory.getMimeType(file.getName());
+        if (mimeType != null && mimeType.getType().equals(mediaType)) {
             node = new ContentNode();
             node.setId(nodeId);
             node.setName(file.getName());
             node.setPath(file.getAbsolutePath());
-            node.setContentType(contentType);
+            node.setMimeType(mimeType);
             node.setSize(file.length());
             node.setModifedDate(formatUpnpDate(file.lastModified()));
         }
@@ -342,7 +342,7 @@ public final class MediaService implements IMediaService {
 
     private PodcastNode buildPodcastNode(String name, String url) {
         PodcastNode node = new PodcastNode();
-        NodeId id = new NodeId(ContentType.TYPE_PODCAST, url);
+        NodeId id = new NodeId(MimeType.TYPE_PODCAST, url);
         node.setId(id.getNodeId());
         node.setName(name);
         node.setUrl(url);

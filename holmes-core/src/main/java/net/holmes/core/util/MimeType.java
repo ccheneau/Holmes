@@ -19,11 +19,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.util;
 
 import java.io.Serializable;
 
-public final class ContentType implements Serializable {
+public final class MimeType implements Serializable {
     private static final long serialVersionUID = -1521224459310661472L;
 
     public final static String TYPE_VIDEO = "video";
@@ -33,19 +33,19 @@ public final class ContentType implements Serializable {
 
     private String type;
     private String subType;
-    private String contentType;
+    private String mimeType;
 
-    public ContentType(String contentType) {
-        this.contentType = contentType;
-        String[] types = contentType.split("/");
+    public MimeType(String mimeType) {
+        this.mimeType = mimeType;
+        String[] types = mimeType.split("/");
         if (types != null && types.length > 1) {
             this.type = types[0];
             this.subType = types[1];
         }
     }
 
-    public String getContentType() {
-        return this.contentType;
+    public String getMimeType() {
+        return this.mimeType;
     }
 
     public String getType() {
@@ -78,12 +78,12 @@ public final class ContentType implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ContentType [type=");
+        builder.append("MimeType [type=");
         builder.append(type);
         builder.append(", subType=");
         builder.append(subType);
-        builder.append(", contentType=");
-        builder.append(contentType);
+        builder.append(", mimeType=");
+        builder.append(mimeType);
         builder.append("]");
         return builder.toString();
     }

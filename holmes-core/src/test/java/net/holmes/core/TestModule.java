@@ -25,8 +25,8 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.TestConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.model.ContentTypeFactory;
-import net.holmes.core.model.IContentTypeFactory;
+import net.holmes.core.util.MimeTypeFactory;
+import net.holmes.core.util.IMimeTypeFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -45,7 +45,7 @@ public class TestModule extends AbstractModule {
 
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
 
-        bind(IContentTypeFactory.class).to(ContentTypeFactory.class).in(Singleton.class);
+        bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
 
     }
 

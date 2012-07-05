@@ -21,10 +21,12 @@
 */
 package net.holmes.core.model;
 
+import net.holmes.core.util.MimeType;
+
 public final class ContentNode extends AbstractNode {
     private static final long serialVersionUID = 7636797693582850834L;
 
-    private ContentType contentType;
+    private MimeType mimeType;
     private Long size;
     private String path;
 
@@ -32,12 +34,12 @@ public final class ContentNode extends AbstractNode {
         type = NodeType.TYPE_CONTENT;
     }
 
-    public ContentType getContentType() {
-        return contentType;
+    public MimeType getMimeType() {
+        return this.mimeType;
     }
 
-    public void setContentType(ContentType contentType) {
-        this.contentType = contentType;
+    public void setMimeType(MimeType mimeType) {
+        this.mimeType = mimeType;
     }
 
     public Long getSize() {
@@ -62,8 +64,8 @@ public final class ContentNode extends AbstractNode {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ContentNode [contentType=");
-        builder.append(contentType);
+        builder.append("ContentNode [mimeType=");
+        builder.append(mimeType);
         builder.append(", size=");
         builder.append(size);
         builder.append(", id=");

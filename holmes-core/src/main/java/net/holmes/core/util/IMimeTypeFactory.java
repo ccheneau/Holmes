@@ -19,8 +19,8 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.util;
 
-public interface IContentTypeFactory {
-    public abstract ContentType getContentType(String fileName);
+public interface IMimeTypeFactory {
+    public abstract MimeType getMimeType(String fileName);
 }

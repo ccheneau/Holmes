@@ -31,10 +31,10 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
-import net.holmes.core.model.ContentType;
 import net.holmes.core.model.FolderNode;
 import net.holmes.core.model.PodcastEntryNode;
 import net.holmes.core.model.PodcastNode;
+import net.holmes.core.util.MimeType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +61,6 @@ import org.teleal.cling.support.model.container.StorageFolder;
 import org.teleal.cling.support.model.item.Movie;
 import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.model.item.Photo;
-import org.teleal.common.util.MimeType;
 
 @UpnpStateVariables({ @UpnpStateVariable(name = "A_ARG_TYPE_ObjectID", sendEvents = false, datatype = "string"),
         @UpnpStateVariable(name = "A_ARG_TYPE_Result", sendEvents = false, datatype = "string"),
@@ -221,22 +220,22 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             logger.debug("url:" + url);
         }
 
-        MimeType mimeType = new MimeType(contentNode.getContentType().getType(), contentNode.getContentType().getSubType());
-        Res res = new Res(mimeType, contentNode.getSize(), url.toString());
+        Res res = new Res(new org.teleal.common.util.MimeType(contentNode.getMimeType().getType(), contentNode.getMimeType().getSubType()),
+                contentNode.getSize(), url.toString());
 
-        if (contentNode.getContentType().isVideo()) {
+        if (contentNode.getMimeType().isVideo()) {
             // Adds video
             Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
             if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
             didl.addItem(movie);
         }
-        else if (contentNode.getContentType().isAudio()) {
+        else if (contentNode.getMimeType().isAudio()) {
             // Adds audio track
             MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
             if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
             didl.addItem(musicTrack);
         }
-        else if (contentNode.getContentType().isImage()) {
+        else if (contentNode.getMimeType().isImage()) {
             // Adds image
             Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
             if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
@@ -281,16 +280,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             for (AbstractNode node : childNodes) {
                 if (node instanceof PodcastEntryNode) {
                     podcastEntryNode = (PodcastEntryNode) node;
-                    ContentType feedEntryType = null;
                     MimeType mimeType = null;
                     Res res = null;
-                    feedEntryType = podcastEntryNode.getContentType();
-                    if (feedEntryType.isMedia()) {
-                        mimeType = new MimeType(feedEntryType.getType(), feedEntryType.getSubType());
-                        res = new Res(mimeType, podcastEntryNode.getSize(), podcastEntryNode.getUrl());
+                    mimeType = podcastEntryNode.getMimeType();
+                    if (mimeType.isMedia()) {
+                        res = new Res(new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType()), podcastEntryNode.getSize(),
+                                podcastEntryNode.getUrl());
                         if (logger.isDebugEnabled()) logger.debug("add podcast entry:" + podcastEntryNode.getName() + " " + podcastEntryNode.getUrl());
 
-                        if (feedEntryType.isAudio()) {
+                        if (mimeType.isAudio()) {
                             // Add audio track
                             MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", "", "",
                                     res);
@@ -299,7 +297,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                             didl.addItem(musicTrack);
                             itemCount++;
                         }
-                        else if (feedEntryType.isImage()) {
+                        else if (mimeType.isImage()) {
                             // Adds image
                             Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", "", res);
                             if (podcastEntryNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
@@ -308,7 +306,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                             itemCount++;
 
                         }
-                        else if (feedEntryType.isVideo()) {
+                        else if (mimeType.isVideo()) {
                             // Adds video
                             Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", res);
                             if (podcastEntryNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));

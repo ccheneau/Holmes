@@ -133,7 +133,7 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
             if (startOffset == 0) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
                 HttpHeaders.setContentLength(response, fileLength);
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getContentType().getContentType());
+                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
                 response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, "bytes");
             }
             else if (startOffset > 0 && startOffset < fileLength) {
