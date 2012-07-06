@@ -25,8 +25,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.holmes.core.util.LogUtil;
-
 /**
  * Holmes configuration contains:
  * <ul>
@@ -44,12 +42,10 @@ public final class Configuration implements Serializable {
     private static final long serialVersionUID = 1607439493422835211L;
 
     private static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    private static final String DEFAULT_LOG_LEVEL = "ERROR";
     private static final int DEFAULT_HTTP_PORT = 8085;
 
     private String upnpServerName;
     private Integer httpServerPort;
-    private String logLevel;
     private LinkedList<ConfigurationNode> videoFolders;
     private LinkedList<ConfigurationNode> pictureFolders;
     private LinkedList<ConfigurationNode> audioFolders;
@@ -79,20 +75,6 @@ public final class Configuration implements Serializable {
 
     public void setHttpServerPort(Integer httpServerPort) {
         this.httpServerPort = httpServerPort;
-    }
-
-    public String getLogLevel() {
-        if (logLevel == null || logLevel.trim().length() == 0) {
-            return DEFAULT_LOG_LEVEL;
-        }
-        else {
-            return logLevel;
-        }
-    }
-
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
-        LogUtil.setLogLevel(logLevel);
     }
 
     public List<ConfigurationNode> getVideoFolders() {
@@ -134,8 +116,6 @@ public final class Configuration implements Serializable {
         builder.append(upnpServerName);
         builder.append(", httpServerPort=");
         builder.append(httpServerPort);
-        builder.append(", logLevel=");
-        builder.append(logLevel);
         builder.append(", videoFolders=");
         builder.append(videoFolders);
         builder.append(", pictureFolders=");

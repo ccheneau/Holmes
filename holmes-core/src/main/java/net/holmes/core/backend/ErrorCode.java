@@ -32,8 +32,7 @@ public enum ErrorCode {
     MALFORMATTED_URL(7, "Malformatted URL"), //
     DUPLICATED_FOLDER(8, "Duplicated folder"), //
     EMPTY_SERVER_NAME(9, "Server name is not defined"), //
-    EMPTY_HTTP_SERVER_PORT(10, "Http server port is not defined"), //
-    EMPTY_LOG_LEVEL(11, "Trace level is not defined");
+    EMPTY_HTTP_SERVER_PORT(10, "Http server port is not defined");
 
     private final int code;
     private String message;

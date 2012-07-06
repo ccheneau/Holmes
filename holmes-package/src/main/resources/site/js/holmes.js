@@ -2,7 +2,7 @@ $.extend(
 		// Default jqgrid options
 		$.jgrid.defaults, { 
 			datatype: "json", 
-			height: 300,
+			height: 250,
 			hidegrid: false,
 			pgbuttons: false,
 			pginput: false,
@@ -176,7 +176,6 @@ $(document).ready(function() {
 	    $("#configuration_fieldset").addClass("ui-widget ui-widget-content ui-corner-all");
 	    $("#text_server_name").addClass("ui-state-default ui-corner-all hover");
 	    $("#text_http_server_port").addClass("ui-state-default ui-corner-all hover");
-	    $("#select_log_level").addClass("ui-state-default ui-corner-all hover");
 	    $("#btn_submit").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
 	    $("#btn_submit").html($("#btn_submit").html() + "<span class='ui-icon ui-icon-disk'></span>");
 	    $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
@@ -199,7 +198,6 @@ $(document).ready(function() {
 		    $.getJSON('/backend/configuration/getConfiguration', function(response) {
 		    		$("#text_server_name").val(response.serverName);
 		    		$("#text_http_server_port").val(response.httpServerPort);
-		    		$("#select_log_level").val(response.logLevel);
 		    });
 	    }
 	    loadConfiguration();
@@ -208,8 +206,7 @@ $(document).ready(function() {
 	    $('#btn_submit').click(function() {
 	    	$.post('/backend/configuration/editConfiguration',
 	    			{serverName : $("#text_server_name").val(),
-	    				httpServerPort : $("#text_http_server_port").val(),
-	    				logLevel : $("#select_log_level").val()
+	    				httpServerPort : $("#text_http_server_port").val()
 	    			},
 	    			function(response) {
 	    				if (response.status){

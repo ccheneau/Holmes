@@ -18,16 +18,14 @@
 	
 	<body>
     	<header>
-			<div id="header">
-				<span id="title">Holmes</span>
-				<span id="version">version 0.2.0</span>
-			</div>
+    		<div id="title">Holmes</div>
 			<div id="toolbar">
 				<ul>
 					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes"><span class="i18n" data-msg="msg.toolbar.holmesOnGitHub">Holmes on GitHub</span></a></li>
 					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes/wiki"><span class="i18n" data-msg="msg.toolbar.wiki">Wiki</span></a></li>
 				</ul>
 			</div>
+			<div id="version">version 0.2.0</div>
     	</header>
 		<div id="tabs">
 			<ul>
@@ -74,18 +72,6 @@
 								<tr>
 									<td class="i18n" data-msg="msg.config.httpServerPort">Http server port</td>
 									<td><input id="text_http_server_port" type="text" size="6" name="httpServerPort" /></td>
-								</tr>
-								<tr>
-									<td class="i18n" data-msg="msg.config.logLevel">Trace level</td>
-									<td>
-										<select id="select_log_level" name="logLevel">
-											<option value="OFF" class="i18n" data-msg="msg.config.logLevel.off">No trace</option>
-											<option value="DEBUG" class="i18n" data-msg="msg.config.logLevel.debug">Debug</option>
-											<option value="INFO" class="i18n" data-msg="msg.config.logLevel.info">Info</option>
-											<option value="WARNING" class="i18n" data-msg="msg.config.logLevel.warning">Warning</option>
-											<option value="ERROR" class="i18n" data-msg="msg.config.logLevel.error">Error</option>
-										</select> 
-									</td>
 								</tr>
 								<tr>
 									<td colspan="2" align="center">

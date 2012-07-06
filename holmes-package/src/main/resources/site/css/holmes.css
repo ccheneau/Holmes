@@ -10,7 +10,7 @@ html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address
 
 html {
 	overflow-y: scroll;
-	background: #FFFFFF url('images/bck.png') repeat-x scroll;
+	background: #F7F7F7 url('images/bck.png') repeat-x scroll;
 }
 
 body {
@@ -25,36 +25,28 @@ header {
 	width: 100%;
 }
 
-#header {
-    margin-left: auto;
-    margin-right: auto;
-	width:800px;
-	height: 60px;
-}
-
 #title {
 	display:block;
 	color: #B8C0CB;
-	font-size: 4em;
+	font-size: 3em;
 	letter-spacing: 1pt;
 	font-family: Verdana, Geneva, sans-serif;
 	font-weight: bold;
 	float: left;
     margin-left: 60px;
-    margin-top: 5px;
 }
 
 #version {
 	color: white;
-	float: right;
-    margin-top: 40px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 14px;
 }
 
 #toolbar {
-    margin-left: auto;
-    margin-right: auto;
-	width:800px;
+    margin-left: 600px;
 	height: 40px;
+    float: left;
 }
 
 #toolbar  ul{
@@ -63,7 +55,7 @@ header {
 }
 
 .toolbar-state-hover {
-	background-color:#373E47;
+	background-color:#434C56;
 }
 
 #toolbar  li{
@@ -93,7 +85,7 @@ header {
     margin-left: auto;
     margin-right: auto;
 	width:800px;
-	height: 450px;
+	height: 400px;
 }
 
 #configuration_video_folders {

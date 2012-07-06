@@ -53,9 +53,9 @@ import com.google.inject.Inject;
 @Path("/backend/configuration")
 public class ConfigurationResource {
 
-    private static final String ADD_GRID_ROW_OPERATION = "add";
-    private static final String EDIT_GRID_ROW_OPERATION = "edit";
-    private static final String DELETE_GRID_ROW_OPERATION = "del";
+    private static final String ADD_OPERATION = "add";
+    private static final String EDIT_OPERATION = "edit";
+    private static final String DELETE_OPERATION = "del";
 
     @Inject
     private IConfiguration configuration;
@@ -154,7 +154,6 @@ public class ConfigurationResource {
         ConfigurationResponse response = new ConfigurationResponse();
         response.setHttpServerPort(configuration.getConfig().getHttpServerPort());
         response.setServerName(configuration.getConfig().getUpnpServerName());
-        response.setLogLevel(configuration.getConfig().getLogLevel());
 
         return response;
     }
@@ -165,8 +164,7 @@ public class ConfigurationResource {
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
-            @FormParam("logLevel") String logLevel) {
+    public EditFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort) {
         EditFolderResponse response = new EditFolderResponse();
         response.setStatus(true);
         response.setErrorCode(ErrorCode.NO_ERROR);
@@ -180,15 +178,10 @@ public class ConfigurationResource {
             response.setStatus(false);
             response.setErrorCode(ErrorCode.EMPTY_HTTP_SERVER_PORT);
         }
-        else if (logLevel == null || logLevel.trim().length() == 0) {
-            response.setStatus(false);
-            response.setErrorCode(ErrorCode.EMPTY_LOG_LEVEL);
-        }
         else {
             // Save configuration
             configuration.getConfig().setUpnpServerName(serverName.trim());
             configuration.getConfig().setHttpServerPort(httpServerPort);
-            configuration.getConfig().setLogLevel(logLevel.trim());
             configuration.saveConfig();
         }
         return response;
@@ -227,7 +220,7 @@ public class ConfigurationResource {
         response.setId(id);
         response.setErrorCode(ErrorCode.NO_ERROR);
 
-        if (ADD_GRID_ROW_OPERATION.equals(operation)) {
+        if (ADD_OPERATION.equals(operation)) {
             // Checks this folders does not exists
             ConfigurationNode existingFolder = null;
             for (ConfigurationNode folder : folders) {
@@ -254,7 +247,7 @@ public class ConfigurationResource {
                 response.setErrorCode(ErrorCode.FOLDER_ALREADY_EXISTS);
             }
         }
-        else if (EDIT_GRID_ROW_OPERATION.equals(operation)) {
+        else if (EDIT_OPERATION.equals(operation)) {
             // Checks this folders exists
             ConfigurationNode existingFolder = null;
             boolean duplicated = false;
@@ -291,7 +284,7 @@ public class ConfigurationResource {
                 response.setErrorCode(ErrorCode.UNKNOWN_FOLDER);
             }
         }
-        else if (DELETE_GRID_ROW_OPERATION.equals(operation)) {
+        else if (DELETE_OPERATION.equals(operation)) {
             // Checks this folders exists
             ConfigurationNode existingFolder = null;
             for (ConfigurationNode folder : folders) {

@@ -30,7 +30,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 
-import net.holmes.core.util.LogUtil;
 import net.holmes.core.util.SystemProperty;
 
 import org.slf4j.Logger;
@@ -87,7 +86,6 @@ public final class XmlConfiguration implements IConfiguration {
         if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ConfigurationNode>());
         if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ConfigurationNode>());
 
-        LogUtil.setLogLevel(config.getLogLevel());
     }
 
     /* (non-Javadoc)

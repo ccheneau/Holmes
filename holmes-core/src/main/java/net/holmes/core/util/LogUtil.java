@@ -26,10 +26,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpMethod;
@@ -46,22 +43,8 @@ public class LogUtil {
         String homeDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
         if (homeDir != null && new File(homeDir).exists()) {
             String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";
-            if (new File(logConfig).exists()) DOMConfigurator.configure(logConfig);
+            if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
         }
-    }
-
-    public static void setLogLevel(String level) {
-        // Set level to java.util.logging
-        java.util.logging.Level julLevel = java.util.logging.Level.OFF;
-        if (level.equalsIgnoreCase("debug")) julLevel = java.util.logging.Level.FINE;
-        else if (level.equalsIgnoreCase("info")) julLevel = java.util.logging.Level.INFO;
-        else if (level.equalsIgnoreCase("warn")) julLevel = java.util.logging.Level.WARNING;
-        else if (level.equalsIgnoreCase("error")) julLevel = java.util.logging.Level.SEVERE;
-        Logger.getLogger("").setLevel(julLevel);
-
-        // Set log4j level
-        LogManager.getLoggerRepository().setThreshold(Level.toLevel(level));
-        if (LogManager.getRootLogger() != null) LogManager.getRootLogger().setLevel(Level.toLevel(level));
     }
 
     /**

@@ -283,15 +283,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     MimeType mimeType = null;
                     Res res = null;
                     mimeType = podcastEntryNode.getMimeType();
+                    String entryName = getPodcastEntryName(itemCount, podcastEntryNode.getName());
                     if (mimeType.isMedia()) {
                         res = new Res(new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType()), podcastEntryNode.getSize(),
                                 podcastEntryNode.getUrl());
-                        if (logger.isDebugEnabled()) logger.debug("add podcast entry:" + podcastEntryNode.getName() + " " + podcastEntryNode.getUrl());
+                        if (logger.isDebugEnabled()) logger.debug("add podcast entry:" + entryName + " " + podcastEntryNode.getUrl());
 
                         if (mimeType.isAudio()) {
                             // Add audio track
-                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", "", "",
-                                    res);
+                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", "", res);
                             if (podcastEntryNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
 
                             didl.addItem(musicTrack);
@@ -299,7 +299,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         }
                         else if (mimeType.isImage()) {
                             // Adds image
-                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", "", res);
+                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", res);
                             if (podcastEntryNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
 
                             didl.addItem(photo);
@@ -308,7 +308,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         }
                         else if (mimeType.isVideo()) {
                             // Adds video
-                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), podcastEntryNode.getName(), "", res);
+                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", res);
                             if (podcastEntryNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
 
                             didl.addItem(movie);
@@ -319,5 +319,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             }
         }
         return itemCount;
+    }
+
+    private String getPodcastEntryName(int count, String title) {
+        return String.format("%02d %s", count, title);
     }
 }
