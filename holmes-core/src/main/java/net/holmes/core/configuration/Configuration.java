@@ -30,7 +30,6 @@ import java.util.List;
  * <ul>
  * <li>UPnP server name</li>
  * <li>HTTP server port</li>
- * <li>log level</li>
  * <li>video folders</li>
  * <li>audio folders</li>
  * <li>picture folder</li>
