@@ -30,7 +30,7 @@ public class FolderListResponse implements Serializable {
     private int page;
     private int total;
     private int records;
-    private Collection<Folder> folders;
+    private Collection<Folder> rows;
 
     public int getPage() {
         return page;
@@ -56,11 +56,11 @@ public class FolderListResponse implements Serializable {
         this.records = records;
     }
 
-    public Collection<Folder> getFolders() {
-        return folders;
+    public Collection<Folder> getRows() {
+        return rows;
     }
 
-    public void setFolders(Collection<Folder> folders) {
-        this.folders = folders;
+    public void setRows(Collection<Folder> rows) {
+        this.rows = rows;
     }
 }

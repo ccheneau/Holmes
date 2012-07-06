@@ -213,7 +213,7 @@ public class ConfigurationResource {
             folders.add(new Folder(folder.getId(), cell));
         }
 
-        response.setFolders(folders);
+        response.setRows(folders);
         return response;
     }
 
