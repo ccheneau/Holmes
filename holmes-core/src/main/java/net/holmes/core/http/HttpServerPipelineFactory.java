@@ -29,14 +29,11 @@ import org.jboss.netty.handler.codec.http.HttpChunkAggregator;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import org.jboss.netty.handler.stream.ChunkedWriteHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
-    private static Logger logger = LoggerFactory.getLogger(HttpServerPipelineFactory.class);
 
     @Inject
     @Named("http")
@@ -47,8 +44,6 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
     */
     @Override
     public ChannelPipeline getPipeline() throws Exception {
-        if (logger.isDebugEnabled()) logger.debug("[START] getPipeline");
-
         // Create a default pipeline implementation.
         ChannelPipeline pipeline = Channels.pipeline();
 
@@ -61,7 +56,6 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
         // Add http server handler
         pipeline.addLast("handler", httpServerHandler);
 
-        if (logger.isDebugEnabled()) logger.debug("[END] getPipeline");
         return pipeline;
     }
 }
