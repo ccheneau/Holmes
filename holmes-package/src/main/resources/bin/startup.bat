@@ -6,7 +6,7 @@ call :resolve_path "%bin_path%.." home_path
 set lib_path=%home_path%\lib
 
 rem Set java args
-set java_args=-Dnet.holmes.home="%home_path%" -Dfile.encoding=UTF-8 -Xmx40m
+set java_args=-Dnet.holmes.home="%home_path%" -Dfile.encoding=UTF-8 -Xmx30m
 
 rem Set classpath
 set class_path=
