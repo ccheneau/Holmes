@@ -22,25 +22,8 @@
 package net.holmes.core.model;
 
 public enum NodeType {
-
-    TYPE_FOLDER("folder"), //
-    TYPE_CONTENT("content"), //
-    TYPE_PODCAST("podcast"), //
-    TYPE_PODCAST_ENTRY("podcastEntry");
-
-    private String value;
-
-    NodeType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return this.value;
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
-    }
-
+    TYPE_FOLDER, //
+    TYPE_CONTENT, //
+    TYPE_PODCAST, //
+    TYPE_PODCAST_ENTRY;
 }
