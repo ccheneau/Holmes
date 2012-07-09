@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
 
 import net.holmes.core.util.SystemProperty;
 
@@ -81,10 +80,7 @@ public final class XmlConfiguration implements IConfiguration {
             }
         }
         if (config == null) config = new Configuration();
-        if (config.getVideoFolders() == null) config.setVideoFolders(new LinkedList<ConfigurationNode>());
-        if (config.getAudioFolders() == null) config.setAudioFolders(new LinkedList<ConfigurationNode>());
-        if (config.getPodcasts() == null) config.setPodcasts(new LinkedList<ConfigurationNode>());
-        if (config.getPictureFolders() == null) config.setPictureFolders(new LinkedList<ConfigurationNode>());
+        config.check();
 
     }
 

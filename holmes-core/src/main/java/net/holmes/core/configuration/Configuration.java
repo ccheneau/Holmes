@@ -22,6 +22,7 @@
 package net.holmes.core.configuration;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +50,18 @@ public final class Configuration implements Serializable {
     private LinkedList<ConfigurationNode> pictureFolders;
     private LinkedList<ConfigurationNode> audioFolders;
     private LinkedList<ConfigurationNode> podcasts;
+    private HashMap<String, String> variables;
+
+    public void check() {
+        if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
+        if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
+        if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
+        if (this.podcasts == null) this.podcasts = new LinkedList<ConfigurationNode>();
+        if (this.variables == null) this.variables = new HashMap<String, String>();
+        for (Variable var : Variable.values()) {
+            if (this.variables.get(var.getName()) == null) this.variables.put(var.getName(), var.getDefaultValue());
+        }
+    }
 
     public String getUpnpServerName() {
         if (upnpServerName == null || upnpServerName.trim().length() == 0) {
@@ -108,6 +121,12 @@ public final class Configuration implements Serializable {
         this.pictureFolders = pictureFolders;
     }
 
+    public Boolean getVariable(Variable var) {
+        String value = this.variables.get(var.getName());
+        if (value == null) value = var.getDefaultValue();
+        return Boolean.parseBoolean(value);
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -123,6 +142,8 @@ public final class Configuration implements Serializable {
         builder.append(audioFolders);
         builder.append(", podcasts=");
         builder.append(podcasts);
+        builder.append(", variables=");
+        builder.append(variables);
         builder.append("]");
         return builder.toString();
     }

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Variable;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
@@ -322,6 +323,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     private String getPodcastEntryName(int count, String title) {
-        return String.format("%02d %s", count, title);
+        if (configuration.getConfig().getVariable(Variable.PREPEND_PODCAST_ENTRY_NAME)) {
+            return String.format("%02d %s", count, title);
+        }
+        else {
+            return title;
+        }
     }
 }
