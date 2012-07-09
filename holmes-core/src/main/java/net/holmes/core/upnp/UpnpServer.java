@@ -76,6 +76,7 @@ public final class UpnpServer implements IServer {
         catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+        logger.info("Upnp server started");
     }
 
     /* (non-Javadoc)

@@ -23,12 +23,17 @@ package net.holmes.core;
 
 import net.holmes.core.util.LogUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
 public final class HolmesServer implements IServer {
+    private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
+
     @Inject
     @Named("http")
     private IServer httpServer;
@@ -45,9 +50,11 @@ public final class HolmesServer implements IServer {
      */
     @Override
     public void start() {
+        logger.info("Starting Holmes server");
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
+        logger.info("Holmes server started");
     }
 
     /* (non-Javadoc)
