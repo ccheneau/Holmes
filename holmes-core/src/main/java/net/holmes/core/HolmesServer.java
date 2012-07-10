@@ -81,9 +81,11 @@ public final class HolmesServer implements IServer {
      */
     @Override
     public void stop() {
+        logger.info("Stopping Holmes server");
         // Stop Holmes server
         httpServer.stop();
         upnpServer.stop();
+        logger.info("Holmes server stopped");
     }
 
     private void initSystray() {
