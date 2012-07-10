@@ -50,7 +50,7 @@ public final class HolmesServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
 
     @Inject
-    IConfiguration configuration;
+    private IConfiguration configuration;
 
     @Inject
     @Named("http")
