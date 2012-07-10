@@ -21,6 +21,21 @@
 */
 package net.holmes.core;
 
+import java.awt.AWTException;
+import java.awt.Desktop;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ResourceBundle;
+
+import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.util.LogUtil;
 
 import org.slf4j.Logger;
@@ -33,6 +48,9 @@ import com.google.inject.name.Named;
 
 public final class HolmesServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
+
+    @Inject
+    IConfiguration configuration;
 
     @Inject
     @Named("http")
@@ -54,6 +72,7 @@ public final class HolmesServer implements IServer {
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
+        initSystray();
         logger.info("Holmes server started");
     }
 
@@ -65,6 +84,62 @@ public final class HolmesServer implements IServer {
         // Stop Holmes server
         httpServer.stop();
         upnpServer.stop();
+    }
+
+    private void initSystray() {
+        // Check the SystemTray is supported
+        if (!SystemTray.isSupported()) {
+            return;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("message");
+
+        final PopupMenu popup = new PopupMenu();
+        final TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")), bundle.getString("systray.title"));
+        final SystemTray tray = SystemTray.getSystemTray();
+
+        // Create a popup menu components
+        // Quit Holmes item
+        MenuItem quitItem = new MenuItem(bundle.getString("systray.quit"));
+        quitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                System.exit(0);
+            }
+        });
+        // Holmes admin site item
+        MenuItem holmesItem = new MenuItem(bundle.getString("systray.holmes"));
+        holmesItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        StringBuilder holmesUrl = new StringBuilder();
+                        holmesUrl.append("http://localhost:").append(configuration.getConfig().getHttpServerPort()).append("/");
+                        Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
+                    }
+                    catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                    catch (URISyntaxException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+            }
+        });
+
+        // Add components to popup menu
+        popup.add(holmesItem);
+        popup.addSeparator();
+        popup.add(quitItem);
+
+        trayIcon.setPopupMenu(popup);
+        try {
+            tray.add(trayIcon);
+        }
+        catch (AWTException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     public static void main(String[] args) {
