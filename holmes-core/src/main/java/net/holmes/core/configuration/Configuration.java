@@ -35,6 +35,7 @@ import java.util.List;
  * <li>audio folders</li>
  * <li>picture folder</li>
  * <li>pod-cast URLs</li>
+ * <li>misc. parameters</li>
  * </ul>
  *
  */
@@ -50,16 +51,16 @@ public final class Configuration implements Serializable {
     private LinkedList<ConfigurationNode> pictureFolders;
     private LinkedList<ConfigurationNode> audioFolders;
     private LinkedList<ConfigurationNode> podcasts;
-    private HashMap<String, String> variables;
+    private HashMap<String, String> parameters;
 
     public void check() {
         if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
         if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
         if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
         if (this.podcasts == null) this.podcasts = new LinkedList<ConfigurationNode>();
-        if (this.variables == null) this.variables = new HashMap<String, String>();
-        for (Variable var : Variable.values()) {
-            if (this.variables.get(var.getName()) == null) this.variables.put(var.getName(), var.getDefaultValue());
+        if (this.parameters == null) this.parameters = new HashMap<String, String>();
+        for (Parameter param : Parameter.values()) {
+            if (this.parameters.get(param.getName()) == null) this.parameters.put(param.getName(), param.getDefaultValue());
         }
     }
 
@@ -121,9 +122,9 @@ public final class Configuration implements Serializable {
         this.pictureFolders = pictureFolders;
     }
 
-    public Boolean getVariable(Variable var) {
-        String value = this.variables.get(var.getName());
-        if (value == null) value = var.getDefaultValue();
+    public Boolean getParameter(Parameter param) {
+        String value = this.parameters.get(param.getName());
+        if (value == null) value = param.getDefaultValue();
         return Boolean.parseBoolean(value);
     }
 
@@ -142,8 +143,8 @@ public final class Configuration implements Serializable {
         builder.append(audioFolders);
         builder.append(", podcasts=");
         builder.append(podcasts);
-        builder.append(", variables=");
-        builder.append(variables);
+        builder.append(", parameters=");
+        builder.append(parameters);
         builder.append("]");
         return builder.toString();
     }
