@@ -22,9 +22,9 @@
 package net.holmes.core.configuration;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Holmes configuration contains:
@@ -51,16 +51,16 @@ public final class Configuration implements Serializable {
     private LinkedList<ConfigurationNode> pictureFolders;
     private LinkedList<ConfigurationNode> audioFolders;
     private LinkedList<ConfigurationNode> podcasts;
-    private HashMap<String, String> parameters;
+    private Properties properties;
 
     public void check() {
         if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
         if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
         if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
         if (this.podcasts == null) this.podcasts = new LinkedList<ConfigurationNode>();
-        if (this.parameters == null) this.parameters = new HashMap<String, String>();
-        for (Parameter param : Parameter.values()) {
-            if (this.parameters.get(param.getName()) == null) this.parameters.put(param.getName(), param.getDefaultValue());
+        if (this.properties == null) this.properties = new Properties();
+        for (Property prop : Property.values()) {
+            if (this.properties.getProperty(prop.getName()) == null) this.properties.put(prop.getName(), prop.getDefaultValue());
         }
     }
 
@@ -122,9 +122,9 @@ public final class Configuration implements Serializable {
         this.pictureFolders = pictureFolders;
     }
 
-    public Boolean getParameter(Parameter param) {
-        String value = this.parameters.get(param.getName());
-        if (value == null) value = param.getDefaultValue();
+    public Boolean getProperty(Property prop) {
+        String value = (String) this.properties.get(prop.getName());
+        if (value == null) value = prop.getDefaultValue();
         return Boolean.parseBoolean(value);
     }
 
@@ -143,8 +143,8 @@ public final class Configuration implements Serializable {
         builder.append(audioFolders);
         builder.append(", podcasts=");
         builder.append(podcasts);
-        builder.append(", parameters=");
-        builder.append(parameters);
+        builder.append(", properties=");
+        builder.append(properties);
         builder.append("]");
         return builder.toString();
     }

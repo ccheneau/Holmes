@@ -21,13 +21,13 @@
 */
 package net.holmes.core.configuration;
 
-public enum Parameter {
+public enum Property {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false");
 
     private String name;
     private String defaultValue;
 
-    Parameter(String name, String defaultValue) {
+    Property(String name, String defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
     }
