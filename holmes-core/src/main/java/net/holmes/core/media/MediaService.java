@@ -244,7 +244,7 @@ public final class MediaService implements IMediaService {
         Cache podcastEntriesCache = cacheManager.getCache("podcastEntries");
 
         // Try to read entries from cache
-        if (podcastEntriesCache.get(url) == null) {
+        if (podcastEntriesCache == null || podcastEntriesCache.get(url) == null) {
             // No entries in cache, read them from RSS feed
             XmlReader reader = null;
             try {
@@ -298,7 +298,7 @@ public final class MediaService implements IMediaService {
                 }
             }
             // Add entries to cache
-            podcastEntriesCache.put(new Element(url, podcastEntryNodes));
+            if (podcastEntriesCache != null) podcastEntriesCache.put(new Element(url, podcastEntryNodes));
         }
         else {
             // Get entries from cache
