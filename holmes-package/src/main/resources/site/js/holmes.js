@@ -32,8 +32,16 @@ $(document).ready(function() {
 
 		// Initialize document
 		function initializeDocument()
-		{
-			// Initialize video folders grid
+		{			
+		    // Get Holmes version
+		    function loadVersion() {
+			    $.get('/backend/configuration/getVersion', function(response) {
+			    	$("#version").html(msg.toolbar.version + " " + response);
+			    });
+		    }
+		    loadVersion();
+
+		    // Initialize video folders grid
 			$("#list_video_folders").jqGrid({
 				url:'/backend/configuration/getVideoFolders', 
 				colNames:[msg.video.id,msg.video.label, msg.video.path], 

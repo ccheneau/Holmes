@@ -61,6 +61,16 @@ public class ConfigurationResource {
     private IConfiguration configuration;
 
     /**
+     * Get holmes version
+     */
+    @GET
+    @Path("/getVersion")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getVersion() {
+        return "" + this.getClass().getPackage().getImplementationVersion();
+    }
+
+    /**
      * Get video configuration folders
      */
     @GET
