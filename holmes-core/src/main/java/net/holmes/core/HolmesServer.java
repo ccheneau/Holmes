@@ -101,7 +101,7 @@ public final class HolmesServer implements IServer {
         final SystemTray tray = SystemTray.getSystemTray();
 
         // Create a popup menu components
-        // Quit Holmes item
+        // Quit Holmes menu item
         MenuItem quitItem = new MenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
             @Override
@@ -109,7 +109,7 @@ public final class HolmesServer implements IServer {
                 System.exit(0);
             }
         });
-        // Holmes admin site item
+        // Holmes admin site menu item
         MenuItem holmesItem = new MenuItem(bundle.getString("systray.holmes"));
         holmesItem.addActionListener(new ActionListener() {
             @Override
@@ -135,6 +135,7 @@ public final class HolmesServer implements IServer {
         popup.addSeparator();
         popup.add(quitItem);
 
+        trayIcon.setImageAutoSize(true);
         trayIcon.setPopupMenu(popup);
         try {
             tray.add(trayIcon);
