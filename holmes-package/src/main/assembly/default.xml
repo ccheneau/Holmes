@@ -20,13 +20,21 @@
 	</dependencySets>
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/src/main/resources</directory>
+			<directory>${project.basedir}/src/main/resources</directory>
 			<outputDirectory>/</outputDirectory>
 			<excludes>
 				<exclude>**/.gitignore</exclude>
 				<exclude>conf/config.xml</exclude>
+				<exclude>bin/*.*</exclude>
 				<exclude>log/holmes.log</exclude>
 			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>bin/*.*</include>
+			</includes>
 		</fileSet>
 	</fileSets>
 
