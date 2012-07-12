@@ -5,7 +5,7 @@
 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d [%t] %-5p %c - %m%n" />
+			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMax" value="INFO" />
@@ -15,7 +15,7 @@
 	<appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.err" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d [%t] %-5p %c - %m%n" />
+			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="WARN" />
@@ -29,7 +29,7 @@
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d [%t] %-5p %c - %m%n" />
+			<param name="ConversionPattern" value="%%5p [%d] (%c:%L) - %m%n" />
 		</layout>
 	</appender>
 
