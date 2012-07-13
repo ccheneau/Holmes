@@ -83,8 +83,8 @@ public final class HolmesServer implements IServer {
     public void stop() {
         logger.info("Stopping Holmes server");
         // Stop Holmes server
-        httpServer.stop();
         upnpServer.stop();
+        httpServer.stop();
         logger.info("Holmes server stopped");
     }
 

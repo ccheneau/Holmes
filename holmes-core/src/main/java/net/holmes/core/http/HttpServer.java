@@ -114,7 +114,7 @@ public final class HttpServer implements IServer {
          * @see org.jboss.netty.channel.ChannelFutureListener#operationComplete(org.jboss.netty.channel.ChannelFuture)
          */
         @Override
-        public void operationComplete(ChannelFuture arg0) throws Exception {
+        public void operationComplete(ChannelFuture cf) throws Exception {
             logger.info("Http server stop complete");
         }
     }
