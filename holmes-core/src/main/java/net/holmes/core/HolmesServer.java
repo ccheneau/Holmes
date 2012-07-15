@@ -30,12 +30,14 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ResourceBundle;
 
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.util.HomeDirectory;
 import net.holmes.core.util.LogUtil;
 
 import org.slf4j.Logger;
@@ -109,6 +111,25 @@ public final class HolmesServer implements IServer {
                 System.exit(0);
             }
         });
+
+        // Quit Holmes menu item
+        MenuItem logsItem = new MenuItem(bundle.getString("systray.logs"));
+        logsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        StringBuilder logFile = new StringBuilder();
+                        logFile.append(HomeDirectory.getLogDirectory()).append(File.separator).append("holmes.log");
+                        Desktop.getDesktop().open(new File(logFile.toString()));
+                    }
+                    catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+            }
+        });
+
         // Holmes admin site menu item
         MenuItem holmesItem = new MenuItem(bundle.getString("systray.holmes"));
         holmesItem.addActionListener(new ActionListener() {
@@ -132,6 +153,7 @@ public final class HolmesServer implements IServer {
 
         // Add components to popup menu
         popup.add(holmesItem);
+        popup.add(logsItem);
         popup.addSeparator();
         popup.add(quitItem);
 

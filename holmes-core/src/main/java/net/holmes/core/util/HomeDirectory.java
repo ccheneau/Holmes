@@ -5,6 +5,7 @@ import java.io.File;
 public class HomeDirectory {
     private static final String HOME_CONF_FOLDER = "conf";
     private static final String HOME_SITE_FOLDER = "site";
+    private static final String HOME_LOG_FOLDER = "log";
 
     public static String getHomeDirectory() {
         String homeDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
@@ -23,6 +24,10 @@ public class HomeDirectory {
 
     public static String getSiteDirectory() {
         return getSubDirectory(HOME_SITE_FOLDER);
+    }
+
+    public static String getLogDirectory() {
+        return getSubDirectory(HOME_LOG_FOLDER);
     }
 
     private static String getSubDirectory(String subDirName) {
