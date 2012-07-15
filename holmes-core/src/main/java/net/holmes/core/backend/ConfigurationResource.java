@@ -77,7 +77,7 @@ public class ConfigurationResource {
     @Path("/getVideoFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public FolderListResponse getVideoFolders() {
-        return getConfigurationFolders(configuration.getConfig().getVideoFolders());
+        return getConfigurationFolders(configuration.getVideoFolders());
     }
 
     /**
@@ -87,7 +87,7 @@ public class ConfigurationResource {
     @Path("/getAudioFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public FolderListResponse getAudioFolders() {
-        return getConfigurationFolders(configuration.getConfig().getAudioFolders());
+        return getConfigurationFolders(configuration.getAudioFolders());
     }
 
     /**
@@ -97,7 +97,7 @@ public class ConfigurationResource {
     @Path("/getPictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public FolderListResponse getPictureFolders() {
-        return getConfigurationFolders(configuration.getConfig().getPictureFolders());
+        return getConfigurationFolders(configuration.getPictureFolders());
     }
 
     /**
@@ -107,7 +107,7 @@ public class ConfigurationResource {
     @Path("/getPodcasts")
     @Produces(MediaType.APPLICATION_JSON)
     public FolderListResponse getPodcasts() {
-        return getConfigurationFolders(configuration.getConfig().getPodcasts());
+        return getConfigurationFolders(configuration.getPodcasts());
     }
 
     /**
@@ -118,7 +118,7 @@ public class ConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public EditFolderResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getConfig().getVideoFolders(), true);
+        return editFolder(operation, id, label, path, configuration.getVideoFolders(), true);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public EditFolderResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getConfig().getAudioFolders(), true);
+        return editFolder(operation, id, label, path, configuration.getAudioFolders(), true);
     }
 
     /**
@@ -140,7 +140,7 @@ public class ConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public EditFolderResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getConfig().getPictureFolders(), true);
+        return editFolder(operation, id, label, path, configuration.getPictureFolders(), true);
     }
 
     /**
@@ -151,7 +151,7 @@ public class ConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public EditFolderResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getConfig().getPodcasts(), false);
+        return editFolder(operation, id, label, path, configuration.getPodcasts(), false);
     }
 
     /**
@@ -162,8 +162,8 @@ public class ConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationResponse getConfiguration() {
         ConfigurationResponse response = new ConfigurationResponse();
-        response.setHttpServerPort(configuration.getConfig().getHttpServerPort());
-        response.setServerName(configuration.getConfig().getUpnpServerName());
+        response.setHttpServerPort(configuration.getHttpServerPort());
+        response.setServerName(configuration.getUpnpServerName());
 
         return response;
     }
@@ -190,8 +190,8 @@ public class ConfigurationResource {
         }
         else {
             // Save configuration
-            configuration.getConfig().setUpnpServerName(serverName.trim());
-            configuration.getConfig().setHttpServerPort(httpServerPort);
+            configuration.setUpnpServerName(serverName.trim());
+            configuration.setHttpServerPort(httpServerPort);
             configuration.saveConfig();
         }
         return response;

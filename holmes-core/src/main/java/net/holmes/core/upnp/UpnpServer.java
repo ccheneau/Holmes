@@ -100,8 +100,7 @@ public final class UpnpServer implements IServer {
         DeviceType type = new UDADeviceType("MediaServer", 1);
 
         // Device name
-        String serverName = configuration.getConfig().getUpnpServerName();
-        DeviceDetails details = new DeviceDetails(serverName);
+        DeviceDetails details = new DeviceDetails(configuration.getUpnpServerName());
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);

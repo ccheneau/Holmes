@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.configuration;
+package net.holmes.core.configuration.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,8 +28,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
-import net.holmes.core.util.SystemProperty;
+import net.holmes.core.configuration.ConfigurationNode;
+import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Parameter;
+import net.holmes.core.util.HomeDirectory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,26 +41,31 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+/**
+ * 
+ */
 public final class XmlConfiguration implements IConfiguration {
+
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
 
-    private Configuration config = null;
+    private XmlRootNode rootNode = null;
 
     public XmlConfiguration() {
         loadConfig();
     }
 
-    /**
-     * Load configuration from XML file.
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#loadConfig()
      */
-    private void loadConfig() {
-        config = null;
+    @Override
+    public void loadConfig() {
+        rootNode = null;
 
         XStream xs = getXStream();
 
-        String confPath = getHomeConfigDirectory();
+        String confPath = HomeDirectory.getConfigDirectory();
         if (confPath != null) {
             String filePath = confPath + File.separator + CONF_FILE_NAME;
             File confFile = new File(filePath);
@@ -64,7 +73,7 @@ public final class XmlConfiguration implements IConfiguration {
                 InputStream in = null;
                 try {
                     in = new FileInputStream(confFile);
-                    config = (Configuration) xs.fromXML(in);
+                    rootNode = (XmlRootNode) xs.fromXML(in);
                 }
                 catch (FileNotFoundException e) {
                     logger.error(e.getMessage(), e);
@@ -79,8 +88,8 @@ public final class XmlConfiguration implements IConfiguration {
                 }
             }
         }
-        if (config == null) config = new Configuration();
-        config.check();
+        if (rootNode == null) rootNode = new XmlRootNode();
+        rootNode.check();
 
     }
 
@@ -91,7 +100,7 @@ public final class XmlConfiguration implements IConfiguration {
     public void saveConfig() {
         XStream xs = getXStream();
 
-        String confPath = getHomeConfigDirectory();
+        String confPath = HomeDirectory.getConfigDirectory();
         if (confPath != null) {
             String filePath = confPath + File.separator + CONF_FILE_NAME;
             File confFile = new File(filePath);
@@ -99,7 +108,7 @@ public final class XmlConfiguration implements IConfiguration {
             OutputStream out = null;
             try {
                 out = new FileOutputStream(confFile);
-                xs.toXML(config, out);
+                xs.toXML(rootNode, out);
             }
             catch (FileNotFoundException e) {
                 logger.error(e.getMessage(), e);
@@ -115,62 +124,105 @@ public final class XmlConfiguration implements IConfiguration {
         }
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getConfig()
-     */
-    @Override
-    public Configuration getConfig() {
-        return config;
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHomeDirectory()
-     */
-    @Override
-    public String getHomeDirectory() {
-        String homeDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
-        if (homeDirectory != null) {
-            File fPath = new File(homeDirectory);
-            if (fPath.exists() && fPath.isDirectory() && fPath.canWrite()) {
-                return homeDirectory;
-            }
-        }
-        throw new RuntimeException(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHomeConfigDirectory()
-     */
-    @Override
-    public String getHomeConfigDirectory() {
-        return getHomeSubDirectory(HOME_CONF_FOLDER);
-    }
-
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHomeSiteDirectory()
-     */
-    @Override
-    public String getHomeSiteDirectory() {
-        return getHomeSubDirectory(HOME_SITE_FOLDER);
-    }
-
-    private String getHomeSubDirectory(String subDirName) {
-        String homeSubDirectory = getHomeDirectory() + File.separator + subDirName;
-        File confDir = new File(homeSubDirectory);
-        if (!confDir.exists()) {
-            confDir.mkdir();
-        }
-        if (confDir.exists() && confDir.isDirectory() && confDir.canWrite()) {
-            return homeSubDirectory;
-        }
-        return null;
-    }
-
     private XStream getXStream() {
         XStream xs = new XStream(new DomDriver("UTF-8"));
-        xs.alias("config", Configuration.class);
+        xs.alias("config", XmlRootNode.class);
         xs.alias("node", ConfigurationNode.class);
 
         return xs;
     }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getUpnpServerName()
+     */
+    @Override
+    public String getUpnpServerName() {
+        String upnpServerName = this.rootNode.getUpnpServerName();
+        if (upnpServerName == null || upnpServerName.trim().length() == 0) {
+            return DEFAULT_UPNP_SERVER_NAME;
+        }
+        else {
+            return upnpServerName;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#setUpnpServerName(java.lang.String)
+     */
+    @Override
+    public void setUpnpServerName(String upnpServerName) {
+        this.rootNode.setUpnpServerName(upnpServerName);
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getHttpServerPort()
+     */
+    @Override
+    public Integer getHttpServerPort() {
+        Integer httpServerPort = rootNode.getHttpServerPort();
+        if (httpServerPort == null) {
+            return DEFAULT_HTTP_PORT;
+        }
+        else {
+            return httpServerPort;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#setHttpServerPort(java.lang.Integer)
+     */
+    @Override
+    public void setHttpServerPort(Integer httpServerPort) {
+        this.rootNode.setHttpServerPort(httpServerPort);
+
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getVideoFolders()
+     */
+    @Override
+    public List<ConfigurationNode> getVideoFolders() {
+        return this.rootNode.getVideoFolders();
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getPodcasts()
+     */
+    @Override
+    public List<ConfigurationNode> getPodcasts() {
+        return this.rootNode.getPodcasts();
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getAudioFolders()
+     */
+    @Override
+    public List<ConfigurationNode> getAudioFolders() {
+        return this.rootNode.getAudioFolders();
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getPictureFolders()
+     */
+    @Override
+    public List<ConfigurationNode> getPictureFolders() {
+        return this.rootNode.getPictureFolders();
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#getParameter(net.holmes.core.configuration.Parameter)
+     */
+    @Override
+    public Boolean getParameter(Parameter prop) {
+        return this.rootNode.getParameter(prop);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return this.rootNode.toString();
+    }
+
 }

@@ -31,8 +31,8 @@ import java.io.Serializable;
  * <li>root node for audio folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_AUDIO_NODE_ID} </li>
  * <li>root node for picture folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PICTURE_NODE_ID} </li>
  * <li>root node for pod-cast URLs: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PODCAST_NODE_ID} </li>
- * <li>video / audio / picture folders defined in {@link net.holmes.core.configuration.Configuration} </li>
- * <li>pod-cast URLs defined in {@link net.holmes.core.configuration.Configuration} </li>
+ * <li>video / audio / picture folders defined in {@link net.holmes.core.configuration.IConfiguration} </li>
+ * <li>pod-cast URLs defined in {@link net.holmes.core.configuration.IConfiguration} </li>
   *</ul>
  */
 public final class ConfigurationNode implements Serializable {
@@ -84,7 +84,7 @@ public final class ConfigurationNode implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ContentFolder [id=");
+        builder.append("ConfigurationNode [id=");
         builder.append(id);
         builder.append(", label=");
         builder.append(label);

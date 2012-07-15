@@ -65,7 +65,7 @@ public final class HttpServer implements IServer {
     public void start() {
         logger.info("Starting HTTP server");
 
-        int port = configuration.getConfig().getHttpServerPort();
+        int port = configuration.getHttpServerPort();
         InetSocketAddress bindAddress = new InetSocketAddress(port);
 
         // Configure the server.

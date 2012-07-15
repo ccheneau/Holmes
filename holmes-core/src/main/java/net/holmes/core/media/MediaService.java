@@ -143,19 +143,19 @@ public final class MediaService implements IMediaService {
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getAudioFolders(), false, MimeType.TYPE_AUDIO);
+            childNodes = getChildRootNodes(configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
         }
         else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getVideoFolders(), false, MimeType.TYPE_VIDEO);
+            childNodes = getChildRootNodes(configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
         }
         else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getPictureFolders(), false, MimeType.TYPE_IMAGE);
+            childNodes = getChildRootNodes(configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
         }
         else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
-            childNodes = getChildRootNodes(configuration.getConfig().getPodcasts(), true, null);
+            childNodes = getChildRootNodes(configuration.getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
             // Get node id

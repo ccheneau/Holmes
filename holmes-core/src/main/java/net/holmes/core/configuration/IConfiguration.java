@@ -21,39 +21,46 @@
 */
 package net.holmes.core.configuration;
 
+import java.util.List;
+
+/**
+ * Holmes configuration contains:
+ * <ul>
+ * <li>UPnP server name</li>
+ * <li>HTTP server port</li>
+ * <li>video folders</li>
+ * <li>audio folders</li>
+ * <li>picture folder</li>
+ * <li>pod-cast URLs</li>
+ * <li>misc. parameters</li>
+ * </ul>
+ *
+ */
 public interface IConfiguration {
-    /**
-     * Location of configuration folder relative to Holmes home directory
-     */
-    public static final String HOME_CONF_FOLDER = "conf";
 
-    /**
-     * Location of site folder relative to Holmes home directory
-     */
-    public static final String HOME_SITE_FOLDER = "site";
+    public static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
+    public static final int DEFAULT_HTTP_PORT = 8085;
 
-    /**
-     * Save configuration
-     */
-    public abstract void saveConfig();
+    public void loadConfig();
 
-    /**
-     * Get {@link net.holmes.core.configuration.Configuration} 
-     */
-    public abstract Configuration getConfig();
+    public void saveConfig();
 
-    /**
-     * Get Holmes home directory
-     */
-    public abstract String getHomeDirectory();
+    public String getUpnpServerName();
 
-    /**
-     * Get directory that contains Holmes configuration (log file and {@link net.holmes.core.configuration.Configuration} file)
-     */
-    public abstract String getHomeConfigDirectory();
+    public void setUpnpServerName(String upnpServerName);
 
-    /**
-     * Get directory that contains sources for Holmes administration site
-     */
-    public abstract String getHomeSiteDirectory();
+    public Integer getHttpServerPort();
+
+    public void setHttpServerPort(Integer httpServerPort);
+
+    public List<ConfigurationNode> getVideoFolders();
+
+    public List<ConfigurationNode> getPodcasts();
+
+    public List<ConfigurationNode> getAudioFolders();
+
+    public List<ConfigurationNode> getPictureFolders();
+
+    public Boolean getParameter(Parameter param);
+
 }

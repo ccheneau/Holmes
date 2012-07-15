@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.Property;
+import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.model.AbstractNode;
 import net.holmes.core.model.ContentNode;
@@ -212,7 +212,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private void addContent(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
         StringBuilder url = new StringBuilder();
-        url.append("http://").append(localIp).append(":").append(configuration.getConfig().getHttpServerPort());
+        url.append("http://").append(localIp).append(":").append(configuration.getHttpServerPort());
         url.append("/content?id=");
         url.append(contentNode.getId());
 
@@ -323,7 +323,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     private String getPodcastEntryName(int count, String title) {
-        if (configuration.getConfig().getProperty(Property.PREPEND_PODCAST_ENTRY_NAME)) {
+        if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             return String.format("%02d %s", count, title);
         }
         else {

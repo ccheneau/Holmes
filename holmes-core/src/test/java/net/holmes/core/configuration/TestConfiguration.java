@@ -3,45 +3,32 @@ package net.holmes.core.configuration;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TestConfiguration implements IConfiguration {
 
-    private Configuration config = null;
+    private LinkedList<ConfigurationNode> videoFolders;
+    private LinkedList<ConfigurationNode> pictureFolders;
+    private LinkedList<ConfigurationNode> audioFolders;
+    private LinkedList<ConfigurationNode> podcasts;
 
     public TestConfiguration() {
-        config = new Configuration();
-        config.setVideoFolders(new LinkedList<ConfigurationNode>());
-        config.getVideoFolders().add(getTestContentFolder("videosTest", "/videosTest/"));
-        config.setAudioFolders(new LinkedList<ConfigurationNode>());
-        config.getAudioFolders().add(getTestContentFolder("audiosTest", "/audiosTest/"));
-        config.setPictureFolders(new LinkedList<ConfigurationNode>());
-        config.getPictureFolders().add(getTestContentFolder("imagesTest", "/imagesTest/"));
-        config.setPodcasts(new LinkedList<ConfigurationNode>());
-        config.getPodcasts().add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
+        videoFolders = new LinkedList<ConfigurationNode>();
+        videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
+        audioFolders = new LinkedList<ConfigurationNode>();
+        audioFolders.add(getTestContentFolder("audiosTest", "/audiosTest/"));
+        pictureFolders = new LinkedList<ConfigurationNode>();
+        pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
+        podcasts = new LinkedList<ConfigurationNode>();
+        podcasts.add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
+    }
+
+    @Override
+    public void loadConfig() {
     }
 
     @Override
     public void saveConfig() {
-    }
-
-    @Override
-    public Configuration getConfig() {
-        return config;
-    }
-
-    @Override
-    public String getHomeDirectory() {
-        return null;
-    }
-
-    @Override
-    public String getHomeConfigDirectory() {
-        return null;
-    }
-
-    @Override
-    public String getHomeSiteDirectory() {
-        return null;
     }
 
     private ConfigurationNode getTestContentFolder(String label, String path) {
@@ -54,6 +41,66 @@ public class TestConfiguration implements IConfiguration {
         }
 
         return contentFolder;
+    }
+
+    @Override
+    public String getUpnpServerName() {
+        return DEFAULT_UPNP_SERVER_NAME;
+    }
+
+    @Override
+    public void setUpnpServerName(String upnpServerName) {
+
+    }
+
+    @Override
+    public Integer getHttpServerPort() {
+        return DEFAULT_HTTP_PORT;
+    }
+
+    @Override
+    public void setHttpServerPort(Integer httpServerPort) {
+
+    }
+
+    @Override
+    public List<ConfigurationNode> getVideoFolders() {
+        return this.videoFolders;
+    }
+
+    @Override
+    public List<ConfigurationNode> getPodcasts() {
+        return this.podcasts;
+    }
+
+    @Override
+    public List<ConfigurationNode> getAudioFolders() {
+        return this.audioFolders;
+    }
+
+    @Override
+    public List<ConfigurationNode> getPictureFolders() {
+        return this.pictureFolders;
+    }
+
+    @Override
+    public Boolean getParameter(Parameter param) {
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("TestConfiguration [videoFolders=");
+        builder.append(videoFolders);
+        builder.append(", pictureFolders=");
+        builder.append(pictureFolders);
+        builder.append(", audioFolders=");
+        builder.append(audioFolders);
+        builder.append(", podcasts=");
+        builder.append(podcasts);
+        builder.append("]");
+        return builder.toString();
     }
 
 }

@@ -60,7 +60,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testMediaService() {
-        logger.debug(configuration.getConfig().toString());
+        logger.debug(configuration.toString());
     }
 
     @Test

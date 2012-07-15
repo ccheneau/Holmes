@@ -117,7 +117,7 @@ public final class HolmesServer implements IServer {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder holmesUrl = new StringBuilder();
-                        holmesUrl.append("http://localhost:").append(configuration.getConfig().getHttpServerPort()).append("/");
+                        holmesUrl.append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
                         Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
                     }
                     catch (IOException e) {

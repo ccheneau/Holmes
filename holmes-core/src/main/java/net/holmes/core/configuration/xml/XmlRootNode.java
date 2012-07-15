@@ -19,31 +19,18 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.configuration;
+package net.holmes.core.configuration.xml;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * Holmes configuration contains:
- * <ul>
- * <li>UPnP server name</li>
- * <li>HTTP server port</li>
- * <li>video folders</li>
- * <li>audio folders</li>
- * <li>picture folder</li>
- * <li>pod-cast URLs</li>
- * <li>misc. parameters</li>
- * </ul>
- *
- */
-public final class Configuration implements Serializable {
-    private static final long serialVersionUID = 1607439493422835211L;
+import net.holmes.core.configuration.ConfigurationNode;
+import net.holmes.core.configuration.Parameter;
 
-    private static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    private static final int DEFAULT_HTTP_PORT = 8085;
+public final class XmlRootNode implements Serializable {
+    private static final long serialVersionUID = 1607439493422835211L;
 
     private String upnpServerName;
     private Integer httpServerPort;
@@ -51,26 +38,21 @@ public final class Configuration implements Serializable {
     private LinkedList<ConfigurationNode> pictureFolders;
     private LinkedList<ConfigurationNode> audioFolders;
     private LinkedList<ConfigurationNode> podcasts;
-    private Properties properties;
+    private Properties parameters;
 
     public void check() {
         if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
         if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
         if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
         if (this.podcasts == null) this.podcasts = new LinkedList<ConfigurationNode>();
-        if (this.properties == null) this.properties = new Properties();
-        for (Property prop : Property.values()) {
-            if (this.properties.getProperty(prop.getName()) == null) this.properties.put(prop.getName(), prop.getDefaultValue());
+        if (this.parameters == null) this.parameters = new Properties();
+        for (Parameter param : Parameter.values()) {
+            if (this.parameters.getProperty(param.getName()) == null) this.parameters.put(param.getName(), param.getDefaultValue());
         }
     }
 
     public String getUpnpServerName() {
-        if (upnpServerName == null || upnpServerName.trim().length() == 0) {
-            return DEFAULT_UPNP_SERVER_NAME;
-        }
-        else {
-            return upnpServerName;
-        }
+        return this.upnpServerName;
     }
 
     public void setUpnpServerName(String upnpServerName) {
@@ -78,12 +60,7 @@ public final class Configuration implements Serializable {
     }
 
     public Integer getHttpServerPort() {
-        if (httpServerPort == null) {
-            return DEFAULT_HTTP_PORT;
-        }
-        else {
-            return httpServerPort;
-        }
+        return this.httpServerPort;
     }
 
     public void setHttpServerPort(Integer httpServerPort) {
@@ -91,7 +68,7 @@ public final class Configuration implements Serializable {
     }
 
     public List<ConfigurationNode> getVideoFolders() {
-        return videoFolders;
+        return this.videoFolders;
     }
 
     public void setVideoFolders(LinkedList<ConfigurationNode> videoFolders) {
@@ -99,7 +76,7 @@ public final class Configuration implements Serializable {
     }
 
     public List<ConfigurationNode> getPodcasts() {
-        return podcasts;
+        return this.podcasts;
     }
 
     public void setPodcasts(LinkedList<ConfigurationNode> podcasts) {
@@ -107,7 +84,7 @@ public final class Configuration implements Serializable {
     }
 
     public List<ConfigurationNode> getAudioFolders() {
-        return audioFolders;
+        return this.audioFolders;
     }
 
     public void setAudioFolders(LinkedList<ConfigurationNode> audioFolders) {
@@ -115,16 +92,16 @@ public final class Configuration implements Serializable {
     }
 
     public List<ConfigurationNode> getPictureFolders() {
-        return pictureFolders;
+        return this.pictureFolders;
     }
 
     public void setPictureFolders(LinkedList<ConfigurationNode> pictureFolders) {
         this.pictureFolders = pictureFolders;
     }
 
-    public Boolean getProperty(Property prop) {
-        String value = (String) this.properties.get(prop.getName());
-        if (value == null) value = prop.getDefaultValue();
+    public Boolean getParameter(Parameter param) {
+        String value = (String) this.parameters.get(param.getName());
+        if (value == null) value = param.getDefaultValue();
         return Boolean.parseBoolean(value);
     }
 
@@ -143,8 +120,8 @@ public final class Configuration implements Serializable {
         builder.append(audioFolders);
         builder.append(", podcasts=");
         builder.append(podcasts);
-        builder.append(", properties=");
-        builder.append(properties);
+        builder.append(", parameters=");
+        builder.append(parameters);
         builder.append("]");
         return builder.toString();
     }

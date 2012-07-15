@@ -28,6 +28,7 @@ import java.io.RandomAccessFile;
 
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.http.HttpServer;
+import net.holmes.core.util.HomeDirectory;
 import net.holmes.core.util.IMimeTypeFactory;
 import net.holmes.core.util.LogUtil;
 
@@ -99,7 +100,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
 
-        String filePath = configuration.getHomeSiteDirectory() + fileName;
+        String filePath = HomeDirectory.getSiteDirectory() + fileName;
 
         if (logger.isDebugEnabled()) logger.debug("file path:" + filePath);
 
