@@ -22,5 +22,5 @@
 package net.holmes.core.util;
 
 public interface IMimeTypeFactory {
-    public abstract MimeType getMimeType(String fileName);
+    public MimeType getMimeType(String fileName);
 }

@@ -38,8 +38,8 @@ import java.util.List;
  */
 public interface IConfiguration {
 
-    public static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    public static final int DEFAULT_HTTP_PORT = 8085;
+    static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
+    static final int DEFAULT_HTTP_SERVER_PORT = 8085;
 
     public void loadConfig();
 

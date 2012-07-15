@@ -55,7 +55,7 @@ public class TestConfiguration implements IConfiguration {
 
     @Override
     public Integer getHttpServerPort() {
-        return DEFAULT_HTTP_PORT;
+        return DEFAULT_HTTP_SERVER_PORT;
     }
 
     @Override

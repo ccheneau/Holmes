@@ -23,8 +23,8 @@ package net.holmes.core;
 
 public interface IServer {
 
-    public abstract void start();
+    public void start();
 
-    public abstract void stop();
+    public void stop();
 
 }

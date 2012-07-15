@@ -161,7 +161,7 @@ public final class XmlConfiguration implements IConfiguration {
     public Integer getHttpServerPort() {
         Integer httpServerPort = rootNode.getHttpServerPort();
         if (httpServerPort == null) {
-            return DEFAULT_HTTP_PORT;
+            return DEFAULT_HTTP_SERVER_PORT;
         }
         else {
             return httpServerPort;
