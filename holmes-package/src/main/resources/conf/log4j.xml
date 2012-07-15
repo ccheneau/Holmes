@@ -29,7 +29,7 @@
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%%5p [%d] (%c:%L) - %m%n" />
+			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
 		</layout>
 	</appender>
 
