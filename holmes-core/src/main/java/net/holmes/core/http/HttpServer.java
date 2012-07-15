@@ -92,7 +92,7 @@ public final class HttpServer implements IServer {
 
         channel.close();
         cf.awaitUninterruptibly();
-        bootstrap.getFactory().releaseExternalResources();
+        bootstrap.releaseExternalResources();
 
         logger.info("HTTP server stopped");
     }
@@ -115,7 +115,7 @@ public final class HttpServer implements IServer {
          */
         @Override
         public void operationComplete(ChannelFuture cf) throws Exception {
-            logger.info("Http server stop complete");
+            logger.info("HTTP server stop complete");
         }
     }
 }
