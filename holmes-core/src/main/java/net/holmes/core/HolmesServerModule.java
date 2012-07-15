@@ -33,8 +33,8 @@ import net.holmes.core.http.request.IHttpRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.upnp.UpnpServer;
-import net.holmes.core.util.MimeTypeFactory;
 import net.holmes.core.util.IMimeTypeFactory;
+import net.holmes.core.util.MimeTypeFactory;
 
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipelineFactory;
