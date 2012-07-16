@@ -26,7 +26,7 @@
 				<exclude>**/.gitignore</exclude>
 				<exclude>conf/config.xml</exclude>
 				<exclude>bin/*.*</exclude>
-				<exclude>log/holmes.log</exclude>
+				<exclude>log/*.log</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
