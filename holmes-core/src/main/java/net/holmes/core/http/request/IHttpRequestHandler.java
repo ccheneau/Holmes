@@ -29,7 +29,7 @@ public interface IHttpRequestHandler {
     /**
      * Initialize handler
      */
-    public abstract void initHandler();
+    public void initHandler();
 
     /**
      * Check if handler can process request
@@ -39,6 +39,6 @@ public interface IHttpRequestHandler {
     /**
      * Process request
      */
-    public abstract void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
+    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
 
 }
