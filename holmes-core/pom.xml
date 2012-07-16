@@ -138,12 +138,6 @@
 			<artifactId>jersey-guice</artifactId>
 		</dependency>
 
-		<!-- Jackson -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-
 		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>

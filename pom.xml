@@ -222,13 +222,6 @@
 				</exclusions>
 			</dependency>
 
-			<!-- Jackson -->
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>1.9.8</version>
-			</dependency>
-
 			<!-- ehcache -->
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
