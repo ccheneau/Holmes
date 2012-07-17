@@ -28,7 +28,7 @@ import net.holmes.core.TestModule;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
-import net.holmes.core.model.AbstractNode;
+import net.holmes.core.media.node.AbstractNode;
 
 import org.junit.Before;
 import org.junit.Test;

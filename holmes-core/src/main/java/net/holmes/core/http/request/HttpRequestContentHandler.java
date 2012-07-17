@@ -27,9 +27,9 @@ import java.io.RandomAccessFile;
 
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.IMediaService;
-import net.holmes.core.model.AbstractNode;
-import net.holmes.core.model.ContentNode;
-import net.holmes.core.model.NodeType;
+import net.holmes.core.media.node.AbstractNode;
+import net.holmes.core.media.node.ContentNode;
+import net.holmes.core.media.node.NodeType;
 import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.channel.Channel;

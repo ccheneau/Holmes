@@ -23,7 +23,7 @@ package net.holmes.core.media;
 
 import java.util.List;
 
-import net.holmes.core.model.AbstractNode;
+import net.holmes.core.media.node.AbstractNode;
 
 public interface IMediaService {
     public abstract AbstractNode getNode(String nodeId);

@@ -19,42 +19,38 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.backend.response;
 
-public final class PodcastNode extends AbstractNode {
-    private static final long serialVersionUID = 1970454850754589123L;
+import java.io.Serializable;
 
-    private String url;
+public class ConfigurationResponse implements Serializable {
+    private static final long serialVersionUID = 337172491421293170L;
 
-    public PodcastNode() {
-        type = NodeType.TYPE_PODCAST;
+    private String serverName;
+    private Integer httpServerPort;
+    private String logLevel;
+
+    public String getServerName() {
+        return serverName;
     }
 
-    public String getUrl() {
-        return url;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public Integer getHttpServerPort() {
+        return httpServerPort;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.model.AbstractNode#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PodcastNode [url=");
-        builder.append(url);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append("]");
-        return builder.toString();
+    public void setHttpServerPort(Integer httpServerPort) {
+        this.httpServerPort = httpServerPort;
+    }
+
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
     }
 }

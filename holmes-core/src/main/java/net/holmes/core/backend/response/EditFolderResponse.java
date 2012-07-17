@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.backend.model;
+package net.holmes.core.backend.response;
 
 import java.io.Serializable;
 

@@ -36,11 +36,11 @@ import java.util.UUID;
 
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.model.AbstractNode;
-import net.holmes.core.model.ContentNode;
-import net.holmes.core.model.FolderNode;
-import net.holmes.core.model.PodcastEntryNode;
-import net.holmes.core.model.PodcastNode;
+import net.holmes.core.media.node.AbstractNode;
+import net.holmes.core.media.node.ContentNode;
+import net.holmes.core.media.node.FolderNode;
+import net.holmes.core.media.node.PodcastEntryNode;
+import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.IMimeTypeFactory;
 import net.holmes.core.util.MimeType;
 import net.sf.ehcache.Cache;
@@ -95,7 +95,7 @@ public final class MediaService implements IMediaService {
 
         if (rootNodes.get(nodeId) != null) {
             // root node
-            node = buildRootNode(nodeId, rootNodes.get(nodeId));
+            node = buildRootNode(nodeId);
         }
         else if (nodeId != null) {
             // Get node id
@@ -126,7 +126,7 @@ public final class MediaService implements IMediaService {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#getChildNodes(net.holmes.core.model.AbstractNode)
+     * @see net.holmes.core.media.IMediaService#getChildNodes(net.holmes.core.media.node.AbstractNode)
      */
     @Override
     public List<AbstractNode> getChildNodes(AbstractNode parentNode) {
@@ -136,10 +136,10 @@ public final class MediaService implements IMediaService {
         if (ConfigurationNode.ROOT_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
             childNodes = new ArrayList<AbstractNode>();
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_AUDIO_NODE_ID)));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_VIDEO_NODE_ID)));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PICTURE_NODE_ID)));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID, rootNodes.get(ConfigurationNode.ROOT_PODCAST_NODE_ID)));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID));
+            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID));
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
@@ -307,10 +307,10 @@ public final class MediaService implements IMediaService {
         return podcastEntryNodes;
     }
 
-    private FolderNode buildRootNode(String nodeId, String bundleKey) {
+    private FolderNode buildRootNode(String nodeId) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
-        node.setName(bundle.getString(bundleKey));
+        node.setName(bundle.getString(rootNodes.get(nodeId)));
         return node;
     }
 
@@ -356,7 +356,7 @@ public final class MediaService implements IMediaService {
     }
 
     /**
-     * Node parameters for nodes having id with format "nodeType|Path or Url" 
+     * Node id parser for nodes having id with format "nodeType|Path or Url" 
      */
     private class NodeId {
         private String nodeType = null;;

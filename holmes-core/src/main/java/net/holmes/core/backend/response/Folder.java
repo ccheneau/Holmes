@@ -19,38 +19,38 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.backend.model;
+package net.holmes.core.backend.response;
 
 import java.io.Serializable;
+import java.util.Collection;
 
-public class ConfigurationResponse implements Serializable {
-    private static final long serialVersionUID = 337172491421293170L;
+public class Folder implements Serializable {
+    private static final long serialVersionUID = -7055943024207235434L;
 
-    private String serverName;
-    private Integer httpServerPort;
-    private String logLevel;
+    private String id;
+    private Collection<String> cell;
 
-    public String getServerName() {
-        return serverName;
+    public Folder() {
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
+    public Folder(String id, Collection<String> cell) {
+        this.id = id;
+        this.cell = cell;
     }
 
-    public Integer getHttpServerPort() {
-        return httpServerPort;
+    public String getId() {
+        return id;
     }
 
-    public void setHttpServerPort(Integer httpServerPort) {
-        this.httpServerPort = httpServerPort;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getLogLevel() {
-        return logLevel;
+    public Collection<String> getCell() {
+        return cell;
     }
 
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
+    public void setCell(Collection<String> cell) {
+        this.cell = cell;
     }
 }

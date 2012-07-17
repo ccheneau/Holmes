@@ -19,38 +19,48 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.backend.model;
+package net.holmes.core.backend.response;
 
 import java.io.Serializable;
 import java.util.Collection;
 
-public class Folder implements Serializable {
-    private static final long serialVersionUID = -7055943024207235434L;
+public class FolderListResponse implements Serializable {
+    private static final long serialVersionUID = 936714380923230317L;
 
-    private String id;
-    private Collection<String> cell;
+    private int page;
+    private int total;
+    private int records;
+    private Collection<Folder> rows;
 
-    public Folder() {
+    public int getPage() {
+        return page;
     }
 
-    public Folder(String id, Collection<String> cell) {
-        this.id = id;
-        this.cell = cell;
+    public void setPage(int page) {
+        this.page = page;
     }
 
-    public String getId() {
-        return id;
+    public int getTotal() {
+        return total;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public Collection<String> getCell() {
-        return cell;
+    public int getRecords() {
+        return records;
     }
 
-    public void setCell(Collection<String> cell) {
-        this.cell = cell;
+    public void setRecords(int records) {
+        this.records = records;
+    }
+
+    public Collection<Folder> getRows() {
+        return rows;
+    }
+
+    public void setRows(Collection<Folder> rows) {
+        this.rows = rows;
     }
 }

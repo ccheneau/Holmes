@@ -19,39 +19,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.media.node;
 
-public final class FolderNode extends AbstractNode {
-    private static final long serialVersionUID = 8129761596085917631L;
-
-    public FolderNode() {
-        type = NodeType.TYPE_FOLDER;
-    }
-
-    private String path;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("FolderNode [id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append("]");
-        return builder.toString();
-    }
+public enum NodeType {
+    TYPE_FOLDER, //
+    TYPE_CONTENT, //
+    TYPE_PODCAST, //
+    TYPE_PODCAST_ENTRY;
 }

@@ -19,48 +19,42 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.backend.model;
+package net.holmes.core.media.node;
 
-import java.io.Serializable;
-import java.util.Collection;
+public final class PodcastNode extends AbstractNode {
+    private static final long serialVersionUID = 1970454850754589123L;
 
-public class FolderListResponse implements Serializable {
-    private static final long serialVersionUID = 936714380923230317L;
+    private String url;
 
-    private int page;
-    private int total;
-    private int records;
-    private Collection<Folder> rows;
-
-    public int getPage() {
-        return page;
+    public PodcastNode() {
+        type = NodeType.TYPE_PODCAST;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public String getUrl() {
+        return url;
     }
 
-    public int getTotal() {
-        return total;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public int getRecords() {
-        return records;
-    }
-
-    public void setRecords(int records) {
-        this.records = records;
-    }
-
-    public Collection<Folder> getRows() {
-        return rows;
-    }
-
-    public void setRows(Collection<Folder> rows) {
-        this.rows = rows;
+    /* (non-Javadoc)
+     * @see net.holmes.core.media.node.AbstractNode#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PodcastNode [url=");
+        builder.append(url);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", modifedDate=");
+        builder.append(modifedDate);
+        builder.append(", type=");
+        builder.append(type);
+        builder.append("]");
+        return builder.toString();
     }
 }

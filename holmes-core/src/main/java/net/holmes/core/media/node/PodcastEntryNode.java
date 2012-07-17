@@ -19,19 +19,19 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.model;
+package net.holmes.core.media.node;
 
 import net.holmes.core.util.MimeType;
 
-public final class ContentNode extends AbstractNode {
-    private static final long serialVersionUID = 7636797693582850834L;
+public final class PodcastEntryNode extends AbstractNode {
+    private static final long serialVersionUID = -8336088869310788944L;
 
     private MimeType mimeType;
     private Long size;
-    private String path;
+    private String url;
 
-    public ContentNode() {
-        type = NodeType.TYPE_CONTENT;
+    public PodcastEntryNode() {
+        type = NodeType.TYPE_PODCAST_ENTRY;
     }
 
     public MimeType getMimeType() {
@@ -50,30 +50,30 @@ public final class ContentNode extends AbstractNode {
         this.size = size;
     }
 
-    public String getPath() {
-        return path;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.model.AbstractNode#toString()
+     * @see net.holmes.core.media.node.AbstractNode#toString()
      */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ContentNode [mimeType=");
+        builder.append("PodcastEntryNode [mimeType=");
         builder.append(mimeType);
         builder.append(", size=");
         builder.append(size);
+        builder.append(", url=");
+        builder.append(url);
         builder.append(", id=");
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

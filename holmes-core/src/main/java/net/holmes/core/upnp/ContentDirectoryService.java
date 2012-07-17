@@ -30,11 +30,11 @@ import java.util.UUID;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.IMediaService;
-import net.holmes.core.model.AbstractNode;
-import net.holmes.core.model.ContentNode;
-import net.holmes.core.model.FolderNode;
-import net.holmes.core.model.PodcastEntryNode;
-import net.holmes.core.model.PodcastNode;
+import net.holmes.core.media.node.AbstractNode;
+import net.holmes.core.media.node.ContentNode;
+import net.holmes.core.media.node.FolderNode;
+import net.holmes.core.media.node.PodcastEntryNode;
+import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.MimeType;
 
 import org.slf4j.Logger;

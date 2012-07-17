@@ -34,10 +34,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.holmes.core.backend.model.ConfigurationResponse;
-import net.holmes.core.backend.model.EditFolderResponse;
-import net.holmes.core.backend.model.Folder;
-import net.holmes.core.backend.model.FolderListResponse;
+import net.holmes.core.backend.response.ConfigurationResponse;
+import net.holmes.core.backend.response.EditFolderResponse;
+import net.holmes.core.backend.response.Folder;
+import net.holmes.core.backend.response.FolderListResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 
