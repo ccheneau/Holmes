@@ -54,6 +54,8 @@ public final class HttpServer implements IServer {
     private IConfiguration configuration;
 
     public HttpServer() {
+        // Init channel group
+        allChannels = new DefaultChannelGroup(HttpServer.class.getName());
     }
 
     /* (non-Javadoc)
@@ -63,10 +65,7 @@ public final class HttpServer implements IServer {
     public void start() {
         logger.info("Starting HTTP server");
 
-        int port = configuration.getHttpServerPort();
-        InetSocketAddress bindAddress = new InetSocketAddress(port);
-
-        allChannels = new DefaultChannelGroup(HttpServer.class.getName());
+        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
         // Configure the server.
         bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
