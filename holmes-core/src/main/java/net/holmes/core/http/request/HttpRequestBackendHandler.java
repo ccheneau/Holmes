@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -182,6 +183,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
                     values.add(ContainerResponse.getHeaderValue(v));
                 response.setHeader(headerEntry.getKey(), values);
             }
+            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
             // Return output stream
             ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();

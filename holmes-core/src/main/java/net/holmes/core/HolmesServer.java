@@ -112,7 +112,7 @@ public final class HolmesServer implements IServer {
             }
         });
 
-        // Quit Holmes menu item
+        // Holmes logs menu item
         MenuItem logsItem = new MenuItem(bundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
             @Override

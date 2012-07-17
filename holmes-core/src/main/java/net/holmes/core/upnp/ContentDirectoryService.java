@@ -79,7 +79,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     private IMediaService mediaService;
     private IConfiguration configuration;
-    private String localIp;
+    private String localAddress;
 
     public ContentDirectoryService() {
         super( // search caps
@@ -87,7 +87,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // sort caps
                 Arrays.asList("dc:title"));
         try {
-            this.localIp = InetAddress.getLocalHost().getHostAddress();
+            this.localAddress = InetAddress.getLocalHost().getHostAddress();
         }
         catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
@@ -130,7 +130,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
                 if (browseNode != null) {
                     if (browseNode instanceof FolderNode) {
-                        // adds folder child nodes
+                        // add folder child nodes
                         if (logger.isDebugEnabled()) logger.debug("browse folder node:" + browseNode);
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
 
@@ -208,11 +208,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Adds content to didl
+     * Add content to didl
      */
     private void addContent(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
         StringBuilder url = new StringBuilder();
-        url.append("http://").append(localIp).append(":").append(configuration.getHttpServerPort());
+        url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
         url.append("/content?id=");
         url.append(contentNode.getId());
 
@@ -225,19 +225,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 contentNode.getSize(), url.toString());
 
         if (contentNode.getMimeType().isVideo()) {
-            // Adds video
+            // Add video
             Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
             if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
             didl.addItem(movie);
         }
         else if (contentNode.getMimeType().isAudio()) {
-            // Adds audio track
+            // Add audio track
             MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
             if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
             didl.addItem(musicTrack);
         }
         else if (contentNode.getMimeType().isImage()) {
-            // Adds image
+            // Add image
             Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
             if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
             didl.addItem(photo);
@@ -245,7 +245,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Adds folder to didl
+     * Add folder to didl
      */
     private void addFolder(String parentNodeId, FolderNode folderNode, DIDLContent didl) {
         if (logger.isDebugEnabled()) logger.debug("add folder node:" + folderNode);
@@ -270,7 +270,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Adds pod-cast items to didl
+     * Add pod-cast entries to didl
      * @return the number of added items
      */
     private int addPodcastEntries(PodcastNode parentNode, DIDLContent didl) {
