@@ -28,10 +28,8 @@ import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.group.ChannelGroup;
+import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +44,11 @@ public final class HttpServer implements IServer {
 
     public static final String HTTP_SERVER_NAME = "Holmes http server";
 
-    private Channel channel = null;
+    private ChannelGroup allChannels = null;
     private ServerBootstrap bootstrap = null;
 
     @Inject
-    private ChannelPipelineFactory pipelineFactory;
+    private IChannelPipelineFactory pipelineFactory;
 
     @Inject
     private IConfiguration configuration;
@@ -68,14 +66,17 @@ public final class HttpServer implements IServer {
         int port = configuration.getHttpServerPort();
         InetSocketAddress bindAddress = new InetSocketAddress(port);
 
+        allChannels = new DefaultChannelGroup(HttpServer.class.getName());
+
         // Configure the server.
         bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
 
         // Set up the event pipeline factory.
+        pipelineFactory.setChannelGroup(allChannels);
         bootstrap.setPipelineFactory(pipelineFactory);
 
         // Bind and start to accept incoming connections.
-        channel = bootstrap.bind(bindAddress);
+        allChannels.add(bootstrap.bind(bindAddress));
 
         logger.info("HTTP server bound on " + bindAddress);
     }
@@ -87,35 +88,9 @@ public final class HttpServer implements IServer {
     public void stop() {
         logger.info("Stopping HTTP server");
 
-        ChannelFuture cf = channel.getCloseFuture();
-        cf.addListener(new ServerChannelFutureListener());
-
-        channel.close();
-        cf.awaitUninterruptibly();
+        allChannels.close();
         bootstrap.releaseExternalResources();
 
         logger.info("HTTP server stopped");
-    }
-
-    /**
-     * The listener interface for receiving serverChannelFuture events.
-     * The class that is interested in processing a serverChannelFuture
-     * event implements this interface, and the object created
-     * with that class is registered with a component using the
-     * component's <code>addServerChannelFutureListener<code> method. When
-     * the serverChannelFuture event occurs, that object's appropriate
-     * method is invoked.
-     *
-     * @see ServerChannelFutureEvent
-     */
-    private class ServerChannelFutureListener implements ChannelFutureListener {
-
-        /* (non-Javadoc)
-         * @see org.jboss.netty.channel.ChannelFutureListener#operationComplete(org.jboss.netty.channel.ChannelFuture)
-         */
-        @Override
-        public void operationComplete(ChannelFuture cf) throws Exception {
-            logger.info("HTTP server stop complete");
-        }
     }
 }

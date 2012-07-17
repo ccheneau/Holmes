@@ -26,6 +26,7 @@ import net.holmes.core.configuration.xml.XmlConfiguration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerHandler;
 import net.holmes.core.http.HttpServerPipelineFactory;
+import net.holmes.core.http.IChannelPipelineFactory;
 import net.holmes.core.http.request.HttpRequestBackendHandler;
 import net.holmes.core.http.request.HttpRequestContentHandler;
 import net.holmes.core.http.request.HttpRequestSiteHandler;
@@ -37,13 +38,13 @@ import net.holmes.core.util.IMimeTypeFactory;
 import net.holmes.core.util.MimeTypeFactory;
 
 import org.jboss.netty.channel.ChannelHandler;
-import org.jboss.netty.channel.ChannelPipelineFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 public final class HolmesServerModule extends AbstractModule {
+
     /* (non-Javadoc)
      * @see com.google.inject.AbstractModule#configure()
      */
@@ -61,7 +62,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
 
         // Bind Http handlers
-        bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
+        bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
         bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpServerHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpRequestContentHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpRequestBackendHandler.class);
