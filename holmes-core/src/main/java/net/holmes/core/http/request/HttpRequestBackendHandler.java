@@ -85,7 +85,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     public void initHandler() {
         if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
 
-        // Jersey integration
+        // Jersey initialization
         if (application == null) {
             application = WebApplicationFactory.createWebApplication();
             if (!application.isInitiated()) {
@@ -152,7 +152,6 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
         for (String name : request.getHeaderNames()) {
             headers.put(name, request.getHeaders(name));
         }
-
         return headers;
     }
 
@@ -160,7 +159,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
      * Response writer for backend requests     
      *
      */
-    private final static class BackendResponseWriter implements ContainerResponseWriter {
+    private final class BackendResponseWriter implements ContainerResponseWriter {
 
         private final Channel channel;
         private HttpResponse response;

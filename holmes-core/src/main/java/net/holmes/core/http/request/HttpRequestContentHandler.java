@@ -99,10 +99,10 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
 
             // Check node
             File file = new File(node.getPath());
-            if (!file.exists()) {
+            if (!file.exists() || !file.isFile()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
             }
-            if (!file.isFile() || !file.canRead() || file.isHidden()) {
+            else if (!file.canRead() || file.isHidden()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
             }
 

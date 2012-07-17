@@ -92,7 +92,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.getPath();
-        if (fileName.equals("/")) {
+        if ("/".equals(fileName)) {
             fileName = "/index.html";
         }
 
