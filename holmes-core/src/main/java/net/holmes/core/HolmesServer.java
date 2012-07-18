@@ -23,11 +23,9 @@ package net.holmes.core;
 
 import java.awt.AWTException;
 import java.awt.Desktop;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
+import java.awt.Font;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
-import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -36,9 +34,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ResourceBundle;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
+
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.util.HomeDirectory;
 import net.holmes.core.util.LogUtil;
+import net.holmes.core.util.SystemTrayIcon;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +78,7 @@ public final class HolmesServer implements IServer {
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
-        initSystray();
+        if (initUI()) initSysTrayIcon();
         logger.info("Holmes server started");
     }
 
@@ -90,7 +94,24 @@ public final class HolmesServer implements IServer {
         logger.info("Holmes server stopped");
     }
 
-    private void initSystray() {
+    private boolean initUI() {
+        boolean initOk = true;
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            Font menuItemFont = UIManager.getFont("MenuItem.font");
+            if (menuItemFont != null) {
+                FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
+                UIManager.put("MenuItem.bold.font", menuItemBoldFont);
+            }
+        }
+        catch (Exception e) {
+            initOk = false;
+        }
+        return initOk;
+    }
+
+    private void initSysTrayIcon() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
             return;
@@ -98,13 +119,15 @@ public final class HolmesServer implements IServer {
 
         ResourceBundle bundle = ResourceBundle.getBundle("message");
 
-        final PopupMenu popup = new PopupMenu();
-        final TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")), bundle.getString("systray.title"));
+        final SystemTrayIcon trayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
+                bundle.getString("systray.title"));
         final SystemTray tray = SystemTray.getSystemTray();
+
+        final JPopupMenu popup = new JPopupMenu();
 
         // Create a popup menu components
         // Quit Holmes menu item
-        MenuItem quitItem = new MenuItem(bundle.getString("systray.quit"));
+        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -113,7 +136,7 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes logs menu item
-        MenuItem logsItem = new MenuItem(bundle.getString("systray.logs"));
+        JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -131,7 +154,10 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes admin site menu item
-        MenuItem holmesItem = new MenuItem(bundle.getString("systray.holmes"));
+        JMenuItem holmesItem = new JMenuItem(bundle.getString("systray.holmes"));
+        Font boldFont = UIManager.getFont("MenuItem.bold.font");
+        if (boldFont != null) holmesItem.setFont(boldFont);
+
         holmesItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -158,7 +184,7 @@ public final class HolmesServer implements IServer {
         popup.add(quitItem);
 
         trayIcon.setImageAutoSize(true);
-        trayIcon.setPopupMenu(popup);
+        trayIcon.setJPopupMenu(popup);
         try {
             tray.add(trayIcon);
         }
