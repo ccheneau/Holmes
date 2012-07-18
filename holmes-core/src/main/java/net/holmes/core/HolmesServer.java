@@ -75,10 +75,14 @@ public final class HolmesServer implements IServer {
     @Override
     public void start() {
         logger.info("Starting Holmes server");
+
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
-        if (initUI()) initSysTrayIcon();
+
+        // Add system tray icon
+        if (initUI()) initSystemTrayIcon();
+
         logger.info("Holmes server started");
     }
 
@@ -88,9 +92,11 @@ public final class HolmesServer implements IServer {
     @Override
     public void stop() {
         logger.info("Stopping Holmes server");
+
         // Stop Holmes server
         upnpServer.stop();
         httpServer.stop();
+
         logger.info("Holmes server stopped");
     }
 
@@ -111,10 +117,10 @@ public final class HolmesServer implements IServer {
         return initOk;
     }
 
-    private void initSysTrayIcon() {
+    private SystemTrayIcon initSystemTrayIcon() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
-            return;
+            return null;
         }
 
         ResourceBundle bundle = ResourceBundle.getBundle("message");
@@ -122,13 +128,16 @@ public final class HolmesServer implements IServer {
         final SystemTrayIcon trayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
                 bundle.getString("systray.title"));
         final SystemTray tray = SystemTray.getSystemTray();
-
         final JPopupMenu popup = new JPopupMenu();
 
         // Create a popup menu components
         // Quit Holmes menu item
         JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
+
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 System.exit(0);
@@ -138,6 +147,10 @@ public final class HolmesServer implements IServer {
         // Holmes logs menu item
         JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
+
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (Desktop.isDesktopSupported()) {
@@ -159,6 +172,10 @@ public final class HolmesServer implements IServer {
         if (boldFont != null) holmesItem.setFont(boldFont);
 
         holmesItem.addActionListener(new ActionListener() {
+
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {
@@ -191,6 +208,7 @@ public final class HolmesServer implements IServer {
         catch (AWTException e) {
             logger.error(e.getMessage(), e);
         }
+        return trayIcon;
     }
 
     public static void main(String[] args) {
@@ -208,6 +226,10 @@ public final class HolmesServer implements IServer {
         Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
     }
 
+    /**
+     * Shutdown hook: properly stop Holmes server on system exit
+     *
+     */
     private static class ShutdownHook extends Thread {
         IServer holmesServer;
 
