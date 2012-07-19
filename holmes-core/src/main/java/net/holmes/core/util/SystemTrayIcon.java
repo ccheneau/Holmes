@@ -39,7 +39,7 @@ import javax.swing.event.PopupMenuListener;
  */
 public class SystemTrayIcon extends TrayIcon {
 
-    private JPopupMenu menu;
+    private JPopupMenu popupMenu;
     private static JDialog dialog;
 
     static {
@@ -90,22 +90,24 @@ public class SystemTrayIcon extends TrayIcon {
     }
 
     private void showJPopupMenu(MouseEvent e) {
-        if (menu != null) {
-            Dimension size = menu.getPreferredSize();
+        if (popupMenu != null) {
+            Dimension size = popupMenu.getPreferredSize();
             dialog.setLocation(e.getX(), e.getY() - size.height);
             dialog.setVisible(true);
-            menu.show(dialog.getContentPane(), 0, 0);
+            popupMenu.show(dialog.getContentPane(), 0, 0);
             dialog.toFront();
         }
     }
 
-    public void setJPopupMenu(JPopupMenu menu) {
-        if (this.menu != null) {
-            this.menu.removePopupMenuListener(popupListener);
+    public void setJPopupMenu(JPopupMenu popupMenu) {
+        if (this.popupMenu != null) {
+            this.popupMenu.removePopupMenuListener(popupListener);
         }
 
-        this.menu = menu;
-        menu.addPopupMenuListener(popupListener);
+        if (popupMenu != null) {
+            this.popupMenu = popupMenu;
+            this.popupMenu.addPopupMenuListener(popupListener);
+        }
 
     }
 }

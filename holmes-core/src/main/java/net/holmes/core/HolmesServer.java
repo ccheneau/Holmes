@@ -125,12 +125,13 @@ public final class HolmesServer implements IServer {
 
         ResourceBundle bundle = ResourceBundle.getBundle("message");
 
-        final SystemTrayIcon trayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
+        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
                 bundle.getString("systray.title"));
-        final SystemTray tray = SystemTray.getSystemTray();
-        final JPopupMenu popup = new JPopupMenu();
+        final SystemTray systemTray = SystemTray.getSystemTray();
 
-        // Create a popup menu components
+        // Create a popup menu
+        final JPopupMenu popupMenu = new JPopupMenu();
+
         // Quit Holmes menu item
         JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
@@ -194,21 +195,22 @@ public final class HolmesServer implements IServer {
             }
         });
 
-        // Add components to popup menu
-        popup.add(holmesItem);
-        popup.add(logsItem);
-        popup.addSeparator();
-        popup.add(quitItem);
+        // Add items to popup menu
+        popupMenu.add(holmesItem);
+        popupMenu.add(logsItem);
+        popupMenu.addSeparator();
+        popupMenu.add(quitItem);
 
-        trayIcon.setImageAutoSize(true);
-        trayIcon.setJPopupMenu(popup);
+        // Add tray icon
+        systemTrayIcon.setImageAutoSize(true);
+        systemTrayIcon.setJPopupMenu(popupMenu);
         try {
-            tray.add(trayIcon);
+            systemTray.add(systemTrayIcon);
         }
         catch (AWTException e) {
             logger.error(e.getMessage(), e);
         }
-        return trayIcon;
+        return systemTrayIcon;
     }
 
     public static void main(String[] args) {
