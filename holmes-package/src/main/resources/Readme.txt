@@ -1,1 +1,1 @@
-See https://github.com/ccheneau/Holmes for more information
+See https://github.com/ccheneau/Holmes/wiki for more information
