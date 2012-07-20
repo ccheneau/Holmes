@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (c) 2012 Cedric Cheneau
 
@@ -34,10 +34,11 @@ holmes_start () {
   done
 
   # set holmes home
-  currentDir=`pwd`
+  current_dir=`pwd`
   HOLMES_HOME=`dirname "$SCRIPT_PATH"`/..
   HOLMES_HOME=`cd "$HOLMES_HOME" && pwd`
-  cd "$currentDir"
+  cd "$current_dir"
+  export HOLMES_HOME
 
   # locate java
   if [ -n "$JAVA_HOME"  ] ; then
@@ -51,21 +52,39 @@ holmes_start () {
   fi
   
   # run holmes
-  JAVA_ARGS="-Dnet.holmes.home=\"$HOLMES_HOME\" -Dfile.encoding=UTF-8"
-  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core--${project.version}.jar 1>$HOLMES_HOME/log/systemOut.log 2>$HOLMES_HOME/log/systemErr.log &
-  echo "[INFO] Holmes server started"
+  echo "Starting Holmes"
+  JAVA_ARGS="-Dnet.holmes.home=$HOLMES_HOME -Dfile.encoding=UTF-8"
+  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-${project.version}.jar 1>$HOLMES_HOME/log/systemOut.log 2>$HOLMES_HOME/log/systemErr.log &
+  sleep 3
+  holmes_status
 }
 
 holmes_stop() {
-  echo "TODO stop"
+  holmes_pid=`ps -eaf |grep "net.holmes.home" | grep -v "grep" | head -1 | awk '{ print $2 }'`
+  if [ ! -z "$holmes_pid" ] ; then
+    echo "Stopping Holmes (pid $holmes_pid)"
+    kill -s 15 $holmes_pid
+    sleep 3
+  fi
+  holmes_status
 }
 
 holmes_force_stop() {
-  echo "TODO force-stop"
+  holmes_pid=`ps -eaf |grep "net.holmes.home" | grep -v "grep" | head -1 | awk '{ print $2 }'`
+  if [ ! -z "$holmes_pid" ] ; then
+    echo "Stopping Holmes (pid $holmes_pid)"
+    kill -9 $holmes_pid
+  fi
+  holmes_status
 }
 
 holmes_status() {
-  echo "TODO status"
+  holmes_pid=`ps -eaf |grep "net.holmes.home" | grep -v "grep" | head -1 | awk '{ print $2 }'`
+  if [ -z "$holmes_pid" ] ; then
+    echo "Holmes is not running"
+  else
+    echo "Holmes is running (pid $holmes_pid)"
+  fi
 }
 
 case "$1" in
@@ -86,7 +105,7 @@ case "$1" in
     ;;
 
   *)
-    echo "Usage: holmes.sh {start|stop|force-stop|status}"
+    echo "Usage: holmes.sh (start|stop|force-stop|status)"
     exit 1
     ;;
 esac
