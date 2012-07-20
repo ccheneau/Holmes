@@ -40,6 +40,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.HomeDirectory;
 import net.holmes.core.util.LogUtil;
 import net.holmes.core.util.SystemTrayIcon;
@@ -80,8 +81,10 @@ public final class HolmesServer implements IServer {
         httpServer.start();
         upnpServer.start();
 
-        // Add system tray icon
-        if (initUI()) initSystemTrayIcon();
+        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY)) {
+            // Add system tray icon
+            if (initUI()) initSystemTrayIcon();
+        }
 
         logger.info("Holmes server started");
     }
