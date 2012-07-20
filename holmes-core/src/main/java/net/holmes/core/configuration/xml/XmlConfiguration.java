@@ -33,7 +33,6 @@ import java.util.List;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.util.HomeDirectory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +48,31 @@ public final class XmlConfiguration implements IConfiguration {
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
+    private static final String CONF_FILE_PATH = ".holmes";
 
     private XmlRootNode rootNode = null;
 
     public XmlConfiguration() {
         loadConfig();
+    }
+
+    /**
+     * Get path to Holmes configuration file 
+     */
+    private String getConfigFilePath() {
+        String configFilePath = null;
+        StringBuilder userHomeHolmes = new StringBuilder();
+        userHomeHolmes.append(System.getProperty("user.home")).append(File.separator).append(CONF_FILE_PATH);
+
+        // Create holmes user home directory if it does not exist
+        File userHomeHolmesDir = new File(userHomeHolmes.toString());
+        if (!userHomeHolmesDir.exists() || !userHomeHolmesDir.isDirectory()) {
+            userHomeHolmesDir.mkdir();
+        }
+        if (userHomeHolmesDir.exists() && userHomeHolmesDir.isDirectory()) {
+            configFilePath = userHomeHolmes.append(File.separator).append(CONF_FILE_NAME).toString();
+        }
+        return configFilePath;
     }
 
     /* (non-Javadoc)
@@ -65,9 +84,8 @@ public final class XmlConfiguration implements IConfiguration {
 
         XStream xs = getXStream();
 
-        String confPath = HomeDirectory.getConfigDirectory();
-        if (confPath != null) {
-            String filePath = confPath + File.separator + CONF_FILE_NAME;
+        String filePath = getConfigFilePath();
+        if (filePath != null) {
             File confFile = new File(filePath);
             if (confFile.exists() && confFile.canRead()) {
                 InputStream in = null;
@@ -100,9 +118,8 @@ public final class XmlConfiguration implements IConfiguration {
     public void saveConfig() {
         XStream xs = getXStream();
 
-        String confPath = HomeDirectory.getConfigDirectory();
-        if (confPath != null) {
-            String filePath = confPath + File.separator + CONF_FILE_NAME;
+        String filePath = getConfigFilePath();
+        if (filePath != null) {
             File confFile = new File(filePath);
 
             OutputStream out = null;
@@ -224,5 +241,4 @@ public final class XmlConfiguration implements IConfiguration {
     public String toString() {
         return this.rootNode.toString();
     }
-
 }

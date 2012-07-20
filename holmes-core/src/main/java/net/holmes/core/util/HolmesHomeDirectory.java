@@ -2,12 +2,12 @@ package net.holmes.core.util;
 
 import java.io.File;
 
-public class HomeDirectory {
+public class HolmesHomeDirectory {
     private static final String HOME_CONF_FOLDER = "conf";
     private static final String HOME_SITE_FOLDER = "site";
     private static final String HOME_LOG_FOLDER = "log";
 
-    public static String getHomeDirectory() {
+    public static String getHolmesHomeDirectory() {
         String homeDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
         if (homeDirectory != null) {
             File fPath = new File(homeDirectory);
@@ -31,7 +31,7 @@ public class HomeDirectory {
     }
 
     private static String getSubDirectory(String subDirName) {
-        String homeSubDirectory = getHomeDirectory() + File.separator + subDirName;
+        String homeSubDirectory = getHolmesHomeDirectory() + File.separator + subDirName;
         File confDir = new File(homeSubDirectory);
         if (!confDir.exists()) {
             confDir.mkdir();
