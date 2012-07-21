@@ -42,15 +42,12 @@ import javax.swing.plaf.FontUIResource;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.LogUtil;
 import net.holmes.core.util.SystemTrayIcon;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
 public final class HolmesServer implements IServer {
@@ -75,7 +72,7 @@ public final class HolmesServer implements IServer {
      */
     @Override
     public void start() {
-        logger.info("Starting Holmes server");
+        if (logger.isInfoEnabled()) logger.info("Starting Holmes server");
 
         // Start Holmes server
         httpServer.start();
@@ -86,7 +83,7 @@ public final class HolmesServer implements IServer {
             if (initUI()) initSystemTrayIcon();
         }
 
-        logger.info("Holmes server started");
+        if (logger.isInfoEnabled()) logger.info("Holmes server started");
     }
 
     /* (non-Javadoc)
@@ -94,13 +91,13 @@ public final class HolmesServer implements IServer {
      */
     @Override
     public void stop() {
-        logger.info("Stopping Holmes server");
+        if (logger.isInfoEnabled()) logger.info("Stopping Holmes server");
 
         // Stop Holmes server
         upnpServer.stop();
         httpServer.stop();
 
-        logger.info("Holmes server stopped");
+        if (logger.isInfoEnabled()) logger.info("Holmes server stopped");
     }
 
     private boolean initUI() {
@@ -214,40 +211,5 @@ public final class HolmesServer implements IServer {
             logger.error(e.getMessage(), e);
         }
         return systemTrayIcon;
-    }
-
-    public static void main(String[] args) {
-        // Load log configuration
-        LogUtil.loadConfig();
-
-        // Create Guice injector
-        Injector injector = Guice.createInjector(new HolmesServerModule());
-
-        // Start Holmes server
-        IServer holmesServer = injector.getInstance(HolmesServer.class);
-        holmesServer.start();
-
-        // Add shutdown hook
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
-    }
-
-    /**
-     * Shutdown hook: properly stop Holmes server on system exit
-     *
-     */
-    private static class ShutdownHook extends Thread {
-        IServer holmesServer;
-
-        public ShutdownHook(IServer holmesServer) {
-            this.holmesServer = holmesServer;
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Thread#run()
-         */
-        @Override
-        public void run() {
-            holmesServer.stop();
-        }
     }
 }

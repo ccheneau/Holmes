@@ -63,7 +63,7 @@ public final class HttpServer implements IServer {
      */
     @Override
     public void start() {
-        logger.info("Starting HTTP server");
+        if (logger.isInfoEnabled()) logger.info("Starting HTTP server");
 
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
@@ -74,10 +74,10 @@ public final class HttpServer implements IServer {
         pipelineFactory.setChannelGroup(allChannels);
         bootstrap.setPipelineFactory(pipelineFactory);
 
-        // Bind and start to accept incoming connections.
+        // Bind and start server to accept incoming connections.
         allChannels.add(bootstrap.bind(bindAddress));
 
-        logger.info("HTTP server bound on " + bindAddress);
+        if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
     }
 
     /* (non-Javadoc)
@@ -85,11 +85,14 @@ public final class HttpServer implements IServer {
      */
     @Override
     public void stop() {
-        logger.info("Stopping HTTP server");
+        if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
-        allChannels.close();
-        bootstrap.releaseExternalResources();
+        // Stop the server
+        if (bootstrap != null) {
+            allChannels.close();
+            bootstrap.releaseExternalResources();
+        }
 
-        logger.info("HTTP server stopped");
+        if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
     }
 }

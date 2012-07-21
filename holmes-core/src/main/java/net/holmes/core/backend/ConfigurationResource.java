@@ -215,8 +215,8 @@ public class ConfigurationResource {
             cell.add(folder.getPath());
             folders.add(new Folder(folder.getId(), cell));
         }
-
         response.setRows(folders);
+
         return response;
     }
 
@@ -271,7 +271,7 @@ public class ConfigurationResource {
             if (existingFolder != null) {
                 if (!duplicated) {
                     ErrorCode validate = validatePath(path, isPath);
-                    if (validate.code() == 0) {
+                    if (validate == ErrorCode.NO_ERROR) {
                         // Edits the folder
                         existingFolder.setLabel(label);
                         existingFolder.setPath(path);

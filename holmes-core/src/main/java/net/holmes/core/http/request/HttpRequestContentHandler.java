@@ -83,8 +83,6 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
-
-        // Debug
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             LogUtil.debugHttpRequest(logger, request);

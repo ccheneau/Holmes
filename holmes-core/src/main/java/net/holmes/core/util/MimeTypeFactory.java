@@ -49,7 +49,7 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
                 if (in != null) in.close();
             }
             catch (IOException e) {
-                // Nothing
+                logger.error(e.getMessage(), e);
             }
         }
     }
@@ -65,9 +65,6 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
         ext = fileName.substring(mid + 1, fileName.length());
 
         // Get mime type
-        MimeType mimeType = null;
-        if (properties.getProperty(ext) != null) mimeType = new MimeType(properties.getProperty(ext));
-
-        return mimeType;
+        return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));
     }
 }

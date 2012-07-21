@@ -55,6 +55,7 @@ import org.teleal.cling.support.contentdirectory.DIDLParser;
 import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.BrowseResult;
 import org.teleal.cling.support.model.DIDLContent;
+import org.teleal.cling.support.model.DIDLObject;
 import org.teleal.cling.support.model.DIDLObject.Property.DC;
 import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.SortCriterion;
@@ -112,7 +113,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (logger.isDebugEnabled()) {
                 logger.debug("[START] browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " filter=" + filter
                         + " indice=" + firstResult + " nbresults=" + maxResults);
-
                 try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
                     logger.debug("RequestFrom agent: " + userAgent);
@@ -125,13 +125,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 DIDLContent didl = new DIDLContent();
 
+                // Get node
                 AbstractNode browseNode = mediaService.getNode(objectID);
                 if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
                 if (browseNode != null) {
                     if (browseNode instanceof FolderNode) {
                         // add folder child nodes
-                        if (logger.isDebugEnabled()) logger.debug("browse folder node:" + browseNode);
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
 
                         if (childNodes != null && !childNodes.isEmpty()) {
@@ -221,25 +221,24 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             logger.debug("url:" + url);
         }
 
-        Res res = new Res(new org.teleal.common.util.MimeType(contentNode.getMimeType().getType(), contentNode.getMimeType().getSubType()),
-                contentNode.getSize(), url.toString());
+        Res res = new Res(contentNode.getMimeType().toUpnpMimeType(), contentNode.getSize(), url.toString());
 
         if (contentNode.getMimeType().isVideo()) {
             // Add video
             Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
-            if (contentNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
+            setModifiedDate(movie, contentNode);
             didl.addItem(movie);
         }
         else if (contentNode.getMimeType().isAudio()) {
             // Add audio track
             MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
-            if (contentNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
+            setModifiedDate(musicTrack, contentNode);
             didl.addItem(musicTrack);
         }
         else if (contentNode.getMimeType().isImage()) {
             // Add image
             Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
-            if (contentNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(contentNode.getModifedDate()));
+            setModifiedDate(photo, contentNode);
             didl.addItem(photo);
         }
     }
@@ -275,6 +274,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private int addPodcastEntries(PodcastNode parentNode, DIDLContent didl) {
         int itemCount = 0;
+
+        // Get child nodes
         List<AbstractNode> childNodes = mediaService.getChildNodes(parentNode);
         if (childNodes != null && !childNodes.isEmpty()) {
             PodcastEntryNode podcastEntryNode = null;
@@ -284,25 +285,21 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     MimeType mimeType = null;
                     Res res = null;
                     mimeType = podcastEntryNode.getMimeType();
-                    String entryName = getPodcastEntryName(itemCount, podcastEntryNode.getName());
                     if (mimeType.isMedia()) {
-                        res = new Res(new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType()), podcastEntryNode.getSize(),
-                                podcastEntryNode.getUrl());
-                        if (logger.isDebugEnabled()) logger.debug("add podcast entry:" + entryName + " " + podcastEntryNode.getUrl());
+                        String entryName = getPodcastEntryName(itemCount, podcastEntryNode.getName());
+                        res = new Res(mimeType.toUpnpMimeType(), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
 
                         if (mimeType.isAudio()) {
                             // Add audio track
                             MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", "", res);
-                            if (podcastEntryNode.getModifedDate() != null) musicTrack.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
-
+                            setModifiedDate(musicTrack, podcastEntryNode);
                             didl.addItem(musicTrack);
                             itemCount++;
                         }
                         else if (mimeType.isImage()) {
                             // Adds image
                             Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", res);
-                            if (podcastEntryNode.getModifedDate() != null) photo.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
-
+                            setModifiedDate(photo, podcastEntryNode);
                             didl.addItem(photo);
                             itemCount++;
 
@@ -310,8 +307,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         else if (mimeType.isVideo()) {
                             // Adds video
                             Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", res);
-                            if (podcastEntryNode.getModifedDate() != null) movie.replaceFirstProperty(new DC.DATE(podcastEntryNode.getModifedDate()));
-
+                            setModifiedDate(movie, podcastEntryNode);
                             didl.addItem(movie);
                             itemCount++;
                         }
@@ -320,6 +316,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             }
         }
         return itemCount;
+    }
+
+    private void setModifiedDate(DIDLObject didlObjet, AbstractNode node) {
+        if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(node.getModifedDate()));
     }
 
     private String getPodcastEntryName(int count, String title) {

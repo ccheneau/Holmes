@@ -22,9 +22,7 @@
 package net.holmes.core;
 
 public interface IServer {
-
     public void start();
 
     public void stop();
-
 }

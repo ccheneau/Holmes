@@ -143,19 +143,19 @@ public final class MediaService implements IMediaService {
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
+            childNodes = getRootChildNodes(configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
         }
         else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
+            childNodes = getRootChildNodes(configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
         }
         else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
-            childNodes = getChildRootNodes(configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
+            childNodes = getRootChildNodes(configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
         }
         else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
-            childNodes = getChildRootNodes(configuration.getPodcasts(), true, null);
+            childNodes = getRootChildNodes(configuration.getPodcasts(), true, null);
         }
         else if (parentNode.getId() != null) {
             // Get node id
@@ -182,7 +182,7 @@ public final class MediaService implements IMediaService {
     /**
      * Get childs of a root node
      */
-    private List<AbstractNode> getChildRootNodes(List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
+    private List<AbstractNode> getRootChildNodes(List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         if (contentFolders != null && !contentFolders.isEmpty()) {
             if (podcast) {

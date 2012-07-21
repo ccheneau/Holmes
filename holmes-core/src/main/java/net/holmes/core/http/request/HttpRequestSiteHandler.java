@@ -115,7 +115,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
             // Read the file
             RandomAccessFile raf = new RandomAccessFile(file, "r");
 
-            // Compute HttpHeader
+            // Define response header
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
@@ -124,7 +124,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
                 response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType);
             }
 
-            // Write the header.
+            // Write the response.
             channel.write(response);
 
             // Write the file.
@@ -136,7 +136,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
         }
-        catch (FileNotFoundException fnfe) {
+        catch (FileNotFoundException e) {
             if (logger.isWarnEnabled()) logger.warn("resource not found:" + fileName);
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }

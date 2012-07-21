@@ -91,12 +91,12 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
             application = WebApplicationFactory.createWebApplication();
             if (!application.isInitiated()) {
 
-                // Initialize web application and Guice
+                // Set web application propeties
                 Map<String, Object> props = new HashMap<String, Object>();
-
                 props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
                 props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
+                // Initialize web application
                 ResourceConfig rcf = new PackagesResourceConfig(props);
                 application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
             }
@@ -117,23 +117,21 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
-
-        // Debug log
         if (logger.isDebugEnabled()) {
             logger.debug("[START] processRequest");
             LogUtil.debugHttpRequest(logger, request);
         }
         try {
-
             // Define base URL
             String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + REQUEST_PATH;
             final URI baseUri = new URI(base);
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
 
-            // Process request
+            // Build request
             final ContainerRequest cRequest = new ContainerRequest(application, request.getMethod().getName(), baseUri, requestUri, getHeaders(request),
                     new ChannelBufferInputStream(request.getContent()));
 
+            // Process request
             application.handleRequest(cRequest, new BackendResponseWriter(channel));
         }
         catch (URISyntaxException e) {

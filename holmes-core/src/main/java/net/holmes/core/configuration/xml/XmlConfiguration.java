@@ -60,19 +60,14 @@ public final class XmlConfiguration implements IConfiguration {
      * Get path to Holmes configuration file 
      */
     private String getConfigFilePath() {
-        String configFilePath = null;
-        StringBuilder userHomeHolmes = new StringBuilder();
-        userHomeHolmes.append(System.getProperty("user.home")).append(File.separator).append(CONF_FILE_PATH);
+        String userHomeHolmes = System.getProperty("user.home") + File.separator + CONF_FILE_PATH;
 
         // Create holmes user home directory if it does not exist
-        File userHomeHolmesDir = new File(userHomeHolmes.toString());
+        File userHomeHolmesDir = new File(userHomeHolmes);
         if (!userHomeHolmesDir.exists() || !userHomeHolmesDir.isDirectory()) {
             userHomeHolmesDir.mkdir();
         }
-        if (userHomeHolmesDir.exists() && userHomeHolmesDir.isDirectory()) {
-            configFilePath = userHomeHolmes.append(File.separator).append(CONF_FILE_NAME).toString();
-        }
-        return configFilePath;
+        return userHomeHolmes + File.separator + CONF_FILE_NAME;
     }
 
     /* (non-Javadoc)
@@ -139,6 +134,7 @@ public final class XmlConfiguration implements IConfiguration {
                 }
             }
         }
+
     }
 
     private XStream getXStream() {

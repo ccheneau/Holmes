@@ -78,6 +78,7 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
 
         try {
+            // Dispatch request to proper handler
             if (contentRequestHandler.canProcess(decoder.getPath())) {
                 contentRequestHandler.processRequest(request, e.getChannel());
             }

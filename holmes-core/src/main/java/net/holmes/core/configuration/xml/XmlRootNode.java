@@ -105,10 +105,13 @@ public final class XmlRootNode implements Serializable {
         return Boolean.parseBoolean(value);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Configuration [upnpServerName=");
+        builder.append("XmlRootNode [upnpServerName=");
         builder.append(upnpServerName);
         builder.append(", httpServerPort=");
         builder.append(httpServerPort);
@@ -125,4 +128,5 @@ public final class XmlRootNode implements Serializable {
         builder.append("]");
         return builder.toString();
     }
+
 }

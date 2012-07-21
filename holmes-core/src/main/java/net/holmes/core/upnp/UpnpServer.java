@@ -65,7 +65,7 @@ public final class UpnpServer implements IServer {
      */
     @Override
     public void start() {
-        logger.info("Starting Upnp server");
+        if (logger.isInfoEnabled()) logger.info("Starting Upnp server");
         try {
             upnpService = new UpnpServiceImpl();
 
@@ -76,7 +76,7 @@ public final class UpnpServer implements IServer {
         catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        logger.info("Upnp server started");
+        if (logger.isInfoEnabled()) logger.info("Upnp server started");
     }
 
     /* (non-Javadoc)
@@ -84,11 +84,12 @@ public final class UpnpServer implements IServer {
      */
     @Override
     public void stop() {
-        logger.info("Stopping UPnP server");
+        if (logger.isInfoEnabled()) logger.info("Stopping UPnP server");
+
         if (upnpService != null) {
             upnpService.shutdown();
         }
-        logger.info("UPnP server stopped");
+        if (logger.isInfoEnabled()) logger.info("UPnP server stopped");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
