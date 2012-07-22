@@ -40,6 +40,7 @@ import net.holmes.core.backend.response.Folder;
 import net.holmes.core.backend.response.FolderListResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.util.resource.IResource;
 
 import com.google.inject.Inject;
 
@@ -59,6 +60,9 @@ public class ConfigurationResource {
 
     @Inject
     private IConfiguration configuration;
+
+    @Inject
+    private IResource resource;
 
     /**
      * Get holmes version
@@ -177,16 +181,16 @@ public class ConfigurationResource {
     public EditFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort) {
         EditFolderResponse response = new EditFolderResponse();
         response.setStatus(true);
-        response.setErrorCode(ErrorCode.NO_ERROR);
+        setResponseErrorCode(response, ErrorCode.NO_ERROR);
 
         // Validate configuration
         if (serverName == null || serverName.trim().length() == 0) {
             response.setStatus(false);
-            response.setErrorCode(ErrorCode.EMPTY_SERVER_NAME);
+            setResponseErrorCode(response, ErrorCode.EMPTY_SERVER_NAME);
         }
         else if (httpServerPort == 0) {
             response.setStatus(false);
-            response.setErrorCode(ErrorCode.EMPTY_HTTP_SERVER_PORT);
+            setResponseErrorCode(response, ErrorCode.EMPTY_HTTP_SERVER_PORT);
         }
         else {
             // Save configuration
@@ -220,6 +224,11 @@ public class ConfigurationResource {
         return response;
     }
 
+    private void setResponseErrorCode(EditFolderResponse response, ErrorCode errorCode) {
+        response.setErrorCode(errorCode.getCode());
+        response.setMessage(resource.getString("backend.error." + errorCode.getCode()));
+    }
+
     /**
      * Edit configuration folder
      */
@@ -228,10 +237,10 @@ public class ConfigurationResource {
         response.setStatus(true);
         response.setOperation(operation);
         response.setId(id);
-        response.setErrorCode(ErrorCode.NO_ERROR);
+        setResponseErrorCode(response, ErrorCode.NO_ERROR);
 
         if (ADD_OPERATION.equals(operation)) {
-            // Checks this folders does not exists
+            // Check this folders does not exists
             ConfigurationNode existingFolder = null;
             for (ConfigurationNode folder : folders) {
                 if (folder.getLabel().equals(label)) existingFolder = folder;
@@ -239,7 +248,7 @@ public class ConfigurationResource {
             }
             if (existingFolder == null) {
                 ErrorCode validate = validatePath(path, isPath);
-                if (validate.code() == 0) {
+                if (validate.getCode() == 0) {
                     // Adds a new folder
                     ConfigurationNode configDirectory = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
                     folders.add(configDirectory);
@@ -248,17 +257,17 @@ public class ConfigurationResource {
                 else {
                     // Path not valid
                     response.setStatus(false);
-                    response.setErrorCode(validate);
+                    setResponseErrorCode(response, validate);
                 }
             }
             else {
                 // Folder already exists
                 response.setStatus(false);
-                response.setErrorCode(ErrorCode.FOLDER_ALREADY_EXISTS);
+                setResponseErrorCode(response, ErrorCode.FOLDER_ALREADY_EXISTS);
             }
         }
         else if (EDIT_OPERATION.equals(operation)) {
-            // Checks this folders exists
+            // Check this folders exists
             ConfigurationNode existingFolder = null;
             boolean duplicated = false;
             for (ConfigurationNode folder : folders) {
@@ -272,48 +281,48 @@ public class ConfigurationResource {
                 if (!duplicated) {
                     ErrorCode validate = validatePath(path, isPath);
                     if (validate == ErrorCode.NO_ERROR) {
-                        // Edits the folder
+                        // Edit the folder
                         existingFolder.setLabel(label);
                         existingFolder.setPath(path);
                     }
                     else {
                         // Path not valid
                         response.setStatus(false);
-                        response.setErrorCode(validate);
+                        setResponseErrorCode(response, validate);
                     }
                 }
                 else {
                     // Duplicated folder
                     response.setStatus(false);
-                    response.setErrorCode(ErrorCode.DUPLICATED_FOLDER);
+                    setResponseErrorCode(response, ErrorCode.DUPLICATED_FOLDER);
                 }
             }
             else {
                 // Unknown folder
                 response.setStatus(false);
-                response.setErrorCode(ErrorCode.UNKNOWN_FOLDER);
+                setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
         }
         else if (DELETE_OPERATION.equals(operation)) {
-            // Checks this folders exists
+            // Check this folders exists
             ConfigurationNode existingFolder = null;
             for (ConfigurationNode folder : folders) {
                 if (folder.getId().equals(id)) existingFolder = folder;
             }
             if (existingFolder != null) {
-                // Removes the folder
+                // Remove the folder
                 folders.remove(existingFolder);
             }
             else {
                 // Unknown folder
                 response.setStatus(false);
-                response.setErrorCode(ErrorCode.UNKNOWN_FOLDER);
+                setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
         }
         else {
             // Unknown operation
             response.setStatus(false);
-            response.setErrorCode(ErrorCode.UNKNOWN_OPERATION);
+            setResponseErrorCode(response, ErrorCode.UNKNOWN_OPERATION);
         }
 
         // Save configuration on success

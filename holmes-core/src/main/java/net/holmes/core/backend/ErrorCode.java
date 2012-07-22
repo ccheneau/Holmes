@@ -22,31 +22,26 @@
 package net.holmes.core.backend;
 
 public enum ErrorCode {
-    NO_ERROR(0, "OK"), //
-    FOLDER_ALREADY_EXISTS(1, "This folder already exists"), //
-    UNKNOWN_FOLDER(2, "Unkonwn folder"), //
-    UNKNOWN_OPERATION(3, "Unkonwn operation"), //
-    PATH_NOT_EXIST(4, "Path does not exist"), //
-    PATH_NOT_DIRECTORY(5, "Path must be a dictory"), // ;
-    PATH_NOT_READABLE(6, "Path is not readable"), //
-    MALFORMATTED_URL(7, "Malformatted URL"), //
-    DUPLICATED_FOLDER(8, "Duplicated folder"), //
-    EMPTY_SERVER_NAME(9, "Server name is not defined"), //
-    EMPTY_HTTP_SERVER_PORT(10, "Http server port is not defined");
+    NO_ERROR(0), //
+    FOLDER_ALREADY_EXISTS(1), //
+    UNKNOWN_FOLDER(2), //
+    UNKNOWN_OPERATION(3), //
+    PATH_NOT_EXIST(4), //
+    PATH_NOT_DIRECTORY(5), //
+    PATH_NOT_READABLE(6), //
+    MALFORMATTED_URL(7), //
+    DUPLICATED_FOLDER(8), //
+    EMPTY_SERVER_NAME(9), //
+    EMPTY_HTTP_SERVER_PORT(10);
 
     private final int code;
-    private String message;
 
-    ErrorCode(int code, String message) {
+    ErrorCode(int code) {
         this.code = code;
-        this.message = message;
     }
 
-    public int code() {
+    public int getCode() {
         return this.code;
     }
 
-    public String message() {
-        return this.message;
-    }
 }

@@ -23,8 +23,6 @@ package net.holmes.core.backend.response;
 
 import java.io.Serializable;
 
-import net.holmes.core.backend.ErrorCode;
-
 public class EditFolderResponse implements Serializable {
     private static final long serialVersionUID = 4829835251156005404L;
 
@@ -72,10 +70,5 @@ public class EditFolderResponse implements Serializable {
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode.code();
-        this.message = errorCode.message();
     }
 }
