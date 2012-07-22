@@ -224,11 +224,6 @@ public class ConfigurationResource {
         return response;
     }
 
-    private void setResponseErrorCode(EditFolderResponse response, ErrorCode errorCode) {
-        response.setErrorCode(errorCode.getCode());
-        response.setMessage(resource.getString("backend.error." + errorCode.getCode()));
-    }
-
     /**
      * Edit configuration folder
      */
@@ -329,6 +324,11 @@ public class ConfigurationResource {
         if (response.getStatus()) configuration.saveConfig();
 
         return response;
+    }
+
+    private void setResponseErrorCode(EditFolderResponse response, ErrorCode errorCode) {
+        response.setErrorCode(errorCode.getCode());
+        response.setMessage(resource.getString("backend.error." + errorCode.getCode()));
     }
 
     /**
