@@ -23,8 +23,8 @@ package net.holmes.core.test;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.IMimeTypeFactory;
-import net.holmes.core.util.MimeType;
+import net.holmes.core.util.mimetype.IMimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeType;
 
 import org.junit.Before;
 import org.junit.Test;

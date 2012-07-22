@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core.util;
+package net.holmes.core.util.mimetype;
 
 public interface IMimeTypeFactory {
     public MimeType getMimeType(String fileName);
