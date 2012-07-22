@@ -123,49 +123,41 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 }
             }
             int itemCount = 0;
-            if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
-                DIDLContent didl = new DIDLContent();
+            DIDLContent didl = new DIDLContent();
 
-                // Get node
-                String nodeId = StringUtils.unescapeUpnpId(objectID);
-                AbstractNode browseNode = mediaService.getNode(nodeId);
-                if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
+            String nodeId = StringUtils.unescapeUpnpId(objectID);
+            // Get node                
+            AbstractNode browseNode = mediaService.getNode(nodeId);
+            if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
-                if (browseNode != null) {
+            if (browseNode != null) {
+                if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
+                    // Browse child nodes
                     if (browseNode instanceof FolderNode) {
-                        // add folder child nodes
+                        // Add folder child nodes
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-
                         if (childNodes != null && !childNodes.isEmpty()) {
                             for (AbstractNode childNode : childNodes) {
                                 if (logger.isDebugEnabled()) logger.debug("child node:" + childNode);
-
-                                if (childNode instanceof ContentNode) {
-                                    addContent(nodeId, (ContentNode) childNode, didl);
-                                    itemCount += 1;
-                                }
-                                else if (childNode instanceof FolderNode) {
-                                    addFolder(nodeId, (FolderNode) childNode, didl);
-                                    itemCount += 1;
-                                }
-                                else if (childNode instanceof PodcastNode) {
-                                    addPodcast(nodeId, (PodcastNode) childNode, didl);
-                                    itemCount += 1;
-                                }
+                                itemCount += addNode(nodeId, childNode, didl);
                             }
                         }
                     }
                     else if (browseNode instanceof PodcastNode) {
+                        // Add pod-cast entry nodes
                         itemCount += addPodcastEntries((PodcastNode) browseNode, didl);
                     }
                 }
-                return new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
+                else if (browseFlag == BrowseFlag.METADATA) {
+                    // Get node metadata
+                    itemCount += addNode(nodeId, browseNode, didl);
+                }
             }
+            return new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
         }
         catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
         }
-        throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS);
     }
 
     /* (non-Javadoc)
@@ -207,6 +199,27 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy)
             throws ContentDirectoryException {
         return super.search(containerId, searchCriteria, filter, firstResult, maxResults, orderBy);
+    }
+
+    /**
+     * Add node to didl
+     */
+    private int addNode(String nodeId, AbstractNode node, DIDLContent didl) {
+        int itemCount = 0;
+
+        if (node instanceof ContentNode) {
+            addContent(nodeId, (ContentNode) node, didl);
+            itemCount += 1;
+        }
+        else if (node instanceof FolderNode) {
+            addFolder(nodeId, (FolderNode) node, didl);
+            itemCount += 1;
+        }
+        else if (node instanceof PodcastNode) {
+            addPodcast(nodeId, (PodcastNode) node, didl);
+            itemCount += 1;
+        }
+        return itemCount;
     }
 
     /**
