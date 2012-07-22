@@ -19,34 +19,24 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-package net.holmes.core;
+package net.holmes.core.util.resource;
 
-import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.TestConfiguration;
-import net.holmes.core.media.IMediaService;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.util.mimetype.IMimeTypeFactory;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
+import java.util.ResourceBundle;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
+public class Resource implements IResource {
 
-/**
- * The Class TestModule.
- */
-public class TestModule extends AbstractModule {
+    private ResourceBundle bundle;
+
+    public Resource() {
+        bundle = ResourceBundle.getBundle("message");
+    }
 
     /* (non-Javadoc)
-     * @see com.google.inject.AbstractModule#configure()
+     * @see net.holmes.core.util.resource.IResource#getString(java.lang.String)
      */
     @Override
-    protected void configure() {
-        bind(IConfiguration.class).to(TestConfiguration.class).in(Singleton.class);
-
-        bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-
-        bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
-
+    public String getString(String key) {
+        return bundle.getString(key);
     }
 
 }

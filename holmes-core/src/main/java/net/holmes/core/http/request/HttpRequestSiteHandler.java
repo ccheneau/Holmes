@@ -29,8 +29,8 @@ import java.io.RandomAccessFile;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.IMimeTypeFactory;
 import net.holmes.core.util.LogUtil;
+import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;

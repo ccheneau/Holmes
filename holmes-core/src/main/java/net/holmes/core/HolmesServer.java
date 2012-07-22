@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ResourceBundle;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -43,6 +42,7 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.SystemTrayIcon;
+import net.holmes.core.util.resource.IResource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +63,9 @@ public final class HolmesServer implements IServer {
     @Inject
     @Named("upnp")
     private IServer upnpServer;
+
+    @Inject
+    IResource resource;
 
     public HolmesServer() {
     }
@@ -123,17 +126,15 @@ public final class HolmesServer implements IServer {
             return null;
         }
 
-        ResourceBundle bundle = ResourceBundle.getBundle("message");
-
         final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
-                bundle.getString("systray.title"));
+                resource.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
         // Quit Holmes menu item
-        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
+        JMenuItem quitItem = new JMenuItem(resource.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
 
             /* (non-Javadoc)
@@ -146,7 +147,7 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes logs menu item
-        JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
+        JMenuItem logsItem = new JMenuItem(resource.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
 
             /* (non-Javadoc)
@@ -168,7 +169,7 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes admin site menu item
-        JMenuItem holmesItem = new JMenuItem(bundle.getString("systray.holmes"));
+        JMenuItem holmesItem = new JMenuItem(resource.getString("systray.holmes"));
         Font boldFont = UIManager.getFont("MenuItem.bold.font");
         if (boldFont != null) holmesItem.setFont(boldFont);
 

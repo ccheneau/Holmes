@@ -21,7 +21,7 @@
 */
 package net.holmes.core.media.node;
 
-import net.holmes.core.util.MimeType;
+import net.holmes.core.util.mimetype.MimeType;
 
 public final class PodcastEntryNode extends AbstractNode {
     private static final long serialVersionUID = -8336088869310788944L;

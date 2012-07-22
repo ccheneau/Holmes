@@ -35,8 +35,8 @@ import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
-import net.holmes.core.util.MimeType;
 import net.holmes.core.util.StringUtils;
+import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

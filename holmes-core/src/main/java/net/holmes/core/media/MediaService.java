@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 import net.holmes.core.configuration.ConfigurationNode;
@@ -41,8 +40,9 @@ import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
-import net.holmes.core.util.IMimeTypeFactory;
-import net.holmes.core.util.MimeType;
+import net.holmes.core.util.mimetype.IMimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeType;
+import net.holmes.core.util.resource.IResource;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -68,14 +68,14 @@ public final class MediaService implements IMediaService {
     @Inject
     private IMimeTypeFactory mimeTypeFactory;
 
-    private CacheManager cacheManager;
+    @Inject
+    IResource resource;
 
-    private ResourceBundle bundle;
+    private CacheManager cacheManager;
 
     private Map<String, String> rootNodes;
 
     public MediaService() {
-        bundle = ResourceBundle.getBundle("message");
         cacheManager = CacheManager.create();
         rootNodes = new HashMap<String, String>();
         rootNodes.put(ConfigurationNode.ROOT_NODE_ID, "node.rootNode");
@@ -310,7 +310,7 @@ public final class MediaService implements IMediaService {
     private FolderNode buildRootNode(String nodeId) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
-        node.setName(bundle.getString(rootNodes.get(nodeId)));
+        node.setName(resource.getString(rootNodes.get(nodeId)));
         return node;
     }
 
