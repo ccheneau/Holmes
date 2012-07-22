@@ -112,7 +112,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
-                logger.debug("[START] browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " filter=" + filter
+                logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " filter=" + filter
                         + " indice=" + firstResult + " nbresults=" + maxResults);
                 try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
