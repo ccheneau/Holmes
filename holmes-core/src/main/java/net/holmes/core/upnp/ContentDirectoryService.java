@@ -36,6 +36,7 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.MimeType;
+import net.holmes.core.util.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +127,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 DIDLContent didl = new DIDLContent();
 
                 // Get node
-                AbstractNode browseNode = mediaService.getNode(objectID);
+                String nodeId = StringUtils.unescapeUpnpId(objectID);
+                AbstractNode browseNode = mediaService.getNode(nodeId);
                 if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
                 if (browseNode != null) {
@@ -139,15 +141,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                 if (logger.isDebugEnabled()) logger.debug("child node:" + childNode);
 
                                 if (childNode instanceof ContentNode) {
-                                    addContent(objectID, (ContentNode) childNode, didl);
+                                    addContent(nodeId, (ContentNode) childNode, didl);
                                     itemCount += 1;
                                 }
                                 else if (childNode instanceof FolderNode) {
-                                    addFolder(objectID, (FolderNode) childNode, didl);
+                                    addFolder(nodeId, (FolderNode) childNode, didl);
                                     itemCount += 1;
                                 }
                                 else if (childNode instanceof PodcastNode) {
-                                    addPodcast(objectID, (PodcastNode) childNode, didl);
+                                    addPodcast(nodeId, (PodcastNode) childNode, didl);
                                     itemCount += 1;
                                 }
                             }
@@ -211,10 +213,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * Add content to didl
      */
     private void addContent(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
+        String escNodeId = StringUtils.escapeUpnpId(contentNode.getId());
+        String escParentNodeId = StringUtils.escapeUpnpId(parentNodeId);
+
         StringBuilder url = new StringBuilder();
         url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
         url.append("/content?id=");
-        url.append(contentNode.getId());
+        url.append(escNodeId);
 
         if (logger.isDebugEnabled()) {
             logger.debug("add content item:" + contentNode);
@@ -225,19 +230,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
         if (contentNode.getMimeType().isVideo()) {
             // Add video
-            Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), "", res);
+            Movie movie = new Movie(escNodeId, escParentNodeId, contentNode.getName(), "", res);
             setModifiedDate(movie, contentNode);
             didl.addItem(movie);
         }
         else if (contentNode.getMimeType().isAudio()) {
             // Add audio track
-            MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", "", res);
+            MusicTrack musicTrack = new MusicTrack(escNodeId, escParentNodeId, contentNode.getName(), "", "", "", res);
             setModifiedDate(musicTrack, contentNode);
             didl.addItem(musicTrack);
         }
         else if (contentNode.getMimeType().isImage()) {
             // Add image
-            Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), "", "", res);
+            Photo photo = new Photo(escNodeId, escParentNodeId, contentNode.getName(), "", "", res);
             setModifiedDate(photo, contentNode);
             didl.addItem(photo);
         }
@@ -251,8 +256,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
         List<AbstractNode> childNodes = mediaService.getChildNodes(folderNode);
         Integer childCount = childNodes != null ? childNodes.size() : 0;
-        StorageFolder folder = new StorageFolder(folderNode.getId(), parentNodeId, folderNode.getName(), "", childCount, 0L);
-        if (folderNode.getModifedDate() != null) folder.replaceFirstProperty(new DC.DATE(folderNode.getModifedDate()));
+
+        String escNodeId = StringUtils.escapeUpnpId(folderNode.getId());
+        String escParentNodeId = StringUtils.escapeUpnpId(parentNodeId);
+
+        StorageFolder folder = new StorageFolder(escNodeId, escParentNodeId, folderNode.getName(), "", childCount, 0L);
+        setModifiedDate(folder, folderNode);
 
         didl.addContainer(folder);
     }
