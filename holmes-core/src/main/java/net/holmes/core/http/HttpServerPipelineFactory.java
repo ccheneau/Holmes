@@ -37,7 +37,7 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
 
     @Inject
     @Named("http")
-    private ChannelHandler httpServerHandler;
+    private ChannelHandler httpRequestHandler;
 
     private ChannelGroup channelGroup = null;
 
@@ -58,8 +58,8 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
         // Add event handler for channel registration to channel group
         pipeline.addLast("channelEvent", new ChannelEventHandler(this.channelGroup));
 
-        // Add http server handler
-        pipeline.addLast("httpServer", httpServerHandler);
+        // Add http request handler
+        pipeline.addLast("httpRequestHandler", httpRequestHandler);
         return pipeline;
     }
 

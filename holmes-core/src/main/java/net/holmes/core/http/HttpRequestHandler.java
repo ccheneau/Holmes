@@ -57,8 +57,8 @@ import com.google.inject.name.Named;
 /**
  * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
  */
-public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
+public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 
     @Inject
     @Named("content")

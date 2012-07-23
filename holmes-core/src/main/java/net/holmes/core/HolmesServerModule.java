@@ -24,7 +24,7 @@ package net.holmes.core;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.xml.XmlConfiguration;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.HttpServerHandler;
+import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.IChannelPipelineFactory;
 import net.holmes.core.http.request.HttpRequestBackendHandler;
@@ -66,7 +66,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Http handlers
         bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpServerHandler.class);
+        bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpRequestHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpRequestContentHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpRequestBackendHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpRequestSiteHandler.class);
