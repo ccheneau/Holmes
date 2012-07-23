@@ -29,7 +29,6 @@ import java.io.RandomAccessFile;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.LogUtil;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -84,10 +83,7 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("[START] processRequest");
-            LogUtil.debugHttpRequest(logger, request);
-        }
+        if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());

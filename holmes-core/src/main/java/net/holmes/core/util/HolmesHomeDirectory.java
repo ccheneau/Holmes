@@ -20,22 +20,11 @@ public class HolmesHomeDirectory {
     }
 
     private static String getSubDirectory(String subDirName) {
-        String homeSubDirectory = getHomeDirectory() + File.separator + subDirName;
+        String homeSubDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue()) + File.separator + subDirName;
         File confDir = new File(homeSubDirectory);
         if (!confDir.exists()) {
             confDir.mkdir();
         }
         return homeSubDirectory;
-    }
-
-    private static String getHomeDirectory() {
-        String homeDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
-        if (homeDirectory != null) {
-            File fPath = new File(homeDirectory);
-            if (fPath.exists() && fPath.isDirectory()) {
-                return homeDirectory;
-            }
-        }
-        throw new RuntimeException(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
     }
 }

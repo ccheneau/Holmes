@@ -1,6 +1,10 @@
 package net.holmes.core;
 
-import net.holmes.core.util.LogUtil;
+import java.io.File;
+
+import net.holmes.core.util.SystemProperty;
+
+import org.apache.log4j.xml.DOMConfigurator;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -8,18 +12,27 @@ import com.google.inject.Injector;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        // Load log configuration
-        LogUtil.loadConfig();
+        String homeDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
+        if (homeDir != null && new File(homeDir).exists()) {
+            // Load log4j configuration
+            String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";
+            if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
-        // Create Guice injector
-        Injector injector = Guice.createInjector(new HolmesServerModule());
+            // Create Guice injector
+            Injector injector = Guice.createInjector(new HolmesServerModule());
 
-        // Start Holmes server
-        IServer holmesServer = injector.getInstance(HolmesServer.class);
-        holmesServer.start();
+            // Start Holmes server
+            IServer holmesServer = injector.getInstance(HolmesServer.class);
+            holmesServer.start();
 
-        // Add shutdown hook
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
+            // Add shutdown hook
+            Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
+        }
+        else {
+            System.err.println(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
+            System.exit(1);
+        }
+
     }
 
     /**

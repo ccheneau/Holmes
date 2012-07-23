@@ -22,6 +22,10 @@
 package net.holmes.core.http;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.holmes.core.http.request.HttpRequestException;
 import net.holmes.core.http.request.IHttpRequestHandler;
@@ -37,6 +41,7 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -76,6 +81,26 @@ public final class HttpServerHandler extends SimpleChannelUpstreamHandler {
 
         HttpRequest request = (HttpRequest) e.getMessage();
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Request uri: " + request.getUri());
+            for (Entry<String, String> entry : request.getHeaders()) {
+                logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
+            }
+
+            if (request.getMethod().equals(HttpMethod.POST)) {
+                ChannelBuffer content = request.getContent();
+                if (content.readable()) {
+                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + content.toString(Charset.forName("utf-8")));
+                    Map<String, List<String>> params = queryStringDecoder.getParameters();
+                    if (params != null) {
+                        for (String paramKey : params.keySet()) {
+                            logger.debug("Post parameter: " + paramKey + " => " + params.get(paramKey));
+                        }
+                    }
+                }
+            }
+        }
 
         try {
             // Dispatch request to proper handler

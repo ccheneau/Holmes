@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.util.LogUtil;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -117,10 +116,8 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("[START] processRequest");
-            LogUtil.debugHttpRequest(logger, request);
-        }
+        if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
+
         try {
             // Define base URL
             String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + REQUEST_PATH;

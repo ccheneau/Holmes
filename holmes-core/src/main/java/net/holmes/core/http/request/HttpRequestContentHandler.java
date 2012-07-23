@@ -24,13 +24,13 @@ package net.holmes.core.http.request;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Map.Entry;
 
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
-import net.holmes.core.util.LogUtil;
 import net.holmes.core.util.StringUtils;
 
 import org.jboss.netty.channel.Channel;
@@ -84,10 +84,7 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
      */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("[START] processRequest");
-            LogUtil.debugHttpRequest(logger, request);
-        }
+        if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
             // Get content node
@@ -145,7 +142,12 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
             }
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            LogUtil.debugHttpResponse(logger, response);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Response: " + response);
+                for (Entry<String, String> entry : response.getHeaders()) {
+                    logger.debug("Response header: " + entry.getKey() + " ==> " + entry.getValue());
+                }
+            }
 
             // Write the header.
             channel.write(response);
