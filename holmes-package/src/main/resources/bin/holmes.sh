@@ -38,7 +38,6 @@ holmes_start () {
   HOLMES_HOME=`dirname "$SCRIPT_PATH"`/..
   HOLMES_HOME=`cd "$HOLMES_HOME" && pwd`
   cd "$current_dir"
-  export HOLMES_HOME
 
   # locate java
   if [ -n "$JAVA_HOME"  ] ; then
