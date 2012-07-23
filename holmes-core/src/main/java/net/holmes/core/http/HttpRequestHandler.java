@@ -77,12 +77,10 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
      */
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws IOException {
-        if (logger.isDebugEnabled()) logger.debug("[START] messageReceived event:" + e);
-
         HttpRequest request = (HttpRequest) e.getMessage();
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
 
         if (logger.isDebugEnabled()) {
+            logger.debug("[START] messageReceived event:" + e);
             logger.debug("Request uri: " + request.getUri());
             for (Entry<String, String> entry : request.getHeaders()) {
                 logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
@@ -102,6 +100,7 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             }
         }
 
+        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         try {
             // Dispatch request to proper handler
             if (contentRequestHandler.canProcess(decoder.getPath())) {
