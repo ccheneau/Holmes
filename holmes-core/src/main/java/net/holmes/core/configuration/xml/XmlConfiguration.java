@@ -187,7 +187,6 @@ public final class XmlConfiguration implements IConfiguration {
     @Override
     public void setHttpServerPort(Integer httpServerPort) {
         this.rootNode.setHttpServerPort(httpServerPort);
-
     }
 
     /* (non-Javadoc)

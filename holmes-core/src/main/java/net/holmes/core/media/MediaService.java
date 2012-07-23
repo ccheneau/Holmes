@@ -120,7 +120,6 @@ public final class MediaService implements IMediaService {
                 }
             }
         }
-
         if (logger.isDebugEnabled()) logger.debug("[END] getNode node:" + node);
         return node;
     }

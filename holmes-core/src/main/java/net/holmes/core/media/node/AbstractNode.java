@@ -51,6 +51,14 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         return type;
     }
 
+    public String getModifedDate() {
+        return modifedDate;
+    }
+
+    public void setModifedDate(String modifedDate) {
+        this.modifedDate = modifedDate;
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -61,14 +69,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         else return 1;
     }
 
-    public String getModifedDate() {
-        return modifedDate;
-    }
-
-    public void setModifedDate(String modifedDate) {
-        this.modifedDate = modifedDate;
-    }
-
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
