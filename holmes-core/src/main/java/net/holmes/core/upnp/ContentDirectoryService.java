@@ -132,6 +132,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
             if (browseNode != null) {
                 if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
+                    //TODO paginate
                     // Browse child nodes
                     if (browseNode instanceof FolderNode) {
                         // Add folder child nodes
@@ -150,10 +151,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 }
                 else if (browseFlag == BrowseFlag.METADATA) {
                     // Get node metadata
-                    itemCount += addNode(nodeId, browseNode, didl);
+                    itemCount += addNode(browseNode.getParentId(), browseNode, didl);
                 }
             }
-            return new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
+            BrowseResult br = new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
+            if (logger.isDebugEnabled()) logger.debug(br.getResult());
+            return br;
         }
         catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
@@ -243,19 +246,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
         if (contentNode.getMimeType().isVideo()) {
             // Add video
-            Movie movie = new Movie(escNodeId, escParentNodeId, contentNode.getName(), "", res);
+            Movie movie = new Movie(escNodeId, escParentNodeId, contentNode.getName(), null, res);
             setModifiedDate(movie, contentNode);
             didl.addItem(movie);
         }
         else if (contentNode.getMimeType().isAudio()) {
             // Add audio track
-            MusicTrack musicTrack = new MusicTrack(escNodeId, escParentNodeId, contentNode.getName(), "", "", "", res);
+            MusicTrack musicTrack = new MusicTrack(escNodeId, escParentNodeId, contentNode.getName(), null, null, (String) null, res);
             setModifiedDate(musicTrack, contentNode);
             didl.addItem(musicTrack);
         }
         else if (contentNode.getMimeType().isImage()) {
             // Add image
-            Photo photo = new Photo(escNodeId, escParentNodeId, contentNode.getName(), "", "", res);
+            Photo photo = new Photo(escNodeId, escParentNodeId, contentNode.getName(), null, null, res);
             setModifiedDate(photo, contentNode);
             didl.addItem(photo);
         }
@@ -273,7 +276,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         String escNodeId = StringUtils.escapeUpnpId(folderNode.getId());
         String escParentNodeId = StringUtils.escapeUpnpId(parentNodeId);
 
-        StorageFolder folder = new StorageFolder(escNodeId, escParentNodeId, folderNode.getName(), "", childCount, 0L);
+        StorageFolder folder = new StorageFolder(escNodeId, escParentNodeId, folderNode.getName(), null, childCount, null);
         setModifiedDate(folder, folderNode);
 
         didl.addContainer(folder);
@@ -285,7 +288,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private void addPodcast(String parentNodeId, PodcastNode podcastNode, DIDLContent didl) {
         if (logger.isDebugEnabled()) logger.debug("add podcast:" + podcastNode);
 
-        StorageFolder folder = new StorageFolder(podcastNode.getId(), parentNodeId, podcastNode.getName(), "", 1, 0L);
+        StorageFolder folder = new StorageFolder(podcastNode.getId(), parentNodeId, podcastNode.getName(), null, 1, null);
 
         didl.addContainer(folder);
     }
@@ -313,14 +316,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
                         if (mimeType.isAudio()) {
                             // Add audio track
-                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", "", res);
+                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, (String) null, res);
                             setModifiedDate(musicTrack, podcastEntryNode);
                             didl.addItem(musicTrack);
                             itemCount++;
                         }
                         else if (mimeType.isImage()) {
                             // Adds image
-                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", "", res);
+                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, res);
                             setModifiedDate(photo, podcastEntryNode);
                             didl.addItem(photo);
                             itemCount++;
@@ -328,7 +331,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         }
                         else if (mimeType.isVideo()) {
                             // Adds video
-                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, "", res);
+                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, res);
                             setModifiedDate(movie, podcastEntryNode);
                             didl.addItem(movie);
                             itemCount++;

@@ -27,6 +27,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
     private static final long serialVersionUID = 5909549322056486631L;
 
     protected String id;
+    protected String parentId;
     protected String name;
     protected String modifedDate;
     protected NodeType type;
@@ -37,6 +38,14 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getName() {
@@ -77,6 +86,8 @@ public abstract class AbstractNode implements Comparable<AbstractNode>, Serializ
         StringBuilder builder = new StringBuilder();
         builder.append("AbstractNode [id=");
         builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
         builder.append(", modifedDate=");

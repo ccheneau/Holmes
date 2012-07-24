@@ -23,8 +23,8 @@ package net.holmes.core;
 
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.xml.XmlConfiguration;
-import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpRequestHandler;
+import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.IChannelPipelineFactory;
 import net.holmes.core.http.request.HttpRequestBackendHandler;
@@ -33,6 +33,8 @@ import net.holmes.core.http.request.HttpRequestSiteHandler;
 import net.holmes.core.http.request.IHttpRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
+import net.holmes.core.media.index.IMediaIndex;
+import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
@@ -59,6 +61,7 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind media service
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
         bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
+        bind(IMediaIndex.class).to(MediaIndex.class).in(Singleton.class);
 
         // Bind servers
         bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);

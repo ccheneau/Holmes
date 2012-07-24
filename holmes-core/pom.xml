@@ -120,6 +120,12 @@
 			<artifactId>ehcache-core</artifactId>
 		</dependency>
 
+		<!-- guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
 		<!-- jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
