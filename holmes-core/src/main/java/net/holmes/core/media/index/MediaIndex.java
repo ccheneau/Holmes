@@ -28,6 +28,8 @@ import com.google.common.collect.HashBiMap;
 
 public class MediaIndex implements IMediaIndex {
 
+    private static String SEPARATOR = "|";
+
     private BiMap<String, String> nodeUUID;
 
     public MediaIndex() {
@@ -42,24 +44,45 @@ public class MediaIndex implements IMediaIndex {
         NodeValue nodeValue = null;
         String value = nodeUUID.get(uuid);
         if (value != null) {
-            String[] nodeParams = value.split("\\|");
-            if (nodeParams != null && nodeParams.length == 3) {
-                nodeValue = new NodeValue(nodeParams[0], nodeParams[1], nodeParams[2]);
+            String[] nodeParams = value.split("\\" + SEPARATOR);
+            if (nodeParams != null) {
+                if (nodeParams.length == 3) {
+                    nodeValue = new NodeValue(nodeParams[0], nodeParams[1], nodeParams[2], null);
+                }
+                else if (nodeParams.length == 4) {
+                    nodeValue = new NodeValue(nodeParams[0], nodeParams[1], nodeParams[2], nodeParams[3]);
+                }
             }
         }
         return nodeValue;
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.media.index.IMediaIndex#getUUID(java.lang.String, java.lang.String, java.lang.String)
+     * @see net.holmes.core.media.index.IMediaIndex#add(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public String getUUID(String parentId, String mediaType, String path) {
-        String nodeValue = parentId + "|" + mediaType + "|" + path;
-        String uuid = nodeUUID.inverse().get(nodeValue);
+    public String add(String parentId, String mediaType, String path, String name) {
+        StringBuilder nodeValue = new StringBuilder();
+        nodeValue.append(parentId).append(SEPARATOR).append(mediaType).append(SEPARATOR).append(path);
+        if (name != null) nodeValue.append(SEPARATOR).append(name);
+        String uuid = nodeUUID.inverse().get(nodeValue.toString());
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
-            nodeUUID.put(uuid, nodeValue);
+            nodeUUID.put(uuid, nodeValue.toString());
+        }
+        return uuid;
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.media.index.IMediaIndex#put(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public String put(String uuid, String parentId, String mediaType, String path, String name) {
+        if (nodeUUID.get(uuid) == null) {
+            StringBuilder nodeValue = new StringBuilder();
+            nodeValue.append(parentId).append(SEPARATOR).append(mediaType).append(SEPARATOR).append(path);
+            if (name != null) nodeValue.append(SEPARATOR).append(name);
+            nodeUUID.put(uuid, nodeValue.toString());
         }
         return uuid;
     }

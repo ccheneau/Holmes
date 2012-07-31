@@ -25,13 +25,14 @@ public class NodeValue {
 
     String parentId;
     String mediaType;
+    String name;
     String path;
 
-    public NodeValue(String parentId, String mediaType, String path) {
-        super();
+    public NodeValue(String parentId, String mediaType, String path, String name) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
+        this.name = name;
     }
 
     public String getParentId() {
@@ -56,5 +57,13 @@ public class NodeValue {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

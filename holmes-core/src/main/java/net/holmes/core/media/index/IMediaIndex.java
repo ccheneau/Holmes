@@ -23,8 +23,10 @@ package net.holmes.core.media.index;
 
 public interface IMediaIndex {
 
-    public abstract NodeValue getValue(String uuid);
+    public String add(String parentId, String mediaType, String path, String name);
 
-    public abstract String getUUID(String parentId, String mediaType, String path);
+    public NodeValue getValue(String uuid);
+
+    public String put(String uuid, String parentId, String mediaType, String path, String name);
 
 }
