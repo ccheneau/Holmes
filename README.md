@@ -3,13 +3,15 @@ Holmes
 
 Holmes stands for Home Light Media Server.
 
-A Java application that supports UPnp protocol for playing videos, music, pictures and podcasts to compatible devices.
+A Java application that supports DLNA/UPnP protocol for playing videos, music, pictures and podcasts (RSS) to compatible devices.
+
+This application has been tested on Windows and Ubuntu Linux with [VLC](http://www.videolan.org/vlc/) 2.x, Freebox V6 (a french set top box) and LG SmartTV
 
 ## DESCRIPTION
 
 Holmes uses the following frameworks:
 
-* [Cling](http://teleal.org/projects/cling/) as UPnp server
+* [Cling](http://teleal.org/projects/cling/) as UPnP server
 * [Netty](http://www.jboss.org/netty/) as HTTP server (streaming and HTML pages)
 * [Guice](http://code.google.com/p/google-guice/) for dependency injection
 * [Jersey](http://jersey.java.net/) and [Jackson](http://jackson.codehaus.org/) for back-end REST api
@@ -17,7 +19,6 @@ Holmes uses the following frameworks:
 * [EHCache](http://ehcache.org/) for caching
 * [JQueryUI](http://jqueryui.com/) for user interface
 
-This application has been tested on Windows with [VLC](http://www.videolan.org/vlc/) 2.0.1 and Freebox V6 (a french set top box)
  
 ## REQUIREMENTS
 
@@ -25,13 +26,13 @@ Java 6 and [Apache Maven](http://maven.apache.org/) are required to build this p
 
 ## INSTALL
 
-Compile using Maven then unzip the archive generated in holmes-package module.
+Download the zip from GitHub or compile sources using Maven (the archive is generated in holmes-package/target directory).
 
-Run the startup.bat script.
+Run the startup script in bin directory.
 
-## Usage
+## USAGE
 
-After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/
+After starting the application, use a web browser to access the user interface at http://ip_of_your_server:8085/ or the system tray icon
 
 ## LICENSE
 
