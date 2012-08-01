@@ -31,7 +31,6 @@ import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
-import net.holmes.core.util.StringUtils;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -183,7 +182,7 @@ public final class HttpRequestContentHandler implements IHttpRequestHandler {
         if (logger.isDebugEnabled()) logger.debug("file Id :" + contentId);
 
         if (contentId != null) {
-            AbstractNode node = mediaService.getNode(StringUtils.unescapeUpnpId(contentId));
+            AbstractNode node = mediaService.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :" + node);
             if (node != null && node.getType() == NodeType.TYPE_CONTENT && node instanceof ContentNode) {
                 contentNode = (ContentNode) node;

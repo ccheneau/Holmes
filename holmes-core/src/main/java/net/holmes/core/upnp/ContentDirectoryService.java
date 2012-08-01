@@ -35,7 +35,6 @@ import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
-import net.holmes.core.util.StringUtils;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
@@ -112,6 +111,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
+                // Debug log
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " filter=" + filter
                         + " indice=" + firstResult + " nbresults=" + maxResults);
                 try {
@@ -122,17 +122,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     logger.debug("RequestFrom agent: Anonymous");
                 }
             }
-            int itemCount = 0;
+            long itemCount = 0;
+            long totalCount = 0;
+
             DIDLContent didl = new DIDLContent();
 
-            String nodeId = StringUtils.unescapeUpnpId(objectID);
             // Get node                
-            AbstractNode browseNode = mediaService.getNode(nodeId);
+            AbstractNode browseNode = mediaService.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
             if (browseNode != null) {
                 if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
-                    //TODO paginate
                     // Browse child nodes
                     if (browseNode instanceof FolderNode) {
                         // Add folder child nodes
@@ -140,21 +140,21 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         if (childNodes != null && !childNodes.isEmpty()) {
                             for (AbstractNode childNode : childNodes) {
                                 if (logger.isDebugEnabled()) logger.debug("child node:" + childNode);
-                                itemCount += addNode(nodeId, childNode, didl);
+                                addNode(objectID, childNode, didl, itemCount, totalCount, firstResult, maxResults);
                             }
                         }
                     }
                     else if (browseNode instanceof PodcastNode) {
                         // Add pod-cast entry nodes
-                        itemCount += addPodcastEntries((PodcastNode) browseNode, didl);
+                        addPodcastEntries((PodcastNode) browseNode, didl, itemCount, totalCount, firstResult, maxResults);
                     }
                 }
                 else if (browseFlag == BrowseFlag.METADATA) {
                     // Get node metadata
-                    itemCount += addNode(browseNode.getParentId(), browseNode, didl);
+                    addNode(browseNode.getParentId(), browseNode, didl, itemCount, totalCount, firstResult, maxResults);
                 }
             }
-            BrowseResult br = new BrowseResult(new DIDLParser().generate(didl), itemCount, itemCount);
+            BrowseResult br = new BrowseResult(new DIDLParser().generate(didl), itemCount, totalCount);
             if (logger.isDebugEnabled()) logger.debug(br.getResult());
             return br;
         }
@@ -207,38 +207,41 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Add node to didl
      */
-    private int addNode(String nodeId, AbstractNode node, DIDLContent didl) {
-        int itemCount = 0;
-
+    private void addNode(String nodeId, AbstractNode node, DIDLContent didl, long itemCount, long totalCount, long firstResult, long maxResults) {
         if (node instanceof ContentNode) {
-            addContent(nodeId, (ContentNode) node, didl);
-            itemCount += 1;
+            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                addContent(nodeId, (ContentNode) node, didl);
+                itemCount++;
+            }
+            totalCount++;
         }
         else if (node instanceof FolderNode) {
-            addFolder(nodeId, (FolderNode) node, didl);
-            itemCount += 1;
+            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                addFolder(nodeId, (FolderNode) node, didl);
+                itemCount++;
+            }
+            totalCount++;
         }
         else if (node instanceof PodcastNode) {
-            addPodcast(nodeId, (PodcastNode) node, didl);
-            itemCount += 1;
+            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                addPodcast(nodeId, (PodcastNode) node, didl);
+                itemCount++;
+            }
+            totalCount++;
         }
-        return itemCount;
     }
 
     /**
      * Add content to didl
      */
     private void addContent(String parentNodeId, ContentNode contentNode, DIDLContent didl) {
-        String escNodeId = StringUtils.escapeUpnpId(contentNode.getId());
-        String escParentNodeId = StringUtils.escapeUpnpId(parentNodeId);
-
         StringBuilder url = new StringBuilder();
         url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
         url.append("/content?id=");
-        url.append(escNodeId);
+        url.append(contentNode.getId());
 
         if (logger.isDebugEnabled()) {
-            logger.debug("add content item:" + contentNode);
+            logger.debug("add content:" + contentNode);
             logger.debug("url:" + url);
         }
 
@@ -246,19 +249,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
         if (contentNode.getMimeType().isVideo()) {
             // Add video
-            Movie movie = new Movie(escNodeId, escParentNodeId, contentNode.getName(), null, res);
+            Movie movie = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
             setModifiedDate(movie, contentNode);
             didl.addItem(movie);
         }
         else if (contentNode.getMimeType().isAudio()) {
             // Add audio track
-            MusicTrack musicTrack = new MusicTrack(escNodeId, escParentNodeId, contentNode.getName(), null, null, (String) null, res);
+            MusicTrack musicTrack = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, (String) null, res);
             setModifiedDate(musicTrack, contentNode);
             didl.addItem(musicTrack);
         }
         else if (contentNode.getMimeType().isImage()) {
             // Add image
-            Photo photo = new Photo(escNodeId, escParentNodeId, contentNode.getName(), null, null, res);
+            Photo photo = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
             setModifiedDate(photo, contentNode);
             didl.addItem(photo);
         }
@@ -273,10 +276,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         List<AbstractNode> childNodes = mediaService.getChildNodes(folderNode);
         Integer childCount = childNodes != null ? childNodes.size() : 0;
 
-        String escNodeId = StringUtils.escapeUpnpId(folderNode.getId());
-        String escParentNodeId = StringUtils.escapeUpnpId(parentNodeId);
-
-        StorageFolder folder = new StorageFolder(escNodeId, escParentNodeId, folderNode.getName(), null, childCount, null);
+        StorageFolder folder = new StorageFolder(folderNode.getId(), parentNodeId, folderNode.getName(), null, childCount, null);
         setModifiedDate(folder, folderNode);
 
         didl.addContainer(folder);
@@ -289,16 +289,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (logger.isDebugEnabled()) logger.debug("add podcast:" + podcastNode);
 
         StorageFolder folder = new StorageFolder(podcastNode.getId(), parentNodeId, podcastNode.getName(), null, 1, null);
-
         didl.addContainer(folder);
     }
 
     /**
      * Add pod-cast entries to didl
-     * @return the number of added items
      */
-    private int addPodcastEntries(PodcastNode parentNode, DIDLContent didl) {
-        int itemCount = 0;
+    private void addPodcastEntries(PodcastNode parentNode, DIDLContent didl, long itemCount, long totalCount, long firstResult, long maxResults) {
 
         // Get child nodes
         List<AbstractNode> childNodes = mediaService.getChildNodes(parentNode);
@@ -315,39 +312,51 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         res = new Res(mimeType.toUpnpMimeType(), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
 
                         if (mimeType.isAudio()) {
-                            // Add audio track
-                            MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, (String) null, res);
-                            setModifiedDate(musicTrack, podcastEntryNode);
-                            didl.addItem(musicTrack);
-                            itemCount++;
+                            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                                // Add audio track
+                                MusicTrack musicTrack = new MusicTrack(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, (String) null,
+                                        res);
+                                setModifiedDate(musicTrack, podcastEntryNode);
+                                didl.addItem(musicTrack);
+                                itemCount++;
+                            }
+                            totalCount++;
                         }
                         else if (mimeType.isImage()) {
-                            // Adds image
-                            Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, res);
-                            setModifiedDate(photo, podcastEntryNode);
-                            didl.addItem(photo);
-                            itemCount++;
-
+                            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                                // Add image
+                                Photo photo = new Photo(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, null, res);
+                                setModifiedDate(photo, podcastEntryNode);
+                                didl.addItem(photo);
+                                itemCount++;
+                            }
+                            totalCount++;
                         }
                         else if (mimeType.isVideo()) {
-                            // Adds video
-                            Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, res);
-                            setModifiedDate(movie, podcastEntryNode);
-                            didl.addItem(movie);
-                            itemCount++;
+                            if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
+                                // Add video
+                                Movie movie = new Movie(UUID.randomUUID().toString(), parentNode.getId(), entryName, null, res);
+                                setModifiedDate(movie, podcastEntryNode);
+                                didl.addItem(movie);
+                                itemCount++;
+                            }
+                            totalCount++;
                         }
                     }
                 }
             }
         }
-        return itemCount;
+    }
+
+    private boolean filterDidl(long itemCount, long totalCount, long firstResult, long maxResults) {
+        return itemCount < maxResults && totalCount >= firstResult;
     }
 
     private void setModifiedDate(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(node.getModifedDate()));
     }
 
-    private String getPodcastEntryName(int count, String title) {
+    private String getPodcastEntryName(long count, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             return String.format("%02d %s", count, title);
         }
