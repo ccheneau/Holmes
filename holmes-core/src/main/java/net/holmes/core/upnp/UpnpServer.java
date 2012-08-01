@@ -107,6 +107,8 @@ public final class UpnpServer implements IServer {
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
         DefaultServiceManager serviceManager = new DefaultServiceManager(contentDirectoryService, ContentDirectoryService.class);
         contentDirectoryService.setManager(serviceManager);
+
+        // Inject dependencies
         ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
         contentDirectory.setConfiguration(configuration);
         contentDirectory.setMediaService(mediaService);
