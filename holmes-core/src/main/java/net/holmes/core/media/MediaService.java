@@ -194,7 +194,7 @@ public final class MediaService implements IMediaService {
                 // Add podcast nodes
                 for (ConfigurationNode contentFolder : contentFolders) {
                     // Add node to mediaIndex
-                    mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType, contentFolder.getLabel(), contentFolder.getPath());
+                    mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType, contentFolder.getPath(), contentFolder.getLabel());
                     // Add child node
                     nodes.add(buildPodcastNode(contentFolder.getId(), contentFolder.getLabel(), contentFolder.getPath()));
                 }
@@ -205,7 +205,7 @@ public final class MediaService implements IMediaService {
                     File file = new File(contentFolder.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         // Add node to mediaIndex
-                        mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType, contentFolder.getLabel(), contentFolder.getPath());
+                        mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType, contentFolder.getPath(), contentFolder.getLabel());
                         // Add child node
                         nodes.add(buildFolderNode(contentFolder.getId(), rootNodeId, contentFolder.getLabel(), file));
                     }
