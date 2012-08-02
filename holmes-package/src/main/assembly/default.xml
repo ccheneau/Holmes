@@ -6,6 +6,7 @@
 	<id>default</id>
 	<formats>
 		<format>zip</format>
+		<format>tar.gz</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<dependencySets>
@@ -24,7 +25,6 @@
 			<outputDirectory>/</outputDirectory>
 			<excludes>
 				<exclude>**/.gitignore</exclude>
-				<exclude>conf/config.xml</exclude>
 				<exclude>bin/*.*</exclude>
 				<exclude>log/*.log</exclude>
 			</excludes>
@@ -32,6 +32,7 @@
 		<fileSet>
 			<directory>${project.build.outputDirectory}</directory>
 			<outputDirectory>/</outputDirectory>
+			<fileMode>0755</fileMode>
 			<includes>
 				<include>bin/*.*</include>
 			</includes>
