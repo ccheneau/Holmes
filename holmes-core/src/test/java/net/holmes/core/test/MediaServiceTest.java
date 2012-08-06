@@ -72,6 +72,7 @@ public class MediaServiceTest extends TestCase {
         List<AbstractNode> childNodes = mediaService.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
+        assertEquals(childNodes.size(), 4);
         logger.debug(childNodes.toString());
     }
 
@@ -84,16 +85,14 @@ public class MediaServiceTest extends TestCase {
         List<AbstractNode> childNodes = mediaService.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
+        assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        for (AbstractNode childNode : childNodes) {
-            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
-            assertNotNull(nodes);
-            assertFalse(nodes.isEmpty());
-            for (AbstractNode iNode : nodes) {
-                logger.debug(iNode.toString());
-            }
-        }
+        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 1);
+        assertEquals(nodes.iterator().next().getName(), "video.avi");
 
     }
 
@@ -106,16 +105,14 @@ public class MediaServiceTest extends TestCase {
         List<AbstractNode> childNodes = mediaService.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
+        assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        for (AbstractNode childNode : childNodes) {
-            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
-            assertNotNull(nodes);
-            assertFalse(nodes.isEmpty());
-            for (AbstractNode iNode : nodes) {
-                logger.debug(iNode.toString());
-            }
-        }
+        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 1);
+        assertEquals(nodes.iterator().next().getName(), "audio.mp3");
     }
 
     @Test
@@ -127,16 +124,14 @@ public class MediaServiceTest extends TestCase {
         List<AbstractNode> childNodes = mediaService.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
+        assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        for (AbstractNode childNode : childNodes) {
-            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
-            assertNotNull(nodes);
-            assertFalse(nodes.isEmpty());
-            for (AbstractNode iNode : nodes) {
-                logger.debug(iNode.toString());
-            }
-        }
+        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 1);
+        assertEquals(nodes.iterator().next().getName(), "image.jpg");
     }
 
     @Test
@@ -148,6 +143,7 @@ public class MediaServiceTest extends TestCase {
         List<AbstractNode> childNodes = mediaService.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
+        assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
         for (AbstractNode childNode : childNodes) {
