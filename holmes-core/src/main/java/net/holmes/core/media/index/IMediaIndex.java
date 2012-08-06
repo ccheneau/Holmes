@@ -25,7 +25,7 @@ public interface IMediaIndex {
 
     public String add(String parentId, String mediaType, String path, String name);
 
-    public NodeValue getValue(String uuid);
+    public IndexNode getValue(String uuid);
 
     public String put(String uuid, String parentId, String mediaType, String path, String name);
 

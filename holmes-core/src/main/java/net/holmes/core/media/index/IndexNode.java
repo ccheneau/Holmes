@@ -21,14 +21,14 @@
 */
 package net.holmes.core.media.index;
 
-public class NodeValue {
+public class IndexNode {
 
     String parentId;
     String mediaType;
     String name;
     String path;
 
-    public NodeValue(String parentId, String mediaType, String path, String name) {
+    public IndexNode(String parentId, String mediaType, String path, String name) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
@@ -65,5 +65,23 @@ public class NodeValue {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("IndexNode [parentId=");
+        builder.append(parentId);
+        builder.append(", mediaType=");
+        builder.append(mediaType);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", path=");
+        builder.append(path);
+        builder.append("]");
+        return builder.toString();
     }
 }

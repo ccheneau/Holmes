@@ -40,17 +40,17 @@ public class MediaIndex implements IMediaIndex {
      * @see net.holmes.core.media.index.IMediaIndex#getValue(java.lang.String)
      */
     @Override
-    public NodeValue getValue(String uuid) {
-        NodeValue nodeValue = null;
+    public IndexNode getValue(String uuid) {
+        IndexNode nodeValue = null;
         String value = nodeUUID.get(uuid);
         if (value != null) {
             String[] nodeParams = value.split("\\" + SEPARATOR);
             if (nodeParams != null) {
                 if (nodeParams.length == 3) {
-                    nodeValue = new NodeValue(nodeParams[0], nodeParams[1], nodeParams[2], null);
+                    nodeValue = new IndexNode(nodeParams[0], nodeParams[1], nodeParams[2], null);
                 }
                 else if (nodeParams.length == 4) {
-                    nodeValue = new NodeValue(nodeParams[0], nodeParams[1], nodeParams[2], nodeParams[3]);
+                    nodeValue = new IndexNode(nodeParams[0], nodeParams[1], nodeParams[2], nodeParams[3]);
                 }
             }
         }
