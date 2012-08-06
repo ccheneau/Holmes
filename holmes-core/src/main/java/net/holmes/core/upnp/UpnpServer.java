@@ -65,7 +65,7 @@ public final class UpnpServer implements IServer {
      */
     @Override
     public void start() {
-        if (logger.isInfoEnabled()) logger.info("Starting Upnp server");
+        if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
         try {
             upnpService = new UpnpServiceImpl();
 
@@ -76,7 +76,7 @@ public final class UpnpServer implements IServer {
         catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        if (logger.isInfoEnabled()) logger.info("Upnp server started");
+        if (logger.isInfoEnabled()) logger.info("UPnP server started");
     }
 
     /* (non-Javadoc)
@@ -108,7 +108,7 @@ public final class UpnpServer implements IServer {
         DefaultServiceManager serviceManager = new DefaultServiceManager(contentDirectoryService, ContentDirectoryService.class);
         contentDirectoryService.setManager(serviceManager);
 
-        // Inject dependencies
+        // Content directory service
         ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
         contentDirectory.setConfiguration(configuration);
         contentDirectory.setMediaService(mediaService);
