@@ -36,7 +36,7 @@ public class Bootstrap {
     }
 
     /**
-     * Shutdown hook: properly stop Holmes server on system exit
+     * Shutdown hook: stop Holmes server on system exit
      *
      */
     private static class ShutdownHook extends Thread {
