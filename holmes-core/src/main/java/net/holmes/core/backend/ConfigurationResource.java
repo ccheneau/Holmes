@@ -239,7 +239,7 @@ public class ConfigurationResource {
             if (existingFolder == null) {
                 ErrorCode validate = validatePath(path, isPath);
                 if (validate.getCode() == 0) {
-                    // Adds a new folder
+                    // Add a new folder
                     ConfigurationNode configDirectory = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
                     folders.add(configDirectory);
                     response.setId(configDirectory.getId());
