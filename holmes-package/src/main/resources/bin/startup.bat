@@ -1,23 +1,18 @@
 @echo off
-REM Copyright (c) 2012 Cedric Cheneau
-
-REM Permission is hereby granted, free of charge, to any person obtaining a copy
-REM of this software and associated documentation files (the "Software"), to deal
-REM in the Software without restriction, including without limitation the rights
-REM to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-REM copies of the Software, and to permit persons to whom the Software is
-REM furnished to do so, subject to the following conditions:
-
-REM The above copyright notice and this permission notice shall be included in
-REM all copies or substantial portions of the Software.
-
-REM THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-REM IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-REM FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-REM AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-REM LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-REM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-REM THE SOFTWARE.
+REM Copyright (C) 2012  Cedric Cheneau
+REM 
+REM This program is free software: you can redistribute it and/or modify
+REM it under the terms of the GNU General Public License as published by
+REM the Free Software Foundation, either version 3 of the License, or
+REM (at your option) any later version.
+REM 
+REM This program is distributed in the hope that it will be useful,
+REM but WITHOUT ANY WARRANTY; without even the implied warranty of
+REM MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+REM GNU General Public License for more details.
+REM 
+REM You should have received a copy of the GNU General Public License
+REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 setlocal
 
