@@ -19,6 +19,7 @@ package net.holmes.core;
 import java.awt.AWTException;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -45,6 +46,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+/**
+ * Holmes server main class
+ */
 public final class HolmesServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
 
@@ -99,10 +103,11 @@ public final class HolmesServer implements IServer {
     }
 
     private boolean initUI() {
-        boolean initOk = true;
+        boolean init = true;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
+            // Add bold font for systray menu item
             Font menuItemFont = UIManager.getFont("MenuItem.font");
             if (menuItemFont != null) {
                 FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
@@ -110,9 +115,9 @@ public final class HolmesServer implements IServer {
             }
         }
         catch (Exception e) {
-            initOk = false;
+            init = false;
         }
-        return initOk;
+        return init;
     }
 
     private SystemTrayIcon initSystemTrayIcon() {
@@ -121,8 +126,8 @@ public final class HolmesServer implements IServer {
             return null;
         }
 
-        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif")),
-                resource.getString("systray.title"));
+        final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif"));
+        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, resource.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu

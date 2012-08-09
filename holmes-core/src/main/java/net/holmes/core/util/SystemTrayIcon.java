@@ -103,6 +103,5 @@ public class SystemTrayIcon extends TrayIcon {
             this.popupMenu = popupMenu;
             this.popupMenu.addPopupMenuListener(popupListener);
         }
-
     }
 }

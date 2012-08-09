@@ -173,6 +173,9 @@ public final class MediaService implements IMediaService {
                     }
                 }
             }
+            else {
+                logger.error(parentNode.getId() + " node not found in index");
+            }
         }
 
         if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :" + childNodes);
@@ -180,7 +183,7 @@ public final class MediaService implements IMediaService {
     }
 
     /**
-     * Get childs of a root node (child nodes are sotored in configuration)
+     * Get childs of a root node (child nodes are stored in configuration)
      */
     private List<AbstractNode> getRootChildNodes(String rootNodeId, List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
@@ -364,5 +367,4 @@ public final class MediaService implements IMediaService {
         cal.setTimeInMillis(timestamp);
         return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());
     }
-
 }

@@ -35,9 +35,6 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-/**
- * 
- */
 public final class XmlConfiguration implements IConfiguration {
 
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);

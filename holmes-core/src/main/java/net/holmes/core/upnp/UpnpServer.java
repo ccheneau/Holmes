@@ -41,6 +41,9 @@ import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
 
 import com.google.inject.Inject;
 
+/**
+ * UPnP server main class
+ */
 public final class UpnpServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 

@@ -20,7 +20,5 @@ package net.holmes.core.util.resource;
  * 
  */
 public interface IResource {
-
     public String getString(String key);
-
 }

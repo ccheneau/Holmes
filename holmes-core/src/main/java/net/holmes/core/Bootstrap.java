@@ -70,5 +70,4 @@ public class Bootstrap {
             holmesServer.stop();
         }
     }
-
 }

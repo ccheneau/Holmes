@@ -35,5 +35,4 @@ public interface IHttpRequestHandler {
      * Process request
      */
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
-
 }

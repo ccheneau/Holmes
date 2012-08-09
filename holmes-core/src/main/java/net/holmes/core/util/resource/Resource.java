@@ -33,5 +33,4 @@ public class Resource implements IResource {
     public String getString(String key) {
         return bundle.getString(key);
     }
-
 }

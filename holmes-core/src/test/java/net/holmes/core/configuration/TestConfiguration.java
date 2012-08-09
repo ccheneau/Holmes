@@ -154,5 +154,4 @@ public class TestConfiguration implements IConfiguration {
         builder.append("]");
         return builder.toString();
     }
-
 }

@@ -123,5 +123,4 @@ public final class XmlRootNode implements Serializable {
         builder.append("]");
         return builder.toString();
     }
-
 }

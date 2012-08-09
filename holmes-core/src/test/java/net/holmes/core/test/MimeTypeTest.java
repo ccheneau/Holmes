@@ -82,5 +82,4 @@ public class MimeTypeTest extends TestCase {
             fail(e.getMessage());
         }
     }
-
 }

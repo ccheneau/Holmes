@@ -24,7 +24,7 @@ public interface IMediaService {
     /**
      * Get node
      */
-    public abstract AbstractNode getNode(String nodeId);
+    public AbstractNode getNode(String nodeId);
 
     /**
      * Get child nodes

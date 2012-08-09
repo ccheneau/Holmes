@@ -359,7 +359,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Get post-cast entry name. If prepend_podcast_entry_name parameter is set to true, item number is added to name
+     * Get post-cast entry name. If prepend_podcast_entry_name parameter is set to true, item number is added to title
      */
     private String getPodcastEntryName(long count, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {

@@ -19,7 +19,7 @@ package net.holmes.core.configuration;
 import java.io.Serializable;
 
 /**
- * A ConfigurationNode may represent:
+ * A ConfigurationNode is:
  * <ul>
  * <li>Holmes root node: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_NODE_ID} </li>
  * <li>root node for video folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_VIDEO_NODE_ID} </li>

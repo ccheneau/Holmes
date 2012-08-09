@@ -57,5 +57,4 @@ public interface IConfiguration {
     public List<ConfigurationNode> getPictureFolders();
 
     public Boolean getParameter(Parameter param);
-
 }
