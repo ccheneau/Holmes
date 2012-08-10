@@ -19,6 +19,8 @@ package net.holmes.core.http;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 
@@ -28,8 +30,6 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * HTTP server main class  

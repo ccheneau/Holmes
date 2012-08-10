@@ -16,6 +16,8 @@
 */
 package net.holmes.core.test;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
@@ -27,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class MimeTypeTest extends TestCase {

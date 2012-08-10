@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
@@ -42,9 +44,6 @@ import net.holmes.core.util.resource.IResource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Holmes server main class

@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.index.IMediaIndex;
@@ -47,7 +49,6 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.io.FeedException;

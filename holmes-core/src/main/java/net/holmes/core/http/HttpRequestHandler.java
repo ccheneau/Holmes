@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import net.holmes.core.http.request.HttpRequestException;
 import net.holmes.core.http.request.IHttpRequestHandler;
 
@@ -46,8 +49,6 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler

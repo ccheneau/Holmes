@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
@@ -40,8 +42,6 @@ import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Handler to serve contents (i.e. videos, audios or pictures) to UPnP media renderer

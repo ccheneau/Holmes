@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import net.holmes.core.http.HttpServer;
 
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -43,7 +45,6 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
@@ -85,7 +86,7 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
             application = WebApplicationFactory.createWebApplication();
             if (!application.isInitiated()) {
 
-                // Set web application propeties
+                // Set web application properties
                 Map<String, Object> props = new HashMap<String, Object>();
                 props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
                 props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);

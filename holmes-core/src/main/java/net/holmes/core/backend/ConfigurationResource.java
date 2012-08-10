@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,8 +37,6 @@ import net.holmes.core.backend.response.FolderListResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.util.resource.IResource;
-
-import com.google.inject.Inject;
 
 /**
  * Back-end REST resource for:

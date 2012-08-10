@@ -21,7 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import net.holmes.core.configuration.IConfiguration;
+import javax.inject.Inject;
+
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
@@ -40,16 +41,11 @@ import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-
 /**
  * Handler to serve pages of Holmes administration site
  */
 public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
-
-    @Inject
-    private IConfiguration configuration;
 
     @Inject
     private IMimeTypeFactory mimeTypeFactory;

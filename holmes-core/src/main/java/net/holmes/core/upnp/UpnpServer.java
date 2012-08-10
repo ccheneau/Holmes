@@ -18,6 +18,8 @@ package net.holmes.core.upnp;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
@@ -38,8 +40,6 @@ import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDADeviceType;
 import org.teleal.cling.model.types.UDN;
 import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
-
-import com.google.inject.Inject;
 
 /**
  * UPnP server main class

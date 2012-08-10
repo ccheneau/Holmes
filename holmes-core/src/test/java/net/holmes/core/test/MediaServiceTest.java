@@ -18,6 +18,8 @@ package net.holmes.core.test;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import net.holmes.core.configuration.ConfigurationNode;
@@ -31,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class MediaServiceTest extends TestCase {

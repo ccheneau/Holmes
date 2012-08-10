@@ -16,6 +16,9 @@
 */
 package net.holmes.core.http;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.Channels;
@@ -24,9 +27,6 @@ import org.jboss.netty.handler.codec.http.HttpChunkAggregator;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import org.jboss.netty.handler.stream.ChunkedWriteHandler;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public final class HttpServerPipelineFactory implements IChannelPipelineFactory {
 
