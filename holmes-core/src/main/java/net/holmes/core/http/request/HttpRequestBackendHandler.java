@@ -73,10 +73,6 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
     public HttpRequestBackendHandler() {
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#initHandler()
-     */
-    @Override
     @Inject
     public void initHandler() {
         if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
@@ -167,7 +163,6 @@ public final class HttpRequestBackendHandler implements IHttpRequestHandler {
         public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException {
             // Set http headers
             response = new DefaultHttpResponse(HttpVersion.HTTP_1_0, HttpResponseStatus.valueOf(cResponse.getStatus()));
-
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = new ArrayList<String>();
                 for (Object v : headerEntry.getValue())

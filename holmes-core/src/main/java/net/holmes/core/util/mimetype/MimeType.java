@@ -52,7 +52,7 @@ public final class MimeType implements Serializable {
     }
 
     public boolean isMedia() {
-        return type != null && (type.equals(TYPE_VIDEO) || type.equals(TYPE_AUDIO) || type.equals(TYPE_IMAGE));
+        return isAudio() || isVideo() || isImage();
     }
 
     public boolean isAudio() {

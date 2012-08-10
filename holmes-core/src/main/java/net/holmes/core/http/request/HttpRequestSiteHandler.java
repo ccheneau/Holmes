@@ -54,14 +54,6 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#initHandler()
-     */
-    @Override
-    @Inject
-    public void initHandler() {
-    }
-
-    /* (non-Javadoc)
      * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
      */
     @Override

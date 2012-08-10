@@ -22,11 +22,6 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 public interface IHttpRequestHandler {
 
     /**
-     * Initialize handler
-     */
-    public void initHandler();
-
-    /**
      * Check if handler can process request
      */
     public boolean canProcess(String requestPath);
