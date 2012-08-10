@@ -7,5 +7,5 @@ A Java application that supports DLNA/UPnP protocol for playing videos, music, p
 
 This application runs on Windows 7 and Linux Ubuntu with [VLC](http://www.videolan.org/vlc/) 2.x, Freebox V6 (a french set top box) and LG SmartTV devices
 
-See [Holmes wiki](wiki) for more information
+See [Holmes wiki](/wiki) for more information
 
