@@ -117,11 +117,11 @@ public final class HttpRequestSiteHandler implements IHttpRequestHandler {
         }
         catch (FileNotFoundException e) {
             if (logger.isWarnEnabled()) logger.warn("resource not found:" + fileName);
-            throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
         }
         catch (IOException e) {
             if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
-            throw new HttpRequestException("", HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
         finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");

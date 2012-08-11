@@ -66,7 +66,7 @@ holmes_stop() {
 holmes_force_stop() {
   holmes_pid=`ps -eaf |grep "net.holmes.home" | grep -v "grep" | head -1 | awk '{ print $2 }'`
   if [ ! -z "$holmes_pid" ] ; then
-    echo "Stopping Holmes (pid $holmes_pid)"
+    echo "Killing Holmes (pid $holmes_pid). Professor Moriarty finally wins :-("
     kill -9 $holmes_pid
   fi
   holmes_status

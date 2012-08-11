@@ -41,7 +41,6 @@ $(document).ready(function() {
 		    		if ($(elem).data('msg') != undefined)
 		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
 		    	});
-		    	// Initialize document
 	    		initializeDocument();
 		    }
 		});

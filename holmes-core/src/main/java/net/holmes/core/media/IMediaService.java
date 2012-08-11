@@ -21,13 +21,7 @@ import java.util.List;
 import net.holmes.core.media.node.AbstractNode;
 
 public interface IMediaService {
-    /**
-     * Get node
-     */
     public AbstractNode getNode(String nodeId);
 
-    /**
-     * Get child nodes
-     */
     public List<AbstractNode> getChildNodes(AbstractNode parentNode);
 }

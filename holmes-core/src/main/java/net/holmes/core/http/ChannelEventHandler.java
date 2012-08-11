@@ -22,7 +22,7 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 
 /**
- * Register opened channels to chanel group
+ * Register opened channels to channel group
  */
 public class ChannelEventHandler extends SimpleChannelUpstreamHandler {
 
