@@ -17,7 +17,8 @@
 package net.holmes.core.util;
 
 public enum SystemProperty {
-    HOLMES_HOME("net.holmes.home");
+    HOLMES_HOME("net.holmes.home"), //
+    USER_HOME("user.home");
 
     private String value;
 

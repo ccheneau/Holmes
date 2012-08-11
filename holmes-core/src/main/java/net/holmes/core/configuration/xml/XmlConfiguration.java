@@ -28,6 +28,7 @@ import java.util.List;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.util.SystemProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public final class XmlConfiguration implements IConfiguration {
      * Get path to Holmes configuration file 
      */
     private String getConfigFilePath() {
-        String userHomeHolmes = System.getProperty("user.home") + File.separator + CONF_FILE_PATH;
+        String userHomeHolmes = System.getProperty(SystemProperty.USER_HOME.getValue()) + File.separator + CONF_FILE_PATH;
 
         // Create holmes user home directory if it does not exist
         File userHomeHolmesDir = new File(userHomeHolmes);
