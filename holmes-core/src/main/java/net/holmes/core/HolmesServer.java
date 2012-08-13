@@ -125,6 +125,7 @@ public final class HolmesServer implements IServer {
             return null;
         }
 
+        // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif"));
         final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, resource.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();

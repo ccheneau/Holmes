@@ -69,7 +69,6 @@ public final class XmlConfiguration implements IConfiguration {
     @Override
     public void loadConfig() {
         rootNode = null;
-
         XStream xs = getXStream();
 
         String filePath = getConfigFilePath();

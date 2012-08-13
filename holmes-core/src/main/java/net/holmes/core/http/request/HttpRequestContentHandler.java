@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 public final class HttpRequestContentHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
 
-    public final static String REQUEST_PATH = "/content";
+    private final static String REQUEST_PATH = "/content";
 
     @Inject
     private IMediaService mediaService;
