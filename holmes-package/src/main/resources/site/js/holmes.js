@@ -233,7 +233,7 @@ $(document).ready(function() {
 	    			},
 	    			function(response) {
 	    				if (response.status){
-	    					successMessage('Configuration saved');
+	    					successMessage(msg.config.saved);
 	    				} else {
 	    					errorMessage(serverResponse.message);
 	    				}
