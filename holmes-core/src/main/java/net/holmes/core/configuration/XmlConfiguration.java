@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.configuration.xml;
+package net.holmes.core.configuration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,9 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import net.holmes.core.configuration.ConfigurationNode;
-import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.SystemProperty;
 
 import org.slf4j.Logger;

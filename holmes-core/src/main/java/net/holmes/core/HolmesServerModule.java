@@ -17,7 +17,7 @@
 package net.holmes.core;
 
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.xml.XmlConfiguration;
+import net.holmes.core.configuration.XmlConfiguration;
 import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
