@@ -18,7 +18,8 @@ package net.holmes.core.configuration;
 
 public enum Parameter {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
-    ENABLE_SYSTRAY("enable_systray", "true");
+    ENABLE_SYSTRAY("enable_systray", "true"), //
+    ENABLE_UPNP("enable_upnp", "true");
 
     private String name;
     private String defaultValue;

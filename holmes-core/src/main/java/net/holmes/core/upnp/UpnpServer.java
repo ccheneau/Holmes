@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.IMediaService;
 
 import org.slf4j.Logger;
@@ -65,16 +66,22 @@ public final class UpnpServer implements IServer {
     public void start() {
         if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
         try {
-            upnpService = new UpnpServiceImpl();
+            if (configuration.getParameter(Parameter.ENABLE_UPNP)) {
+                upnpService = new UpnpServiceImpl();
 
-            // Add the bound local device to the registry
-            LocalDevice localDevice = createDevice();
-            upnpService.getRegistry().addDevice(localDevice);
+                // Add the bound local device to the registry
+                LocalDevice localDevice = createDevice();
+                upnpService.getRegistry().addDevice(localDevice);
+
+                if (logger.isInfoEnabled()) logger.info("UPnP server started");
+            }
+            else {
+                if (logger.isInfoEnabled()) logger.info("UPnP is disabled");
+            }
         }
         catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        if (logger.isInfoEnabled()) logger.info("UPnP server started");
     }
 
     /* (non-Javadoc)
@@ -82,12 +89,12 @@ public final class UpnpServer implements IServer {
      */
     @Override
     public void stop() {
-        if (logger.isInfoEnabled()) logger.info("Stopping UPnP server");
 
         if (upnpService != null) {
+            if (logger.isInfoEnabled()) logger.info("Stopping UPnP server");
             upnpService.shutdown();
+            if (logger.isInfoEnabled()) logger.info("UPnP server stopped");
         }
-        if (logger.isInfoEnabled()) logger.info("UPnP server stopped");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
