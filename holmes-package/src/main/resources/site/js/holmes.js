@@ -41,6 +41,7 @@ $(document).ready(function() {
 		    		if ($(elem).data('msg') != undefined)
 		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
 		    	});
+		    	// Initialize document
 	    		initializeDocument();
 		    }
 		});
@@ -62,7 +63,8 @@ $(document).ready(function() {
 				colNames:[msg.video.id,msg.video.label, msg.video.path], 
 				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
 				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false,
+				        	   formoptions:{elmsuffix:'<a id="videoFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}} 
 				          ], 
 				caption: msg.video.folders,
 				pager: '#list_video_folders_nav',
@@ -74,13 +76,17 @@ $(document).ready(function() {
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
 					// edit options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+					    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+				    }, 
 					// add options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.video.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+					    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+				    },
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.video.remove.caption, msg: msg.video.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
@@ -93,8 +99,9 @@ $(document).ready(function() {
 				colNames:[msg.audio.id,msg.audio.label, msg.audio.path], 
 				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
 				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
-				          ], 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false, 
+				        	   formoptions:{elmsuffix:'<a id="audioFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}}
+				         ], 
 				caption: msg.audio.folders,
 				pager: '#list_audio_folders_nav', 
 				editurl:"/backend/configuration/editAudioFolder" 
@@ -105,13 +112,17 @@ $(document).ready(function() {
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
 					// edit options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+					    beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+					},
 					// add options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.audio.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+				    	beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+					}, 
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.audio.remove.caption, msg: msg.audio.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
@@ -124,7 +135,8 @@ $(document).ready(function() {
 				colNames:[msg.picture.id,msg.picture.label, msg.picture.path], 
 				colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
 				           {name:"label",index:"label", width:150, editable:true, editrules:{required: true}, sortable: false}, 
-				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+				           {name:"path",index:"path", width:450, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false,
+				        	   formoptions:{elmsuffix:'<a id="pictureFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}}
 				          ], 
 				caption: msg.picture.folders,
 				pager: '#list_picture_folders_nav', 
@@ -136,13 +148,17 @@ $(document).ready(function() {
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
 					// edit options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+					    beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+					}, 
 					// add options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.picture.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-						afterSubmit: function(response,postdata){ return getEditResponseData(response);}}, 
+						afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+						beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+					},
 					// delete options
 					{reloadAfterSubmit:true, closeOnEscape:true, 
 						caption: msg.picture.remove.caption, msg: msg.picture.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
@@ -167,11 +183,11 @@ $(document).ready(function() {
 					{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
 						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
 					// edit options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
 						editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
 					// add options
-					{height:150, width: 500, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+					{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
 						addCaption: msg.podcast.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 						afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
 					// delete options
@@ -246,6 +262,11 @@ $(document).ready(function() {
 	    	loadConfiguration();
 	    });
 	    
+		// Show folder browser dialog
+		function browseFolder(formId) {
+			//alert(formId);
+			alert('Work in progress');
+		}
 	    // Show configuration success message
 	    function successMessage(message) {
 	    	$("#message").html("<span>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
