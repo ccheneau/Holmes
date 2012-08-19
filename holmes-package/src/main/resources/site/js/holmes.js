@@ -24,13 +24,13 @@ $(document).ready(function() {
 		    path:'bundle/',
 		    mode:'both',
 		    callback: function() {
-		    	// HTML internationalization
+		    	// Internationalize i18n elements
 		    	$(".i18n").each( function(i,elem) {
 		    		if ($(elem).data('msg') != undefined)
 		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
 		    	});
-		    	// Initialize document
-	    		initializeDocument();
+		    	// Initialize document data once i18n is loaded
+	    		initializeDocumentData();
 		    }
 		});
 		
@@ -54,10 +54,7 @@ $(document).ready(function() {
 			   },function(){
 			  $(this).removeClass("toolbar-state-hover");
 		});
-	    
-	    // Load configuration data
-	    loadConfiguration();
-	    
+	    	    
 	    // Bind configuration submit handler
 	    $('#btn_submit').click(function() {
 	    	$.post('/backend/configuration/editConfiguration',
@@ -76,7 +73,7 @@ $(document).ready(function() {
 	    // Bind configuration reset handler
 	    $('#btn_reset').click(function() {
 	    	closeMessage();
-	    	loadConfiguration();
+	    	getConfiguration();
 	    });
 });
 
@@ -92,17 +89,18 @@ $.extend(
 		});
 
 
-// Initialize document
-function initializeDocument()
+// Initialize document data
+function initializeDocumentData()
 {			
     // Get Holmes version
-    function getHolmesVersion() {
-	    $.get('/backend/configuration/getVersion', function(response) {
-	    	$("#version").html(msg.toolbar.version + " " + response);
-	    });
-    }
     getHolmesVersion();
 
+    // Get configuration data
+    getConfiguration();
+    
+    // Initialize folder tree
+    initializeFolderTree();
+    
     // Initialize video folders grid
 	$("#list_video_folders").jqGrid({
 		url:'/backend/configuration/getVideoFolders', 
@@ -243,7 +241,68 @@ function initializeDocument()
 	);
 }
 
-// Callback for edit/add/delete item 
+// Get Holmes version
+function getHolmesVersion() {
+    $.get('/backend/util/getVersion', function(response) {
+    	$("#version").html(msg.toolbar.version + " " + response);
+    });
+}
+
+// Get configuration data
+function getConfiguration() {
+    $.getJSON('/backend/configuration/getConfiguration', function(response) {
+    		$("#text_server_name").val(response.serverName);
+    		$("#text_http_server_port").val(response.httpServerPort);
+    });
+}
+
+// Folder dialog variables
+var folderTree;
+var folderDialog;
+var folderFormId;
+var selectedFolder;
+// Initialize folder tree dialog
+function initializeFolderTree() {
+	folderTree = $("#folderTree").jstree({ 
+		"json_data" : {
+			"ajax" : {
+				"url" : "/backend/util/getChildFolders",
+				"type" : "POST",
+				"data" : function (n) {
+					return { "path" : n.data ? n.data("path") : "none" };
+				}
+			}
+		},
+		"themes" : {"dots" : false},
+		"plugins" : [ "themes", "json_data", "ui" ]
+	});
+	folderTree.bind("select_node.jstree", function (e, data) { selectedFolder = data.rslt.obj.data("path"); });
+	folderDialog = $("#folderTree").dialog({ 
+		autoOpen : false , 
+		title : msg.treeFolder.dialog.title , 
+		height : 300 ,  
+		buttons: [{ text : msg.treeFolder.dialog.ok , 
+				   click : function() { folderTreeDialogOk();}}]
+	});
+}
+
+// Callback for folder tree Ok button
+function folderTreeDialogOk(dialog) {
+	folderDialog.dialog('close');
+	$('#'+folderFormId).find('#path').each(
+		function() {
+	       $(this).val(selectedFolder);
+		}
+	);
+}
+
+// Show folder browser dialog
+function browseFolder(formId) {
+	folderFormId = formId;
+	folderDialog.dialog('open');
+}
+
+// Callback for edit/add/delete grid item 
 function getEditResponseData (response) {
 	var serverResponse = $.parseJSON(response.responseText);
 	if (serverResponse.operation == "edit") {
@@ -254,20 +313,6 @@ function getEditResponseData (response) {
         return [serverResponse.status,serverResponse.message];
 	}
     return [false,"Unable to parse response",""];
-}
-
-// Load configuration data
-function loadConfiguration() {
-    $.getJSON('/backend/configuration/getConfiguration', function(response) {
-    		$("#text_server_name").val(response.serverName);
-    		$("#text_http_server_port").val(response.httpServerPort);
-    });
-}
-
-// Show folder browser dialog
-function browseFolder(formId) {
-	//alert(formId);
-	alert('Work in progress');
 }
 
 // Show configuration success message

@@ -19,16 +19,16 @@ package net.holmes.core.backend.response;
 import java.io.Serializable;
 import java.util.Collection;
 
-public class Folder implements Serializable {
+public class ConfigFolder implements Serializable {
     private static final long serialVersionUID = -7055943024207235434L;
 
     private String id;
     private Collection<String> cell;
 
-    public Folder() {
+    public ConfigFolder() {
     }
 
-    public Folder(String id, Collection<String> cell) {
+    public ConfigFolder(String id, Collection<String> cell) {
         this.id = id;
         this.cell = cell;
     }

@@ -18,7 +18,7 @@ package net.holmes.core.backend.response;
 
 import java.io.Serializable;
 
-public class EditFolderResponse implements Serializable {
+public class EditConfigFolderResponse implements Serializable {
     private static final long serialVersionUID = 4829835251156005404L;
 
     private boolean status;

@@ -19,13 +19,13 @@ package net.holmes.core.backend.response;
 import java.io.Serializable;
 import java.util.Collection;
 
-public class FolderListResponse implements Serializable {
+public class ConfigFolderListResponse implements Serializable {
     private static final long serialVersionUID = 936714380923230317L;
 
     private int page;
     private int total;
     private int records;
-    private Collection<Folder> rows;
+    private Collection<ConfigFolder> rows;
 
     public int getPage() {
         return page;
@@ -51,11 +51,11 @@ public class FolderListResponse implements Serializable {
         this.records = records;
     }
 
-    public Collection<Folder> getRows() {
+    public Collection<ConfigFolder> getRows() {
         return rows;
     }
 
-    public void setRows(Collection<Folder> rows) {
+    public void setRows(Collection<ConfigFolder> rows) {
         this.rows = rows;
     }
 }
