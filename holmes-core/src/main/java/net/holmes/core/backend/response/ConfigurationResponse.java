@@ -16,11 +16,8 @@
 */
 package net.holmes.core.backend.response;
 
-import java.io.Serializable;
 
-public class ConfigurationResponse implements Serializable {
-    private static final long serialVersionUID = 337172491421293170L;
-
+public class ConfigurationResponse {
     private String serverName;
     private Integer httpServerPort;
     private String logLevel;

@@ -1,16 +1,11 @@
 package net.holmes.core.backend.response;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Folder implements Serializable {
-    private static final long serialVersionUID = 1951551250233853849L;
-
+public class Folder {
     private String data;
-
     private String state;
-
     private Map<String, String> metadata;
 
     public Folder() {

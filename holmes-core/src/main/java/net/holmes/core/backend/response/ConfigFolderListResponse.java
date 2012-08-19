@@ -16,12 +16,9 @@
 */
 package net.holmes.core.backend.response;
 
-import java.io.Serializable;
 import java.util.Collection;
 
-public class ConfigFolderListResponse implements Serializable {
-    private static final long serialVersionUID = 936714380923230317L;
-
+public class ConfigFolderListResponse {
     private int page;
     private int total;
     private int records;
