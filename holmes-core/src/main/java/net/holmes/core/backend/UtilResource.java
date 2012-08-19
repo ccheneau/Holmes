@@ -54,14 +54,14 @@ public class UtilResource {
         Collection<Folder> folders = new ArrayList<Folder>();
 
         if (path == null || path.equals("none")) {
-            // User home folder
+            // Add user home folder
             File userHomeDir = new File(System.getProperty(SystemProperty.USER_HOME.getValue()));
             Folder folder = new Folder();
             folder.setData(userHomeDir.getName());
             folder.getMetadata().put("path", userHomeDir.getAbsolutePath());
             folders.add(folder);
 
-            // Root folders
+            // Add root folders
             File[] roots = File.listRoots();
             if (roots != null) {
                 for (File root : roots) {
