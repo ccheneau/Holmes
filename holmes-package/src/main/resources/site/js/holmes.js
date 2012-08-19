@@ -15,79 +15,79 @@
 */
 
 $(document).ready(function() {
-		// Initialize tabs
-		$( "#tabs" ).tabs();
+	// Initialize tabs
+	$( "#tabs" ).tabs();
 
-		// Initialize i18n
-		$.i18n.properties({
-		    name:'messages', 
-		    path:'bundle/',
-		    mode:'both',
-		    callback: function() {
-		    	// Internationalize i18n elements
-		    	$(".i18n").each( function(i,elem) {
-		    		if ($(elem).data('msg') != undefined)
-		    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
-		    	});
-		    	// Initialize document data once i18n is loaded
-	    		initializeDocumentData();
-		    }
-		});
-		
-	    // Initialize configuration UI
-	    $("#configuration_fieldset").addClass("ui-widget ui-widget-content ui-corner-all");
-	    $("#text_server_name").addClass("ui-state-default ui-corner-all hover");
-	    $("#text_http_server_port").addClass("ui-state-default ui-corner-all hover");
-	    $("#btn_submit").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
-	    $("#btn_submit").html($("#btn_submit").html() + "<span class='ui-icon ui-icon-disk'></span>");
-	    $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
-	    $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
-	    
-	    $(".hover").hover(function(){
-			  $(this).addClass("ui-state-hover");
-			   },function(){
-			  $(this).removeClass("ui-state-hover");
-		});
-	    
-	    $(".toolbar_hover").hover(function(){
-			  $(this).addClass("toolbar-state-hover");
-			   },function(){
-			  $(this).removeClass("toolbar-state-hover");
-		});
-	    	    
-	    // Bind configuration submit handler
-	    $('#btn_submit').click(function() {
-	    	$.post('/backend/configuration/editConfiguration',
-	    			{serverName : $("#text_server_name").val(),
-	    				httpServerPort : $("#text_http_server_port").val()
-	    			},
-	    			function(response) {
-	    				if (response.status){
-	    					successMessage(msg.config.saved);
-	    				} else {
-	    					errorMessage(serverResponse.message);
-	    				}
-	    		});
-	    });
-	    
-	    // Bind configuration reset handler
-	    $('#btn_reset').click(function() {
-	    	closeMessage();
-	    	getConfiguration();
-	    });
+	// Initialize i18n
+	$.i18n.properties({
+	    name:'messages', 
+	    path:'bundle/',
+	    mode:'both',
+	    callback: function() {
+	    	// Internationalize i18n elements
+	    	$(".i18n").each( function(i,elem) {
+	    		if ($(elem).data('msg') != undefined)
+	    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
+	    	});
+	    	// Initialize document data once i18n is loaded
+    		initializeDocumentData();
+	    }
+	});
+
+	// Initialize configuration UI
+    $("#configuration_fieldset").addClass("ui-widget ui-widget-content ui-corner-all");
+    $("#text_server_name").addClass("ui-state-default ui-corner-all hover");
+    $("#text_http_server_port").addClass("ui-state-default ui-corner-all hover");
+    $("#btn_submit").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
+    $("#btn_submit").html($("#btn_submit").html() + "<span class='ui-icon ui-icon-disk'></span>");
+    $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
+    $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
+    
+    $(".hover").hover(function(){
+		  $(this).addClass("ui-state-hover");
+		   },function(){
+		  $(this).removeClass("ui-state-hover");
+	});
+    
+    $(".toolbar_hover").hover(function(){
+		  $(this).addClass("toolbar-state-hover");
+		   },function(){
+		  $(this).removeClass("toolbar-state-hover");
+	});
+    	    
+    // Bind configuration submit handler
+    $('#btn_submit').click(function() {
+    	$.post('/backend/configuration/editConfiguration',
+    			{serverName : $("#text_server_name").val(),
+    				httpServerPort : $("#text_http_server_port").val()
+    			},
+    			function(response) {
+    				if (response.status){
+    					successMessage(msg.config.saved);
+    				} else {
+    					errorMessage(serverResponse.message);
+    				}
+    		});
+    });
+    
+    // Bind configuration reset handler
+    $('#btn_reset').click(function() {
+    	closeMessage();
+    	getConfiguration();
+    });
 });
 
 $.extend(
-		// Default jqgrid options
-		$.jgrid.defaults, { 
-			datatype: "json", 
-			height: 250,
-			hidegrid: false,
-			pgbuttons: false,
-			pginput: false,
-			viewrecords: false
-		});
-
+	// Default jqgrid options
+	$.jgrid.defaults, { 
+		datatype: "json", 
+		height: 250,
+		hidegrid: false,
+		pgbuttons: false,
+		pginput: false,
+		viewrecords: false
+	}
+);
 
 // Initialize document data
 function initializeDocumentData()
@@ -98,8 +98,8 @@ function initializeDocumentData()
     // Get configuration data
     getConfiguration();
     
-    // Initialize folder tree
-    initializeFolderTree();
+    // Initialize folder tree dialog
+    initializeFolderTreeDlg();
     
     // Initialize video folders grid
 	$("#list_video_folders").jqGrid({
@@ -257,13 +257,12 @@ function getConfiguration() {
 }
 
 // Folder dialog variables
-var folderTree;
 var folderDialog;
 var folderFormId;
 var selectedFolder;
 // Initialize folder tree dialog
-function initializeFolderTree() {
-	folderTree = $("#folderTree").jstree({ 
+function initializeFolderTreeDlg() {
+	var folderTree = $("#folderTree").jstree({ 
 		"json_data" : {
 			"ajax" : {
 				"url" : "/backend/util/getChildFolders",
@@ -276,23 +275,20 @@ function initializeFolderTree() {
 		"themes" : {"dots" : false},
 		"plugins" : [ "themes", "json_data", "ui" ]
 	});
-	folderTree.bind("select_node.jstree", function (e, data) { selectedFolder = data.rslt.obj.data("path"); });
+	folderTree.bind("select_node.jstree", function (e, data) {selectedFolder = data.rslt.obj.data("path"); });
 	folderDialog = $("#folderTree").dialog({ 
 		autoOpen : false , 
 		title : msg.treeFolder.dialog.title , 
 		height : 300 ,  
-		buttons: [{ text : msg.treeFolder.dialog.ok , 
-				   click : function() { folderTreeDialogOk();}}]
+		buttons: [{ text : msg.treeFolder.dialog.ok , click : folderTreeDialogOk}]
 	});
 }
 
 // Callback for folder tree Ok button
-function folderTreeDialogOk(dialog) {
+function folderTreeDialogOk() {
 	folderDialog.dialog('close');
 	$('#'+folderFormId).find('#path').each(
-		function() {
-	       $(this).val(selectedFolder);
-		}
+		function() {$(this).val(selectedFolder);}
 	);
 }
 
