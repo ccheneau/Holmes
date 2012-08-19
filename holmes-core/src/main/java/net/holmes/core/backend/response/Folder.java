@@ -1,9 +1,11 @@
 package net.holmes.core.backend.response;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleFolder {
+public class Folder implements Serializable {
+    private static final long serialVersionUID = 1951551250233853849L;
 
     private String data;
 
@@ -11,7 +13,7 @@ public class SimpleFolder {
 
     private Map<String, String> metadata;
 
-    public SimpleFolder() {
+    public Folder() {
         metadata = new HashMap<String, String>();
         state = "closed";
     }

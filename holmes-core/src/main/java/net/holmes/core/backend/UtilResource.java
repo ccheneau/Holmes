@@ -28,7 +28,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.holmes.core.backend.response.SimpleFolder;
+import net.holmes.core.backend.response.Folder;
 import net.holmes.core.util.SystemProperty;
 
 @Path("/backend/util")
@@ -44,16 +44,19 @@ public class UtilResource {
         return "" + this.getClass().getPackage().getImplementationVersion();
     }
 
+    /**
+     * Get child folders
+     */
     @POST
     @Path("/getChildFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<SimpleFolder> getChildFolder(@FormParam("path") String path) {
-        Collection<SimpleFolder> folders = new ArrayList<SimpleFolder>();
+    public Collection<Folder> getChildFolders(@FormParam("path") String path) {
+        Collection<Folder> folders = new ArrayList<Folder>();
 
         if (path == null || path.equals("none")) {
             // User home folder
             File userHomeDir = new File(System.getProperty(SystemProperty.USER_HOME.getValue()));
-            SimpleFolder folder = new SimpleFolder();
+            Folder folder = new Folder();
             folder.setData(userHomeDir.getName());
             folder.getMetadata().put("path", userHomeDir.getAbsolutePath());
             folders.add(folder);
@@ -62,7 +65,7 @@ public class UtilResource {
             File[] roots = File.listRoots();
             if (roots != null) {
                 for (File root : roots) {
-                    SimpleFolder rootFolder = new SimpleFolder();
+                    Folder rootFolder = new Folder();
                     rootFolder.setData(root.getAbsolutePath());
                     rootFolder.getMetadata().put("path", root.getAbsolutePath());
                     folders.add(rootFolder);
@@ -84,7 +87,7 @@ public class UtilResource {
                 });
                 if (childDirs != null) {
                     for (File childDir : childDirs) {
-                        SimpleFolder folder = new SimpleFolder();
+                        Folder folder = new Folder();
                         folder.setData(childDir.getName());
                         folder.getMetadata().put("path", childDir.getAbsolutePath());
                         folders.add(folder);
