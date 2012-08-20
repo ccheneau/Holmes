@@ -16,33 +16,21 @@
 */
 package net.holmes.core.backend.response;
 
-
 public class ConfigurationResponse {
     private String serverName;
     private Integer httpServerPort;
-    private String logLevel;
+
+    public ConfigurationResponse(String serverName, Integer httpServerPort) {
+        super();
+        this.serverName = serverName;
+        this.httpServerPort = httpServerPort;
+    }
 
     public String getServerName() {
         return serverName;
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
     public Integer getHttpServerPort() {
         return httpServerPort;
-    }
-
-    public void setHttpServerPort(Integer httpServerPort) {
-        this.httpServerPort = httpServerPort;
-    }
-
-    public String getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
     }
 }

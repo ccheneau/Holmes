@@ -22,9 +22,6 @@ public class ConfigFolder {
     private String id;
     private Collection<String> cell;
 
-    public ConfigFolder() {
-    }
-
     public ConfigFolder(String id, Collection<String> cell) {
         this.id = id;
         this.cell = cell;
@@ -34,15 +31,7 @@ public class ConfigFolder {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Collection<String> getCell() {
         return cell;
-    }
-
-    public void setCell(Collection<String> cell) {
-        this.cell = cell;
     }
 }

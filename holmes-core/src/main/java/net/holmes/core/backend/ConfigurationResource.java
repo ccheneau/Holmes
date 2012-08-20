@@ -148,11 +148,7 @@ public class ConfigurationResource {
     @Path("/getConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationResponse getConfiguration() {
-        ConfigurationResponse response = new ConfigurationResponse();
-        response.setHttpServerPort(configuration.getHttpServerPort());
-        response.setServerName(configuration.getUpnpServerName());
-
-        return response;
+        return new ConfigurationResponse(configuration.getUpnpServerName(), configuration.getHttpServerPort());
     }
 
     /**

@@ -50,31 +50,25 @@ public class UtilResource {
     @POST
     @Path("/getChildFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Folder> getChildFolders(@FormParam("path") String path) {
+    public Collection<Folder> getChildFolders(@FormParam("path") String parentPath) {
         Collection<Folder> folders = new ArrayList<Folder>();
 
-        if (path == null || path.equals("none")) {
+        if (parentPath == null || parentPath.equals("none")) {
             // Add user home folder
             File userHomeDir = new File(System.getProperty(SystemProperty.USER_HOME.getValue()));
-            Folder folder = new Folder();
-            folder.setData(userHomeDir.getName());
-            folder.getMetadata().put("path", userHomeDir.getAbsolutePath());
-            folders.add(folder);
+            folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add root folders
             File[] roots = File.listRoots();
             if (roots != null) {
                 for (File root : roots) {
-                    Folder rootFolder = new Folder();
-                    rootFolder.setData(root.getAbsolutePath());
-                    rootFolder.getMetadata().put("path", root.getAbsolutePath());
-                    folders.add(rootFolder);
+                    folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
                 }
             }
         }
         else {
             // Get child folders
-            File fPath = new File(path);
+            File fPath = new File(parentPath);
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
                 File[] childDirs = fPath.listFiles(new FileFilter() {
                     /* (non-Javadoc)
@@ -87,10 +81,7 @@ public class UtilResource {
                 });
                 if (childDirs != null) {
                     for (File childDir : childDirs) {
-                        Folder folder = new Folder();
-                        folder.setData(childDir.getName());
-                        folder.getMetadata().put("path", childDir.getAbsolutePath());
-                        folders.add(folder);
+                        folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
                     }
                 }
             }
