@@ -10,23 +10,13 @@
 	<artifactId>holmes-package</artifactId>
 	<packaging>pom</packaging>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>net.holmes</groupId>
-				<artifactId>holmes-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>net.holmes</groupId>
 			<artifactId>holmes-core</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
@@ -70,7 +60,5 @@
 				</includes>
 			</resource>
 		</resources>
-
 	</build>
-
 </project>
