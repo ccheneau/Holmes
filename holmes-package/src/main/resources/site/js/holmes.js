@@ -90,8 +90,7 @@ $.extend(
 );
 
 // Initialize document data
-function initializeDocumentData()
-{			
+function initializeDocumentData() {			
     // Get Holmes version
     getHolmesVersion();
 
@@ -118,18 +117,21 @@ function initializeDocumentData()
 	$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
 			// global options
 			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
+				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
+			}, 
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, modal:true,
 				editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+			    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}
 		    }, 
 			// add options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.video.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+			    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}
 		    },
 			// delete options
 			{reloadAfterSubmit:true, closeOnEscape:true, 
@@ -154,18 +156,21 @@ function initializeDocumentData()
 	$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
 			// global options
 			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
+				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
+			},
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
 				editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+			    beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}
 			},
 			// add options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.audio.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-		    	beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+		    	beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}
 			}, 
 			// delete options
 			{reloadAfterSubmit:true, closeOnEscape:true, 
@@ -190,18 +195,21 @@ function initializeDocumentData()
 	$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav',
 			// global options
 			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg},
+				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
+			},
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
 				editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+			    beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}
 			}, 
 			// add options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.picture.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
 				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-				beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });}
+				beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+				onClose: function() {folderDialog.dialog('close');}				
 			},
 			// delete options
 			{reloadAfterSubmit:true, closeOnEscape:true, 
@@ -225,19 +233,23 @@ function initializeDocumentData()
 	$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
 			// global options
 			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg}, 
+				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
+			}, 
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
 				editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+				afterSubmit: function(response,postdata){ return getEditResponseData(response);}
+			},
 			// add options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true, 
+			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.podcast.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);}},
+				afterSubmit: function(response,postdata){ return getEditResponseData(response);}
+			},
 			// delete options
 			{reloadAfterSubmit:true, closeOnEscape:true, 
 				caption: msg.podcast.remove.caption, msg: msg.podcast.remove.msg, bSubmit: msg.button.remove, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);}} 
+				afterSubmit: function(response,postdata){ return getEditResponseData(response);}
+			} 
 	);
 }
 
@@ -276,6 +288,7 @@ function initializeFolderTreeDlg() {
 		"plugins" : [ "themes", "json_data", "ui" ]
 	});
 	folderTree.bind("select_node.jstree", function (e, data) {selectedFolder = data.rslt.obj.data("path"); });
+	folderTree.bind("dblclick.jstree", function (event) {folderTreeDialogOk();});
 	folderDialog = $("#folderTree").dialog({ 
 		autoOpen : false , 
 		title : msg.treeFolder.dialog.title , 
