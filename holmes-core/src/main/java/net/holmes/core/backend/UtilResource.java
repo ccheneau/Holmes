@@ -76,7 +76,8 @@ public class UtilResource {
                      */
                     @Override
                     public boolean accept(File file) {
-                        return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".");
+                        return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".")
+                                && file.listFiles() != null;
                     }
                 });
                 if (childDirs != null) {
