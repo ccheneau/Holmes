@@ -49,7 +49,6 @@ import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
  */
@@ -96,21 +95,23 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             }
         }
 
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        try {
-            // Dispatch request to proper handler
-            if (contentRequestHandler.canProcess(decoder.getPath())) {
-                contentRequestHandler.processRequest(request, e.getChannel());
+        if (request.getMethod().equals(HttpMethod.POST) || request.getMethod().equals(HttpMethod.GET)) {
+            QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+            try {
+                // Dispatch request to proper handler
+                if (contentRequestHandler.canProcess(decoder.getPath())) {
+                    contentRequestHandler.processRequest(request, e.getChannel());
+                }
+                else if (backendRequestHandler.canProcess(decoder.getPath())) {
+                    backendRequestHandler.processRequest(request, e.getChannel());
+                }
+                else {
+                    siteRequestHandler.processRequest(request, e.getChannel());
+                }
             }
-            else if (backendRequestHandler.canProcess(decoder.getPath())) {
-                backendRequestHandler.processRequest(request, e.getChannel());
+            catch (HttpRequestException ex) {
+                sendError(ctx, ex.getStatus());
             }
-            else {
-                siteRequestHandler.processRequest(request, e.getChannel());
-            }
-        }
-        catch (HttpRequestException ex) {
-            sendError(ctx, ex.getStatus());
         }
 
         if (logger.isDebugEnabled()) logger.debug("[END] messageReceived");
