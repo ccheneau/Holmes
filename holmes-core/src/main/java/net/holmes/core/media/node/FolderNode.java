@@ -17,7 +17,6 @@
 package net.holmes.core.media.node;
 
 public final class FolderNode extends AbstractNode {
-    private static final long serialVersionUID = 8129761596085917631L;
 
     public FolderNode() {
         type = NodeType.TYPE_FOLDER;

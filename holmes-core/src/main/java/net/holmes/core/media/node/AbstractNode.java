@@ -16,11 +16,8 @@
 */
 package net.holmes.core.media.node;
 
-import java.io.Serializable;
 
-public abstract class AbstractNode implements Comparable<AbstractNode>, Serializable {
-    private static final long serialVersionUID = 5909549322056486631L;
-
+public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected String id;
     protected String parentId;
     protected String name;

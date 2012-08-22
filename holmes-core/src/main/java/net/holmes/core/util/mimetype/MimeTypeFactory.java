@@ -30,7 +30,6 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
 
     public MimeTypeFactory() {
         // Load mime types from property file
-        properties = new Properties();
         InputStream in = null;
         try {
             in = this.getClass().getResourceAsStream("/mimetypes.properties");
@@ -50,14 +49,12 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
     }
 
     /* (non-Javadoc)
-     * @see net.holmes.core.util.IMimeTypeFactory#getMimeType(java.lang.String)
+     * @see net.holmes.core.util.mimetype.IMimeTypeFactory#getMimeType(java.lang.String)
      */
     @Override
     public MimeType getMimeType(String fileName) {
         // Get file extension
-        String ext = "";
-        int mid = fileName.lastIndexOf(".");
-        ext = fileName.substring(mid + 1, fileName.length());
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
         // Get mime type
         return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));

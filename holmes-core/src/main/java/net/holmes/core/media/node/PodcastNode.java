@@ -17,8 +17,6 @@
 package net.holmes.core.media.node;
 
 public final class PodcastNode extends AbstractNode {
-    private static final long serialVersionUID = 1970454850754589123L;
-
     private String url;
 
     public PodcastNode() {
