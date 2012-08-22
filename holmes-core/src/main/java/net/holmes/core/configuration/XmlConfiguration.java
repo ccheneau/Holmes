@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -50,9 +49,9 @@ public final class XmlConfiguration implements IConfiguration {
     }
 
     /**
-     * Get path to Holmes configuration file 
+     * Get Holmes configuration file 
      */
-    private String getConfigFilePath() {
+    private File getConfigFile() {
         String userHomeHolmes = System.getProperty(SystemProperty.USER_HOME.getValue()) + File.separator + CONF_FILE_PATH;
 
         // Create holmes user home directory if it does not exist
@@ -60,7 +59,7 @@ public final class XmlConfiguration implements IConfiguration {
         if (!userHomeHolmesDir.exists() || !userHomeHolmesDir.isDirectory()) {
             userHomeHolmesDir.mkdir();
         }
-        return userHomeHolmes + File.separator + CONF_FILE_NAME;
+        return new File(userHomeHolmes + File.separator + CONF_FILE_NAME);
     }
 
     /* (non-Javadoc)
@@ -69,32 +68,32 @@ public final class XmlConfiguration implements IConfiguration {
     @Override
     public void loadConfig() {
         rootNode = null;
+        boolean configLoaded = false;
         XStream xs = getXStream();
 
-        String filePath = getConfigFilePath();
-        if (filePath != null) {
-            File confFile = new File(filePath);
-            if (confFile.exists() && confFile.canRead()) {
-                InputStream in = null;
+        File confFile = getConfigFile();
+        if (confFile.exists() && confFile.canRead()) {
+            InputStream in = null;
+            try {
+                in = new FileInputStream(confFile);
+                rootNode = (XmlRootNode) xs.fromXML(in);
+                configLoaded = true;
+            }
+            catch (FileNotFoundException e) {
+                logger.error(e.getMessage(), e);
+            }
+            finally {
                 try {
-                    in = new FileInputStream(confFile);
-                    rootNode = (XmlRootNode) xs.fromXML(in);
+                    if (in != null) in.close();
                 }
-                catch (FileNotFoundException e) {
+                catch (IOException e) {
                     logger.error(e.getMessage(), e);
-                }
-                finally {
-                    try {
-                        if (in != null) in.close();
-                    }
-                    catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    }
                 }
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
-        rootNode.check();
+        rootNode.checkValues();
+        if (!configLoaded) saveConfig();
 
     }
 
@@ -105,28 +104,22 @@ public final class XmlConfiguration implements IConfiguration {
     public void saveConfig() {
         XStream xs = getXStream();
 
-        String filePath = getConfigFilePath();
-        if (filePath != null) {
-            File confFile = new File(filePath);
-
-            OutputStream out = null;
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(getConfigFile());
+            xs.toXML(rootNode, out);
+        }
+        catch (FileNotFoundException e) {
+            logger.error(e.getMessage(), e);
+        }
+        finally {
             try {
-                out = new FileOutputStream(confFile);
-                xs.toXML(rootNode, out);
+                if (out != null) out.close();
             }
-            catch (FileNotFoundException e) {
+            catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
-            finally {
-                try {
-                    if (out != null) out.close();
-                }
-                catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
-
     }
 
     private XStream getXStream() {
@@ -142,13 +135,7 @@ public final class XmlConfiguration implements IConfiguration {
      */
     @Override
     public String getUpnpServerName() {
-        String upnpServerName = this.rootNode.getUpnpServerName();
-        if (upnpServerName == null || upnpServerName.trim().length() == 0) {
-            return DEFAULT_UPNP_SERVER_NAME;
-        }
-        else {
-            return upnpServerName;
-        }
+        return this.rootNode.getUpnpServerName();
     }
 
     /* (non-Javadoc)
@@ -164,13 +151,7 @@ public final class XmlConfiguration implements IConfiguration {
      */
     @Override
     public Integer getHttpServerPort() {
-        Integer httpServerPort = rootNode.getHttpServerPort();
-        if (httpServerPort == null) {
-            return DEFAULT_HTTP_SERVER_PORT;
-        }
-        else {
-            return httpServerPort;
-        }
+        return rootNode.getHttpServerPort();
     }
 
     /* (non-Javadoc)
@@ -229,9 +210,7 @@ public final class XmlConfiguration implements IConfiguration {
         return this.rootNode.toString();
     }
 
-    private final class XmlRootNode implements Serializable {
-        private static final long serialVersionUID = 1607439493422835211L;
-
+    private static final class XmlRootNode {
         private String upnpServerName;
         private Integer httpServerPort;
         private LinkedList<ConfigurationNode> videoFolders;
@@ -240,7 +219,12 @@ public final class XmlConfiguration implements IConfiguration {
         private LinkedList<ConfigurationNode> podcasts;
         private Properties parameters;
 
-        public void check() {
+        /**
+         * Check config default values
+         */
+        public void checkValues() {
+            if (this.upnpServerName == null) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
+            if (this.httpServerPort == null) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
             if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
             if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
             if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
