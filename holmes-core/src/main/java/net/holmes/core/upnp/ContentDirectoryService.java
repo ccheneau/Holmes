@@ -245,7 +245,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             logger.debug("url:" + url.toString());
         }
 
-        Res res = new Res(contentNode.getMimeType().toUpnpMimeType(), contentNode.getSize(), url.toString());
+        Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url.toString());
 
         if (contentNode.getMimeType().isVideo()) {
             // Add video item
@@ -306,7 +306,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     MimeType mimeType = podcastEntryNode.getMimeType();
                     if (mimeType.isMedia()) {
                         String entryName = getPodcastEntryName(itemCount, podcastEntryNode.getName());
-                        Res res = new Res(mimeType.toUpnpMimeType(), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
+                        Res res = new Res(getUpnpMimeType(mimeType), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
 
                         if (mimeType.isAudio()) {
                             if (filterDidl(itemCount, totalCount, firstResult, maxResults)) {
@@ -369,4 +369,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             return title;
         }
     }
+
+    private org.teleal.common.util.MimeType getUpnpMimeType(MimeType mimeType) {
+        return new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType());
+    }
+
 }

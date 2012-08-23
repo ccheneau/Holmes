@@ -30,6 +30,7 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
 
     public MimeTypeFactory() {
         // Load mime types from property file
+        properties = new Properties();
         InputStream in = null;
         try {
             in = this.getClass().getResourceAsStream("/mimetypes.properties");

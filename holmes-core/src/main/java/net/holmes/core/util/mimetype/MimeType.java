@@ -67,10 +67,6 @@ public final class MimeType implements Serializable {
         return TYPE_IMAGE.equals(type);
     }
 
-    public org.teleal.common.util.MimeType toUpnpMimeType() {
-        return new org.teleal.common.util.MimeType(type, subType);
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
