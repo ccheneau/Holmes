@@ -36,11 +36,12 @@ public class HolmesHomeDirectory {
     }
 
     private static String getSubDirectory(String subDirName) {
-        String homeSubDirectory = System.getProperty(SystemProperty.HOLMES_HOME.getValue()) + File.separator + subDirName;
-        File confDir = new File(homeSubDirectory);
+        StringBuilder homeSubDirectory = new StringBuilder();
+        homeSubDirectory.append(System.getProperty(SystemProperty.HOLMES_HOME.getValue())).append(File.separator).append(subDirName);
+        File confDir = new File(homeSubDirectory.toString());
         if (!confDir.exists()) {
             confDir.mkdir();
         }
-        return homeSubDirectory;
+        return homeSubDirectory.toString();
     }
 }
