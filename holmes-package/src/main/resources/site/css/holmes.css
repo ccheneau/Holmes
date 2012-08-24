@@ -88,24 +88,13 @@ header {
 	height: 400px;
 }
 
-#configuration_video_folders {
-    padding-left: 80px;
-    padding-top: 12px;
-}
-
-#configuration_audio_folders {
-    padding-left: 80px;
-    padding-top: 12px;
-}
-
-#configuration_picture_folders {
-    padding-left: 80px;
-    padding-top: 12px;
-}
-
-#configuration_podcasts {
-    padding-left: 80px;
-    padding-top: 12px;
+#configuration_video_folders,
+#configuration_audio_folders,
+#configuration_picture_folders,
+#configuration_podcasts
+ {
+    padding-left: 30px;
+    padding-top: 10px;
 }
 
 #message {
