@@ -23,7 +23,9 @@ import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
+import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
+import net.holmes.core.http.IHttpRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
@@ -46,15 +48,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler to serve contents (i.e. videos, audios or pictures) to UPnP media renderer
  */
-public final class HttpRequestContentHandler implements IHttpRequestHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpRequestContentHandler.class);
+public final class HttpContentRequestHandler implements IHttpRequestHandler {
+    private static Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);
 
     private final static String REQUEST_PATH = "/content";
 
     @Inject
     private IMediaService mediaService;
 
-    public HttpRequestContentHandler() {
+    public HttpContentRequestHandler() {
     }
 
     /* (non-Javadoc)

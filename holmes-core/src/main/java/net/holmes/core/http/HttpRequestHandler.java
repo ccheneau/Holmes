@@ -25,8 +25,6 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.http.request.HttpRequestException;
-import net.holmes.core.http.request.IHttpRequestHandler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;

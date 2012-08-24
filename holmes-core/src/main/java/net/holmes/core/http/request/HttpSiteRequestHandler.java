@@ -23,7 +23,9 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
+import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
+import net.holmes.core.http.IHttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
@@ -44,13 +46,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler to serve Holmes administration site pages
  */
-public final class HttpRequestSiteHandler implements IHttpRequestHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpRequestSiteHandler.class);
+public final class HttpSiteRequestHandler implements IHttpRequestHandler {
+    private static Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
 
     @Inject
     private IMimeTypeFactory mimeTypeFactory;
 
-    public HttpRequestSiteHandler() {
+    public HttpSiteRequestHandler() {
     }
 
     /* (non-Javadoc)

@@ -22,10 +22,10 @@ import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.IChannelPipelineFactory;
-import net.holmes.core.http.request.HttpRequestBackendHandler;
-import net.holmes.core.http.request.HttpRequestContentHandler;
-import net.holmes.core.http.request.HttpRequestSiteHandler;
-import net.holmes.core.http.request.IHttpRequestHandler;
+import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.http.request.HttpBackendRequestHandler;
+import net.holmes.core.http.request.HttpContentRequestHandler;
+import net.holmes.core.http.request.HttpSiteRequestHandler;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.index.IMediaIndex;
@@ -65,8 +65,8 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind Http handlers
         bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
         bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpRequestHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpRequestContentHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpRequestBackendHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpRequestSiteHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
+        bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpSiteRequestHandler.class);
     }
 }
