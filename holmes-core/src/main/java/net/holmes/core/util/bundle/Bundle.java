@@ -14,8 +14,23 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util.resource;
+package net.holmes.core.util.bundle;
 
-public interface IResource {
-    public String getString(String key);
+import java.util.ResourceBundle;
+
+public class Bundle implements IBundle {
+
+    private ResourceBundle bundle;
+
+    public Bundle() {
+        bundle = ResourceBundle.getBundle("message");
+    }
+
+    /* (non-Javadoc)
+     * @see net.holmes.core.util.bundle.IBundle#getString(java.lang.String)
+     */
+    @Override
+    public String getString(String key) {
+        return bundle.getString(key);
+    }
 }

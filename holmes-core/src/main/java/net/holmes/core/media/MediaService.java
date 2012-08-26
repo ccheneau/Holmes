@@ -39,9 +39,9 @@ import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
+import net.holmes.core.util.bundle.IBundle;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
-import net.holmes.core.util.resource.IResource;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -67,7 +67,7 @@ public final class MediaService implements IMediaService {
     private IMimeTypeFactory mimeTypeFactory;
 
     @Inject
-    IResource resource;
+    IBundle bundle;
 
     @Inject
     IMediaIndex mediaIndex;
@@ -320,7 +320,7 @@ public final class MediaService implements IMediaService {
     private FolderNode buildRootNode(String nodeId) {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
-        node.setName(resource.getString(rootNodes.get(nodeId)));
+        node.setName(bundle.getString(rootNodes.get(nodeId)));
         if (ConfigurationNode.ROOT_NODE_ID.equals(nodeId)) node.setParentId("-1");
         else node.setParentId(ConfigurationNode.ROOT_NODE_ID);
         return node;

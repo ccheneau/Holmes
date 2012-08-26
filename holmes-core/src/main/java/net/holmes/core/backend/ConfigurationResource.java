@@ -36,7 +36,7 @@ import net.holmes.core.backend.response.ConfigurationResponse;
 import net.holmes.core.backend.response.EditConfigFolderResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.util.resource.IResource;
+import net.holmes.core.util.bundle.IBundle;
 
 /**
  * Back-end REST resource for:
@@ -55,7 +55,7 @@ public class ConfigurationResource {
     private IConfiguration configuration;
 
     @Inject
-    private IResource resource;
+    private IBundle bundle;
 
     /**
      * Get video configuration folders
@@ -307,7 +307,7 @@ public class ConfigurationResource {
 
     private void setResponseErrorCode(EditConfigFolderResponse response, ErrorCode errorCode) {
         response.setErrorCode(errorCode.getCode());
-        response.setMessage(resource.getString("backend.error." + errorCode.getCode()));
+        response.setMessage(bundle.getString("backend.error." + errorCode.getCode()));
     }
 
     /**
@@ -359,5 +359,4 @@ public class ConfigurationResource {
             return this.code;
         }
     }
-
 }

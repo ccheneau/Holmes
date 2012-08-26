@@ -40,7 +40,7 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.SystemTrayIcon;
-import net.holmes.core.util.resource.IResource;
+import net.holmes.core.util.bundle.IBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public final class HolmesServer implements IServer {
     private IServer upnpServer;
 
     @Inject
-    IResource resource;
+    IBundle bundle;
 
     public HolmesServer() {
     }
@@ -127,14 +127,14 @@ public final class HolmesServer implements IServer {
 
         // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif"));
-        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, resource.getString("systray.title"));
+        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, bundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
         // Quit Holmes menu item
-        JMenuItem quitItem = new JMenuItem(resource.getString("systray.quit"));
+        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
 
             /* (non-Javadoc)
@@ -147,7 +147,7 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes logs menu item
-        JMenuItem logsItem = new JMenuItem(resource.getString("systray.logs"));
+        JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
 
             /* (non-Javadoc)
@@ -169,7 +169,7 @@ public final class HolmesServer implements IServer {
         });
 
         // Holmes admin site menu item
-        JMenuItem holmesItem = new JMenuItem(resource.getString("systray.holmes"));
+        JMenuItem holmesItem = new JMenuItem(bundle.getString("systray.holmes"));
         Font boldFont = UIManager.getFont("MenuItem.bold.font");
         if (boldFont != null) holmesItem.setFont(boldFont);
 

@@ -31,10 +31,10 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.index.IMediaIndex;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
-import net.holmes.core.util.resource.IResource;
-import net.holmes.core.util.resource.Resource;
 
 import org.jboss.netty.channel.ChannelHandler;
 
@@ -51,7 +51,7 @@ public final class HolmesServerModule extends AbstractModule {
     protected void configure() {
         // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
-        bind(IResource.class).to(Resource.class).in(Singleton.class);
+        bind(IBundle.class).to(Bundle.class).in(Singleton.class);
 
         // Bind media service
         bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
