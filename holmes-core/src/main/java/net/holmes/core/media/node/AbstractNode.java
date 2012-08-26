@@ -16,7 +16,6 @@
 */
 package net.holmes.core.media.node;
 
-
 public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected String id;
     protected String parentId;

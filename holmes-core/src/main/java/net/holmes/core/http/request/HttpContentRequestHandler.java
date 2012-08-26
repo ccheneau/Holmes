@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public final class HttpContentRequestHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);
 
-    private final static String REQUEST_PATH = "/content";
+    private final static String REQUEST_PATH = "/content/";
 
     @Inject
     private IMediaService mediaService;
