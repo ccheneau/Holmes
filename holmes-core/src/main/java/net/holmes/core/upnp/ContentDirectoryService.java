@@ -18,6 +18,7 @@ package net.holmes.core.upnp;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,6 +72,8 @@ import org.teleal.cling.support.model.item.Photo;
         @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
+
+    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private IMediaService mediaService;
     private IConfiguration configuration;
@@ -345,7 +348,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Filter didl content
+     * Filter didl content according to pagination parameters
      */
     private boolean filterDidl(long itemCount, long totalCount, long firstResult, long maxResults) {
         return itemCount < maxResults && totalCount >= firstResult;
@@ -355,7 +358,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * Set didl content modified date
      */
     private void setModifiedDate(DIDLObject didlObjet, AbstractNode node) {
-        if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(node.getModifedDate()));
+        if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
     }
 
     /**

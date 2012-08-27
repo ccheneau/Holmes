@@ -20,9 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +56,6 @@ import com.sun.syndication.io.XmlReader;
 
 public final class MediaService implements IMediaService {
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
-
-    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     @Inject
     private IConfiguration configuration;
@@ -144,19 +141,19 @@ public final class MediaService implements IMediaService {
         }
         else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
-            childNodes = getRootChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
+            childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
         }
         else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
-            childNodes = getRootChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
+            childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
         }
         else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
-            childNodes = getRootChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
+            childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
         }
         else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
-            childNodes = getRootChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MimeType.TYPE_PODCAST);
+            childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MimeType.TYPE_PODCAST);
         }
         else if (parentNode.getId() != null) {
             // Get node in mediaIndex
@@ -184,9 +181,9 @@ public final class MediaService implements IMediaService {
     }
 
     /**
-     * Get childs of a root node (child nodes are stored in configuration)
+     * Get childs of a configuration node (child nodes are stored in configuration)
      */
-    private List<AbstractNode> getRootChildNodes(String rootNodeId, List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
+    private List<AbstractNode> getConfigurationChildNodes(String rootNodeId, List<ConfigurationNode> contentFolders, boolean podcast, String mediaType) {
         List<AbstractNode> nodes = new ArrayList<AbstractNode>();
         if (contentFolders != null && !contentFolders.isEmpty()) {
             if (podcast) {
@@ -243,9 +240,8 @@ public final class MediaService implements IMediaService {
     }
 
     /**
-     * Get childs of a pod-cast node
      * A pod-cast is a RSS feed URL
-     * @return entries parsed from RSS feed
+     * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
     private List<AbstractNode> getPodcastChildNodes(String parentId, String url) {
@@ -272,7 +268,7 @@ public final class MediaService implements IMediaService {
                                 podcastEntryNode.setParentId(parentId);
                                 podcastEntryNode.setName(rssEntry.getTitle());
                                 if (rssEntry.getPublishedDate() != null) {
-                                    podcastEntryNode.setModifedDate(formatUpnpDate(rssEntry.getPublishedDate().getTime()));
+                                    podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
                                 }
                                 if (enclosure.getType() != null) {
                                     podcastEntryNode.setMimeType(new MimeType(enclosure.getType()));
@@ -332,7 +328,7 @@ public final class MediaService implements IMediaService {
         node.setParentId(parentId);
         node.setName(name);
         node.setPath(folder.getAbsolutePath());
-        node.setModifedDate(formatUpnpDate(folder.lastModified()));
+        node.setModifedDate(new Date(folder.lastModified()));
         return node;
     }
 
@@ -349,7 +345,7 @@ public final class MediaService implements IMediaService {
             node.setPath(file.getAbsolutePath());
             node.setMimeType(mimeType);
             node.setSize(file.length());
-            node.setModifedDate(formatUpnpDate(file.lastModified()));
+            node.setModifedDate(new Date(file.lastModified()));
         }
         return node;
     }
@@ -361,11 +357,5 @@ public final class MediaService implements IMediaService {
         node.setName(name);
         node.setUrl(url);
         return node;
-    }
-
-    private String formatUpnpDate(long timestamp) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp);
-        return new SimpleDateFormat(UPNP_DATE_FORMAT).format(cal.getTime());
     }
 }
