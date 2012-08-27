@@ -79,12 +79,12 @@ public class SystemTrayIcon extends TrayIcon {
              */
             @Override
             public void mouseClicked(MouseEvent e) {
-                showJPopupMenu(e);
+                showPopupMenu(e);
             }
         });
     }
 
-    private void showJPopupMenu(MouseEvent e) {
+    private void showPopupMenu(MouseEvent e) {
         if (popupMenu != null) {
             Dimension size = popupMenu.getPreferredSize();
             dialog.setLocation(e.getX(), e.getY() - size.height);
@@ -94,7 +94,7 @@ public class SystemTrayIcon extends TrayIcon {
         }
     }
 
-    public void setJPopupMenu(JPopupMenu popupMenu) {
+    public void setPopupMenu(JPopupMenu popupMenu) {
         if (this.popupMenu != null) {
             this.popupMenu.removePopupMenuListener(popupListener);
         }

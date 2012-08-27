@@ -119,10 +119,10 @@ public final class HolmesServer implements IServer {
         return init;
     }
 
-    private SystemTrayIcon initSystemTrayIcon() {
+    private void initSystemTrayIcon() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
-            return null;
+            return;
         }
 
         // Initialize systray icon
@@ -204,13 +204,12 @@ public final class HolmesServer implements IServer {
 
         // Add tray icon
         systemTrayIcon.setImageAutoSize(true);
-        systemTrayIcon.setJPopupMenu(popupMenu);
+        systemTrayIcon.setPopupMenu(popupMenu);
         try {
             systemTray.add(systemTrayIcon);
         }
         catch (AWTException e) {
             logger.error(e.getMessage(), e);
         }
-        return systemTrayIcon;
     }
 }
