@@ -20,7 +20,7 @@ public interface IMediaIndex {
 
     public String add(String parentId, String mediaType, String path, String name);
 
-    public IndexNode getValue(String uuid);
+    public IndexElement getElement(String uuid);
 
     public String put(String uuid, String parentId, String mediaType, String path, String name);
 }

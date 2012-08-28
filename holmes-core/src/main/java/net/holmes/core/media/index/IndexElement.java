@@ -16,67 +16,39 @@
 */
 package net.holmes.core.media.index;
 
-public class IndexNode {
+public class IndexElement {
 
+    String id;
     String parentId;
     String mediaType;
     String name;
     String path;
 
-    public IndexNode(String parentId, String mediaType, String path, String name) {
+    public IndexElement(String id, String parentId, String mediaType, String path, String name) {
+        this.id = id;
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
     public String getMediaType() {
         return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("IndexNode [parentId=");
-        builder.append(parentId);
-        builder.append(", mediaType=");
-        builder.append(mediaType);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
-        builder.append("]");
-        return builder.toString();
     }
 }

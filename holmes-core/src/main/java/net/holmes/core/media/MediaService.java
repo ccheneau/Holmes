@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.index.IMediaIndex;
-import net.holmes.core.media.index.IndexNode;
+import net.holmes.core.media.index.IndexElement;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
@@ -97,23 +97,23 @@ public final class MediaService implements IMediaService {
         }
         else if (nodeId != null) {
             // Get node in mediaIndex
-            IndexNode indexNode = mediaIndex.getValue(nodeId);
-            if (indexNode != null) {
-                if (MimeType.TYPE_PODCAST.equals(indexNode.getMediaType())) {
+            IndexElement indexElement = mediaIndex.getElement(nodeId);
+            if (indexElement != null) {
+                if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
                     // podcast node
-                    node = buildPodcastNode(nodeId, indexNode.getName(), indexNode.getPath());
+                    node = buildPodcastNode(nodeId, indexElement.getName(), indexElement.getPath());
                 }
                 else {
-                    File nodeFile = new File(indexNode.getPath());
+                    File nodeFile = new File(indexElement.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
                             // content node
-                            node = buildContentNode(nodeId, indexNode.getParentId(), nodeFile, indexNode.getMediaType());
+                            node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, indexElement.getMediaType());
                         }
                         else if (nodeFile.isDirectory()) {
                             // folder node
-                            String nodeName = indexNode.getName() != null ? indexNode.getName() : nodeFile.getName();
-                            node = buildFolderNode(nodeId, indexNode.getParentId(), nodeName, nodeFile);
+                            String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
+                            node = buildFolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
                         }
                     }
                 }
@@ -157,17 +157,17 @@ public final class MediaService implements IMediaService {
         }
         else if (parentNode.getId() != null) {
             // Get node in mediaIndex
-            IndexNode indexNode = mediaIndex.getValue(parentNode.getId());
-            if (indexNode != null) {
-                if (MimeType.TYPE_PODCAST.equals(indexNode.getMediaType())) {
+            IndexElement indexElement = mediaIndex.getElement(parentNode.getId());
+            if (indexElement != null) {
+                if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
                     // get podcast child nodes
-                    childNodes = getPodcastChildNodes(parentNode.getId(), indexNode.getPath());
+                    childNodes = getPodcastChildNodes(parentNode.getId(), indexElement.getPath());
                 }
                 else {
-                    File node = new File(indexNode.getPath());
+                    File node = new File(indexElement.getPath());
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
                         // get folder child nodes
-                        childNodes = getFolderChildNodes(parentNode.getId(), node, indexNode.getMediaType());
+                        childNodes = getFolderChildNodes(parentNode.getId(), node, indexElement.getMediaType());
                     }
                 }
             }
