@@ -107,10 +107,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     logger.debug("RequestFrom agent: Anonymous");
                 }
             }
+
             DirectoryBrowseResult result = new DirectoryBrowseResult((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? firstResult : 0,
                     (browseFlag == BrowseFlag.DIRECT_CHILDREN) ? maxResults : 1);
 
-            // Get node                
+            // Get browse node                
             AbstractNode browseNode = mediaService.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
 
@@ -122,7 +123,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
                         if (childNodes != null && !childNodes.isEmpty()) {
                             for (AbstractNode childNode : childNodes) {
-                                if (logger.isDebugEnabled()) logger.debug("child node:" + childNode);
                                 addNode(objectID, childNode, result);
                             }
                         }
@@ -201,31 +201,31 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result) {
         if (node instanceof ContentNode) {
             if (result.filterResult()) {
-                // build content url
+                // Build content url
                 StringBuilder url = new StringBuilder();
                 url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
                 url.append("/content?id=");
                 url.append(node.getId());
 
-                // add item to result
+                // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url.toString());
             }
             result.addTotalCount();
         }
         else if (node instanceof FolderNode) {
             if (result.filterResult()) {
-                // get child counts
+                // Get child counts
                 List<AbstractNode> childNodes = mediaService.getChildNodes(node);
                 int childCount = childNodes != null ? childNodes.size() : 0;
 
-                // add container to result
+                // Add container to result
                 result.addContainer(nodeId, node, childCount);
             }
             result.addTotalCount();
         }
         else if (node instanceof PodcastNode) {
             if (result.filterResult()) {
-                // add container to result
+                // Add container to result
                 result.addContainer(nodeId, node, 1);
             }
             result.addTotalCount();
@@ -243,7 +243,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     MimeType mimeType = podcastEntryNode.getMimeType();
                     if (mimeType.isMedia()) {
                         if (result.filterResult()) {
-                            // add child item to result
+                            // Add child item to result
                             String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), podcastEntryNode.getName());
                             result.addItem(parentNode.getId(), podcastEntryNode, entryName);
                         }
@@ -255,7 +255,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Get post-cast entry name. If prepend_podcast_entry_name parameter is set to true, item number is added to title
+     * Get post-cast entry name. If prepend_podcast_entry_name configuration parameter is set to true, item number is added to title
      */
     private String getPodcastEntryName(long count, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
