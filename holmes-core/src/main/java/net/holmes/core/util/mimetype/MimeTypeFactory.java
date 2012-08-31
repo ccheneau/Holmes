@@ -55,7 +55,7 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
     @Override
     public MimeType getMimeType(String fileName) {
         // Get file extension
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
 
         // Get mime type
         return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));
