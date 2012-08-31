@@ -41,6 +41,8 @@ public final class PodcastNode extends AbstractNode {
         builder.append(url);
         builder.append(", id=");
         builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
         builder.append(", modifedDate=");

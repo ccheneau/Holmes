@@ -61,12 +61,14 @@ public final class ContentNode extends AbstractNode {
         builder.append(mimeType);
         builder.append(", size=");
         builder.append(size);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
         builder.append(", path=");
         builder.append(path);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
+        builder.append(", name=");
+        builder.append(name);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

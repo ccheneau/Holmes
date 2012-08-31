@@ -79,6 +79,8 @@ public class DirectoryBrowseResult {
     public void addItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
+        if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
+
         Item item = null;
         if (mimeType.isAudio()) {
             // Add audio track item

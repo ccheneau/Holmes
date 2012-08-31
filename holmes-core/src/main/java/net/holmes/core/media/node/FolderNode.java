@@ -38,12 +38,14 @@ public final class FolderNode extends AbstractNode {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("FolderNode [id=");
+        builder.append("FolderNode [path=");
+        builder.append(path);
+        builder.append(", id=");
         builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
         builder.append(", modifedDate=");
         builder.append(modifedDate);
         builder.append(", type=");

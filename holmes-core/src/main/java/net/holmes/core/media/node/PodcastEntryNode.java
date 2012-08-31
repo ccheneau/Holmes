@@ -22,6 +22,7 @@ public final class PodcastEntryNode extends AbstractNode {
     private MimeType mimeType;
     private Long size;
     private String url;
+    private String duration;
 
     public PodcastEntryNode() {
         type = NodeType.TYPE_PODCAST_ENTRY;
@@ -51,6 +52,14 @@ public final class PodcastEntryNode extends AbstractNode {
         this.url = url;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
     /* (non-Javadoc)
      * @see net.holmes.core.media.node.AbstractNode#toString()
      */
@@ -63,8 +72,12 @@ public final class PodcastEntryNode extends AbstractNode {
         builder.append(size);
         builder.append(", url=");
         builder.append(url);
+        builder.append(", duration=");
+        builder.append(duration);
         builder.append(", id=");
         builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
         builder.append(", modifedDate=");
