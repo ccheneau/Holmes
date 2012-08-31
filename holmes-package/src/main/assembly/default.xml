@@ -11,7 +11,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/lib</outputDirectory>
+			<outputDirectory>/holmes-${project.version}/lib</outputDirectory>
 			<includes>
 				<include>net.holmes:holmes-core</include>
 			</includes>
@@ -22,7 +22,7 @@
 	<fileSets>
 		<fileSet>
 			<directory>${project.basedir}/src/main/resources</directory>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/holmes-${project.version}/</outputDirectory>
 			<excludes>
 				<exclude>**/.gitignore</exclude>
 				<exclude>bin/*.*</exclude>
@@ -31,7 +31,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>${project.build.outputDirectory}</directory>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>/holmes-${project.version}/</outputDirectory>
 			<fileMode>0755</fileMode>
 			<includes>
 				<include>bin/*.*</include>
