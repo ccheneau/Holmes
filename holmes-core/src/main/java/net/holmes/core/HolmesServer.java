@@ -63,7 +63,7 @@ public final class HolmesServer implements IServer {
     private IServer upnpServer;
 
     @Inject
-    IBundle bundle;
+    private IBundle bundle;
 
     public HolmesServer() {
     }

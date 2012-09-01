@@ -17,12 +17,11 @@
 package net.holmes.core.media.node;
 
 public final class FolderNode extends AbstractNode {
+    private String path;
 
     public FolderNode() {
         type = NodeType.TYPE_FOLDER;
     }
-
-    private String path;
 
     public String getPath() {
         return path;

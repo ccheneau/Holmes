@@ -64,10 +64,10 @@ public final class MediaService implements IMediaService {
     private IMimeTypeFactory mimeTypeFactory;
 
     @Inject
-    IBundle bundle;
+    private IBundle bundle;
 
     @Inject
-    IMediaIndex mediaIndex;
+    private IMediaIndex mediaIndex;
 
     private CacheManager cacheManager;
 
@@ -92,7 +92,7 @@ public final class MediaService implements IMediaService {
         if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:" + nodeId);
 
         if (rootNodes.get(nodeId) != null) {
-            // root node
+            // Root node
             node = buildRootNode(nodeId);
         }
         else if (nodeId != null) {
@@ -100,18 +100,18 @@ public final class MediaService implements IMediaService {
             IndexElement indexElement = mediaIndex.getElement(nodeId);
             if (indexElement != null) {
                 if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
-                    // podcast node
+                    //Podcast node
                     node = buildPodcastNode(nodeId, indexElement.getName(), indexElement.getPath());
                 }
                 else {
                     File nodeFile = new File(indexElement.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
-                            // content node
+                            // Content node
                             node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, indexElement.getMediaType());
                         }
                         else if (nodeFile.isDirectory()) {
-                            // folder node
+                            // Folder node
                             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
                             node = buildFolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
                         }
@@ -160,13 +160,13 @@ public final class MediaService implements IMediaService {
             IndexElement indexElement = mediaIndex.getElement(parentNode.getId());
             if (indexElement != null) {
                 if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
-                    // get podcast child nodes
+                    // Get podcast child nodes
                     childNodes = getPodcastChildNodes(parentNode.getId(), indexElement.getPath());
                 }
                 else {
                     File node = new File(indexElement.getPath());
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
-                        // get folder child nodes
+                        // Get folder child nodes
                         childNodes = getFolderChildNodes(parentNode.getId(), node, indexElement.getMediaType());
                     }
                 }
