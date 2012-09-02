@@ -26,7 +26,7 @@
 			<excludes>
 				<exclude>**/.gitignore</exclude>
 				<exclude>bin/*.*</exclude>
-				<exclude>log/*.log</exclude>
+				<exclude>log/*.*</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
