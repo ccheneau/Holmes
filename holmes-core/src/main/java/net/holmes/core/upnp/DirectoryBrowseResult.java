@@ -120,7 +120,7 @@ public class DirectoryBrowseResult {
      * Filter result according to pagination parameters
      */
     public boolean filterResult() {
-        return itemCount < maxResults && totalCount >= firstResult;
+        return maxResults == 0 || (itemCount < maxResults && totalCount >= firstResult);
     }
 
     private org.teleal.common.util.MimeType getUpnpMimeType(MimeType mimeType) {
