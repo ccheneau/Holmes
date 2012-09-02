@@ -16,9 +16,13 @@
 */
 package net.holmes.core.upnp;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 import net.holmes.core.configuration.IConfiguration;
@@ -74,7 +78,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // sort caps
                 Arrays.asList("dc:title"));
         try {
-            this.localAddress = InetAddress.getLocalHost().getHostAddress();
+            this.localAddress = getLocalAddress();
+            if (logger.isDebugEnabled()) logger.debug("local address:" + this.localAddress);
         }
         catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
@@ -87,6 +92,24 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
+    }
+
+    private static String getLocalAddress() throws UnknownHostException {
+        try {
+            for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) {
+                NetworkInterface iface = ifaces.nextElement();
+                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements();) {
+                    InetAddress inetAddr = inetAddrs.nextElement();
+                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
+                        return inetAddr.getHostAddress();
+                    }
+                }
+            }
+            return InetAddress.getLocalHost().getHostAddress();
+        }
+        catch (SocketException e) {
+            throw new UnknownHostException();
+        }
     }
 
     /* (non-Javadoc)
