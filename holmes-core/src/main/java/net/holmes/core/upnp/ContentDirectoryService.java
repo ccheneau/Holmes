@@ -37,14 +37,9 @@ import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.teleal.cling.binding.annotations.UpnpAction;
-import org.teleal.cling.binding.annotations.UpnpInputArgument;
-import org.teleal.cling.binding.annotations.UpnpOutputArgument;
 import org.teleal.cling.binding.annotations.UpnpStateVariable;
 import org.teleal.cling.binding.annotations.UpnpStateVariables;
 import org.teleal.cling.model.message.header.UpnpHeader;
-import org.teleal.cling.model.types.ErrorCode;
-import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.protocol.sync.ReceivingAction;
 import org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.teleal.cling.support.contentdirectory.ContentDirectoryErrorCode;
@@ -96,10 +91,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     private static String getLocalAddress() throws UnknownHostException {
         try {
-            for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) {
-                NetworkInterface iface = ifaces.nextElement();
-                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements();) {
-                    InetAddress inetAddr = inetAddrs.nextElement();
+            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
+                NetworkInterface intf = intfaces.nextElement();
+                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
+                    InetAddress inetAddr = inetAddresses.nextElement();
                     if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
                         return inetAddr.getHostAddress();
                     }
@@ -122,6 +117,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (logger.isDebugEnabled()) {
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
                         + " nbresults=" + maxResults);
+                logger.debug("filter: " + filter);
                 try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
                     logger.debug("RequestFrom agent: " + userAgent);
@@ -178,47 +174,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
         }
-    }
-
-    /* (non-Javadoc)
-     * @see org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService#search(java.lang.String, java.lang.String, java.lang.String, org.teleal.cling.model.types.UnsignedIntegerFourBytes, org.teleal.cling.model.types.UnsignedIntegerFourBytes, java.lang.String)
-     */
-    @Override
-    @UpnpAction(out = { @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
-            @UpnpOutputArgument(name = "NumberReturned", stateVariable = "A_ARG_TYPE_Count", getterName = "getCount"),
-            @UpnpOutputArgument(name = "TotalMatches", stateVariable = "A_ARG_TYPE_Count", getterName = "getTotalMatches"),
-            @UpnpOutputArgument(name = "UpdateID", stateVariable = "A_ARG_TYPE_UpdateID", getterName = "getContainerUpdateID") })
-    public BrowseResult search(@UpnpInputArgument(name = "ContainerID") String objectId, @UpnpInputArgument(name = "SearchCriteria") String searchCriteria,
-            @UpnpInputArgument(name = "Filter") String filter,
-            @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
-            @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") String orderBy) throws ContentDirectoryException {
-        SortCriterion[] orderByCriteria;
-        try {
-            orderByCriteria = SortCriterion.valueOf(orderBy);
-        }
-        catch (Exception ex) {
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA, ex.toString());
-        }
-
-        try {
-            return search(objectId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria);
-        }
-        catch (ContentDirectoryException ex) {
-            throw ex;
-        }
-        catch (Exception ex) {
-            throw new ContentDirectoryException(ErrorCode.ACTION_FAILED, ex.toString());
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService#search(java.lang.String, java.lang.String, java.lang.String, long, long, org.teleal.cling.support.model.SortCriterion[])
-     */
-    @Override
-    public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy)
-            throws ContentDirectoryException {
-        return super.search(containerId, searchCriteria, filter, firstResult, maxResults, orderBy);
     }
 
     private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result) {
