@@ -22,6 +22,7 @@ public final class ContentNode extends AbstractNode {
     private MimeType mimeType;
     private Long size;
     private String path;
+    private String resolution;
 
     public ContentNode() {
         type = NodeType.TYPE_CONTENT;
@@ -51,6 +52,14 @@ public final class ContentNode extends AbstractNode {
         this.path = path;
     }
 
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
     /* (non-Javadoc)
      * @see net.holmes.core.media.node.AbstractNode#toString()
      */
@@ -63,6 +72,8 @@ public final class ContentNode extends AbstractNode {
         builder.append(size);
         builder.append(", path=");
         builder.append(path);
+        builder.append(", resolution=");
+        builder.append(resolution);
         builder.append(", id=");
         builder.append(id);
         builder.append(", parentId=");
@@ -73,6 +84,8 @@ public final class ContentNode extends AbstractNode {
         builder.append(modifedDate);
         builder.append(", type=");
         builder.append(type);
+        builder.append(", iconUrl=");
+        builder.append(iconUrl);
         builder.append("]");
         return builder.toString();
     }

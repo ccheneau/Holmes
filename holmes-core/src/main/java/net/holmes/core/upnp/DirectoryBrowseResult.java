@@ -16,6 +16,8 @@
 */
 package net.holmes.core.upnp;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 import net.holmes.core.media.node.AbstractNode;
@@ -26,6 +28,7 @@ import net.holmes.core.util.mimetype.MimeType;
 import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.DIDLObject;
 import org.teleal.cling.support.model.DIDLObject.Property.DC;
+import org.teleal.cling.support.model.DIDLObject.Property.UPNP;
 import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.container.StorageFolder;
 import org.teleal.cling.support.model.item.Item;
@@ -73,6 +76,8 @@ public class DirectoryBrowseResult {
     public void addItem(String parentNodeId, ContentNode contentNode, String url) {
         MimeType mimeType = contentNode.getMimeType();
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
+        if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
+
         Item item = null;
         if (mimeType.isVideo()) {
             // Add video item
@@ -88,6 +93,7 @@ public class DirectoryBrowseResult {
         }
         if (item != null) {
             setModifiedDate(item, contentNode);
+            setIconUrl(item, contentNode);
             addItem(item);
         }
     }
@@ -112,6 +118,7 @@ public class DirectoryBrowseResult {
         }
         if (item != null) {
             setModifiedDate(item, podcastEntryNode);
+            setIconUrl(item, podcastEntryNode);
             addItem(item);
         }
     }
@@ -124,6 +131,9 @@ public class DirectoryBrowseResult {
     public void addContainer(String parentNodeId, AbstractNode node, int childCount) {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
         setModifiedDate(folder, node);
+        setModifiedDate(folder, node);
+        setIconUrl(folder, node);
+
         didl.addContainer(folder);
         itemCount += 1;
     }
@@ -145,5 +155,13 @@ public class DirectoryBrowseResult {
 
     private void setModifiedDate(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
+    }
+
+    private void setIconUrl(DIDLObject didlObjet, AbstractNode node) {
+        if (node.getIconUrl() != null) try {
+            didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+        }
+        catch (URISyntaxException e) {
+        }
     }
 }

@@ -49,6 +49,8 @@ public final class FolderNode extends AbstractNode {
         builder.append(modifedDate);
         builder.append(", type=");
         builder.append(type);
+        builder.append(", iconUrl=");
+        builder.append(iconUrl);
         builder.append("]");
         return builder.toString();
     }

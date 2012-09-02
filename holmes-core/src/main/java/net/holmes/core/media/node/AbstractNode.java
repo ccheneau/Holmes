@@ -24,6 +24,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected String name;
     protected Date modifedDate;
     protected NodeType type;
+    protected String iconUrl;
 
     public String getId() {
         return id;
@@ -61,6 +62,14 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         this.modifedDate = modifedDate;
     }
 
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -87,6 +96,8 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         builder.append(modifedDate);
         builder.append(", type=");
         builder.append(type);
+        builder.append(", iconUrl=");
+        builder.append(iconUrl);
         builder.append("]");
         return builder.toString();
     }
