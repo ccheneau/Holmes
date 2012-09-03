@@ -152,10 +152,12 @@ public class DirectoryBrowseResult {
     private void setMetadata(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
 
-        if (node.getIconUrl() != null) try {
-            didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
-        }
-        catch (URISyntaxException e) {
+        if (node.getIconUrl() != null) {
+            try {
+                didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+            }
+            catch (URISyntaxException e) {
+            }
         }
     }
 }
