@@ -92,8 +92,7 @@ public class DirectoryBrowseResult {
             item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
         }
         if (item != null) {
-            setModifiedDate(item, contentNode);
-            setIconUrl(item, contentNode);
+            setMetadata(item, contentNode);
             addItem(item);
         }
     }
@@ -117,8 +116,7 @@ public class DirectoryBrowseResult {
             item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
         }
         if (item != null) {
-            setModifiedDate(item, podcastEntryNode);
-            setIconUrl(item, podcastEntryNode);
+            setMetadata(item, podcastEntryNode);
             addItem(item);
         }
     }
@@ -130,9 +128,7 @@ public class DirectoryBrowseResult {
 
     public void addContainer(String parentNodeId, AbstractNode node, int childCount) {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
-        setModifiedDate(folder, node);
-        setModifiedDate(folder, node);
-        setIconUrl(folder, node);
+        setMetadata(folder, node);
 
         didl.addContainer(folder);
         itemCount += 1;
@@ -153,13 +149,12 @@ public class DirectoryBrowseResult {
         return new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType());
     }
 
-    private void setModifiedDate(DIDLObject didlObjet, AbstractNode node) {
+    private void setMetadata(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
-    }
 
-    private void setIconUrl(DIDLObject didlObjet, AbstractNode node) {
         if (node.getIconUrl() != null) try {
             didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+            didlObjet.replaceFirstProperty(new UPNP.ALBUM_ART_URI(new URI(node.getIconUrl())));
         }
         catch (URISyntaxException e) {
         }

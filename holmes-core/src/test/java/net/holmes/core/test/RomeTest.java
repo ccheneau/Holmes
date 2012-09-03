@@ -17,8 +17,8 @@
 package net.holmes.core.test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -27,6 +27,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.syndication.feed.module.itunes.EntryInformation;
+import com.sun.syndication.feed.module.itunes.ITunes;
+import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
+import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -37,8 +41,7 @@ import com.sun.syndication.io.XmlReader;
 /**
  * The Class RomeTest.
  */
-public class RomeTest extends TestCase
-{
+public class RomeTest extends TestCase {
     private static Logger logger = LoggerFactory.getLogger(RomeTest.class);
 
     /**
@@ -46,60 +49,55 @@ public class RomeTest extends TestCase
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRome()
-    {
+    public void testRome() {
         XmlReader reader = null;
-        try
-        {
-            URL feedSource = new URL("http://lescastcodeurs.libsyn.com/rss");
+        try {
             SyndFeedInput input = new SyndFeedInput();
-            reader = new XmlReader(feedSource);
+            InputStream in = this.getClass().getResourceAsStream("/castCodersRss.xml");
+            reader = new XmlReader(in);
             SyndFeed feed = input.build(reader);
             List<SyndEntry> entries = feed.getEntries();
-            if (entries != null && !entries.isEmpty())
-            {
-                for (SyndEntry entry : entries)
-                {
+            if (entries != null && !entries.isEmpty()) {
+                for (SyndEntry entry : entries) {
                     logger.debug(entry.getTitle());
-                    if (entry.getEnclosures() != null && !entry.getEnclosures().isEmpty())
-                    {
-                        for (SyndEnclosure enclosure : (List<SyndEnclosure>) entry.getEnclosures())
-                        {
+                    if (entry.getEnclosures() != null && !entry.getEnclosures().isEmpty()) {
+                        for (SyndEnclosure enclosure : (List<SyndEnclosure>) entry.getEnclosures()) {
                             logger.debug(enclosure.getType());
                             logger.debug(enclosure.getUrl());
                         }
                     }
+                    EntryInformation itunesInfo = (EntryInformation) (entry.getModule(ITunes.URI));
+                    if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                        logger.debug("duration: " + itunesInfo.getDuration().toString());
+                    }
+                    MediaEntryModule mediaInfo = (MediaEntryModule) (entry.getModule(MediaModule.URI));
+                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
+                        logger.debug("iconUrl: " + mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString());
+                    }
                 }
             }
         }
-        catch (MalformedURLException e)
-        {
+        catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
         }
-        catch (IllegalArgumentException e)
-        {
+        catch (IllegalArgumentException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
         }
-        catch (FeedException e)
-        {
+        catch (FeedException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
         }
-        finally
-        {
-            try
-            {
+        finally {
+            try {
                 if (reader != null) reader.close();
             }
-            catch (IOException e)
-            {
+            catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }

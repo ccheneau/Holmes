@@ -141,14 +141,5 @@ public class MediaServiceTest extends TestCase {
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
-
-        for (AbstractNode childNode : childNodes) {
-            List<AbstractNode> nodes = mediaService.getChildNodes(childNode);
-            assertNotNull(nodes);
-            assertFalse(nodes.isEmpty());
-            for (AbstractNode iNode : nodes) {
-                logger.debug(iNode.toString());
-            }
-        }
     }
 }
