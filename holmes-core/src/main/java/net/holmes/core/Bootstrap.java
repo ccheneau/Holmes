@@ -21,6 +21,7 @@ import java.io.File;
 import net.holmes.core.util.SystemProperty;
 
 import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -39,7 +40,13 @@ public class Bootstrap {
 
             // Start Holmes server
             IServer holmesServer = injector.getInstance(HolmesServer.class);
-            holmesServer.start();
+            try {
+                holmesServer.start();
+            }
+            catch (RuntimeException e) {
+                LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
+                System.exit(1);
+            }
 
             // Add shutdown hook
             Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
