@@ -27,7 +27,7 @@ set java_args=-Dnet.holmes.home="%home_path%" -Dfile.encoding=UTF-8
 set java=javaw
 if not "%JAVA_HOME%" == "" set java="%JAVA_HOME%\bin\javaw.exe"
 
-start "Holmes" %java% -Xmx30m %java_args% -jar %lib_path%\holmes-core-${project.version}.jar 
+start "Holmes" ""%java%"" -Xmx30m %java_args% -jar "%lib_path%\holmes-core-${project.version}.jar" 
 
 endlocal
 
