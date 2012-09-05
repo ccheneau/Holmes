@@ -1,44 +1,25 @@
-html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video
-{
-	border: 0 none;
-	font-size: 100%;
-	margin: 0;
-	outline: 0 none;
-	padding: 0;
-	vertical-align: baseline;
-}
-
-html {
-	overflow-y: scroll;
-}
-
 body {
 	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
-	background: transparent no-repeat center top;
 	font-size: 10px;
 	background-color: #EEEEEE;
 }
 
 #container {
-    clear: both;
     margin: 50px auto;
     padding: auto;
-	text-align: left;
 	height: 650px;
     width: 960px;
     background: white url('images/logo.png') no-repeat;
-	box-shadow: 5px 5px 5px #656565;
-	border-radius: 6px;
+	box-shadow: 5px 5px 5px #434C56;
+	border-radius: 5px;
 }
 header {
-	display: block;
 	height: 100px;
 	width: 100%;
 	border-bottom: 1px solid #434C56;
 }
 
 nav {
-	display:block;
 	height: 80px;
 	width: 100%;
 }
@@ -84,8 +65,8 @@ nav {
 #version {
 	font-size: 12px;
 	float: right;
-    margin-right: 10px;
-    margin-top: 14px;
+    margin-right: 15px;
+    margin-top: 15px;
 }
 
 #tabs {
