@@ -59,7 +59,7 @@ $(document).ready(function() {
     				if (response.status){
     					successMessage(msg.config.saved);
     				} else {
-    					errorMessage(serverResponse.message);
+    					errorMessage(response.message);
     				}
     		});
     });
@@ -257,8 +257,8 @@ function getHolmesVersion() {
 // Get configuration data
 function getConfiguration() {
     $.getJSON('/backend/configuration/getConfiguration', function(response) {
-    		$("#text_server_name").val(response.serverName);
-    		$("#text_http_server_port").val(response.httpServerPort);
+    	$("#text_server_name").val(response.serverName);
+    	$("#text_http_server_port").val(response.httpServerPort);
     });
 }
 
@@ -320,13 +320,13 @@ function getEditResponseData (response) {
 
 // Show configuration success message
 function successMessage(message) {
-	$("#message").html("<span>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
+	$("#message").html("<div class='ui-state-highlight'>" + message + "<a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a></div>");
 	$('#close_message').click(function() { closeMessage(); });
 }
 
 // Show configuration error message
 function errorMessage(message) {
-	$("#message").html("<span class='ui-state-error-text'>" + message + "</span><a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a>");
+	$("#message").html("<div class='ui-state-error'>" + message + "<a id='close_message' href='javascript:void(0)' style='float:right' class='ui-icon ui-icon-close'></a></div>");
 	$('#close_message').click(function() { closeMessage(); });
 }
 
