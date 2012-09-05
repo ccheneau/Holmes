@@ -55,15 +55,15 @@ $(document).ready(function() {
     // Bind configuration submit handler
     $('#btn_submit').click(function() {
     	$.post('/backend/configuration/editConfiguration',
-    			{serverName : $("#text_server_name").val(),
-    				httpServerPort : $("#text_http_server_port").val()
-    			},
-    			function(response) {
-    				if (response.status){
-    					successMessage(msg.config.saved);
-    				} else {
-    					errorMessage(response.message);
-    				}
+    		{serverName : $("#text_server_name").val(),
+    			httpServerPort : $("#text_http_server_port").val()
+    		},
+    		function(response) {
+    			if (response.status){
+    				successMessage(msg.config.saved);
+    			} else {
+    				errorMessage(response.message);
+    			}
     		});
     });
     

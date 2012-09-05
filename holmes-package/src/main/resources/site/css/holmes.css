@@ -13,6 +13,7 @@ body {
 	box-shadow: 5px 5px 5px #434C56;
 	border-radius: 5px;
 }
+
 header {
 	height: 100px;
 	width: 100%;
@@ -28,24 +29,24 @@ nav {
     margin-left: 600px;
 }
 
-#toolbar  ul{
+#toolbar  ul {
 	list-style-type: none;
 }
 
-#toolbar  li{
-	float:left;
+#toolbar  li {
+	float: left;
 }
 
-#toolbar  a{
-	color:#434C56;
+#toolbar  a {
+	color: #434C56;
 	font-size: 13px;
 	font-weight: bold;
-	text-decoration:none;
-	cursor:pointer;
+	text-decoration: none;
+	cursor: pointer;
 }
 
-#toolbar  a:hover{
-	color:#1C94C4;
+#toolbar  a:hover {
+	color: #1C94C4;
 }
 
 #toolbar span {
@@ -72,15 +73,14 @@ nav {
 #tabs {
     margin-left: auto;
     margin-right: auto;
-	width:800px;
+	width: 800px;
 	height: 400px;
 }
 
 #configuration_video_folders,
 #configuration_audio_folders,
 #configuration_picture_folders,
-#configuration_podcasts
- {
+#configuration_podcasts {
     padding-left: 10px;
     padding-top: 10px;
 }
@@ -119,6 +119,6 @@ nav {
     margin-right: auto;	
 }
 
-#configuration_table td{
+#configuration_table td {
 	vertical-align: middle;
 }
