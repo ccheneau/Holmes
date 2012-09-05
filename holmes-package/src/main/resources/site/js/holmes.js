@@ -49,12 +49,6 @@ $(document).ready(function() {
 		  $(this).removeClass("ui-state-hover");
 	});
     
-    $(".toolbar_hover").hover(function(){
-		  $(this).addClass("toolbar-state-hover");
-		   },function(){
-		  $(this).removeClass("toolbar-state-hover");
-	});
-    	    
     // Bind configuration submit handler
     $('#btn_submit').click(function() {
     	$.post('/backend/configuration/editConfiguration',

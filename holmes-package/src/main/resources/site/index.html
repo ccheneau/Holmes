@@ -34,77 +34,82 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	</head>
 	
 	<body>
-    	<header>
-    		<div id="title">Holmes</div>
+		<div id="container">
+	    	<header id="top">
+				<div id="version"></div>
+	    	</header>
+	    	<nav>
 			<div id="toolbar">
 				<ul>
 					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes" target="_blank"><span class="i18n" data-msg="msg.toolbar.holmesOnGitHub">Holmes on GitHub</span></a></li>
 					<li class="toolbar_hover"><a href="https://github.com/ccheneau/Holmes/wiki" target="_blank"><span class="i18n" data-msg="msg.toolbar.wiki">Wiki</span></a></li>
 				</ul>
 			</div>
-			<div id="version"></div>
-    	</header>
-		<div id="tabs">
-			<ul>
-				<li><a href="#tab-1" class="i18n" data-msg="msg.tab.video">Video</a></li>
-				<li><a href="#tab-2" class="i18n" data-msg="msg.tab.audio">Audio</a></li>
-				<li><a href="#tab-3" class="i18n" data-msg="msg.tab.picures">Pictures</a></li>
-				<li><a href="#tab-4" class="i18n" data-msg="msg.tab.podcast">Podcast</a></li>
-				<li><a href="#tab-5" class="i18n" data-msg="msg.tab.settings">Settings</a></li>
-			</ul>
-			<div id="tab-1">
-					<div id="configuration_video_folders">
-						<table id="list_video_folders"></table>
-						<div id="list_video_folders_nav"></div>
+			</nav>
+	    	<div id="main">
+				<div id="tabs">
+					<ul>
+						<li><a href="#tab-1" class="i18n" data-msg="msg.tab.video">Video</a></li>
+						<li><a href="#tab-2" class="i18n" data-msg="msg.tab.audio">Audio</a></li>
+						<li><a href="#tab-3" class="i18n" data-msg="msg.tab.picures">Pictures</a></li>
+						<li><a href="#tab-4" class="i18n" data-msg="msg.tab.podcast">Podcast</a></li>
+						<li><a href="#tab-5" class="i18n" data-msg="msg.tab.settings">Settings</a></li>
+					</ul>
+					<div id="tab-1">
+							<div id="configuration_video_folders">
+								<table id="list_video_folders"></table>
+								<div id="list_video_folders_nav"></div>
+							</div>
 					</div>
-			</div>
-			<div id="tab-2">
-				<div id="configuration_audio_folders">
-					<table id="list_audio_folders"></table>
-					<div id="list_audio_folders_nav"></div>
+					<div id="tab-2">
+						<div id="configuration_audio_folders">
+							<table id="list_audio_folders"></table>
+							<div id="list_audio_folders_nav"></div>
+						</div>
+					</div>
+					<div id="tab-3">
+						<div id="configuration_picture_folders">
+							<table id="list_picture_folders"></table>
+							<div id="list_picture_folders_nav"></div>
+						</div>
+					</div>
+					<div id="tab-4">
+						<div id="configuration_podcasts">
+							<table id="list_podcasts"></table>
+							<div id="list_podcasts_nav"></div>
+						</div>
+					</div>
+					<div id="tab-5">
+						<div id="configuration" >
+							<fieldset id="configuration_fieldset">
+								<legend id="configuration_legend" class="i18n" data-msg="msg.config.setting">Settings</legend>
+								<table id="configuration_table">
+									<tbody>
+										<tr>
+											<td class="i18n" data-msg="msg.config.serverName">Server name</td>
+											<td><input id="text_server_name" type="text" name="serverName" /></td>
+										</tr>
+										<tr>
+											<td class="i18n" data-msg="msg.config.httpServerPort">Http server port</td>
+											<td><input id="text_http_server_port" type="text" size="6" name="httpServerPort" /></td>
+										</tr>
+										<tr>
+											<td colspan="2" align="center">
+												<a id="btn_reset" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.reset">Reset</a>
+												<a id="btn_submit" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.submit">Submit</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+						</div>
+						<div id="message"></div>
+					</div>
 				</div>
+				<div id="folderTree"></div>
 			</div>
-			<div id="tab-3">
-				<div id="configuration_picture_folders">
-					<table id="list_picture_folders"></table>
-					<div id="list_picture_folders_nav"></div>
-				</div>
-			</div>
-			<div id="tab-4">
-				<div id="configuration_podcasts">
-					<table id="list_podcasts"></table>
-					<div id="list_podcasts_nav"></div>
-				</div>
-			</div>
-			<div id="tab-5">
-				<div id="configuration" >
-					<fieldset id="configuration_fieldset">
-						<legend id="configuration_legend" class="i18n" data-msg="msg.config.setting">Settings</legend>
-						<table id="configuration_table">
-							<tbody>
-								<tr>
-									<td class="i18n" data-msg="msg.config.serverName">Server name</td>
-									<td><input id="text_server_name" type="text" name="serverName" /></td>
-								</tr>
-								<tr>
-									<td class="i18n" data-msg="msg.config.httpServerPort">Http server port</td>
-									<td><input id="text_http_server_port" type="text" size="6" name="httpServerPort" /></td>
-								</tr>
-								<tr>
-									<td colspan="2" align="center">
-										<a id="btn_reset" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.reset">Reset</a>
-										<a id="btn_submit" href="javascript:void(0)" class="i18n" data-msg="msg.config.btn.submit">Submit</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</fieldset>
-				</div>
-				<div id="message"></div>
-			</div>
+			<footer>
+			</footer>
 		</div>
-		<div id="folderTree"></div>
-		<footer>
-		</footer>
 	</body>
 </html>

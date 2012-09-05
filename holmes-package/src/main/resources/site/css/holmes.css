@@ -10,43 +10,44 @@ html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address
 
 html {
 	overflow-y: scroll;
-	background: #F7F7F7 url('images/bck.png') repeat-x scroll;
 }
 
 body {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	background: transparent no-repeat center top;
-	font-size: 62.5%;
+	font-size: 10px;
+	background-color: #EEEEEE;
 }
 
+#container {
+    clear: both;
+    margin: 50px auto;
+    padding: auto;
+	text-align: left;
+	height: 650px;
+    width: 960px;
+    background: white url('images/logo.png') no-repeat;
+	box-shadow: 5px 5px 5px #656565;
+	border-radius: 6px;
+}
 header {
 	display: block;
-	height: 160px;
+	height: 100px;
+	width: 100%;
+	border-bottom: 1px solid;
+}
+
+nav {
+	display:block;
+	height: 80px;
 	width: 100%;
 }
 
-#title {
-	display:block;
-	color: #B8C0CB;
-	font-size: 3em;
-	letter-spacing: 1pt;
-	font-family: Verdana, Geneva, sans-serif;
-	font-weight: bold;
-	float: left;
-    margin-left: 60px;
-}
-
-#version {
-	color: white;
-    float: right;
-    margin-right: 10px;
-    margin-top: 14px;
-}
-
 #toolbar {
+	display:block;
     margin-left: 600px;
 	height: 40px;
-    float: left;
+	color:white;
 }
 
 #toolbar  ul{
@@ -54,31 +55,38 @@ header {
 	list-style-type: none;
 }
 
-.toolbar-state-hover {
-	background-color:#434C56;
-}
-
 #toolbar  li{
 	float:left;
 	height:40px;
 	display: list-item;
-	color:white;
-	text-decoration:none;
 	cursor:pointer;
 }
 
 #toolbar  a{
-	color:white;
+	color:#1C94C4;
 	font-size: 13px;
+	font-weight: bold;
 	text-decoration:none;
 	cursor:pointer;
 	height:40px;
 }
 
+#toolbar  a:hover{
+	color:#434C56;
+}
+
 #toolbar span {
-    display: block;
+	display: block;
     height: 20px;
     padding:10px;
+}
+
+
+#version {
+	font-size: 12px;
+	float: right;
+    margin-right: 10px;
+    margin-top: 14px;
 }
 
 #tabs {
