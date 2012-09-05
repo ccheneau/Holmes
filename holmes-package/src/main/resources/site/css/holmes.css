@@ -63,7 +63,7 @@ nav {
 }
 
 #toolbar  a{
-	color:#1C94C4;
+	color:#434C56;
 	font-size: 13px;
 	font-weight: bold;
 	text-decoration:none;
@@ -72,7 +72,7 @@ nav {
 }
 
 #toolbar  a:hover{
-	color:#434C56;
+	color:#1C94C4;
 }
 
 #toolbar span {
