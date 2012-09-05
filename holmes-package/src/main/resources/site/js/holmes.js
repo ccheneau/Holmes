@@ -16,7 +16,7 @@
 
 $(document).ready(function() {
 	// Initialize tabs
-	$( "#tabs" ).tabs();
+	$("#tabs").tabs();
 
 	// Initialize i18n
 	$.i18n.properties({
@@ -43,11 +43,14 @@ $(document).ready(function() {
     $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
     $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
     
-    $(".hover").hover(function(){
-		  $(this).addClass("ui-state-hover");
-		   },function(){
-		  $(this).removeClass("ui-state-hover");
+    $(".hover").hover(function() {
+    		$(this).addClass("ui-state-hover");
+		},function(){
+			$(this).removeClass("ui-state-hover");
 	});
+    
+    $('#easter').click(function() {
+    });
     
     // Bind configuration submit handler
     $('#btn_submit').click(function() {

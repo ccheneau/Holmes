@@ -34,7 +34,7 @@ header {
 	display: block;
 	height: 100px;
 	width: 100%;
-	border-bottom: 1px solid;
+	border-bottom: 1px solid #434C56;
 }
 
 nav {
@@ -44,22 +44,15 @@ nav {
 }
 
 #toolbar {
-	display:block;
     margin-left: 600px;
-	height: 40px;
-	color:white;
 }
 
 #toolbar  ul{
-	display:block;
 	list-style-type: none;
 }
 
 #toolbar  li{
 	float:left;
-	height:40px;
-	display: list-item;
-	cursor:pointer;
 }
 
 #toolbar  a{
@@ -68,7 +61,6 @@ nav {
 	font-weight: bold;
 	text-decoration:none;
 	cursor:pointer;
-	height:40px;
 }
 
 #toolbar  a:hover{
@@ -81,6 +73,13 @@ nav {
     padding:10px;
 }
 
+#easter {
+	position: relative;
+	width: 5px;
+	height: 5px;
+	top: 54px;
+	left: 28px;
+}
 
 #version {
 	font-size: 12px;
