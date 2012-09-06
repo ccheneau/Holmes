@@ -27,10 +27,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.syndication.feed.module.itunes.EntryInformation;
-import com.sun.syndication.feed.module.itunes.ITunes;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
-import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -66,14 +62,14 @@ public class RomeTest extends TestCase {
                             logger.debug(enclosure.getUrl());
                         }
                     }
-                    EntryInformation itunesInfo = (EntryInformation) (entry.getModule(ITunes.URI));
-                    if (itunesInfo != null && itunesInfo.getDuration() != null) {
-                        logger.debug("duration: " + itunesInfo.getDuration().toString());
-                    }
-                    MediaEntryModule mediaInfo = (MediaEntryModule) (entry.getModule(MediaModule.URI));
-                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
-                        logger.debug("iconUrl: " + mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString());
-                    }
+                    //                    EntryInformation itunesInfo = (EntryInformation) (entry.getModule(ITunes.URI));
+                    //                    if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                    //                        logger.debug("duration: " + itunesInfo.getDuration().toString());
+                    //                    }
+                    //                    MediaEntryModule mediaInfo = (MediaEntryModule) (entry.getModule(MediaModule.URI));
+                    //                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
+                    //                        logger.debug("iconUrl: " + mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString());
+                    //                    }
                 }
             }
         }

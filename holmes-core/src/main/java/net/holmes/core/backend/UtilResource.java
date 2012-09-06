@@ -41,7 +41,8 @@ public class UtilResource {
     @Path("/getVersion")
     @Produces(MediaType.TEXT_PLAIN)
     public String getVersion() {
-        return "" + this.getClass().getPackage().getImplementationVersion();
+        String version = this.getClass().getPackage().getImplementationVersion();
+        return version == null ? "alpha" : version;
     }
 
     /**

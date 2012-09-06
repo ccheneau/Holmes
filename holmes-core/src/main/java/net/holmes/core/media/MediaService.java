@@ -48,10 +48,6 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.syndication.feed.module.itunes.EntryInformation;
-import com.sun.syndication.feed.module.itunes.ITunes;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
-import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.io.FeedException;
@@ -268,14 +264,14 @@ public final class MediaService implements IMediaService {
                         if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
                             String duration = null;
                             String iconUrl = null;
-                            EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-                            if (itunesInfo != null && itunesInfo.getDuration() != null) {
-                                duration = itunesInfo.getDuration().toString();
-                            }
-                            MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
-                            if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
-                                iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
-                            }
+                            //                            EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
+                            //                            if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                            //                                duration = itunesInfo.getDuration().toString();
+                            //                            }
+                            //                            MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
+                            //                            if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
+                            //                                iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
+                            //                            }
                             for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                                 PodcastEntryNode podcastEntryNode = new PodcastEntryNode();
                                 podcastEntryNode.setId(UUID.randomUUID().toString());
