@@ -50,6 +50,7 @@ $(document).ready(function() {
 	});
     
     $('#easter').click(function() {
+    	$('body').attr('class','roll');
     });
     
     // Bind configuration submit handler
@@ -97,7 +98,17 @@ function initializeDocumentData() {
     // Initialize folder tree dialog
     initializeFolderTreeDlg();
     
+    navGlobalOptions = {search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
+						refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg };
+    
     // Initialize video folders grid
+    var editVideoOptions = {height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, modal:true,
+			editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+			afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+		    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+			onClose: function() {folderDialog.dialog('close');}
+	    };
+    
 	$("#list_video_folders").jqGrid({
 		url:'/backend/configuration/getVideoFolders', 
 		colNames:[msg.video.id,msg.video.label, msg.video.path], 
@@ -108,21 +119,15 @@ function initializeDocumentData() {
 		          ], 
 		caption: msg.video.folders,
 		pager: '#list_video_folders_nav',
-		editurl:"/backend/configuration/editVideoFolder"
+		editurl:"/backend/configuration/editVideoFolder",
+		ondblClickRow: function(id){$(this).editGridRow(id,editVideoOptions);}
 	});
 	// Video folders navigation options
 	$("#list_video_folders").jqGrid('navGrid','#list_video_folders_nav', 
 			// global options
-			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
-			}, 
+			navGlobalOptions,
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true, modal:true,
-				editCaption: msg.video.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#videoFoldersBrowse").unbind('click'); $("#videoFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
-				onClose: function() {folderDialog.dialog('close');}
-		    }, 
+			editVideoOptions,
 			// add options
 			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.video.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
@@ -137,6 +142,13 @@ function initializeDocumentData() {
 	);
 	
 	// Initialize audio folders grid
+	var editAudioOptions = {height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
+			editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+			afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+		    beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+			onClose: function() {folderDialog.dialog('close');}
+		};
+	
 	$("#list_audio_folders").jqGrid({
 		url:'/backend/configuration/getAudioFolders', 
 		colNames:[msg.audio.id,msg.audio.label, msg.audio.path], 
@@ -147,21 +159,15 @@ function initializeDocumentData() {
 		         ], 
 		caption: msg.audio.folders,
 		pager: '#list_audio_folders_nav', 
-		editurl:"/backend/configuration/editAudioFolder" 
+		editurl:"/backend/configuration/editAudioFolder",
+		ondblClickRow: function(id){$(this).editGridRow(id,editAudioOptions);}
 	});
 	// Audio folders navigation options
 	$("#list_audio_folders").jqGrid('navGrid','#list_audio_folders_nav', 
 			// global options
-			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
-			},
+			navGlobalOptions,
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
-				editCaption: msg.audio.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#audioFoldersBrowse").unbind('click'); $("#audioFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
-				onClose: function() {folderDialog.dialog('close');}
-			},
+			editAudioOptions,
 			// add options
 			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.audio.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
@@ -176,6 +182,12 @@ function initializeDocumentData() {
 	);
 	
 	// Initialize picture folders grid
+	var editPictureOptions = {height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
+			editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+			afterSubmit: function(response,postdata){ return getEditResponseData(response);},
+		    beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
+			onClose: function() {folderDialog.dialog('close');}
+		};
 	$("#list_picture_folders").jqGrid({
 		url:'/backend/configuration/getPictureFolders', 
 		colNames:[msg.picture.id,msg.picture.label, msg.picture.path], 
@@ -186,21 +198,15 @@ function initializeDocumentData() {
 		          ], 
 		caption: msg.picture.folders,
 		pager: '#list_picture_folders_nav', 
-		editurl:"/backend/configuration/editPictureFolder" 
+		editurl:"/backend/configuration/editPictureFolder",
+		ondblClickRow: function(id){$(this).editGridRow(id,editPictureOptions);}
 	});
 	// Picture folders navigation options
 	$("#list_picture_folders").jqGrid('navGrid','#list_picture_folders_nav',
 			// global options
-			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
-			},
+			navGlobalOptions,
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
-				editCaption: msg.picture.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);},
-			    beforeShowForm: function(form){$("#pictureFoldersBrowse").unbind('click'); $("#pictureFoldersBrowse").click(function(){ browseFolder(form.attr('id')); });},
-				onClose: function() {folderDialog.dialog('close');}
-			}, 
+			editPictureOptions,
 			// add options
 			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.picture.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
@@ -215,6 +221,10 @@ function initializeDocumentData() {
 	);
 	
 	// Initialize pod-casts grid
+	var editPodcastOptions = {height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
+			editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
+			afterSubmit: function(response,postdata){ return getEditResponseData(response);}
+		};
 	$("#list_podcasts").jqGrid({
 		url:'/backend/configuration/getPodcasts', 
 		colNames:[msg.podcast.id,msg.podcast.label, msg.podcast.url], 
@@ -224,19 +234,15 @@ function initializeDocumentData() {
 		          ], 
 		caption: msg.podcast.folders,
 		pager: '#list_podcasts_nav', 
-		editurl:"/backend/configuration/editPodcast" 
+		editurl:"/backend/configuration/editPodcast",
+		ondblClickRow: function(id){$(this).editGridRow(id,editPodcastOptions);}
 	});
 	// Pod-cast navigation options
 	$("#list_podcasts").jqGrid('navGrid','#list_podcasts_nav', 
 			// global options
-			{search: false, edittitle: msg.nav.edit, addtitle: msg.nav.add, deltitle:msg.nav.remove, 
-				refreshtitle:msg.nav.refresh, alertcap:msg.alert, alerttext:msg.alertmsg
-			}, 
+			navGlobalOptions,
 			// edit options
-			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterEdit:true,  modal:true,
-				editCaption: msg.podcast.edit.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 
-				afterSubmit: function(response,postdata){ return getEditResponseData(response);}
-			},
+			editPodcastOptions,
 			// add options
 			{height:150, width: 600, reloadAfterSubmit:true, closeOnEscape:true, closeAfterAdd:true,  modal:true,
 				addCaption: msg.podcast.add.caption, bSubmit: msg.button.submit, bCancel: msg.button.cancel, 

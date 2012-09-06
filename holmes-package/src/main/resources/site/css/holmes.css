@@ -4,16 +4,6 @@ body {
 	background-color: #EEEEEE;
 }
 
-#container {
-    margin: 50px auto;
-    padding: auto;
-	height: 650px;
-    width: 960px;
-    background: white url('images/logo.png') no-repeat;
-	box-shadow: 5px 5px 5px #434C56;
-	border-radius: 5px;
-}
-
 header {
 	height: 100px;
 	width: 100%;
@@ -21,8 +11,17 @@ header {
 }
 
 nav {
-	height: 80px;
+	height: 70px;
 	width: 100%;
+}
+
+#container {
+    margin: 50px auto;
+	height: 650px;
+    width: 960px;
+    background: white url('images/logo.png') no-repeat;
+	box-shadow: 5px 5px 5px #434C56;
+	border-radius: 5px;
 }
 
 #toolbar {
@@ -38,11 +37,12 @@ nav {
 }
 
 #toolbar  a {
-	color: #434C56;
+	color: #1F262F;
 	font-size: 13px;
 	font-weight: bold;
 	text-decoration: none;
 	cursor: pointer;
+	outline: none;
 }
 
 #toolbar  a:hover {
@@ -52,7 +52,7 @@ nav {
 #toolbar span {
 	display: block;
     height: 20px;
-    padding:10px;
+    padding: 0 10px 10px 10px;
 }
 
 #easter {
@@ -122,3 +122,31 @@ nav {
 #configuration_table td {
 	vertical-align: middle;
 }
+
+body.roll { 
+ 	-moz-animation-name: roll; 
+	-moz-animation-duration: 6s; 
+	-moz-animation-iteration-count: 1; 
+	-o-animation-name: roll; 
+	-o-animation-duration: 6s; 
+	-o-animation-iteration-count: 1; 
+	-webkit-animation-name: roll; 
+	-webkit-animation-duration: 6s; 
+    -webkit-animation-iteration-count: 1; 
+}
+
+@-moz-keyframes roll { 
+	100% { 
+		-moz-transform: rotate(1440deg) scale(0,0);
+	}
+} 
+@-o-keyframes roll { 
+	100% { 
+		-o-transform: rotate(1440deg) scale(0,0); 
+	} 
+} 
+@-webkit-keyframes roll {
+	100% { 
+		-webkit-transform: rotate(1440deg) scale(0,0); 
+	} 
+} 
