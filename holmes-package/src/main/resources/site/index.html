@@ -87,12 +87,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								<table id="configuration_table">
 									<tbody>
 										<tr>
-											<td class="i18n" data-msg="msg.config.serverName">Server name</td>
+											<td class="i18n configuration_label" data-msg="msg.config.serverName">Server name</td>
 											<td><input id="text_server_name" type="text" name="serverName" /></td>
 										</tr>
 										<tr>
-											<td class="i18n" data-msg="msg.config.httpServerPort">Http server port</td>
+											<td class="i18n configuration_label" data-msg="msg.config.httpServerPort">Http server port</td>
 											<td><input id="text_http_server_port" type="text" size="6" name="httpServerPort" /></td>
+										</tr>
+										<tr>
+											<td class="configuration_label"><input id="chk_prependPodcastItem" type="checkbox" name="prependPodcastItem" value="true" /></td>
+											<td><label class="i18n" data-msg="msg.config.prependPodcastItem" for="chk_prependPodcastItem">Prepend podcast item</label></td>
 										</tr>
 										<tr>
 											<td colspan="2" align="center">

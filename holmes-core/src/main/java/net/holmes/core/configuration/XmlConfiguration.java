@@ -203,6 +203,14 @@ public final class XmlConfiguration implements IConfiguration {
     }
 
     /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#setParameter(net.holmes.core.configuration.Parameter, java.lang.Boolean)
+     */
+    @Override
+    public void setParameter(Parameter param, Boolean value) {
+        this.rootNode.setParameter(param, value);
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
@@ -271,6 +279,10 @@ public final class XmlConfiguration implements IConfiguration {
             String value = (String) this.parameters.get(param.getName());
             if (value == null) value = param.getDefaultValue();
             return Boolean.parseBoolean(value);
+        }
+
+        public void setParameter(Parameter param, Boolean value) {
+            this.parameters.setProperty(param.getName(), value.toString());
         }
     }
 }

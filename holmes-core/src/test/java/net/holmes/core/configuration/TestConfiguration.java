@@ -138,6 +138,13 @@ public class TestConfiguration implements IConfiguration {
     }
 
     /* (non-Javadoc)
+     * @see net.holmes.core.configuration.IConfiguration#setParameter(net.holmes.core.configuration.Parameter, java.lang.Boolean)
+     */
+    @Override
+    public void setParameter(Parameter param, Boolean value) {
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override

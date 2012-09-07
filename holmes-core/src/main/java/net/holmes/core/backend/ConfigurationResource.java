@@ -36,6 +36,7 @@ import net.holmes.core.backend.response.ConfigurationResponse;
 import net.holmes.core.backend.response.EditConfigFolderResponse;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.bundle.IBundle;
 
 /**
@@ -148,7 +149,8 @@ public class ConfigurationResource {
     @Path("/getConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationResponse getConfiguration() {
-        return new ConfigurationResponse(configuration.getUpnpServerName(), configuration.getHttpServerPort());
+        return new ConfigurationResponse(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
+                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME));
     }
 
     /**
@@ -157,7 +159,8 @@ public class ConfigurationResource {
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort) {
+    public EditConfigFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
+            @FormParam("prependPodcastItem") boolean prependPodcastItem) {
         EditConfigFolderResponse response = new EditConfigFolderResponse();
         response.setStatus(true);
         setResponseErrorCode(response, ErrorCode.NO_ERROR);
@@ -175,6 +178,7 @@ public class ConfigurationResource {
             // Save configuration
             configuration.setUpnpServerName(serverName.trim());
             configuration.setHttpServerPort(httpServerPort);
+            configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, prependPodcastItem);
             configuration.saveConfig();
         }
         return response;

@@ -57,7 +57,8 @@ $(document).ready(function() {
     $('#btn_submit').click(function() {
     	$.post('/backend/configuration/editConfiguration',
     		{serverName : $("#text_server_name").val(),
-    			httpServerPort : $("#text_http_server_port").val()
+    			httpServerPort : $("#text_http_server_port").val(),
+    			prependPodcastItem : $("#chk_prependPodcastItem").is(':checked') ? "true":"false"
     		},
     		function(response) {
     			if (response.status){
@@ -268,6 +269,7 @@ function getConfiguration() {
     $.getJSON('/backend/configuration/getConfiguration', function(response) {
     	$("#text_server_name").val(response.serverName);
     	$("#text_http_server_port").val(response.httpServerPort);
+    	$("#chk_prependPodcastItem").attr('checked', response.prependPodcastItem);
     });
 }
 
