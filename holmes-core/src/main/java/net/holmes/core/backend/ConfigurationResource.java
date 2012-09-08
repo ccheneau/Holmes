@@ -159,25 +159,32 @@ public class ConfigurationResource {
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") int httpServerPort,
+    public EditConfigFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") String httpServerPort,
             @FormParam("prependPodcastItem") boolean prependPodcastItem) {
         EditConfigFolderResponse response = new EditConfigFolderResponse();
         response.setStatus(true);
         setResponseErrorCode(response, ErrorCode.NO_ERROR);
+
+        Integer iHttpServerPort = null;
+        try {
+            iHttpServerPort = Integer.valueOf(httpServerPort);
+        }
+        catch (NumberFormatException e) {
+        }
 
         // Validate configuration
         if (serverName == null || serverName.trim().length() == 0) {
             response.setStatus(false);
             setResponseErrorCode(response, ErrorCode.EMPTY_SERVER_NAME);
         }
-        else if (httpServerPort == 0) {
+        else if (iHttpServerPort == null) {
             response.setStatus(false);
-            setResponseErrorCode(response, ErrorCode.EMPTY_HTTP_SERVER_PORT);
+            setResponseErrorCode(response, ErrorCode.INVALID_HTTP_SERVER_PORT);
         }
         else {
             // Save configuration
             configuration.setUpnpServerName(serverName.trim());
-            configuration.setHttpServerPort(httpServerPort);
+            configuration.setHttpServerPort(iHttpServerPort);
             configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, prependPodcastItem);
             configuration.saveConfig();
         }
@@ -351,7 +358,7 @@ public class ConfigurationResource {
         MALFORMATTED_URL(7), //
         DUPLICATED_FOLDER(8), //
         EMPTY_SERVER_NAME(9), //
-        EMPTY_HTTP_SERVER_PORT(10);
+        INVALID_HTTP_SERVER_PORT(10);
 
         private final int code;
 
