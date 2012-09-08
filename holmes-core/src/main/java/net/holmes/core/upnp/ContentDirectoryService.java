@@ -237,7 +237,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private String getPodcastEntryName(long count, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
-            return String.format("%02d %s", count, title);
+            return String.format("%02d - %s", count + 1, title);
         }
         else {
             return title;
