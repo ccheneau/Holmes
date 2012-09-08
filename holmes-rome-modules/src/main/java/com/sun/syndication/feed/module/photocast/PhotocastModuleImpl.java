@@ -1,5 +1,3 @@
-
-
 /*
  * PhotocastModuleImpl.java
  *
@@ -43,19 +41,20 @@
 
 package com.sun.syndication.feed.module.photocast;
 
+import java.net.URL;
+import java.util.Date;
+
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 import com.sun.syndication.feed.module.photocast.types.Metadata;
-
-import java.net.URL;
-
-import java.util.Date;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class PhotocastModuleImpl implements PhotocastModule {
+    private static final long serialVersionUID = 8035085246742367220L;
+
     private Date photoDate;
     private Date cropDate;
     private URL imageUrl;
@@ -66,67 +65,71 @@ public class PhotocastModuleImpl implements PhotocastModule {
     public PhotocastModuleImpl() {
     }
 
+    @Override
     public Date getPhotoDate() {
         return photoDate;
     }
 
+    @Override
     public void setPhotoDate(Date photoDate) {
         this.photoDate = photoDate;
     }
 
+    @Override
     public Date getCropDate() {
         return cropDate;
     }
 
+    @Override
     public void setCropDate(Date cropDate) {
         this.cropDate = cropDate;
     }
 
+    @Override
     public URL getImageUrl() {
         return imageUrl;
     }
 
+    @Override
     public void setImageUrl(URL imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    @Override
     public URL getThumbnailUrl() {
         return thumbnailUrl;
     }
 
+    @Override
     public void setThumbnailUrl(URL thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    @Override
     public Metadata getMetadata() {
         return metadata;
     }
 
+    @Override
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
     }
 
+    @Override
     public void copyFrom(Object obj) {
         PhotocastModule pm = (PhotocastModule) obj;
-        this.setPhotoDate((pm.getPhotoDate() == null) ? null
-                                                      : (Date) pm.getPhotoDate()
-                                                                 .clone());
-        this.setCropDate((pm.getCropDate() == null) ? null
-                                                    : (Date) pm.getCropDate()
-                                                               .clone());
+        this.setPhotoDate((pm.getPhotoDate() == null) ? null : (Date) pm.getPhotoDate().clone());
+        this.setCropDate((pm.getCropDate() == null) ? null : (Date) pm.getCropDate().clone());
         this.setImageUrl(pm.getImageUrl());
         this.setThumbnailUrl(pm.getThumbnailUrl());
         this.setMetadata(pm.getMetadata());
     }
 
+    @Override
     public Object clone() {
         PhotocastModuleImpl pm = new PhotocastModuleImpl();
-        pm.setPhotoDate((this.getPhotoDate() == null) ? null
-                                                      : (Date) this.getPhotoDate()
-                                                                   .clone());
-        pm.setCropDate((this.getCropDate() == null) ? null
-                                                    : (Date) this.getCropDate()
-                                                                 .clone());
+        pm.setPhotoDate((this.getPhotoDate() == null) ? null : (Date) this.getPhotoDate().clone());
+        pm.setCropDate((this.getCropDate() == null) ? null : (Date) this.getCropDate().clone());
         pm.setImageUrl(this.getThumbnailUrl());
         pm.setThumbnailUrl(this.getThumbnailUrl());
         pm.setMetadata(this.getMetadata());
@@ -134,26 +137,31 @@ public class PhotocastModuleImpl implements PhotocastModule {
         return pm;
     }
 
+    @Override
     public String getUri() {
         return PhotocastModule.URI;
     }
 
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return PhotocastModule.class;
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(PhotocastModuleImpl.class, this);
 
         return tsBean.toString();
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(PhotocastModuleImpl.class, this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(PhotocastModuleImpl.class, this);
 

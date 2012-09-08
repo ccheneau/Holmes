@@ -14,46 +14,46 @@ package com.sun.syndication.feed.module.georss.geometries;
  * @author runaas
  */
 public final class LineString extends AbstractCurve {
+    private static final long serialVersionUID = 379833585445502546L;
+
     private PositionList posList;
-    
+
     /** Creates a new instance of LineString */
     public LineString() {
-        
+
     }
-    
+
     /**
      * Construct object from a position list
      */
     public LineString(PositionList posList) {
         this.posList = posList;
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
-        LineString retval = (LineString)super.clone();
-        if (posList != null)
-            retval.posList = (PositionList)posList.clone();
+        LineString retval = (LineString) super.clone();
+        if (posList != null) retval.posList = (PositionList) posList.clone();
         return retval;
     }
-    
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        return getPositionList().equals(((LineString)obj).getPositionList());
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        return getPositionList().equals(((LineString) obj).getPositionList());
     }
-    
+
     /**
      * Get the position list
      *
      * @return the positionlist
      */
     public PositionList getPositionList() {
-        if (posList == null)
-            posList = new PositionList();
+        if (posList == null) posList = new PositionList();
         return posList;
     }
-    
+
     /**
      * Set the position list
      *

@@ -40,8 +40,6 @@
  */
 package com.sun.syndication.feed.module.itunes;
 
-
-
 /**
  * This is an abstract object that implements the attributes common across Feeds
  * or Items in an iTunes compatible RSS feed.
@@ -49,6 +47,8 @@ package com.sun.syndication.feed.module.itunes;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneable {
+    private static final long serialVersionUID = -1507584666860485534L;
+
     /**
      * The URI that iTunes used for its custom tags.
      * <p>What is up with using a versioned DTD anyway?</p>\
@@ -75,13 +75,15 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Defined by the ROME module API
      * @param obj Object to copy from
      */
+    @Override
     public abstract void copyFrom(Object obj);
 
     /**
      * Defined by the ROME API
      * @return Class of the Interface for this module.
      */
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return getClass();
     }
 
@@ -89,6 +91,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * The URI this module implements
      * @return "http://www.itunes.com/dtds/podcast-1.0.dtd"
      */
+    @Override
     public String getUri() {
         return AbstractITunesObject.URI;
     }
@@ -97,12 +100,14 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Required by the ROME API
      * @return A clone of this module object
      */
+    @Override
     public abstract Object clone();
 
     /**
      * Returns the author string for this feed or entry
      * @return Returns the author string for this feed or entry
      */
+    @Override
     public String getAuthor() {
         return author;
     }
@@ -111,6 +116,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Sets the author string for this feed or entry
      * @param author Sets the author string for this feed or entry
      */
+    @Override
     public void setAuthor(String author) {
         this.author = author;
     }
@@ -119,6 +125,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Boolean as to whether to block this feed or entry
      * @return Boolean as to whether to block this feed or entry
      */
+    @Override
     public boolean getBlock() {
         return block;
     }
@@ -127,6 +134,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Boolean as to whether to block this feed or entry
      * @param block Boolean as to whether to block this feed or entry
      */
+    @Override
     public void setBlock(boolean block) {
         this.block = block;
     }
@@ -135,6 +143,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Boolean as to whether this feed or entry contains adult content
      * @return Boolean as to whether this feed or entry contains adult content
      */
+    @Override
     public boolean getExplicit() {
         return explicit;
     }
@@ -143,6 +152,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Boolean as to whether this feed or entry contains adult content
      * @param explicit Boolean as to whether this feed or entry contains adult content
      */
+    @Override
     public void setExplicit(boolean explicit) {
         this.explicit = explicit;
     }
@@ -153,6 +163,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Must not contain spaces
      * @return A list of keywords for this feed or entry
      */
+    @Override
     public String[] getKeywords() {
         return keywords == null ? new String[0] : keywords;
     }
@@ -163,6 +174,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * Must not contain spaces
      * @param keywords A list of keywords for this feed or enty
      */
+    @Override
     public void setKeywords(String[] keywords) {
         this.keywords = keywords;
     }
@@ -171,6 +183,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * A subtitle for this feed or entry
      * @return A subtitle for this feed or entry
      */
+    @Override
     public String getSubtitle() {
         return subtitle;
     }
@@ -179,6 +192,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * A subtitle for this feed or entry
      * @param subtitle A subtitle for this feed or entry
      */
+    @Override
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
     }
@@ -187,6 +201,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * A subtitle for this feed or entry
      * @return A subtitle for this feed or entry
      */
+    @Override
     public String getSummary() {
         return summary;
     }
@@ -195,10 +210,12 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
      * A subtitle for this feed or entry
      * @param summary A subtitle for this feed or entry
      */
+    @Override
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("[");
         sb.append(" Author: ");

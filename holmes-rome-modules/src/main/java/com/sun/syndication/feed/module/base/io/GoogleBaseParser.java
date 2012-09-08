@@ -39,10 +39,27 @@
  */
 package com.sun.syndication.feed.module.base.io;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.base.GoogleBase;
 import com.sun.syndication.feed.module.base.GoogleBaseImpl;
-import com.sun.syndication.io.ModuleParser;
 import com.sun.syndication.feed.module.base.types.CurrencyEnumeration;
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 import com.sun.syndication.feed.module.base.types.FloatUnit;
@@ -53,29 +70,7 @@ import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 import com.sun.syndication.feed.module.base.types.Size;
 import com.sun.syndication.feed.module.base.types.YearType;
-
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-
-import java.io.IOException;
-
-import java.lang.reflect.Array;
-
-import java.net.URL;
-
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.sun.syndication.io.ModuleParser;
 
 /**
  * DOCUMENT ME!
@@ -85,7 +80,7 @@ import java.util.logging.Logger;
  * @version $Revision: 1.3 $
  */
 public class GoogleBaseParser implements ModuleParser {
-    private static final Logger log = Logger.getAnonymousLogger();
+    private static final Logger logger = Logger.getLogger(GoogleBaseParser.class.getName());
     public static final char[] INTEGER_CHARS = "-1234567890".toCharArray();
     public static final char[] FLOAT_CHARS = "-1234567890.".toCharArray();
     public static final SimpleDateFormat SHORT_DT_FMT = new SimpleDateFormat("yyyy-MM-dd");
@@ -98,12 +93,12 @@ public class GoogleBaseParser implements ModuleParser {
         try {
             pds = Introspector.getBeanInfo(GoogleBaseImpl.class).getPropertyDescriptors();
             PROPS2TAGS.load(GoogleBaseParser.class.getResourceAsStream("/com/sun/syndication/feed/module/base/io/tags.properties"));
-        } catch(IOException e) {
-            e.printStackTrace();
-            log.log(Level.SEVERE,"Unable to read properties file for Google Base tags!",e);
-        } catch(IntrospectionException e) {
-            e.printStackTrace();
-            log.log(Level.SEVERE,"Unable to get property descriptors for GoogleBaseImpl!",e);
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE, "Unable to read properties file for Google Base tags!", e);
+        }
+        catch (IntrospectionException e) {
+            logger.log(Level.SEVERE, "Unable to get property descriptors for GoogleBaseImpl!", e);
         }
     }
 
@@ -114,40 +109,43 @@ public class GoogleBaseParser implements ModuleParser {
         super();
     }
 
+    @Override
     public Module parse(Element element) {
-        HashMap tag2pd = new HashMap();
+        HashMap<String, PropertyDescriptor> tag2pd = new HashMap<String, PropertyDescriptor>();
         GoogleBaseImpl module = new GoogleBaseImpl();
 
         try {
-            for(int i = 0; i < pds.length; i++) {
+            for (int i = 0; i < pds.length; i++) {
                 PropertyDescriptor pd = pds[i];
                 String tagName = GoogleBaseParser.PROPS2TAGS.getProperty(pd.getName());
 
-                if(tagName == null) {
-                    log.log(Level.FINE,"Property: " + pd.getName() + " doesn't have a tag mapping. ");
-                } else {
-                    tag2pd.put(tagName,pd);
+                if (tagName == null) {
+                    logger.log(Level.FINE, "Property: " + pd.getName() + " doesn't have a tag mapping. ");
+                }
+                else {
+                    tag2pd.put(tagName, pd);
                 }
             }
-        } catch(Exception e) {
-            throw new RuntimeException("Exception building tag to property mapping. ",e);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Exception building tag to property mapping. ", e);
         }
 
-        List children = element.getChildren();
-        Iterator it = children.iterator();
+        List<?> children = element.getChildren();
+        Iterator<?> it = children.iterator();
 
-        while(it.hasNext()) {
-            Element child = (Element)it.next();
+        while (it.hasNext()) {
+            Element child = (Element) it.next();
 
-            if(child.getNamespace().equals(GoogleBaseParser.NS)) {
-                PropertyDescriptor pd = (PropertyDescriptor)tag2pd.get(child.getName());
+            if (child.getNamespace().equals(GoogleBaseParser.NS)) {
+                PropertyDescriptor pd = tag2pd.get(child.getName());
 
-                if(pd != null) {
+                if (pd != null) {
                     try {
-                        this.handleTag(child,pd,module);
-                    } catch(Exception e) {
-                        log.log(Level.WARNING,"Unable to handle tag: " + child.getName(),e);
-                        e.printStackTrace();
+                        this.handleTag(child, pd, module);
+                    }
+                    catch (Exception e) {
+                        logger.log(Level.WARNING, "Unable to handle tag: " + child.getName(), e);
                     }
                 }
             }
@@ -156,12 +154,12 @@ public class GoogleBaseParser implements ModuleParser {
         return module;
     }
 
-    public static String stripNonValidCharacters(char[] validCharacters,String input) {
+    public static String stripNonValidCharacters(char[] validCharacters, String input) {
         StringBuffer newString = new StringBuffer();
 
-        for(int i = 0; i < input.length(); i++) {
-            for(int j = 0; j < validCharacters.length; j++) {
-                if(input.charAt(i) == validCharacters[j]) {
+        for (int i = 0; i < input.length(); i++) {
+            for (int j = 0; j < validCharacters.length; j++) {
+                if (input.charAt(i) == validCharacters[j]) {
                     newString.append(validCharacters[j]);
                 }
             }
@@ -170,76 +168,96 @@ public class GoogleBaseParser implements ModuleParser {
         return newString.toString();
     }
 
+    @Override
     public String getNamespaceUri() {
         return GoogleBase.URI;
     }
 
-    private void handleTag(Element tag,PropertyDescriptor pd,GoogleBase module) throws Exception {
+    private void handleTag(Element tag, PropertyDescriptor pd, GoogleBase module) throws Exception {
         Object tagValue = null;
 
-        if((pd.getPropertyType() == Integer.class)||(pd.getPropertyType().getComponentType() == Integer.class)) {
-            tagValue = new Integer(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS,tag.getText()));
-        } else if((pd.getPropertyType() == Float.class)||(pd.getPropertyType().getComponentType() == Float.class)) {
-            tagValue = new Float(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS,tag.getText()));
-        } else if((pd.getPropertyType() == String.class)||(pd.getPropertyType().getComponentType() == String.class)) {
+        if ((pd.getPropertyType() == Integer.class) || (pd.getPropertyType().getComponentType() == Integer.class)) {
+            tagValue = new Integer(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS, tag.getText()));
+        }
+        else if ((pd.getPropertyType() == Float.class) || (pd.getPropertyType().getComponentType() == Float.class)) {
+            tagValue = new Float(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS, tag.getText()));
+        }
+        else if ((pd.getPropertyType() == String.class) || (pd.getPropertyType().getComponentType() == String.class)) {
             tagValue = tag.getText();
-        } else if((pd.getPropertyType() == URL.class)||(pd.getPropertyType().getComponentType() == URL.class)) {
+        }
+        else if ((pd.getPropertyType() == URL.class) || (pd.getPropertyType().getComponentType() == URL.class)) {
             tagValue = new URL(tag.getText().trim());
-        } else if((pd.getPropertyType() == Boolean.class)||(pd.getPropertyType().getComponentType() == Boolean.class)) {
+        }
+        else if ((pd.getPropertyType() == Boolean.class) || (pd.getPropertyType().getComponentType() == Boolean.class)) {
             tagValue = new Boolean(tag.getText().trim());
-        } else if((pd.getPropertyType() == Date.class)||(pd.getPropertyType().getComponentType() == Date.class)) {
+        }
+        else if ((pd.getPropertyType() == Date.class) || (pd.getPropertyType().getComponentType() == Date.class)) {
             String text = tag.getText().trim();
 
-            if(text.length() > 10) {
+            if (text.length() > 10) {
                 tagValue = GoogleBaseParser.LONG_DT_FMT.parse(text);
-            } else {
+            }
+            else {
                 tagValue = GoogleBaseParser.SHORT_DT_FMT.parse(text);
             }
-        } else if((pd.getPropertyType() == IntUnit.class)||(pd.getPropertyType().getComponentType() == IntUnit.class)) {
+        }
+        else if ((pd.getPropertyType() == IntUnit.class) || (pd.getPropertyType().getComponentType() == IntUnit.class)) {
             tagValue = new IntUnit(tag.getText());
-        } else if((pd.getPropertyType() == FloatUnit.class)||(pd.getPropertyType().getComponentType() == FloatUnit.class)) {
+        }
+        else if ((pd.getPropertyType() == FloatUnit.class) || (pd.getPropertyType().getComponentType() == FloatUnit.class)) {
             tagValue = new FloatUnit(tag.getText());
-        } else if((pd.getPropertyType() == DateTimeRange.class)||(pd.getPropertyType().getComponentType() == DateTimeRange.class)) {
-            tagValue = new DateTimeRange(LONG_DT_FMT.parse(tag.getChild("start",GoogleBaseParser.NS).getText().trim()),LONG_DT_FMT.parse(tag.getChild("end",GoogleBaseParser.NS).getText().trim()));
-        } else if((pd.getPropertyType() == ShippingType.class)||(pd.getPropertyType().getComponentType() == ShippingType.class)) {
-            FloatUnit price = new FloatUnit(tag.getChild("price",GoogleBaseParser.NS).getText().trim());
-            ShippingType.ServiceEnumeration service = ShippingType.ServiceEnumeration.findByValue(tag.getChild("service",GoogleBaseParser.NS).getText().trim());
+        }
+        else if ((pd.getPropertyType() == DateTimeRange.class) || (pd.getPropertyType().getComponentType() == DateTimeRange.class)) {
+            tagValue = new DateTimeRange(LONG_DT_FMT.parse(tag.getChild("start", GoogleBaseParser.NS).getText().trim()), LONG_DT_FMT.parse(tag
+                    .getChild("end", GoogleBaseParser.NS).getText().trim()));
+        }
+        else if ((pd.getPropertyType() == ShippingType.class) || (pd.getPropertyType().getComponentType() == ShippingType.class)) {
+            FloatUnit price = new FloatUnit(tag.getChild("price", GoogleBaseParser.NS).getText().trim());
+            ShippingType.ServiceEnumeration service = ShippingType.ServiceEnumeration
+                    .findByValue(tag.getChild("service", GoogleBaseParser.NS).getText().trim());
 
-            if(service == null) {
+            if (service == null) {
                 service = ShippingType.ServiceEnumeration.STANDARD;
             }
 
-            String country = tag.getChild("country",GoogleBaseParser.NS).getText().trim();
-            tagValue = new ShippingType(price,service,country);
-        } else if((pd.getPropertyType() == PaymentTypeEnumeration.class)||(pd.getPropertyType().getComponentType() == PaymentTypeEnumeration.class)) {
+            String country = tag.getChild("country", GoogleBaseParser.NS).getText().trim();
+            tagValue = new ShippingType(price, service, country);
+        }
+        else if ((pd.getPropertyType() == PaymentTypeEnumeration.class) || (pd.getPropertyType().getComponentType() == PaymentTypeEnumeration.class)) {
             tagValue = PaymentTypeEnumeration.findByValue(tag.getText().trim());
-        } else if((pd.getPropertyType() == PriceTypeEnumeration.class)||(pd.getPropertyType().getComponentType() == PriceTypeEnumeration.class)) {
+        }
+        else if ((pd.getPropertyType() == PriceTypeEnumeration.class) || (pd.getPropertyType().getComponentType() == PriceTypeEnumeration.class)) {
             tagValue = PriceTypeEnumeration.findByValue(tag.getText().trim());
-        } else if((pd.getPropertyType() == CurrencyEnumeration.class)||(pd.getPropertyType().getComponentType() == CurrencyEnumeration.class)) {
+        }
+        else if ((pd.getPropertyType() == CurrencyEnumeration.class) || (pd.getPropertyType().getComponentType() == CurrencyEnumeration.class)) {
             tagValue = CurrencyEnumeration.findByValue(tag.getText().trim());
-        } else if((pd.getPropertyType() == GenderEnumeration.class)||(pd.getPropertyType().getComponentType() == GenderEnumeration.class)) {
+        }
+        else if ((pd.getPropertyType() == GenderEnumeration.class) || (pd.getPropertyType().getComponentType() == GenderEnumeration.class)) {
             tagValue = GenderEnumeration.findByValue(tag.getText().trim());
-        } else if((pd.getPropertyType() == YearType.class)||(pd.getPropertyType().getComponentType() == YearType.class)) {
+        }
+        else if ((pd.getPropertyType() == YearType.class) || (pd.getPropertyType().getComponentType() == YearType.class)) {
             tagValue = new YearType(tag.getText().trim());
-        } else if((pd.getPropertyType() == Size.class)||(pd.getPropertyType().getComponentType() == Size.class)) {
+        }
+        else if ((pd.getPropertyType() == Size.class) || (pd.getPropertyType().getComponentType() == Size.class)) {
             tagValue = new Size(tag.getText().trim());
-        } 
+        }
 
-        if(!pd.getPropertyType().isArray()) {
-            pd.getWriteMethod().invoke(module,new Object[] {tagValue});
-        } else {
-            Object[] current = (Object[])pd.getReadMethod().invoke(module,(Object[])null);
+        if (!pd.getPropertyType().isArray()) {
+            pd.getWriteMethod().invoke(module, new Object[] { tagValue });
+        }
+        else {
+            Object[] current = (Object[]) pd.getReadMethod().invoke(module, (Object[]) null);
             int newSize = (current == null) ? 1 : (current.length + 1);
-            Object setValue = Array.newInstance(pd.getPropertyType().getComponentType(),newSize);
+            Object setValue = Array.newInstance(pd.getPropertyType().getComponentType(), newSize);
 
             int i = 0;
 
-            for(; (current != null)&&(i < current.length); i++) {
-                Array.set(setValue,i,current[i]);
+            for (; (current != null) && (i < current.length); i++) {
+                Array.set(setValue, i, current[i]);
             }
 
-            Array.set(setValue,i,tagValue);
-            pd.getWriteMethod().invoke(module,new Object[] {setValue});
+            Array.set(setValue, i, tagValue);
+            pd.getWriteMethod().invoke(module, new Object[] { setValue });
         }
     }
 }

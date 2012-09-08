@@ -25,18 +25,19 @@ package com.sun.syndication.feed.module.georss;
  * 
  */
 public class GMLModuleImpl extends GeoRSSModule {
+    private static final long serialVersionUID = -5121012655274558600L;
 
-	public GMLModuleImpl() {
-		super(GeoRSSModule.class, GeoRSSModule.GEORSS_GML_URI);
-	}
+    public GMLModuleImpl() {
+        super(GeoRSSModule.class, GeoRSSModule.GEORSS_GML_URI);
+    }
 
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sun.syndication.feed.CopyFrom#getInterface()
-	 */
-	public Class getInterface() {
-		return GeoRSSModule.class;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.sun.syndication.feed.CopyFrom#getInterface()
+     */
+    @Override
+    public Class<?> getInterface() {
+        return GeoRSSModule.class;
+    }
 }

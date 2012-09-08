@@ -38,8 +38,11 @@
  */
 package com.sun.syndication.feed.module.base;
 
-import com.sun.syndication.feed.impl.EqualsBean;
+import java.lang.reflect.Array;
+import java.net.URL;
+import java.util.Date;
 
+import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.module.base.types.CloneableType;
 import com.sun.syndication.feed.module.base.types.CurrencyEnumeration;
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
@@ -53,13 +56,6 @@ import com.sun.syndication.feed.module.base.types.ShortDate;
 import com.sun.syndication.feed.module.base.types.Size;
 import com.sun.syndication.feed.module.base.types.YearType;
 
-import java.lang.reflect.Array;
-
-import java.net.URL;
-
-import java.util.Date;
-
-
 /**
  * This is the implementation class for the GoogleBase module interface.
  *
@@ -68,6 +64,8 @@ import java.util.Date;
  * @version $Revision: 1.2 $
  */
 public class GoogleBaseImpl implements GoogleBase {
+    private static final long serialVersionUID = -1471895363111086985L;
+
     /** boolean:listing_type */
     private Boolean listingType;
 
@@ -349,799 +347,988 @@ public class GoogleBaseImpl implements GoogleBase {
      *
      * @param actors
      */
+    @Override
     public void setActors(String[] actors) {
         this.actors = actors;
     }
 
+    @Override
     public String[] getActors() {
         return actors == null ? new String[0] : actors;
     }
 
+    @Override
     public void setAge(Integer age) {
         this.age = age;
     }
 
+    @Override
     public Integer getAge() {
         return age;
     }
 
+    @Override
     public void setAgents(String[] agents) {
         this.agents = agents == null ? new String[0] : agents;
     }
 
+    @Override
     public String[] getAgents() {
         return agents;
     }
 
+    @Override
     public void setApparelType(String apparelType) {
         this.apparelType = apparelType;
     }
 
+    @Override
     public String getApparelType() {
         return apparelType;
     }
 
+    @Override
     public void setArea(IntUnit area) {
         this.area = area;
     }
 
+    @Override
     public IntUnit getArea() {
         return area;
     }
 
+    @Override
     public void setArtists(String[] artists) {
         this.artists = artists;
     }
 
+    @Override
     public String[] getArtists() {
         return artists == null ? new String[0] : artists;
     }
 
+    @Override
     public void setAuthors(String[] authors) {
         this.authors = authors;
     }
 
+    @Override
     public String[] getAuthors() {
         return authors == null ? new String[0] : authors;
     }
 
+    @Override
     public void setBathrooms(Float bathrooms) {
         this.bathrooms = bathrooms;
     }
 
+    @Override
     public Float getBathrooms() {
         return bathrooms;
     }
 
+    @Override
     public void setBedrooms(Integer bedrooms) {
         this.bedrooms = bedrooms;
     }
 
+    @Override
     public Integer getBedrooms() {
         return bedrooms;
     }
 
+    @Override
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
+    @Override
     public String getBrand() {
         return brand;
     }
 
+    @Override
     public void setColors(String[] color) {
         this.color = color;
     }
 
+    @Override
     public String[] getColors() {
         return color == null ? new String[0] : color;
     }
 
+    @Override
     public void setCondition(String condition) {
         this.condition = condition;
     }
 
+    @Override
     public String getCondition() {
         return condition;
     }
 
+    @Override
     public void setCourseDateRange(DateTimeRange courseDateRange) {
         this.courseDateRange = courseDateRange;
     }
 
+    @Override
     public DateTimeRange getCourseDateRange() {
         return courseDateRange;
     }
 
+    @Override
     public void setCourseNumber(String courseNumber) {
         this.courseNumber = courseNumber;
     }
 
+    @Override
     public String getCourseNumber() {
         return courseNumber;
     }
 
+    @Override
     public void setCourseTimes(String courseTimes) {
         this.courseTimes = courseTimes;
     }
 
+    @Override
     public String getCourseTimes() {
         return courseTimes;
     }
 
+    @Override
     public void setCurrency(CurrencyEnumeration currency) {
         this.currency = currency;
     }
 
+    @Override
     public CurrencyEnumeration getCurrency() {
         return currency;
     }
 
+    @Override
     public void setDeliveryNotes(String deliveryNotes) {
         this.deliveryNotes = deliveryNotes;
     }
 
+    @Override
     public String getDeliveryNotes() {
         return deliveryNotes;
     }
 
+    @Override
     public void setDeliveryRadius(FloatUnit deliveryRadius) {
         this.deliveryRadius = deliveryRadius;
     }
 
+    @Override
     public FloatUnit getDeliveryRadius() {
         return deliveryRadius;
     }
 
+    @Override
     public void setEducation(String education) {
         this.education = education;
     }
 
+    @Override
     public String getEducation() {
         return education;
     }
 
+    @Override
     public void setEmployer(String employer) {
         this.employer = employer;
     }
 
+    @Override
     public String getEmployer() {
         return employer;
     }
 
+    @Override
     public void setEthnicities(String[] ethnicities) {
         this.ethnicities = ethnicities;
     }
 
+    @Override
     public String[] getEthnicities() {
         return ethnicities == null ? new String[0] : ethnicities;
     }
 
+    @Override
     public void setEventDateRange(DateTimeRange eventDateRange) {
         this.eventDateRange = eventDateRange;
     }
 
+    @Override
     public DateTimeRange getEventDateRange() {
         return eventDateRange;
     }
 
+    @Override
     public void setExpirationDate(Date expirationDate) {
-        if((expirationDate != null)&&!(expirationDate instanceof ShortDate)) {
+        if ((expirationDate != null) && !(expirationDate instanceof ShortDate)) {
             this.expirationDate = new ShortDate(expirationDate);
-        } else {
+        }
+        else {
             this.expirationDate = null;
         }
     }
 
+    @Override
     public Date getExpirationDate() {
         return expirationDate;
     }
 
+    @Override
     public void setExpirationDateTime(Date expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
     }
 
+    @Override
     public Date getExpirationDateTime() {
         return expirationDateTime;
     }
 
+    @Override
     public void setFormat(String[] format) {
         this.format = format;
     }
 
+    @Override
     public String[] getFormat() {
         return format == null ? new String[0] : format;
     }
 
+    @Override
     public void setFromLocation(String fromLocation) {
         this.fromLocation = fromLocation;
     }
 
+    @Override
     public String getFromLocation() {
         return fromLocation;
     }
 
+    @Override
     public void setGender(GenderEnumeration gender) {
         this.gender = gender;
     }
 
+    @Override
     public GenderEnumeration getGender() {
         return gender;
     }
 
+    @Override
     public void setHoaDues(Float hoaDues) {
         this.hoaDues = hoaDues;
     }
 
+    @Override
     public Float getHoaDues() {
         return hoaDues;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setImageLinks(URL[] imageLinks) {
         this.imageLinks = imageLinks;
     }
 
+    @Override
     public URL[] getImageLinks() {
         return imageLinks == null ? new URL[0] : imageLinks;
     }
 
+    @Override
     public void setImmigrationStatus(String immigrationStatus) {
         this.immigrationStatus = immigrationStatus;
     }
 
+    @Override
     public String getImmigrationStatus() {
         return immigrationStatus;
     }
 
+    @Override
     public void setInterestedIn(String[] interestedIn) {
         this.interestedIn = interestedIn;
     }
 
+    @Override
     public String[] getInterestedIn() {
         return interestedIn == null ? new String[0] : interestedIn;
     }
 
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return GoogleBase.class;
     }
 
+    @Override
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
+    @Override
     public String getIsbn() {
         return isbn;
     }
 
+    @Override
     public void setJobFunctions(String[] jobFunctions) {
         this.jobFunctions = jobFunctions;
     }
 
+    @Override
     public String[] getJobFunctions() {
         return jobFunctions == null ? new String[0] : jobFunctions;
     }
 
+    @Override
     public void setJobIndustries(String[] jobIndustries) {
         this.jobIndustries = jobIndustries;
     }
 
+    @Override
     public String[] getJobIndustries() {
         return jobIndustries == null ? new String[0] : jobIndustries;
     }
 
+    @Override
     public void setJobTypes(String[] jobTypes) {
         this.jobTypes = jobTypes;
     }
 
+    @Override
     public String[] getJobTypes() {
         return jobTypes == null ? new String[0] : jobTypes;
     }
 
+    @Override
     public void setLabels(String[] labels) {
         this.labels = labels;
     }
 
+    @Override
     public String[] getLabels() {
         return labels == null ? new String[0] : labels;
     }
 
+    @Override
     public void setLicenses(String[] licenses) {
         this.licenses = licenses;
     }
 
+    @Override
     public String[] getLicenses() {
         return licenses == null ? new String[0] : licenses;
     }
 
+    @Override
     public void setListingType(Boolean listingType) {
         this.listingType = listingType;
     }
 
+    @Override
     public Boolean getListingType() {
         return listingType;
     }
 
+    @Override
     public void setLocation(String location) {
         this.location = location;
     }
 
+    @Override
     public String getLocation() {
         return location;
     }
 
+    @Override
     public void setMake(String make) {
         this.make = make;
     }
 
+    @Override
     public String getMake() {
         return make;
     }
 
+    @Override
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
 
+    @Override
     public String getManufacturer() {
         return manufacturer;
     }
 
+    @Override
     public void setManufacturerId(String manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
+    @Override
     public String getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setMaritalStatus(String maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
+    @Override
     public String getMaritalStatus() {
         return maritalStatus;
     }
 
+    @Override
     public void setMegapixels(FloatUnit megapixels) {
         this.megapixels = megapixels;
     }
 
+    @Override
     public FloatUnit getMegapixels() {
         return megapixels;
     }
 
+    @Override
     public void setMemory(FloatUnit memory) {
         this.memory = memory;
     }
 
+    @Override
     public FloatUnit getMemory() {
         return memory;
     }
 
+    @Override
     public void setMileage(Integer mileage) {
         this.mileage = mileage;
     }
 
+    @Override
     public Integer getMileage() {
         return mileage;
     }
 
+    @Override
     public void setModel(String model) {
         this.model = model;
     }
 
+    @Override
     public String getModel() {
         return model;
     }
 
+    @Override
     public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
     }
 
+    @Override
     public String getModelNumber() {
         return modelNumber;
     }
 
+    @Override
     public void setNameOfItemBeingReviewed(String nameOfItemBeingReviewed) {
         this.nameOfItemBeingReviewed = nameOfItemBeingReviewed;
     }
 
+    @Override
     public String getNameOfItemBeingReviewed() {
         return nameOfItemBeingReviewed;
     }
 
+    @Override
     public void setNewsSource(String newsSource) {
         this.newsSource = newsSource;
     }
 
+    @Override
     public String getNewsSource() {
         return newsSource;
     }
 
+    @Override
     public void setOccupation(String occupation) {
         this.occupation = occupation;
     }
 
+    @Override
     public String getOccupation() {
         return occupation;
     }
 
+    @Override
     public void setOperatingSystems(String operatingSystems) {
         this.operatingSystems = operatingSystems;
     }
 
+    @Override
     public String getOperatingSystems() {
         return operatingSystems;
     }
 
+    @Override
     public void setPages(Integer pages) {
         this.pages = pages;
     }
 
+    @Override
     public Integer getPages() {
         return pages;
     }
 
+    @Override
     public void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted) {
         this.paymentAccepted = paymentAccepted;
     }
 
+    @Override
     public PaymentTypeEnumeration[] getPaymentAccepted() {
         return paymentAccepted == null ? new PaymentTypeEnumeration[0] : paymentAccepted;
     }
 
+    @Override
     public void setPaymentNotes(String paymentNotes) {
         this.paymentNotes = paymentNotes;
     }
 
+    @Override
     public String getPaymentNotes() {
         return paymentNotes;
     }
 
+    @Override
     public void setPickup(Boolean pickup) {
         this.pickup = pickup;
     }
 
+    @Override
     public Boolean getPickup() {
         return pickup;
     }
 
+    @Override
     public void setPrice(FloatUnit price) {
         this.price = price;
     }
 
+    @Override
     public FloatUnit getPrice() {
         return price;
     }
 
+    @Override
     public void setPriceType(PriceTypeEnumeration priceType) {
         this.priceType = priceType;
     }
 
+    @Override
     public PriceTypeEnumeration getPriceType() {
         return priceType;
     }
 
+    @Override
     public void setProcessorSpeed(FloatUnit processorSpeed) {
         this.processorSpeed = processorSpeed;
     }
 
+    @Override
     public FloatUnit getProcessorSpeed() {
         return processorSpeed;
     }
 
+    @Override
     public void setProductTypes(String[] productTypes) {
         this.productTypes = productTypes;
     }
 
+    @Override
     public String[] getProductTypes() {
         return productTypes == null ? new String[0] : productTypes;
     }
 
+    @Override
     public void setProgrammingLanguages(String[] programmingLanguages) {
         this.programmingLanguages = programmingLanguages;
     }
 
+    @Override
     public String[] getProgrammingLanguages() {
         return programmingLanguages == null ? new String[0] : programmingLanguages;
     }
 
+    @Override
     public void setPropertyTypes(String[] propertyTypes) {
         this.propertyTypes = propertyTypes;
     }
 
+    @Override
     public String[] getPropertyTypes() {
         return propertyTypes == null ? new String[0] : propertyTypes;
     }
 
+    @Override
     public void setPublicationName(String publicationName) {
         this.publicationName = publicationName;
     }
 
+    @Override
     public String getPublicationName() {
         return publicationName;
     }
 
+    @Override
     public void setPublicationVolume(String publicationVolume) {
         this.publicationVolume = publicationVolume;
     }
 
+    @Override
     public String getPublicationVolume() {
         return publicationVolume;
     }
 
+    @Override
     public void setPublishDate(Date publishDate) {
-        if((publishDate != null)&&!(publishDate instanceof ShortDate)) {
+        if ((publishDate != null) && !(publishDate instanceof ShortDate)) {
             this.publishDate = new ShortDate(publishDate);
-        } else {
+        }
+        else {
             this.publishDate = null;
         }
     }
 
+    @Override
     public Date getPublishDate() {
         return publishDate;
     }
 
+    @Override
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
+    @Override
     public Integer getQuantity() {
         return quantity;
     }
 
+    @Override
     public void setRating(Float rating) {
         this.rating = rating;
     }
 
+    @Override
     public Float getRating() {
         return rating;
     }
 
+    @Override
     public void setRelatedLinks(URL[] relatedLinks) {
         this.relatedLinks = relatedLinks;
     }
 
+    @Override
     public URL[] getRelatedLinks() {
         return relatedLinks == null ? new URL[0] : relatedLinks;
     }
 
+    @Override
     public void setReviewType(String reviewType) {
         this.reviewType = reviewType;
     }
 
+    @Override
     public String getReviewType() {
         return reviewType;
     }
 
+    @Override
     public void setReviewerType(String reviewerType) {
         this.reviewerType = reviewerType;
     }
 
+    @Override
     public String getReviewerType() {
         return reviewerType;
     }
 
+    @Override
     public void setSalary(Float salary) {
         this.salary = salary;
     }
 
+    @Override
     public Float getSalary() {
         return salary;
     }
 
+    @Override
     public void setSalaryType(PriceTypeEnumeration salaryType) {
         this.salaryType = salaryType;
     }
 
+    @Override
     public PriceTypeEnumeration getSalaryType() {
         return salaryType;
     }
 
+    @Override
     public void setSchoolDistrict(String schoolDistrict) {
         this.schoolDistrict = schoolDistrict;
     }
 
+    @Override
     public String getSchoolDistrict() {
         return schoolDistrict;
     }
 
+    @Override
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
+    @Override
     public String getServiceType() {
         return serviceType;
     }
 
+    @Override
     public void setSexualOrientation(String SexualOrientation) {
         this.SexualOrientation = SexualOrientation;
     }
 
+    @Override
     public String getSexualOrientation() {
         return SexualOrientation;
     }
 
+    @Override
     public void setShipping(ShippingType[] shipping) {
         this.shipping = shipping;
     }
 
+    @Override
     public ShippingType[] getShipping() {
         return shipping == null ? new ShippingType[0] : shipping;
     }
 
+    @Override
     public void setSize(Size size) {
         this.size = size;
     }
 
+    @Override
     public Size getSize() {
         return size;
     }
 
+    @Override
     public void setSquareFootages(IntUnit[] squareFootages) {
         this.squareFootages = squareFootages;
     }
 
+    @Override
     public IntUnit[] getSquareFootages() {
         return squareFootages == null ? new IntUnit[0] : squareFootages;
     }
 
+    @Override
     public void setSubjectAreas(String[] subjectAreas) {
         this.subjectAreas = subjectAreas;
     }
 
+    @Override
     public String[] getSubjectAreas() {
         return subjectAreas == null ? new String[0] : subjectAreas;
     }
 
+    @Override
     public void setSubjects(String[] subjects) {
         this.subjects = subjects;
     }
 
+    @Override
     public String[] getSubjects() {
         return subjects == null ? new String[0] : subjects;
     }
 
+    @Override
     public void setTaxPercent(Float taxPercent) {
         this.taxPercent = taxPercent;
     }
 
+    @Override
     public Float getTaxPercent() {
         return taxPercent;
     }
 
+    @Override
     public void setTaxRegion(String taxRegion) {
         this.taxRegion = taxRegion;
     }
 
+    @Override
     public String getTaxRegion() {
         return taxRegion;
     }
 
+    @Override
     public void setToLocation(String toLocation) {
         this.toLocation = toLocation;
     }
 
+    @Override
     public String getToLocation() {
         return toLocation;
     }
 
+    @Override
     public void setTravelDateRange(DateTimeRange travelDateRange) {
         this.travelDateRange = travelDateRange;
     }
 
+    @Override
     public DateTimeRange getTravelDateRange() {
         return travelDateRange;
     }
 
+    @Override
     public void setUniversity(String university) {
         this.university = university;
     }
 
+    @Override
     public String getUniversity() {
         return university;
     }
 
+    @Override
     public void setUpc(String upc) {
         this.upc = upc;
     }
 
+    @Override
     public String getUpc() {
         return upc;
     }
 
+    @Override
     public String getUri() {
         return GoogleBase.URI;
     }
 
+    @Override
     public void setUrlOfItemBeingReviewed(URL urlOfItemBeingReviewed) {
         this.urlOfItemBeingReviewed = urlOfItemBeingReviewed;
     }
 
+    @Override
     public URL getUrlOfItemBeingReviewed() {
         return urlOfItemBeingReviewed;
     }
 
+    @Override
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
     }
 
+    @Override
     public String getVehicleType() {
         return vehicleType;
     }
 
+    @Override
     public void setVin(String vin) {
         this.vin = vin;
     }
 
+    @Override
     public String getVin() {
         return vin;
     }
 
+    @Override
     public void setWeight(FloatUnit weight) {
         this.weight = weight;
     }
 
+    @Override
     public FloatUnit getWeight() {
         return weight;
     }
 
+    @Override
     public void setYear(YearType year) {
         this.year = year;
     }
 
+    @Override
     public YearType getYear() {
         return year;
     }
 
-    //TODO: Finish
+    @Override
     public Object clone() throws CloneNotSupportedException {
         try {
             GoogleBaseImpl gbi = new GoogleBaseImpl();
             gbi.copyFrom(this);
 
             return gbi;
-        } catch(Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception e) {
             throw new CloneNotSupportedException();
         }
     }
 
+    @Override
     public void copyFrom(Object obj) {
-        if(!(obj instanceof GoogleBase)) {
+        if (!(obj instanceof GoogleBase)) {
             return;
         }
 
-        GoogleBase source = (GoogleBase)obj;
+        GoogleBase source = (GoogleBase) obj;
 
-        this.setActors((String[])arrayCopy(source.getActors()));
+        this.setActors((String[]) arrayCopy(source.getActors()));
         this.setAge(source.getAge());
-        this.setAgents((String[])arrayCopy(source.getAgents()));
+        this.setAgents((String[]) arrayCopy(source.getAgents()));
         this.setApparelType(source.getApparelType());
         this.setArea(source.getArea());
-        this.setArtists((String[])arrayCopy(source.getArtists()));
-        this.setAuthors((String[])arrayCopy(source.getAuthors()));
+        this.setArtists((String[]) arrayCopy(source.getArtists()));
+        this.setAuthors((String[]) arrayCopy(source.getAuthors()));
         this.setBathrooms(source.getBathrooms());
         this.setBedrooms(source.getBedrooms());
         this.setBrand(source.getBrand());
-        this.setColors((String[])arrayCopy(source.getColors()));
+        this.setColors((String[]) arrayCopy(source.getColors()));
         this.setCondition(source.getCondition());
-        this.setCourseDateRange((DateTimeRange)cloneOrNull(source.getCourseDateRange()));
+        this.setCourseDateRange((DateTimeRange) cloneOrNull(source.getCourseDateRange()));
         this.setCourseNumber(source.getCourseNumber());
         this.setCourseTimes(source.getCourseTimes());
         this.setDeliveryNotes(source.getDeliveryNotes());
         this.setDeliveryRadius(source.getDeliveryRadius());
         this.setEducation(source.getEducation());
         this.setEmployer(source.getEmployer());
-        this.setEthnicities((String[])arrayCopy(source.getEthnicities()));
-        this.setEventDateRange((DateTimeRange)cloneOrNull(source.getEventDateRange()));
+        this.setEthnicities((String[]) arrayCopy(source.getEthnicities()));
+        this.setEventDateRange((DateTimeRange) cloneOrNull(source.getEventDateRange()));
         this.setExpirationDate(dateOrNull(source.getExpirationDate()));
         this.setExpirationDateTime(dateOrNull(source.getExpirationDateTime()));
         this.setFormat(source.getFormat());
@@ -1149,14 +1336,14 @@ public class GoogleBaseImpl implements GoogleBase {
         this.setGender(source.getGender());
         this.setHoaDues(source.getHoaDues());
         this.setId(source.getId());
-        this.setImageLinks((URL[])arrayCopy(source.getImageLinks()));
+        this.setImageLinks((URL[]) arrayCopy(source.getImageLinks()));
         this.setImmigrationStatus(source.getImmigrationStatus());
         this.setInterestedIn(source.getInterestedIn());
         this.setIsbn(source.getIsbn());
-        this.setJobFunctions((String[])arrayCopy(source.getJobFunctions()));
-        this.setJobIndustries((String[])arrayCopy(source.getJobIndustries()));
-        this.setJobTypes((String[])arrayCopy(source.getJobTypes()));
-        this.setLabels((String[])arrayCopy(source.getLabels()));
+        this.setJobFunctions((String[]) arrayCopy(source.getJobFunctions()));
+        this.setJobIndustries((String[]) arrayCopy(source.getJobIndustries()));
+        this.setJobTypes((String[]) arrayCopy(source.getJobTypes()));
+        this.setLabels((String[]) arrayCopy(source.getLabels()));
         this.setListingType(source.getListingType());
         this.setLocation(source.getLocation());
         this.setMake(source.getMake());
@@ -1172,14 +1359,14 @@ public class GoogleBaseImpl implements GoogleBase {
         this.setNewsSource(source.getNewsSource());
         this.setOccupation(source.getOccupation());
         this.setPages(source.getPages());
-        this.setPaymentAccepted((PaymentTypeEnumeration[])arrayCopy(source.getPaymentAccepted()));
+        this.setPaymentAccepted((PaymentTypeEnumeration[]) arrayCopy(source.getPaymentAccepted()));
         this.setPaymentNotes(source.getPaymentNotes());
         this.setPickup(source.getPickup());
         this.setPrice(source.getPrice());
         this.setPriceType(source.getPriceType());
         this.setProcessorSpeed(source.getProcessorSpeed());
-        this.setProductTypes((String[])arrayCopy(source.getProductTypes()));
-        this.setPropertyTypes((String[])arrayCopy(source.getPropertyTypes()));
+        this.setProductTypes((String[]) arrayCopy(source.getProductTypes()));
+        this.setPropertyTypes((String[]) arrayCopy(source.getPropertyTypes()));
         this.setPublicationName(source.getPublicationName());
         this.setPublicationVolume(source.getPublicationVolume());
         this.setPublishDate(dateOrNull(source.getPublishDate()));
@@ -1191,23 +1378,23 @@ public class GoogleBaseImpl implements GoogleBase {
         this.setSalaryType(source.getSalaryType());
         this.setServiceType(source.getServiceType());
         this.setSexualOrientation(source.getSexualOrientation());
-        this.setShipping((ShippingType[])arrayCopy(source.getShipping()));
+        this.setShipping((ShippingType[]) arrayCopy(source.getShipping()));
         this.setSize(source.getSize());
-        this.setSubjects((String[])arrayCopy(source.getSubjects()));
+        this.setSubjects((String[]) arrayCopy(source.getSubjects()));
         this.setTaxPercent(source.getTaxPercent());
         this.setTaxRegion(source.getTaxRegion());
         this.setToLocation(source.getToLocation());
-        this.setTravelDateRange((DateTimeRange)cloneOrNull(source.getTravelDateRange()));
+        this.setTravelDateRange((DateTimeRange) cloneOrNull(source.getTravelDateRange()));
         this.setUpc(source.getUpc());
         this.setUrlOfItemBeingReviewed(source.getUrlOfItemBeingReviewed());
         this.setVehicleType(source.getVehicleType());
         this.setVin(source.getVin());
         this.setYear(source.getYear());
-        this.setLicenses((String[])arrayCopy(source.getLicenses()));
-        this.setRelatedLinks((URL[])arrayCopy(source.getRelatedLinks()));
-        this.setSubjectAreas((String[])arrayCopy(source.getSubjectAreas()));
-        this.setProgrammingLanguages((String[])arrayCopy(source.getProgrammingLanguages()));
-        this.setSquareFootages(((IntUnit[])arrayCopy(source.getSquareFootages())));
+        this.setLicenses((String[]) arrayCopy(source.getLicenses()));
+        this.setRelatedLinks((URL[]) arrayCopy(source.getRelatedLinks()));
+        this.setSubjectAreas((String[]) arrayCopy(source.getSubjectAreas()));
+        this.setProgrammingLanguages((String[]) arrayCopy(source.getProgrammingLanguages()));
+        this.setSquareFootages(((IntUnit[]) arrayCopy(source.getSquareFootages())));
         this.setCurrency(source.getCurrency());
         this.setSchoolDistrict(source.getSchoolDistrict());
         this.setUniversity(source.getUniversity());
@@ -1215,20 +1402,21 @@ public class GoogleBaseImpl implements GoogleBase {
         this.setOperatingSystems(source.getOperatingSystems());
     }
 
+    @Override
     public boolean equals(Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(),this);
+        EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
     private Object arrayCopy(Object[] source) {
-        if(source == null) {
+        if (source == null) {
             return null;
         }
 
-        Object[] array = (Object[])Array.newInstance(source.getClass().getComponentType(),source.length);
+        Object[] array = (Object[]) Array.newInstance(source.getClass().getComponentType(), source.length);
 
-        for(int i = 0; i < source.length; i++) {
+        for (int i = 0; i < source.length; i++) {
             array[i] = source[i];
         }
 
@@ -1236,17 +1424,19 @@ public class GoogleBaseImpl implements GoogleBase {
     }
 
     private Object cloneOrNull(CloneableType o) {
-        if(o == null) {
+        if (o == null) {
             return null;
-        } else {
+        }
+        else {
             return o.clone();
         }
     }
 
     private Date dateOrNull(Date date) {
-        if(date == null) {
+        if (date == null) {
             return null;
-        } else {
+        }
+        else {
             return new Date(date.getTime());
         }
     }

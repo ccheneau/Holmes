@@ -18,12 +18,11 @@
 package com.sun.syndication.feed.module.sle;
 
 import com.sun.syndication.feed.impl.ObjectBean;
-import com.sun.syndication.feed.module.sle.io.*;
 import com.sun.syndication.feed.module.sle.io.LabelNamespaceElement;
+import com.sun.syndication.feed.module.sle.io.ModuleParser;
 import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
-import org.jdom.Namespace;
 
 /**This is a <b>parse only</b> module that holds the values of enternal fields declared in the SLE module.
  * These will <b>not</b> be persisted on an output() call, <b>nor</b> will changing a value here change a
@@ -32,36 +31,38 @@ import org.jdom.Namespace;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SleEntryImpl implements SleEntry {
+    private static final long serialVersionUID = 6407862396765808870L;
+
     private static final EntryValue[] EMPTY_VALUES = new EntryValue[0];
     private ObjectBean obj = new ObjectBean(SleEntryImpl.class, this);
     private EntryValue[] groupValues = EMPTY_VALUES;
     private EntryValue[] sortValues = EMPTY_VALUES;
-    
+
     /** Creates a new instance of SleEntryImpl */
     public SleEntryImpl() {
         super();
     }
-    
+
+    @Override
     public EntryValue getGroupByElement(Group element) {
         EntryValue[] values = this.getGroupValues();
-        LabelNamespaceElement compare = new LabelNamespaceElement( element.getLabel(), element.getNamespace(), element.getElement() );
+        LabelNamespaceElement compare = new LabelNamespaceElement(element.getLabel(), element.getNamespace(), element.getElement());
         for (int i = 0; i < values.length; i++) {
-            if( compare.equals( new LabelNamespaceElement( values[i].getLabel(), values[i].getNamespace(), values[i].getElement() )))
-                return values[i];
+            if (compare.equals(new LabelNamespaceElement(values[i].getLabel(), values[i].getNamespace(), values[i].getElement()))) return values[i];
         }
-        
-        
+
         return null;
     }
-    
+
     public void setGroupValues(EntryValue[] groupValues) {
         this.groupValues = (groupValues == null) ? EMPTY_VALUES : groupValues;
     }
-    
+
+    @Override
     public EntryValue[] getGroupValues() {
         return groupValues;
     }
-    
+
     /**
      * Returns the interface the copyFrom works on.
      * <p>
@@ -71,43 +72,47 @@ public class SleEntryImpl implements SleEntry {
      *
      * @return the interface the copyFrom works on.
      */
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return SleEntry.class;
     }
-    
+
+    @Override
     public EntryValue getSortByElement(Sort element) {
         EntryValue[] values = this.getSortValues();
-        LabelNamespaceElement compare = new LabelNamespaceElement( element.getLabel(), element.getNamespace(), element.getElement() );
+        LabelNamespaceElement compare = new LabelNamespaceElement(element.getLabel(), element.getNamespace(), element.getElement());
         for (int i = 0; i < values.length; i++) {
-            if( compare.equals( new LabelNamespaceElement( values[i].getLabel(), values[i].getNamespace(), values[i].getElement() ) ) )
-                return values[i];            
+            if (compare.equals(new LabelNamespaceElement(values[i].getLabel(), values[i].getNamespace(), values[i].getElement()))) return values[i];
         }
-        
+
         return null;
     }
-    
+
     public void setSortValues(EntryValue[] sortValues) {
         this.sortValues = sortValues;
     }
-    
+
+    @Override
     public EntryValue[] getSortValues() {
         return sortValues;
     }
-    
+
     /**
      * Returns the URI of the module.
      * <p>
      *
      * @return URI of the module.
      */
+    @Override
     public String getUri() {
         return ModuleParser.TEMP.getURI();
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return obj.clone();
     }
-    
+
     /**
      * Copies all the properties of the given bean into this one.
      * <p>
@@ -119,20 +124,24 @@ public class SleEntryImpl implements SleEntry {
      *
      * @param obj the instance to copy properties from.
      */
+    @Override
     public void copyFrom(Object obj) {
         SleEntry entry = (SleEntry) obj;
-        this.setGroupValues((EntryValue[]) entry.getGroupValues().clone());
-        this.setSortValues((EntryValue[]) entry.getSortValues().clone());
+        this.setGroupValues(entry.getGroupValues().clone());
+        this.setSortValues(entry.getSortValues().clone());
     }
-    
+
+    @Override
     public boolean equals(Object o) {
         return obj.equals(o);
     }
-    
+
+    @Override
     public int hashCode() {
         return obj.hashCode();
     }
-    
+
+    @Override
     public String toString() {
         return obj.toString();
     }

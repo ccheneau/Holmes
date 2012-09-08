@@ -40,13 +40,14 @@
  *
  */
 package com.sun.syndication.feed.module.itunes;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.sun.syndication.feed.module.itunes.types.Category;
 
 /**
  * This class contains information for iTunes podcast feeds that exist at the Channel level.
@@ -54,10 +55,12 @@ import java.util.logging.Logger;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class FeedInformationImpl extends AbstractITunesObject implements FeedInformation {
+    private static final long serialVersionUID = -3672967750764259458L;
+
     private String ownerName;
     private String ownerEmailAddress;
     private URL image;
-    private List categories;
+    private List<Category> categories;
 
     /**
      * Creates a new instance of FeedInformationImpl
@@ -69,15 +72,17 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * The parent categories for this feed
      * @return The parent categories for this feed
      */
-    public List getCategories() {
-	return (categories==null) ? (categories=new ArrayList()) : categories;
+    @Override
+    public List<Category> getCategories() {
+        return (categories == null) ? (categories = new ArrayList<Category>()) : categories;
     }
 
     /**
      * The parent categories for this feed
      * @param categories The parent categories for this feed
      */
-    public void setCategories(List categories) {
+    @Override
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
@@ -85,6 +90,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Returns the owner name for the feed
      * @return  Returns the owner name for the feed
      */
+    @Override
     public String getOwnerName() {
         return ownerName;
     }
@@ -93,6 +99,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Sets the owner name for the feed
      * @param ownerName Sets the owner name for the feed
      */
+    @Override
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
@@ -101,6 +108,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Returns the owner email address for the feed.
      * @return Returns the owner email address for the feed.
      */
+    @Override
     public String getOwnerEmailAddress() {
         return ownerEmailAddress;
     }
@@ -109,6 +117,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Sets the owner email address for the feed.
      * @param ownerEmailAddress Sets the owner email address for the feed.
      */
+    @Override
     public void setOwnerEmailAddress(String ownerEmailAddress) {
         this.ownerEmailAddress = ownerEmailAddress;
     }
@@ -119,6 +128,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * NOTE: To specification images should be in PNG or JPEG format.
      * @return Returns the URL for the image.
      */
+    @Override
     public URL getImage() {
         return image;
     }
@@ -129,6 +139,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * NOTE: To specification images should be in PNG or JPEG format.
      * @param image Sets the URL for the image.
      */
+    @Override
     public void setImage(URL image) {
         this.image = image;
     }
@@ -137,6 +148,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Required by the ROME API
      * @param obj object to copy property values from
      */
+    @Override
     public void copyFrom(Object obj) {
         FeedInformationImpl info = (FeedInformationImpl) obj;
         this.setAuthor(info.getAuthor());
@@ -153,12 +165,13 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
             if (info.getImage() != null) {
                 this.setImage(new URL(info.getImage().toExternalForm()));
             }
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             Logger.getAnonymousLogger().fine("Error copying URL:" + info.getImage());
         }
 
         if (info.getKeywords() != null) {
-            this.setKeywords((String[]) info.getKeywords().clone());
+            this.setKeywords(info.getKeywords().clone());
         }
 
         this.setOwnerEmailAddress(info.getOwnerEmailAddress());
@@ -172,6 +185,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * 
      * @return Returns a copy of this FeedInformationImpl object
      */
+    @Override
     public Object clone() {
         FeedInformationImpl info = new FeedInformationImpl();
         info.copyFrom(this);
@@ -179,6 +193,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
         return info;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("[");
         sb.append(" email: ");

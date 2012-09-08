@@ -16,15 +16,17 @@ import java.io.Serializable;
  * @author runaas
  */
 public class Position implements Cloneable, Serializable {
+    private static final long serialVersionUID = -6494530683094579620L;
+
     private double latitude;
     private double longitude;
-    
+
     /** Creates a new instance of Position */
     public Position() {
-        latitude  = Double.NaN;
+        latitude = Double.NaN;
         longitude = Double.NaN;
     }
-    
+
     /**
      * Create Position from a pair of coordinate values
      *
@@ -32,31 +34,31 @@ public class Position implements Cloneable, Serializable {
      * @param longitude
      */
     public Position(double latitude, double longitude) {
-        this.latitude  = latitude;
+        this.latitude = latitude;
         this.longitude = longitude;
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-    
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        
-        Position p = (Position)obj;
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+
+        Position p = (Position) obj;
         return p.latitude == latitude && p.longitude == longitude;
     }
-    
+
     /**
      * @return latitude
      */
     public double getLatitude() {
         return latitude;
     }
-    
+
     /**
      * Set the latitude
      *
@@ -65,14 +67,14 @@ public class Position implements Cloneable, Serializable {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-    
+
     /**
      * @return longitude
      */
     public double getLongitude() {
         return longitude;
     }
-    
+
     /**
      * Set the longitude
      *

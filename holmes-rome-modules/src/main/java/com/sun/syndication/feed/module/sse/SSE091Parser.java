@@ -1,22 +1,29 @@
 package com.sun.syndication.feed.module.sse;
 
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.sse.modules.*;
-import com.sun.syndication.feed.rss.Item;
-import com.sun.syndication.io.DelegatingModuleParser;
-import com.sun.syndication.io.WireFeedParser;
-import com.sun.syndication.io.impl.DateParser;
-import com.sun.syndication.io.impl.RSS20Parser;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.jdom.Attribute;
 import org.jdom.DataConversionException;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
+import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.sse.modules.Conflict;
+import com.sun.syndication.feed.module.sse.modules.Conflicts;
+import com.sun.syndication.feed.module.sse.modules.History;
+import com.sun.syndication.feed.module.sse.modules.Related;
+import com.sun.syndication.feed.module.sse.modules.SSEModule;
+import com.sun.syndication.feed.module.sse.modules.Sharing;
+import com.sun.syndication.feed.module.sse.modules.Sync;
+import com.sun.syndication.feed.module.sse.modules.Update;
+import com.sun.syndication.feed.rss.Item;
+import com.sun.syndication.io.DelegatingModuleParser;
+import com.sun.syndication.io.WireFeedParser;
+import com.sun.syndication.io.impl.DateParser;
+import com.sun.syndication.io.impl.RSS20Parser;
 
 /**
  * Parses embedded SSE content from RSS channel and item content.
@@ -24,8 +31,6 @@ import java.util.logging.Logger;
  * @author <a href="mailto:ldornin@dev.java.net">ldornin</a>
  */
 public class SSE091Parser implements DelegatingModuleParser {
-    static Logger log = Logger.getLogger(SSE091Parser.class.getName());
-
     // root of the sharing element
     private RSS20Parser rssParser;
 
@@ -33,21 +38,25 @@ public class SSE091Parser implements DelegatingModuleParser {
     public SSE091Parser() {
     }
 
+    @Override
     public void setFeedParser(WireFeedParser feedParser) {
-        this.rssParser = (RSS20Parser)feedParser;
+        this.rssParser = (RSS20Parser) feedParser;
     }
 
+    @Override
     public String getNamespaceUri() {
         return SSEModule.SSE_SCHEMA_URI;
     }
 
+    @Override
     public Module parse(org.jdom.Element element) {
         SSEModule sseModule = null;
         String name = element.getName();
 
         if (name.equals("rss")) {
             sseModule = parseSharing(element);
-        } else if (name.equals("item")) {
+        }
+        else if (name.equals("item")) {
             sseModule = parseSync(element);
         }
         return sseModule;
@@ -76,7 +85,6 @@ public class SSE091Parser implements DelegatingModuleParser {
         Element relatedChild = root.getChild(Related.NAME, SSEModule.SSE_NS);
         if (relatedChild != null) {
             related = new Related();
-            // TODO; is this an attribute?
             related.setLink(parseStringAttribute(relatedChild, Related.LINK_ATTRIBUTE));
             related.setSince(parseDateAttribute(relatedChild, Related.SINCE_ATTRIBUTE));
             related.setTitle(parseStringAttribute(relatedChild, Related.TITLE_ATTRIBUTE));
@@ -103,20 +111,15 @@ public class SSE091Parser implements DelegatingModuleParser {
         return sync;
     }
 
-    private List parseConflicts(Element syncElement) {
-        List conflicts = null;
+    private List<Conflict> parseConflicts(Element syncElement) {
+        List<Conflict> conflicts = null;
 
-        List conflictsContent = syncElement.getContent(new ContentFilter(Conflicts.NAME));
-        for (Iterator conflictsIter = conflictsContent.iterator();
-             conflictsIter.hasNext();)
-        {
+        List<?> conflictsContent = syncElement.getContent(new ContentFilter(Conflicts.NAME));
+        for (Iterator<?> conflictsIter = conflictsContent.iterator(); conflictsIter.hasNext();) {
             Element conflictsElement = (Element) conflictsIter.next();
 
-            List conflictContent =
-                    conflictsElement.getContent(new ContentFilter(Conflict.NAME));
-            for (Iterator conflictIter = conflictContent.iterator();
-                 conflictIter.hasNext();)
-            {
+            List<?> conflictContent = conflictsElement.getContent(new ContentFilter(Conflict.NAME));
+            for (Iterator<?> conflictIter = conflictContent.iterator(); conflictIter.hasNext();) {
                 Element conflictElement = (Element) conflictIter.next();
 
                 Conflict conflict = new Conflict();
@@ -124,18 +127,15 @@ public class SSE091Parser implements DelegatingModuleParser {
                 conflict.setWhen(parseDateAttribute(conflictElement, Conflict.WHEN_ATTRIBUTE));
                 conflict.setVersion(parseIntegerAttribute(conflictElement, Conflict.VERSION_ATTRIBUTE));
 
-                List conflictItemContent =
-                        conflictElement.getContent(new ContentFilter("item"));
-                for (Iterator conflictItemIter = conflictItemContent.iterator();
-                     conflictItemIter.hasNext();)
-                {
+                List<?> conflictItemContent = conflictElement.getContent(new ContentFilter("item"));
+                for (Iterator<?> conflictItemIter = conflictItemContent.iterator(); conflictItemIter.hasNext();) {
                     Element conflictItemElement = (Element) conflictItemIter.next();
                     Element root = getRoot(conflictItemElement);
                     Item conflictItem = rssParser.parseItem(root, conflictItemElement);
                     conflict.setItem(conflictItem);
 
                     if (conflicts == null) {
-                        conflicts = new ArrayList();
+                        conflicts = new ArrayList<Conflict>();
                     }
                     conflicts.add(conflict);
                 }
@@ -169,7 +169,7 @@ public class SSE091Parser implements DelegatingModuleParser {
     }
 
     private Element getFirstContent(Element element, String name) {
-        List filterList = element.getContent(new ContentFilter(name));
+        List<?> filterList = element.getContent(new ContentFilter(name));
         Element firstContent = null;
         if ((filterList != null) && (filterList.size() > 0)) {
             firstContent = (Element) filterList.get(0);
@@ -178,8 +178,8 @@ public class SSE091Parser implements DelegatingModuleParser {
     }
 
     private void parseUpdates(Element historyChild, History history) {
-        List updatedChildren = historyChild.getContent(new ContentFilter(Update.NAME));
-        for (Iterator childIter = updatedChildren.iterator(); childIter.hasNext();) {
+        List<?> updatedChildren = historyChild.getContent(new ContentFilter(Update.NAME));
+        for (Iterator<?> childIter = updatedChildren.iterator(); childIter.hasNext();) {
             Element updateChild = (Element) childIter.next();
             Update update = new Update();
             update.setBy(parseStringAttribute(updateChild, Update.BY_ATTRIBUTE));
@@ -199,7 +199,8 @@ public class SSE091Parser implements DelegatingModuleParser {
         if (integerAttribute != null) {
             try {
                 integerAttr = new Integer(integerAttribute.getIntValue());
-            } catch (DataConversionException e) {
+            }
+            catch (DataConversionException e) {
                 // dont use the data
             }
         }
@@ -212,7 +213,8 @@ public class SSE091Parser implements DelegatingModuleParser {
         if (attribute != null) {
             try {
                 attrValue = Boolean.valueOf(attribute.getBooleanValue());
-            } catch (DataConversionException e) {
+            }
+            catch (DataConversionException e) {
                 // dont use the data
             }
         }
@@ -232,14 +234,16 @@ public class SSE091Parser implements DelegatingModuleParser {
     }
 
     private static class ContentFilter implements Filter {
+        private static final long serialVersionUID = -6834384294039340975L;
         private String name;
+
         private ContentFilter(String name) {
             this.name = name;
         }
 
+        @Override
         public boolean matches(Object object) {
-            return (object instanceof Element) &&
-                    name.equals(((Element)object).getName());
+            return (object instanceof Element) && name.equals(((Element) object).getName());
         }
     }
 }

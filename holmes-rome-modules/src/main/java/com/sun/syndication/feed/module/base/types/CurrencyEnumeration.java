@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.util.HashMap;
 
-
 /**
  * An Enumeration of valid currency types.
  *
@@ -49,7 +48,7 @@ import java.util.HashMap;
  * @version $Revision: 1.1 $
  */
 public class CurrencyEnumeration {
-    private static final HashMap lookup = new HashMap();
+    private static final HashMap<String, CurrencyEnumeration> lookup = new HashMap<String, CurrencyEnumeration>();
 
     //<xs:restriction base="xs:string">
     //   <xs:enumeration value="AED"/>
@@ -578,21 +577,23 @@ public class CurrencyEnumeration {
      */
     private CurrencyEnumeration(String value) {
         this.value = value;
-        lookup.put(value,this);
+        lookup.put(value, this);
     }
 
     public String getValue() {
         return this.value;
     }
 
+    @Override
     public Object clone() {
         return this;
     }
 
     public static CurrencyEnumeration findByValue(String value) {
-        return (CurrencyEnumeration)lookup.get(value.trim().toUpperCase());
+        return lookup.get(value.trim().toUpperCase());
     }
 
+    @Override
     public String toString() {
         return value;
     }

@@ -38,12 +38,10 @@
 package com.sun.syndication.feed.module.yahooweather.types;
 
 import java.io.Serializable;
-
 import java.util.Date;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
-
 
 /**
  * The weather forecast for a specific day. The item element contains
@@ -70,8 +68,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Forecast implements Serializable, Cloneable {
-    private transient ToStringBean toString = new ToStringBean(Forecast.class,
-            this);
+    private static final long serialVersionUID = 8037411327693518044L;
+
+    private transient ToStringBean toString = new ToStringBean(Forecast.class, this);
     private transient EqualsBean equals = new EqualsBean(Forecast.class, this);
     private String day;
     private Date date;
@@ -98,8 +97,7 @@ public class Forecast implements Serializable, Cloneable {
      *              Cloudy"
      * @param code ConditionCode instance for this forcast.
      */
-    public Forecast(String day, Date date, int low, int high, String text,
-        ConditionCode code) {
+    public Forecast(String day, Date date, int low, int high, String text, ConditionCode code) {
         super();
         this.day = day;
         this.date = date;
@@ -213,21 +211,23 @@ public class Forecast implements Serializable, Cloneable {
         this.code = code;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
 
+    @Override
     public Object clone() {
-        return new Forecast(this.day,
-            (this.date != null) ? new Date(this.date.getTime()) : null,
-            this.low, this.high, this.text, this.code);
+        return new Forecast(this.day, (this.date != null) ? new Date(this.date.getTime()) : null, this.low, this.high, this.text, this.code);
     }
 }

@@ -17,12 +17,11 @@
  */
 package com.sun.syndication.feed.module.sle.types;
 
-import com.sun.syndication.feed.impl.ObjectBean;
+import java.io.Serializable;
 
 import org.jdom.Namespace;
 
-import java.io.Serializable;
-
+import com.sun.syndication.feed.impl.ObjectBean;
 
 /**
  * The <code>cf:group</code> element is intended to inform the client that the&nbsp;property to which it 
@@ -55,6 +54,8 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Group implements Serializable, Cloneable {
+    private static final long serialVersionUID = -7303429881984910769L;
+
     private Namespace namespace = Namespace.XML_NAMESPACE;
     private ObjectBean obj = new ObjectBean(Group.class, this);
     private String element;
@@ -93,21 +94,25 @@ public class Group implements Serializable, Cloneable {
      * @return Returns the namespace of the element.
      */
     public Namespace getNamespace() {
-        return namespace ;
+        return namespace;
     }
 
+    @Override
     public Object clone() {
         return new Group(namespace, element, label);
     }
 
+    @Override
     public boolean equals(Object o) {
         return obj.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return obj.hashCode();
     }
 
+    @Override
     public String toString() {
         return obj.toString();
     }

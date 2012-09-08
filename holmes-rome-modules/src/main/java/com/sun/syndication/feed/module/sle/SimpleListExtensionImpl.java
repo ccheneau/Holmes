@@ -21,12 +21,13 @@ import com.sun.syndication.feed.module.ModuleImpl;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
 
-
 /**
  * 
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExtension {
+    private static final long serialVersionUID = 7781620211225688388L;
+
     private String treatAs = "list";
     private Group[] groupFields;
     private Sort[] sortFields;
@@ -36,10 +37,12 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
         super(SimpleListExtensionImpl.class, SimpleListExtension.URI);
     }
 
+    @Override
     public void setGroupFields(Group[] groupFields) {
         this.groupFields = groupFields;
     }
 
+    @Override
     public Group[] getGroupFields() {
         return groupFields;
     }
@@ -53,22 +56,27 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
      *
      * @return the interface the copyFrom works on.
      */
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return SimpleListExtension.class;
     }
 
+    @Override
     public void setSortFields(Sort[] sortFields) {
         this.sortFields = sortFields;
     }
 
+    @Override
     public Sort[] getSortFields() {
         return sortFields;
     }
 
+    @Override
     public void setTreatAs(String treatAs) {
         this.treatAs = treatAs;
     }
 
+    @Override
     public String getTreatAs() {
         return treatAs;
     }
@@ -79,6 +87,7 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
      *
      * @return URI of the module.
      */
+    @Override
     public String getUri() {
         return SimpleListExtension.URI;
     }
@@ -94,10 +103,11 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
      *
      * @param obj the instance to copy properties from.
      */
+    @Override
     public void copyFrom(Object obj) {
         SimpleListExtension sle = (SimpleListExtension) obj;
-        this.setGroupFields((Group[]) sle.getGroupFields().clone());
-        this.setSortFields((Sort[]) sle.getSortFields().clone());
+        this.setGroupFields(sle.getGroupFields().clone());
+        this.setSortFields(sle.getSortFields().clone());
         this.setTreatAs(sle.getTreatAs());
     }
 }

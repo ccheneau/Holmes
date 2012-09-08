@@ -28,16 +28,15 @@ import com.sun.syndication.feed.module.ModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
 
-
 /**
  *
  * This class represents feed/channel level elements for MediaRSS
  * @author cooper
  */
 public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializable {
-	private static final long serialVersionUID = 1506805082848531979L;
+    private static final long serialVersionUID = 1506805082848531979L;
 
-	private Metadata metadata;
+    private Metadata metadata;
     private PlayerReference player;
 
     /** Creates a new instance of MediaModuleImpl */
@@ -50,11 +49,12 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
      * @param clazz
      * @param uri
      */
-    public MediaModuleImpl(Class clazz, String uri) {
+    public MediaModuleImpl(Class<?> clazz, String uri) {
         super(clazz, uri);
     }
 
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return MediaModule.class;
     }
 
@@ -70,6 +70,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
      * Metadata for a feed.
      * @return Metadata for a feed.
      */
+    @Override
     public Metadata getMetadata() {
         return metadata;
     }
@@ -86,14 +87,17 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
      * Player for a feed.
      * @return Player for a feed.
      */
+    @Override
     public PlayerReference getPlayer() {
         return player;
     }
 
+    @Override
     public String getUri() {
         return MediaModule.URI;
     }
 
+    @Override
     public Object clone() {
         MediaModuleImpl m = new MediaModuleImpl();
         m.setMetadata((Metadata) metadata.clone());
@@ -102,6 +106,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
         return m;
     }
 
+    @Override
     public void copyFrom(Object obj) {
         MediaModule m = (MediaModule) obj;
         this.metadata = (Metadata) m.getMetadata().clone();

@@ -21,15 +21,12 @@
  */
 package com.sun.syndication.feed.module.mediarss.io;
 
-import com.sun.syndication.feed.WireFeed;
-import com.sun.syndication.io.impl.RSS20Parser;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
-import java.util.List;
-
+import com.sun.syndication.feed.WireFeed;
+import com.sun.syndication.io.impl.RSS20Parser;
 
 /**
  * @author Nathanial X. Freitas
@@ -58,12 +55,12 @@ public class RSS20YahooParser extends RSS20Parser {
      * @param document document to check if it can be parsed with this parser implementation.
      * @return <b>true</b> if the document is RSS1., <b>false</b> otherwise.
      */
+    @Override
     public boolean isMyType(Document document) {
         boolean ok = false;
 
         Element rssRoot = document.getRootElement();
         Namespace defaultNS = rssRoot.getNamespace();
-        List additionalNSs = rssRoot.getAdditionalNamespaces();
 
         ok = (defaultNS != null) && defaultNS.equals(getRSSNamespace());
 
@@ -76,6 +73,7 @@ public class RSS20YahooParser extends RSS20Parser {
      *
      * @return returns "http://purl.org/rss/1.0/".
      */
+    @Override
     protected Namespace getRSSNamespace() {
         return Namespace.getNamespace(RSS_URI);
     }
@@ -85,6 +83,7 @@ public class RSS20YahooParser extends RSS20Parser {
      * this parser is a phantom.
      *
      */
+    @Override
     protected WireFeed parseChannel(Element rssRoot) {
         WireFeed wFeed = super.parseChannel(rssRoot);
         wFeed.setFeedType("rss_2.0");

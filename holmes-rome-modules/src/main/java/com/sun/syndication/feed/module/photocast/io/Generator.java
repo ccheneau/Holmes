@@ -41,65 +41,71 @@
 
 package com.sun.syndication.feed.module.photocast.io;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.photocast.PhotocastModule;
 import com.sun.syndication.io.ModuleGenerator;
-import java.util.HashSet;
-import java.util.Set;
-import org.jdom.Element;
-import org.jdom.Namespace;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Generator implements ModuleGenerator {
-    
-    private static final Namespace NS = Namespace.getNamespace( "apple-wallpapers", PhotocastModule.URI );
-    private static final HashSet NAMESPACES = new HashSet();
+
+    private static final Namespace NS = Namespace.getNamespace("apple-wallpapers", PhotocastModule.URI);
+    private static final HashSet<Namespace> NAMESPACES = new HashSet<Namespace>();
     private static final String FEED_VERSION = "0.9";
-    static{
-        NAMESPACES.add( NS );
+    static {
+        NAMESPACES.add(NS);
     }
+
     /** Creates a new instance of Generator */
     public Generator() {
         super();
     }
 
+    @Override
     public void generate(Module module, Element element) {
-        if( !(module instanceof PhotocastModule ) )
-            return;
+        if (!(module instanceof PhotocastModule)) return;
         PhotocastModule pm = (PhotocastModule) module;
-        if( element.getName().equals("channel") || element.getName().equals("feed") ){
-            element.addContent( generateSimpleElement( "feedVersion", FEED_VERSION) );
+        if (element.getName().equals("channel") || element.getName().equals("feed")) {
+            element.addContent(generateSimpleElement("feedVersion", FEED_VERSION));
             return;
         }
-        element.addContent( generateSimpleElement("photoDate", Parser.PHOTO_DATE_FORMAT.format(pm.getPhotoDate())));
-        element.addContent( generateSimpleElement("cropDate", Parser.CROP_DATE_FORMAT.format( pm.getCropDate() )));
-        element.addContent( generateSimpleElement("thumbnail", pm.getThumbnailUrl().toString() ) );
-        element.addContent( generateSimpleElement("image", pm.getImageUrl().toString() ) );
-        Element e = new Element( "metadata", NS );
-        Element pd = new Element( "PhotoDate", "" );
-        pd.addContent( pm.getMetadata().getPhotoDate().toString() );
-        e.addContent( pd );
+        element.addContent(generateSimpleElement("photoDate", Parser.PHOTO_DATE_FORMAT.format(pm.getPhotoDate())));
+        element.addContent(generateSimpleElement("cropDate", Parser.CROP_DATE_FORMAT.format(pm.getCropDate())));
+        element.addContent(generateSimpleElement("thumbnail", pm.getThumbnailUrl().toString()));
+        element.addContent(generateSimpleElement("image", pm.getImageUrl().toString()));
+        Element e = new Element("metadata", NS);
+        Element pd = new Element("PhotoDate", "");
+        pd.addContent(pm.getMetadata().getPhotoDate().toString());
+        e.addContent(pd);
         Element com = new Element("Comments", "");
-        com.addContent( pm.getMetadata().getComments() );
-        e.addContent( com );
+        com.addContent(pm.getMetadata().getComments());
+        e.addContent(com);
         element.addContent(e);
     }
 
-    public Set getNamespaces() {
+    @Override
+    public Set<Namespace> getNamespaces() {
         return Generator.NAMESPACES;
     }
 
+    @Override
     public String getNamespaceUri() {
         return PhotocastModule.URI;
     }
+
     protected Element generateSimpleElement(String name, String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
 
         return element;
     }
-   
+
 }

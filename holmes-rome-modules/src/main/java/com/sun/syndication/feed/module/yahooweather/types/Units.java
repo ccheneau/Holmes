@@ -42,7 +42,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * Units for various aspects of the forecast. Attributes:
  *      <ul class="topspace">
@@ -64,6 +63,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Units implements Serializable, Cloneable {
+    private static final long serialVersionUID = 1452115206504137214L;
+
     private transient ToStringBean toString = new ToStringBean(Units.class, this);
     private transient EqualsBean equals = new EqualsBean(Units.class, this);
     private String temperature;
@@ -85,8 +86,7 @@ public class Units implements Serializable, Cloneable {
      * @param pressure units of pressure ("in" or "mb")
      * @param speed units of speed ("mph" or "kph")
      */
-    public Units(String temperature, String distance, String pressure,
-        String speed) {
+    public Units(String temperature, String distance, String pressure, String speed) {
         super();
         this.temperature = temperature;
         this.distance = distance;
@@ -158,20 +158,23 @@ public class Units implements Serializable, Cloneable {
         this.speed = speed;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
 
+    @Override
     public Object clone() {
-        return new Units(this.temperature, this.distance, this.pressure,
-            this.speed);
+        return new Units(this.temperature, this.distance, this.pressure, this.speed);
     }
 }

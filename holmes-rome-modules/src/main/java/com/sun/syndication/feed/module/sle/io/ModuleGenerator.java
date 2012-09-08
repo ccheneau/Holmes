@@ -8,24 +8,23 @@
  */
 package com.sun.syndication.feed.module.sle.io;
 
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.sle.SimpleListExtension;
-import com.sun.syndication.feed.module.sle.types.Group;
-import com.sun.syndication.feed.module.sle.types.Sort;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jdom.Element;
 import org.jdom.Namespace;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.sle.SimpleListExtension;
+import com.sun.syndication.feed.module.sle.types.Group;
+import com.sun.syndication.feed.module.sle.types.Sort;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
-    private static final Set NAMESPACES = new HashSet();
+    private static final Set<Namespace> NAMESPACES = new HashSet<Namespace>();
 
     static {
         NAMESPACES.add(ModuleParser.NS);
@@ -42,6 +41,7 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
      *
      * @return the namespace URI.
      */
+    @Override
     public String getNamespaceUri() {
         return SimpleListExtension.URI;
     }
@@ -55,7 +55,8 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
      *
      * @return a set with all the URIs (JDOM Namespace elements) this module generator uses.
      */
-    public Set getNamespaces() {
+    @Override
+    public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 
@@ -66,6 +67,7 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
      * @param module the module to inject into the XML node (JDOM element).
      * @param element the XML node to inject the module metadata to.
      */
+    @Override
     public void generate(Module module, Element element) {
         if (!(module instanceof SimpleListExtension)) {
             return;
@@ -117,7 +119,8 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        } else {
+        }
+        else {
             target.setAttribute(name, value.toString());
         }
     }
@@ -125,7 +128,8 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
     protected Element addNotNullElement(Element target, String name, Object value) {
         if (value == null) {
             return null;
-        } else {
+        }
+        else {
             Element e = generateSimpleElement(name, value.toString());
             target.addContent(e);
 

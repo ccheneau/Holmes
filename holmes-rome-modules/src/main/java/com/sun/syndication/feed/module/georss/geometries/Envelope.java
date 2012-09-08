@@ -17,12 +17,15 @@ package com.sun.syndication.feed.module.georss.geometries;
  * @author runaas
  */
 public class Envelope extends AbstractGeometry {
+    private static final long serialVersionUID = 1555722515672546906L;
+
     protected double minLatitude, minLongitude, maxLatitude, maxLongitude;
-    
+
     /** Creates a new instance of Envelope */
     public Envelope() {
         minLatitude = minLongitude = maxLatitude = maxLongitude = Double.NaN;
     }
+
     /**
      * Construct object from coordinate values
      *
@@ -32,61 +35,61 @@ public class Envelope extends AbstractGeometry {
      * @param maxLongitude
      */
     public Envelope(double minLatitude, double minLongitude, double maxLatitude, double maxLongitude) {
-        this.minLatitude  = minLatitude;
+        this.minLatitude = minLatitude;
         this.minLongitude = minLongitude;
-        this.maxLatitude  = maxLatitude;
+        this.maxLatitude = maxLatitude;
         this.maxLongitude = maxLongitude;
     }
-    
+
     /**
      * @return the minimum longitude
      */
     public double getMinLongitude() {
         return minLongitude;
     }
-    
+
     /**
      * @return the minimum latitude
      */
     public double getMinLatitude() {
         return minLatitude;
     }
-    
+
     /**
      * @return the maximum longitude
      */
     public double getMaxLongitude() {
         return maxLongitude;
     }
-    
+
     /**
      * @return the maximum latitude
      */
     public double getMaxLatitude() {
         return maxLatitude;
     }
-    
+
     /**
      * @param v  minimum longitude
      */
     public void setMinLongitude(double v) {
         minLongitude = v;
     }
-    
+
     /**
      * @param v minimum latitude
      */
     public void setMinLatitude(double v) {
         minLatitude = v;
     }
-    
+
     /**
      * @param v maximum longitude
      */
     public void setMaxLongitude(double v) {
         maxLongitude = v;
     }
-    
+
     /**
      * @param v maximum latitude
      */

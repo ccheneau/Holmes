@@ -23,7 +23,7 @@ import com.sun.syndication.feed.module.opensearch.entity.OSQuery;
 /** Provides access to A9 Open Search information.
  * @author Michael W. Nassif (enrouteinc@gmail.com)
  */
-public interface OpenSearchResponse{
+public interface OpenSearchResponse {
 
     /**
      * #  totalResults – the maximum number of results available for these search terms
@@ -33,8 +33,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @param totalResults A positive integer value.
      */
-	public void setTotalResults(int totalResults);
-	
+    public void setTotalResults(int totalResults);
+
     /**
      * #  totalResults – the maximum number of results available for these search terms
      * 
@@ -43,8 +43,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @return a positive integer value.
      */
-	public int getTotalResults();
-	
+    public int getTotalResults();
+
     /**
      * #  startIndex – the index of the first item returned in the result.
      * 
@@ -54,8 +54,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @param startIndex int value >= 1.
      */
-	public void setStartIndex(int startIndex);
-	
+    public void setStartIndex(int startIndex);
+
     /**
      * #  startIndex – the index of the first item returned in the result.
      * 
@@ -65,8 +65,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @return int value >= 1.
      */
-	public int getStartIndex();
-	
+    public int getStartIndex();
+
     /**
      * #  itemsPerPage – the maximum number of items that can appear in one page of results.
      * 
@@ -75,8 +75,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @param itemsPerPage int value >= 1.
      */
-	public void setItemsPerPage(int itemsPerPage);
-	
+    public void setItemsPerPage(int itemsPerPage);
+
     /**
      * #  itemsPerPage – the maximum number of items that can appear in one page of results.
      * 
@@ -85,8 +85,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @return int value >= 1
      */
-	public int getItemsPerPage();
-	
+    public int getItemsPerPage();
+
     /**
      * #  link – a reference back to the OpenSearch Description file
      * 
@@ -96,8 +96,8 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @param link link to the open search spec.
      */
-	public void setLink(Link link);
-	
+    public void setLink(Link link);
+
     /**
      * #  link – a reference back to the OpenSearch Description file
      * 
@@ -107,9 +107,9 @@ public interface OpenSearchResponse{
      *    * Requirements: May appear zero or one time.
      * @return link to the opensearch spec.
      */
-	public Link getLink();
-	
-	// list of OSResponseQuery interfaces
+    public Link getLink();
+
+    // list of OSResponseQuery interfaces
     /**
      * <code>Query</code> – in an OpenSearch Response, can be used both to echo back the original query and to suggest new searches.
      * 	Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
@@ -118,8 +118,8 @@ public interface OpenSearchResponse{
      *        <li>Requirements: May appear zero or more times. Note that the “Q” is capitalized.</li>
      * @param query List of OSQuery objects.
      */
-	public void setQueries(List query);
-	
+    public void setQueries(List<OSQuery> query);
+
     /**
      * <code>Query</code> – in an OpenSearch Response, can be used both to echo back the original query and to suggest new searches.
      * 	Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
@@ -128,12 +128,12 @@ public interface OpenSearchResponse{
      *        <li>Requirements: May appear zero or more times. Note that the “Q” is capitalized.</li>
      * @return A list of OSQuery objects.
      */
-	public List getQueries();
-	
-	// convenience method
+    public List<OSQuery> getQueries();
+
+    // convenience method
     /**
      * Adds a query to the module.
      * @param query OSQuery object to add.
      */
-	public void addQuery(OSQuery query);
+    public void addQuery(OSQuery query);
 }

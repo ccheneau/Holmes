@@ -40,6 +40,7 @@
  */
 
 package com.sun.syndication.feed.module.slash;
+
 import com.sun.syndication.feed.impl.EqualsBean;
 
 /**
@@ -47,91 +48,102 @@ import com.sun.syndication.feed.impl.EqualsBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SlashImpl implements Slash {
-    
+    private static final long serialVersionUID = -7802311045707090255L;
+
     private String section;
-    
+
     private String department;
-    
+
     private Integer comments;
-    
+
     private Integer[] hitParade;
-    
+
     /** Creates a new instance of SlashImpl */
     public SlashImpl() {
     }
 
+    @Override
     public String getSection() {
         return section;
     }
 
+    @Override
     public void setSection(String section) {
         this.section = section;
     }
 
+    @Override
     public String getDepartment() {
         return department;
     }
 
+    @Override
     public void setDepartment(String department) {
         this.department = department;
     }
 
+    @Override
     public Integer getComments() {
         return comments;
     }
 
+    @Override
     public void setComments(Integer comments) {
         this.comments = comments;
     }
 
+    @Override
     public Integer[] getHitParade() {
         return hitParade == null ? new Integer[0] : hitParade;
     }
 
+    @Override
     public void setHitParade(Integer[] hitParade) {
         this.hitParade = hitParade;
     }
 
-
-    
+    @Override
     public void copyFrom(Object object) {
-	Slash source =(Slash) object;
-	this.setHitParade( arrayCopy( source.getHitParade() ));
-	this.setComments( source.getComments() );
-	this.setDepartment( source.getDepartment() );
-	this.setSection( source.getSection() );	
+        Slash source = (Slash) object;
+        this.setHitParade(arrayCopy(source.getHitParade()));
+        this.setComments(source.getComments());
+        this.setDepartment(source.getDepartment());
+        this.setSection(source.getSection());
     }
 
+    @Override
     public Object clone() {
-	SlashImpl si = new SlashImpl();
-	si.copyFrom( this );
-	return si;
+        SlashImpl si = new SlashImpl();
+        si.copyFrom(this);
+        return si;
     }
 
+    @Override
     public String getUri() {
-	return Slash.URI;
+        return Slash.URI;
     }
-    
-    
+
     private Integer[] arrayCopy(Integer[] source) {
-        if(source == null) {
+        if (source == null) {
             return null;
         }
 
-        Integer[] array = new Integer[ source.length ];
-        for(int i = 0; i < source.length; i++) {
+        Integer[] array = new Integer[source.length];
+        for (int i = 0; i < source.length; i++) {
             array[i] = source[i];
         }
 
         return array;
     }
 
-    public Class getInterface() {
-	return Slash.class;
+    @Override
+    public Class<?> getInterface() {
+        return Slash.class;
     }
-    
-   public boolean equals(Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(),this);
+
+    @Override
+    public boolean equals(Object obj) {
+        EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }

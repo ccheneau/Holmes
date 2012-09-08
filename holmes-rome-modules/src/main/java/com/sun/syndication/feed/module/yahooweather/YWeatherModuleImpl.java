@@ -44,14 +44,14 @@ import com.sun.syndication.feed.module.yahooweather.types.Location;
 import com.sun.syndication.feed.module.yahooweather.types.Units;
 import com.sun.syndication.feed.module.yahooweather.types.Wind;
 
-
 /**
  * A Module implementation for entry or feed level information.
  * @version $Id: YWeatherModuleImpl.java,v 1.2 2008/01/22 14:50:06 kebernet Exp $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class YWeatherModuleImpl extends ModuleImpl
-    implements YWeatherEntryModule, YWeatherFeedModule {
+public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModule, YWeatherFeedModule {
+    private static final long serialVersionUID = 5385569481249542934L;
+
     private Location location;
     private Astronomy astronomy;
     private Atmosphere atmosphere;
@@ -64,95 +64,104 @@ public class YWeatherModuleImpl extends ModuleImpl
         super(YWeatherModuleImpl.class, YWeatherModule.URI);
     }
 
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return CopyFromInterface.class;
     }
 
+    @Override
     public void copyFrom(Object o) {
         YWeatherModuleImpl from = (YWeatherModuleImpl) o;
-        this.setAstronomy((from.getAstronomy() != null)
-            ? (Astronomy) from.getAstronomy().clone() : null);
-        this.setCondition((from.getCondition() != null)
-            ? (Condition) from.getCondition().clone() : null);
-        this.setLocation((from.getLocation() != null)
-            ? (Location) from.getLocation().clone() : null);
-        this.setUnits((from.getUnits() != null)
-            ? (Units) from.getUnits().clone() : null);
-        this.setWind((from.getWind() != null) ? (Wind) from.getWind().clone()
-                                              : null);
+        this.setAstronomy((from.getAstronomy() != null) ? (Astronomy) from.getAstronomy().clone() : null);
+        this.setCondition((from.getCondition() != null) ? (Condition) from.getCondition().clone() : null);
+        this.setLocation((from.getLocation() != null) ? (Location) from.getLocation().clone() : null);
+        this.setUnits((from.getUnits() != null) ? (Units) from.getUnits().clone() : null);
+        this.setWind((from.getWind() != null) ? (Wind) from.getWind().clone() : null);
 
-        this.setAtmosphere((from.getAtmosphere() != null)
-            ? (Atmosphere) from.getAtmosphere().clone() : null);
+        this.setAtmosphere((from.getAtmosphere() != null) ? (Atmosphere) from.getAtmosphere().clone() : null);
 
-        if(from.getForecasts() != null) {
+        if (from.getForecasts() != null) {
             this.forecasts = new Forecast[from.forecasts.length];
 
-            for(int i = 0; i < from.forecasts.length; i++) {
-                this.forecasts[i] = (from.forecasts[i] != null)
-                    ? (Forecast) from.forecasts[i].clone() : null;
+            for (int i = 0; i < from.forecasts.length; i++) {
+                this.forecasts[i] = (from.forecasts[i] != null) ? (Forecast) from.forecasts[i].clone() : null;
             }
-        } else {
+        }
+        else {
             this.forecasts = null;
         }
     }
 
+    @Override
     public Location getLocation() {
         return location;
     }
 
+    @Override
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    @Override
     public Astronomy getAstronomy() {
         return astronomy;
     }
 
+    @Override
     public void setAstronomy(Astronomy astronomy) {
         this.astronomy = astronomy;
     }
 
+    @Override
     public Units getUnits() {
         return units;
     }
 
+    @Override
     public void setUnits(Units units) {
         this.units = units;
     }
 
+    @Override
     public Condition getCondition() {
         return condition;
     }
 
+    @Override
     public void setCondition(Condition condition) {
         this.condition = condition;
     }
 
+    @Override
     public Forecast[] getForecasts() {
         return forecasts;
     }
 
+    @Override
     public void setForecasts(Forecast[] forecasts) {
         this.forecasts = forecasts;
     }
 
+    @Override
     public Wind getWind() {
         return wind;
     }
 
+    @Override
     public void setWind(Wind wind) {
         this.wind = wind;
     }
 
+    @Override
     public Atmosphere getAtmosphere() {
         return atmosphere;
     }
 
+    @Override
     public void setAtmosphere(Atmosphere atmosphere) {
         this.atmosphere = atmosphere;
     }
 
-    public static interface CopyFromInterface extends YWeatherFeedModule,
-        YWeatherEntryModule {
+    public static interface CopyFromInterface extends YWeatherFeedModule, YWeatherEntryModule {
     }
 }

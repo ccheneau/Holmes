@@ -9,61 +9,60 @@
 
 package com.sun.syndication.feed.module.georss.geometries;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Polygon, a surface object bounded by one external ring and zero or more internal rings 
  * @author runaas
  */
 public final class Polygon extends AbstractSurface implements Cloneable {
+    private static final long serialVersionUID = -691747021168579678L;
+
     private AbstractRing exterior;
-    private List         interior;
-    
+    private List<AbstractRing> interior;
+
     /** Creates a new instance of Polygon */
     public Polygon() {
-        
+
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
-        Polygon retval  = (Polygon)super.clone();
-        if (exterior != null)
-             retval.exterior = (AbstractRing)exterior.clone();
-         if (interior != null) {
-             retval.interior = new ArrayList();
-             Iterator it = interior.iterator();
-             while (it.hasNext()) {
-                 AbstractRing r = (AbstractRing)it.next();
-                 retval.interior.add(r.clone());
-             }
-         }
-         return retval;
-     }
-    
-     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        Polygon pol = (Polygon)obj;
+        Polygon retval = (Polygon) super.clone();
+        if (exterior != null) retval.exterior = (AbstractRing) exterior.clone();
+        if (interior != null) {
+            retval.interior = new ArrayList<AbstractRing>();
+            Iterator<AbstractRing> it = interior.iterator();
+            while (it.hasNext()) {
+                AbstractRing r = it.next();
+                retval.interior.add((AbstractRing) r.clone());
+            }
+        }
+        return retval;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        Polygon pol = (Polygon) obj;
         if (exterior == null && pol.exterior == null)
-            ;
-        else if (exterior == null || pol.exterior == null)
-            return false;
-        else if (!exterior.equals(pol.exterior))
-            return false;
-       
+        ;
+        else if (exterior == null || pol.exterior == null) return false;
+        else if (!exterior.equals(pol.exterior)) return false;
+
         // Not efficient.... (but the number of internal ringr is usually small).
-        Iterator it = interior.iterator();
-        while (it.hasNext()) 
-            if (!pol.interior.contains(it.next()))
-                return false;
+        Iterator<AbstractRing> it = interior.iterator();
+        while (it.hasNext())
+            if (!pol.interior.contains(it.next())) return false;
         it = pol.interior.iterator();
-        while (it.hasNext()) 
-            if (!interior.contains(it.next()))
-                return false;
+        while (it.hasNext())
+            if (!interior.contains(it.next())) return false;
         return true;
     }
-    
+
     /**
      * Retrieve the outer border
      *
@@ -72,18 +71,17 @@ public final class Polygon extends AbstractSurface implements Cloneable {
     public AbstractRing getExterior() {
         return exterior;
     }
-    
+
     /**
      * Retrieve the inner border
      *
      * @return the list of border rings
      */
-    public List getInterior() {
-        if (interior == null)
-            interior = new ArrayList();
+    public List<AbstractRing> getInterior() {
+        if (interior == null) interior = new ArrayList<AbstractRing>();
         return interior;
     }
-    
+
     /**
      * Set the outer border
      *
@@ -92,13 +90,13 @@ public final class Polygon extends AbstractSurface implements Cloneable {
     public void setExterior(AbstractRing exterior) {
         this.exterior = exterior;
     }
-    
+
     /**
      * Set the list of inner borders (holes)
      *
      * @param interior the list of inner rings
      */
-    public void setInterior(List interior) {
+    public void setInterior(List<AbstractRing> interior) {
         this.interior = interior;
     }
 }

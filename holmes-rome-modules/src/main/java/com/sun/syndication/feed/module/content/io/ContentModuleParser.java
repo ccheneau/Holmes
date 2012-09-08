@@ -43,17 +43,18 @@
  */
 package com.sun.syndication.feed.module.content.io;
 
-import com.sun.syndication.feed.module.content.ContentItem;
-import com.sun.syndication.feed.module.content.ContentModule;
-import com.sun.syndication.feed.module.content.ContentModuleImpl;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.Namespace;
-
 import org.jdom.output.XMLOutputter;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sun.syndication.feed.module.content.ContentItem;
+import com.sun.syndication.feed.module.content.ContentModule;
+import com.sun.syndication.feed.module.content.ContentModuleImpl;
+
 /**
  * @version $Revision: 1.3 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -66,16 +67,19 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
     public ContentModuleParser() {
     }
 
+    @Override
     public String getNamespaceUri() {
         return ContentModule.URI;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
     public com.sun.syndication.feed.module.Module parse(org.jdom.Element element) {
         boolean foundSomething = false;
         ContentModule cm = new ContentModuleImpl();
-        List encodeds = element.getChildren("encoded", CONTENT_NS);
-        ArrayList contentStrings = new ArrayList();
-        ArrayList encodedStrings = new ArrayList();
+        List<?> encodeds = element.getChildren("encoded", CONTENT_NS);
+        ArrayList<String> contentStrings = new ArrayList<String>();
+        ArrayList<String> encodedStrings = new ArrayList<String>();
 
         if (encodeds.size() > 0) {
             foundSomething = true;
@@ -87,13 +91,13 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
             }
         }
 
-        ArrayList contentItems = new ArrayList();
-        List items = element.getChildren("items", CONTENT_NS);
+        ArrayList<ContentItem> contentItems = new ArrayList<ContentItem>();
+        List<?> items = element.getChildren("items", CONTENT_NS);
 
         for (int i = 0; i < items.size(); i++) {
             foundSomething = true;
 
-            List lis = ((Element) items.get(i)).getChild("Bag", RDF_NS).getChildren("li", RDF_NS);
+            List<?> lis = ((Element) items.get(i)).getChild("Bag", RDF_NS).getChildren("li", RDF_NS);
 
             for (int j = 0; j < lis.size(); j++) {
                 ContentItem ci = new ContentItem();
@@ -112,7 +116,8 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
                         ci.setContentValue(getXmlInnerText(value));
                         contentStrings.add(getXmlInnerText(value));
                         ci.setContentValueNamespaces(value.getAdditionalNamespaces());
-                    } else {
+                    }
+                    else {
                         ci.setContentValue(value.getText());
                         contentStrings.add(value.getText());
                     }
@@ -150,7 +155,7 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
     protected String getXmlInnerText(Element e) {
         StringBuffer sb = new StringBuffer();
         XMLOutputter xo = new XMLOutputter();
-        List children = e.getContent();
+        List<?> children = e.getContent();
         sb.append(xo.outputString(children));
 
         return sb.toString();

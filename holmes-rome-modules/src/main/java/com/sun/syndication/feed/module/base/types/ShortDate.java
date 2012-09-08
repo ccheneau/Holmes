@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.util.Date;
 
-
 /**
  * This is a simple wrapper for java.util.Date that indicates it should be 
  * formatted without time of day for Google Base. It should be transparent to 
@@ -52,6 +51,8 @@ import java.util.Date;
  * @version $Revision: 1.1 $
  */
 public class ShortDate extends Date implements CloneableType {
+    private static final long serialVersionUID = -6612985324845135483L;
+
     /** Creates a new instance of ShortDate */
     public ShortDate() {
         super();
@@ -77,6 +78,7 @@ public class ShortDate extends Date implements CloneableType {
      * Returns a duplicate of this object.
      * @return Duplicate of the object.
      */
+    @Override
     public Object clone() {
         return new ShortDate(this.getTime());
     }

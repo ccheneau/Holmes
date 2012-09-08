@@ -42,7 +42,6 @@ package com.sun.syndication.feed.module.content;
 
 import java.util.List;
 
-
 /**
  * @version $Revision: 1.1 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -55,18 +54,21 @@ public interface ContentModule extends com.sun.syndication.feed.module.Module {
      * are in the element.
      * @return List of content Strings
      */
-    public List getEncodeds();
+    public List<String> getEncodeds();
 
     /** Sets a List of Strings containing the New Syntax Encoded values
      * are in the element.
      * @return List of content Strings
      */
-    public void setEncodeds(List encodeds);
+    public void setEncodeds(List<String> encodeds);
 
+    @Override
     public void copyFrom(Object obj);
 
-    public Class getInterface();
+    @Override
+    public Class<?> getInterface();
 
+    @Override
     public String getUri();
 
     public String toString(String str);
@@ -75,23 +77,23 @@ public interface ContentModule extends com.sun.syndication.feed.module.Module {
      * @see com.totsp.xml.syndication.content.ContentItem
      * @return List of ContentItems.
      */
-    public List getContentItems();
+    public List<ContentItem> getContentItems();
 
     /** Contains a list of ContentItems that represent the "Original Syntax" set.
      * @see com.totsp.xml.syndication.content.ContentItem
      * @param List of ContentItems.
      */
-    public void setContentItems(List list);
+    public void setContentItems(List<ContentItem> list);
 
     /** Returns a List of Strings containing whatever new or original syntax items
      * are in the element.
      * @return List of content Strings
      */
-    public List getContents();
+    public List<String> getContents();
 
     /** Sets a List of Strings containing whatever new or original syntax items
      * are in the element.
      * @return List of content Strings
      */
-    public void setContents(List contents);
+    public void setContents(List<String> contents);
 }

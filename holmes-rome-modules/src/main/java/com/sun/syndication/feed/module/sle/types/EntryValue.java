@@ -18,8 +18,8 @@
 package com.sun.syndication.feed.module.sle.types;
 
 import java.io.Serializable;
-import org.jdom.Namespace;
 
+import org.jdom.Namespace;
 
 /**
  * An interface that parents data types for sorting and grouping.
@@ -42,8 +42,8 @@ public interface EntryValue extends Serializable, Cloneable {
      * Returns the value of the element.
      * @return Returns the value of the element.
      */
-    public Comparable getValue();
-    
+    public Comparable<?> getValue();
+
     /** 
      * Returns the namespace of the element.
      * @return Returns the namespace of the element.

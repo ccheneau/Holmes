@@ -17,12 +17,11 @@
  */
 package com.sun.syndication.feed.module.sle.types;
 
-import com.sun.syndication.feed.impl.ObjectBean;
+import java.io.Serializable;
 
 import org.jdom.Namespace;
 
-import java.io.Serializable;
-
+import com.sun.syndication.feed.impl.ObjectBean;
 
 /**
  * <p>The <code>cf:sort</code> element is intended to inform the client that the property to which it refers 
@@ -69,6 +68,8 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Sort implements Serializable, Cloneable {
+    private static final long serialVersionUID = 2660485308442078216L;
+
     /**
      * dataType value for Date information.
      */
@@ -145,18 +146,22 @@ public class Sort implements Serializable, Cloneable {
         return namespace;
     }
 
+    @Override
     public Object clone() {
         return new Sort(namespace, element, dataType, label, defaultOrder);
     }
 
+    @Override
     public boolean equals(Object o) {
         return obj.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return obj.hashCode();
     }
 
+    @Override
     public String toString() {
         return obj.toString();
     }

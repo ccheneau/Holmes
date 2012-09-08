@@ -22,21 +22,19 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
-
 import java.io.Serializable;
 import java.text.NumberFormat;
 
+import com.sun.syndication.feed.impl.EqualsBean;
 
 /**
  * Represents a <a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a> timestamp.
  * @author cooper
  */
 public class Time implements Serializable {
-	private static final long serialVersionUID = 4088522049885593073L;
+    private static final long serialVersionUID = 4088522049885593073L;
 
-	private static final long SECOND = 1000;
+    private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE * SECOND;
     private static final NumberFormat nf = NumberFormat.getInstance();
@@ -62,7 +60,7 @@ public class Time implements Serializable {
     public Time(String value) {
         String[] values = value.split(":");
         int count = values.length - 1;
-        this.milliseconds = (long) (Double.parseDouble(values[count]) * (double) SECOND);
+        this.milliseconds = (long) (Double.parseDouble(values[count]) * SECOND);
         count--;
 
         if (count >= 0) {
@@ -79,18 +77,21 @@ public class Time implements Serializable {
         return milliseconds;
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         long value = this.milliseconds;
         long hours = value / HOUR;

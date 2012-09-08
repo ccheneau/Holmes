@@ -40,10 +40,12 @@ package com.sun.syndication.feed.module.yahooweather.io;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
 
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.yahooweather.YWeatherModule;
@@ -58,21 +60,14 @@ import com.sun.syndication.feed.module.yahooweather.types.Units;
 import com.sun.syndication.feed.module.yahooweather.types.Wind;
 import com.sun.syndication.io.ModuleParser;
 
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-
 /** ModuleParser implementation for Slash RSS.
  * @version $Revision: 1.2 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class WeatherModuleParser implements ModuleParser {
-    private static final SimpleDateFormat TIME_ONLY = new SimpleDateFormat(
-            "h:mm a");
-    private static final SimpleDateFormat LONG_DATE = new SimpleDateFormat(
-            "EEE, d MMM yyyy h:mm a zzz");
-    private static final SimpleDateFormat SHORT_DATE = new SimpleDateFormat(
-            "d MMM yyyy");
+    private static final SimpleDateFormat TIME_ONLY = new SimpleDateFormat("h:mm a");
+    private static final SimpleDateFormat LONG_DATE = new SimpleDateFormat("EEE, d MMM yyyy h:mm a zzz");
+    private static final SimpleDateFormat SHORT_DATE = new SimpleDateFormat("d MMM yyyy");
     private static final Namespace NS = Namespace.getNamespace(YWeatherModule.URI);
 
     /** Creates a new instance of SlashModuleParser */
@@ -80,128 +75,105 @@ public class WeatherModuleParser implements ModuleParser {
         super();
     }
 
+    @Override
     public String getNamespaceUri() {
         return YWeatherModule.URI;
     }
 
+    @Override
     public Module parse(Element element) {
         YWeatherModuleImpl module = new YWeatherModuleImpl();
         Element location = element.getChild("location", WeatherModuleParser.NS);
 
-        if(location != null) {
-            Location l = new Location(location.getAttributeValue("city"),
-                    location.getAttributeValue("region"),
-                    location.getAttributeValue("country"));
+        if (location != null) {
+            Location l = new Location(location.getAttributeValue("city"), location.getAttributeValue("region"), location.getAttributeValue("country"));
             module.setLocation(l);
         }
 
         Element units = element.getChild("units", WeatherModuleParser.NS);
 
-        if(units != null) {
-            Units u = new Units(units.getAttributeValue("temperature"),
-                    units.getAttributeValue("distance"),
-                    units.getAttributeValue("pressure"),
+        if (units != null) {
+            Units u = new Units(units.getAttributeValue("temperature"), units.getAttributeValue("distance"), units.getAttributeValue("pressure"),
                     units.getAttributeValue("speed"));
             module.setUnits(u);
         }
 
         Element wind = element.getChild("wind", WeatherModuleParser.NS);
 
-        if(wind != null) {
+        if (wind != null) {
             try {
-                Wind w = new Wind(Integer.parseInt(wind.getAttributeValue(
-                                "chill")),
-                        Integer.parseInt(wind.getAttributeValue("direction")),
+                Wind w = new Wind(Integer.parseInt(wind.getAttributeValue("chill")), Integer.parseInt(wind.getAttributeValue("direction")),
                         Integer.parseInt(wind.getAttributeValue("speed")));
                 module.setWind(w);
-            } catch(NumberFormatException nfe) {
-                Logger.getAnonymousLogger()
-                      .warning("NumberFormatException processing <wind> tag.");
+            }
+            catch (NumberFormatException nfe) {
+                Logger.getAnonymousLogger().warning("NumberFormatException processing <wind> tag.");
             }
         }
 
-        Element atmosphere = element.getChild("atmosphere",
-                WeatherModuleParser.NS);
+        Element atmosphere = element.getChild("atmosphere", WeatherModuleParser.NS);
 
-        if(atmosphere != null) {
+        if (atmosphere != null) {
             try {
-                Atmosphere a = new Atmosphere(Integer.parseInt(
-                            atmosphere.getAttributeValue("humidity")),
-                        Double.parseDouble(atmosphere.getAttributeValue(
-                                "visibility")) / 100,
-                        Double.parseDouble(atmosphere.getAttributeValue(
-                                "pressure")),
-                        Atmosphere.PressureChange.fromCode(Integer.parseInt(
-                                atmosphere.getAttributeValue("rising"))));
+                Atmosphere a = new Atmosphere(Integer.parseInt(atmosphere.getAttributeValue("humidity")), Double.parseDouble(atmosphere
+                        .getAttributeValue("visibility")) / 100, Double.parseDouble(atmosphere.getAttributeValue("pressure")),
+                        Atmosphere.PressureChange.fromCode(Integer.parseInt(atmosphere.getAttributeValue("rising"))));
                 module.setAtmosphere(a);
-            } catch(NumberFormatException nfe) {
-                Logger.getAnonymousLogger()
-                      .warning("NumberFormatException processing <atmosphere> tag.");
+            }
+            catch (NumberFormatException nfe) {
+                Logger.getAnonymousLogger().warning("NumberFormatException processing <atmosphere> tag.");
             }
         }
 
         Element astronomy = element.getChild("astronomy", WeatherModuleParser.NS);
 
-        if(astronomy != null) {
+        if (astronomy != null) {
             try {
-                Astronomy a = new Astronomy(TIME_ONLY.parse(
-                            astronomy.getAttributeValue("sunrise")
-                                     .replaceAll("am", "AM")
-                                     .replaceAll("pm", "PM")),
-                        TIME_ONLY.parse(astronomy.getAttributeValue("sunset")
-                                                 .replaceAll("am", "AM")
-                                                 .replaceAll("pm", "PM")));
+                Astronomy a = new Astronomy(TIME_ONLY.parse(astronomy.getAttributeValue("sunrise").replaceAll("am", "AM").replaceAll("pm", "PM")),
+                        TIME_ONLY.parse(astronomy.getAttributeValue("sunset").replaceAll("am", "AM").replaceAll("pm", "PM")));
                 module.setAstronomy(a);
-            } catch(ParseException pe) {
-                Logger.getAnonymousLogger()
-                      .warning("ParseException processing <astronomy> tag.");
+            }
+            catch (ParseException pe) {
+                Logger.getAnonymousLogger().warning("ParseException processing <astronomy> tag.");
             }
         }
 
         Element condition = element.getChild("condition", WeatherModuleParser.NS);
 
-        if(condition != null) {
+        if (condition != null) {
             try {
-                Condition c = new Condition(condition.getAttributeValue("text"),
-                        ConditionCode.fromCode(Integer.parseInt(
-                                condition.getAttributeValue("code"))),
-                        Integer.parseInt(condition.getAttributeValue("temp")),
-                        LONG_DATE.parse(condition.getAttributeValue("date")
-                                                 .replaceAll("pm", "PM")
-                                                 .replaceAll("am", "AM")));
+                Condition c = new Condition(condition.getAttributeValue("text"), ConditionCode.fromCode(Integer.parseInt(condition.getAttributeValue("code"))),
+                        Integer.parseInt(condition.getAttributeValue("temp")), LONG_DATE.parse(condition.getAttributeValue("date").replaceAll("pm", "PM")
+                                .replaceAll("am", "AM")));
                 module.setCondition(c);
-            } catch(NumberFormatException nfe) {
-                Logger.getAnonymousLogger()
-                      .warning("NumberFormatException processing <condition> tag.");
-            } catch(ParseException pe) {
-                Logger.getAnonymousLogger()
-                      .warning("ParseException processing <condition> tag.");
+            }
+            catch (NumberFormatException nfe) {
+                Logger.getAnonymousLogger().warning("NumberFormatException processing <condition> tag.");
+            }
+            catch (ParseException pe) {
+                Logger.getAnonymousLogger().warning("ParseException processing <condition> tag.");
             }
         }
 
-        List forecasts = element.getChildren("forecast", WeatherModuleParser.NS);
+        List<?> forecasts = element.getChildren("forecast", WeatherModuleParser.NS);
 
-        if(forecasts != null) {
+        if (forecasts != null) {
             Forecast[] f = new Forecast[forecasts.size()];
             int i = 0;
 
-            for(Iterator it = forecasts.iterator(); it.hasNext(); i++) {
+            for (Iterator<?> it = forecasts.iterator(); it.hasNext(); i++) {
                 Element forecast = (Element) it.next();
 
                 try {
-                    f[i] = new Forecast(forecast.getAttributeValue("day"),
-                            SHORT_DATE.parse(forecast.getAttributeValue("date")),
-                            Integer.parseInt(forecast.getAttributeValue("low")),
-                            Integer.parseInt(forecast.getAttributeValue("high")),
-                            forecast.getAttributeValue("text"),
-                            ConditionCode.fromCode(Integer.parseInt(
-                                    forecast.getAttributeValue("code"))));
-                } catch(NumberFormatException nfe) {
-                    Logger.getAnonymousLogger()
-                          .warning("NumberFormatException processing <forecast> tag.");
-                } catch(ParseException pe) {
-                    Logger.getAnonymousLogger()
-                          .warning("ParseException processing <forecast> tag.");
+                    f[i] = new Forecast(forecast.getAttributeValue("day"), SHORT_DATE.parse(forecast.getAttributeValue("date")), Integer.parseInt(forecast
+                            .getAttributeValue("low")), Integer.parseInt(forecast.getAttributeValue("high")), forecast.getAttributeValue("text"),
+                            ConditionCode.fromCode(Integer.parseInt(forecast.getAttributeValue("code"))));
+                }
+                catch (NumberFormatException nfe) {
+                    Logger.getAnonymousLogger().warning("NumberFormatException processing <forecast> tag.");
+                }
+                catch (ParseException pe) {
+                    Logger.getAnonymousLogger().warning("ParseException processing <forecast> tag.");
                 }
             }
 

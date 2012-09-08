@@ -28,39 +28,46 @@ import java.util.List;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class CustomTagsImpl implements CustomTags {
-    
-    private List values;
+    private static final long serialVersionUID = 4964424461870045574L;
+
+    private List<CustomTag> values;
+
     /** Creates a new instance of CustomTagsImpl */
     public CustomTagsImpl() {
     }
-    
-    public List getValues(){
-	values = (values == null )? new ArrayList() : values;
-	return values;
+
+    @Override
+    public List<CustomTag> getValues() {
+        values = (values == null) ? new ArrayList<CustomTag>() : values;
+        return values;
     }
-    
-    public void setValues(List values){
-	this.values = values;
+
+    @Override
+    public void setValues(List<CustomTag> values) {
+        this.values = values;
     }
-    
+
+    @Override
     public void copyFrom(Object object) {
-	CustomTags ct = (CustomTags) object;
-	this.values = new ArrayList( ct.getValues() );
+        CustomTags ct = (CustomTags) object;
+        this.values = new ArrayList<CustomTag>(ct.getValues());
     }
-    
+
+    @Override
     public Object clone() {
-	CustomTagsImpl cti = new CustomTagsImpl();
-	cti.values = new ArrayList( this.values );
-	return cti;
-    }
-    
-    public Class getInterface(){
-	return CustomTags.class;
+        CustomTagsImpl cti = new CustomTagsImpl();
+        cti.values = new ArrayList<CustomTag>(this.values);
+        return cti;
     }
 
+    @Override
+    public Class<?> getInterface() {
+        return CustomTags.class;
+    }
+
+    @Override
     public String getUri() {
-	return CustomTags.URI;
+        return CustomTags.URI;
     }
 
-    
 }

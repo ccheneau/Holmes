@@ -14,43 +14,43 @@ package com.sun.syndication.feed.module.georss.geometries;
  * @author runaas
  */
 public final class Point extends AbstractGeometricPrimitive {
+    private static final long serialVersionUID = -4313019631466637375L;
+
     private Position pos;
-    
+
     /** Creates a new instance of Point */
     public Point() {
-      
+
     }
-    
+
     public Point(Position pos) {
         this.pos = pos;
     }
-  
-     public Object clone() throws CloneNotSupportedException {
-        Point retval = (Point)super.clone();
-        if (pos != null)
-            retval.pos = (Position)pos.clone();
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Point retval = (Point) super.clone();
+        if (pos != null) retval.pos = (Position) pos.clone();
         return retval;
     }
-    
-     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        return getPosition().equals(((Point)obj).getPosition());
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        return getPosition().equals(((Point) obj).getPosition());
     }
-     
+
     /**
      * Get the position
      *
      * @return the position
      */
     public Position getPosition() {
-        if (pos == null)
-            pos = new Position();
+        if (pos == null) pos = new Position();
         return pos;
     }
-    
+
     /**
      * Set the position
      * 
@@ -58,5 +58,5 @@ public final class Point extends AbstractGeometricPrimitive {
      */
     public void setPosition(Position pos) {
         this.pos = pos;
-    } 
+    }
 }

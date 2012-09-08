@@ -8,6 +8,8 @@ import java.util.List;
  * <pre><sx:history></pre>Element within <pre><sx:sync></pre>.
  */
 public class History extends SSEModule {
+    private static final long serialVersionUID = -1121755080445109246L;
+
     // A date-time attribute.
     private Date when;
 
@@ -19,19 +21,20 @@ public class History extends SSEModule {
     public static final String WHEN_ATTRIBUTE = "when";
     public static final String BY_ATTRIBUTE = "by";
 
-    private List updates;
+    private List<Update> updates;
 
     public History() {
     }
 
+    @Override
     public void copyFrom(Object other) {
-        History otherHistory = (History)other;
+        History otherHistory = (History) other;
         when = otherHistory.when == null ? null : (Date) otherHistory.when.clone();
         // dont copy immutable
         by = otherHistory.by;
 
         if (otherHistory.updates != null) {
-            updates = new ArrayList();
+            updates = new ArrayList<Update>();
             updates.addAll(otherHistory.updates);
         }
     }
@@ -45,7 +48,6 @@ public class History extends SSEModule {
      * @return the date-time when the most recent modification took place. 
      */
     public Date getWhen() {
-        // TODO: convert to the earliest time in RFC 822 (which is what?)
         return when;
     }
 
@@ -95,7 +97,7 @@ public class History extends SSEModule {
      */
     public void addUpdate(Update update) {
         if (updates == null) {
-            updates = new ArrayList();
+            updates = new ArrayList<Update>();
         }
         updates.add(update);
     }
@@ -105,7 +107,7 @@ public class History extends SSEModule {
      *
      * @return the list of updates for this history.
      */
-    public List getUpdates() {
+    public List<Update> getUpdates() {
         return updates;
     }
 }

@@ -16,7 +16,6 @@
  */
 package com.sun.syndication.feed.module.georss;
 
-
 /**
  * W3CGeoModuleImpl is the implementation of the {@link GeoRSSModule} Interface
  * for the W3C geo format.
@@ -26,19 +25,20 @@ package com.sun.syndication.feed.module.georss;
  * 
  */
 public class W3CGeoModuleImpl extends GeoRSSModule {
+    private static final long serialVersionUID = -2379864315882090268L;
 
-	public W3CGeoModuleImpl() {
-		super(GeoRSSModule.class, GeoRSSModule.GEORSS_W3CGEO_URI);
-	}
+    public W3CGeoModuleImpl() {
+        super(GeoRSSModule.class, GeoRSSModule.GEORSS_W3CGEO_URI);
+    }
 
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sun.syndication.feed.CopyFrom#getInterface()
-	 */
-	public Class getInterface() {
-		return GeoRSSModule.class;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.sun.syndication.feed.CopyFrom#getInterface()
+     */
+    @Override
+    public Class<?> getInterface() {
+        return GeoRSSModule.class;
+    }
 
 }

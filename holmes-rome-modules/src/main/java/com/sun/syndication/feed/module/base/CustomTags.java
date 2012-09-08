@@ -20,19 +20,20 @@
 
 package com.sun.syndication.feed.module.base;
 
-import com.sun.syndication.feed.module.Module;
 import java.util.List;
+
+import com.sun.syndication.feed.module.Module;
 
 /**
  * @version $Revision: 1.1 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface CustomTags extends Module {
-    
+
     public static final String URI = "http://base.google.com/cns/1.0";
-    
-    public List getValues();
-    
-    public void setValues(List values);
-    
+
+    public List<CustomTag> getValues();
+
+    public void setValues(List<CustomTag> values);
+
 }

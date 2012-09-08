@@ -21,6 +21,12 @@
  */
 package com.sun.syndication.feed.module.mediarss.io;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
@@ -35,33 +41,28 @@ import com.sun.syndication.feed.module.mediarss.types.Restriction;
 import com.sun.syndication.feed.module.mediarss.types.Text;
 import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
 import com.sun.syndication.feed.module.mediarss.types.UrlReference;
-import com.sun.syndication.io.*;
-
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import com.sun.syndication.io.ModuleGenerator;
 
 //this class TBI
 public class MediaModuleGenerator implements ModuleGenerator {
-    private static final Namespace NS = Namespace.getNamespace("media",
-            MediaModule.URI);
-    private static final Set NAMESPACES = new HashSet();
+    private static final Namespace NS = Namespace.getNamespace("media", MediaModule.URI);
+    private static final Set<Namespace> NAMESPACES = new HashSet<Namespace>();
 
     static {
         NAMESPACES.add(NS);
     }
 
+    @Override
     public String getNamespaceUri() {
         return MediaModule.URI;
     }
 
-    public Set getNamespaces() {
+    @Override
+    public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 
+    @Override
     public void generate(Module module, Element element) {
         if (module instanceof MediaModule) {
             MediaModule m = (MediaModule) module;
@@ -106,7 +107,8 @@ public class MediaModuleGenerator implements ModuleGenerator {
         if (c.getReference() instanceof UrlReference) {
             this.addNotNullAttribute(mc, "url", c.getReference());
             this.generatePlayer(c.getPlayer(), mc);
-        } else {
+        }
+        else {
             this.generatePlayer(c.getPlayer(), mc);
         }
 
@@ -156,8 +158,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
         this.addNotNullAttribute(desc, "type", m.getDescriptionType());
 
         if (m.getHash() != null) {
-            Element hash = this.addNotNullElement(e, "hash",
-                    m.getHash().getValue());
+            Element hash = this.addNotNullElement(e, "hash", m.getHash().getValue());
             this.addNotNullAttribute(hash, "algo", m.getHash().getAlgorithm());
         }
 
@@ -181,7 +182,8 @@ public class MediaModuleGenerator implements ModuleGenerator {
 
             if (rats[i].equals(Rating.ADULT)) {
                 this.addNotNullElement(e, "adult", "true");
-            } else if (rats[i].equals(Rating.NONADULT)) {
+            }
+            else if (rats[i].equals(Rating.NONADULT)) {
                 this.addNotNullElement(e, "adult", "false");
             }
         }
@@ -212,8 +214,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
         Restriction[] r = m.getRestrictions();
 
         for (int i = 0; i < r.length; i++) {
-            Element res = this.addNotNullElement(e, "restriction",
-                    r[i].getValue());
+            Element res = this.addNotNullElement(e, "restriction", r[i].getValue());
             this.addNotNullAttribute(res, "type", r[i].getType());
             this.addNotNullAttribute(res, "relationship", r[i].getRelationship());
         }
@@ -234,16 +235,17 @@ public class MediaModuleGenerator implements ModuleGenerator {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        } else {
+        }
+        else {
             target.setAttribute(name, value.toString());
         }
     }
 
-    protected Element addNotNullElement(Element target, String name,
-        Object value) {
+    protected Element addNotNullElement(Element target, String name, Object value) {
         if (value == null) {
             return null;
-        } else {
+        }
+        else {
             Element e = generateSimpleElement(name, value.toString());
             target.addContent(e);
 

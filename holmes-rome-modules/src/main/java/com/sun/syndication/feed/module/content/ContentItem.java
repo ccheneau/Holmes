@@ -43,6 +43,8 @@ package com.sun.syndication.feed.module.content;
 
 import java.util.List;
 
+import org.jdom.Content;
+import org.jdom.Namespace;
 
 /** This class represents a content item per the "Original Syntax".
  * http://purl.org/rss/1.0/modules/content/
@@ -53,10 +55,10 @@ public class ContentItem implements Cloneable {
     private String contentFormat;
     private String contentEncoding;
     private String contentValue;
-    private List contentValueDOM;
+    private List<Content> contentValueDOM;
     private String contentAbout;
     private String contentValueParseType;
-    private List contentValueNamespace;
+    private List<Namespace> contentValueNamespace;
     private String contentResource;
 
     /** Creates a new instance of ContentItem */
@@ -87,11 +89,11 @@ public class ContentItem implements Cloneable {
         this.contentValue = contentValue;
     }
 
-    public List getContentValueDOM() {
+    public List<Content> getContentValueDOM() {
         return this.contentValueDOM;
     }
 
-    public void setContentValueDOM(List contentValueDOM) {
+    public void setContentValueDOM(List<Content> contentValueDOM) {
         this.contentValueDOM = contentValueDOM;
     }
 
@@ -111,11 +113,11 @@ public class ContentItem implements Cloneable {
         this.contentValueParseType = contentValueParseType;
     }
 
-    public List getContentValueNamespaces() {
+    public List<Namespace> getContentValueNamespaces() {
         return this.contentValueNamespace;
     }
 
-    public void setContentValueNamespaces(List contentValueNamespace) {
+    public void setContentValueNamespaces(List<Namespace> contentValueNamespace) {
         this.contentValueNamespace = contentValueNamespace;
     }
 
@@ -127,20 +129,30 @@ public class ContentItem implements Cloneable {
         this.contentResource = contentResource;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o instanceof ContentItem) {
             ContentItem test = (ContentItem) o;
 
-            if (((test.contentFormat == contentFormat) || (test.contentFormat.equals(contentFormat))) && ((test.contentEncoding == contentEncoding) || (test.contentEncoding.equals(contentEncoding))) && ((test.contentFormat == contentFormat) || (test.contentValue.equals(contentValue))) && ((test.contentAbout == contentAbout) || (test.contentAbout.equals(contentAbout))) && ((test.contentValueParseType == contentValueParseType) || (test.contentValueParseType.equals(contentValueParseType))) && ((test.contentValueNamespace == contentValueNamespace) || (test.contentValueNamespace.equals(contentValueNamespace))) && ((test.contentResource == contentResource) || (test.contentResource.equals(contentResource)))) {
+            if (((test.contentFormat == contentFormat) || (test.contentFormat.equals(contentFormat)))
+                    && ((test.contentEncoding == contentEncoding) || (test.contentEncoding.equals(contentEncoding)))
+                    && ((test.contentFormat == contentFormat) || (test.contentValue.equals(contentValue)))
+                    && ((test.contentAbout == contentAbout) || (test.contentAbout.equals(contentAbout)))
+                    && ((test.contentValueParseType == contentValueParseType) || (test.contentValueParseType.equals(contentValueParseType)))
+                    && ((test.contentValueNamespace == contentValueNamespace) || (test.contentValueNamespace.equals(contentValueNamespace)))
+                    && ((test.contentResource == contentResource) || (test.contentResource.equals(contentResource)))) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
-        } else {
+        }
+        else {
             return false;
         }
     }
 
+    @Override
     public Object clone() {
         ContentItem o = new ContentItem();
         o.contentAbout = this.contentAbout;

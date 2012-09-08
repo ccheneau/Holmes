@@ -42,7 +42,6 @@ package com.sun.syndication.feed.module.itunes.types;
 
 import java.io.Serializable;
 
-
 /**
  * This Category information. Basically a name and an optional Subcategory.
  * Categories are defined by Apple. See ITMS for a view.
@@ -50,6 +49,8 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Category implements Serializable {
+    private static final long serialVersionUID = 5580598178604767283L;
+
     private String name;
     private Subcategory subcategory;
 
@@ -100,6 +101,7 @@ public class Category implements Serializable {
      * Returns a copy of this category.
      * @return Returns a copy of this category.
      */
+    @Override
     public Object clone() {
         Category c = new Category();
         c.setName(this.getName());
@@ -111,6 +113,7 @@ public class Category implements Serializable {
         return c;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(this.getName());
 

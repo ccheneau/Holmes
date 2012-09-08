@@ -41,19 +41,20 @@
  */
 package com.sun.syndication.feed.module.content.io;
 
-import com.sun.syndication.feed.module.content.ContentItem;
-import com.sun.syndication.feed.module.content.ContentModule;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.sun.syndication.feed.module.content.ContentItem;
+import com.sun.syndication.feed.module.content.ContentModule;
 
 /**
  * @version $Revision: 1.2 $
@@ -62,10 +63,10 @@ import java.util.Set;
 public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
     private static final Namespace CONTENT_NS = Namespace.getNamespace("content", ContentModule.URI);
     private static final Namespace RDF_NS = Namespace.getNamespace("rdf", ContentModule.RDF_URI);
-    private static final Set NAMESPACES;
+    private static final Set<Namespace> NAMESPACES;
 
     static {
-        Set nss = new HashSet();
+        Set<Namespace> nss = new HashSet<Namespace>();
         nss.add(CONTENT_NS);
         NAMESPACES = Collections.unmodifiableSet(nss);
     }
@@ -74,6 +75,7 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
     public ContentModuleGenerator() {
     }
 
+    @Override
     public void generate(com.sun.syndication.feed.module.Module module, org.jdom.Element element) {
         // this is not necessary, it is done to avoid the namespace definition in every item.
         Element root = element;
@@ -90,17 +92,16 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
 
         ContentModule cm = (ContentModule) module;
 
-        List encodeds = cm.getEncodeds();
-        
+        List<String> encodeds = cm.getEncodeds();
+
         //
         if (encodeds != null) {
-            System.out.println(cm.getEncodeds().size());
             for (int i = 0; i < encodeds.size(); i++) {
                 element.addContent(generateCDATAElement("encoded", encodeds.get(i).toString()));
             }
         }
 
-        List contentItems = cm.getContentItems();
+        List<ContentItem> contentItems = cm.getContentItems();
 
         if ((contentItems != null) && (contentItems.size() > 0)) {
             Element items = new Element("items", CONTENT_NS);
@@ -108,7 +109,7 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
             items.addContent(bag);
 
             for (int i = 0; i < contentItems.size(); i++) {
-                ContentItem contentItem = (ContentItem) contentItems.get(i);
+                ContentItem contentItem = contentItems.get(i);
                 Element li = new Element("li", RDF_NS);
                 Element item = new Element("item", CONTENT_NS);
 
@@ -143,18 +144,17 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
                     }
 
                     if (contentItem.getContentValueNamespaces() != null) {
-                        List namespaces = contentItem.getContentValueNamespaces();
+                        List<Namespace> namespaces = contentItem.getContentValueNamespaces();
 
                         for (int ni = 0; ni < namespaces.size(); ni++) {
-                            value.addNamespaceDeclaration((Namespace) namespaces.get(ni));
+                            value.addNamespaceDeclaration(namespaces.get(ni));
                         }
                     }
 
-                    List detached = new ArrayList();
+                    List<Content> detached = new ArrayList<Content>();
 
-                    for (int c = 0;
-                            c < contentItem.getContentValueDOM().size(); c++) {
-                        detached.add(((Content) ((Content) contentItem.getContentValueDOM().get(c)).clone()).detach());
+                    for (int c = 0; c < contentItem.getContentValueDOM().size(); c++) {
+                        detached.add((Content) contentItem.getContentValueDOM().get(c).clone());
                     }
 
                     value.setContent(detached);
@@ -184,11 +184,13 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
         return element;
     }
 
+    @Override
     public String getNamespaceUri() {
         return ContentModule.URI;
     }
 
-    public java.util.Set getNamespaces() {
+    @Override
+    public java.util.Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 }

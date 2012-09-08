@@ -46,33 +46,37 @@ package com.sun.syndication.feed.module.content;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * @version $Revision: 1.4 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImpl implements ContentModule {
-    private List encodeds;
-    private List contents;
-    private List contentItems;
+    private static final long serialVersionUID = 5321734934971547821L;
+
+    private List<String> encodeds;
+    private List<String> contents;
+    private List<ContentItem> contentItems;
 
     public ContentModuleImpl() {
         super(ContentModuleImpl.class, URI);
     }
 
-    protected ContentModuleImpl(java.lang.Class beanClass, java.lang.String uri) {
+    protected ContentModuleImpl(java.lang.Class<?> beanClass, java.lang.String uri) {
         super(beanClass, uri);
     }
 
-    public List getEncodeds() {
-        this.encodeds = this.encodeds == null ? new ArrayList() : this.encodeds;
+    @Override
+    public List<String> getEncodeds() {
+        this.encodeds = this.encodeds == null ? new ArrayList<String>() : this.encodeds;
         return this.encodeds;
     }
 
-    public void setEncodeds(List encodeds) {
+    @Override
+    public void setEncodeds(List<String> encodeds) {
         this.encodeds = encodeds;
     }
 
+    @Override
     public void copyFrom(Object obj) {
         ContentModule cm = (ContentModule) obj;
         this.setEncodeds(cm.getEncodeds());
@@ -80,28 +84,34 @@ public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImp
         this.setContents(cm.getContents());
     }
 
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return ContentModule.class;
     }
 
-    public List getContentItems() {
-        this.contentItems = this.contentItems == null ? new ArrayList() : this.contentItems;
+    @Override
+    public List<ContentItem> getContentItems() {
+        this.contentItems = this.contentItems == null ? new ArrayList<ContentItem>() : this.contentItems;
         return this.contentItems;
     }
 
-    public void setContentItems(List list) {
+    @Override
+    public void setContentItems(List<ContentItem> list) {
         this.contentItems = list;
     }
 
-    public List getContents() {
-        this.contents = this.contents == null ? new ArrayList() : this.contents;
+    @Override
+    public List<String> getContents() {
+        this.contents = this.contents == null ? new ArrayList<String>() : this.contents;
         return this.contents;
     }
 
-    public void setContents(List contents) {
+    @Override
+    public void setContents(List<String> contents) {
         this.contents = contents;
     }
 
+    @Override
     public String toString(String str) {
         return contentItems.toString();
     }

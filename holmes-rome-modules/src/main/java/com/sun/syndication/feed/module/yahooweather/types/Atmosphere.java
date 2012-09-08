@@ -42,7 +42,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * Forecast information about current atmospheric pressure, humidity,
  *       and visibility. Attributes:
@@ -62,6 +61,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Atmosphere implements Serializable, Cloneable {
+    private static final long serialVersionUID = -6897760886672230764L;
+
     private EqualsBean equals = new EqualsBean(Atmosphere.class, this);
     private ToStringBean toString = new ToStringBean(Atmosphere.class, this);
     private int humidity;
@@ -83,8 +84,7 @@ public class Atmosphere implements Serializable, Cloneable {
      * @param pressure barometric pressure
      * @param change state of the barometric pressure
      */
-    public Atmosphere(int humidity, double visibility, double pressure,
-        PressureChange change) {
+    public Atmosphere(int humidity, double visibility, double pressure, PressureChange change) {
         super();
         this.humidity = humidity;
         this.visibility = visibility;
@@ -92,14 +92,17 @@ public class Atmosphere implements Serializable, Cloneable {
         this.change = change;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
@@ -169,18 +172,17 @@ public class Atmosphere implements Serializable, Cloneable {
         this.change = change;
     }
 
+    @Override
     public Object clone() {
-        return new Atmosphere(this.humidity, this.visibility, this.pressure,
-            this.change);
+        return new Atmosphere(this.humidity, this.visibility, this.pressure, this.change);
     }
 
     public static class PressureChange implements Serializable {
-        public static final PressureChange RISING = new PressureChange(1,
-                "rising");
-        public static final PressureChange STEADY = new PressureChange(0,
-                "steady");
-        public static final PressureChange FALLING = new PressureChange(2,
-                "falling");
+        private static final long serialVersionUID = -6145736605940597604L;
+
+        public static final PressureChange RISING = new PressureChange(1, "rising");
+        public static final PressureChange STEADY = new PressureChange(0, "steady");
+        public static final PressureChange FALLING = new PressureChange(2, "falling");
         private int code;
         private String text;
 
@@ -189,6 +191,7 @@ public class Atmosphere implements Serializable, Cloneable {
             this.text = text;
         }
 
+        @Override
         public String toString() {
             return "[ code: " + this.code + " (" + this.text + ")]";
         }
@@ -208,7 +211,7 @@ public class Atmosphere implements Serializable, Cloneable {
          * @throws RuntimeException if no 0, 1, or 2.
          */
         public static PressureChange fromCode(int code) {
-            switch(code) {
+            switch (code) {
             case 0:
                 return STEADY;
 

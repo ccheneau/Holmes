@@ -1,13 +1,16 @@
 package com.sun.syndication.feed.module.sse.modules;
 
-import com.sun.syndication.feed.rss.Item;
-
 import java.util.Date;
+import java.util.logging.Logger;
+
+import com.sun.syndication.feed.rss.Item;
 
 /**
  * <sx:conflict> element within <sx:conflicts>
  */
 public class Conflict extends SSEModule {
+    private static final long serialVersionUID = 707752064413186548L;
+
     public static final String CONFLICTS_NAME = "conflicts";
 
     public static final String NAME = "conflict";
@@ -42,16 +45,17 @@ public class Conflict extends SSEModule {
     private String by;
     private Item conflictItem;
 
+    @Override
     public void copyFrom(Object obj) {
-        Conflict conflict = (Conflict)obj;
+        Conflict conflict = (Conflict) obj;
         conflict.when = when == null ? null : (Date) when.clone();
         conflict.by = by;
         conflict.version = version;
         try {
             conflict.conflictItem = (Item) conflictItem.clone();
-        } catch (CloneNotSupportedException e) {
-            // should not happen
-            e.printStackTrace();
+        }
+        catch (CloneNotSupportedException e) {
+            Logger.getAnonymousLogger().warning(e.getMessage());
         }
     }
 

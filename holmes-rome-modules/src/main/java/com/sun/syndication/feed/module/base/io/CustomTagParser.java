@@ -20,7 +20,20 @@
 
 package com.sun.syndication.feed.module.base.io;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.base.CustomTag;
 import com.sun.syndication.feed.module.base.CustomTagImpl;
 import com.sun.syndication.feed.module.base.CustomTags;
 import com.sun.syndication.feed.module.base.CustomTagsImpl;
@@ -30,93 +43,103 @@ import com.sun.syndication.feed.module.base.types.IntUnit;
 import com.sun.syndication.feed.module.base.types.ShortDate;
 import com.sun.syndication.io.ModuleParser;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.jdom.Element;
-import org.jdom.Namespace;
-
 /**
  * @version $Revision: 1.4 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class CustomTagParser implements ModuleParser  {
-    private static final Logger log = Logger.getAnonymousLogger();
-    
-    static final Namespace NS = Namespace.getNamespace( "g-custom", CustomTags.URI );
-    
+public class CustomTagParser implements ModuleParser {
+    private static final Logger logger = Logger.getLogger(CustomTagParser.class.getName());
+
+    static final Namespace NS = Namespace.getNamespace("g-custom", CustomTags.URI);
+
     /** Creates a new instance of CustomTagParser */
     public CustomTagParser() {
     }
-    
+
+    @Override
     public Module parse(Element element) {
-	CustomTags module = new CustomTagsImpl();
-	ArrayList tags = new ArrayList();
-	List elements = element.getChildren();
-	Iterator it = elements.iterator();
-	while( it.hasNext() ){
-	    Element child = (Element) it.next();
-	    if( child.getNamespace().equals( NS ) ){
-		String type = child.getAttributeValue( "type" );
-		try{
-		    if( type == null ){
-			continue;
-		    } else if( type.equals( "string") ){
-			tags.add( new CustomTagImpl( child.getName(), child.getText() ) );
-		    } else if( type.equals( "int") ){
-			tags.add( new CustomTagImpl( child.getName(), new Integer( child.getTextTrim() )));
-		    } else if( type.equals( "float") ){
-			tags.add( new CustomTagImpl( child.getName(), new Float( child.getTextTrim() ) ) );
-		    } else if( type.equals("intUnit") ){
-			tags.add( new CustomTagImpl( child.getName(), new IntUnit( child.getTextTrim()) ) );
-		    } else if( type.equals( "floatUnit") ){
-			tags.add( new CustomTagImpl( child.getName(), new FloatUnit( child.getTextTrim()) ) );
-		    } else if( type.equals( "date") ){
-			try{
-			    tags.add( new CustomTagImpl( child.getName(), new ShortDate( GoogleBaseParser.SHORT_DT_FMT.parse( child.getTextTrim()))) );
-			} catch( ParseException e ){
-			    log.log( Level.WARNING, "Unable to parse date type on "+child.getName(), e );
-			}
-		    } else if( type.equals( "dateTime") ){
-			try{
-			    tags.add( new CustomTagImpl( child.getName(), GoogleBaseParser.LONG_DT_FMT.parse( child.getTextTrim() )));
-			} catch(ParseException e){
-			    log.log( Level.WARNING, "Unable to parse date type on "+child.getName(), e );
-			}
-		    } else if( type.equals( "dateTimeRange") ){
-			try{
-			    tags.add( new CustomTagImpl( child.getName(), new DateTimeRange(GoogleBaseParser.LONG_DT_FMT.parse(child.getChild("start",CustomTagParser.NS).getText().trim()),GoogleBaseParser.LONG_DT_FMT.parse(child.getChild("end",CustomTagParser.NS).getText().trim()))));
-			} catch(Exception e){
-			    log.log( Level.WARNING, "Unable to parse date type on "+child.getName(), e );
-			}
-		    } else if( type.equals( "url") ){
-			try{
-			    tags.add( new CustomTagImpl( child.getName(), new URL( child.getTextTrim() )) );
-			} catch( MalformedURLException e){
-			    log.log( Level.WARNING, "Unable to parse URL type on "+child.getName(), e );
-			}
-		    } else if( type.equals( "boolean") ){
-			tags.add( new CustomTagImpl( child.getName(), new Boolean( child.getTextTrim().toLowerCase()) ));
-		    } else if( type.equals( "location") ) {
-			tags.add( new CustomTagImpl( child.getName(), new CustomTagImpl.Location( child.getText() )));
-		    } else {
-			throw new Exception( "Unknown type: "+ type );
-		    }
-		} catch(Exception e){
-		    log.log( Level.WARNING, "Unable to parse type on "+child.getName(), e );
-		}
-	    }
-	}
-	module.setValues( tags );
-	return module;
+        CustomTags module = new CustomTagsImpl();
+        ArrayList<CustomTag> tags = new ArrayList<CustomTag>();
+        List<?> elements = element.getChildren();
+        Iterator<?> it = elements.iterator();
+        while (it.hasNext()) {
+            Element child = (Element) it.next();
+            if (child.getNamespace().equals(NS)) {
+                String type = child.getAttributeValue("type");
+                try {
+                    if (type == null) {
+                        continue;
+                    }
+                    else if (type.equals("string")) {
+                        tags.add(new CustomTagImpl(child.getName(), child.getText()));
+                    }
+                    else if (type.equals("int")) {
+                        tags.add(new CustomTagImpl(child.getName(), new Integer(child.getTextTrim())));
+                    }
+                    else if (type.equals("float")) {
+                        tags.add(new CustomTagImpl(child.getName(), new Float(child.getTextTrim())));
+                    }
+                    else if (type.equals("intUnit")) {
+                        tags.add(new CustomTagImpl(child.getName(), new IntUnit(child.getTextTrim())));
+                    }
+                    else if (type.equals("floatUnit")) {
+                        tags.add(new CustomTagImpl(child.getName(), new FloatUnit(child.getTextTrim())));
+                    }
+                    else if (type.equals("date")) {
+                        try {
+                            tags.add(new CustomTagImpl(child.getName(), new ShortDate(GoogleBaseParser.SHORT_DT_FMT.parse(child.getTextTrim()))));
+                        }
+                        catch (ParseException e) {
+                            logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
+                        }
+                    }
+                    else if (type.equals("dateTime")) {
+                        try {
+                            tags.add(new CustomTagImpl(child.getName(), GoogleBaseParser.LONG_DT_FMT.parse(child.getTextTrim())));
+                        }
+                        catch (ParseException e) {
+                            logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
+                        }
+                    }
+                    else if (type.equals("dateTimeRange")) {
+                        try {
+                            tags.add(new CustomTagImpl(child.getName(), new DateTimeRange(GoogleBaseParser.LONG_DT_FMT.parse(child
+                                    .getChild("start", CustomTagParser.NS).getText().trim()), GoogleBaseParser.LONG_DT_FMT.parse(child
+                                    .getChild("end", CustomTagParser.NS).getText().trim()))));
+                        }
+                        catch (Exception e) {
+                            logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
+                        }
+                    }
+                    else if (type.equals("url")) {
+                        try {
+                            tags.add(new CustomTagImpl(child.getName(), new URL(child.getTextTrim())));
+                        }
+                        catch (MalformedURLException e) {
+                            logger.log(Level.WARNING, "Unable to parse URL type on " + child.getName(), e);
+                        }
+                    }
+                    else if (type.equals("boolean")) {
+                        tags.add(new CustomTagImpl(child.getName(), new Boolean(child.getTextTrim().toLowerCase())));
+                    }
+                    else if (type.equals("location")) {
+                        tags.add(new CustomTagImpl(child.getName(), new CustomTagImpl.Location(child.getText())));
+                    }
+                    else {
+                        throw new Exception("Unknown type: " + type);
+                    }
+                }
+                catch (Exception e) {
+                    logger.log(Level.WARNING, "Unable to parse type on " + child.getName(), e);
+                }
+            }
+        }
+        module.setValues(tags);
+        return module;
     }
-    
+
+    @Override
     public String getNamespaceUri() {
-	return CustomTags.URI;
+        return CustomTags.URI;
     }
 }

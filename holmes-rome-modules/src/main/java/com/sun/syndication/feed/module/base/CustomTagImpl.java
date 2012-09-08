@@ -19,108 +19,132 @@
  */
 package com.sun.syndication.feed.module.base;
 
+import java.net.URL;
+import java.util.Date;
+
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 import com.sun.syndication.feed.module.base.types.FloatUnit;
 import com.sun.syndication.feed.module.base.types.IntUnit;
 import com.sun.syndication.feed.module.base.types.ShortDate;
-
-import java.net.URL;
-
-import java.util.Date;
-
 
 /**
  * @version $Revision: 1.1 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class CustomTagImpl implements CustomTag {
+    private static final long serialVersionUID = -5923754991476434312L;
+
     private Object value;
     private String name;
 
     /** Creates a new instance of CustomTagImpl */
-    public CustomTagImpl(String name,String value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); } 
+    public CustomTagImpl(String name, String value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,Integer value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, Integer value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,Float value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, Float value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,IntUnit value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, IntUnit value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,FloatUnit value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, FloatUnit value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,ShortDate value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, ShortDate value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,Date value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, Date value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,DateTimeRange value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, DateTimeRange value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,URL value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, URL value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,Boolean value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, Boolean value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
-    public CustomTagImpl(String name,Location value) {
-	if( name == null || value == null ){ throw new NullPointerException("Name and Value cannont be null."); }
+    public CustomTagImpl(String name, Location value) {
+        if (name == null || value == null) {
+            throw new NullPointerException("Name and Value cannont be null.");
+        }
         this.name = name;
         this.value = value;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public Object getValue() {
         return this.value;
     }
 
-    public boolean equals( Object o ){
-	if( o instanceof CustomTag ){
-	    CustomTag tag = (CustomTag) o;
-	    if( this.name.equals( tag.getName() ) && this.value.equals( tag.getValue() ))
-		return true;
-	}
-	return false;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CustomTag) {
+            CustomTag tag = (CustomTag) o;
+            if (this.name.equals(tag.getName()) && this.value.equals(tag.getValue())) return true;
+        }
+        return false;
     }
-    
+
     /**
      * Creates and returns a copy of this object.  The precise meaning 
      * of "copy" may depend on the class of the object. The general 
@@ -179,15 +203,18 @@ public class CustomTagImpl implements CustomTag {
      *               be cloned.
      * @see java.lang.Cloneable
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
-        CustomTagImpl cti = new CustomTagImpl( this.name, "" );
-	cti.value = this.value;
-	return cti;	
+        CustomTagImpl cti = new CustomTagImpl(this.name, "");
+        cti.value = this.value;
+        return cti;
     }
 
+    @Override
     public String toString() {
-	return "[custom name=\""+this.name+"\" value=\""+this.value.toString()+"\"]";
+        return "[custom name=\"" + this.name + "\" value=\"" + this.value.toString() + "\"]";
     }
+
     public static class Location {
         private String value;
 
@@ -199,17 +226,20 @@ public class CustomTagImpl implements CustomTag {
             return value;
         }
 
+        @Override
         public Object clone() {
             return new Location(this.value);
         }
 
+        @Override
         public String toString() {
             return value;
         }
-	
-	public boolean equals( Object o ){
-	    if( o instanceof Location && ((Location) o).value.equals(this.value) ) return true;
-	    else return false;
-	}
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Location && ((Location) o).value.equals(this.value)) return true;
+            else return false;
+        }
     }
 }

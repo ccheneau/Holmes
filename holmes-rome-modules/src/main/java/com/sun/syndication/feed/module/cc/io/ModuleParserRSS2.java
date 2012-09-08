@@ -40,16 +40,17 @@
 
 package com.sun.syndication.feed.module.cc.io;
 
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.feed.module.cc.CreativeCommonsImpl;
-import com.sun.syndication.feed.module.cc.types.License;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.jdom.Element;
 import org.jdom.Namespace;
+
+import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.cc.CreativeCommonsImpl;
+import com.sun.syndication.feed.module.cc.types.License;
+import com.sun.syndication.io.ModuleParser;
 
 /**
  *
@@ -57,63 +58,65 @@ import org.jdom.Namespace;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ModuleParserRSS2 implements ModuleParser {
-    
-    private static final Namespace NS = Namespace.getNamespace( CreativeCommonsImpl.RSS2_URI );
-    
+
+    private static final Namespace NS = Namespace.getNamespace(CreativeCommonsImpl.RSS2_URI);
+
     /** Creates a new instance of ModuleParserRSS2 */
     public ModuleParserRSS2() {
     }
 
+    @Override
     public Module parse(Element element) {
-	CreativeCommonsImpl module = new CreativeCommonsImpl();
-	//Do channel global
-	{
-	    Element root = element;
-	    while( !root.getName().equals("channel") && !root.getName().equals("feed") )
-		root = root.getParentElement();
-	    ArrayList licenses = new ArrayList();
-	    List items = null;
-	    if( root.getName().equals("channel"))
-		items = root.getChildren("item");
-	    else
-		items = root.getChildren("entry");
-	    
-	    Iterator iit = items.iterator();
-	    while( iit.hasNext() ){
-		Element item = (Element) iit.next();
-		List licenseTags = item.getChildren( "license", NS );
-		Iterator lit = licenseTags.iterator();
-		while(lit.hasNext() ){
-		    Element licenseTag = (Element) lit.next();
-		    License license = License.findByValue( licenseTag.getTextTrim() );
-		    if( !licenses.contains( license ));
-			licenses.add( license );
-		}
-	    }
-	    if( licenses.size() > 0 ){
-		module.setAllLicenses( (License[]) licenses.toArray( new License[0] ) );
-	    }
-	}
-	// do element local
-	ArrayList licenses = new ArrayList();
-	List licenseTags = element.getChildren( "license", NS );
-	Iterator it = licenseTags.iterator();
-	while( it.hasNext() ){
-	    Element licenseTag = (Element) it.next();
-	    licenses.add( License.findByValue(licenseTag.getTextTrim() ));
-	}
-	if( licenses.size() > 0 ){
-	    module.setLicenses( (License[]) licenses.toArray( new License[0]));
-	}
-	
-	if( module.getLicenses() != null && module.getAllLicenses() != null ){
-	    return module;
-	} else {
-	    return null;
-	}
+        CreativeCommonsImpl module = new CreativeCommonsImpl();
+        //Do channel global
+        {
+            Element root = element;
+            while (!root.getName().equals("channel") && !root.getName().equals("feed"))
+                root = root.getParentElement();
+            ArrayList<License> licenses = new ArrayList<License>();
+            List<?> items = null;
+            if (root.getName().equals("channel")) items = root.getChildren("item");
+            else items = root.getChildren("entry");
+
+            Iterator<?> iit = items.iterator();
+            while (iit.hasNext()) {
+                Element item = (Element) iit.next();
+                List<?> licenseTags = item.getChildren("license", NS);
+                Iterator<?> lit = licenseTags.iterator();
+                while (lit.hasNext()) {
+                    Element licenseTag = (Element) lit.next();
+                    License license = License.findByValue(licenseTag.getTextTrim());
+                    if (!licenses.contains(license))
+                    ;
+                    licenses.add(license);
+                }
+            }
+            if (licenses.size() > 0) {
+                module.setAllLicenses(licenses.toArray(new License[0]));
+            }
+        }
+        // do element local
+        ArrayList<License> licenses = new ArrayList<License>();
+        List<?> licenseTags = element.getChildren("license", NS);
+        Iterator<?> it = licenseTags.iterator();
+        while (it.hasNext()) {
+            Element licenseTag = (Element) it.next();
+            licenses.add(License.findByValue(licenseTag.getTextTrim()));
+        }
+        if (licenses.size() > 0) {
+            module.setLicenses(licenses.toArray(new License[0]));
+        }
+
+        if (module.getLicenses() != null && module.getAllLicenses() != null) {
+            return module;
+        }
+        else {
+            return null;
+        }
     }
 
+    @Override
     public String getNamespaceUri() {
-	return CreativeCommonsImpl.RSS2_URI;
+        return CreativeCommonsImpl.RSS2_URI;
     }
 }

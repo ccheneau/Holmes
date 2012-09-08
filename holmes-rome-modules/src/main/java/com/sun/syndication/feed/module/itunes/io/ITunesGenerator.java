@@ -40,6 +40,12 @@
  */
 package com.sun.syndication.feed.module.itunes.io;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.itunes.AbstractITunesObject;
 import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
@@ -47,18 +53,12 @@ import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
 import com.sun.syndication.feed.module.itunes.types.Category;
 import com.sun.syndication.io.ModuleGenerator;
 
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import java.util.HashSet;
-import java.util.Iterator;
-
 /**
  * @version $Revision: 1.3 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ITunesGenerator implements ModuleGenerator {
-    private static final HashSet SET = new HashSet();
+    private static final HashSet<Namespace> SET = new HashSet<Namespace>();
     private static final Namespace NS = Namespace.getNamespace(AbstractITunesObject.PREFIX, AbstractITunesObject.URI);
 
     static {
@@ -69,6 +69,7 @@ public class ITunesGenerator implements ModuleGenerator {
     public ITunesGenerator() {
     }
 
+    @Override
     public void generate(Module module, Element element) {
         Element root = element;
 
@@ -101,8 +102,8 @@ public class ITunesGenerator implements ModuleGenerator {
                 element.addContent(image);
             }
 
-            for (Iterator it = info.getCategories().iterator(); it.hasNext();) {
-        	Category cat = (Category) it.next();
+            for (Iterator<Category> it = info.getCategories().iterator(); it.hasNext();) {
+                Category cat = it.next();
                 Element category = this.generateSimpleElement("category", "");
                 category.setAttribute("text", cat.getName());
 
@@ -114,7 +115,8 @@ public class ITunesGenerator implements ModuleGenerator {
 
                 element.addContent(category);
             }
-        } else if (itunes instanceof EntryInformationImpl) {
+        }
+        else if (itunes instanceof EntryInformationImpl) {
             EntryInformationImpl info = (EntryInformationImpl) itunes;
 
             if (info.getDuration() != null) {
@@ -132,7 +134,8 @@ public class ITunesGenerator implements ModuleGenerator {
 
         if (itunes.getExplicit()) {
             element.addContent(this.generateSimpleElement("explicit", "yes"));
-        } else {
+        }
+        else {
             element.addContent(this.generateSimpleElement("explicit", "no"));
         }
 
@@ -162,13 +165,15 @@ public class ITunesGenerator implements ModuleGenerator {
     /** Returns the list of namespaces this module uses.
      * @return set of Namespace objects.
      */
-    public java.util.Set getNamespaces() {
+    @Override
+    public java.util.Set<Namespace> getNamespaces() {
         return SET;
     }
 
     /** Returns the namespace URI this module handles.
      * @return Returns the namespace URI this module handles.
      */
+    @Override
     public String getNamespaceUri() {
         return AbstractITunesObject.URI;
     }

@@ -42,13 +42,14 @@ package com.sun.syndication.feed.module.itunes.types;
 
 import java.io.Serializable;
 
-
 /**
  * This class represents a Subcategor of a Category.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  */
 public class Subcategory implements Serializable {
+    private static final long serialVersionUID = -8563595355552684061L;
+
     private String name;
 
     /** Creates a new instance of SubCategory */
@@ -82,6 +83,7 @@ public class Subcategory implements Serializable {
      * Clones the object.
      * @return Clone of the object.
      */
+    @Override
     public Object clone() {
         Subcategory sc = new Subcategory();
         sc.setName(this.getName());
@@ -93,6 +95,7 @@ public class Subcategory implements Serializable {
      * String representation of the object.
      * @return String representation of the object.
      */
+    @Override
     public String toString() {
         return new StringBuffer(this.getName()).toString();
     }

@@ -50,55 +50,56 @@ import java.util.Date;
  * number of days since 00:00:00 01/01/00.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class PhotoDate extends Date{
-    
-    private static final long Y2K =  946616400531l;
+public class PhotoDate extends Date {
+    private static final long serialVersionUID = -3610656763669753517L;
+
+    private static final long Y2K = 946616400531l;
     private static final double DAY = 24 * 60 * 60 * 1000;
+
     /** Creates a new instance of PhotoDate */
     public PhotoDate() {
         super();
     }
-    
+
     /**
      * Creates a new instance of PhotoDate with the timestamp provided.
      * @param time milliseconds time
      */
-    public PhotoDate( long time ){
-        super( time );
+    public PhotoDate(long time) {
+        super(time);
     }
-    
+
     /**
      * Creates a new instance of PhotoDate with the fractional 
      * number of days since 00:00:00 01/01/00.
      * @param photoDateValue fractional number of days since 00:00:00 01/01/00
      */
-    public PhotoDate( double photoDateValue ){
+    public PhotoDate(double photoDateValue) {
         BigDecimal d = new BigDecimal(photoDateValue);
-        d = d.multiply( new BigDecimal( DAY ) );
-        d = d.add( new BigDecimal( Y2K) );
-        this.setTime( d.longValue() );
+        d = d.multiply(new BigDecimal(DAY));
+        d = d.add(new BigDecimal(Y2K));
+        this.setTime(d.longValue());
     }
-    
+
     /**
      * Returns a string representing the fractional 
      * number of days since 00:00:00 01/01/00.
      * @return Returns a string representing the fractional 
      * number of days since 00:00:00 01/01/00.
      */
-    public String toString(){
-        BigDecimal d = new BigDecimal( this.getTime() );  
-        d = d.subtract( new BigDecimal( Y2K) );     
-        d = d.multiply( new BigDecimal( 1000000 ) );
-        d = d.divide( new BigDecimal(DAY) , BigDecimal.ROUND_HALF_UP);
-        return d.divide( new BigDecimal(1000000), 7, BigDecimal.ROUND_HALF_UP).toString();
+    @Override
+    public String toString() {
+        BigDecimal d = new BigDecimal(this.getTime());
+        d = d.subtract(new BigDecimal(Y2K));
+        d = d.multiply(new BigDecimal(1000000));
+        d = d.divide(new BigDecimal(DAY), BigDecimal.ROUND_HALF_UP);
+        return d.divide(new BigDecimal(1000000), 7, BigDecimal.ROUND_HALF_UP).toString();
     }
-    
-    public boolean equals( Object o ){
-        if( o instanceof Date || ((Date)o).getTime()/1000 == this.getTime()/1000 )
-            return true;
-        else
-            return false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Date || ((Date) o).getTime() / 1000 == this.getTime() / 1000) return true;
+        else return false;
     }
-   
-    
+
 }

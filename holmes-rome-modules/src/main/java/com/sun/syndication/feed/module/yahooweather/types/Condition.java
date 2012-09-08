@@ -38,12 +38,10 @@
 package com.sun.syndication.feed.module.yahooweather.types;
 
 import java.io.Serializable;
-
 import java.util.Date;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
-
 
 /**
  * The current weather conditions. Attributes:
@@ -66,6 +64,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Condition implements Serializable, Cloneable {
+    private static final long serialVersionUID = -1643202476855720265L;
+
     private EqualsBean equals = new EqualsBean(Condition.class, this);
     private ToStringBean toString = new ToStringBean(Condition.class, this);
     private String text;
@@ -164,20 +164,23 @@ public class Condition implements Serializable, Cloneable {
         this.date = date;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
 
+    @Override
     public Object clone() {
-        return new Condition(this.text, this.code, this.temperature,
-            (this.date != null) ? new Date(this.date.getTime()) : null);
+        return new Condition(this.text, this.code, this.temperature, (this.date != null) ? new Date(this.date.getTime()) : null);
     }
 }

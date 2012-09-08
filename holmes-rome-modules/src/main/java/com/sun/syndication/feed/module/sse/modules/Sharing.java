@@ -6,8 +6,10 @@ import java.util.Date;
  * <pre><sx:sharing></pre>Element within RSS <pre><channel></pre> or OPML <pre><head></pre>.
  */
 public class Sharing extends SSEModule {
+    private static final long serialVersionUID = 5545417627727242603L;
+
     public static final String NAME = "sharing";
-    
+
     public static final String UNTIL_ATTRIBUTE = "until";
     public static final String SINCE_ATTRIBUTE = "since";
     public static final String ORDERED_ATTRIBUTE = "ordered";
@@ -30,8 +32,9 @@ public class Sharing extends SSEModule {
     private Date until;
     private Related related;
 
+    @Override
     public void copyFrom(Object obj) {
-        Sharing sharing = (Sharing)obj;
+        Sharing sharing = (Sharing) obj;
         ordered = sharing.ordered;
         since = sharing.since == null ? null : (Date) sharing.since.clone();
         window = sharing.window;

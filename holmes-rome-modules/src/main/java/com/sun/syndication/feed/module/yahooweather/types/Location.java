@@ -42,7 +42,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * The location of this forecast. Attributes:
  *      <ul class="topspace">
@@ -53,8 +52,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Location implements Serializable, Cloneable {
-    private transient ToStringBean toString = new ToStringBean(Location.class,
-            this);
+    private static final long serialVersionUID = 7710235884944405862L;
+
+    private transient ToStringBean toString = new ToStringBean(Location.class, this);
     private transient EqualsBean equals = new EqualsBean(Location.class, this);
     private String city;
     private String region;
@@ -128,18 +128,22 @@ public class Location implements Serializable, Cloneable {
         this.country = country;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
 
+    @Override
     public Object clone() {
         return new Location(this.city, this.region, this.country);
     }

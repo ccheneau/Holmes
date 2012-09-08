@@ -7,6 +7,8 @@ import java.util.List;
  * <pre><sx:sync></pre>Element within RSS <pre><item></pre> or OPML <pre><outline></pre>.
  */
 public class Sync extends SSEModule {
+    private static final long serialVersionUID = 7465115408608694410L;
+
     public static final String NAME = "sync";
 
     public static final String ID_ATTRIBUTE = "id";
@@ -24,17 +26,18 @@ public class Sync extends SSEModule {
     private Boolean conflict;
 
     private History history;
-    private List conflicts;
+    private List<Conflict> conflicts;
 
+    @Override
     public void copyFrom(Object obj) {
-        Sync sync = (Sync)obj;
+        Sync sync = (Sync) obj;
         deleted = sync.deleted;
         version = sync.version;
         conflict = sync.conflict;
         id = sync.id;
-        history = (sync.history == null ? null : (History)sync.history.clone());
+        history = (sync.history == null ? null : (History) sync.history.clone());
         if (sync.conflicts != null) {
-            conflicts = new ArrayList();
+            conflicts = new ArrayList<Conflict>();
             conflicts.addAll(sync.conflicts);
         }
     }
@@ -117,9 +120,6 @@ public class Sync extends SSEModule {
         this.conflict = conflict;
     }
 
-    // TODO: does it make sense for the sync element to have a history?
-    // TODO: should the history be a module?
-
     /**
      * The history history for this sync object
      *
@@ -140,16 +140,16 @@ public class Sync extends SSEModule {
 
     public void addConflict(Conflict conflict) {
         if (conflicts == null) {
-            conflicts = new ArrayList();
+            conflicts = new ArrayList<Conflict>();
         }
         conflicts.add(conflict);
     }
 
-    public List getConflicts() {
+    public List<Conflict> getConflicts() {
         return conflicts;
     }
 
-    public void setConflicts(List conflicts) {
+    public void setConflicts(List<Conflict> conflicts) {
         this.conflicts = conflicts;
     }
 }

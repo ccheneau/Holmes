@@ -14,9 +14,10 @@ package com.sun.syndication.feed.module.georss.geometries;
  * @author runaas
  */
 public abstract class AbstractSurface extends AbstractGeometricPrimitive {
-    
+    private static final long serialVersionUID = -8457489352329545410L;
+
     /** Creates a new instance of Surface */
     public AbstractSurface() {
     }
-    
+
 }

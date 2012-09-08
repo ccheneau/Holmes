@@ -28,11 +28,13 @@ import com.sun.syndication.feed.module.opensearch.entity.OSQuery;
  * OpenSearch Module implementation
  */
 public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int totalResults = -1;
     private int startIndex = 1;
     private int itemsPerPage = -1;
     private Link link;
-    private List queries;
+    private List<OSQuery> queries;
 
     public OpenSearchModuleImpl() {
         super(OpenSearchModuleImpl.class, OpenSearchModuleImpl.URI);
@@ -74,8 +76,8 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @return Returns the queries.
      */
     @Override
-    public List getQueries() {
-        this.queries = (queries == null) ? new LinkedList() : queries;
+    public List<OSQuery> getQueries() {
+        this.queries = (queries == null) ? new LinkedList<OSQuery>() : queries;
 
         return this.queries;
     }
@@ -84,7 +86,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param queries The queries to set.
      */
     @Override
-    public void setQueries(List queries) {
+    public void setQueries(List<OSQuery> queries) {
         this.queries = queries;
     }
 
@@ -94,7 +96,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
             queries.add(query);
         }
         else {
-            queries = new LinkedList();
+            queries = new LinkedList<OSQuery>();
             queries.add(query);
         }
     }
@@ -150,7 +152,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @see com.sun.syndication.feed.CopyFrom#getInterface()
      */
     @Override
-    public Class getInterface() {
+    public Class<?> getInterface() {
         return OpenSearchModule.class;
     }
 }

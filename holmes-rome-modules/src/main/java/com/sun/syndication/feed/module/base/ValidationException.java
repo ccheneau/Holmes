@@ -25,11 +25,12 @@ package com.sun.syndication.feed.module.base;
  * @version $Revision: 1.1 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ValidationException extends RuntimeException{
-    
+public class ValidationException extends RuntimeException {
+    private static final long serialVersionUID = 276615733985687171L;
+
     /** Creates a new instance of ValidationException */
     public ValidationException(String message) {
-	super( message );
+        super(message);
     }
-    
+
 }

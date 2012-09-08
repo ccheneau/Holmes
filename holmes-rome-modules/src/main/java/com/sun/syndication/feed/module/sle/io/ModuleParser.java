@@ -17,18 +17,17 @@
  */
 package com.sun.syndication.feed.module.sle.io;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.sle.SimpleListExtension;
 import com.sun.syndication.feed.module.sle.SimpleListExtensionImpl;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
-
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  *
@@ -49,6 +48,7 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
      *
      * @return the namespace URI.
      */
+    @Override
     public String getNamespaceUri() {
         return SimpleListExtension.URI;
     }
@@ -60,6 +60,7 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
      * @param element the XML node (JDOM element) to extract module information from.
      * @return a module instance, <b>null</b> if the element did not have module information.
      */
+    @Override
     public Module parse(Element element) {
         if (element.getChild("treatAs", NS) == null) {
             return null;
@@ -69,21 +70,22 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
         sle.setTreatAs(element.getChildText("treatAs", NS));
 
         Element listInfo = element.getChild("listinfo", NS);
-        List groups = listInfo.getChildren("group", NS);
-        ArrayList values = new ArrayList();
+        List<?> groups = listInfo.getChildren("group", NS);
+        ArrayList<Group> groupValues = new ArrayList<Group>();
 
         for (int i = 0; (groups != null) && (i < groups.size()); i++) {
             Element ge = (Element) groups.get(i);
             Namespace ns = (ge.getAttribute("ns") == null) ? element.getNamespace() : Namespace.getNamespace(ge.getAttributeValue("ns"));
             String elementName = ge.getAttributeValue("element");
             String label = ge.getAttributeValue("label");
-            values.add(new Group(ns, elementName, label));
+            groupValues.add(new Group(ns, elementName, label));
         }
 
-        sle.setGroupFields((Group[]) values.toArray(new Group[values.size()]));
-        values = (values.size() == 0) ? values : new ArrayList();
+        sle.setGroupFields(groupValues.toArray(new Group[groupValues.size()]));
 
-        List sorts = listInfo.getChildren("sort", NS);
+        ArrayList<Sort> sortValues = new ArrayList<Sort>();
+
+        List<?> sorts = listInfo.getChildren("sort", NS);
 
         for (int i = 0; (sorts != null) && (i < sorts.size()); i++) {
             Element se = (Element) sorts.get(i);
@@ -92,10 +94,10 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
             String label = se.getAttributeValue("label");
             String dataType = se.getAttributeValue("data-type");
             boolean defaultOrder = (se.getAttribute("default") == null) ? false : new Boolean(se.getAttributeValue("default")).booleanValue();
-            values.add(new Sort(ns, elementName, dataType, label, defaultOrder));
+            sortValues.add(new Sort(ns, elementName, dataType, label, defaultOrder));
         }
 
-        sle.setSortFields((Sort[]) values.toArray(new Sort[values.size()]));
+        sle.setSortFields(sortValues.toArray(new Sort[sortValues.size()]));
         insertValues(sle, element.getChildren());
 
         return sle;
@@ -104,12 +106,13 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        } else {
+        }
+        else {
             target.setAttribute(name, value.toString());
         }
     }
 
-    public void insertValues(SimpleListExtension sle, List elements) {
+    public void insertValues(SimpleListExtension sle, List<?> elements) {
         for (int i = 0; (elements != null) && (i < elements.size()); i++) {
             Element e = (Element) elements.get(i);
             Group[] groups = sle.getGroupFields();
@@ -125,8 +128,8 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
                 addNotNullAttribute(group, "element", groups[g].getElement());
                 addNotNullAttribute(group, "label", groups[g].getLabel());
                 addNotNullAttribute(group, "value", value.getText());
-                addNotNullAttribute(group, "ns", groups[g].getNamespace().getURI() );
-                
+                addNotNullAttribute(group, "ns", groups[g].getNamespace().getURI());
+
                 e.addContent(group);
             }
 
@@ -161,7 +164,7 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
                 addNotNullAttribute(sort, "element", sorts[s].getElement());
                 addNotNullAttribute(sort, "value", value.getText());
                 addNotNullAttribute(sort, "data-type", sorts[s].getDataType());
-                addNotNullAttribute(sort, "ns", sorts[s].getNamespace().getURI() );
+                addNotNullAttribute(sort, "ns", sorts[s].getNamespace().getURI());
                 e.addContent(sort);
             }
         }

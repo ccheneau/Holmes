@@ -23,24 +23,25 @@ import com.sun.syndication.feed.impl.ObjectBean;
  * @author Michael W. Nassif (enrouteinc@gmail.com)
  * Class representation of the Query object (Response portion so far)
  */
-public class OSQuery implements Cloneable, Serializable{
+public class OSQuery implements Cloneable, Serializable {
+    private static final long serialVersionUID = -5707178327384837650L;
 
-	ObjectBean _objBean = null;
-	
-	// role is required
-	private String role;
-	private int startPage = -1;
-	private int totalResults = -1;
-	private String osd;
-	private String title;
-	private String searchTerms;
-	
+    ObjectBean _objBean = null;
+
+    // role is required
+    private String role;
+    private int startPage = -1;
+    private int totalResults = -1;
+    private String osd;
+    private String title;
+    private String searchTerms;
+
     /**
      * Default constructor. All properties are set to <b>null</b>.
      * <p>
      */
     public OSQuery() {
-        _objBean = new ObjectBean(this.getClass(),this);
+        _objBean = new ObjectBean(this.getClass(), this);
     }
 
     /**
@@ -50,6 +51,7 @@ public class OSQuery implements Cloneable, Serializable{
      * @throws CloneNotSupportedException thrown if an element of the object cannot be cloned.
      *
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return _objBean.clone();
     }
@@ -61,6 +63,7 @@ public class OSQuery implements Cloneable, Serializable{
      * @return <b>true</b> if 'this' object is equal to the 'other' object.
      *
      */
+    @Override
     public boolean equals(Object other) {
         return _objBean.equals(other);
     }
@@ -73,6 +76,7 @@ public class OSQuery implements Cloneable, Serializable{
      * @return the hashcode of the bean object.
      *
      */
+    @Override
     public int hashCode() {
         return _objBean.hashCode();
     }
@@ -83,82 +87,94 @@ public class OSQuery implements Cloneable, Serializable{
      * @return String representation for the object.
      *
      */
+    @Override
     public String toString() {
         return _objBean.toString();
     }
-	
-	/**
-	 * @return Returns the osd.
-	 */
-	public String getOsd() {
-		return osd;
-	}
-	/**
-	 * Typically represents a url link to the os description file
-	 * @param osd The osd to set.
-	 */
-	public void setOsd(String osd) {
-		this.osd = osd;
-	}
-	/**
-	 * @return Returns the role.
-	 */
-	public String getRole() {
-		return role;
-	}
-	/**
-	 * @param role The role to set.
-	 */
-	public void setRole(String role) {
-		this.role = role;
-	}
-	/**
-	 * @return Returns the searchTerms.
-	 */
-	public String getSearchTerms() {
-		return searchTerms;
-	}
-	/**
-	 * @param searchTerms The searchTerms to set.
-	 */
-	public void setSearchTerms(String searchTerms) {
-		this.searchTerms = searchTerms;
-	}
-	/**
-	 * @return Returns the startPage.
-	 */
-	public int getStartPage() {
-		return startPage;
-	}
-	/**
-	 * @param startPage The startPage to set.
-	 */
-	public void setStartPage(int startPage) {
-		this.startPage = startPage;
-	}
-	/**
-	 * @return Returns the title.
-	 */
-	public String getTitle() {
-		return title;
-	}
-	/**
-	 * @param title The title to set.
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	/**
-	 * @return Returns the totalResults.
-	 */
-	public int getTotalResults() {
-		return totalResults;
-	}
-	/**
-	 * @param totalResults The totalResults to set.
-	 */
-	public void setTotalResults(int totalResults) {
-		this.totalResults = totalResults;
-	}
+
+    /**
+     * @return Returns the osd.
+     */
+    public String getOsd() {
+        return osd;
+    }
+
+    /**
+     * Typically represents a url link to the os description file
+     * @param osd The osd to set.
+     */
+    public void setOsd(String osd) {
+        this.osd = osd;
+    }
+
+    /**
+     * @return Returns the role.
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role The role to set.
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    /**
+     * @return Returns the searchTerms.
+     */
+    public String getSearchTerms() {
+        return searchTerms;
+    }
+
+    /**
+     * @param searchTerms The searchTerms to set.
+     */
+    public void setSearchTerms(String searchTerms) {
+        this.searchTerms = searchTerms;
+    }
+
+    /**
+     * @return Returns the startPage.
+     */
+    public int getStartPage() {
+        return startPage;
+    }
+
+    /**
+     * @param startPage The startPage to set.
+     */
+    public void setStartPage(int startPage) {
+        this.startPage = startPage;
+    }
+
+    /**
+     * @return Returns the title.
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title The title to set.
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * @return Returns the totalResults.
+     */
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+    /**
+     * @param totalResults The totalResults to set.
+     */
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
+    }
 
 }

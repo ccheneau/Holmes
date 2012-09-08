@@ -19,12 +19,17 @@ package com.sun.syndication.feed.module.georss;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
+import org.jdom.Namespace;
 
 import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.georss.geometries.AbstractGeometry;
+import com.sun.syndication.feed.module.georss.geometries.Point;
+import com.sun.syndication.feed.module.georss.geometries.Position;
 import com.sun.syndication.io.ModuleGenerator;
-import com.sun.syndication.feed.module.georss.geometries.*;
 
 /**
  * W3CGeoGenerator produces georss elements in georss W3C geo format.
@@ -34,18 +39,19 @@ import com.sun.syndication.feed.module.georss.geometries.*;
  * 
  */
 public class W3CGeoGenerator implements ModuleGenerator {
-    
+    private static final Logger logger = Logger.getLogger(W3CGeoGenerator.class.getName());
+
     private static boolean isShort = true;
 
-    private static final Set NAMESPACES;
-    
+    private static final Set<Namespace> NAMESPACES;
+
     static {
-        Set nss = new HashSet();
+        Set<Namespace> nss = new HashSet<Namespace>();
         nss.add(GeoRSSModule.W3CGEO_NS);
         NAMESPACES = Collections.unmodifiableSet(nss);
     }
-    
-    public static void enableDefaultPointElement(){
+
+    public static void enableDefaultPointElement() {
         isShort = false;
     }
 
@@ -54,6 +60,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
      * 
      * @see com.sun.syndication.io.ModuleGenerator#getNamespaceUri()
      */
+    @Override
     public String getNamespaceUri() {
         return GeoRSSModule.GEORSS_W3CGEO_URI;
     }
@@ -63,7 +70,8 @@ public class W3CGeoGenerator implements ModuleGenerator {
      * 
      * @see com.sun.syndication.io.ModuleGenerator#getNamespaces()
      */
-    public Set getNamespaces() {
+    @Override
+    public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 
@@ -73,6 +81,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
      * @see com.sun.syndication.io.ModuleGenerator#generate(com.sun.syndication.feed.module.Module,
      *      org.jdom.Element)
      */
+    @Override
     public void generate(Module module, Element element) {
         // this is not necessary, it is done to avoid the namespace definition
         // in every item.
@@ -89,11 +98,11 @@ public class W3CGeoGenerator implements ModuleGenerator {
         }
 
         GeoRSSModule geoRSSModule = (GeoRSSModule) module;
-         AbstractGeometry geometry = geoRSSModule.getGeometry();
-        
+        AbstractGeometry geometry = geoRSSModule.getGeometry();
+
         if (geometry instanceof Point) {
-            Position pos = ((Point)geometry).getPosition();
-            
+            Position pos = ((Point) geometry).getPosition();
+
             Element latElement = new Element("lat", GeoRSSModule.W3CGEO_NS);
             latElement.addContent(String.valueOf(pos.getLatitude()));
             pointElement.addContent(latElement);
@@ -102,7 +111,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
             pointElement.addContent(lngElement);
         }
         else {
-             System.err.println("W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
+            logger.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
         }
     }
 }

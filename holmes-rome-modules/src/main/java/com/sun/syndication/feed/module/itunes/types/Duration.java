@@ -39,12 +39,11 @@
  */
 package com.sun.syndication.feed.module.itunes.types;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
-import java.io.Serializable;
 
 import com.sun.syndication.io.impl.NumberParser;
-
 
 /**
  * An encapsulation of the duration of a podcast. This will serialize (via .toString()) 
@@ -53,11 +52,13 @@ import com.sun.syndication.io.impl.NumberParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Duration implements Serializable {
+    private static final long serialVersionUID = -1960363504597514365L;
+
     static final long SECOND = 1000;
     static final long MINUTE = SECOND * 60;
     static final long HOUR = MINUTE * 60;
     static final NumberFormat NUM_FORMAT = NumberFormat.getNumberInstance();
-    static{
+    static {
         NUM_FORMAT.setMinimumFractionDigits(0);
         NUM_FORMAT.setMaximumFractionDigits(0);
         NUM_FORMAT.setMinimumIntegerDigits(2);
@@ -87,28 +88,28 @@ public class Duration implements Serializable {
      * @param seconds number of seconds
      */
     public Duration(final int hours, final int minutes, final float seconds) {
-        this.setMilliseconds((hours * HOUR) + (minutes * MINUTE) +
-            (long)(seconds * SECOND));
+        this.setMilliseconds((hours * HOUR) + (minutes * MINUTE) + (long) (seconds * SECOND));
     }
-    
+
     /**
      * Creates a new Duration parsing the String value.
      * @param duration A String to parse
      */
-    public Duration( final String duration ){
-        StringTokenizer tok = new StringTokenizer( duration, ":" );
-        switch (tok.countTokens() ){
-            case 1:
-                this.setMilliseconds( (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND) );
-                break;
-            case 2:
-                this.setMilliseconds(NumberParser.parseLong( tok.nextToken(), 0l ) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND) );
-                break;
-            case 3:
-                this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0l) * HOUR + NumberParser.parseLong(tok.nextToken(), 0l) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND) );
-                break;
-            default:
-                throw new RuntimeException("Illegal time value: "+ duration);
+    public Duration(final String duration) {
+        StringTokenizer tok = new StringTokenizer(duration, ":");
+        switch (tok.countTokens()) {
+        case 1:
+            this.setMilliseconds((long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+            break;
+        case 2:
+            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0l) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+            break;
+        case 3:
+            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0l) * HOUR + NumberParser.parseLong(tok.nextToken(), 0l) * MINUTE
+                    + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+            break;
+        default:
+            throw new RuntimeException("Illegal time value: " + duration);
         }
     }
 
@@ -116,12 +117,11 @@ public class Duration implements Serializable {
      * Returns a String representation in the formation HH:MM:SS
      * @return Returns a String representation in the formation HH:MM:SS
      */
+    @Override
     public String toString() {
         Time time = new Time();
 
-        
-        return NUM_FORMAT.format(time.hours) + ":" + NUM_FORMAT.format(time.minutes) + ":" +
-        NUM_FORMAT.format( Math.round(time.seconds) );
+        return NUM_FORMAT.format(time.hours) + ":" + NUM_FORMAT.format(time.minutes) + ":" + NUM_FORMAT.format(Math.round(time.seconds));
     }
 
     /**
@@ -148,10 +148,10 @@ public class Duration implements Serializable {
         public Time() {
             long time = getMilliseconds();
             hours = (int) (time / HOUR);
-            time = time - (long) hours * HOUR;
+            time = time - hours * HOUR;
             minutes = (int) (time / MINUTE);
-            time = time - (long) minutes * MINUTE;
-            seconds = (float) ( (float) time / (float) SECOND);
+            time = time - minutes * MINUTE;
+            seconds = (float) time / (float) SECOND;
         }
     }
 }

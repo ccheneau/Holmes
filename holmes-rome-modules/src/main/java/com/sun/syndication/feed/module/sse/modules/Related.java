@@ -6,6 +6,8 @@ import java.util.Date;
  * <pre><sx:related></pre>Element within <pre><sx:sharing></pre>.
  */
 public class Related extends SSEModule {
+    private static final long serialVersionUID = -6371835370161581244L;
+
     public static final String NAME = "related";
 
     /**
@@ -37,8 +39,9 @@ public class Related extends SSEModule {
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String UNTIL_ATTRIBUTE = "until";
 
+    @Override
     public void copyFrom(Object obj) {
-        Related related = (Related)obj;
+        Related related = (Related) obj;
         related.link = link;
         related.since = since == null ? null : (Date) since.clone();
         related.title = title;
@@ -51,7 +54,6 @@ public class Related extends SSEModule {
      *
      * @return the URL for related feeds
      */
-    // TODO: use a java.net.URL?
     public String getLink() {
         return link;
     }
@@ -64,7 +66,6 @@ public class Related extends SSEModule {
     public void setLink(String link) {
         this.link = link;
     }
-
 
     /**
      * title An optional, string attribute. The name or description of the related feed.

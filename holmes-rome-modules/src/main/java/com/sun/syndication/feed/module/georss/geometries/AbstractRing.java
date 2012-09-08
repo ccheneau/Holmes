@@ -16,11 +16,13 @@ import java.io.Serializable;
  * @author runaas
  */
 public abstract class AbstractRing implements Cloneable, Serializable {
-    
+    private static final long serialVersionUID = 2889624751037045817L;
+
     /** Creates a new instance of AbstractRing */
     public AbstractRing() {
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }

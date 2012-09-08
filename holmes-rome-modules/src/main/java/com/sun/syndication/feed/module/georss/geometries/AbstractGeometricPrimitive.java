@@ -14,10 +14,11 @@ package com.sun.syndication.feed.module.georss.geometries;
  * @author runaas
  */
 public abstract class AbstractGeometricPrimitive extends AbstractGeometry {
-    
+    private static final long serialVersionUID = 5456295157598430456L;
+
     /** Creates a new instance of GeometricPrimitive */
     public AbstractGeometricPrimitive() {
-        
+
     }
-    
+
 }

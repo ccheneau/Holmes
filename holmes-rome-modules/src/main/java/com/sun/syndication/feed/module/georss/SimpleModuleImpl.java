@@ -16,7 +16,6 @@
  */
 package com.sun.syndication.feed.module.georss;
 
-
 /**
  * SimpleModuleImpl is the implementation of the {@link GeoRSSModule} Interface
  * for the GeoRSS Simple format.
@@ -25,18 +24,20 @@ package com.sun.syndication.feed.module.georss;
  * @version $Id: SimpleModuleImpl.java,v 1.4 2007/04/18 09:59:29 marcwick Exp $
  * 
  */
-public class SimpleModuleImpl extends  GeoRSSModule {
+public class SimpleModuleImpl extends GeoRSSModule {
+    private static final long serialVersionUID = -2185595041554894477L;
+
     public SimpleModuleImpl() {
         super(GeoRSSModule.class, GeoRSSModule.GEORSS_GEORSS_URI);
     }
 
-    
     /*
      * (non-Javadoc)
      * 
      * @see com.sun.syndication.feed.CopyFrom#getInterface()
      */
-    public Class getInterface() {
+    @Override
+    public Class<?> getInterface() {
         return GeoRSSModule.class;
     }
 }

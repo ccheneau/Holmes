@@ -42,7 +42,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  *  Units for various aspects of the forecast. Attributes:
  *       <ul class="topspace">
@@ -63,6 +62,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Wind implements Serializable, Cloneable {
+    private static final long serialVersionUID = -6498450780931429693L;
+
     private transient ToStringBean toString = new ToStringBean(Wind.class, this);
     private transient EqualsBean equals = new EqualsBean(Wind.class, this);
     private int chill;
@@ -89,14 +90,17 @@ public class Wind implements Serializable, Cloneable {
         this.speed = speed;
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
@@ -153,6 +157,7 @@ public class Wind implements Serializable, Cloneable {
         this.speed = speed;
     }
 
+    @Override
     public Object clone() {
         return new Wind(this.chill, this.direction, this.speed);
     }

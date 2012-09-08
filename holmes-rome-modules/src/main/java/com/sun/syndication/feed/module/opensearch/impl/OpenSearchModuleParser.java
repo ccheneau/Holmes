@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -37,6 +39,7 @@ import com.sun.syndication.io.ModuleParser;
  * OpenSearch implementation of the ModuleParser class
  */
 public class OpenSearchModuleParser implements ModuleParser {
+    private static final Logger logger = Logger.getLogger(OpenSearchModuleParser.class.getName());
 
     private static final Namespace OS_NS = Namespace.getNamespace("opensearch", OpenSearchModule.URI);
 
@@ -64,7 +67,7 @@ public class OpenSearchModuleParser implements ModuleParser {
             }
             catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                System.err.println("Warning: The element totalResults must be an integer value: " + ex.getMessage());
+                logger.log(Level.WARNING, "The element totalResults must be an integer value: " + ex.getMessage());
             }
         }
 
@@ -75,7 +78,7 @@ public class OpenSearchModuleParser implements ModuleParser {
             }
             catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                System.err.println("Warning: The element itemsPerPage must be an integer value: " + ex.getMessage());
+                logger.log(Level.WARNING, "The element itemsPerPage must be an integer value: " + ex.getMessage());
             }
         }
 
@@ -86,18 +89,18 @@ public class OpenSearchModuleParser implements ModuleParser {
             }
             catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                System.err.println("Warning: The element startIndex must be an integer value: " + ex.getMessage());
+                logger.log(Level.WARNING, "The element startIndex must be an integer value: " + ex.getMessage());
             }
         }
 
-        List queries = dcRoot.getChildren("Query", OS_NS);
+        List<?> queries = dcRoot.getChildren("Query", OS_NS);
 
         if (queries != null && queries.size() > 0) {
 
             // Create the OSQuery list 
-            List osqList = new LinkedList();
+            List<OSQuery> osqList = new LinkedList<OSQuery>();
 
-            for (Iterator iter = queries.iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = queries.iterator(); iter.hasNext();) {
                 e = (Element) iter.next();
                 osqList.add(parseQuery(e));
             }
@@ -146,7 +149,7 @@ public class OpenSearchModuleParser implements ModuleParser {
 
         }
         catch (NumberFormatException ex) {
-            System.err.println("Warning: Exception caught while trying to parse a non-numeric Query attribute " + ex.getMessage());
+            logger.log(Level.WARNING, "Exception caught while trying to parse a non-numeric Query attribute: " + ex.getMessage());
         }
 
         return query;
@@ -225,9 +228,9 @@ public class OpenSearchModuleParser implements ModuleParser {
     /** Use feed links and/or xml:base attribute to determine baseURI of feed */
     private static URL findBaseURI(Element root) {
         URL baseURI = null;
-        List linksList = root.getChildren("link", OS_NS);
+        List<?> linksList = root.getChildren("link", OS_NS);
         if (linksList != null) {
-            for (Iterator links = linksList.iterator(); links.hasNext();) {
+            for (Iterator<?> links = linksList.iterator(); links.hasNext();) {
                 Element link = (Element) links.next();
                 if (!root.equals(link.getParent())) break;
                 String href = link.getAttribute("href").getValue();
@@ -238,7 +241,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                         break;
                     }
                     catch (MalformedURLException e) {
-                        System.err.println("Base URI is malformed: " + href);
+                        logger.log(Level.WARNING, "Base URI is malformed: " + href);
                     }
                 }
             }

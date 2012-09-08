@@ -100,6 +100,7 @@ public class ShippingType implements CloneableType {
      * Clones this object.
      * @return Duplicate ShippingType object.
      */
+    @Override
     public Object clone() {
         return new ShippingType(this.price, this.service, this.country);
     }
@@ -108,25 +109,26 @@ public class ShippingType implements CloneableType {
      * Returns a String representation of this object.
      * @return String representation of this object.
      */
+    @Override
     public String toString() {
         return this.country + " " + this.price + " " + this.service;
     }
 
-    public boolean equals( Object o ){
-	if( !(o instanceof ShippingType))
-	    return false;
-	if( this.toString().equals( o.toString() ) )
-	    return true;
-	return false;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ShippingType)) return false;
+        if (this.toString().equals(o.toString())) return true;
+        return false;
     }
+
     /**
      * Enumeration class of valid options for ServiceType.
      */
     public static class ServiceEnumeration {
-	/**
-         * Looks up a ServiceEnumeration based on the string value.
-         */
-        private static final HashMap lookup = new HashMap();
+        /**
+        * Looks up a ServiceEnumeration based on the string value.
+        */
+        private static final HashMap<String, ServiceEnumeration> lookup = new HashMap<String, ServiceEnumeration>();
         /**
          * Standard
          */
@@ -139,7 +141,7 @@ public class ShippingType implements CloneableType {
          * Overnight
          */
         public static final ServiceEnumeration OVERNIGHT = new ServiceEnumeration("Overnight");
-        
+
         /**
          * String value
          */
@@ -168,13 +170,14 @@ public class ShippingType implements CloneableType {
          * @return ServiceEnumeration or null.
          */
         public static ServiceEnumeration findByValue(String value) {
-            return (ServiceEnumeration) lookup.get(value.toUpperCase());
+            return lookup.get(value.toUpperCase());
         }
 
         /**
          * String value of this Service.
          * @return String value of this Service.
          */
+        @Override
         public String toString() {
             return this.value;
         }

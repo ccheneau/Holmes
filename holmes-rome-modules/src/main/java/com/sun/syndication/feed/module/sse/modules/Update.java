@@ -6,6 +6,8 @@ import java.util.Date;
  * <pre><sx:update></pre>Element within <pre><sx:history></pre>.
  */
 public class Update extends SSEModule {
+    private static final long serialVersionUID = -1913059865226395433L;
+
     public static final String NAME = "update";
     public static final String BY_ATTRIBUTE = "by";
     public static final String WHEN_ATTRIBUTE = "when";
@@ -13,8 +15,9 @@ public class Update extends SSEModule {
     private Date when;
     private String by;
 
+    @Override
     public void copyFrom(Object other) {
-        Update otherUpdate = (Update)other;
+        Update otherUpdate = (Update) other;
         otherUpdate.when = when == null ? null : (Date) when.clone();
         // dont copy immutable
         otherUpdate.by = by;

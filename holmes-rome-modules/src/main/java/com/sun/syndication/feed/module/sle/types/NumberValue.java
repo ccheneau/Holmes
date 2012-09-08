@@ -17,23 +17,25 @@
  */
 package com.sun.syndication.feed.module.sle.types;
 
-import com.sun.syndication.feed.impl.ObjectBean;
-
 import java.math.BigDecimal;
+
 import org.jdom.Namespace;
 
+import com.sun.syndication.feed.impl.ObjectBean;
 
 /**
  * An EntryValue implementation for "number" data-type values.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class NumberValue implements EntryValue {
+    private static final long serialVersionUID = 6470462111988094892L;
+
     private BigDecimal value;
     private ObjectBean obj = new ObjectBean(NumberValue.class, this);
     private String element;
     private String label;
     private Namespace namespace = Namespace.XML_NAMESPACE;
-    
+
     /** Creates a new instance of NumberValue */
     public NumberValue() {
     }
@@ -42,6 +44,7 @@ public class NumberValue implements EntryValue {
         this.element = element;
     }
 
+    @Override
     public String getElement() {
         return element;
     }
@@ -50,6 +53,7 @@ public class NumberValue implements EntryValue {
         this.label = label;
     }
 
+    @Override
     public String getLabel() {
         return label;
     }
@@ -58,32 +62,38 @@ public class NumberValue implements EntryValue {
         this.value = value;
     }
 
-    public Comparable getValue() {
+    @Override
+    public Comparable<?> getValue() {
         return value;
     }
 
+    @Override
     public Object clone() {
         NumberValue clone = new NumberValue();
         clone.setElement(this.getElement());
         clone.setLabel(this.getLabel());
         clone.setValue(this.value);
-        clone.setNamespace( this.namespace );
-        
+        clone.setNamespace(this.namespace);
+
         return clone;
     }
 
+    @Override
     public boolean equals(Object o) {
         return obj.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return obj.hashCode();
     }
 
+    @Override
     public String toString() {
         return "[Element:" + element + " Label:" + label + " Value:" + value + "]";
     }
 
+    @Override
     public Namespace getNamespace() {
         return namespace;
     }

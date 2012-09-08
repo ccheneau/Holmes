@@ -17,20 +17,23 @@ import java.io.Serializable;
  * @author runaas
  */
 public abstract class AbstractGeometry implements Cloneable, Serializable {
-    
+    private static final long serialVersionUID = -5941895432484894478L;
+
     /** Creates a new instance of Geometry */
     public AbstractGeometry() {
     }
-    
+
     /**
      * Make a deep copy of the geometric object
      * @return A copy of the object
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-    
-     public boolean equals(Object obj) {
-         return obj != null && obj.getClass() == getClass();
-     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj.getClass() == getClass();
+    }
 }

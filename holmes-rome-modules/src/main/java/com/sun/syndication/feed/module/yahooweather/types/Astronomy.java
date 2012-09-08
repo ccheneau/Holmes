@@ -38,12 +38,10 @@
 package com.sun.syndication.feed.module.yahooweather.types;
 
 import java.io.Serializable;
-
 import java.util.Date;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
-
 
 /**
  * Forecast information about current astronomical conditions. Attributes:
@@ -57,6 +55,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Astronomy implements Serializable, Cloneable {
+    private static final long serialVersionUID = -8299442945620890371L;
+
     private EqualsBean equals = new EqualsBean(Astronomy.class, this);
     private ToStringBean toString = new ToStringBean(Astronomy.class, this);
     private Date sunrise;
@@ -79,21 +79,23 @@ public class Astronomy implements Serializable, Cloneable {
         this.sunset = sunset;
     }
 
+    @Override
     public Object clone() {
-        return new Astronomy((this.getSunrise() != null)
-            ? new Date(this.getSunrise().getTime()) : null,
-            (this.getSunset() != null) ? new Date(this.getSunset().getTime())
-                                       : null);
+        return new Astronomy((this.getSunrise() != null) ? new Date(this.getSunrise().getTime()) : null, (this.getSunset() != null) ? new Date(this.getSunset()
+                .getTime()) : null);
     }
 
+    @Override
     public boolean equals(Object o) {
         return this.equals.equals(o);
     }
 
+    @Override
     public int hashCode() {
         return this.equals.hashCode();
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
