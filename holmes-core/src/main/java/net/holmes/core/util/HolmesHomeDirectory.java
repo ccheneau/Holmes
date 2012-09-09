@@ -21,7 +21,6 @@ import java.io.File;
 public class HolmesHomeDirectory {
     private static final String HOME_CONF_FOLDER = "conf";
     private static final String HOME_SITE_FOLDER = "site";
-    private static final String HOME_LOG_FOLDER = "log";
 
     public static String getConfigDirectory() {
         return getSubDirectory(HOME_CONF_FOLDER);
