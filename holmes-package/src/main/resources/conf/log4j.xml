@@ -23,9 +23,9 @@
 	</appender>
 	
 	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${net.holmes.home}/log/holmes.log" />
+		<param name="file" value="${user.home}/.holmes/holmes.log" />
 		<param name="MaxFileSize" value="5MB" />
-		<param name="append" value="true"/>
+		<param name="append" value="false"/>
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">

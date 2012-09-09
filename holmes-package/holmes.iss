@@ -44,9 +44,6 @@ Source: "target\holmes-{#MyAppVersion}\lib\*"; DestDir: "{app}\lib"; Flags: igno
 Source: "target\holmes-{#MyAppVersion}\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-[Dirs]
-Name: "{app}\log"
-
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"; IconFilename: "{app}\holmes.ico"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"; Tasks: desktopicon; IconFilename: "{app}\holmes.ico"

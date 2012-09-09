@@ -29,10 +29,10 @@ import com.google.inject.Injector;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        String homeDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
-        if (homeDir != null && new File(homeDir).exists()) {
+        String holmesDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
+        if (holmesDir != null && new File(holmesDir).exists()) {
             // Load log4j configuration
-            String logConfig = homeDir + File.separator + "conf" + File.separator + "log4j.xml";
+            String logConfig = holmesDir + File.separator + "conf" + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
             // Create Guice injector

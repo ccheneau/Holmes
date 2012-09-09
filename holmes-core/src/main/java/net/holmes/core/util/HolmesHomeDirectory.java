@@ -31,10 +31,6 @@ public class HolmesHomeDirectory {
         return getSubDirectory(HOME_SITE_FOLDER);
     }
 
-    public static String getLogDirectory() {
-        return getSubDirectory(HOME_LOG_FOLDER);
-    }
-
     private static String getSubDirectory(String subDirName) {
         StringBuilder homeSubDirectory = new StringBuilder();
         homeSubDirectory.append(System.getProperty(SystemProperty.HOLMES_HOME.getValue())).append(File.separator).append(subDirName);
