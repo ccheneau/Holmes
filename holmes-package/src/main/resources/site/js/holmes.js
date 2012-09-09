@@ -114,7 +114,7 @@ function initializeDocumentData() {
 		url:'/backend/configuration/getVideoFolders', 
 		colNames:[msg.video.id,msg.video.label, msg.video.path], 
 		colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, sortable: false}, 
+		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, editoptions: {size:30}, sortable: false}, 
 		           {name:"path",index:"path", width:570, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false,
 		        	   formoptions:{elmsuffix:'<a id="videoFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}} 
 		          ], 
@@ -154,7 +154,7 @@ function initializeDocumentData() {
 		url:'/backend/configuration/getAudioFolders', 
 		colNames:[msg.audio.id,msg.audio.label, msg.audio.path], 
 		colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, sortable: false}, 
+		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, editoptions: {size:30}, sortable: false}, 
 		           {name:"path",index:"path", width:570, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false, 
 		        	   formoptions:{elmsuffix:'<a id="audioFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}}
 		         ], 
@@ -193,7 +193,7 @@ function initializeDocumentData() {
 		url:'/backend/configuration/getPictureFolders', 
 		colNames:[msg.picture.id,msg.picture.label, msg.picture.path], 
 		colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, sortable: false}, 
+		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, editoptions: {size:30}, sortable: false}, 
 		           {name:"path",index:"path", width:570, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false,
 		        	   formoptions:{elmsuffix:'<a id="pictureFoldersBrowse" href="javascript:void(0)" style="position:absolute"><span class="ui-icon ui-icon-folder-collapsed"></span></a>'}}
 		          ], 
@@ -230,8 +230,8 @@ function initializeDocumentData() {
 		url:'/backend/configuration/getPodcasts', 
 		colNames:[msg.podcast.id,msg.podcast.label, msg.podcast.url], 
 		colModel:[ {name:"id",index:"id", width:0 , hidden:true, editable:false, sortable: false}, 
-		           {name:"label",index:"label", width:170, editable:true, editrules:{required: true}, sortable: false}, 
-		           {name:"path",index:"path", width:570, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
+		           {name:"label",index:"label", width:220, editable:true, editrules:{required: true}, editoptions: {size:30}, sortable: false}, 
+		           {name:"path",index:"path", width:520, editable:true, editrules:{required: true}, editoptions: {size:70}, sortable: false} 
 		          ], 
 		caption: msg.podcast.folders,
 		pager: '#list_podcasts_nav', 

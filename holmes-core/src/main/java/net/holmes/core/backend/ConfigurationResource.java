@@ -246,9 +246,10 @@ public class ConfigurationResource {
                 }
             }
             else {
-                // Folder already exists
+                // Folder or Podcast already exists
                 response.setStatus(false);
-                setResponseErrorCode(response, ErrorCode.FOLDER_ALREADY_EXISTS);
+                if (isPath) setResponseErrorCode(response, ErrorCode.FOLDER_ALREADY_EXISTS);
+                else setResponseErrorCode(response, ErrorCode.PODCAST_ALREADY_EXISTS);
             }
         }
         else if (EDIT_OPERATION.equals(operation)) {
@@ -358,7 +359,8 @@ public class ConfigurationResource {
         MALFORMATTED_URL(7), //
         DUPLICATED_FOLDER(8), //
         EMPTY_SERVER_NAME(9), //
-        INVALID_HTTP_SERVER_PORT(10);
+        INVALID_HTTP_SERVER_PORT(10), //
+        PODCAST_ALREADY_EXISTS(11);
 
         private final int code;
 
