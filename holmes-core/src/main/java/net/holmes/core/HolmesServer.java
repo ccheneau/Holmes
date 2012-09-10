@@ -159,7 +159,7 @@ public final class HolmesServer implements IServer {
                     try {
                         StringBuilder logFile = new StringBuilder();
                         logFile.append(System.getProperty(SystemProperty.USER_HOME.getValue())).append(File.separator).append(".holmes").append(File.separator)
-                                .append("holmes.log");
+                                .append("log").append(File.separator).append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     }
                     catch (IOException e) {
