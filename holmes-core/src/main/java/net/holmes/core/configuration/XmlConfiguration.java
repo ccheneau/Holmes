@@ -40,7 +40,7 @@ public final class XmlConfiguration implements IConfiguration {
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
-    private static final String CONF_FILE_PATH = ".holmes";
+    private static final String HOME_CONF_FILE_PATH = ".holmes";
 
     private XmlRootNode rootNode = null;
 
@@ -52,14 +52,15 @@ public final class XmlConfiguration implements IConfiguration {
      * Get Holmes configuration file 
      */
     private File getConfigFile() {
-        String userHomeHolmes = System.getProperty(SystemProperty.USER_HOME.getValue()) + File.separator + CONF_FILE_PATH;
+        StringBuilder confPath = new StringBuilder();
+        confPath.append(System.getProperty(SystemProperty.USER_HOME.getValue())).append(File.separator).append(HOME_CONF_FILE_PATH).append(File.separator)
+                .append("conf");
 
-        // Create holmes user home directory if it does not exist
-        File userHomeHolmesDir = new File(userHomeHolmes);
-        if (!userHomeHolmesDir.exists() || !userHomeHolmesDir.isDirectory()) {
-            userHomeHolmesDir.mkdir();
-        }
-        return new File(userHomeHolmes + File.separator + CONF_FILE_NAME);
+        // Create holmes user conf directory if it does not exist
+        File fConfPath = new File(confPath.toString());
+        if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
+
+        return new File(confPath.toString() + File.separator + CONF_FILE_NAME);
     }
 
     /* (non-Javadoc)
