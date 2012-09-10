@@ -18,6 +18,7 @@ package net.holmes.core;
 
 import java.io.File;
 
+import net.holmes.core.util.AppLock;
 import net.holmes.core.util.SystemProperty;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -29,33 +30,38 @@ import com.google.inject.Injector;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        String holmesDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
-        if (holmesDir != null && new File(holmesDir).exists()) {
-            // Load log4j configuration
-            String logConfig = holmesDir + File.separator + "conf" + File.separator + "log4j.xml";
-            if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
+        if (AppLock.lockInstance()) {
+            String holmesDir = System.getProperty(SystemProperty.HOLMES_HOME.getValue());
+            if (holmesDir != null && new File(holmesDir).exists()) {
+                // Load log4j configuration
+                String logConfig = holmesDir + File.separator + "conf" + File.separator + "log4j.xml";
+                if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
-            // Create Guice injector
-            Injector injector = Guice.createInjector(new HolmesServerModule());
+                // Create Guice injector
+                Injector injector = Guice.createInjector(new HolmesServerModule());
 
-            // Start Holmes server
-            IServer holmesServer = injector.getInstance(HolmesServer.class);
-            try {
-                holmesServer.start();
+                // Start Holmes server
+                IServer holmesServer = injector.getInstance(HolmesServer.class);
+                try {
+                    holmesServer.start();
+                }
+                catch (RuntimeException e) {
+                    LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
+                    System.exit(1);
+                }
+
+                // Add shutdown hook
+                Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
             }
-            catch (RuntimeException e) {
-                LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
+            else {
+                System.err.println(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
                 System.exit(1);
             }
-
-            // Add shutdown hook
-            Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
         }
         else {
-            System.err.println(SystemProperty.HOLMES_HOME.getValue() + " system variable undefined or not valid");
+            System.err.println("Holmes is already running");
             System.exit(1);
         }
-
     }
 
     /**
