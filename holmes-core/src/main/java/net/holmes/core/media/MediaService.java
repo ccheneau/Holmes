@@ -280,7 +280,7 @@ public final class MediaService implements IMediaService {
                                 PodcastEntryNode podcastEntryNode = new PodcastEntryNode();
                                 podcastEntryNode.setId(UUID.randomUUID().toString());
                                 podcastEntryNode.setParentId(parentId);
-                                podcastEntryNode.setName(rssEntry.getTitle());
+                                podcastEntryNode.setName(rssEntry.getTitle().trim());
                                 if (rssEntry.getPublishedDate() != null) {
                                     podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
                                 }
