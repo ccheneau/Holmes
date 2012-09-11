@@ -362,10 +362,15 @@ public class MediaModuleParser implements ModuleParser {
             for (int i = 0; (thumbnails != null) && (i < thumbnails.size()); i++) {
                 try {
                     Element thumb = (Element) thumbnails.get(i);
-                    Time t = (thumb.getAttributeValue("time") == null) ? null : new Time(thumb.getAttributeValue("time"));
-                    Integer width = (thumb.getAttributeValue("width") == null) ? null : new Integer(thumb.getAttributeValue("width"));
-                    Integer height = (thumb.getAttributeValue("height") == null) ? null : new Integer(thumb.getAttributeValue("height"));
-                    values.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
+                    if (thumb.getValue().startsWith("http")) {
+                        values.add(new Thumbnail(new URI(thumb.getValue()), null, null, null));
+                    }
+                    else {
+                        Time t = (thumb.getAttributeValue("time") == null) ? null : new Time(thumb.getAttributeValue("time"));
+                        Integer width = (thumb.getAttributeValue("width") == null) ? null : new Integer(thumb.getAttributeValue("width"));
+                        Integer height = (thumb.getAttributeValue("height") == null) ? null : new Integer(thumb.getAttributeValue("height"));
+                        values.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
+                    }
                 }
                 catch (Exception ex) {
                     logger.log(Level.WARNING, "Exception parsing thumbnail tag.", ex);
