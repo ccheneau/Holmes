@@ -53,7 +53,7 @@ holmes_start () {
   # run holmes
   echo "Starting Holmes"
   JAVA_ARGS="-Dnet.holmes.home=$HOLMES_HOME -Dfile.encoding=UTF-8"
-  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-0.2.2.jar 1>$HOME/.holmes/log/systemOut.log 2>$HOME/.holmes/log/systemErr.log &
+  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-${project.version}.jar 1>$HOME/.holmes/log/systemOut.log 2>$HOME/.holmes/log/systemErr.log &
   sleep 3
   holmes_status
 }
