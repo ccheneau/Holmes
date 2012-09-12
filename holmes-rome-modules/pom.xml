@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.holmes</groupId>
 		<artifactId>holmes-parent</artifactId>
-		<version>0.2.2</version>
+		<version>0.3.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>holmes-rome-modules</artifactId>
