@@ -44,11 +44,16 @@ holmes_start () {
     echo "[ERROR]: JAVA_HOME is not defined correctly or java is not in path."
     exit 1
   fi
+ 
+  # check log dir 
+  if [ ! -x "$HOME/.holmes/log" ] ; then
+    mkdir -p "$HOME/.holmes/log"
+  fi
   
   # run holmes
   echo "Starting Holmes"
   JAVA_ARGS="-Dnet.holmes.home=$HOLMES_HOME -Dfile.encoding=UTF-8"
-  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-${project.version}.jar 1>$HOLMES_HOME/log/systemOut.log 2>$HOLMES_HOME/log/systemErr.log &
+  $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-0.2.2.jar 1>$HOME/.holmes/log/systemOut.log 2>$HOME/.holmes/log/systemErr.log &
   sleep 3
   holmes_status
 }
