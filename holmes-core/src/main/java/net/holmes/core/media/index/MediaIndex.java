@@ -23,9 +23,7 @@ import com.google.common.collect.HashBiMap;
 
 public class MediaIndex implements IMediaIndex {
 
-    private static String SEPARATOR = "|";
-
-    private BiMap<String, String> nodeUUID;
+    private BiMap<String, IndexElement> nodeUUID;
 
     public MediaIndex() {
         nodeUUID = HashBiMap.create();
@@ -36,20 +34,7 @@ public class MediaIndex implements IMediaIndex {
      */
     @Override
     public IndexElement getElement(String uuid) {
-        IndexElement nodeValue = null;
-        String value = nodeUUID.get(uuid);
-        if (value != null) {
-            String[] nodeParams = value.split("\\" + SEPARATOR);
-            if (nodeParams != null) {
-                if (nodeParams.length == 3) {
-                    nodeValue = new IndexElement(uuid, nodeParams[0], nodeParams[1], nodeParams[2], null);
-                }
-                else if (nodeParams.length == 4) {
-                    nodeValue = new IndexElement(uuid, nodeParams[0], nodeParams[1], nodeParams[2], nodeParams[3]);
-                }
-            }
-        }
-        return nodeValue;
+        return nodeUUID.get(uuid);
     }
 
     /* (non-Javadoc)
@@ -57,13 +42,11 @@ public class MediaIndex implements IMediaIndex {
      */
     @Override
     public String add(String parentId, String mediaType, String path, String name) {
-        StringBuilder nodeValue = new StringBuilder();
-        nodeValue.append(parentId).append(SEPARATOR).append(mediaType).append(SEPARATOR).append(path);
-        if (name != null) nodeValue.append(SEPARATOR).append(name);
-        String uuid = nodeUUID.inverse().get(nodeValue.toString());
+        IndexElement element = new IndexElement(parentId, mediaType, path, name);
+        String uuid = nodeUUID.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
-            nodeUUID.put(uuid, nodeValue.toString());
+            nodeUUID.put(uuid, element);
         }
         return uuid;
     }
@@ -74,10 +57,8 @@ public class MediaIndex implements IMediaIndex {
     @Override
     public String put(String uuid, String parentId, String mediaType, String path, String name) {
         if (nodeUUID.get(uuid) == null) {
-            StringBuilder nodeValue = new StringBuilder();
-            nodeValue.append(parentId).append(SEPARATOR).append(mediaType).append(SEPARATOR).append(path);
-            if (name != null) nodeValue.append(SEPARATOR).append(name);
-            nodeUUID.put(uuid, nodeValue.toString());
+            IndexElement element = new IndexElement(parentId, mediaType, path, name);
+            nodeUUID.put(uuid, element);
         }
         return uuid;
     }
