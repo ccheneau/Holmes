@@ -22,5 +22,5 @@ public interface IMediaIndex {
 
     public IndexElement getElement(String uuid);
 
-    public String put(String uuid, String parentId, String mediaType, String path, String name);
+    public void put(String uuid, String parentId, String mediaType, String path, String name);
 }

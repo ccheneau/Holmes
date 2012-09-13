@@ -55,11 +55,10 @@ public class MediaIndex implements IMediaIndex {
      * @see net.holmes.core.media.index.IMediaIndex#put(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public String put(String uuid, String parentId, String mediaType, String path, String name) {
+    public void put(String uuid, String parentId, String mediaType, String path, String name) {
         if (nodeUUID.get(uuid) == null) {
             IndexElement element = new IndexElement(parentId, mediaType, path, name);
             nodeUUID.put(uuid, element);
         }
-        return uuid;
     }
 }
