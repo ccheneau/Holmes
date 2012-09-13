@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.holmes</groupId>
 	<artifactId>holmes-parent</artifactId>
-	<version>0.2.2</version>
+	<version>0.2.3</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -197,22 +197,22 @@
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-core</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-json</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-guice</artifactId>
-				<version>1.13</version>
+				<version>1.14</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.google.inject.extensions</groupId>
