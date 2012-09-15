@@ -29,7 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.response.Folder;
-import net.holmes.core.util.SystemProperty;
+import net.holmes.core.util.HolmesProperty;
 
 @Path("/backend/util")
 public class UtilResource {
@@ -56,7 +56,7 @@ public class UtilResource {
 
         if (parentPath == null || parentPath.equals("none")) {
             // Add user home folder
-            File userHomeDir = new File(System.getProperty(SystemProperty.USER_HOME.getValue()));
+            File userHomeDir = new File(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue()));
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add root folders

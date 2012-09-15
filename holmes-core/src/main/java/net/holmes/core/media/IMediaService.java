@@ -21,6 +21,12 @@ import java.util.List;
 import net.holmes.core.media.node.AbstractNode;
 
 public interface IMediaService {
+    public static final String ROOT_NODE_ID = "0";
+    public static final String ROOT_VIDEO_NODE_ID = "1_VIDEOS";
+    public static final String ROOT_PICTURE_NODE_ID = "2_PICTURES";
+    public static final String ROOT_AUDIO_NODE_ID = "3_AUDIOS";
+    public static final String ROOT_PODCAST_NODE_ID = "4_PODCASTS";
+
     public AbstractNode getNode(String nodeId);
 
     public List<AbstractNode> getChildNodes(AbstractNode parentNode);

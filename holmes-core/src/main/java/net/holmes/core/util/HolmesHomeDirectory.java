@@ -19,20 +19,17 @@ package net.holmes.core.util;
 import java.io.File;
 
 public class HolmesHomeDirectory {
-    private static final String HOME_CONF_FOLDER = "conf";
-    private static final String HOME_SITE_FOLDER = "site";
-
     public static String getConfigDirectory() {
-        return getSubDirectory(HOME_CONF_FOLDER);
+        return getSubDirectory("conf");
     }
 
     public static String getSiteDirectory() {
-        return getSubDirectory(HOME_SITE_FOLDER);
+        return getSubDirectory("site");
     }
 
     private static String getSubDirectory(String subDirName) {
         StringBuilder homeSubDirectory = new StringBuilder();
-        homeSubDirectory.append(System.getProperty(SystemProperty.HOLMES_HOME.getValue())).append(File.separator).append(subDirName);
+        homeSubDirectory.append(System.getProperty(HolmesProperty.SYS_VAR_HOLMES_HOME.getValue())).append(File.separator).append(subDirName);
         File confDir = new File(homeSubDirectory.toString());
         if (!confDir.exists()) {
             confDir.mkdir();

@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import net.holmes.core.util.SystemProperty;
+import net.holmes.core.util.HolmesProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,6 @@ public final class XmlConfiguration implements IConfiguration {
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
-    private static final String HOME_CONF_FILE_PATH = ".holmes";
 
     private XmlRootNode rootNode = null;
 
@@ -53,8 +52,8 @@ public final class XmlConfiguration implements IConfiguration {
      */
     private File getConfigFile() {
         StringBuilder confPath = new StringBuilder();
-        confPath.append(System.getProperty(SystemProperty.USER_HOME.getValue())).append(File.separator).append(HOME_CONF_FILE_PATH).append(File.separator)
-                .append("conf");
+        confPath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH)
+                .append(File.separator).append("conf");
 
         // Create holmes user conf directory if it does not exist
         File fConfPath = new File(confPath.toString());

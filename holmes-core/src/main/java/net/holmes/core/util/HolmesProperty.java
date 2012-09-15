@@ -16,13 +16,14 @@
 */
 package net.holmes.core.util;
 
-public enum SystemProperty {
-    HOLMES_HOME("net.holmes.home"), //
-    USER_HOME("user.home");
+public enum HolmesProperty {
+    SYS_VAR_HOLMES_HOME("net.holmes.home"), //
+    SYS_VAR_USER_HOME("user.home"), //
+    HOME_CONF_FILE_PATH(".holmes");
 
     private String value;
 
-    SystemProperty(String value) {
+    HolmesProperty(String value) {
         this.value = value;
     }
 

@@ -80,11 +80,11 @@ public final class MediaService implements IMediaService {
     public MediaService() {
         cacheManager = CacheManager.create();
         rootNodes = new HashMap<String, String>();
-        rootNodes.put(ConfigurationNode.ROOT_NODE_ID, "node.rootNode");
-        rootNodes.put(ConfigurationNode.ROOT_AUDIO_NODE_ID, "node.audio");
-        rootNodes.put(ConfigurationNode.ROOT_VIDEO_NODE_ID, "node.video");
-        rootNodes.put(ConfigurationNode.ROOT_PICTURE_NODE_ID, "node.picture");
-        rootNodes.put(ConfigurationNode.ROOT_PODCAST_NODE_ID, "node.podcast");
+        rootNodes.put(ROOT_NODE_ID, "node.rootNode");
+        rootNodes.put(ROOT_AUDIO_NODE_ID, "node.audio");
+        rootNodes.put(ROOT_VIDEO_NODE_ID, "node.video");
+        rootNodes.put(ROOT_PICTURE_NODE_ID, "node.picture");
+        rootNodes.put(ROOT_PODCAST_NODE_ID, "node.podcast");
     }
 
     /* (non-Javadoc)
@@ -135,27 +135,27 @@ public final class MediaService implements IMediaService {
         if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
 
         List<AbstractNode> childNodes = null;
-        if (ConfigurationNode.ROOT_NODE_ID.equals(parentNode.getId())) {
+        if (ROOT_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
             childNodes = new ArrayList<AbstractNode>();
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_AUDIO_NODE_ID));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_VIDEO_NODE_ID));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PICTURE_NODE_ID));
-            childNodes.add(buildRootNode(ConfigurationNode.ROOT_PODCAST_NODE_ID));
+            childNodes.add(buildRootNode(ROOT_AUDIO_NODE_ID));
+            childNodes.add(buildRootNode(ROOT_VIDEO_NODE_ID));
+            childNodes.add(buildRootNode(ROOT_PICTURE_NODE_ID));
+            childNodes.add(buildRootNode(ROOT_PODCAST_NODE_ID));
         }
-        else if (ConfigurationNode.ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
+        else if (ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
         }
-        else if (ConfigurationNode.ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
+        else if (ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
         }
-        else if (ConfigurationNode.ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
+        else if (ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
         }
-        else if (ConfigurationNode.ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
+        else if (ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MimeType.TYPE_PODCAST);
         }
@@ -333,8 +333,8 @@ public final class MediaService implements IMediaService {
         FolderNode node = new FolderNode();
         node.setId(nodeId);
         node.setName(bundle.getString(rootNodes.get(nodeId)));
-        if (ConfigurationNode.ROOT_NODE_ID.equals(nodeId)) node.setParentId("-1");
-        else node.setParentId(ConfigurationNode.ROOT_NODE_ID);
+        if (ROOT_NODE_ID.equals(nodeId)) node.setParentId("-1");
+        else node.setParentId(ROOT_NODE_ID);
         return node;
     }
 
@@ -369,7 +369,7 @@ public final class MediaService implements IMediaService {
     private PodcastNode buildPodcastNode(String nodeId, String name, String url) {
         PodcastNode node = new PodcastNode();
         node.setId(nodeId);
-        node.setParentId(ConfigurationNode.ROOT_PODCAST_NODE_ID);
+        node.setParentId(ROOT_PODCAST_NODE_ID);
         node.setName(name);
         node.setUrl(url);
         return node;

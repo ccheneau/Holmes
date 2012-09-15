@@ -21,12 +21,10 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
 public class AppLock {
-    private static final String HOME_CONF_FILE_PATH = ".holmes";
-
     public static boolean lockInstance() {
         try {
             StringBuilder homePath = new StringBuilder();
-            homePath.append(System.getProperty(SystemProperty.USER_HOME.getValue())).append(File.separator).append(HOME_CONF_FILE_PATH);
+            homePath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH);
             File fConfPath = new File(homePath.toString());
             if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
 

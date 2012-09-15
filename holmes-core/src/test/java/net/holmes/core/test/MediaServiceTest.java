@@ -22,7 +22,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
@@ -61,7 +60,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootNode() {
-        AbstractNode node = mediaService.getNode(ConfigurationNode.ROOT_NODE_ID);
+        AbstractNode node = mediaService.getNode(IMediaService.ROOT_NODE_ID);
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -74,7 +73,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootVideoNode() {
-        AbstractNode node = mediaService.getNode(ConfigurationNode.ROOT_VIDEO_NODE_ID);
+        AbstractNode node = mediaService.getNode(IMediaService.ROOT_VIDEO_NODE_ID);
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -94,7 +93,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootAudioNode() {
-        AbstractNode node = mediaService.getNode(ConfigurationNode.ROOT_AUDIO_NODE_ID);
+        AbstractNode node = mediaService.getNode(IMediaService.ROOT_AUDIO_NODE_ID);
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -113,7 +112,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPictureNode() {
-        AbstractNode node = mediaService.getNode(ConfigurationNode.ROOT_PICTURE_NODE_ID);
+        AbstractNode node = mediaService.getNode(IMediaService.ROOT_PICTURE_NODE_ID);
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -132,7 +131,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPodcastNode() {
-        AbstractNode node = mediaService.getNode(ConfigurationNode.ROOT_PODCAST_NODE_ID);
+        AbstractNode node = mediaService.getNode(IMediaService.ROOT_PODCAST_NODE_ID);
         assertNotNull(node);
         logger.debug(node.toString());
 

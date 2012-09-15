@@ -18,26 +18,8 @@ package net.holmes.core.configuration;
 
 import java.io.Serializable;
 
-/**
- * A ConfigurationNode is:
- * <ul>
- * <li>Holmes root node: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_NODE_ID} </li>
- * <li>root node for video folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_VIDEO_NODE_ID} </li>
- * <li>root node for audio folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_AUDIO_NODE_ID} </li>
- * <li>root node for picture folders: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PICTURE_NODE_ID} </li>
- * <li>root node for pod-cast URLs: {@link net.holmes.core.configuration.ConfigurationNode#ROOT_PODCAST_NODE_ID} </li>
- * <li>video / audio / picture folders defined in {@link net.holmes.core.configuration.IConfiguration} </li>
- * <li>pod-cast URLs defined in {@link net.holmes.core.configuration.IConfiguration} </li>
-  *</ul>
- */
 public final class ConfigurationNode implements Serializable {
     private static final long serialVersionUID = -476678562488489847L;
-
-    public static final String ROOT_NODE_ID = "0";
-    public static final String ROOT_VIDEO_NODE_ID = "1_VIDEOS";
-    public static final String ROOT_PICTURE_NODE_ID = "2_PICTURES";
-    public static final String ROOT_AUDIO_NODE_ID = "3_AUDIOS";
-    public static final String ROOT_PODCAST_NODE_ID = "4_PODCASTS";
 
     private String id;
     private String label;
