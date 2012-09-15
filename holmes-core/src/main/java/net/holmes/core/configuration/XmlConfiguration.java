@@ -36,7 +36,6 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public final class XmlConfiguration implements IConfiguration {
-
     private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
@@ -52,8 +51,8 @@ public final class XmlConfiguration implements IConfiguration {
      */
     private File getConfigFile() {
         StringBuilder confPath = new StringBuilder();
-        confPath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH)
-                .append(File.separator).append("conf");
+        confPath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator)
+                .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue()).append(File.separator).append("conf");
 
         // Create holmes user conf directory if it does not exist
         File fConfPath = new File(confPath.toString());

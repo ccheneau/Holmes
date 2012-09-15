@@ -17,6 +17,7 @@
 package net.holmes.core.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
@@ -24,7 +25,9 @@ public class AppLock {
     public static boolean lockInstance() {
         try {
             StringBuilder homePath = new StringBuilder();
-            homePath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH);
+            homePath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator)
+                    .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue());
+
             File fConfPath = new File(homePath.toString());
             if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
 
@@ -39,17 +42,16 @@ public class AppLock {
                             fileLock.release();
                             randomAccessFile.close();
                             lockFile.delete();
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             System.err.println("Unable to remove lock file: " + lockFile.getPath() + "  " + e.getMessage());
                         }
                     }
                 });
                 return true;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Unable to create and/or lock file: " + e.getMessage());
         }
         return false;
     }
-
 }

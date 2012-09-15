@@ -16,11 +16,7 @@
 */
 package net.holmes.core.configuration;
 
-import java.io.Serializable;
-
-public final class ConfigurationNode implements Serializable {
-    private static final long serialVersionUID = -476678562488489847L;
-
+public final class ConfigurationNode {
     private String id;
     private String label;
     private String path;
