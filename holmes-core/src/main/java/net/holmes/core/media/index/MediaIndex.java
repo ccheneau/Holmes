@@ -23,10 +23,10 @@ import com.google.common.collect.HashBiMap;
 
 public class MediaIndex implements IMediaIndex {
 
-    private BiMap<String, IndexElement> nodeUUID;
+    private BiMap<String, IndexElement> elements;
 
     public MediaIndex() {
-        nodeUUID = HashBiMap.create();
+        elements = HashBiMap.create();
     }
 
     /* (non-Javadoc)
@@ -34,7 +34,7 @@ public class MediaIndex implements IMediaIndex {
      */
     @Override
     public IndexElement getElement(String uuid) {
-        return nodeUUID.get(uuid);
+        return elements.get(uuid);
     }
 
     /* (non-Javadoc)
@@ -43,10 +43,10 @@ public class MediaIndex implements IMediaIndex {
     @Override
     public String add(String parentId, String mediaType, String path, String name) {
         IndexElement element = new IndexElement(parentId, mediaType, path, name);
-        String uuid = nodeUUID.inverse().get(element);
+        String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
-            nodeUUID.put(uuid, element);
+            elements.put(uuid, element);
         }
         return uuid;
     }
@@ -56,9 +56,8 @@ public class MediaIndex implements IMediaIndex {
      */
     @Override
     public void put(String uuid, String parentId, String mediaType, String path, String name) {
-        if (nodeUUID.get(uuid) == null) {
-            IndexElement element = new IndexElement(parentId, mediaType, path, name);
-            nodeUUID.put(uuid, element);
+        if (elements.get(uuid) == null) {
+            elements.put(uuid, new IndexElement(parentId, mediaType, path, name));
         }
     }
 }
