@@ -45,7 +45,6 @@ import com.sun.syndication.feed.module.base.types.PaymentTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * service offerings.
@@ -174,7 +173,6 @@ public interface Service extends GlobalInterface {
      */
     public void setDeliveryNotes(String deliveryNotes);
 
-
     /**
      * Additional instructions to explain the item’s delivery process.
      *
@@ -251,6 +249,7 @@ public interface Service extends GlobalInterface {
      * @param deliveryRadius The maximum distance you will deliver an item in any direction.
      */
     public void setDeliveryRadius(FloatUnit deliveryRadius);
+
     /**
      * The maximum distance you will deliver an item in any direction.
      *        <table border="1" cellpadding="5" cellspacing="0" width="640">

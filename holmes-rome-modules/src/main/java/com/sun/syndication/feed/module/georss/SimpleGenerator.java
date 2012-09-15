@@ -106,16 +106,14 @@ public class SimpleGenerator implements ModuleGenerator {
             Element pointElement = new Element("point", GeoRSSModule.SIMPLE_NS);
             pointElement.addContent(pos.getLatitude() + " " + pos.getLongitude());
             element.addContent(pointElement);
-        }
-        else if (geometry instanceof LineString) {
+        } else if (geometry instanceof LineString) {
             PositionList posList = ((LineString) geometry).getPositionList();
 
             Element lineElement = new Element("line", GeoRSSModule.SIMPLE_NS);
 
             lineElement.addContent(posListToString(posList));
             element.addContent(lineElement);
-        }
-        else if (geometry instanceof Polygon) {
+        } else if (geometry instanceof Polygon) {
             AbstractRing ring = ((Polygon) geometry).getExterior();
             if (ring instanceof LinearRing) {
                 PositionList posList = ((LinearRing) ring).getPositionList();
@@ -123,19 +121,16 @@ public class SimpleGenerator implements ModuleGenerator {
 
                 polygonElement.addContent(posListToString(posList));
                 element.addContent(polygonElement);
-            }
-            else {
+            } else {
                 logger.log(Level.WARNING, "GeoRSS simple format can't handle rings of type: " + ring.getClass().getName());
             }
-        }
-        else if (geometry instanceof Envelope) {
+        } else if (geometry instanceof Envelope) {
             Envelope envelope = (Envelope) geometry;
             Element boxElement = new Element("box", GeoRSSModule.SIMPLE_NS);
             boxElement.addContent(envelope.getMinLatitude() + " " + envelope.getMinLongitude() + " " + envelope.getMaxLatitude() + " "
                     + envelope.getMaxLongitude());
             element.addContent(boxElement);
-        }
-        else {
+        } else {
             logger.log(Level.WARNING, "GeoRSS simple format can't handle geometries of type: " + geometry.getClass().getName());
         }
     }

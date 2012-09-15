@@ -43,7 +43,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
 
-
 /**
  * This is an interface representing the universals.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>

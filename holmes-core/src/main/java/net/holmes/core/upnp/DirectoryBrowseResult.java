@@ -82,12 +82,10 @@ public class DirectoryBrowseResult {
         if (mimeType.isVideo()) {
             // Add video item
             item = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
-        }
-        else if (mimeType.isAudio()) {
+        } else if (mimeType.isAudio()) {
             // Add audio track item
             item = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, (String) null, res);
-        }
-        else if (mimeType.isImage()) {
+        } else if (mimeType.isImage()) {
             // Add image item
             item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
         }
@@ -106,12 +104,10 @@ public class DirectoryBrowseResult {
         if (mimeType.isAudio()) {
             // Add audio track item
             item = new MusicTrack(podcastEntryNode.getId(), parentNodeId, entryName, null, null, (String) null, res);
-        }
-        else if (mimeType.isImage()) {
+        } else if (mimeType.isImage()) {
             // Add image item
             item = new Photo(podcastEntryNode.getId(), parentNodeId, entryName, null, null, res);
-        }
-        else if (mimeType.isVideo()) {
+        } else if (mimeType.isVideo()) {
             // Add video item
             item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
         }
@@ -155,8 +151,7 @@ public class DirectoryBrowseResult {
         if (node.getIconUrl() != null) {
             try {
                 didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
-            }
-            catch (URISyntaxException e) {
+            } catch (URISyntaxException e) {
             }
         }
     }

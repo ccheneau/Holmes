@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base;
 
 import java.util.Date;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * Scholarly publication, research studies and reference materials.

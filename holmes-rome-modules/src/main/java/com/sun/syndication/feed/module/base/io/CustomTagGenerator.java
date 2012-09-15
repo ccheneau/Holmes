@@ -82,55 +82,45 @@ public class CustomTagGenerator implements ModuleGenerator {
                 newTag.addContent(this.generateSimpleElement("start", GoogleBaseParser.LONG_DT_FMT.format(dtr.getStart())));
                 newTag.addContent(this.generateSimpleElement("end", GoogleBaseParser.LONG_DT_FMT.format(dtr.getEnd())));
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof ShortDate) {
+            } else if (tag.getValue() instanceof ShortDate) {
                 ShortDate sd = (ShortDate) tag.getValue();
                 Element newTag = this.generateSimpleElement(tag.getName(), GoogleBaseParser.SHORT_DT_FMT.format(sd));
                 newTag.setAttribute("type", "date");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof Date) {
+            } else if (tag.getValue() instanceof Date) {
                 Date d = (Date) tag.getValue();
                 Element newTag = this.generateSimpleElement(tag.getName(), GoogleBaseParser.SHORT_DT_FMT.format(d));
                 newTag.setAttribute("type", "dateTime");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof Integer) {
+            } else if (tag.getValue() instanceof Integer) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "int");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof IntUnit) {
+            } else if (tag.getValue() instanceof IntUnit) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "intUnit");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof Float) {
+            } else if (tag.getValue() instanceof Float) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "float");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof FloatUnit) {
+            } else if (tag.getValue() instanceof FloatUnit) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "floatUnit");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof String) {
+            } else if (tag.getValue() instanceof String) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "string");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof URL) {
+            } else if (tag.getValue() instanceof URL) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "url");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof Boolean) {
+            } else if (tag.getValue() instanceof Boolean) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "boolean");
                 element.addContent(newTag);
-            }
-            else if (tag.getValue() instanceof CustomTagImpl.Location) {
+            } else if (tag.getValue() instanceof CustomTagImpl.Location) {
                 Element newTag = this.generateSimpleElement(tag.getName(), tag.getValue().toString());
                 newTag.setAttribute("type", "location");
                 element.addContent(newTag);

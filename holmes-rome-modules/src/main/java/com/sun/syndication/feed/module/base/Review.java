@@ -44,7 +44,6 @@ import java.net.URL;
 
 import java.util.Date;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * critical reviews of other things.

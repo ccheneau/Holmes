@@ -122,8 +122,7 @@ public class License implements Serializable {
                             found = new License(uri, current.getRequires(), current.getPermits());
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
         }

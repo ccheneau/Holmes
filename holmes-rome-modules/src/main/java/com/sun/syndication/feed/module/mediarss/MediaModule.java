@@ -25,7 +25,6 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
 
-
 /**
  * This is the base module for MediaRSS.
  * <p>It represents information that can be stored at the feed level,

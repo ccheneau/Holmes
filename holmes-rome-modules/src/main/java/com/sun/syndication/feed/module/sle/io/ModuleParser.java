@@ -106,8 +106,7 @@ public class ModuleParser implements com.sun.syndication.io.ModuleParser {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        }
-        else {
+        } else {
             target.setAttribute(name, value.toString());
         }
     }

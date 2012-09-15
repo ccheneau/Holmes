@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.util.Date;
 
-
 /** Represents a time range.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -63,11 +62,10 @@ public class DateTimeRange implements CloneableType {
      * @param end End of the Timeframe.
      */
     public DateTimeRange(Date start, Date end) {
-        this.start= start;
-        this.end = end ;
+        this.start = start;
+        this.end = end;
     }
 
-    
     /**
      * The end of the timeframe.
      * @return The end of the timeframe.
@@ -76,7 +74,6 @@ public class DateTimeRange implements CloneableType {
         return end;
     }
 
-   
     /**
      * The beginning of the timeframe.
      * @return The beginning of the timeframe.
@@ -110,18 +107,15 @@ public class DateTimeRange implements CloneableType {
     public String toString() {
         return "Start: " + this.start + " End: " + this.end;
     }
-    
-    public boolean equals( Object o ){
-	if( !(o instanceof DateTimeRange )  || o == null )
-	    return false;
-	DateTimeRange d = (DateTimeRange) o;
-	if( this.start == d.getStart() && this.end == d.getEnd() ){
-	    return true;
-	}
-	if( this.start != null && !this.start.equals( d.getStart()) )
-	    return false;
-	if( this.end != null && !this.end.equals( d.getEnd()) )
-	    return false;
-	return true;
+
+    public boolean equals(Object o) {
+        if (!(o instanceof DateTimeRange) || o == null) return false;
+        DateTimeRange d = (DateTimeRange) o;
+        if (this.start == d.getStart() && this.end == d.getEnd()) {
+            return true;
+        }
+        if (this.start != null && !this.start.equals(d.getStart())) return false;
+        if (this.end != null && !this.end.equals(d.getEnd())) return false;
+        return true;
     }
 }

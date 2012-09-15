@@ -107,8 +107,7 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
         if (query.getRole() != null) {
             Attribute roleAttribute = new Attribute("role", query.getRole());
             qElement.setAttribute(roleAttribute);
-        }
-        else {
+        } else {
             throw new RequiredAttributeMissingException("If declaring a Query element, the field 'role' must be be specified");
         }
 

@@ -165,8 +165,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
             if (info.getImage() != null) {
                 this.setImage(new URL(info.getImage().toExternalForm()));
             }
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             Logger.getAnonymousLogger().fine("Error copying URL:" + info.getImage());
         }
 

@@ -27,7 +27,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  *
  * <strong>&lt;media:hash&gt;</strong></p>
@@ -40,22 +39,23 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Hash extends AbstractSchemeValue implements Serializable {
-	private static final long serialVersionUID = 3566980635881544337L;
+    private static final long serialVersionUID = 3566980635881544337L;
 
-	/**
+    /**
      * Creates a new instance of Hash
      * @param algorithm algoright used
      * @param value value of the hash
      */
     public Hash(String algorithm, String value) {
-        super(algorithm == null ? "MD5": algorithm , value);
+        super(algorithm == null ? "MD5" : algorithm, value);
     }
+
     /**
      * Creates a new instance of Hash assuming the default algorithm of MD5
      * @param algorithm algoright used
      */
-    public Hash(String value ){
-        this( null, value);
+    public Hash(String value) {
+        this(null, value);
     }
 
     /**

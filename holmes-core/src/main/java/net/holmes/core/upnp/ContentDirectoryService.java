@@ -75,8 +75,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         try {
             this.localAddress = getLocalAddress();
             if (logger.isDebugEnabled()) logger.debug("local address:" + this.localAddress);
-        }
-        catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
         }
     }
@@ -101,8 +100,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 }
             }
             return InetAddress.getLocalHost().getHostAddress();
-        }
-        catch (SocketException e) {
+        } catch (SocketException e) {
             throw new UnknownHostException();
         }
     }
@@ -121,8 +119,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
                     logger.debug("RequestFrom agent: " + userAgent);
-                }
-                catch (NullPointerException ex) {
+                } catch (NullPointerException ex) {
                     logger.debug("RequestFrom agent: Anonymous");
                 }
             }
@@ -145,18 +142,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                 addNode(objectID, childNode, result);
                             }
                         }
-                    }
-                    else if (browseNode instanceof PodcastNode) {
+                    } else if (browseNode instanceof PodcastNode) {
                         // Add pod-cast entry nodes
                         addPodcastEntries((PodcastNode) browseNode, result);
                     }
-                }
-                else if (browseFlag == BrowseFlag.METADATA) {
+                } else if (browseFlag == BrowseFlag.METADATA) {
                     // Get node metadata
                     addNode(browseNode.getParentId(), browseNode, result);
                 }
-            }
-            else {
+            } else {
                 throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
             }
 
@@ -167,11 +161,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 logger.debug(br.getResult());
             }
             return br;
-        }
-        catch (ContentDirectoryException ex) {
+        } catch (ContentDirectoryException ex) {
             throw ex;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
         }
     }
@@ -189,8 +181,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url.toString());
             }
             result.addTotalCount();
-        }
-        else if (node instanceof FolderNode) {
+        } else if (node instanceof FolderNode) {
             if (result.filterResult()) {
                 // Get child counts
                 List<AbstractNode> childNodes = mediaService.getChildNodes(node);
@@ -200,8 +191,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addContainer(nodeId, node, childCount);
             }
             result.addTotalCount();
-        }
-        else if (node instanceof PodcastNode) {
+        } else if (node instanceof PodcastNode) {
             if (result.filterResult()) {
                 // Add container to result
                 result.addContainer(nodeId, node, 1);
@@ -238,8 +228,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private String getPodcastEntryName(long count, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             return String.format("%02d - %s", count + 1, title);
-        }
-        else {
+        } else {
             return title;
         }
     }

@@ -105,8 +105,7 @@ public class WeatherModuleParser implements ModuleParser {
                 Wind w = new Wind(Integer.parseInt(wind.getAttributeValue("chill")), Integer.parseInt(wind.getAttributeValue("direction")),
                         Integer.parseInt(wind.getAttributeValue("speed")));
                 module.setWind(w);
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 Logger.getAnonymousLogger().warning("NumberFormatException processing <wind> tag.");
             }
         }
@@ -119,8 +118,7 @@ public class WeatherModuleParser implements ModuleParser {
                         .getAttributeValue("visibility")) / 100, Double.parseDouble(atmosphere.getAttributeValue("pressure")),
                         Atmosphere.PressureChange.fromCode(Integer.parseInt(atmosphere.getAttributeValue("rising"))));
                 module.setAtmosphere(a);
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 Logger.getAnonymousLogger().warning("NumberFormatException processing <atmosphere> tag.");
             }
         }
@@ -132,8 +130,7 @@ public class WeatherModuleParser implements ModuleParser {
                 Astronomy a = new Astronomy(TIME_ONLY.parse(astronomy.getAttributeValue("sunrise").replaceAll("am", "AM").replaceAll("pm", "PM")),
                         TIME_ONLY.parse(astronomy.getAttributeValue("sunset").replaceAll("am", "AM").replaceAll("pm", "PM")));
                 module.setAstronomy(a);
-            }
-            catch (ParseException pe) {
+            } catch (ParseException pe) {
                 Logger.getAnonymousLogger().warning("ParseException processing <astronomy> tag.");
             }
         }
@@ -146,11 +143,9 @@ public class WeatherModuleParser implements ModuleParser {
                         Integer.parseInt(condition.getAttributeValue("temp")), LONG_DATE.parse(condition.getAttributeValue("date").replaceAll("pm", "PM")
                                 .replaceAll("am", "AM")));
                 module.setCondition(c);
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 Logger.getAnonymousLogger().warning("NumberFormatException processing <condition> tag.");
-            }
-            catch (ParseException pe) {
+            } catch (ParseException pe) {
                 Logger.getAnonymousLogger().warning("ParseException processing <condition> tag.");
             }
         }
@@ -168,11 +163,9 @@ public class WeatherModuleParser implements ModuleParser {
                     f[i] = new Forecast(forecast.getAttributeValue("day"), SHORT_DATE.parse(forecast.getAttributeValue("date")), Integer.parseInt(forecast
                             .getAttributeValue("low")), Integer.parseInt(forecast.getAttributeValue("high")), forecast.getAttributeValue("text"),
                             ConditionCode.fromCode(Integer.parseInt(forecast.getAttributeValue("code"))));
-                }
-                catch (NumberFormatException nfe) {
+                } catch (NumberFormatException nfe) {
                     Logger.getAnonymousLogger().warning("NumberFormatException processing <forecast> tag.");
-                }
-                catch (ParseException pe) {
+                } catch (ParseException pe) {
                     Logger.getAnonymousLogger().warning("ParseException processing <forecast> tag.");
                 }
             }

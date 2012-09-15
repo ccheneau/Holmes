@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 
-
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -50,18 +49,19 @@ import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 public class IntUnit implements CloneableType {
     private String units;
     private int value;
-    private boolean inCharArray( char find, char[] array ){
-        for( int i=0; i < array.length; i++ ){
-            if( find == array[i])
-                return true;
+
+    private boolean inCharArray(char find, char[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (find == array[i]) return true;
         }
         return false;
     }
+
     public IntUnit(String source) {
         String parse = source.trim();
         int space = -1;
-        for( int i=0; i < parse.length(); i++ ){
-            if( !inCharArray( parse.charAt(i), GoogleBaseParser.INTEGER_CHARS ) ){
+        for (int i = 0; i < parse.length(); i++) {
+            if (!inCharArray(parse.charAt(i), GoogleBaseParser.INTEGER_CHARS)) {
                 space = i;
                 break;
             }
@@ -70,8 +70,7 @@ public class IntUnit implements CloneableType {
             space = parse.length();
         }
 
-        this.value = Integer.parseInt(
-                GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS, parse.substring(0, space)));
+        this.value = Integer.parseInt(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS, parse.substring(0, space)));
 
         if (space != parse.length()) {
             this.units = parse.substring(space, parse.length()).trim();
@@ -103,17 +102,16 @@ public class IntUnit implements CloneableType {
             return Integer.toString(value);
         }
     }
-    
-    public boolean equals( Object o ){
-	if(!(o instanceof IntUnit) )
-	    return false;
-	IntUnit f = (IntUnit) o;
-	if( f.getValue() != this.value ){
-	    return false;	    
-	}
-	if( this.units == f.getUnits() || ( this.units != null && this.units.equals( f.getUnits() )) ){
-	    return true;
-	}
-	return false;
+
+    public boolean equals(Object o) {
+        if (!(o instanceof IntUnit)) return false;
+        IntUnit f = (IntUnit) o;
+        if (f.getValue() != this.value) {
+            return false;
+        }
+        if (this.units == f.getUnits() || (this.units != null && this.units.equals(f.getUnits()))) {
+            return true;
+        }
+        return false;
     }
 }

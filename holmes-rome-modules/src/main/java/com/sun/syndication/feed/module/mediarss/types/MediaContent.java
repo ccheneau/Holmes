@@ -26,7 +26,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * <strong>&lt;media:content&gt;</strong></p>
  * <p>&lt;media:content&gt; is a sub-element of either &lt;item&gt; or &lt;media:group&gt;.&nbsp;Media objects that are not the same content should not be included in the same &lt;media:group&gt; element.&nbsp;The sequence of these items implies the order of presentation.
@@ -87,9 +86,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * RSS 2.0 document.
  */
 public class MediaContent implements Serializable {
-	private static final long serialVersionUID = -4990262574794352616L;
-	
-	private Expression expression;
+    private static final long serialVersionUID = -4990262574794352616L;
+
+    private Expression expression;
     private Float bitrate = null;
     private Float framerate = null;
     private Float samplingrate = null;
@@ -130,8 +129,7 @@ public class MediaContent implements Serializable {
         super();
 
         if (reference == null) {
-            throw new NullPointerException(
-                "You must provide either a PlayerReference or URL reference.");
+            throw new NullPointerException("You must provide either a PlayerReference or URL reference.");
         }
 
         this.setReference(reference);
@@ -411,8 +409,7 @@ public class MediaContent implements Serializable {
         c.setFramerate(getFramerate());
         c.setHeight(getHeight());
         c.setLanguage(getLanguage());
-        c.setMetadata((getMetadata() == null) ? null
-                                              : (Metadata) getMetadata().clone());
+        c.setMetadata((getMetadata() == null) ? null : (Metadata) getMetadata().clone());
         c.setPlayer(getPlayer());
         c.setSamplingrate(getSamplingrate());
         c.setType(getType());

@@ -53,8 +53,7 @@ public class Conflict extends SSEModule {
         conflict.version = version;
         try {
             conflict.conflictItem = (Item) conflictItem.clone();
-        }
-        catch (CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             Logger.getAnonymousLogger().warning(e.getMessage());
         }
     }

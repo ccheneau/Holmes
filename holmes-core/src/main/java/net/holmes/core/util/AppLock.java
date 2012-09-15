@@ -39,16 +39,14 @@ public class AppLock {
                             fileLock.release();
                             randomAccessFile.close();
                             lockFile.delete();
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             System.err.println("Unable to remove lock file: " + lockFile.getPath() + "  " + e.getMessage());
                         }
                     }
                 });
                 return true;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Unable to create and/or lock file: " + e.getMessage());
         }
         return false;

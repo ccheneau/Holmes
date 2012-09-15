@@ -69,67 +69,50 @@ public class CustomTagParser implements ModuleParser {
                 try {
                     if (type == null) {
                         continue;
-                    }
-                    else if (type.equals("string")) {
+                    } else if (type.equals("string")) {
                         tags.add(new CustomTagImpl(child.getName(), child.getText()));
-                    }
-                    else if (type.equals("int")) {
+                    } else if (type.equals("int")) {
                         tags.add(new CustomTagImpl(child.getName(), new Integer(child.getTextTrim())));
-                    }
-                    else if (type.equals("float")) {
+                    } else if (type.equals("float")) {
                         tags.add(new CustomTagImpl(child.getName(), new Float(child.getTextTrim())));
-                    }
-                    else if (type.equals("intUnit")) {
+                    } else if (type.equals("intUnit")) {
                         tags.add(new CustomTagImpl(child.getName(), new IntUnit(child.getTextTrim())));
-                    }
-                    else if (type.equals("floatUnit")) {
+                    } else if (type.equals("floatUnit")) {
                         tags.add(new CustomTagImpl(child.getName(), new FloatUnit(child.getTextTrim())));
-                    }
-                    else if (type.equals("date")) {
+                    } else if (type.equals("date")) {
                         try {
                             tags.add(new CustomTagImpl(child.getName(), new ShortDate(GoogleBaseParser.SHORT_DT_FMT.parse(child.getTextTrim()))));
-                        }
-                        catch (ParseException e) {
+                        } catch (ParseException e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
                         }
-                    }
-                    else if (type.equals("dateTime")) {
+                    } else if (type.equals("dateTime")) {
                         try {
                             tags.add(new CustomTagImpl(child.getName(), GoogleBaseParser.LONG_DT_FMT.parse(child.getTextTrim())));
-                        }
-                        catch (ParseException e) {
+                        } catch (ParseException e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
                         }
-                    }
-                    else if (type.equals("dateTimeRange")) {
+                    } else if (type.equals("dateTimeRange")) {
                         try {
                             tags.add(new CustomTagImpl(child.getName(), new DateTimeRange(GoogleBaseParser.LONG_DT_FMT.parse(child
                                     .getChild("start", CustomTagParser.NS).getText().trim()), GoogleBaseParser.LONG_DT_FMT.parse(child
                                     .getChild("end", CustomTagParser.NS).getText().trim()))));
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
                         }
-                    }
-                    else if (type.equals("url")) {
+                    } else if (type.equals("url")) {
                         try {
                             tags.add(new CustomTagImpl(child.getName(), new URL(child.getTextTrim())));
-                        }
-                        catch (MalformedURLException e) {
+                        } catch (MalformedURLException e) {
                             logger.log(Level.WARNING, "Unable to parse URL type on " + child.getName(), e);
                         }
-                    }
-                    else if (type.equals("boolean")) {
+                    } else if (type.equals("boolean")) {
                         tags.add(new CustomTagImpl(child.getName(), new Boolean(child.getTextTrim().toLowerCase())));
-                    }
-                    else if (type.equals("location")) {
+                    } else if (type.equals("location")) {
                         tags.add(new CustomTagImpl(child.getName(), new CustomTagImpl.Location(child.getText())));
-                    }
-                    else {
+                    } else {
                         throw new Exception("Unknown type: " + type);
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.log(Level.WARNING, "Unable to parse type on " + child.getName(), e);
                 }
             }

@@ -109,8 +109,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
             Element lngElement = new Element("long", GeoRSSModule.W3CGEO_NS);
             lngElement.addContent(String.valueOf(pos.getLongitude()));
             pointElement.addContent(lngElement);
-        }
-        else {
+        } else {
             logger.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
         }
     }

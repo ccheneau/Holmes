@@ -64,8 +64,7 @@ public class OpenSearchModuleParser implements ModuleParser {
 
             try {
                 osm.setTotalResults(Integer.parseInt(e.getText()));
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
                 logger.log(Level.WARNING, "The element totalResults must be an integer value: " + ex.getMessage());
             }
@@ -75,8 +74,7 @@ public class OpenSearchModuleParser implements ModuleParser {
         if (e != null) {
             try {
                 osm.setItemsPerPage(Integer.parseInt(e.getText()));
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
                 logger.log(Level.WARNING, "The element itemsPerPage must be an integer value: " + ex.getMessage());
             }
@@ -86,8 +84,7 @@ public class OpenSearchModuleParser implements ModuleParser {
         if (e != null) {
             try {
                 osm.setStartIndex(Integer.parseInt(e.getText()));
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
                 logger.log(Level.WARNING, "The element startIndex must be an integer value: " + ex.getMessage());
             }
@@ -147,8 +144,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                 query.setStartPage(Integer.parseInt(att));
             }
 
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             logger.log(Level.WARNING, "Exception caught while trying to parse a non-numeric Query attribute: " + ex.getMessage());
         }
 
@@ -177,8 +173,7 @@ public class OpenSearchModuleParser implements ModuleParser {
 
             if (isRelativeURI(att)) { //
                 link.setHref(resolveURI(baseURI, e, ""));
-            }
-            else {
+            } else {
                 link.setHref(att);
             }
         }
@@ -211,11 +206,9 @@ public class OpenSearchModuleParser implements ModuleParser {
                 xmlBase = xmlBase.substring(0, xmlBase.lastIndexOf("/") + 1);
             }
             return resolveURI(baseURI, parent.getParent(), xmlBase + url);
-        }
-        else if (isRelativeURI(url) && parent == null) {
+        } else if (isRelativeURI(url) && parent == null) {
             return baseURI + url;
-        }
-        else if (baseURI != null && url.startsWith("/")) {
+        } else if (baseURI != null && url.startsWith("/")) {
             String hostURI = baseURI.getProtocol() + "://" + baseURI.getHost();
             if (baseURI.getPort() != baseURI.getDefaultPort()) {
                 hostURI = hostURI + ":" + baseURI.getPort();
@@ -239,8 +232,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                     try {
                         baseURI = new URL(href);
                         break;
-                    }
-                    catch (MalformedURLException e) {
+                    } catch (MalformedURLException e) {
                         logger.log(Level.WARNING, "Base URI is malformed: " + href);
                     }
                 }

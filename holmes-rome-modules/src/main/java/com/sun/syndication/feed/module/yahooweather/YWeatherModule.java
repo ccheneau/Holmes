@@ -37,7 +37,6 @@ package com.sun.syndication.feed.module.yahooweather;
 
 import com.sun.syndication.feed.module.Module;
 
-
 /**
  * A simple parent interface that defines the feed URI
  *

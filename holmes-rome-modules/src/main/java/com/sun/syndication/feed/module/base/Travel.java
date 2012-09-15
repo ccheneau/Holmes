@@ -46,7 +46,6 @@ import com.sun.syndication.feed.module.base.types.PaymentTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 
-
 /**This is an interface for the GoogleBase plug in that exposes methods used for
  * travel items.
  *
@@ -721,7 +720,6 @@ public interface Travel extends GlobalInterface {
      */
     public PriceTypeEnumeration getPriceType();
 
-
     /**
      * Quantity available.
      *
@@ -830,7 +828,6 @@ public interface Travel extends GlobalInterface {
      */
     public Integer getQuantity();
 
-    
     /**
      * Tax rate associated with the event.
      *
@@ -1012,7 +1009,7 @@ public interface Travel extends GlobalInterface {
      * @return Region where tax applies.
      */
     public String getTaxRegion();
-    
+
     /**
      * Destination city and state/country of the trip.
      * 
@@ -1222,6 +1219,7 @@ public interface Travel extends GlobalInterface {
      * @return Departure date and time of the trip.
      */
     public DateTimeRange getTravelDateRange();
+
     /**
      * Location of the property.
      * <table border="1" cellpadding="5" cellspacing="0" width="640">
@@ -1321,8 +1319,7 @@ public interface Travel extends GlobalInterface {
      * @return Location of the property.
      */
     public String getLocation();
-    
-    
+
     /**
      * Shipping options available for an item.
      *
@@ -1379,6 +1376,5 @@ public interface Travel extends GlobalInterface {
      * @return Shipping options available for an item.
      */
     public ShippingType[] getShipping();
-
 
 }

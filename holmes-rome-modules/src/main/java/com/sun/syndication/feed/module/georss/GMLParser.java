@@ -87,15 +87,13 @@ public class GMLParser implements ModuleParser {
                 Position pos = new Position(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]));
                 geoRSSModule.setGeometry(new Point(pos));
             }
-        }
-        else if (lineStringElement != null) {
+        } else if (lineStringElement != null) {
             Element posListElement = lineStringElement.getChild("posList", GeoRSSModule.GML_NS);
             if (posListElement != null) {
                 geoRSSModule = new GMLModuleImpl();
                 geoRSSModule.setGeometry(new LineString(parsePosList(posListElement)));
             }
-        }
-        else if (polygonElement != null) {
+        } else if (polygonElement != null) {
             Polygon poly = null;
 
             // The external ring
@@ -133,8 +131,7 @@ public class GMLParser implements ModuleParser {
                 geoRSSModule = new GMLModuleImpl();
                 geoRSSModule.setGeometry(poly);
             }
-        }
-        else if (envelopeElement != null) {
+        } else if (envelopeElement != null) {
             Element lowerElement = envelopeElement.getChild("lowerCorner", GeoRSSModule.GML_NS);
             Element upperElement = envelopeElement.getChild("upperCorner", GeoRSSModule.GML_NS);
             if (lowerElement != null && upperElement != null) {

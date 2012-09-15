@@ -41,7 +41,6 @@ import com.sun.syndication.feed.module.yahooweather.types.Location;
 import com.sun.syndication.feed.module.yahooweather.types.Units;
 import com.sun.syndication.feed.module.yahooweather.types.Wind;
 
-
 /**
  * An interface describing feed/channel level data for Yahoo Weather.
  * @version $Id: YWeatherFeedModule.java,v 1.3 2008/03/29 16:19:12 kebernet Exp $

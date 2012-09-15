@@ -28,7 +28,6 @@ import com.sun.syndication.feed.impl.ToStringBean;
 import java.io.Serializable;
 import java.net.URI;
 
-
 /**
  *
  * <strong>&lt;media:player&gt;</strong></p>
@@ -42,9 +41,9 @@ import java.net.URI;
  * @author cooper
  */
 public class PlayerReference implements Reference, Serializable {
-	private static final long serialVersionUID = -2618211012392630834L;
-	
-	private Integer height;
+    private static final long serialVersionUID = -2618211012392630834L;
+
+    private Integer height;
     private Integer width;
     private URI url;
 

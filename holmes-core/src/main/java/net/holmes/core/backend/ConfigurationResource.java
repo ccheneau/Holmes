@@ -168,20 +168,17 @@ public class ConfigurationResource {
         Integer iHttpServerPort = null;
         try {
             iHttpServerPort = Integer.valueOf(httpServerPort);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
         }
 
         // Validate configuration
         if (serverName == null || serverName.trim().length() == 0) {
             response.setStatus(false);
             setResponseErrorCode(response, ErrorCode.EMPTY_SERVER_NAME);
-        }
-        else if (iHttpServerPort == null) {
+        } else if (iHttpServerPort == null) {
             response.setStatus(false);
             setResponseErrorCode(response, ErrorCode.INVALID_HTTP_SERVER_PORT);
-        }
-        else {
+        } else {
             // Save configuration
             configuration.setUpnpServerName(serverName.trim());
             configuration.setHttpServerPort(iHttpServerPort);
@@ -238,21 +235,18 @@ public class ConfigurationResource {
                     ConfigurationNode configDirectory = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
                     folders.add(configDirectory);
                     response.setId(configDirectory.getId());
-                }
-                else {
+                } else {
                     // Path not valid
                     response.setStatus(false);
                     setResponseErrorCode(response, validate);
                 }
-            }
-            else {
+            } else {
                 // Folder or Podcast already exists
                 response.setStatus(false);
                 if (isPath) setResponseErrorCode(response, ErrorCode.FOLDER_ALREADY_EXISTS);
                 else setResponseErrorCode(response, ErrorCode.PODCAST_ALREADY_EXISTS);
             }
-        }
-        else if (EDIT_OPERATION.equals(operation)) {
+        } else if (EDIT_OPERATION.equals(operation)) {
             // Check this folders exists
             ConfigurationNode existingFolder = null;
             boolean duplicated = false;
@@ -270,26 +264,22 @@ public class ConfigurationResource {
                         // Edit the folder
                         existingFolder.setLabel(label);
                         existingFolder.setPath(path);
-                    }
-                    else {
+                    } else {
                         // Path not valid
                         response.setStatus(false);
                         setResponseErrorCode(response, validate);
                     }
-                }
-                else {
+                } else {
                     // Duplicated folder
                     response.setStatus(false);
                     setResponseErrorCode(response, ErrorCode.DUPLICATED_FOLDER);
                 }
-            }
-            else {
+            } else {
                 // Unknown folder
                 response.setStatus(false);
                 setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
-        }
-        else if (DELETE_OPERATION.equals(operation)) {
+        } else if (DELETE_OPERATION.equals(operation)) {
             // Check this folders exists
             ConfigurationNode existingFolder = null;
             for (ConfigurationNode folder : folders) {
@@ -298,14 +288,12 @@ public class ConfigurationResource {
             if (existingFolder != null) {
                 // Remove the folder
                 folders.remove(existingFolder);
-            }
-            else {
+            } else {
                 // Unknown folder
                 response.setStatus(false);
                 setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
-        }
-        else {
+        } else {
             // Unknown operation
             response.setStatus(false);
             setResponseErrorCode(response, ErrorCode.UNKNOWN_OPERATION);
@@ -331,15 +319,12 @@ public class ConfigurationResource {
             File file = new File(path);
             if (!file.exists()) {
                 return ErrorCode.PATH_NOT_EXIST;
-            }
-            else if (!file.canRead() || file.isHidden()) {
+            } else if (!file.canRead() || file.isHidden()) {
                 return ErrorCode.PATH_NOT_READABLE;
-            }
-            else if (!file.isDirectory()) {
+            } else if (!file.isDirectory()) {
                 return ErrorCode.PATH_NOT_DIRECTORY;
             }
-        }
-        else {
+        } else {
             // Validate URL
             if (!path.toLowerCase().startsWith("http://")) {
                 return ErrorCode.MALFORMATTED_URL;

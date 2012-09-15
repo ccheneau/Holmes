@@ -98,8 +98,7 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
                 values.add(value);
                 element.removeContent(sort);
 
-            }
-            else if (dataType.equals(Sort.DATE_TYPE)) {
+            } else if (dataType.equals(Sort.DATE_TYPE)) {
                 DateValue value = new DateValue();
                 value.setElement(sort.getAttributeValue("element"));
                 value.setLabel(sort.getAttributeValue("label"));
@@ -110,16 +109,14 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
                 try {
                     dateValue = DateParser.parseRFC822(sort.getAttributeValue("value"));
                     dateValue = (dateValue == null) ? DateParser.parseW3CDateTime(sort.getAttributeValue("value")) : dateValue;
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     ; // ignore parse exceptions
                 }
 
                 value.setValue(dateValue);
                 values.add(value);
                 element.removeContent(sort);
-            }
-            else if (dataType.equals(Sort.NUMBER_TYPE)) {
+            } else if (dataType.equals(Sort.NUMBER_TYPE)) {
                 NumberValue value = new NumberValue();
                 value.setElement(sort.getAttributeValue("element"));
                 value.setLabel(sort.getAttributeValue("label"));
@@ -128,8 +125,7 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
 
                 try {
                     value.setValue(new BigDecimal(sort.getAttributeValue("value")));
-                }
-                catch (NumberFormatException nfe) {
+                } catch (NumberFormatException nfe) {
                     ; // ignore
                     values.add(value);
                     element.removeContent(sort);

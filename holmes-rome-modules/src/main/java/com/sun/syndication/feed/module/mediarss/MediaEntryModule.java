@@ -25,7 +25,6 @@ package com.sun.syndication.feed.module.mediarss;
 import com.sun.syndication.feed.module.mediarss.types.MediaContent;
 import com.sun.syndication.feed.module.mediarss.types.MediaGroup;
 
-
 /**
  * Represents entry/item level information.
  * @author cooper

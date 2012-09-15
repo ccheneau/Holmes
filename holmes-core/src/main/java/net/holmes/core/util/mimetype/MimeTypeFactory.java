@@ -35,15 +35,12 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
         try {
             in = this.getClass().getResourceAsStream("/mimetypes.properties");
             properties.load(in);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             try {
                 if (in != null) in.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }

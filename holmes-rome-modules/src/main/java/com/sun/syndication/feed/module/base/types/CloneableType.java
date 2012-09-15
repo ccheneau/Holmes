@@ -39,7 +39,6 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
-
 /**
  * This is just a holder interface for cloneable elements.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>

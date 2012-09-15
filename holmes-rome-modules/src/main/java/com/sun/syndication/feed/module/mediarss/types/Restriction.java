@@ -27,7 +27,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * <strong>&lt;media:restriction&gt; </strong></p>
  *
@@ -50,9 +49,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Restriction implements Serializable {
-	private static final long serialVersionUID = 7944281267467298628L;
+    private static final long serialVersionUID = 7944281267467298628L;
 
-	private Relationship relationship;
+    private Relationship relationship;
     private String value;
     private Type type;
 
@@ -64,13 +63,11 @@ public class Restriction implements Serializable {
      */
     public Restriction(Relationship relationship, Type type, String value) {
         if ((value == null) || (relationship == null)) {
-            throw new NullPointerException(
-                "Value and Relationship cannot be null.");
+            throw new NullPointerException("Value and Relationship cannot be null.");
         }
 
         if ((type == null) && !(value.equals("all") || value.equals("none"))) {
-            throw new NullPointerException(
-                "Type is required if the value is other than 'all' or 'none'.");
+            throw new NullPointerException("Type is required if the value is other than 'all' or 'none'.");
         }
 
         this.relationship = relationship;

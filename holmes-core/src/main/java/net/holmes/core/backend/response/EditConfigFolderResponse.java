@@ -16,7 +16,6 @@
 */
 package net.holmes.core.backend.response;
 
-
 public class EditConfigFolderResponse {
     private boolean status;
     private String message;

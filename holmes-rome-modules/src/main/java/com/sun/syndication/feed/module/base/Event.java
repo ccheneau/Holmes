@@ -46,7 +46,6 @@ import com.sun.syndication.feed.module.base.types.PaymentTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * Event entry types.

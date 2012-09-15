@@ -119,8 +119,7 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        }
-        else {
+        } else {
             target.setAttribute(name, value.toString());
         }
     }
@@ -128,8 +127,7 @@ public class ModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
     protected Element addNotNullElement(Element target, String name, Object value) {
         if (value == null) {
             return null;
-        }
-        else {
+        } else {
             Element e = generateSimpleElement(name, value.toString());
             target.addContent(e);
 

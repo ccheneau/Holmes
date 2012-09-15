@@ -25,14 +25,13 @@ package com.sun.syndication.feed.module.mediarss.types;
 
 import java.io.Serializable;
 
-
 /** Simple data bean parent for scheme-value type entities.
  *
  * @author cooper
  */
 public abstract class AbstractSchemeValue implements Serializable {
-	private static final long serialVersionUID = -917128796432458636L;
-	private String scheme;
+    private static final long serialVersionUID = -917128796432458636L;
+    private String scheme;
     private String value;
 
     public AbstractSchemeValue(String scheme, String value) {

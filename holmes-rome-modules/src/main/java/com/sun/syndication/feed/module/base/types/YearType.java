@@ -42,7 +42,6 @@ package com.sun.syndication.feed.module.base.types;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /** This class represents a simple 4 digit year.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -68,8 +67,8 @@ public class YearType implements CloneableType {
      */
     public YearType(Date date) {
         Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	this.year = cal.get( Calendar.YEAR );
+        cal.setTime(date);
+        this.year = cal.get(Calendar.YEAR);
     }
 
     /**
@@ -87,12 +86,10 @@ public class YearType implements CloneableType {
     public String toString() {
         return Integer.toString(year);
     }
-    
-    public boolean equals( Object o ){
-	if( !(o instanceof YearType))
-	    return false;
-	if( this.toString().equals( o.toString() ) )
-	    return true;
-	return false;
+
+    public boolean equals(Object o) {
+        if (!(o instanceof YearType)) return false;
+        if (this.toString().equals(o.toString())) return true;
+        return false;
     }
 }

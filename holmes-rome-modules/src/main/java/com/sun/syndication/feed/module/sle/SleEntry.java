@@ -23,7 +23,6 @@ import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
 
-
 /** This is a <b>parse only</b> module that holds the values of enternal fields declared in the SLE module.
  * These will <b>not</b> be persisted on an output() call, <b>nor</b> will changing a value here change a
  * value in another module or a foreign markup tag.

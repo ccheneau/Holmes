@@ -98,23 +98,20 @@ public final class MediaService implements IMediaService {
         if (rootNodes.get(nodeId) != null) {
             // Root node
             node = buildRootNode(nodeId);
-        }
-        else if (nodeId != null) {
+        } else if (nodeId != null) {
             // Get node in mediaIndex
             IndexElement indexElement = mediaIndex.getElement(nodeId);
             if (indexElement != null) {
                 if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
                     //Podcast node
                     node = buildPodcastNode(nodeId, indexElement.getName(), indexElement.getPath());
-                }
-                else {
+                } else {
                     File nodeFile = new File(indexElement.getPath());
                     if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
                         if (nodeFile.isFile()) {
                             // Content node
                             node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, indexElement.getMediaType());
-                        }
-                        else if (nodeFile.isDirectory()) {
+                        } else if (nodeFile.isDirectory()) {
                             // Folder node
                             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
                             node = buildFolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
@@ -142,40 +139,33 @@ public final class MediaService implements IMediaService {
             childNodes.add(buildRootNode(ROOT_VIDEO_NODE_ID));
             childNodes.add(buildRootNode(ROOT_PICTURE_NODE_ID));
             childNodes.add(buildRootNode(ROOT_PODCAST_NODE_ID));
-        }
-        else if (ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
+        } else if (ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MimeType.TYPE_AUDIO);
-        }
-        else if (ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
+        } else if (ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MimeType.TYPE_VIDEO);
-        }
-        else if (ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
+        } else if (ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MimeType.TYPE_IMAGE);
-        }
-        else if (ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
+        } else if (ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MimeType.TYPE_PODCAST);
-        }
-        else if (parentNode.getId() != null) {
+        } else if (parentNode.getId() != null) {
             // Get node in mediaIndex
             IndexElement indexElement = mediaIndex.getElement(parentNode.getId());
             if (indexElement != null) {
                 if (MimeType.TYPE_PODCAST.equals(indexElement.getMediaType())) {
                     // Get podcast child nodes
                     childNodes = getPodcastChildNodes(parentNode.getId(), indexElement.getPath());
-                }
-                else {
+                } else {
                     File node = new File(indexElement.getPath());
                     if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
                         // Get folder child nodes
                         childNodes = getFolderChildNodes(parentNode.getId(), node, indexElement.getMediaType());
                     }
                 }
-            }
-            else {
+            } else {
                 logger.error(parentNode.getId() + " node not found in index");
             }
         }
@@ -198,8 +188,7 @@ public final class MediaService implements IMediaService {
                     // Add child node
                     nodes.add(buildPodcastNode(contentFolder.getId(), contentFolder.getLabel(), contentFolder.getPath()));
                 }
-            }
-            else {
+            } else {
                 // Add folder nodes
                 for (ConfigurationNode contentFolder : contentFolders) {
                     File file = new File(contentFolder.getPath());
@@ -231,8 +220,7 @@ public final class MediaService implements IMediaService {
                     if (file.isDirectory()) {
                         // Add folder node
                         node = buildFolderNode(nodeId, parentId, file.getName(), file);
-                    }
-                    else {
+                    } else {
                         // Add content node
                         node = buildContentNode(nodeId, parentId, file, mediaType);
                     }
@@ -297,32 +285,25 @@ public final class MediaService implements IMediaService {
                         }
                     }
                 }
-            }
-            catch (MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 logger.error(e.getMessage(), e);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage(), e);
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 logger.error(e.getMessage(), e);
-            }
-            catch (FeedException e) {
+            } catch (FeedException e) {
                 logger.error(e.getMessage(), e);
-            }
-            finally {
+            } finally {
                 // Close the reader
                 try {
                     if (reader != null) reader.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     logger.error(e.getMessage(), e);
                 }
             }
             // Add entries to cache
             if (podcastEntriesCache != null) podcastEntriesCache.put(new Element(url, podcastEntryNodes));
-        }
-        else {
+        } else {
             // Get entries from cache
             podcastEntryNodes = (List<AbstractNode>) (podcastEntriesCache.get(url).getValue());
         }

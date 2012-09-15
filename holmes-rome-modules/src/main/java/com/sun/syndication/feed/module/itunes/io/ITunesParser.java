@@ -111,8 +111,7 @@ public class ITunesParser implements ModuleParser {
                 try {
                     URL imageURL = new URL(image.getAttributeValue("href").trim());
                     feedInfo.setImage(imageURL);
-                }
-                catch (MalformedURLException e) {
+                } catch (MalformedURLException e) {
                     logger.finer("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
                 }
             }
@@ -136,8 +135,7 @@ public class ITunesParser implements ModuleParser {
                 }
             }
 
-        }
-        else if (element.getName().equals("item")) {
+        } else if (element.getName().equals("item")) {
             EntryInformationImpl entryInfo = new EntryInformationImpl();
             module = entryInfo;
 

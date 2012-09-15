@@ -116,8 +116,7 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
                         ci.setContentValue(getXmlInnerText(value));
                         contentStrings.add(getXmlInnerText(value));
                         ci.setContentValueNamespaces(value.getAdditionalNamespaces());
-                    }
-                    else {
+                    } else {
                         ci.setContentValue(value.getText());
                         contentStrings.add(value.getText());
                     }

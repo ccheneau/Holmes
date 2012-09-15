@@ -94,8 +94,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
     public void addQuery(OSQuery query) {
         if (queries != null) {
             queries.add(query);
-        }
-        else {
+        } else {
             queries = new LinkedList<OSQuery>();
             queries.add(query);
         }

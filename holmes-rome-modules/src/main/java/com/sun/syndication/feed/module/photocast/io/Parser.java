@@ -79,8 +79,7 @@ public class Parser implements ModuleParser {
     public Module parse(Element element) {
         if (element.getName().equals("channel") || element.getName().equals("feed")) {
             return new PhotocastModuleImpl();
-        }
-        else if (element.getChild("metadata", Parser.NS) == null && element.getChild("image", Parser.NS) == null) return null;
+        } else if (element.getChild("metadata", Parser.NS) == null && element.getChild("image", Parser.NS) == null) return null;
         PhotocastModule pm = new PhotocastModuleImpl();
         List<?> children = element.getChildren();
         Iterator<?> it = children.iterator();
@@ -90,43 +89,34 @@ public class Parser implements ModuleParser {
             if (e.getName().equals("photoDate")) {
                 try {
                     pm.setPhotoDate(Parser.PHOTO_DATE_FORMAT.parse(e.getText()));
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     logger.warning("Unable to parse photoDate: " + e.getText() + " " + ex.toString());
                 }
-            }
-            else if (e.getName().equals("cropDate")) {
+            } else if (e.getName().equals("cropDate")) {
                 try {
                     pm.setCropDate(Parser.CROP_DATE_FORMAT.parse(e.getText()));
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     logger.warning("Unable to parse cropDate: " + e.getText() + " " + ex.toString());
                 }
-            }
-            else if (e.getName().equals("thumbnail")) {
+            } else if (e.getName().equals("thumbnail")) {
                 try {
                     pm.setThumbnailUrl(new URL(e.getText()));
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     logger.warning("Unable to parse thumnail: " + e.getText() + " " + ex.toString());
                 }
-            }
-            else if (e.getName().equals("image")) {
+            } else if (e.getName().equals("image")) {
                 try {
                     pm.setImageUrl(new URL(e.getText()));
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     logger.warning("Unable to parse image: " + e.getText() + " " + ex.toString());
                 }
-            }
-            else if (e.getName().equals("metadata")) {
+            } else if (e.getName().equals("metadata")) {
                 String comments = "";
                 PhotoDate photoDate = null;
                 if (e.getChildText("PhotoDate") != null) {
                     try {
                         photoDate = new PhotoDate(Double.parseDouble(e.getChildText("PhotoDate")));
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         logger.warning("Unable to parse PhotoDate: " + e.getText() + " " + ex.toString());
                     }
                 }

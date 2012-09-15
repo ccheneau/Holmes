@@ -111,8 +111,7 @@ public class GoogleBaseGenerator implements ModuleGenerator {
             try {
                 if (pds[i].getPropertyType().isArray()) {
                     values = (Object[]) pds[i].getReadMethod().invoke(mod, (Object[]) null);
-                }
-                else {
+                } else {
                     values = new Object[] { pds[i].getReadMethod().invoke(mod, (Object[]) null) };
                 }
 
@@ -121,8 +120,7 @@ public class GoogleBaseGenerator implements ModuleGenerator {
                         element.addContent(this.generateTag(values[j], tagName));
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 logger.log(Level.WARNING, e.getMessage());
             }
         }
@@ -133,14 +131,11 @@ public class GoogleBaseGenerator implements ModuleGenerator {
                 || o instanceof IntUnit || o instanceof GenderEnumeration || o instanceof PaymentTypeEnumeration || o instanceof PriceTypeEnumeration
                 || o instanceof CurrencyEnumeration || o instanceof Size || o instanceof YearType) {
             return this.generateSimpleElement(tagName, o.toString());
-        }
-        else if (o instanceof ShortDate) {
+        } else if (o instanceof ShortDate) {
             return this.generateSimpleElement(tagName, GoogleBaseParser.SHORT_DT_FMT.format(o));
-        }
-        else if (o instanceof Date) {
+        } else if (o instanceof Date) {
             return this.generateSimpleElement(tagName, GoogleBaseParser.LONG_DT_FMT.format(o));
-        }
-        else if (o instanceof ShippingType) {
+        } else if (o instanceof ShippingType) {
             ShippingType st = (ShippingType) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
 
@@ -151,8 +146,7 @@ public class GoogleBaseGenerator implements ModuleGenerator {
             element.addContent(this.generateSimpleElement("price", st.getPrice().toString()));
 
             return element;
-        }
-        else if (o instanceof DateTimeRange) {
+        } else if (o instanceof DateTimeRange) {
             DateTimeRange dtr = (DateTimeRange) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
             element.addContent(this.generateSimpleElement("start", GoogleBaseParser.LONG_DT_FMT.format(dtr.getStart())));

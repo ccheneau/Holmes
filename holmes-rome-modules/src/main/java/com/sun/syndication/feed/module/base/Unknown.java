@@ -43,7 +43,6 @@ import java.net.URL;
 
 import com.sun.syndication.feed.module.base.types.IntUnit;
 
-
 /**
  * This interface contains all the other schema elements that the document
  * doesn't associate with a particular type.

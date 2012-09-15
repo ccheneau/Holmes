@@ -27,7 +27,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  *
  * <strong>&lt;media:credit&gt;</strong></p>
@@ -69,8 +68,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Credit implements Serializable {
-	private static final long serialVersionUID = 7722721287224043428L;
-	/**
+    private static final long serialVersionUID = 7722721287224043428L;
+    /**
      * Scheme value for the EBU credits.
      */
     public static final String SCHEME_EBU = "urn:ebu";

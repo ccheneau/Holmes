@@ -127,8 +127,7 @@ public class GMLGenerator implements ModuleGenerator {
             Element lineElement = new Element("LineString", GeoRSSModule.GML_NS);
             lineElement.addContent(createPosListElement(posList));
             whereElement.addContent(lineElement);
-        }
-        else if (geometry instanceof Polygon) {
+        } else if (geometry instanceof Polygon) {
             Element polygonElement = new Element("Polygon", GeoRSSModule.GML_NS);
             {
                 AbstractRing ring = ((Polygon) geometry).getExterior();
@@ -139,8 +138,7 @@ public class GMLGenerator implements ModuleGenerator {
                     exteriorElement.addContent(ringElement);
                     ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
 
-                }
-                else {
+                } else {
                     logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
                 }
             }
@@ -155,14 +153,12 @@ public class GMLGenerator implements ModuleGenerator {
                     interiorElement.addContent(ringElement);
                     ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
 
-                }
-                else {
+                } else {
                     logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
                 }
             }
             whereElement.addContent(polygonElement);
-        }
-        else if (geometry instanceof Envelope) {
+        } else if (geometry instanceof Envelope) {
             Envelope envelope = (Envelope) geometry;
             Element envelopeElement = new Element("Envelope", GeoRSSModule.GML_NS);
             whereElement.addContent(envelopeElement);
@@ -175,8 +171,7 @@ public class GMLGenerator implements ModuleGenerator {
             upperElement.addContent(String.valueOf(envelope.getMaxLatitude()) + " " + String.valueOf(envelope.getMaxLongitude()));
             envelopeElement.addContent(upperElement);
 
-        }
-        else {
+        } else {
             logger.log(Level.WARNING, "GeoRSS GML format can't handle geometries of type: " + geometry.getClass().getName());
         }
     }

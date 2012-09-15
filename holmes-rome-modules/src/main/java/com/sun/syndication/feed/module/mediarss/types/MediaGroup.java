@@ -28,7 +28,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * <strong>&lt;media:group&gt;</strong></p>
  * <p>&lt;media:group&gt; is a sub-element of &lt;item&gt;. It allows grouping of &lt;media:content&gt; elements that are effectively the same content, yet different representations.&nbsp;For instance: the same song recorded in both the WAV and MP3 format.
@@ -36,9 +35,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class MediaGroup implements Cloneable, Serializable {
-	private static final long serialVersionUID = 768465435081309082L;
-	
-	private Integer defaultContentIndex;
+    private static final long serialVersionUID = 768465435081309082L;
+
+    private Integer defaultContentIndex;
     private Metadata metadata;
     private MediaContent[] contents = new MediaContent[0];
 
@@ -66,8 +65,7 @@ public class MediaGroup implements Cloneable, Serializable {
      * @param defaultContentIndex index of the default content item.
      * @param metadata metadata for the group.
      */
-    public MediaGroup(MediaContent[] contents, Integer defaultContentIndex,
-        Metadata metadata) {
+    public MediaGroup(MediaContent[] contents, Integer defaultContentIndex, Metadata metadata) {
         this.setContents(contents);
         this.setDefaultContentIndex(defaultContentIndex);
         this.setMetadata(metadata);
@@ -130,8 +128,7 @@ public class MediaGroup implements Cloneable, Serializable {
     }
 
     public Object clone() {
-        return new MediaGroup(getContents(), getDefaultContentIndex(),
-            getMetadata());
+        return new MediaGroup(getContents(), getDefaultContentIndex(), getMetadata());
     }
 
     public boolean equals(Object obj) {

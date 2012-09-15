@@ -19,14 +19,13 @@ package com.sun.syndication.feed.module.mediarss.types;
 
 import java.io.Serializable;
 
-
 /**
  * expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
  */
 public class Expression implements Serializable {
-	private static final long serialVersionUID = 2356898289547679768L;
+    private static final long serialVersionUID = 2356898289547679768L;
 
-	/**
+    /**
      * Represents a complete media object.
      */
     public static final Expression FULL = new Expression("full");

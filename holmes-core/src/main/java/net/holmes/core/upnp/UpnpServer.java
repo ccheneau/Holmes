@@ -74,12 +74,10 @@ public final class UpnpServer implements IServer {
                 upnpService.getRegistry().addDevice(localDevice);
 
                 if (logger.isInfoEnabled()) logger.info("UPnP server started");
-            }
-            else {
+            } else {
                 if (logger.isInfoEnabled()) logger.info("UPnP is disabled");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
     }

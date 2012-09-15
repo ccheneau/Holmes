@@ -44,21 +44,18 @@ public class Bootstrap {
                 IServer holmesServer = injector.getInstance(HolmesServer.class);
                 try {
                     holmesServer.start();
-                }
-                catch (RuntimeException e) {
+                } catch (RuntimeException e) {
                     LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
                     System.exit(1);
                 }
 
                 // Add shutdown hook
                 Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
-            }
-            else {
+            } else {
                 System.err.println(HolmesProperty.SYS_VAR_HOLMES_HOME.getValue() + " system variable undefined or not valid");
                 System.exit(1);
             }
-        }
-        else {
+        } else {
             System.err.println("Holmes is already running");
             System.exit(1);
         }

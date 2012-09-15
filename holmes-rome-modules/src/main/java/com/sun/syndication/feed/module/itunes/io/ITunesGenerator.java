@@ -115,8 +115,7 @@ public class ITunesGenerator implements ModuleGenerator {
 
                 element.addContent(category);
             }
-        }
-        else if (itunes instanceof EntryInformationImpl) {
+        } else if (itunes instanceof EntryInformationImpl) {
             EntryInformationImpl info = (EntryInformationImpl) itunes;
 
             if (info.getDuration() != null) {
@@ -134,8 +133,7 @@ public class ITunesGenerator implements ModuleGenerator {
 
         if (itunes.getExplicit()) {
             element.addContent(this.generateSimpleElement("explicit", "yes"));
-        }
-        else {
+        } else {
             element.addContent(this.generateSimpleElement("explicit", "no"));
         }
 

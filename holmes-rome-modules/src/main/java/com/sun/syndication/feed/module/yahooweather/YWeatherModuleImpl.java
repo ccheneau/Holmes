@@ -86,8 +86,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
             for (int i = 0; i < from.forecasts.length; i++) {
                 this.forecasts[i] = (from.forecasts[i] != null) ? (Forecast) from.forecasts[i].clone() : null;
             }
-        }
-        else {
+        } else {
             this.forecasts = null;
         }
     }

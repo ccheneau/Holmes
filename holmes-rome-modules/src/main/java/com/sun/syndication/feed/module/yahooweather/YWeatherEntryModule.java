@@ -39,7 +39,6 @@ package com.sun.syndication.feed.module.yahooweather;
 import com.sun.syndication.feed.module.yahooweather.types.Condition;
 import com.sun.syndication.feed.module.yahooweather.types.Forecast;
 
-
 /**
  * An interface describing the entry/item level data for Yahoo Weather.
  * @version $Id: YWeatherEntryModule.java,v 1.2 2008/01/22 14:50:06 kebernet Exp $

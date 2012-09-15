@@ -46,7 +46,6 @@ import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 import com.sun.syndication.feed.module.base.types.Size;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * Products.

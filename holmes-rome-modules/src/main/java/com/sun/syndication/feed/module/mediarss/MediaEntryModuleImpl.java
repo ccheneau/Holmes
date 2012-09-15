@@ -29,16 +29,14 @@ import com.sun.syndication.feed.module.mediarss.types.MediaContent;
 import com.sun.syndication.feed.module.mediarss.types.MediaGroup;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 
-
 /**
  * Represents information for an Entry/Item level.
  * @author Nathanial X. Freitas
  */
-public class MediaEntryModuleImpl extends MediaModuleImpl
-    implements MediaEntryModule, Cloneable, Serializable {
-	private static final long serialVersionUID = -1564409507033924835L;
+public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryModule, Cloneable, Serializable {
+    private static final long serialVersionUID = -1564409507033924835L;
 
-	/*
+    /*
      * the variables in the MediaModule are set when they apply to
      * all MediaContent instances in the set
      */
@@ -57,8 +55,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl
      * @param mediaContents MediaContent items for the entry
      */
     public void setMediaContents(MediaContent[] mediaContents) {
-        this.mediaContents = (mediaContents == null) ? new MediaContent[0]
-                                                     : mediaContents;
+        this.mediaContents = (mediaContents == null) ? new MediaContent[0] : mediaContents;
     }
 
     /**
@@ -89,8 +86,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl
         MediaEntryModuleImpl m = new MediaEntryModuleImpl();
         m.setMediaContents((MediaContent[]) mediaContents.clone());
         m.setMediaGroups((MediaGroup[]) mediaGroups.clone());
-        m.setMetadata((getMetadata() == null) ? null
-                                              : (Metadata) getMetadata().clone());
+        m.setMetadata((getMetadata() == null) ? null : (Metadata) getMetadata().clone());
         m.setPlayer(getPlayer());
 
         return m;

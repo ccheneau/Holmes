@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.util.StringTokenizer;
 
-
 /** Represents the size on an item in 2 or 3 dimensions.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
@@ -67,11 +66,11 @@ public class Size implements CloneableType {
      */
     public Size(String source) {
         StringTokenizer tok = new StringTokenizer(source, "Xx");
-        this.length = new FloatUnit( tok.nextToken());
-        this.width = new FloatUnit( tok.nextToken());
+        this.length = new FloatUnit(tok.nextToken());
+        this.width = new FloatUnit(tok.nextToken());
 
         if (tok.hasMoreTokens()) {
-            this.height = new FloatUnit( tok.nextToken());
+            this.height = new FloatUnit(tok.nextToken());
         }
     }
 
@@ -144,11 +143,10 @@ public class Size implements CloneableType {
             return length + "x" + width;
         }
     }
-    public boolean equals( Object o ){
-	if( !(o instanceof Size))
-	    return false;
-	if( this.toString().equals( o.toString() ) )
-	    return true;
-	return false;
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Size)) return false;
+        if (this.toString().equals(o.toString())) return true;
+        return false;
     }
 }

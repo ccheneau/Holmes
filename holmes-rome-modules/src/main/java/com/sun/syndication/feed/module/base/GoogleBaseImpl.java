@@ -571,8 +571,7 @@ public class GoogleBaseImpl implements GoogleBase {
     public void setExpirationDate(Date expirationDate) {
         if ((expirationDate != null) && !(expirationDate instanceof ShortDate)) {
             this.expirationDate = new ShortDate(expirationDate);
-        }
-        else {
+        } else {
             this.expirationDate = null;
         }
     }
@@ -1011,8 +1010,7 @@ public class GoogleBaseImpl implements GoogleBase {
     public void setPublishDate(Date publishDate) {
         if ((publishDate != null) && !(publishDate instanceof ShortDate)) {
             this.publishDate = new ShortDate(publishDate);
-        }
-        else {
+        } else {
             this.publishDate = null;
         }
     }
@@ -1294,8 +1292,7 @@ public class GoogleBaseImpl implements GoogleBase {
             gbi.copyFrom(this);
 
             return gbi;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new CloneNotSupportedException();
         }
     }
@@ -1426,8 +1423,7 @@ public class GoogleBaseImpl implements GoogleBase {
     private Object cloneOrNull(CloneableType o) {
         if (o == null) {
             return null;
-        }
-        else {
+        } else {
             return o.clone();
         }
     }
@@ -1435,8 +1431,7 @@ public class GoogleBaseImpl implements GoogleBase {
     private Date dateOrNull(Date date) {
         if (date == null) {
             return null;
-        }
-        else {
+        } else {
             return new Date(date.getTime());
         }
     }

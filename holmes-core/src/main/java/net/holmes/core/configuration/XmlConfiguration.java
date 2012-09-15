@@ -78,15 +78,12 @@ public final class XmlConfiguration implements IConfiguration {
                 in = new FileInputStream(confFile);
                 rootNode = (XmlRootNode) xs.fromXML(in);
                 configLoaded = true;
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 logger.error(e.getMessage(), e);
-            }
-            finally {
+            } finally {
                 try {
                     if (in != null) in.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -108,15 +105,12 @@ public final class XmlConfiguration implements IConfiguration {
         try {
             out = new FileOutputStream(getConfigFile());
             xs.toXML(rootNode, out);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             logger.error(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             try {
                 if (out != null) out.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }

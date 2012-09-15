@@ -27,7 +27,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  *
  * <strong>&lt;media:category&gt;</strong></p>
@@ -49,8 +48,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Category implements Serializable {
-	private static final long serialVersionUID = 5182373808661745402L;
-	/**
+    private static final long serialVersionUID = 5182373808661745402L;
+    /**
      * Schem for FLICKR tags
      */
     public static final String SCHEME_FLICKR_TAGS = "urn:flickr:tags";

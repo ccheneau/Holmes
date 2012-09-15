@@ -21,7 +21,6 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
 
-
 /** This is the primary module interface for the 
  * <a href="http://msdn.microsoft.com/xml/rss/sle/">MS Simple List Extensions</a>.
  *

@@ -55,8 +55,7 @@ public class SSE091Parser implements DelegatingModuleParser {
 
         if (name.equals("rss")) {
             sseModule = parseSharing(element);
-        }
-        else if (name.equals("item")) {
+        } else if (name.equals("item")) {
             sseModule = parseSync(element);
         }
         return sseModule;
@@ -199,8 +198,7 @@ public class SSE091Parser implements DelegatingModuleParser {
         if (integerAttribute != null) {
             try {
                 integerAttr = new Integer(integerAttribute.getIntValue());
-            }
-            catch (DataConversionException e) {
+            } catch (DataConversionException e) {
                 // dont use the data
             }
         }
@@ -213,8 +211,7 @@ public class SSE091Parser implements DelegatingModuleParser {
         if (attribute != null) {
             try {
                 attrValue = Boolean.valueOf(attribute.getBooleanValue());
-            }
-            catch (DataConversionException e) {
+            } catch (DataConversionException e) {
                 // dont use the data
             }
         }

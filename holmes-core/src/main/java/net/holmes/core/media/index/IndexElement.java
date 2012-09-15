@@ -76,20 +76,19 @@ public class IndexElement implements Serializable {
         IndexElement other = (IndexElement) obj;
         if (mediaType == null) {
             if (other.mediaType != null) return false;
-        }
-        else if (!mediaType.equals(other.mediaType)) return false;
+        } else if (!mediaType.equals(other.mediaType)) return false;
+
         if (name == null) {
             if (other.name != null) return false;
-        }
-        else if (!name.equals(other.name)) return false;
+        } else if (!name.equals(other.name)) return false;
+
         if (parentId == null) {
             if (other.parentId != null) return false;
-        }
-        else if (!parentId.equals(other.parentId)) return false;
+        } else if (!parentId.equals(other.parentId)) return false;
+
         if (path == null) {
             if (other.path != null) return false;
-        }
-        else if (!path.equals(other.path)) return false;
+        } else if (!path.equals(other.path)) return false;
         return true;
     }
 }

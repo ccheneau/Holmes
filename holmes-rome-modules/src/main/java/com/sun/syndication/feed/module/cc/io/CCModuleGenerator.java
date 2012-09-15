@@ -84,8 +84,7 @@ public class CCModuleGenerator implements ModuleGenerator {
         }
         if (root.getNamespace().equals(RDF) || root.getNamespace().equals(RSS)) {
             generateRSS1((CreativeCommons) module, element);
-        }
-        else {
+        } else {
             generateRSS2((CreativeCommons) module, element);
         }
     }

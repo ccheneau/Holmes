@@ -30,50 +30,47 @@ import com.sun.syndication.feed.module.georss.geometries.*;
  *
  */
 public class W3CGeoParser implements ModuleParser {
-    
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.sun.syndication.io.ModuleParser#getNamespaceUri()
-         */
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.sun.syndication.io.ModuleParser#getNamespaceUri()
+     */
     public String getNamespaceUri() {
         return GeoRSSModule.GEORSS_W3CGEO_URI;
     }
-    
-    
+
     static Module parseW3C(Element element) {
         GeoRSSModule geoRSSModule = null;
-        
+
         // do we have an optional "Point" element ?
-        Element pointElement = element
-                .getChild("Point", GeoRSSModule.W3CGEO_NS);
-        
+        Element pointElement = element.getChild("Point", GeoRSSModule.W3CGEO_NS);
+
         // we don't have an optional "Point" element
         if (pointElement == null) {
             pointElement = element;
         }
-        
+
         Element lat = pointElement.getChild("lat", GeoRSSModule.W3CGEO_NS);
         Element lng = pointElement.getChild("long", GeoRSSModule.W3CGEO_NS);
-        if (lng == null)
-            lng = pointElement.getChild("lon", GeoRSSModule.W3CGEO_NS);
+        if (lng == null) lng = pointElement.getChild("lon", GeoRSSModule.W3CGEO_NS);
         if (lat != null && lng != null) {
             geoRSSModule = new W3CGeoModuleImpl();
             Position pos = new Position(Double.parseDouble(lat.getText()), Double.parseDouble(lng.getText()));
             geoRSSModule.setGeometry(new Point(pos));
         }
-        
+
         return geoRSSModule;
     }
-    
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
-         */
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
+     */
     public Module parse(Element element) {
         Module geoRssModule = parseW3C(element);
         return geoRssModule;
     }
-    
+
 }

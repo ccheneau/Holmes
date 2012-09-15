@@ -112,8 +112,7 @@ public final class HolmesServer implements IServer {
                 FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
                 UIManager.put("MenuItem.bold.font", menuItemBoldFont);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             init = false;
         }
         return init;
@@ -162,8 +161,7 @@ public final class HolmesServer implements IServer {
                                 .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue()).append(File.separator).append("log").append(File.separator)
                                 .append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -187,11 +185,9 @@ public final class HolmesServer implements IServer {
                         StringBuilder holmesUrl = new StringBuilder();
                         holmesUrl.append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
                         Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         logger.error(e.getMessage(), e);
-                    }
-                    catch (URISyntaxException e) {
+                    } catch (URISyntaxException e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -209,8 +205,7 @@ public final class HolmesServer implements IServer {
         systemTrayIcon.setPopupMenu(popupMenu);
         try {
             systemTray.add(systemTrayIcon);
-        }
-        catch (AWTException e) {
+        } catch (AWTException e) {
             logger.error(e.getMessage(), e);
         }
     }

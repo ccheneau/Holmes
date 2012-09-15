@@ -16,10 +16,9 @@ import org.jdom.Namespace;
  * @author cooper
  */
 public class AlternateMediaModuleParser extends MediaModuleParser {
-    
+
     private static final Namespace NS = Namespace.getNamespace("http://search.yahoo.com/mrss");
 
-    
     /** Creates a new instance of AlternateMediaModuleParser */
     public AlternateMediaModuleParser() {
         super();
@@ -28,8 +27,8 @@ public class AlternateMediaModuleParser extends MediaModuleParser {
     public String getNamespaceUri() {
         return "http://search.yahoo.com/mrss";
     }
-    
-    public Namespace getNS(){
+
+    public Namespace getNS() {
         return AlternateMediaModuleParser.NS;
     }
 }

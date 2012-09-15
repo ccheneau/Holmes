@@ -29,7 +29,6 @@ import com.sun.syndication.feed.impl.ToStringBean;
 import java.io.Serializable;
 import java.net.URI;
 
-
 /**
  *
  *
@@ -51,9 +50,9 @@ import java.net.URI;
  * @author cooper
  */
 public class Metadata implements Cloneable, Serializable {
-	private static final long serialVersionUID = 649350950456005250L;
-	
-	private Hash hash;
+    private static final long serialVersionUID = 649350950456005250L;
+
+    private Hash hash;
     private String copyright;
     private String description;
     private String descriptionType;
@@ -67,12 +66,12 @@ public class Metadata implements Cloneable, Serializable {
     private Restriction[] restrictions = new Restriction[0];
     private Text[] text = new Text[0];
     private Thumbnail[] thumbnail = new Thumbnail[0];
-    
+
     /** Creates a new instance of Metadata */
     public Metadata() {
         super();
     }
-    
+
     /**
      * <strong>&lt;media:category&gt;</strong></p>
      *        <p> Allows a taxonomy to be set that gives an indication of the type of media content, and its particular contents.
@@ -95,7 +94,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setCategories(Category[] categories) {
         this.categories = (categories == null) ? new Category[0] : categories;
     }
-    
+
     /**
      * <strong>&lt;media:category&gt;</strong></p>
      *        <p> Allows a taxonomy to be set that gives an indication of the type of media content, and its particular contents.
@@ -118,7 +117,7 @@ public class Metadata implements Cloneable, Serializable {
     public Category[] getCategories() {
         return categories;
     }
-    
+
     /**
      * <strong>&lt;media:copyright&gt;</strong></p>
      * <p>Copyright information for media object.  It has 1 optional attribute.</p>
@@ -130,7 +129,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setCopyright(String copyright) {
         this.copyright = copyright;
     }
-    
+
     /**
      * <strong>&lt;media:copyright&gt;</strong></p>
      * <p>Copyright information for media object.  It has 1 optional attribute.</p>
@@ -142,7 +141,7 @@ public class Metadata implements Cloneable, Serializable {
     public String getCopyright() {
         return copyright;
     }
-    
+
     /**
      * <strong>&lt;media:copyright&gt;</strong></p>
      * <p>Copyright information for media object.  It has 1 optional attribute.</p>
@@ -154,7 +153,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setCopyrightUrl(URI copyrightUrl) {
         this.copyrightUrl = copyrightUrl;
     }
-    
+
     /**
      * <strong>&lt;media:copyright&gt;</strong></p>
      * <p>Copyright information for media object.  It has 1 optional attribute.</p>
@@ -166,7 +165,7 @@ public class Metadata implements Cloneable, Serializable {
     public URI getCopyrightUrl() {
         return copyrightUrl;
     }
-    
+
     /**
      * <strong>&lt;media:credit&gt;</strong></p>
      *
@@ -209,7 +208,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setCredits(Credit[] credits) {
         this.credits = (credits == null) ? new Credit[0] : credits;
     }
-    
+
     /**
      * <strong>&lt;media:credit&gt;</strong></p>
      *
@@ -252,7 +251,7 @@ public class Metadata implements Cloneable, Serializable {
     public Credit[] getCredits() {
         return credits;
     }
-    
+
     /**
      * <strong>&lt;media:description&gt;</strong></p>
      * <p>Short description describing the media object typically a sentence in length. It has 1 optional attribute.</p>
@@ -263,7 +262,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * <strong>&lt;media:description&gt;</strong></p>
      * <p>Short description describing the media object typically a sentence in length. It has 1 optional attribute.</p>
@@ -274,7 +273,7 @@ public class Metadata implements Cloneable, Serializable {
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * <strong>&lt;media:description&gt;</strong></p>
      * <p>Short description describing the media object typically a sentence in length. It has 1 optional attribute.</p>
@@ -285,7 +284,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setDescriptionType(String descriptionType) {
         this.descriptionType = descriptionType;
     }
-    
+
     /**
      * <strong>&lt;media:description&gt;</strong></p>
      * <p>Short description describing the media object typically a sentence in length. It has 1 optional attribute.</p>
@@ -296,7 +295,7 @@ public class Metadata implements Cloneable, Serializable {
     public String getDescriptionType() {
         return descriptionType;
     }
-    
+
     /**
      * <strong>&lt;media:hash&gt;</strong></p>
      *
@@ -310,7 +309,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setHash(Hash hash) {
         this.hash = hash;
     }
-    
+
     /**
      * <strong>&lt;media:hash&gt;</strong></p>
      *
@@ -324,7 +323,7 @@ public class Metadata implements Cloneable, Serializable {
     public Hash getHash() {
         return hash;
     }
-    
+
     /**
      * <strong>&lt;media:keywords&gt;</strong></p>
      * <p>Highly relevant keywords describing the media object with typically a maximum of ten words. The keywords and phrases should be comma delimited.</p>
@@ -335,7 +334,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setKeywords(String[] keywords) {
         this.keywords = (keywords == null) ? new String[0] : keywords;
     }
-    
+
     /**
      * <strong>&lt;media:keywords&gt;</strong></p>
      * <p>Highly relevant keywords describing the media object with typically a maximum of ten words. The keywords and phrases should be comma delimited.</p>
@@ -346,7 +345,7 @@ public class Metadata implements Cloneable, Serializable {
     public String[] getKeywords() {
         return keywords;
     }
-    
+
     /**
      * <strong>&lt;media:rating&gt;</strong></p>
      *
@@ -368,7 +367,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setRatings(Rating[] ratings) {
         this.ratings = (ratings == null) ? new Rating[0] : ratings;
     }
-    
+
     /**
      * <strong>&lt;media:rating&gt;</strong></p>
      *
@@ -390,7 +389,7 @@ public class Metadata implements Cloneable, Serializable {
     public Rating[] getRatings() {
         return ratings;
     }
-    
+
     /**
      * <strong>&lt;media:restriction&gt; </strong></p>
      *
@@ -403,10 +402,9 @@ public class Metadata implements Cloneable, Serializable {
      * @param restrictions restrictions for the item.
      */
     public void setRestrictions(Restriction[] restrictions) {
-        this.restrictions = (restrictions == null) ? new Restriction[0]
-                : restrictions;
+        this.restrictions = (restrictions == null) ? new Restriction[0] : restrictions;
     }
-    
+
     /**
      * <strong>&lt;media:restriction&gt; </strong></p>
      *
@@ -421,7 +419,7 @@ public class Metadata implements Cloneable, Serializable {
     public Restriction[] getRestrictions() {
         return restrictions;
     }
-    
+
     /**
      * <strong>&lt;media:text&gt;</strong></p>
      * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
@@ -449,7 +447,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setText(Text[] text) {
         this.text = (text == null) ? new Text[0] : text;
     }
-    
+
     /**
      * <strong>&lt;media:text&gt;</strong></p>
      * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
@@ -477,7 +475,7 @@ public class Metadata implements Cloneable, Serializable {
     public Text[] getText() {
         return text;
     }
-    
+
     /**
      * <strong>&lt;media:thumbnail&gt;</strong></p>
      *
@@ -500,7 +498,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setThumbnail(Thumbnail[] thumbnail) {
         this.thumbnail = (thumbnail == null) ? new Thumbnail[0] : thumbnail;
     }
-    
+
     /**
      * <strong>&lt;media:thumbnail&gt;</strong></p>
      *
@@ -523,7 +521,7 @@ public class Metadata implements Cloneable, Serializable {
     public Thumbnail[] getThumbnail() {
         return thumbnail;
     }
-    
+
     /**
      * <strong>&lt;media:title&gt;</strong></p>
      * <p>The title of the particular media object.  It has 1 optional attribute.</p>
@@ -535,7 +533,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     /**
      * <strong>&lt;media:title&gt;</strong></p>
      * <p>The title of the particular media object.  It has 1 optional attribute.</p>
@@ -547,7 +545,7 @@ public class Metadata implements Cloneable, Serializable {
     public String getTitle() {
         return title;
     }
-    
+
     /**
      * <strong>&lt;media:title&gt;</strong></p>
      * <p>The title of the particular media object.  It has 1 optional attribute.</p>
@@ -559,7 +557,7 @@ public class Metadata implements Cloneable, Serializable {
     public void setTitleType(String titleType) {
         this.titleType = titleType;
     }
-    
+
     /**
      * <strong>&lt;media:title&gt;</strong></p>
      * <p>The title of the particular media object.  It has 1 optional attribute.</p>
@@ -571,7 +569,7 @@ public class Metadata implements Cloneable, Serializable {
     public String getTitleType() {
         return titleType;
     }
-    
+
     /**
      * <strong>&lt;media:copyright&gt;</strong></p>
      * <p>Copyright information for media object.  It has 1 optional attribute.</p>
@@ -596,25 +594,25 @@ public class Metadata implements Cloneable, Serializable {
         md.setTitle(getTitle());
         md.setTitleType(getTitleType());
         md.setRestrictions(getRestrictions());
-        
+
         return md;
     }
-    
+
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(Metadata.class, this);
-        
+
         return eBean.beanEquals(obj);
     }
-    
+
     public int hashCode() {
         EqualsBean equals = new EqualsBean(Metadata.class, this);
-        
+
         return equals.beanHashCode();
     }
-    
+
     public String toString() {
         ToStringBean tsBean = new ToStringBean(Metadata.class, this);
-        
+
         return tsBean.toString();
     }
 }

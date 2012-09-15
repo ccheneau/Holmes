@@ -75,8 +75,7 @@ public class SSE091Generator implements DelegatingModuleGenerator {
             root.addNamespaceDeclaration(SSEModule.SSE_NS);
 
             generateSharing(sharing, root);
-        }
-        else if (sseModule instanceof Sync) {
+        } else if (sseModule instanceof Sync) {
             generateSync((Sync) sseModule, element);
         }
     }
@@ -176,8 +175,7 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         if (o != null) {
             if (o instanceof Date) {
                 return DateParser.formatRFC822((Date) o);
-            }
-            else {
+            } else {
                 return o.toString();
             }
         }

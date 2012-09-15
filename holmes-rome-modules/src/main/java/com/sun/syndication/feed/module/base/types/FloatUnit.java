@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 
-
 /** This class represents a quantity consisting of a float value and an optional
  * units specification.
  *
@@ -64,14 +63,13 @@ public class FloatUnit implements CloneableType {
      * @param array array to search
      * @return boolean indicating presence.
      */
-    private boolean inCharArray( char find, char[] array ){
-        for( int i=0; i < array.length; i++ ){
-            if( find == array[i])
-                return true;
+    private boolean inCharArray(char find, char[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (find == array[i]) return true;
         }
         return false;
     }
-    
+
     /**
      * Creates a new float unit by parsing a String value
      * @param source String value to parse
@@ -79,8 +77,8 @@ public class FloatUnit implements CloneableType {
     public FloatUnit(String source) {
         String parse = source.trim();
         int space = -1;
-        for( int i=0; i < parse.length(); i++ ){
-            if( !inCharArray( parse.charAt(i), GoogleBaseParser.FLOAT_CHARS ) ){
+        for (int i = 0; i < parse.length(); i++) {
+            if (!inCharArray(parse.charAt(i), GoogleBaseParser.FLOAT_CHARS)) {
                 space = i;
                 break;
             }
@@ -90,12 +88,11 @@ public class FloatUnit implements CloneableType {
             space = parse.length();
         }
 
-        this.value = Float.parseFloat(
-                GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS, parse.substring(0, space)));
+        this.value = Float.parseFloat(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS, parse.substring(0, space)));
 
-         if (space != parse.length()) {
+        if (space != parse.length()) {
             this.units = parse.substring(space, parse.length()).trim();
-        }       
+        }
     }
 
     /**
@@ -143,17 +140,16 @@ public class FloatUnit implements CloneableType {
             return Float.toString(value);
         }
     }
-    
-    public boolean equals( Object o ){
-	if(!(o instanceof FloatUnit) )
-	    return false;
-	FloatUnit f = (FloatUnit) o;
-	if( f.getValue() != this.value ){
-	    return false;	    
-	}
-	if( this.units == f.getUnits() || ( this.units != null && this.units.equals( f.getUnits() )) ){
-	    return true;
-	}
-	return false;
+
+    public boolean equals(Object o) {
+        if (!(o instanceof FloatUnit)) return false;
+        FloatUnit f = (FloatUnit) o;
+        if (f.getValue() != this.value) {
+            return false;
+        }
+        if (this.units == f.getUnits() || (this.units != null && this.units.equals(f.getUnits()))) {
+            return true;
+        }
+        return false;
     }
 }

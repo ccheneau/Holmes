@@ -40,7 +40,6 @@ package com.sun.syndication.feed.module.base;
 
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * Class or Course information entry types.

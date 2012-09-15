@@ -107,8 +107,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
         if (c.getReference() instanceof UrlReference) {
             this.addNotNullAttribute(mc, "url", c.getReference());
             this.generatePlayer(c.getPlayer(), mc);
-        }
-        else {
+        } else {
             this.generatePlayer(c.getPlayer(), mc);
         }
 
@@ -182,8 +181,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
 
             if (rats[i].equals(Rating.ADULT)) {
                 this.addNotNullElement(e, "adult", "true");
-            }
-            else if (rats[i].equals(Rating.NONADULT)) {
+            } else if (rats[i].equals(Rating.NONADULT)) {
                 this.addNotNullElement(e, "adult", "false");
             }
         }
@@ -235,8 +233,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
     protected void addNotNullAttribute(Element target, String name, Object value) {
         if ((target == null) || (value == null)) {
             return;
-        }
-        else {
+        } else {
             target.setAttribute(name, value.toString());
         }
     }
@@ -244,8 +241,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
     protected Element addNotNullElement(Element target, String name, Object value) {
         if (value == null) {
             return null;
-        }
-        else {
+        } else {
             Element e = generateSimpleElement(name, value.toString());
             target.addContent(e);
 

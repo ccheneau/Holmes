@@ -43,14 +43,13 @@ package com.sun.syndication.feed.module.itunes;
 
 import com.sun.syndication.feed.module.itunes.types.Duration;
 
-
 /**
  * This class contains information for iTunes podcast feeds that exist at the Item level.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  *
  */
-public interface EntryInformation extends ITunes{
+public interface EntryInformation extends ITunes {
 
     /**
      * Returns the Duration object for this Item
@@ -62,6 +61,6 @@ public interface EntryInformation extends ITunes{
      * Sets the Duration object for this Item
      * @param duration Sets the Duration object for this Item
      */
-    public void setDuration(Duration duration) ;
+    public void setDuration(Duration duration);
 
 }

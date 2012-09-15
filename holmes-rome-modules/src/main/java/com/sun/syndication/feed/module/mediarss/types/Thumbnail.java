@@ -27,7 +27,6 @@ import com.sun.syndication.feed.impl.ToStringBean;
 import java.io.Serializable;
 import java.net.URI;
 
-
 /**
  * <strong>&lt;media:thumbnail&gt;</strong></p>
  *
@@ -47,9 +46,9 @@ import java.net.URI;
  * specifies the time offset in relation to the media object. Typically this is used when creating multiple keyframes within a single video. The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. It is an optional attribute.</p>
  */
 public class Thumbnail implements Cloneable, Serializable {
-	private static final long serialVersionUID = 2035345549055202026L;
+    private static final long serialVersionUID = 2035345549055202026L;
 
-	private Integer thumbHeight = null;
+    private Integer thumbHeight = null;
     private Integer thumbWidth = null;
     private Time time;
     private URI thumbUrl = null;

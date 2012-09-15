@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base;
 
 import com.sun.syndication.feed.module.base.types.GenderEnumeration;
 
-
 /** This is an interface for the GoogleBase plug in that exposes methods used for
  * Person (personal ad, resume, profile) entry types.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>

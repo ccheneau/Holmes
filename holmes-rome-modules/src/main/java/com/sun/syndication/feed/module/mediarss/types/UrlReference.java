@@ -29,16 +29,15 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
 /**
  * Used to indicate a URL primary reference for a MediaContent object.
  * @author cooper
  */
 public class UrlReference implements Reference, Serializable {
-	private static final long serialVersionUID = -178149736468242989L;
-	
-	private URI url;
-    
+    private static final long serialVersionUID = -178149736468242989L;
+
+    private URI url;
+
     /**
      * Creates a new UrlReference.
      * @param url URL to the media source
@@ -47,25 +46,25 @@ public class UrlReference implements Reference, Serializable {
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
-        
+
         this.url = url;
     }
-    
+
     /**
      * Creates a new instance of UrlReference
      * @param url String value of a URL
      * @throws java.net.MalformedURLException thrown on bad URLs
      */
-    public UrlReference(String url) throws URISyntaxException  {
+    public UrlReference(String url) throws URISyntaxException {
         super();
-        
+
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
-        
+
         this.url = new URI(url);
     }
-    
+
     /**
      * Returns the URL value
      * @return Returns the URL value
@@ -73,19 +72,19 @@ public class UrlReference implements Reference, Serializable {
     public URI getUrl() {
         return this.url;
     }
-    
+
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-        
+
         return eBean.beanEquals(obj);
     }
-    
+
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-        
+
         return equals.beanHashCode();
     }
-    
+
     public String toString() {
         return url.toString();
     }

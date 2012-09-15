@@ -42,7 +42,6 @@ package com.sun.syndication.feed.module.base;
 import com.sun.syndication.feed.module.base.types.CurrencyEnumeration;
 import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 
-
 /** This is an interface for the GoogleBase plug in that exposes methods used for
  * Job listing entry types.
  *
@@ -773,8 +772,7 @@ public interface Job extends GlobalInterface {
      * @return The type of salary included.
      */
     public PriceTypeEnumeration getSalaryType();
-    
-    
+
     /**
      * Currency  of the price amount for an item.
      *

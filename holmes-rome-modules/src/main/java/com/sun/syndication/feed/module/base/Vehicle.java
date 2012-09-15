@@ -46,7 +46,6 @@ import com.sun.syndication.feed.module.base.types.PriceTypeEnumeration;
 import com.sun.syndication.feed.module.base.types.ShippingType;
 import com.sun.syndication.feed.module.base.types.YearType;
 
-
 /**
  * This is an interface for the GoogleBase plug in that exposes methods used for
  * vehicles.
@@ -556,7 +555,6 @@ public interface Vehicle extends GlobalInterface {
      */
     public String getLocation();
 
-
     /**
      * The vehicle manufacturer.
      * 
@@ -799,61 +797,61 @@ public interface Vehicle extends GlobalInterface {
      */
     public String getModel();
 
-/**
-     * Payment Methods acceptable for the service.
-     *
-     * <table border="1" cellpadding="5" cellspacing="0" width="640">
-     *
-     * <tbody><tr valign="top">
-     *  <td colspan="2" bgcolor="#dddddd" valign="top"><font size="-1">
-     *  <b><a name="payment_accepted"></a>payment_accepted</b></font></td>
-     * </tr>
-     * <tr valign="top">
-     *  <td width="120"><font size="-1">
-     *  <b>Details</b></font></td>
-     *  <td><font size="-1"> Acceptable payment methods for item purchases. Acceptable
-     *  values are "Cash," "Check," "Traveler’s Check," "Visa," "MasterCard,"
-     *
-     *  "American Express," "Discover," "Wire transfer" or "Paypal." If you accept
-     *  more than one method, include multiple instances of the
-     *  &lt;payment_accepted&gt; attribute for each acceptable method.</font></td>
-     *
-     * </tr>
-     *
-     * <tr valign="top">
-     *  <td width="120"><font size="-1">
-     *  <b>Example</b></font></td>
-     *  <td><font size="-1">
-     * <em>Acceptable:</em><br>
-     * &lt;g:payment_accepted&gt;Cash&lt;/g:payment_accepted&gt;<br>
-     *
-     * &lt;g:payment_accepted&gt;Check&lt;/g:payment_accepted&gt;<br>
-     *
-     * &lt;g:payment_accepted&gt;Paypal&lt;/g:payment_accepted&gt;<br>
-     * <em>Not acceptable:</em><br>
-     * &lt;g:payment_accepted&gt;Cash
-     *  Check Paypal&lt;/g:payment_accepted&gt;</font></td>
-     * </tr>
-     *
-     * <tr valign="top">
-     *  <td width="120"><font size="-1">
-     *  <b>Attribute of</b></font></td>
-     *
-     *  <td><font size="-1">
-     *  Events, Housing,
-     *  Products, Services, Travel, Vehicles</font></td>
-     * </tr>
-     * <tr valign="top">
-     *
-     *  <td width="120"><font size="-1">
-     *  <b>Content type</b></font></td>
-     *  <td><font size="-1">
-     *  paymentMethodEnumeration</font></td>
-     *
-     * </tr>
-     * </tbody></table>
-     * @param paymentAccepted Payment Methods acceptable for the service.
-     */
+    /**
+         * Payment Methods acceptable for the service.
+         *
+         * <table border="1" cellpadding="5" cellspacing="0" width="640">
+         *
+         * <tbody><tr valign="top">
+         *  <td colspan="2" bgcolor="#dddddd" valign="top"><font size="-1">
+         *  <b><a name="payment_accepted"></a>payment_accepted</b></font></td>
+         * </tr>
+         * <tr valign="top">
+         *  <td width="120"><font size="-1">
+         *  <b>Details</b></font></td>
+         *  <td><font size="-1"> Acceptable payment methods for item purchases. Acceptable
+         *  values are "Cash," "Check," "Traveler’s Check," "Visa," "MasterCard,"
+         *
+         *  "American Express," "Discover," "Wire transfer" or "Paypal." If you accept
+         *  more than one method, include multiple instances of the
+         *  &lt;payment_accepted&gt; attribute for each acceptable method.</font></td>
+         *
+         * </tr>
+         *
+         * <tr valign="top">
+         *  <td width="120"><font size="-1">
+         *  <b>Example</b></font></td>
+         *  <td><font size="-1">
+         * <em>Acceptable:</em><br>
+         * &lt;g:payment_accepted&gt;Cash&lt;/g:payment_accepted&gt;<br>
+         *
+         * &lt;g:payment_accepted&gt;Check&lt;/g:payment_accepted&gt;<br>
+         *
+         * &lt;g:payment_accepted&gt;Paypal&lt;/g:payment_accepted&gt;<br>
+         * <em>Not acceptable:</em><br>
+         * &lt;g:payment_accepted&gt;Cash
+         *  Check Paypal&lt;/g:payment_accepted&gt;</font></td>
+         * </tr>
+         *
+         * <tr valign="top">
+         *  <td width="120"><font size="-1">
+         *  <b>Attribute of</b></font></td>
+         *
+         *  <td><font size="-1">
+         *  Events, Housing,
+         *  Products, Services, Travel, Vehicles</font></td>
+         * </tr>
+         * <tr valign="top">
+         *
+         *  <td width="120"><font size="-1">
+         *  <b>Content type</b></font></td>
+         *  <td><font size="-1">
+         *  paymentMethodEnumeration</font></td>
+         *
+         * </tr>
+         * </tbody></table>
+         * @param paymentAccepted Payment Methods acceptable for the service.
+         */
     public void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
 
     /**
@@ -1203,7 +1201,6 @@ public interface Vehicle extends GlobalInterface {
      */
     public PriceTypeEnumeration getPriceType();
 
-
     /**
      * Quantity available.
      *
@@ -1426,8 +1423,6 @@ public interface Vehicle extends GlobalInterface {
      */
     public ShippingType[] getShipping();
 
-
-    
     /**
      * Tax rate associated with the item.
      *
@@ -1609,7 +1604,6 @@ public interface Vehicle extends GlobalInterface {
      * @return Region where tax applies.
      */
     public String getTaxRegion();
-
 
     /**
      * The type of vehicle: Car, motorcycle, scooter, etc.

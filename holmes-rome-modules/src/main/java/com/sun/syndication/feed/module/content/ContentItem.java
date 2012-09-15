@@ -142,12 +142,10 @@ public class ContentItem implements Cloneable {
                     && ((test.contentValueNamespace == contentValueNamespace) || (test.contentValueNamespace.equals(contentValueNamespace)))
                     && ((test.contentResource == contentResource) || (test.contentResource.equals(contentResource)))) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }

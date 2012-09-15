@@ -50,10 +50,10 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Metadata {
-    
+
     private PhotoDate photoDate;
     private String comments;
-    
+
     /**
      * Creates a new instance of Metadata with a set photoDate and comments value.
      * @param photoDate PhotoDate value to use
@@ -61,7 +61,7 @@ public class Metadata {
      */
     public Metadata(PhotoDate photoDate, String comments) {
         this.photoDate = photoDate == null ? new PhotoDate() : photoDate;
-        this.comments = comments == null ? "" : comments;        
+        this.comments = comments == null ? "" : comments;
     }
 
     /**
@@ -79,6 +79,7 @@ public class Metadata {
     public String getComments() {
         return comments;
     }
+
     /**
      * Returns a String representation of the metadata object.
      * @return Returns a String representation of the metadata object.

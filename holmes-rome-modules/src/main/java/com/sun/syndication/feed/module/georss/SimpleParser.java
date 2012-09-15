@@ -31,7 +31,7 @@ import com.sun.syndication.feed.module.georss.geometries.*;
  *
  */
 public class SimpleParser implements ModuleParser {
-    
+
     /*
      * (non-Javadoc)
      *
@@ -40,16 +40,17 @@ public class SimpleParser implements ModuleParser {
     public String getNamespaceUri() {
         return GeoRSSModule.GEORSS_GEORSS_URI;
     }
-    
+
     private static PositionList parsePosList(Element element) {
         String coordinates = element.getText();
         String[] coord = GeoRSSUtils.trimWhitespace(coordinates).split(" ");
         PositionList posList = new PositionList();
-        for (int i=0; i<coord.length; i += 2) {
-            posList.add(Double.parseDouble(coord[i]), Double.parseDouble(coord[i+1]));
+        for (int i = 0; i < coord.length; i += 2) {
+            posList.add(Double.parseDouble(coord[i]), Double.parseDouble(coord[i + 1]));
         }
         return posList;
     }
+
     /*
      * (non-Javadoc)
      *
@@ -59,20 +60,15 @@ public class SimpleParser implements ModuleParser {
         Module geoRssModule = parseSimple(element);
         return geoRssModule;
     }
-    
+
     static Module parseSimple(Element element) {
         GeoRSSModule geoRSSModule = null;
-        
-        Element pointElement = element.getChild("point",
-                GeoRSSModule.SIMPLE_NS);
-        Element lineElement = element.getChild("line",
-                GeoRSSModule.SIMPLE_NS);
-        Element polygonElement = element.getChild("polygon",
-                GeoRSSModule.SIMPLE_NS);
-        Element boxElement = element.getChild("box",
-                GeoRSSModule.SIMPLE_NS);
-         Element whereElement = element
-                .getChild("where", GeoRSSModule.SIMPLE_NS);
+
+        Element pointElement = element.getChild("point", GeoRSSModule.SIMPLE_NS);
+        Element lineElement = element.getChild("line", GeoRSSModule.SIMPLE_NS);
+        Element polygonElement = element.getChild("polygon", GeoRSSModule.SIMPLE_NS);
+        Element boxElement = element.getChild("box", GeoRSSModule.SIMPLE_NS);
+        Element whereElement = element.getChild("where", GeoRSSModule.SIMPLE_NS);
         if (pointElement != null) {
             geoRSSModule = new SimpleModuleImpl();
             String coordinates = pointElement.getText();
@@ -93,13 +89,13 @@ public class SimpleParser implements ModuleParser {
             geoRSSModule = new SimpleModuleImpl();
             String coordinates = boxElement.getText();
             String[] coord = GeoRSSUtils.trimWhitespace(coordinates).split(" ");
-            Envelope envelope = new Envelope(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), 
-                    Double.parseDouble(coord[2]), Double.parseDouble(coord[3]));
+            Envelope envelope = new Envelope(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), Double.parseDouble(coord[2]),
+                    Double.parseDouble(coord[3]));
             geoRSSModule.setGeometry(envelope);
         } else if (whereElement != null) {
-             geoRSSModule = (GeoRSSModule)GMLParser.parseGML(whereElement);
+            geoRSSModule = (GeoRSSModule) GMLParser.parseGML(whereElement);
         }
-        
+
         return geoRSSModule;
     }
 }

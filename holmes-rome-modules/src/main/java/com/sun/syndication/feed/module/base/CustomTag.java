@@ -22,20 +22,19 @@ package com.sun.syndication.feed.module.base;
 
 import java.io.Serializable;
 
-
 /**
  * This class represents a custom tag name and value.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.3 $
  */
 public interface CustomTag extends Serializable {
-    
+
     /**
      * Returns the tag name used.
      * @return Returns the tag name used.
      */
     public String getName();
-    
+
     /**
      * The value of the custom tag.
      * <br>
@@ -123,5 +122,5 @@ public interface CustomTag extends Serializable {
      * @return The value of the tag. The objects class is determined by the "type" attribute on the tag.
      */
     public Object getValue();
-    
+
 }

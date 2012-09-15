@@ -27,7 +27,6 @@ import java.io.Serializable;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
-
 /**
  * <strong>&lt;media:text&gt;</strong></p>
  * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
@@ -53,8 +52,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Text implements Serializable {
-	private static final long serialVersionUID = 9043514380583850045L;
-	private String type;
+    private static final long serialVersionUID = 9043514380583850045L;
+    private String type;
     private String value;
     private Time end;
     private Time start;

@@ -126,8 +126,7 @@ public abstract class GeoRSSModule extends ModuleImpl implements Cloneable {
         geometry = geoRSSModule.getGeometry();
         try {
             geometry = (AbstractGeometry) geometry.clone();
-        }
-        catch (CloneNotSupportedException ex) {
+        } catch (CloneNotSupportedException ex) {
         }
     }
 
@@ -137,8 +136,7 @@ public abstract class GeoRSSModule extends ModuleImpl implements Cloneable {
             GeoRSSModule retval = (GeoRSSModule) super.clone();
             if (geometry != null) retval.geometry = (AbstractGeometry) geometry.clone();
             return retval;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new CloneNotSupportedException();
         }
     }

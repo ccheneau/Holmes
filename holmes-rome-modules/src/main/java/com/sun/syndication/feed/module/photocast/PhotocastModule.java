@@ -46,7 +46,6 @@ import java.net.URL;
 
 import java.util.Date;
 
-
 /**
  * This is a ROME module that provides support for the 
  * "http://www.apple.com/ilife/wallpapers" namespace.

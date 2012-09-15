@@ -3,19 +3,18 @@ package com.sun.syndication.feed.module.sle.io;
 import com.sun.syndication.feed.impl.ObjectBean;
 import org.jdom.Namespace;
 
-
 public class LabelNamespaceElement {
     private String element;
     private String label;
     private Namespace namespace;
     private ObjectBean obj = new ObjectBean(LabelNamespaceElement.class, this);
-    
-    public LabelNamespaceElement(String label, Namespace namespace, String element){
+
+    public LabelNamespaceElement(String label, Namespace namespace, String element) {
         this.element = element;
         this.label = label;
         this.namespace = namespace;
     }
-    
+
     public String getElement() {
         return element;
     }
@@ -39,9 +38,9 @@ public class LabelNamespaceElement {
     public void setNamespace(Namespace namespace) {
         this.namespace = namespace;
     }
-    
-    public boolean equals(Object o){
+
+    public boolean equals(Object o) {
         return obj.equals(o);
     }
-    
+
 }

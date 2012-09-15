@@ -66,8 +66,7 @@ public class UtilResource {
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
                 }
             }
-        }
-        else {
+        } else {
             // Get child folders
             File fPath = new File(parentPath);
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {

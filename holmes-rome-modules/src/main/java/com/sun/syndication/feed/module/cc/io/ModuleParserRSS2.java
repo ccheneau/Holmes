@@ -109,8 +109,7 @@ public class ModuleParserRSS2 implements ModuleParser {
 
         if (module.getLicenses() != null && module.getAllLicenses() != null) {
             return module;
-        }
-        else {
+        } else {
             return null;
         }
     }

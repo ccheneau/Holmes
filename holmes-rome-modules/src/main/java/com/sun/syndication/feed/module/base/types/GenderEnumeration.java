@@ -76,7 +76,7 @@ public class GenderEnumeration implements CloneableType {
     public String getValue() {
         return this.value;
     }
-    
+
     /** Returns a reference to the same object. :P */
     public Object clone() {
         return this;
