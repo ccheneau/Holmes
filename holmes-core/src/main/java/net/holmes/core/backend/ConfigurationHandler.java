@@ -47,7 +47,7 @@ import net.holmes.core.util.bundle.IBundle;
  *</ul>
  */
 @Path("/backend/configuration")
-public class ConfigurationResource {
+public class ConfigurationHandler {
     private static final String ADD_OPERATION = "add";
     private static final String EDIT_OPERATION = "edit";
     private static final String DELETE_OPERATION = "del";

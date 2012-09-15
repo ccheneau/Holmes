@@ -32,7 +32,7 @@ import net.holmes.core.backend.response.Folder;
 import net.holmes.core.util.HolmesProperty;
 
 @Path("/backend/util")
-public class UtilResource {
+public class UtilHandler {
 
     /**
      * Get holmes version
