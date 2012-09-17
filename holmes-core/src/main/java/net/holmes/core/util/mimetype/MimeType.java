@@ -18,13 +18,10 @@ package net.holmes.core.util.mimetype;
 
 import java.io.Serializable;
 
+import net.holmes.core.util.MediaType;
+
 public final class MimeType implements Serializable {
     private static final long serialVersionUID = -1521224459310661472L;
-
-    public final static String TYPE_VIDEO = "video";
-    public final static String TYPE_AUDIO = "audio";
-    public final static String TYPE_IMAGE = "image";
-    public final static String TYPE_PODCAST = "podcast";
 
     private String type;
     private String subType;
@@ -56,15 +53,15 @@ public final class MimeType implements Serializable {
     }
 
     public boolean isAudio() {
-        return TYPE_AUDIO.equals(type);
+        return MediaType.TYPE_AUDIO.getValue().equals(type);
     }
 
     public boolean isVideo() {
-        return TYPE_VIDEO.equals(type);
+        return MediaType.TYPE_VIDEO.getValue().equals(type);
     }
 
     public boolean isImage() {
-        return TYPE_IMAGE.equals(type);
+        return MediaType.TYPE_IMAGE.getValue().equals(type);
     }
 
     /* (non-Javadoc)
