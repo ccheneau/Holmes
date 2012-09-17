@@ -40,7 +40,7 @@ import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.bundle.IBundle;
 
 /**
- * Back-end REST resource for:
+ * Backend REST handler for:
  * <ul>
  * <li>add / update / delete configuration nodes</li>
  * <li>edit global configuration</li>
@@ -168,7 +168,7 @@ public class ConfigurationHandler {
         Integer iHttpServerPort = null;
         try {
             iHttpServerPort = Integer.valueOf(httpServerPort);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignore) {
         }
 
         // Validate configuration

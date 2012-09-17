@@ -151,7 +151,7 @@ public class DirectoryBrowseResult {
         if (node.getIconUrl() != null) {
             try {
                 didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException ignore) {
             }
         }
     }

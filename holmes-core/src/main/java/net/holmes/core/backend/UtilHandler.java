@@ -71,9 +71,6 @@ public class UtilHandler {
             File fPath = new File(parentPath);
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
                 File[] childDirs = fPath.listFiles(new FileFilter() {
-                    /* (non-Javadoc)
-                     * @see java.io.FileFilter#accept(java.io.File)
-                     */
                     @Override
                     public boolean accept(File file) {
                         return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".")
