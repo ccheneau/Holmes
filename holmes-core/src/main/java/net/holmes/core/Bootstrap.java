@@ -18,7 +18,7 @@ package net.holmes.core;
 
 import java.io.File;
 
-import net.holmes.core.util.AppLock;
+import net.holmes.core.util.HolmesLock;
 import net.holmes.core.util.HolmesProperty;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -30,7 +30,9 @@ import com.google.inject.Injector;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        if (AppLock.lockInstance()) {
+        // Check lock file
+        if (HolmesLock.lockInstance()) {
+            // Check Holmes home system variable
             String holmesDir = System.getProperty(HolmesProperty.SYS_VAR_HOLMES_HOME.getValue());
             if (holmesDir != null && new File(holmesDir).exists()) {
                 // Load log4j configuration

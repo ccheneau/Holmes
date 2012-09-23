@@ -89,7 +89,7 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
             // Get file
             File file = new File(filePath);
             if (file == null || !file.exists() || !file.canRead() || file.isHidden()) {
-                if (logger.isWarnEnabled()) logger.warn("resource not found:" + fileName);
+                if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
                 throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
             }
 
@@ -116,16 +116,13 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
                 // Close the connection when the whole content is written out.
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-        finally {
+        } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }

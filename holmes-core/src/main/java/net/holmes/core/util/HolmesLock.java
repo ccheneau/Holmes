@@ -21,16 +21,23 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
-public class AppLock {
+public class HolmesLock {
+    /**
+     * Create Holmes lock file
+     * @return true on lock success, false if lock file already exists
+     */
     public static boolean lockInstance() {
         try {
+            // Get path for lock file
             StringBuilder homePath = new StringBuilder();
             homePath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator)
                     .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue());
 
+            // Create lock file path if it does not exist
             File fConfPath = new File(homePath.toString());
             if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
 
+            // Create lock file
             final File lockFile = new File(homePath.toString(), "holmes.lock");
             final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
             final FileLock fileLock = randomAccessFile.getChannel().tryLock();
@@ -38,6 +45,7 @@ public class AppLock {
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     @Override
                     public void run() {
+                        // Release lock file on system exit
                         try {
                             fileLock.release();
                             randomAccessFile.close();

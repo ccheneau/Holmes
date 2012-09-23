@@ -88,7 +88,7 @@ public final class XmlConfiguration implements IConfiguration {
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
-        rootNode.checkValues();
+        rootNode.checkDefaultValues();
         if (!configLoaded) saveConfig();
 
     }
@@ -223,7 +223,7 @@ public final class XmlConfiguration implements IConfiguration {
         /**
          * Check config default values
          */
-        public void checkValues() {
+        public void checkDefaultValues() {
             if (this.upnpServerName == null) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
             if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();

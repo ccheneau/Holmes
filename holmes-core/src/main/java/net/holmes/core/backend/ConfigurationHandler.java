@@ -198,7 +198,7 @@ public class ConfigurationHandler {
         response.setRecords(configFolders.size());
 
         Collection<ConfigFolder> folders = new ArrayList<ConfigFolder>();
-        Collection<String> cell = null;
+        Collection<String> cell;
         for (ConfigurationNode folder : configFolders) {
             cell = new ArrayList<String>();
             cell.add(folder.getId());

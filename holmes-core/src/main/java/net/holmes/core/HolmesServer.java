@@ -135,10 +135,6 @@ public final class HolmesServer implements IServer {
         // Quit Holmes menu item
         JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
         quitItem.addActionListener(new ActionListener() {
-
-            /* (non-Javadoc)
-             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-             */
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 System.exit(0);
@@ -148,10 +144,6 @@ public final class HolmesServer implements IServer {
         // Holmes logs menu item
         JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
-
-            /* (non-Javadoc)
-             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-             */
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (Desktop.isDesktopSupported()) {
@@ -174,10 +166,6 @@ public final class HolmesServer implements IServer {
         if (boldFont != null) holmesItem.setFont(boldFont);
 
         holmesItem.addActionListener(new ActionListener() {
-
-            /* (non-Javadoc)
-             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-             */
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {

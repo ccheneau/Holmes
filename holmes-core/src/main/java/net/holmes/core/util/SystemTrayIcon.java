@@ -44,25 +44,15 @@ public class SystemTrayIcon extends TrayIcon {
     }
 
     private static PopupMenuListener popupListener = new PopupMenuListener() {
-
-        /* (non-Javadoc)
-         * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
-         */
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         }
 
-        /* (non-Javadoc)
-         * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
-         */
         @Override
         public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             dialog.setVisible(false);
         }
 
-        /* (non-Javadoc)
-         * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
-         */
         @Override
         public void popupMenuCanceled(PopupMenuEvent e) {
             dialog.setVisible(false);
@@ -73,10 +63,6 @@ public class SystemTrayIcon extends TrayIcon {
     public SystemTrayIcon(Image image, String tooltip) {
         super(image, tooltip);
         addMouseListener(new MouseAdapter() {
-
-            /* (non-Javadoc)
-             * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 showPopupMenu(e);
