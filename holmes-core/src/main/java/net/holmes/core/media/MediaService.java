@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -43,13 +46,12 @@ import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.IBundle;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
@@ -75,12 +77,16 @@ public final class MediaService implements IMediaService {
     @Inject
     private IMediaIndex mediaIndex;
 
-    private CacheManager cacheManager;
+    private Cache<String, List<AbstractNode>> podcastCache;
 
     private Map<String, String> rootNodes;
 
     public MediaService() {
-        cacheManager = CacheManager.create();
+        podcastCache = CacheBuilder.newBuilder() //
+                .maximumSize(50) //
+                .expireAfterWrite(2, TimeUnit.HOURS) //
+                .build();
+
         rootNodes = new HashMap<String, String>();
         rootNodes.put(ROOT_NODE_ID, "node.rootNode");
         rootNodes.put(ROOT_AUDIO_NODE_ID, "node.audio");
@@ -243,78 +249,81 @@ public final class MediaService implements IMediaService {
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastChildNodes(String parentId, String url) {
-        List<AbstractNode> podcastEntryNodes = null;
-        Cache podcastEntriesCache = cacheManager.getCache("podcastEntries");
+    private List<AbstractNode> getPodcastChildNodes(final String parentId, final String url) {
 
-        // Try to read entries from cache
-        if (podcastEntriesCache == null || podcastEntriesCache.get(url) == null) {
-            // No entries in cache, read them from RSS feed
-            XmlReader reader = null;
-            try {
-                // Get RSS feed entries
-                URL feedSource = new URL(url);
-                reader = new XmlReader(feedSource);
-                List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
-                if (rssEntries != null && !rssEntries.isEmpty()) {
-                    podcastEntryNodes = new ArrayList<AbstractNode>();
-                    for (SyndEntry rssEntry : rssEntries) {
-                        // Add node for each feed entries
-                        if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
-                            String duration = null;
-                            String iconUrl = null;
-                            EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-                            if (itunesInfo != null && itunesInfo.getDuration() != null) {
-                                duration = itunesInfo.getDuration().toString();
-                            }
-                            MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
-                            if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
-                                iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
-                            }
-                            for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                                PodcastEntryNode podcastEntryNode = new PodcastEntryNode();
-                                podcastEntryNode.setId(UUID.randomUUID().toString());
-                                podcastEntryNode.setParentId(parentId);
-                                podcastEntryNode.setName(rssEntry.getTitle().trim());
-                                if (rssEntry.getPublishedDate() != null) {
-                                    podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
-                                }
-                                if (enclosure.getType() != null) {
-                                    podcastEntryNode.setMimeType(new MimeType(enclosure.getType()));
-                                }
-                                podcastEntryNode.setSize(enclosure.getLength());
-                                podcastEntryNode.setUrl(enclosure.getUrl());
-                                podcastEntryNode.setDuration(duration);
-                                podcastEntryNode.setIconUrl(iconUrl);
+        try {
+            return podcastCache.get(url, new Callable<List<AbstractNode>>() {
 
-                                podcastEntryNodes.add(podcastEntryNode);
+                @Override
+                public List<AbstractNode> call() throws Exception {
+                    logger.error("getvalues from url " + url);
+                    // No entries in cache, read them from RSS feed
+                    List<AbstractNode> podcastEntryNodes = new ArrayList<AbstractNode>();
+                    XmlReader reader = null;
+                    try {
+                        // Get RSS feed entries
+                        URL feedSource = new URL(url);
+                        reader = new XmlReader(feedSource);
+                        List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
+                        if (rssEntries != null && !rssEntries.isEmpty()) {
+                            for (SyndEntry rssEntry : rssEntries) {
+                                // Add node for each feed entries
+                                if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
+                                    String duration = null;
+                                    String iconUrl = null;
+                                    EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
+                                    if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                                        duration = itunesInfo.getDuration().toString();
+                                    }
+                                    MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
+                                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
+                                        iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
+                                    }
+                                    for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
+                                        PodcastEntryNode podcastEntryNode = new PodcastEntryNode();
+                                        podcastEntryNode.setId(UUID.randomUUID().toString());
+                                        podcastEntryNode.setParentId(parentId);
+                                        podcastEntryNode.setName(rssEntry.getTitle().trim());
+                                        if (rssEntry.getPublishedDate() != null) {
+                                            podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
+                                        }
+                                        if (enclosure.getType() != null) {
+                                            podcastEntryNode.setMimeType(new MimeType(enclosure.getType()));
+                                        }
+                                        podcastEntryNode.setSize(enclosure.getLength());
+                                        podcastEntryNode.setUrl(enclosure.getUrl());
+                                        podcastEntryNode.setDuration(duration);
+                                        podcastEntryNode.setIconUrl(iconUrl);
+
+                                        podcastEntryNodes.add(podcastEntryNode);
+                                    }
+                                }
                             }
                         }
+                    } catch (MalformedURLException e) {
+                        logger.error(e.getMessage(), e);
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    } catch (IllegalArgumentException e) {
+                        logger.error(e.getMessage(), e);
+                    } catch (FeedException e) {
+                        logger.error(e.getMessage(), e);
+                    } finally {
+                        // Close the reader
+                        try {
+                            if (reader != null) reader.close();
+                        } catch (IOException e) {
+                            logger.error(e.getMessage(), e);
+                        }
                     }
+                    return podcastEntryNodes;
                 }
-            } catch (MalformedURLException e) {
-                logger.error(e.getMessage(), e);
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            } catch (IllegalArgumentException e) {
-                logger.error(e.getMessage(), e);
-            } catch (FeedException e) {
-                logger.error(e.getMessage(), e);
-            } finally {
-                // Close the reader
-                try {
-                    if (reader != null) reader.close();
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-            // Add entries to cache
-            if (podcastEntriesCache != null) podcastEntriesCache.put(new Element(url, podcastEntryNodes));
-        } else {
-            // Get entries from cache
-            podcastEntryNodes = (List<AbstractNode>) (podcastEntriesCache.get(url).getValue());
+
+            });
+        } catch (ExecutionException e) {
+            logger.error(e.getMessage(), e);
         }
-        return podcastEntryNodes;
+        return null;
     }
 
     private List<AbstractNode> getPlaylistChildNodes(String parentId, String path) {
