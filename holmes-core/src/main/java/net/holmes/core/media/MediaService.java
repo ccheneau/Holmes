@@ -253,10 +253,8 @@ public final class MediaService implements IMediaService {
 
         try {
             return podcastCache.get(url, new Callable<List<AbstractNode>>() {
-
                 @Override
                 public List<AbstractNode> call() throws Exception {
-                    logger.error("getvalues from url " + url);
                     // No entries in cache, read them from RSS feed
                     List<AbstractNode> podcastEntryNodes = new ArrayList<AbstractNode>();
                     XmlReader reader = null;

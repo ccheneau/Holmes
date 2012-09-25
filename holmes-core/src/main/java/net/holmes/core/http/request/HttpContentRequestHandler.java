@@ -19,7 +19,6 @@ package net.holmes.core.http.request;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
@@ -85,8 +84,7 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
             File file = new File(node.getPath());
             if (!file.exists() || !file.isFile()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
-            }
-            else if (!file.canRead() || file.isHidden()) {
+            } else if (!file.canRead() || file.isHidden()) {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
             }
 
@@ -107,8 +105,7 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
             try {
                 raf = new RandomAccessFile(file, "r");
                 fileLength = raf.length();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
             }
 
@@ -119,23 +116,14 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
                 HttpHeaders.setContentLength(response, fileLength);
                 response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
                 response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, "bytes");
-            }
-            else if (startOffset > 0 && startOffset < fileLength) {
+            } else if (startOffset > 0 && startOffset < fileLength) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PARTIAL_CONTENT);
                 HttpHeaders.setContentLength(response, fileLength - startOffset);
                 response.setHeader(HttpHeaders.Names.CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
-            }
-            else {
+            } else {
                 throw new HttpRequestException("Invalid start offset", HttpResponseStatus.BAD_REQUEST);
             }
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("Response: " + response);
-                for (Entry<String, String> entry : response.getHeaders()) {
-                    logger.debug("Response header: " + entry.getKey() + " ==> " + entry.getValue());
-                }
-            }
 
             // Write the header.
             channel.write(response);
@@ -144,8 +132,7 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
             ChannelFuture writeFuture = null;
             try {
                 writeFuture = channel.write(new ChunkedFile(raf, startOffset, fileLength - startOffset, 8192));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
             }
 
@@ -154,8 +141,7 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
                 // Close the connection when the whole content is written out.
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
-        }
-        finally {
+        } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
