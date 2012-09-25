@@ -20,5 +20,6 @@ public enum NodeType {
     TYPE_FOLDER, //
     TYPE_CONTENT, //
     TYPE_PODCAST, //
-    TYPE_PODCAST_ENTRY;
+    TYPE_PODCAST_ENTRY, //
+    TYPE_PLAYLIST;
 }

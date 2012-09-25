@@ -14,22 +14,12 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util;
+package net.holmes.core.media.playlist;
 
-public enum MediaType {
-    TYPE_VIDEO("video"), //
-    TYPE_AUDIO("audio"), //
-    TYPE_IMAGE("image"), //
-    TYPE_PODCAST("podcast"), //
-    TYPE_PLAYLIST("playlist");
+import java.util.List;
 
-    private String value;
+public interface IPlaylistParser {
 
-    MediaType(String value) {
-        this.value = value;
-    }
+    public List<PlaylistItem> parse();
 
-    public String getValue() {
-        return this.value;
-    }
 }

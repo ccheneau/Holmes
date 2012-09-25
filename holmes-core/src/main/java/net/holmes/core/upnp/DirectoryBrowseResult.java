@@ -30,6 +30,7 @@ import org.teleal.cling.support.model.DIDLObject;
 import org.teleal.cling.support.model.DIDLObject.Property.DC;
 import org.teleal.cling.support.model.DIDLObject.Property.UPNP;
 import org.teleal.cling.support.model.Res;
+import org.teleal.cling.support.model.container.PlaylistContainer;
 import org.teleal.cling.support.model.container.StorageFolder;
 import org.teleal.cling.support.model.item.Item;
 import org.teleal.cling.support.model.item.Movie;
@@ -127,6 +128,14 @@ public class DirectoryBrowseResult {
         setMetadata(folder, node);
 
         didl.addContainer(folder);
+        itemCount += 1;
+    }
+
+    public void addPlaylist(String parentNodeId, AbstractNode node, int childCount) {
+        PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, childCount);
+        setMetadata(playlist, node);
+
+        didl.addContainer(playlist);
         itemCount += 1;
     }
 

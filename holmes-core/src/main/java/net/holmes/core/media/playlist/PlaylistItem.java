@@ -14,22 +14,23 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util;
+package net.holmes.core.media.playlist;
 
-public enum MediaType {
-    TYPE_VIDEO("video"), //
-    TYPE_AUDIO("audio"), //
-    TYPE_IMAGE("image"), //
-    TYPE_PODCAST("podcast"), //
-    TYPE_PLAYLIST("playlist");
+public class PlaylistItem {
+    private String label;
+    private String path;
 
-    private String value;
-
-    MediaType(String value) {
-        this.value = value;
+    public PlaylistItem(String label, String path) {
+        super();
+        this.label = label;
+        this.path = path;
     }
 
-    public String getValue() {
-        return this.value;
+    public String getLabel() {
+        return label;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

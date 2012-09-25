@@ -14,22 +14,26 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util;
+package net.holmes.core.media.playlist;
 
-public enum MediaType {
-    TYPE_VIDEO("video"), //
-    TYPE_AUDIO("audio"), //
-    TYPE_IMAGE("image"), //
-    TYPE_PODCAST("podcast"), //
-    TYPE_PLAYLIST("playlist");
+import java.io.File;
+import java.util.List;
 
-    private String value;
+public class M3UParser implements IPlaylistParser {
 
-    MediaType(String value) {
-        this.value = value;
+    private String playlist;
+
+    public M3UParser(String playlist) {
+        this.playlist = playlist;
     }
 
-    public String getValue() {
-        return this.value;
+    /* (non-Javadoc)
+     * @see net.holmes.core.media.playlist.IPlaylistParser#parse()
+     */
+    @Override
+    public List<PlaylistItem> parse() {
+        File pl = new File(playlist);
+        if (pl.exists()) return null;
+        else return null;
     }
 }

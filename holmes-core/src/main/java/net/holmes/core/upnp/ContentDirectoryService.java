@@ -31,6 +31,7 @@ import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
+import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.mimetype.MimeType;
@@ -88,6 +89,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         this.configuration = configuration;
     }
 
+    /**
+     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
+     */
     private static String getLocalAddress() throws UnknownHostException {
         try {
             for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
@@ -136,6 +140,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     // Browse child nodes
                     if (browseNode instanceof FolderNode) {
                         // Add folder child nodes
+                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                        if (childNodes != null && !childNodes.isEmpty()) {
+                            for (AbstractNode childNode : childNodes) {
+                                addNode(objectID, childNode, result);
+                            }
+                        }
+                    } else if (browseNode instanceof PlaylistNode) {
+                        // Add playlist child nodes
                         List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
                         if (childNodes != null && !childNodes.isEmpty()) {
                             for (AbstractNode childNode : childNodes) {
@@ -191,6 +203,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addContainer(nodeId, node, childCount);
             }
             result.addTotalCount();
+        } else if (node instanceof FolderNode) {
+            if (result.filterResult()) {
+                // Add playlist to result
+                result.addPlaylist(nodeId, node, 1);
+            }
         } else if (node instanceof PodcastNode) {
             if (result.filterResult()) {
                 // Add container to result
