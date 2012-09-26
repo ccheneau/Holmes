@@ -16,12 +16,34 @@
 */
 package net.holmes.core.media;
 
-import java.util.List;
+public enum RootNode {
 
-import net.holmes.core.media.node.AbstractNode;
+    ROOT("0", "-1"), //
+    VIDEO("1_VIDEOS", "0"), //
+    PICTURE("2_PICTURES", "0"), //
+    AUDIO("3_AUDIOS", "0"), //
+    PODCAST("4_PODCASTS", "0");
 
-public interface IMediaService {
-    public AbstractNode getNode(String nodeId);
+    private String id;
+    private String parentId;
 
-    public List<AbstractNode> getChildNodes(AbstractNode parentNode);
+    RootNode(String id, String parentId) {
+        this.id = id;
+        this.parentId = parentId;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getParentId() {
+        return this.parentId;
+    }
+
+    public static RootNode getById(String id) {
+        for (RootNode rootNode : RootNode.values()) {
+            if (rootNode.id.equals(id)) return rootNode;
+        }
+        return null;
+    }
 }

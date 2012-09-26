@@ -22,7 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -51,7 +50,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
@@ -79,20 +77,11 @@ public final class MediaService implements IMediaService {
 
     private Cache<String, List<AbstractNode>> podcastCache;
 
-    private Map<String, String> rootNodes;
-
     public MediaService() {
         podcastCache = CacheBuilder.newBuilder() //
                 .maximumSize(50) //
                 .expireAfterWrite(2, TimeUnit.HOURS) //
                 .build();
-
-        rootNodes = Maps.newHashMap();
-        rootNodes.put(ROOT_NODE_ID, "node.rootNode");
-        rootNodes.put(ROOT_AUDIO_NODE_ID, "node.audio");
-        rootNodes.put(ROOT_VIDEO_NODE_ID, "node.video");
-        rootNodes.put(ROOT_PICTURE_NODE_ID, "node.picture");
-        rootNodes.put(ROOT_PODCAST_NODE_ID, "node.podcast");
     }
 
     /* (non-Javadoc)
@@ -103,9 +92,10 @@ public final class MediaService implements IMediaService {
         AbstractNode node = null;
         if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:" + nodeId);
 
-        if (rootNodes.get(nodeId) != null) {
+        RootNode rootNode = RootNode.getById(nodeId);
+        if (rootNode != null) {
             // Root node
-            node = buildRootNode(nodeId);
+            node = buildRootNode(rootNode);
         } else if (nodeId != null) {
             // Get node in mediaIndex
             IndexElement indexElement = mediaIndex.getElement(nodeId);
@@ -143,24 +133,24 @@ public final class MediaService implements IMediaService {
         if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
 
         List<AbstractNode> childNodes = null;
-        if (ROOT_NODE_ID.equals(parentNode.getId())) {
-            // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
+        if (RootNode.ROOT.getId().equals(parentNode.getId())) {
+            // Child nodes of root are audio, video, picture and pod-cast root nodes
             childNodes = Lists.newArrayList();
-            childNodes.add(buildRootNode(ROOT_AUDIO_NODE_ID));
-            childNodes.add(buildRootNode(ROOT_VIDEO_NODE_ID));
-            childNodes.add(buildRootNode(ROOT_PICTURE_NODE_ID));
-            childNodes.add(buildRootNode(ROOT_PODCAST_NODE_ID));
-        } else if (ROOT_AUDIO_NODE_ID.equals(parentNode.getId())) {
-            // Child nodes of ROOT_AUDIO_NODE_ID are audio folders stored in configuration
+            childNodes.add(buildRootNode(RootNode.AUDIO));
+            childNodes.add(buildRootNode(RootNode.VIDEO));
+            childNodes.add(buildRootNode(RootNode.PICTURE));
+            childNodes.add(buildRootNode(RootNode.PODCAST));
+        } else if (RootNode.AUDIO.getId().equals(parentNode.getId())) {
+            // Child nodes of audio are audio folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MediaType.TYPE_AUDIO);
-        } else if (ROOT_VIDEO_NODE_ID.equals(parentNode.getId())) {
-            // Child nodes of ROOT_VIDEO_NODE_ID are video folders stored in configuration
+        } else if (RootNode.VIDEO.getId().equals(parentNode.getId())) {
+            // Child nodes of video are video folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MediaType.TYPE_VIDEO);
-        } else if (ROOT_PICTURE_NODE_ID.equals(parentNode.getId())) {
-            // Child nodes of ROOT_PICTURE_NODE_ID are picture folders stored in configuration
+        } else if (RootNode.PICTURE.getId().equals(parentNode.getId())) {
+            // Child nodes of pitcure are picture folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MediaType.TYPE_IMAGE);
-        } else if (ROOT_PODCAST_NODE_ID.equals(parentNode.getId())) {
-            // Child nodes of ROOT_PODCAST_NODE_ID are pod-cast URLs stored in configuration
+        } else if (RootNode.PODCAST.getId().equals(parentNode.getId())) {
+            // Child nodes of podcast are pod-cast URLs stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MediaType.TYPE_PODCAST);
         } else if (parentNode.getId() != null) {
             // Get node in mediaIndex
@@ -329,11 +319,11 @@ public final class MediaService implements IMediaService {
         return null;
     }
 
-    private FolderNode buildRootNode(String nodeId) {
+    private FolderNode buildRootNode(RootNode rootNode) {
         FolderNode node = new FolderNode();
-        node.setId(nodeId);
-        node.setName(bundle.getString(rootNodes.get(nodeId)));
-        node.setParentId(ROOT_NODE_ID.equals(nodeId) ? "-1" : ROOT_NODE_ID);
+        node.setId(rootNode.getId());
+        node.setName(bundle.getString("rootNode." + rootNode.getId()));
+        node.setParentId(rootNode.getParentId());
         return node;
     }
 
@@ -377,7 +367,7 @@ public final class MediaService implements IMediaService {
     private PodcastNode buildPodcastNode(String nodeId, String name, String url) {
         PodcastNode node = new PodcastNode();
         node.setId(nodeId);
-        node.setParentId(ROOT_PODCAST_NODE_ID);
+        node.setParentId(RootNode.PODCAST.getId());
         node.setName(name);
         node.setUrl(url);
         return node;

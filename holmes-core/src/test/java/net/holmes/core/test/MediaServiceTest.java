@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
+import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
 
 import org.junit.Before;
@@ -60,7 +61,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootNode() {
-        AbstractNode node = mediaService.getNode(IMediaService.ROOT_NODE_ID);
+        AbstractNode node = mediaService.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -73,7 +74,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootVideoNode() {
-        AbstractNode node = mediaService.getNode(IMediaService.ROOT_VIDEO_NODE_ID);
+        AbstractNode node = mediaService.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -93,7 +94,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootAudioNode() {
-        AbstractNode node = mediaService.getNode(IMediaService.ROOT_AUDIO_NODE_ID);
+        AbstractNode node = mediaService.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -112,7 +113,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPictureNode() {
-        AbstractNode node = mediaService.getNode(IMediaService.ROOT_PICTURE_NODE_ID);
+        AbstractNode node = mediaService.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
@@ -131,7 +132,7 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPodcastNode() {
-        AbstractNode node = mediaService.getNode(IMediaService.ROOT_PODCAST_NODE_ID);
+        AbstractNode node = mediaService.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
