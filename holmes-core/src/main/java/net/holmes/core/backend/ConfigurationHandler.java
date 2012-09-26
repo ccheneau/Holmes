@@ -17,7 +17,6 @@
 package net.holmes.core.backend;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +37,8 @@ import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.bundle.IBundle;
+
+import com.google.common.collect.Lists;
 
 /**
  * Backend REST handler for:
@@ -197,10 +198,10 @@ public class ConfigurationHandler {
         response.setTotal(1);
         response.setRecords(configFolders.size());
 
-        Collection<ConfigFolder> folders = new ArrayList<ConfigFolder>();
+        Collection<ConfigFolder> folders = Lists.newArrayList();
         Collection<String> cell;
         for (ConfigurationNode folder : configFolders) {
-            cell = new ArrayList<String>();
+            cell = Lists.newArrayList();
             cell.add(folder.getId());
             cell.add(folder.getLabel());
             cell.add(folder.getPath());

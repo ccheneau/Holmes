@@ -23,6 +23,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.io.Files;
+
 public final class MimeTypeFactory implements IMimeTypeFactory {
     private static Logger logger = LoggerFactory.getLogger(MimeTypeFactory.class);
 
@@ -52,7 +54,7 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
     @Override
     public MimeType getMimeType(String fileName) {
         // Get file extension
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
+        String ext = Files.getFileExtension(fileName).toLowerCase();
 
         // Get mime type
         return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));

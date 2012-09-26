@@ -18,7 +18,6 @@ package net.holmes.core.backend;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ws.rs.FormParam;
@@ -30,6 +29,8 @@ import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.response.Folder;
 import net.holmes.core.util.HolmesProperty;
+
+import com.google.common.collect.Lists;
 
 @Path("/backend/util")
 public class UtilHandler {
@@ -52,7 +53,7 @@ public class UtilHandler {
     @Path("/getChildFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Folder> getChildFolders(@FormParam("path") String parentPath) {
-        Collection<Folder> folders = new ArrayList<Folder>();
+        Collection<Folder> folders = Lists.newArrayList();
 
         if (parentPath == null || parentPath.equals("none")) {
             // Add user home folder

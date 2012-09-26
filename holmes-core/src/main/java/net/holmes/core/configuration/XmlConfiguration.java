@@ -32,6 +32,7 @@ import net.holmes.core.util.HolmesProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -226,10 +227,10 @@ public final class XmlConfiguration implements IConfiguration {
         public void checkDefaultValues() {
             if (this.upnpServerName == null) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
-            if (this.videoFolders == null) this.videoFolders = new LinkedList<ConfigurationNode>();
-            if (this.audioFolders == null) this.audioFolders = new LinkedList<ConfigurationNode>();
-            if (this.pictureFolders == null) this.pictureFolders = new LinkedList<ConfigurationNode>();
-            if (this.podcasts == null) this.podcasts = new LinkedList<ConfigurationNode>();
+            if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
+            if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
+            if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
+            if (this.podcasts == null) this.podcasts = Lists.newLinkedList();
             if (this.parameters == null) this.parameters = new Properties();
             for (Parameter param : Parameter.values()) {
                 if (this.parameters.getProperty(param.getName()) == null) this.parameters.put(param.getName(), param.getDefaultValue());

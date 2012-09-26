@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,6 +45,8 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
@@ -85,7 +85,7 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
             if (!application.isInitiated()) {
 
                 // Set web application properties
-                Map<String, Object> props = new HashMap<String, Object>();
+                Map<String, Object> props = Maps.newHashMap();
                 props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
                 props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
@@ -124,14 +124,11 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
 
             // Process request
             application.handleRequest(cRequest, new BackendResponseWriter(channel));
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-        finally {
+        } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
@@ -166,7 +163,7 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
             // Set http headers
             response = new DefaultHttpResponse(HttpVersion.HTTP_1_0, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
-                List<String> values = new ArrayList<String>();
+                List<String> values = Lists.newArrayList();
                 for (Object v : headerEntry.getValue())
                     values.add(ContainerResponse.getHeaderValue(v));
                 response.setHeader(headerEntry.getKey(), values);

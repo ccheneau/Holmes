@@ -16,8 +16,9 @@
 */
 package net.holmes.core.backend.response;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 public class Folder {
     public static final String STATE_CLOSED = "closed";
@@ -29,7 +30,7 @@ public class Folder {
 
     public Folder(String title, String path) {
         this.data = title;
-        this.metadata = new HashMap<String, String>();
+        this.metadata = Maps.newHashMap();
         this.metadata.put("path", path);
         this.state = STATE_CLOSED;
     }

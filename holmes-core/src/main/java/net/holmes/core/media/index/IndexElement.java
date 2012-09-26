@@ -17,8 +17,9 @@
 package net.holmes.core.media.index;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 public class IndexElement implements Serializable {
     private static final long serialVersionUID = -4133480765408326085L;
@@ -34,7 +35,7 @@ public class IndexElement implements Serializable {
         this.mediaType = mediaType;
         this.path = path;
         this.name = name;
-        this.metadata = new HashMap<String, String>();
+        this.metadata = Maps.newHashMap();
     }
 
     public String getParentId() {

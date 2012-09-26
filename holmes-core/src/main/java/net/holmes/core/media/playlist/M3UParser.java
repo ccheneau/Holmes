@@ -17,9 +17,18 @@
 package net.holmes.core.media.playlist;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+
 public class M3UParser implements IPlaylistParser {
+    private static Logger logger = LoggerFactory.getLogger(M3UParser.class);
 
     private String playlist;
 
@@ -32,8 +41,21 @@ public class M3UParser implements IPlaylistParser {
      */
     @Override
     public List<PlaylistItem> parse() {
-        File pl = new File(playlist);
-        if (pl.exists()) return null;
-        else return null;
+        List<PlaylistItem> items = Lists.newArrayList();
+        File fPlaylist = new File(playlist);
+        Charset charset = Files.getFileExtension(playlist).toLowerCase().equals("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");
+        try {
+            List<String> lines = Files.readLines(fPlaylist, charset);
+            for (String line : lines) {
+                if (line.startsWith("#")) {
+
+                } else if (line.trim().length() > 0) {
+
+                }
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return items;
     }
 }

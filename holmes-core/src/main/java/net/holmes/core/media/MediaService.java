@@ -20,9 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -52,6 +50,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
@@ -87,7 +87,7 @@ public final class MediaService implements IMediaService {
                 .expireAfterWrite(2, TimeUnit.HOURS) //
                 .build();
 
-        rootNodes = new HashMap<String, String>();
+        rootNodes = Maps.newHashMap();
         rootNodes.put(ROOT_NODE_ID, "node.rootNode");
         rootNodes.put(ROOT_AUDIO_NODE_ID, "node.audio");
         rootNodes.put(ROOT_VIDEO_NODE_ID, "node.video");
@@ -145,7 +145,7 @@ public final class MediaService implements IMediaService {
         List<AbstractNode> childNodes = null;
         if (ROOT_NODE_ID.equals(parentNode.getId())) {
             // Child nodes of ROOT_NODE_ID are audio, video, picture and pod-cast root nodes
-            childNodes = new ArrayList<AbstractNode>();
+            childNodes = Lists.newArrayList();
             childNodes.add(buildRootNode(ROOT_AUDIO_NODE_ID));
             childNodes.add(buildRootNode(ROOT_VIDEO_NODE_ID));
             childNodes.add(buildRootNode(ROOT_PICTURE_NODE_ID));
@@ -192,7 +192,7 @@ public final class MediaService implements IMediaService {
      * Get childs of a configuration node (child nodes are stored in configuration)
      */
     private List<AbstractNode> getConfigurationChildNodes(String rootNodeId, List<ConfigurationNode> contentFolders, boolean podcast, MediaType mediaType) {
-        List<AbstractNode> nodes = new ArrayList<AbstractNode>();
+        List<AbstractNode> nodes = Lists.newArrayList();
         if (contentFolders != null && !contentFolders.isEmpty()) {
             if (podcast) {
                 // Add podcast nodes
@@ -222,7 +222,7 @@ public final class MediaService implements IMediaService {
      * Get childs of a folder node
      */
     private List<AbstractNode> getFolderChildNodes(String parentId, File folder, String mediaType) {
-        List<AbstractNode> nodes = new ArrayList<AbstractNode>();
+        List<AbstractNode> nodes = Lists.newArrayList();
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -256,7 +256,7 @@ public final class MediaService implements IMediaService {
                 @Override
                 public List<AbstractNode> call() throws Exception {
                     // No entries in cache, read them from RSS feed
-                    List<AbstractNode> podcastEntryNodes = new ArrayList<AbstractNode>();
+                    List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                     XmlReader reader = null;
                     try {
                         // Get RSS feed entries
