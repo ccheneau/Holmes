@@ -26,6 +26,7 @@ public class MediaIndex implements IMediaIndex {
     private BiMap<String, IndexElement> elements;
 
     public MediaIndex() {
+        //elements = Maps.synchronizedBiMap(HashBiMap.<String, IndexElement> create());
         elements = HashBiMap.create();
     }
 

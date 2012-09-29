@@ -320,7 +320,18 @@ public final class MediaService implements IMediaService {
         List<PlaylistItem> items = new M3uParser(new File(path)).parse();
         if (items != null) {
             for (PlaylistItem item : items) {
-                // TODO
+                MimeType mimeType = mimeTypeFactory.getMimeType(item.getPath());
+                if (mimeType.isMedia()) {
+                    String nodeId = mediaIndex.add(parentId, mimeType.getType(), item.getPath(), item.getLabel());
+                    ContentNode node = new ContentNode();
+                    node.setId(nodeId);
+                    node.setParentId(parentId);
+                    node.setName(item.getLabel());
+                    node.setPath(item.getPath());
+                    node.setMimeType(mimeType);
+                    node.setSize(new File(item.getPath()).length());
+                    nodes.add(node);
+                }
             }
         }
         return nodes;
