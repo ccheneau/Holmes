@@ -39,6 +39,8 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
+import net.holmes.core.media.playlist.M3uParser;
+import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.IBundle;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
@@ -306,7 +308,6 @@ public final class MediaService implements IMediaService {
                     }
                     return podcastEntryNodes;
                 }
-
             });
         } catch (ExecutionException e) {
             logger.error(e.getMessage(), e);
@@ -315,8 +316,14 @@ public final class MediaService implements IMediaService {
     }
 
     private List<AbstractNode> getPlaylistChildNodes(String parentId, String path) {
-        // TODO
-        return null;
+        List<AbstractNode> nodes = Lists.newArrayList();
+        List<PlaylistItem> items = new M3uParser(new File(path)).parse();
+        if (items != null) {
+            for (PlaylistItem item : items) {
+                // TODO
+            }
+        }
+        return nodes;
     }
 
     private FolderNode buildRootNode(RootNode rootNode) {
