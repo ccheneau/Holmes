@@ -65,21 +65,20 @@ import com.sun.syndication.io.XmlReader;
 public final class MediaService implements IMediaService {
     private static Logger logger = LoggerFactory.getLogger(MediaService.class);
 
-    @Inject
     private IConfiguration configuration;
-
-    @Inject
     private IMimeTypeFactory mimeTypeFactory;
-
-    @Inject
     private IBundle bundle;
-
-    @Inject
     private IMediaIndex mediaIndex;
-
     private Cache<String, List<AbstractNode>> podcastCache;
 
-    public MediaService() {
+    @Inject
+    public MediaService(IConfiguration configuration, IMimeTypeFactory mimeTypeFactory, IBundle bundle, IMediaIndex mediaIndex) {
+        this.configuration = configuration;
+        this.mimeTypeFactory = mimeTypeFactory;
+        this.bundle = bundle;
+        this.mediaIndex = mediaIndex;
+
+        // Initialize podcast cache
         podcastCache = CacheBuilder.newBuilder() //
                 .maximumSize(50) //
                 .expireAfterWrite(2, TimeUnit.HOURS) //

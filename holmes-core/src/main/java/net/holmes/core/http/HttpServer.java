@@ -41,14 +41,13 @@ public final class HttpServer implements IServer {
 
     private ChannelGroup allChannels = null;
     private ServerBootstrap bootstrap = null;
-
-    @Inject
     private IChannelPipelineFactory pipelineFactory;
-
-    @Inject
     private IConfiguration configuration;
 
-    public HttpServer() {
+    @Inject
+    public HttpServer(IChannelPipelineFactory pipelineFactory, IConfiguration configuration) {
+        this.pipelineFactory = pipelineFactory;
+        this.configuration = configuration;
         // Init channel group
         allChannels = new DefaultChannelGroup(HttpServer.class.getName());
     }

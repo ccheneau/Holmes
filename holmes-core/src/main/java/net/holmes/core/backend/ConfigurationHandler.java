@@ -53,11 +53,14 @@ public class ConfigurationHandler {
     private static final String EDIT_OPERATION = "edit";
     private static final String DELETE_OPERATION = "del";
 
-    @Inject
     private IConfiguration configuration;
+    private IBundle bundle;
 
     @Inject
-    private IBundle bundle;
+    public ConfigurationHandler(IConfiguration configuration, IBundle bundle) {
+        this.configuration = configuration;
+        this.bundle = bundle;
+    }
 
     /**
      * Get video configuration folders

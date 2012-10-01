@@ -49,10 +49,13 @@ import org.slf4j.LoggerFactory;
 public final class HttpSiteRequestHandler implements IHttpRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
 
-    @Inject
     private IMimeTypeFactory mimeTypeFactory;
+    private String siteDirectory;
 
-    public HttpSiteRequestHandler() {
+    @Inject
+    public HttpSiteRequestHandler(IMimeTypeFactory mimeTypeFactory) {
+        this.mimeTypeFactory = mimeTypeFactory;
+        siteDirectory = HolmesHomeDirectory.getSiteDirectory();
     }
 
     /* (non-Javadoc)
@@ -81,16 +84,14 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
             throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
         }
 
-        String filePath = HolmesHomeDirectory.getSiteDirectory() + fileName;
-
-        if (logger.isDebugEnabled()) logger.debug("file path:" + filePath);
+        if (logger.isDebugEnabled()) logger.debug("file name:" + fileName);
 
         try {
             // Get file
-            File file = new File(filePath);
-            if (file == null || !file.exists() || !file.canRead() || file.isHidden()) {
+            File file = new File(siteDirectory, fileName);
+            if (!file.exists() || !file.canRead() || file.isHidden()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
-                throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
+                throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
             }
 
             // Read the file

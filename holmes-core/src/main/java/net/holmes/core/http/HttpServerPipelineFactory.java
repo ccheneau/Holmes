@@ -30,11 +30,14 @@ import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
 public final class HttpServerPipelineFactory implements IChannelPipelineFactory {
 
-    @Inject
-    @Named("http")
     private ChannelHandler httpRequestHandler;
-
     private ChannelGroup channelGroup = null;
+
+    @Inject
+    public HttpServerPipelineFactory(@Named("http") ChannelHandler httpRequestHandler) {
+        this.httpRequestHandler = httpRequestHandler;
+
+    }
 
     /* (non-Javadoc)
      * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()

@@ -52,10 +52,12 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
 
     private final static String REQUEST_PATH = "/content";
 
-    @Inject
     private IMediaService mediaService;
 
-    public HttpContentRequestHandler() {
+    @Inject
+    public HttpContentRequestHandler(IMediaService mediaService) {
+        this.mediaService = mediaService;
+
     }
 
     /* (non-Javadoc)

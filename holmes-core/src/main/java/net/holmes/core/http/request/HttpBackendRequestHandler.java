@@ -70,30 +70,26 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
     private WebApplication application;
 
     @Inject
-    private Injector injector;
+    public HttpBackendRequestHandler(Injector injector) {
+        // Jersey initialization
+        application = WebApplicationFactory.createWebApplication();
+        if (!application.isInitiated()) {
 
-    public HttpBackendRequestHandler() {
+            // Set web application properties
+            Map<String, Object> props = Maps.newHashMap();
+            props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
+            props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+
+            // Initialize web application
+            ResourceConfig rcf = new PackagesResourceConfig(props);
+            application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
+        }
     }
 
     @Inject
     public void initHandler() {
         if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
 
-        // Jersey initialization
-        if (application == null) {
-            application = WebApplicationFactory.createWebApplication();
-            if (!application.isInitiated()) {
-
-                // Set web application properties
-                Map<String, Object> props = Maps.newHashMap();
-                props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
-                props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-
-                // Initialize web application
-                ResourceConfig rcf = new PackagesResourceConfig(props);
-                application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
-            }
-        }
         if (logger.isDebugEnabled()) logger.debug("[END] initHandler");
     }
 

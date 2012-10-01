@@ -51,21 +51,17 @@ import org.slf4j.LoggerFactory;
 public final class HolmesServer implements IServer {
     private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
 
-    @Inject
-    private IConfiguration configuration;
-
-    @Inject
-    @Named("http")
     private IServer httpServer;
-
-    @Inject
-    @Named("upnp")
     private IServer upnpServer;
-
-    @Inject
+    private IConfiguration configuration;
     private IBundle bundle;
 
-    public HolmesServer() {
+    @Inject
+    public HolmesServer(@Named("http") IServer httpServer, @Named("upnp") IServer upnpServer, IConfiguration configuration, IBundle bundle) {
+        this.httpServer = httpServer;
+        this.upnpServer = upnpServer;
+        this.configuration = configuration;
+        this.bundle = bundle;
     }
 
     /* (non-Javadoc)
