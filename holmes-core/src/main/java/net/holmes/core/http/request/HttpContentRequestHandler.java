@@ -127,22 +127,21 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
             }
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            // Write the header.
+            // Write the response.
             channel.write(response);
 
             // Write the content.
-            ChannelFuture writeFuture = null;
             try {
-                writeFuture = channel.write(new ChunkedFile(raf, startOffset, fileLength - startOffset, 8192));
+                ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, startOffset, fileLength - startOffset, 8192));
+                // Decide whether to close the connection or not.
+                if (!HttpHeaders.isKeepAlive(request)) {
+                    // Close the connection when the whole content is written out.
+                    writeFuture.addListener(ChannelFutureListener.CLOSE);
+                }
             } catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
             }
 
-            // Decide whether to close the connection or not.
-            if (!HttpHeaders.isKeepAlive(request)) {
-                // Close the connection when the whole content is written out.
-                writeFuture.addListener(ChannelFutureListener.CLOSE);
-            }
         } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }

@@ -36,7 +36,6 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
     @Inject
     public HttpServerPipelineFactory(@Named("http") ChannelHandler httpRequestHandler) {
         this.httpRequestHandler = httpRequestHandler;
-
     }
 
     /* (non-Javadoc)

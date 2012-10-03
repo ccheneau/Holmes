@@ -86,13 +86,6 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
         }
     }
 
-    @Inject
-    public void initHandler() {
-        if (logger.isDebugEnabled()) logger.debug("[START] initHandler");
-
-        if (logger.isDebugEnabled()) logger.debug("[END] initHandler");
-    }
-
     /* (non-Javadoc)
      * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
      */
@@ -110,8 +103,9 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
 
         try {
             // Define base URL
-            String base = "http://" + request.getHeader(HttpHeaders.Names.HOST) + REQUEST_PATH;
-            final URI baseUri = new URI(base);
+            StringBuilder base = new StringBuilder();
+            base.append("http://").append(request.getHeader(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
+            final URI baseUri = new URI(base.toString());
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
 
             // Build request

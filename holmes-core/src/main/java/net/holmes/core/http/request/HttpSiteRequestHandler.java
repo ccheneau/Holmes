@@ -55,7 +55,7 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
     @Inject
     public HttpSiteRequestHandler(IMimeTypeFactory mimeTypeFactory) {
         this.mimeTypeFactory = mimeTypeFactory;
-        siteDirectory = HolmesHomeDirectory.getSiteDirectory();
+        this.siteDirectory = HolmesHomeDirectory.getSiteDirectory();
     }
 
     /* (non-Javadoc)
