@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
@@ -29,6 +28,7 @@ import javax.inject.Inject;
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.util.log.InjectLogger;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -43,47 +43,28 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.inject.Injector;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.header.InBoundHeaders;
-import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
-import com.sun.jersey.spi.container.WebApplicationFactory;
 
 /**
  * Handler for backend requests from Holmes administration site
  */
 public final class HttpBackendRequestHandler implements IHttpRequestHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpBackendRequestHandler.class);
+    @InjectLogger
+    private Logger logger;
 
     private final static String REQUEST_PATH = "/backend/";
 
-    private WebApplication application;
+    private final WebApplication application;
 
     @Inject
-    public HttpBackendRequestHandler(Injector injector) {
-        // Jersey initialization
-        application = WebApplicationFactory.createWebApplication();
-        if (!application.isInitiated()) {
-
-            // Set web application properties
-            Map<String, Object> props = Maps.newHashMap();
-            props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
-            props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-
-            // Initialize web application
-            ResourceConfig rcf = new PackagesResourceConfig(props);
-            application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
-        }
+    public HttpBackendRequestHandler(WebApplication application) {
+        this.application = application;
     }
 
     /* (non-Javadoc)

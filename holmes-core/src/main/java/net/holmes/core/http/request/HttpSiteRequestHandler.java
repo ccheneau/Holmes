@@ -27,6 +27,7 @@ import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
+import net.holmes.core.util.log.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -41,16 +42,16 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handler to serve Holmes administration site pages
  */
 public final class HttpSiteRequestHandler implements IHttpRequestHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
+    @InjectLogger
+    private Logger logger;
 
-    private IMimeTypeFactory mimeTypeFactory;
-    private String siteDirectory;
+    private final IMimeTypeFactory mimeTypeFactory;
+    private final String siteDirectory;
 
     @Inject
     public HttpSiteRequestHandler(IMimeTypeFactory mimeTypeFactory) {

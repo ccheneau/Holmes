@@ -21,8 +21,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import net.holmes.core.util.log.InjectLogger;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -30,7 +31,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 public class M3uParser implements IPlaylistParser {
-    private static Logger logger = LoggerFactory.getLogger(M3uParser.class);
+    @InjectLogger
+    private Logger logger;
 
     private File playlist;
 

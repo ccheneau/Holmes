@@ -53,8 +53,8 @@ public class ConfigurationHandler {
     private static final String EDIT_OPERATION = "edit";
     private static final String DELETE_OPERATION = "del";
 
-    private IConfiguration configuration;
-    private IBundle bundle;
+    private final IConfiguration configuration;
+    private final IBundle bundle;
 
     @Inject
     public ConfigurationHandler(IConfiguration configuration, IBundle bundle) {

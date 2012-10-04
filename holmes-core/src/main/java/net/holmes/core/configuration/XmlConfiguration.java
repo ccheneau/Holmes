@@ -28,16 +28,17 @@ import java.util.List;
 import java.util.Properties;
 
 import net.holmes.core.util.HolmesProperty;
+import net.holmes.core.util.log.InjectLogger;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public final class XmlConfiguration implements IConfiguration {
-    private static Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
+    @InjectLogger
+    private Logger logger;
 
     private static final String CONF_FILE_NAME = "config.xml";
 

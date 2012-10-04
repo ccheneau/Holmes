@@ -41,20 +41,21 @@ import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.HolmesProperty;
 import net.holmes.core.util.SystemTrayIcon;
 import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.log.InjectLogger;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Holmes server main class
  */
 public final class HolmesServer implements IServer {
-    private static Logger logger = LoggerFactory.getLogger(HolmesServer.class);
+    @InjectLogger
+    private Logger logger;
 
-    private IServer httpServer;
-    private IServer upnpServer;
-    private IConfiguration configuration;
-    private IBundle bundle;
+    private final IServer httpServer;
+    private final IServer upnpServer;
+    private final IConfiguration configuration;
+    private final IBundle bundle;
 
     @Inject
     public HolmesServer(@Named("http") IServer httpServer, @Named("upnp") IServer upnpServer, IConfiguration configuration, IBundle bundle) {

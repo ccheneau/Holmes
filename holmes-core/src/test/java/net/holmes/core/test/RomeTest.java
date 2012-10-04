@@ -22,11 +22,15 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.holmes.core.TestModule;
+import net.holmes.core.util.log.InjectLogger;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
@@ -42,7 +46,18 @@ import com.sun.syndication.io.XmlReader;
  * The Class RomeTest.
  */
 public class RomeTest extends TestCase {
-    private static Logger logger = LoggerFactory.getLogger(RomeTest.class);
+    @InjectLogger
+    private Logger logger;
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    @Before
+    public void setUp() {
+        Injector injector = Guice.createInjector(new TestModule());
+        injector.injectMembers(this);
+    }
 
     /**
      * Test rome with cast coders rss.
@@ -76,28 +91,22 @@ public class RomeTest extends TestCase {
                     }
                 }
             }
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (FeedException e) {
+        } catch (FeedException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (reader != null) reader.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }
@@ -135,28 +144,22 @@ public class RomeTest extends TestCase {
                     }
                 }
             }
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        catch (FeedException e) {
+        } catch (FeedException e) {
             logger.error(e.getMessage(), e);
             fail(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (reader != null) reader.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
         }

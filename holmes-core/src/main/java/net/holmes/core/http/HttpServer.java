@@ -23,26 +23,27 @@ import javax.inject.Inject;
 
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.util.log.InjectLogger;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * HTTP server main class  
  */
 public final class HttpServer implements IServer {
-    private static Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    @InjectLogger
+    private Logger logger;
 
     public static final String HTTP_SERVER_NAME = "Holmes http server";
 
     private ChannelGroup allChannels = null;
     private ServerBootstrap bootstrap = null;
-    private IChannelPipelineFactory pipelineFactory;
-    private IConfiguration configuration;
+    private final IChannelPipelineFactory pipelineFactory;
+    private final IConfiguration configuration;
 
     @Inject
     public HttpServer(IChannelPipelineFactory pipelineFactory, IConfiguration configuration) {

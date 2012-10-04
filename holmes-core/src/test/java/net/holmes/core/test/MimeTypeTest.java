@@ -20,19 +20,20 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
+import net.holmes.core.util.log.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class MimeTypeTest extends TestCase {
-    private static Logger logger = LoggerFactory.getLogger(MimeTypeTest.class);
+    @InjectLogger
+    private Logger logger;
 
     @Inject
     private IMimeTypeFactory mimeTypeFactory;
@@ -61,8 +62,7 @@ public class MimeTypeTest extends TestCase {
             logger.debug(mimeType.toString());
             assertEquals("video", mimeType.getType());
             assertEquals("video/x-msvideo", mimeType.getMimeType());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }
@@ -78,8 +78,7 @@ public class MimeTypeTest extends TestCase {
             MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
 
             assertNull(mimeType);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }

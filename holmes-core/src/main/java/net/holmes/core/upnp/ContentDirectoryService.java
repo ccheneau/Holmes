@@ -62,7 +62,7 @@ import org.teleal.cling.support.model.SortCriterion;
         @UpnpStateVariable(name = "A_ARG_TYPE_UpdateID", sendEvents = false, datatype = "ui4"),
         @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
-    private static Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
+    private Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
     private IMediaService mediaService;
     private IConfiguration configuration;

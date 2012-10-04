@@ -35,6 +35,10 @@ import com.google.common.collect.Lists;
 @Path("/backend/util")
 public class UtilHandler {
 
+    public UtilHandler() {
+
+    }
+
     /**
      * Get holmes version
      */

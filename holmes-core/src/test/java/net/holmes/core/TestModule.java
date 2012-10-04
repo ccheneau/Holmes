@@ -22,13 +22,15 @@ import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.index.IMediaIndex;
 import net.holmes.core.media.index.MediaIndex;
-import net.holmes.core.util.bundle.IBundle;
 import net.holmes.core.util.bundle.Bundle;
+import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.log.Slf4JTypeListener;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.matcher.Matchers;
 
 /**
  * The Class TestModule.
@@ -40,6 +42,8 @@ public class TestModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+        bindListener(Matchers.any(), new Slf4JTypeListener());
+
         bind(IConfiguration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(IBundle.class).to(Bundle.class).in(Singleton.class);
 

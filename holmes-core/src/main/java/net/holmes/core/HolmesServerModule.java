@@ -23,6 +23,7 @@ import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.IChannelPipelineFactory;
 import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.http.WebApplicationProvider;
 import net.holmes.core.http.request.HttpBackendRequestHandler;
 import net.holmes.core.http.request.HttpContentRequestHandler;
 import net.holmes.core.http.request.HttpSiteRequestHandler;
@@ -31,8 +32,9 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.index.IMediaIndex;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
-import net.holmes.core.util.bundle.IBundle;
 import net.holmes.core.util.bundle.Bundle;
+import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.log.Slf4JTypeListener;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -40,7 +42,9 @@ import org.jboss.netty.channel.ChannelHandler;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
+import com.sun.jersey.spi.container.WebApplication;
 
 public final class HolmesServerModule extends AbstractModule {
 
@@ -49,6 +53,10 @@ public final class HolmesServerModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+
+        // Bind loggers
+        bindListener(Matchers.any(), new Slf4JTypeListener());
+
         // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
         bind(IBundle.class).to(Bundle.class).in(Singleton.class);
@@ -61,6 +69,9 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind servers
         bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+
+        // Bind Jersey application
+        bind(WebApplication.class).toProvider(WebApplicationProvider.class);
 
         // Bind Http handlers
         bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);

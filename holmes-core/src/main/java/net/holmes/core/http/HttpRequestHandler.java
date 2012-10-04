@@ -25,6 +25,8 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.holmes.core.util.log.InjectLogger;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -44,17 +46,17 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
  */
 public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
-    private static Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
+    @InjectLogger
+    private Logger logger;
 
-    private IHttpRequestHandler contentRequestHandler;
-    private IHttpRequestHandler backendRequestHandler;
-    private IHttpRequestHandler siteRequestHandler;
+    private final IHttpRequestHandler contentRequestHandler;
+    private final IHttpRequestHandler backendRequestHandler;
+    private final IHttpRequestHandler siteRequestHandler;
 
     @Inject
     public HttpRequestHandler(@Named("content") IHttpRequestHandler contentRequestHandler, @Named("backend") IHttpRequestHandler backendRequestHandler,
