@@ -19,7 +19,7 @@ package net.holmes.core;
 import java.io.File;
 
 import net.holmes.core.util.HolmesLock;
-import net.holmes.core.util.HolmesProperty;
+import net.holmes.core.util.SystemProperty;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class Bootstrap {
         // Check lock file
         if (HolmesLock.lockInstance()) {
             // Check Holmes home system variable
-            String holmesDir = HolmesProperty.SYS_VAR_HOLMES_HOME.getValue();
+            String holmesDir = SystemProperty.HOLMES_HOME.getValue();
             if (holmesDir != null && new File(holmesDir).exists()) {
                 // Load log4j configuration
                 String logConfig = holmesDir + File.separator + "conf" + File.separator + "log4j.xml";
@@ -54,7 +54,7 @@ public class Bootstrap {
                 // Add shutdown hook
                 Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
             } else {
-                System.err.println(HolmesProperty.SYS_VAR_HOLMES_HOME.getName() + " system variable undefined or not valid");
+                System.err.println(SystemProperty.HOLMES_HOME.getName() + " system variable undefined or not valid");
                 System.exit(1);
             }
         } else {

@@ -30,7 +30,7 @@ public class HolmesLock {
         try {
             // Get path for lock file
             StringBuilder homePath = new StringBuilder();
-            homePath.append(HolmesProperty.SYS_VAR_USER_HOME.getValue()).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH.getName());
+            homePath.append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
 
             // Create lock file path if it does not exist
             File fConfPath = new File(homePath.toString());

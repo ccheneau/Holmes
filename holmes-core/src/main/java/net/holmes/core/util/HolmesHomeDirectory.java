@@ -29,7 +29,7 @@ public class HolmesHomeDirectory {
 
     private static String getSubDirectory(String subDirName) {
         StringBuilder homeSubDirectory = new StringBuilder();
-        homeSubDirectory.append(HolmesProperty.SYS_VAR_HOLMES_HOME.getValue()).append(File.separator).append(subDirName);
+        homeSubDirectory.append(SystemProperty.HOLMES_HOME.getValue()).append(File.separator).append(subDirName);
         File confDir = new File(homeSubDirectory.toString());
         if (!confDir.exists()) {
             confDir.mkdir();

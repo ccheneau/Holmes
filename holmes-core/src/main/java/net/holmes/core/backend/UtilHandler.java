@@ -28,7 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.response.Folder;
-import net.holmes.core.util.HolmesProperty;
+import net.holmes.core.util.SystemProperty;
 
 import com.google.common.collect.Lists;
 
@@ -61,7 +61,7 @@ public class UtilHandler {
 
         if (parentPath == null || parentPath.equals("none")) {
             // Add user home folder
-            File userHomeDir = new File(HolmesProperty.SYS_VAR_USER_HOME.getValue());
+            File userHomeDir = new File(SystemProperty.USER_HOME.getValue());
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add root folders
