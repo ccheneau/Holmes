@@ -16,12 +16,9 @@
 */
 package net.holmes.core.util.mimetype;
 
-import java.io.Serializable;
-
 import net.holmes.core.util.MediaType;
 
-public final class MimeType implements Serializable {
-    private static final long serialVersionUID = -1521224459310661472L;
+public final class MimeType {
 
     private String type;
     private String subType;

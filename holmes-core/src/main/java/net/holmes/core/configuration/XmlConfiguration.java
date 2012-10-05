@@ -53,8 +53,8 @@ public final class XmlConfiguration implements IConfiguration {
      */
     private File getConfigFile() {
         StringBuilder confPath = new StringBuilder();
-        confPath.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator)
-                .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue()).append(File.separator).append("conf");
+        confPath.append(HolmesProperty.SYS_VAR_USER_HOME.getValue()).append(File.separator).append(HolmesProperty.HOME_CONF_FILE_PATH.getName())
+                .append(File.separator).append("conf");
 
         // Create holmes user conf directory if it does not exist
         File fConfPath = new File(confPath.toString());

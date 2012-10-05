@@ -21,13 +21,17 @@ public enum HolmesProperty {
     SYS_VAR_USER_HOME("user.home"), //
     HOME_CONF_FILE_PATH(".holmes");
 
-    private String value;
+    private String name;
 
-    HolmesProperty(String value) {
-        this.value = value;
+    HolmesProperty(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getValue() {
-        return value;
+        return System.getProperty(name);
     }
 }

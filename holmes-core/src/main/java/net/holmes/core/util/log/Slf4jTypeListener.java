@@ -19,18 +19,46 @@ package net.holmes.core.util.log;
 import java.lang.reflect.Field;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.inject.MembersInjector;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
-public class Slf4JTypeListener implements TypeListener {
+/**
+ * Type listener for slf4j logger injection
+ */
+public class Slf4jTypeListener implements TypeListener {
+
+    public Slf4jTypeListener() {
+    }
 
     @Override
     public <T> void hear(TypeLiteral<T> type, TypeEncounter<T> encounter) {
         for (Field field : type.getRawType().getDeclaredFields()) {
             if (field.getType() == Logger.class && field.isAnnotationPresent(InjectLogger.class)) {
-                encounter.register(new Slf4JMembersInjector<T>(field));
+                encounter.register(new Slf4jMembersInjector<T>(field));
+            }
+        }
+    }
+
+    private class Slf4jMembersInjector<T> implements MembersInjector<T> {
+        private final Field field;
+        private final Logger logger;
+
+        public Slf4jMembersInjector(Field field) {
+            this.field = field;
+            this.logger = LoggerFactory.getLogger(field.getDeclaringClass());
+            field.setAccessible(true);
+        }
+
+        @Override
+        public void injectMembers(T t) {
+            try {
+                field.set(t, logger);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
         }
     }

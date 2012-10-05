@@ -24,7 +24,7 @@ import net.holmes.core.media.index.IMediaIndex;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.log.Slf4JTypeListener;
+import net.holmes.core.util.log.Slf4jTypeListener;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -42,7 +42,7 @@ public class TestModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bindListener(Matchers.any(), new Slf4JTypeListener());
+        bindListener(Matchers.any(), new Slf4jTypeListener());
 
         bind(IConfiguration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(IBundle.class).to(Bundle.class).in(Singleton.class);

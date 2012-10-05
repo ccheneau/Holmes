@@ -34,7 +34,7 @@ import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.log.Slf4JTypeListener;
+import net.holmes.core.util.log.Slf4jTypeListener;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -54,8 +54,8 @@ public final class HolmesServerModule extends AbstractModule {
     @Override
     protected void configure() {
 
-        // Bind loggers
-        bindListener(Matchers.any(), new Slf4JTypeListener());
+        // Bind slf4j loggers
+        bindListener(Matchers.any(), new Slf4jTypeListener());
 
         // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);

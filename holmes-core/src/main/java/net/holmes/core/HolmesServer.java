@@ -146,8 +146,8 @@ public final class HolmesServer implements IServer {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder logFile = new StringBuilder();
-                        logFile.append(System.getProperty(HolmesProperty.SYS_VAR_USER_HOME.getValue())).append(File.separator)
-                                .append(HolmesProperty.HOME_CONF_FILE_PATH.getValue()).append(File.separator).append("log").append(File.separator)
+                        logFile.append(HolmesProperty.SYS_VAR_USER_HOME.getValue()).append(File.separator)
+                                .append(HolmesProperty.HOME_CONF_FILE_PATH.getName()).append(File.separator).append("log").append(File.separator)
                                 .append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     } catch (IOException e) {
