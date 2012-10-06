@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
 
@@ -40,9 +40,6 @@ public class M3uParser implements IPlaylistParser {
         this.playlist = playlist;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.playlist.IPlaylistParser#parse()
-     */
     @Override
     public List<PlaylistItem> parse() {
         List<PlaylistItem> items = null;
@@ -104,5 +101,4 @@ public class M3uParser implements IPlaylistParser {
         }
         return items;
     }
-
 }

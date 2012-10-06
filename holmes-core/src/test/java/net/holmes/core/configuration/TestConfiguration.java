@@ -39,16 +39,10 @@ public class TestConfiguration implements IConfiguration {
         podcasts.add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#loadConfig()
-     */
     @Override
     public void loadConfig() {
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#saveConfig()
-     */
     @Override
     public void saveConfig() {
     }
@@ -65,88 +59,55 @@ public class TestConfiguration implements IConfiguration {
         return contentFolder;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getUpnpServerName()
-     */
     @Override
     public String getUpnpServerName() {
         return DEFAULT_UPNP_SERVER_NAME;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setUpnpServerName(java.lang.String)
-     */
     @Override
     public void setUpnpServerName(String upnpServerName) {
 
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHttpServerPort()
-     */
     @Override
     public Integer getHttpServerPort() {
         return DEFAULT_HTTP_SERVER_PORT;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setHttpServerPort(java.lang.Integer)
-     */
     @Override
     public void setHttpServerPort(Integer httpServerPort) {
 
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getVideoFolders()
-     */
     @Override
     public List<ConfigurationNode> getVideoFolders() {
         return this.videoFolders;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getPodcasts()
-     */
     @Override
     public List<ConfigurationNode> getPodcasts() {
         return this.podcasts;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getAudioFolders()
-     */
     @Override
     public List<ConfigurationNode> getAudioFolders() {
         return this.audioFolders;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getPictureFolders()
-     */
     @Override
     public List<ConfigurationNode> getPictureFolders() {
         return this.pictureFolders;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getParameter(net.holmes.core.configuration.Parameter)
-     */
     @Override
     public Boolean getParameter(Parameter param) {
         return Boolean.FALSE;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setParameter(net.holmes.core.configuration.Parameter, java.lang.Boolean)
-     */
     @Override
     public void setParameter(Parameter param, Boolean value) {
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

@@ -51,9 +51,6 @@ public final class ConfigurationNode {
         this.path = path;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

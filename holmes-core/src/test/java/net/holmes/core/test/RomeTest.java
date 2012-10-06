@@ -23,7 +23,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,16 +42,10 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-/**
- * The Class RomeTest.
- */
 public class RomeTest extends TestCase {
     @InjectLogger
     private Logger logger;
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
     @Override
     @Before
     public void setUp() {

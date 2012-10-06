@@ -27,7 +27,7 @@ import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -59,17 +59,11 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
         this.siteDirectory = HolmesHomeDirectory.getSiteDirectory();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
-     */
     @Override
     public boolean canProcess(String requestPath) {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
-     */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");

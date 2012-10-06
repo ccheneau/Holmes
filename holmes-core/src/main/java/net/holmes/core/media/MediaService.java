@@ -43,7 +43,7 @@ import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
 
@@ -86,9 +86,6 @@ public final class MediaService implements IMediaService {
                 .build();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#getNode(java.lang.String)
-     */
     @Override
     public AbstractNode getNode(String nodeId) {
         AbstractNode node = null;
@@ -127,9 +124,6 @@ public final class MediaService implements IMediaService {
         return node;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.IMediaService#getChildNodes(net.holmes.core.media.node.AbstractNode)
-     */
     @Override
     public List<AbstractNode> getChildNodes(AbstractNode parentNode) {
         if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
@@ -399,5 +393,4 @@ public final class MediaService implements IMediaService {
         node.setPath(path);
         return node;
     }
-
 }

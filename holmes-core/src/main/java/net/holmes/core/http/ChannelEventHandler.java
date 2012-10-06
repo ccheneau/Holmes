@@ -32,9 +32,6 @@ public class ChannelEventHandler extends SimpleChannelUpstreamHandler {
         this.channelGroup = channelGroup;
     }
 
-    /* (non-Javadoc)
-     * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#channelConnected(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.ChannelStateEvent)
-     */
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         this.channelGroup.add(e.getChannel());

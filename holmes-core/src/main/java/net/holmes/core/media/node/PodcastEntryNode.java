@@ -60,9 +60,6 @@ public final class PodcastEntryNode extends AbstractNode {
         this.duration = duration;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.node.AbstractNode#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

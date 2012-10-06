@@ -74,9 +74,6 @@ public class Bootstrap {
             this.holmesServer = holmesServer;
         }
 
-        /* (non-Javadoc)
-         * @see java.lang.Thread#run()
-         */
         @Override
         public void run() {
             holmesServer.stop();

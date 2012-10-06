@@ -109,9 +109,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService#browse(java.lang.String, org.teleal.cling.support.model.BrowseFlag, java.lang.String, long, long, org.teleal.cling.support.model.SortCriterion[])
-     */
     @Override
     public BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults, SortCriterion[] orderby)
             throws ContentDirectoryException {

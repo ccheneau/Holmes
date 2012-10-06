@@ -31,9 +31,6 @@ public final class FolderNode extends AbstractNode {
         this.path = path;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.node.AbstractNode#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

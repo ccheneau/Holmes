@@ -24,7 +24,7 @@ import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.IMediaService;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
 import org.teleal.cling.UpnpService;
@@ -60,9 +60,6 @@ public final class UpnpServer implements IServer {
         this.configuration = configuration;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#start()
-     */
     @Override
     public void start() {
         if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
@@ -83,9 +80,6 @@ public final class UpnpServer implements IServer {
         }
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#stop()
-     */
     @Override
     public void stop() {
 

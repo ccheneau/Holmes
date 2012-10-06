@@ -29,7 +29,7 @@ import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -61,17 +61,11 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
 
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
-     */
     @Override
     public boolean canProcess(String requestPath) {
         return requestPath.startsWith(REQUEST_PATH);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
-     */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");

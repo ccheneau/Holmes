@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Properties;
 
 import net.holmes.core.util.SystemProperty;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
 
@@ -63,9 +63,6 @@ public final class XmlConfiguration implements IConfiguration {
         return new File(confPath.toString() + File.separator + CONF_FILE_NAME);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#loadConfig()
-     */
     @Override
     public void loadConfig() {
         rootNode = null;
@@ -95,9 +92,6 @@ public final class XmlConfiguration implements IConfiguration {
 
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#saveConfig()
-     */
     @Override
     public void saveConfig() {
         XStream xs = getXStream();
@@ -125,89 +119,56 @@ public final class XmlConfiguration implements IConfiguration {
         return xs;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getUpnpServerName()
-     */
     @Override
     public String getUpnpServerName() {
         return this.rootNode.getUpnpServerName();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setUpnpServerName(java.lang.String)
-     */
     @Override
     public void setUpnpServerName(String upnpServerName) {
         this.rootNode.setUpnpServerName(upnpServerName);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getHttpServerPort()
-     */
     @Override
     public Integer getHttpServerPort() {
         return rootNode.getHttpServerPort();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setHttpServerPort(java.lang.Integer)
-     */
     @Override
     public void setHttpServerPort(Integer httpServerPort) {
         this.rootNode.setHttpServerPort(httpServerPort);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getVideoFolders()
-     */
     @Override
     public List<ConfigurationNode> getVideoFolders() {
         return this.rootNode.getVideoFolders();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getPodcasts()
-     */
     @Override
     public List<ConfigurationNode> getPodcasts() {
         return this.rootNode.getPodcasts();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getAudioFolders()
-     */
     @Override
     public List<ConfigurationNode> getAudioFolders() {
         return this.rootNode.getAudioFolders();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getPictureFolders()
-     */
     @Override
     public List<ConfigurationNode> getPictureFolders() {
         return this.rootNode.getPictureFolders();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#getParameter(net.holmes.core.configuration.Parameter)
-     */
     @Override
     public Boolean getParameter(Parameter prop) {
         return this.rootNode.getParameter(prop);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.configuration.IConfiguration#setParameter(net.holmes.core.configuration.Parameter, java.lang.Boolean)
-     */
     @Override
     public void setParameter(Parameter param, Boolean value) {
         this.rootNode.setParameter(param, value);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return this.rootNode.toString();

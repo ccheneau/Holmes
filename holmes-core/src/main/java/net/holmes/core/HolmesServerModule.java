@@ -23,7 +23,6 @@ import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.IChannelPipelineFactory;
 import net.holmes.core.http.IHttpRequestHandler;
-import net.holmes.core.http.WebApplicationProvider;
 import net.holmes.core.http.request.HttpBackendRequestHandler;
 import net.holmes.core.http.request.HttpContentRequestHandler;
 import net.holmes.core.http.request.HttpSiteRequestHandler;
@@ -34,7 +33,8 @@ import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.log.Slf4jTypeListener;
+import net.holmes.core.util.inject.InjectTypeListener;
+import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -48,14 +48,11 @@ import com.sun.jersey.spi.container.WebApplication;
 
 public final class HolmesServerModule extends AbstractModule {
 
-    /* (non-Javadoc)
-     * @see com.google.inject.AbstractModule#configure()
-     */
     @Override
     protected void configure() {
 
         // Bind slf4j loggers
-        bindListener(Matchers.any(), new Slf4jTypeListener());
+        bindListener(Matchers.any(), new InjectTypeListener());
 
         // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);

@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -66,9 +66,6 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
         this.siteRequestHandler = siteRequestHandler;
     }
 
-    /* (non-Javadoc)
-     * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#messageReceived(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.MessageEvent)
-     */
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws IOException {
         HttpRequest request = (HttpRequest) e.getMessage();
@@ -113,9 +110,6 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
         if (logger.isDebugEnabled()) logger.debug("[END] messageReceived");
     }
 
-    /* (non-Javadoc)
-     * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#exceptionCaught(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.ExceptionEvent)
-     */
     @Override
     public void exceptionCaught(ChannelHandlerContext context, ExceptionEvent event) throws Exception {
         Channel channel = event.getChannel();

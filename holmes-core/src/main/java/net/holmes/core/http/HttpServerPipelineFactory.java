@@ -38,9 +38,6 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
         this.httpRequestHandler = httpRequestHandler;
     }
 
-    /* (non-Javadoc)
-     * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
-     */
     @Override
     public ChannelPipeline getPipeline() throws Exception {
         // Create a default pipeline implementation.
@@ -60,9 +57,6 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
         return pipeline;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.IChannelPipelineFactory#setChannelGroup(org.jboss.netty.channel.group.ChannelGroup)
-     */
     @Override
     public void setChannelGroup(ChannelGroup channelGroup) {
         this.channelGroup = channelGroup;

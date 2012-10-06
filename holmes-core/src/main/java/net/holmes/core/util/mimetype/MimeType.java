@@ -61,9 +61,6 @@ public final class MimeType {
         return MediaType.TYPE_IMAGE.getValue().equals(type);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

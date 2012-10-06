@@ -70,9 +70,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         this.iconUrl = iconUrl;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     @Override
     public int compareTo(AbstractNode o) {
         if (this.getType() == o.getType()) return this.name.compareTo(o.name);
@@ -80,9 +77,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

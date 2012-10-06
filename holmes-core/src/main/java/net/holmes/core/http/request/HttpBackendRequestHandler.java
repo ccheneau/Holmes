@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -67,17 +67,11 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
         this.application = application;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#canProcess(java.lang.String)
-     */
     @Override
     public boolean canProcess(String requestPath) {
         return requestPath.startsWith(REQUEST_PATH);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.http.request.IHttpRequestHandler#processRequest(org.jboss.netty.handler.codec.http.HttpRequest, org.jboss.netty.channel.Channel)
-     */
     @Override
     public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
@@ -126,13 +120,10 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
             this.channel = channel;
         }
 
-        /* (non-Javadoc)
-         * @see com.sun.jersey.spi.container.ContainerResponseWriter#writeStatusAndHeaders(long, com.sun.jersey.spi.container.ContainerResponse)
-         */
         @Override
         public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException {
             // Set http headers
-            response = new DefaultHttpResponse(HttpVersion.HTTP_1_0, HttpResponseStatus.valueOf(cResponse.getStatus()));
+            response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = Lists.newArrayList();
                 for (Object v : headerEntry.getValue())
@@ -147,9 +138,6 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
             return new ChannelBufferOutputStream(buffer);
         }
 
-        /* (non-Javadoc)
-         * @see com.sun.jersey.spi.container.ContainerResponseWriter#finish()
-         */
         @Override
         public void finish() throws IOException {
             // Streaming is not supported. Entire response will be written

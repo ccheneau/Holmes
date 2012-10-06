@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util.log;
+package net.holmes.core.util.inject;
 
 import java.lang.reflect.Field;
 
@@ -29,9 +29,9 @@ import com.google.inject.spi.TypeListener;
 /**
  * Type listener for slf4j logger injection
  */
-public class Slf4jTypeListener implements TypeListener {
+public class InjectTypeListener implements TypeListener {
 
-    public Slf4jTypeListener() {
+    public InjectTypeListener() {
     }
 
     @Override
@@ -43,14 +43,14 @@ public class Slf4jTypeListener implements TypeListener {
         }
     }
 
-    private class Slf4jMembersInjector<T> implements MembersInjector<T> {
+    private static class Slf4jMembersInjector<T> implements MembersInjector<T> {
         private final Field field;
         private final Logger logger;
 
         public Slf4jMembersInjector(Field field) {
             this.field = field;
             this.logger = LoggerFactory.getLogger(field.getDeclaringClass());
-            field.setAccessible(true);
+            this.field.setAccessible(true);
         }
 
         @Override

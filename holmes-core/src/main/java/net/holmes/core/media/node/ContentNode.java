@@ -60,9 +60,6 @@ public final class ContentNode extends AbstractNode {
         this.resolution = resolution;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.node.AbstractNode#toString()
-     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

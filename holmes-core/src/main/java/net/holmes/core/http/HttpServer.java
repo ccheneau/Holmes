@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.group.ChannelGroup;
@@ -53,9 +53,6 @@ public final class HttpServer implements IServer {
         allChannels = new DefaultChannelGroup(HttpServer.class.getName());
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#start()
-     */
     @Override
     public void start() {
         if (logger.isInfoEnabled()) logger.info("Starting HTTP server");
@@ -75,9 +72,6 @@ public final class HttpServer implements IServer {
         if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#stop()
-     */
     @Override
     public void stop() {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");

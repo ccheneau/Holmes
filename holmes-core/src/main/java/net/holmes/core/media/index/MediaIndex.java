@@ -30,17 +30,11 @@ public class MediaIndex implements IMediaIndex {
         elements = HashBiMap.create();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.index.IMediaIndex#getElement(java.lang.String)
-     */
     @Override
     public IndexElement getElement(String uuid) {
         return elements.get(uuid);
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.index.IMediaIndex#add(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public String add(String parentId, String mediaType, String path, String name) {
         IndexElement element = new IndexElement(parentId, mediaType, path, name);
@@ -52,9 +46,6 @@ public class MediaIndex implements IMediaIndex {
         return uuid;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.media.index.IMediaIndex#put(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public void put(String uuid, String parentId, String mediaType, String path, String name) {
         if (elements.get(uuid) == null) {

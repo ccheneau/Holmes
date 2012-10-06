@@ -26,7 +26,7 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,9 +45,6 @@ public class MediaServiceTest extends TestCase {
     @Inject
     private IConfiguration configuration;
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
     @Override
     @Before
     public void setUp() {

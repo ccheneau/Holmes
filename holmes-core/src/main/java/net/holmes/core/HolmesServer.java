@@ -41,7 +41,7 @@ import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemTrayIcon;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
 
@@ -65,9 +65,6 @@ public final class HolmesServer implements IServer {
         this.bundle = bundle;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#start()
-     */
     @Override
     public void start() {
         if (logger.isInfoEnabled()) logger.info("Starting Holmes server");
@@ -84,9 +81,6 @@ public final class HolmesServer implements IServer {
         if (logger.isInfoEnabled()) logger.info("Holmes server started");
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.IServer#stop()
-     */
     @Override
     public void stop() {
         if (logger.isInfoEnabled()) logger.info("Stopping Holmes server");

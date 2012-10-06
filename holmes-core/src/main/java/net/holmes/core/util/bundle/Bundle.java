@@ -26,9 +26,6 @@ public class Bundle implements IBundle {
         bundle = ResourceBundle.getBundle("message");
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.util.bundle.IBundle#getString(java.lang.String)
-     */
     @Override
     public String getString(String key) {
         return bundle.getString(key);

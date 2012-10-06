@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import net.holmes.core.util.log.InjectLogger;
+import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
 
@@ -50,9 +50,6 @@ public final class MimeTypeFactory implements IMimeTypeFactory {
         }
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.util.mimetype.IMimeTypeFactory#getMimeType(java.lang.String)
-     */
     @Override
     public MimeType getMimeType(String fileName) {
         // Get file extension
