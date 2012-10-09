@@ -43,12 +43,6 @@ $(document).ready(function() {
     $("#btn_reset").addClass("fm-button ui-state-default ui-corner-all fm-button-icon-left hover");
     $("#btn_reset").html($("#btn_reset").html() + "<span class='ui-icon ui-icon-refresh'></span>");
     
-    $(".hover").hover(function() {
-    		$(this).addClass("ui-state-hover");
-		},function(){
-			$(this).removeClass("ui-state-hover");
-	});
-    
     $('#easter').click(function() {
     	$('body').attr('class','roll');
     });
