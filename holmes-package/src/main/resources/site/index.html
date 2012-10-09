@@ -19,13 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<title>Holmes</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<link type="text/css" href="css/custom-theme/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+		<link type="text/css" href="css/custom-theme/jquery-ui-1.9.0.custom.min.css" rel="stylesheet" />
 		<link type="text/css" href="css/ui.jqgrid.css" rel="stylesheet" />	
 		<link type="text/css" href="css/holmes.css" rel="stylesheet" />
 		<link rel="shortcut icon" type="image/png" href="css/images/favicon.png" />
-		<link rel="icon" type="image/png" href="css/images/favicon.png" />
-		<script src="js/jquery-1.8.1.min.js" type="text/javascript"></script>
-		<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>		
+		<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+		<script src="js/jquery-ui-1.9.0.custom.min.js" type="text/javascript"></script>		
 		<script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
 		<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 		<script src="js/jquery.i18n.properties-min-1.0.9.js" type="text/javascript"></script>
@@ -88,11 +87,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 									<tbody>
 										<tr>
 											<td class="i18n configuration_label" data-msg="msg.config.serverName">Server name</td>
-											<td><input id="text_server_name" type="text" class="text" name="serverName" /></td>
+											<td><input id="text_server_name" type="text" name="serverName" required="required" /></td>
 										</tr>
 										<tr>
 											<td class="i18n configuration_label" data-msg="msg.config.httpServerPort">Http server port</td>
-											<td><input id="text_http_server_port" type="text" class="number" size="6" name="httpServerPort" /></td>
+											<td><input id="text_http_server_port" type="number" size="6" name="httpServerPort" min="1024" max="99999" required="required" /></td>
 										</tr>
 										<tr>
 											<td class="configuration_label"><input id="chk_prependPodcastItem" type="checkbox" name="prependPodcastItem" value="true" /></td>
