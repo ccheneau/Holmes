@@ -16,8 +16,8 @@
 */
 package net.holmes.core.http;
 
-
 import org.jboss.netty.channel.Channel;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
 public interface IHttpRequestHandler {
@@ -25,7 +25,7 @@ public interface IHttpRequestHandler {
     /**
      * Check if handler can process request
      */
-    public boolean canProcess(String requestPath);
+    public boolean canProcess(String requestPath, HttpMethod method);
 
     /**
      * Process request

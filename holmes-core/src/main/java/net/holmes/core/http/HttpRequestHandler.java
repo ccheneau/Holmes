@@ -25,8 +25,6 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.util.inject.InjectLogger;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -34,7 +32,7 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -46,13 +44,13 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * HttpServerHandler redirect {@link net.holmes.core.http.HttpServer} requests to proper handler
+ * HttpServerHandler redirect Http requests to proper handler
  */
-public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
-    @InjectLogger
-    private Logger logger;
+public final class HttpRequestHandler extends SimpleChannelHandler {
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 
     private final IHttpRequestHandler contentRequestHandler;
     private final IHttpRequestHandler backendRequestHandler;
@@ -91,20 +89,16 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
             }
         }
 
-        if (request.getMethod().equals(HttpMethod.POST) || request.getMethod().equals(HttpMethod.GET)) {
-            QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-            try {
-                // Dispatch request to proper handler
-                if (contentRequestHandler.canProcess(decoder.getPath())) {
-                    contentRequestHandler.processRequest(request, e.getChannel());
-                } else if (backendRequestHandler.canProcess(decoder.getPath())) {
-                    backendRequestHandler.processRequest(request, e.getChannel());
-                } else {
-                    siteRequestHandler.processRequest(request, e.getChannel());
-                }
-            } catch (HttpRequestException ex) {
-                sendError(ctx, ex.getStatus());
-            }
+        String requestPath = new QueryStringDecoder(request.getUri()).getPath();
+        try {
+            // Dispatch request to proper handler
+            if (contentRequestHandler.canProcess(requestPath, request.getMethod())) contentRequestHandler.processRequest(request, e.getChannel());
+            else if (backendRequestHandler.canProcess(requestPath, request.getMethod())) backendRequestHandler.processRequest(request, e.getChannel());
+            else if (siteRequestHandler.canProcess(requestPath, request.getMethod())) siteRequestHandler.processRequest(request, e.getChannel());
+            else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+
+        } catch (HttpRequestException ex) {
+            sendError(ctx, ex.getStatus());
         }
 
         if (logger.isDebugEnabled()) logger.debug("[END] messageReceived");
@@ -120,12 +114,6 @@ public final class HttpRequestHandler extends SimpleChannelUpstreamHandler {
         }
 
         if (channel.isConnected() && !event.getFuture().isSuccess()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("isCancelled " + event.getFuture().isCancelled());
-                logger.debug("isDone " + event.getFuture().isDone());
-                logger.debug("isSuccess " + event.getFuture().isSuccess());
-                logger.debug(cause.getMessage(), cause);
-            }
             sendError(context, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
     }

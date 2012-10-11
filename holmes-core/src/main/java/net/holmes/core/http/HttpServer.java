@@ -23,34 +23,37 @@ import javax.inject.Inject;
 
 import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.sun.jersey.spi.container.WebApplication;
 
 /**
  * HTTP server main class  
  */
 public final class HttpServer implements IServer {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
-    public static final String HTTP_SERVER_NAME = "Holmes http server";
+    public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
-    private ChannelGroup allChannels = null;
     private ServerBootstrap bootstrap = null;
+    private final ChannelGroup allChannels;
     private final IChannelPipelineFactory pipelineFactory;
     private final IConfiguration configuration;
+    private final WebApplication application;
 
     @Inject
-    public HttpServer(IChannelPipelineFactory pipelineFactory, IConfiguration configuration) {
+    public HttpServer(IChannelPipelineFactory pipelineFactory, WebApplication application, IConfiguration configuration) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
+        this.application = application;
         // Init channel group
-        allChannels = new DefaultChannelGroup(HttpServer.class.getName());
+        this.allChannels = new DefaultChannelGroup(HttpServer.class.getName());
     }
 
     @Override
@@ -77,10 +80,9 @@ public final class HttpServer implements IServer {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
         // Stop the server
-        if (bootstrap != null) {
-            allChannels.close();
-            bootstrap.releaseExternalResources();
-        }
+        allChannels.close();
+        if (bootstrap != null) bootstrap.releaseExternalResources();
+        application.destroy();
 
         if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
     }

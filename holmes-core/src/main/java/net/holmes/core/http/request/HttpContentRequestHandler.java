@@ -29,13 +29,13 @@ import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
-import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -43,15 +43,15 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler to serve contents (i.e. videos, audios or pictures) to UPnP media renderer
  */
 public final class HttpContentRequestHandler implements IHttpRequestHandler {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);
 
-    private final static String REQUEST_PATH = "/content";
+    private static final String REQUEST_PATH = "/content";
 
     private final IMediaService mediaService;
 
@@ -62,8 +62,8 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(String requestPath) {
-        return requestPath.startsWith(REQUEST_PATH);
+    public boolean canProcess(String requestPath, HttpMethod method) {
+        return method.equals(HttpMethod.GET) && requestPath.startsWith(REQUEST_PATH);
     }
 
     @Override

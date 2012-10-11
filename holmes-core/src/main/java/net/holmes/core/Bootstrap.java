@@ -43,7 +43,7 @@ public class Bootstrap {
                 Injector injector = Guice.createInjector(new HolmesServerModule());
 
                 // Start Holmes server
-                IServer holmesServer = injector.getInstance(HolmesServer.class);
+                final IServer holmesServer = injector.getInstance(HolmesServer.class);
                 try {
                     holmesServer.start();
                 } catch (RuntimeException e) {
@@ -52,7 +52,12 @@ public class Bootstrap {
                 }
 
                 // Add shutdown hook
-                Runtime.getRuntime().addShutdownHook(new ShutdownHook(holmesServer));
+                Runtime.getRuntime().addShutdownHook(new Thread() {
+                    @Override
+                    public void run() {
+                        holmesServer.stop();
+                    }
+                });
             } else {
                 System.err.println(SystemProperty.HOLMES_HOME.getName() + " system variable undefined or not valid");
                 System.exit(1);
@@ -60,23 +65,6 @@ public class Bootstrap {
         } else {
             System.err.println("Holmes is already running");
             System.exit(1);
-        }
-    }
-
-    /**
-     * Shutdown hook: stop Holmes server on system exit
-     *
-     */
-    private static class ShutdownHook extends Thread {
-        IServer holmesServer;
-
-        public ShutdownHook(IServer holmesServer) {
-            this.holmesServer = holmesServer;
-        }
-
-        @Override
-        public void run() {
-            holmesServer.stop();
         }
     }
 }

@@ -17,7 +17,6 @@
 package net.holmes.core.http;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -28,14 +27,16 @@ import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
+import com.google.inject.Injector;
+
 public final class HttpServerPipelineFactory implements IChannelPipelineFactory {
 
-    private final ChannelHandler httpRequestHandler;
+    private final Injector injector;
     private ChannelGroup channelGroup = null;
 
     @Inject
-    public HttpServerPipelineFactory(@Named("http") ChannelHandler httpRequestHandler) {
-        this.httpRequestHandler = httpRequestHandler;
+    public HttpServerPipelineFactory(Injector injector) {
+        this.injector = injector;
     }
 
     @Override
@@ -53,7 +54,7 @@ public final class HttpServerPipelineFactory implements IChannelPipelineFactory 
         pipeline.addLast("channelEvent", new ChannelEventHandler(this.channelGroup));
 
         // Add http request handler
-        pipeline.addLast("httpRequestHandler", httpRequestHandler);
+        pipeline.addLast("httpRequestHandler", injector.getInstance(ChannelHandler.class));
         return pipeline;
     }
 

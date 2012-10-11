@@ -46,18 +46,16 @@ public class WebApplicationProvider implements Provider<WebApplication> {
     public WebApplication get() {
         // Jersey initialization
         WebApplication application = WebApplicationFactory.createWebApplication();
-        if (!application.isInitiated()) {
 
-            // Set web application properties
-            Map<String, Object> props = Maps.newHashMap();
-            props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
-            props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        // Set web application properties
+        Map<String, Object> props = Maps.newHashMap();
+        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
+        props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
-            // Initialize web application
-            ResourceConfig rcf = new PackagesResourceConfig(props);
-            application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
-        }
+        // Initialize web application
+        ResourceConfig rcf = new PackagesResourceConfig(props);
+        application.initiate(rcf, new GuiceComponentProviderFactory(rcf, injector));
+
         return application;
     }
-
 }

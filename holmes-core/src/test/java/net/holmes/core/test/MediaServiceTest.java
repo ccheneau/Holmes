@@ -26,18 +26,17 @@ import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.util.inject.InjectLogger;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class MediaServiceTest extends TestCase {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MediaServiceTest.class);
 
     @Inject
     private IMediaService mediaService;

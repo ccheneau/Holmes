@@ -27,7 +27,6 @@ import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.inject.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -35,6 +34,7 @@ import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -42,13 +42,13 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler to serve Holmes administration site pages
  */
 public final class HttpSiteRequestHandler implements IHttpRequestHandler {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
 
     private final IMimeTypeFactory mimeTypeFactory;
     private final String siteDirectory;
@@ -60,8 +60,8 @@ public final class HttpSiteRequestHandler implements IHttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(String requestPath) {
-        return true;
+    public boolean canProcess(String requestPath, HttpMethod method) {
+        return method.equals(HttpMethod.GET);
     }
 
     @Override

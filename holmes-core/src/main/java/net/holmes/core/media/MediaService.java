@@ -43,11 +43,11 @@ import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.inject.InjectLogger;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -63,8 +63,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public final class MediaService implements IMediaService {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MediaService.class);
 
     private final IConfiguration configuration;
     private final IMimeTypeFactory mimeTypeFactory;

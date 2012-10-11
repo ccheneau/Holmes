@@ -33,7 +33,6 @@ import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.inject.InjectTypeListener;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
@@ -42,7 +41,6 @@ import org.jboss.netty.channel.ChannelHandler;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
 
@@ -50,9 +48,6 @@ public final class HolmesServerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
-        // Bind slf4j loggers
-        bindListener(Matchers.any(), new InjectTypeListener());
 
         // Bind configuration
         bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
@@ -68,11 +63,11 @@ public final class HolmesServerModule extends AbstractModule {
         bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
 
         // Bind Jersey application
-        bind(WebApplication.class).toProvider(WebApplicationProvider.class);
+        bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
 
         // Bind Http handlers
         bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelHandler.class).annotatedWith(Names.named("http")).to(HttpRequestHandler.class);
+        bind(ChannelHandler.class).to(HttpRequestHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpSiteRequestHandler.class);

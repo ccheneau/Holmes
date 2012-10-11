@@ -24,9 +24,9 @@ import net.holmes.core.IServer;
 import net.holmes.core.configuration.IConfiguration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.IMediaService;
-import net.holmes.core.util.inject.InjectLogger;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teleal.cling.UpnpService;
 import org.teleal.cling.UpnpServiceImpl;
 import org.teleal.cling.binding.LocalServiceBindingException;
@@ -46,8 +46,7 @@ import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
  * UPnP server main class
  */
 public final class UpnpServer implements IServer {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
     private UpnpService upnpService = null;
 

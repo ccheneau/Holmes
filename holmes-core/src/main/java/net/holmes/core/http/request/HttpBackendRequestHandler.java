@@ -28,7 +28,6 @@ import javax.inject.Inject;
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
-import net.holmes.core.util.inject.InjectLogger;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -38,11 +37,13 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
+import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.sun.jersey.core.header.InBoundHeaders;
@@ -55,10 +56,9 @@ import com.sun.jersey.spi.container.WebApplication;
  * Handler for backend requests from Holmes administration site
  */
 public final class HttpBackendRequestHandler implements IHttpRequestHandler {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HttpBackendRequestHandler.class);
 
-    private final static String REQUEST_PATH = "/backend/";
+    private static final String REQUEST_PATH = "/backend/";
 
     private final WebApplication application;
 
@@ -68,7 +68,7 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(String requestPath) {
+    public boolean canProcess(String requestPath, HttpMethod method) {
         return requestPath.startsWith(REQUEST_PATH);
     }
 

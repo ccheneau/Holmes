@@ -20,17 +20,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import net.holmes.core.util.inject.InjectLogger;
-
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 
 public final class MimeTypeFactory implements IMimeTypeFactory {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MimeTypeFactory.class);
 
-    private Properties properties = null;
+    private final Properties properties;
 
     public MimeTypeFactory() {
         // Load mime types from property file
