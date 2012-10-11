@@ -40,10 +40,6 @@ public class TestConfiguration implements IConfiguration {
     }
 
     @Override
-    public void loadConfig() {
-    }
-
-    @Override
     public void saveConfig() {
     }
 

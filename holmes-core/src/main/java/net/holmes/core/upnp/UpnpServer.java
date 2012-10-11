@@ -105,7 +105,6 @@ public final class UpnpServer implements IServer {
         DefaultServiceManager serviceManager = new DefaultServiceManager(contentDirectoryService, ContentDirectoryService.class);
         contentDirectoryService.setManager(serviceManager);
 
-        // Content directory service
         ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
         contentDirectory.setConfiguration(configuration);
         contentDirectory.setMediaService(mediaService);

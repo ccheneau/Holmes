@@ -62,9 +62,7 @@ public final class XmlConfiguration implements IConfiguration {
         return new File(confPath.toString() + File.separator + CONF_FILE_NAME);
     }
 
-    @Override
-    public void loadConfig() {
-        rootNode = null;
+    private void loadConfig() {
         boolean configLoaded = false;
         XStream xs = getXStream();
 
@@ -88,7 +86,6 @@ public final class XmlConfiguration implements IConfiguration {
         if (rootNode == null) rootNode = new XmlRootNode();
         rootNode.checkDefaultValues();
         if (!configLoaded) saveConfig();
-
     }
 
     @Override

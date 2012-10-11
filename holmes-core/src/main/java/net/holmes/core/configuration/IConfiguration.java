@@ -36,8 +36,6 @@ public interface IConfiguration {
     static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     static final int DEFAULT_HTTP_SERVER_PORT = 8085;
 
-    public void loadConfig();
-
     public void saveConfig();
 
     public String getUpnpServerName();
