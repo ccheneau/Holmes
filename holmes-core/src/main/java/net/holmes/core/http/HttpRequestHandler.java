@@ -81,8 +81,8 @@ public final class HttpRequestHandler extends SimpleChannelHandler {
                     QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + content.toString(Charset.forName("utf-8")));
                     Map<String, List<String>> params = queryStringDecoder.getParameters();
                     if (params != null) {
-                        for (String paramKey : params.keySet()) {
-                            logger.debug("Post parameter: " + paramKey + " => " + params.get(paramKey));
+                        for (Entry<String, List<String>> entry : params.entrySet()) {
+                            logger.debug("Post parameter: " + entry.getKey() + " => " + entry.getValue());
                         }
                     }
                 }

@@ -55,11 +55,11 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     public Date getModifedDate() {
-        return modifedDate;
+        return new Date(modifedDate.getTime());
     }
 
     public void setModifedDate(Date modifedDate) {
-        this.modifedDate = modifedDate;
+        this.modifedDate = new Date(modifedDate.getTime());
     }
 
     public String getIconUrl() {

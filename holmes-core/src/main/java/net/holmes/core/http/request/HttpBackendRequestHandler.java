@@ -111,7 +111,7 @@ public final class HttpBackendRequestHandler implements IHttpRequestHandler {
      * Response writer for backend requests     
      *
      */
-    private final class BackendResponseWriter implements ContainerResponseWriter {
+    private final static class BackendResponseWriter implements ContainerResponseWriter {
 
         private final Channel channel;
         private HttpResponse response;

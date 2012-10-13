@@ -57,7 +57,7 @@ public final class XmlConfiguration implements IConfiguration {
 
         // Create holmes user conf directory if it does not exist
         File fConfPath = new File(confPath.toString());
-        if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
+        if (!fConfPath.exists() || !fConfPath.isDirectory()) if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + confPath.toString());
 
         return new File(confPath.toString() + File.separator + CONF_FILE_NAME);
     }

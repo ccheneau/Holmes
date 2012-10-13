@@ -34,6 +34,7 @@ import javax.inject.Named;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
 import net.holmes.core.configuration.IConfiguration;
@@ -102,7 +103,13 @@ public final class HolmesServer implements IServer {
                 FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
                 UIManager.put("MenuItem.bold.font", menuItemBoldFont);
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
+            init = false;
+        } catch (InstantiationException e) {
+            init = false;
+        } catch (IllegalAccessException e) {
+            init = false;
+        } catch (UnsupportedLookAndFeelException e) {
             init = false;
         }
         return init;

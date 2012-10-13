@@ -31,8 +31,8 @@ public class HolmesHomeDirectory {
         StringBuilder homeSubDirectory = new StringBuilder();
         homeSubDirectory.append(SystemProperty.HOLMES_HOME.getValue()).append(File.separator).append(subDirName);
         File confDir = new File(homeSubDirectory.toString());
-        if (!confDir.exists()) {
-            confDir.mkdir();
+        if (!confDir.exists() && !confDir.mkdir()) {
+            throw new RuntimeException("Failed to create " + homeSubDirectory.toString());
         }
         return homeSubDirectory.toString();
     }

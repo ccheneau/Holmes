@@ -34,7 +34,8 @@ public class HolmesLock {
 
             // Create lock file path if it does not exist
             File fConfPath = new File(homePath.toString());
-            if (!fConfPath.exists() || !fConfPath.isDirectory()) fConfPath.mkdirs();
+            if (!fConfPath.exists() || !fConfPath.isDirectory())
+                if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + homePath.toString());
 
             // Create lock file
             final File lockFile = new File(homePath.toString(), "holmes.lock");
@@ -48,7 +49,7 @@ public class HolmesLock {
                         try {
                             fileLock.release();
                             randomAccessFile.close();
-                            lockFile.delete();
+                            if (!lockFile.delete()) System.err.println("Unable to remove lock file: " + lockFile.getPath());
                         } catch (IOException e) {
                             System.err.println("Unable to remove lock file: " + lockFile.getPath() + "  " + e.getMessage());
                         }
