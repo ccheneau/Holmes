@@ -124,6 +124,7 @@ public class Size implements CloneableType {
      * Duplicates this object.
      * @return A duplicate Size object.
      */
+    @Override
     public Object clone() {
         if (this.height != null) {
             return new Size(this.length, this.width, this.height);
@@ -136,6 +137,7 @@ public class Size implements CloneableType {
      * Returns a string representation of this object.
      * @return A string representation of this object.
      */
+    @Override
     public String toString() {
         if (height != null) {
             return length + "x" + width + "x" + height;
@@ -144,9 +146,20 @@ public class Size implements CloneableType {
         }
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Size)) return false;
         if (this.toString().equals(o.toString())) return true;
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((height == null) ? 0 : height.hashCode());
+        result = prime * result + ((length == null) ? 0 : length.hashCode());
+        result = prime * result + ((width == null) ? 0 : width.hashCode());
+        return result;
     }
 }

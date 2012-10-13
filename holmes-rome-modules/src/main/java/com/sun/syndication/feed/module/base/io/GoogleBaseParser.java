@@ -83,8 +83,8 @@ public class GoogleBaseParser implements ModuleParser {
     private static final Logger logger = Logger.getLogger(GoogleBaseParser.class.getName());
     public static final char[] INTEGER_CHARS = "-1234567890".toCharArray();
     public static final char[] FLOAT_CHARS = "-1234567890.".toCharArray();
-    public static final SimpleDateFormat SHORT_DT_FMT = new SimpleDateFormat("yyyy-MM-dd");
-    public static final SimpleDateFormat LONG_DT_FMT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final String SHORT_DT_FMT = "yyyy-MM-dd";
+    public static final String LONG_DT_FMT = "yyyy-MM-dd'T'HH:mm:ss";
     static final Namespace NS = Namespace.getNamespace(GoogleBase.URI);
     static final Properties PROPS2TAGS = new Properties();
     static PropertyDescriptor[] pds = null;
@@ -185,17 +185,17 @@ public class GoogleBaseParser implements ModuleParser {
             String text = tag.getText().trim();
 
             if (text.length() > 10) {
-                tagValue = GoogleBaseParser.LONG_DT_FMT.parse(text);
+                tagValue = new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).parse(text);
             } else {
-                tagValue = GoogleBaseParser.SHORT_DT_FMT.parse(text);
+                tagValue = new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).parse(text);
             }
         } else if ((pd.getPropertyType() == IntUnit.class) || (pd.getPropertyType().getComponentType() == IntUnit.class)) {
             tagValue = new IntUnit(tag.getText());
         } else if ((pd.getPropertyType() == FloatUnit.class) || (pd.getPropertyType().getComponentType() == FloatUnit.class)) {
             tagValue = new FloatUnit(tag.getText());
         } else if ((pd.getPropertyType() == DateTimeRange.class) || (pd.getPropertyType().getComponentType() == DateTimeRange.class)) {
-            tagValue = new DateTimeRange(LONG_DT_FMT.parse(tag.getChild("start", GoogleBaseParser.NS).getText().trim()), LONG_DT_FMT.parse(tag
-                    .getChild("end", GoogleBaseParser.NS).getText().trim()));
+            tagValue = new DateTimeRange(new SimpleDateFormat(LONG_DT_FMT).parse(tag.getChild("start", GoogleBaseParser.NS).getText().trim()),
+                    new SimpleDateFormat(LONG_DT_FMT).parse(tag.getChild("end", GoogleBaseParser.NS).getText().trim()));
         } else if ((pd.getPropertyType() == ShippingType.class) || (pd.getPropertyType().getComponentType() == ShippingType.class)) {
             FloatUnit price = new FloatUnit(tag.getChild("price", GoogleBaseParser.NS).getText().trim());
             ShippingType.ServiceEnumeration service = ShippingType.ServiceEnumeration

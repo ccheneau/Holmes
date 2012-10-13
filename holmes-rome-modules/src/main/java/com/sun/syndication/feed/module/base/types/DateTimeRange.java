@@ -86,6 +86,7 @@ public class DateTimeRange implements CloneableType {
      * Clones the object
      * @return Duplicate of this object.
      */
+    @Override
     public Object clone() {
         DateTimeRange retValue = new DateTimeRange(null, null);
 
@@ -104,10 +105,12 @@ public class DateTimeRange implements CloneableType {
      * String representation of the object.
      * @return String representation of the object.
      */
+    @Override
     public String toString() {
         return "Start: " + this.start + " End: " + this.end;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof DateTimeRange) || o == null) return false;
         DateTimeRange d = (DateTimeRange) o;
@@ -118,4 +121,14 @@ public class DateTimeRange implements CloneableType {
         if (this.end != null && !this.end.equals(d.getEnd())) return false;
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((end == null) ? 0 : end.hashCode());
+        result = prime * result + ((start == null) ? 0 : start.hashCode());
+        return result;
+    }
+
 }

@@ -41,14 +41,15 @@ public abstract class SSEModule implements Module {
 
     @Override
     public Object clone() {
-        SSEModule clone = null;
         try {
-            clone = this.getClass().newInstance();
+            SSEModule clone = this.getClass().newInstance();
             clone.copyFrom(this);
+            return clone;
         } catch (InstantiationException e) {
+            throw new AssertionError(e);
         } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
         }
-        return clone;
     }
 
     @Override

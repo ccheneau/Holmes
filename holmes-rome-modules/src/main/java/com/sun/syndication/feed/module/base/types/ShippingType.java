@@ -121,6 +121,16 @@ public class ShippingType implements CloneableType {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((country == null) ? 0 : country.hashCode());
+        result = prime * result + ((price == null) ? 0 : price.hashCode());
+        result = prime * result + ((service == null) ? 0 : service.hashCode());
+        return result;
+    }
+
     /**
      * Enumeration class of valid options for ServiceType.
      */

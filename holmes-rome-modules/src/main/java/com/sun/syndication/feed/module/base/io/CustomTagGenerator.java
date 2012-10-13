@@ -20,6 +20,7 @@
 package com.sun.syndication.feed.module.base.io;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -79,17 +80,17 @@ public class CustomTagGenerator implements ModuleGenerator {
                 DateTimeRange dtr = (DateTimeRange) tag.getValue();
                 Element newTag = new Element(tag.getName(), CustomTagParser.NS);
                 newTag.setAttribute("type", "dateTimeRange");
-                newTag.addContent(this.generateSimpleElement("start", GoogleBaseParser.LONG_DT_FMT.format(dtr.getStart())));
-                newTag.addContent(this.generateSimpleElement("end", GoogleBaseParser.LONG_DT_FMT.format(dtr.getEnd())));
+                newTag.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getStart())));
+                newTag.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getEnd())));
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof ShortDate) {
                 ShortDate sd = (ShortDate) tag.getValue();
-                Element newTag = this.generateSimpleElement(tag.getName(), GoogleBaseParser.SHORT_DT_FMT.format(sd));
+                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(sd));
                 newTag.setAttribute("type", "date");
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof Date) {
                 Date d = (Date) tag.getValue();
-                Element newTag = this.generateSimpleElement(tag.getName(), GoogleBaseParser.SHORT_DT_FMT.format(d));
+                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(d));
                 newTag.setAttribute("type", "dateTime");
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof Integer) {

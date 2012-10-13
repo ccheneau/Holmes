@@ -87,18 +87,21 @@ public class Restriction implements Serializable {
         return value;
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
 
@@ -108,7 +111,9 @@ public class Restriction implements Serializable {
     /**
      * Indicates the action of the relationship
      */
-    public static class Relationship {
+    public static class Relationship implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         /**
          * An Allow relationship
          */
@@ -124,6 +129,7 @@ public class Restriction implements Serializable {
             this.value = value;
         }
 
+        @Override
         public String toString() {
             return this.value;
         }
@@ -132,7 +138,9 @@ public class Restriction implements Serializable {
     /**
      * Indicated the type of the relationship
      */
-    public static class Type {
+    public static class Type implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         /**
          * Indicates a Country type.
          */
@@ -148,6 +156,7 @@ public class Restriction implements Serializable {
             this.value = value;
         }
 
+        @Override
         public String toString() {
             return this.value;
         }

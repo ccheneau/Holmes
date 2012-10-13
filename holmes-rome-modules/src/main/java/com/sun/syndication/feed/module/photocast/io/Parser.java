@@ -42,7 +42,6 @@
 package com.sun.syndication.feed.module.photocast.io;
 
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -67,9 +66,9 @@ public class Parser implements ModuleParser {
 
     private static final Namespace NS = Namespace.getNamespace(PhotocastModule.URI);
     //2005-11-29T04:36:06
-    static final DateFormat PHOTO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    static final String PHOTO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     //2006-01-11 16:42:26 -0800
-    static final DateFormat CROP_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+    static final String CROP_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss Z";
 
     /** Creates a new instance of Parser */
     public Parser() {
@@ -88,13 +87,13 @@ public class Parser implements ModuleParser {
             if (!e.getNamespace().equals(Parser.NS)) continue;
             if (e.getName().equals("photoDate")) {
                 try {
-                    pm.setPhotoDate(Parser.PHOTO_DATE_FORMAT.parse(e.getText()));
+                    pm.setPhotoDate(new SimpleDateFormat(Parser.PHOTO_DATE_FORMAT).parse(e.getText()));
                 } catch (Exception ex) {
                     logger.warning("Unable to parse photoDate: " + e.getText() + " " + ex.toString());
                 }
             } else if (e.getName().equals("cropDate")) {
                 try {
-                    pm.setCropDate(Parser.CROP_DATE_FORMAT.parse(e.getText()));
+                    pm.setCropDate(new SimpleDateFormat(Parser.CROP_DATE_FORMAT).parse(e.getText()));
                 } catch (Exception ex) {
                     logger.warning("Unable to parse cropDate: " + e.getText() + " " + ex.toString());
                 }

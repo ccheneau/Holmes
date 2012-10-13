@@ -63,11 +63,20 @@ public final class Polygon extends AbstractSurface implements Cloneable {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((exterior == null) ? 0 : exterior.hashCode());
+        result = prime * result + ((interior == null) ? 0 : interior.hashCode());
+        return result;
+    }
+
     /**
-     * Retrieve the outer border
-     *
-     * @return the border ring
-     */
+      * Retrieve the outer border
+      *
+      * @return the border ring
+      */
     public AbstractRing getExterior() {
         return exterior;
     }

@@ -23,6 +23,7 @@ package com.sun.syndication.feed.module.base.io;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -81,20 +82,21 @@ public class CustomTagParser implements ModuleParser {
                         tags.add(new CustomTagImpl(child.getName(), new FloatUnit(child.getTextTrim())));
                     } else if (type.equals("date")) {
                         try {
-                            tags.add(new CustomTagImpl(child.getName(), new ShortDate(GoogleBaseParser.SHORT_DT_FMT.parse(child.getTextTrim()))));
+                            tags.add(new CustomTagImpl(child.getName(), new ShortDate(new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).parse(child
+                                    .getTextTrim()))));
                         } catch (ParseException e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
                         }
                     } else if (type.equals("dateTime")) {
                         try {
-                            tags.add(new CustomTagImpl(child.getName(), GoogleBaseParser.LONG_DT_FMT.parse(child.getTextTrim())));
+                            tags.add(new CustomTagImpl(child.getName(), new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).parse(child.getTextTrim())));
                         } catch (ParseException e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);
                         }
                     } else if (type.equals("dateTimeRange")) {
                         try {
-                            tags.add(new CustomTagImpl(child.getName(), new DateTimeRange(GoogleBaseParser.LONG_DT_FMT.parse(child
-                                    .getChild("start", CustomTagParser.NS).getText().trim()), GoogleBaseParser.LONG_DT_FMT.parse(child
+                            tags.add(new CustomTagImpl(child.getName(), new DateTimeRange(new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).parse(child
+                                    .getChild("start", CustomTagParser.NS).getText().trim()), new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).parse(child
                                     .getChild("end", CustomTagParser.NS).getText().trim()))));
                         } catch (Exception e) {
                             logger.log(Level.WARNING, "Unable to parse date type on " + child.getName(), e);

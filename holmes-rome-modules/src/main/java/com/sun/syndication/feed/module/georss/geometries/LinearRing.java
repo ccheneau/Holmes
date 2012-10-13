@@ -41,6 +41,14 @@ public final class LinearRing extends AbstractRing {
         return getPositionList().equals(((LinearRing) obj).getPositionList());
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((posList == null) ? 0 : posList.hashCode());
+        return result;
+    }
+
     /**
      * Get the position list
      *

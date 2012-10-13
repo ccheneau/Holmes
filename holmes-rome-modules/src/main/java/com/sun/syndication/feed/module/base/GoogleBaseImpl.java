@@ -40,6 +40,7 @@ package com.sun.syndication.feed.module.base;
 
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.sun.syndication.feed.impl.EqualsBean;
@@ -1404,6 +1405,105 @@ public class GoogleBaseImpl implements GoogleBase {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((SexualOrientation == null) ? 0 : SexualOrientation.hashCode());
+        result = prime * result + Arrays.hashCode(actors);
+        result = prime * result + ((age == null) ? 0 : age.hashCode());
+        result = prime * result + Arrays.hashCode(agents);
+        result = prime * result + ((apparelType == null) ? 0 : apparelType.hashCode());
+        result = prime * result + ((area == null) ? 0 : area.hashCode());
+        result = prime * result + Arrays.hashCode(artists);
+        result = prime * result + Arrays.hashCode(authors);
+        result = prime * result + ((bathrooms == null) ? 0 : bathrooms.hashCode());
+        result = prime * result + ((bedrooms == null) ? 0 : bedrooms.hashCode());
+        result = prime * result + ((brand == null) ? 0 : brand.hashCode());
+        result = prime * result + Arrays.hashCode(color);
+        result = prime * result + ((condition == null) ? 0 : condition.hashCode());
+        result = prime * result + ((courseDateRange == null) ? 0 : courseDateRange.hashCode());
+        result = prime * result + ((courseNumber == null) ? 0 : courseNumber.hashCode());
+        result = prime * result + ((courseTimes == null) ? 0 : courseTimes.hashCode());
+        result = prime * result + ((currency == null) ? 0 : currency.hashCode());
+        result = prime * result + ((deliveryNotes == null) ? 0 : deliveryNotes.hashCode());
+        result = prime * result + ((deliveryRadius == null) ? 0 : deliveryRadius.hashCode());
+        result = prime * result + ((education == null) ? 0 : education.hashCode());
+        result = prime * result + ((employer == null) ? 0 : employer.hashCode());
+        result = prime * result + Arrays.hashCode(ethnicities);
+        result = prime * result + ((eventDateRange == null) ? 0 : eventDateRange.hashCode());
+        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
+        result = prime * result + ((expirationDateTime == null) ? 0 : expirationDateTime.hashCode());
+        result = prime * result + Arrays.hashCode(format);
+        result = prime * result + ((fromLocation == null) ? 0 : fromLocation.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((hoaDues == null) ? 0 : hoaDues.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + Arrays.hashCode(imageLinks);
+        result = prime * result + ((immigrationStatus == null) ? 0 : immigrationStatus.hashCode());
+        result = prime * result + Arrays.hashCode(interestedIn);
+        result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
+        result = prime * result + Arrays.hashCode(jobFunctions);
+        result = prime * result + Arrays.hashCode(jobIndustries);
+        result = prime * result + Arrays.hashCode(jobTypes);
+        result = prime * result + Arrays.hashCode(labels);
+        result = prime * result + Arrays.hashCode(licenses);
+        result = prime * result + ((listingType == null) ? 0 : listingType.hashCode());
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        result = prime * result + ((make == null) ? 0 : make.hashCode());
+        result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
+        result = prime * result + ((manufacturerId == null) ? 0 : manufacturerId.hashCode());
+        result = prime * result + ((maritalStatus == null) ? 0 : maritalStatus.hashCode());
+        result = prime * result + ((megapixels == null) ? 0 : megapixels.hashCode());
+        result = prime * result + ((memory == null) ? 0 : memory.hashCode());
+        result = prime * result + ((mileage == null) ? 0 : mileage.hashCode());
+        result = prime * result + ((model == null) ? 0 : model.hashCode());
+        result = prime * result + ((modelNumber == null) ? 0 : modelNumber.hashCode());
+        result = prime * result + ((nameOfItemBeingReviewed == null) ? 0 : nameOfItemBeingReviewed.hashCode());
+        result = prime * result + ((newsSource == null) ? 0 : newsSource.hashCode());
+        result = prime * result + ((occupation == null) ? 0 : occupation.hashCode());
+        result = prime * result + ((operatingSystems == null) ? 0 : operatingSystems.hashCode());
+        result = prime * result + ((pages == null) ? 0 : pages.hashCode());
+        result = prime * result + Arrays.hashCode(paymentAccepted);
+        result = prime * result + ((paymentNotes == null) ? 0 : paymentNotes.hashCode());
+        result = prime * result + ((pickup == null) ? 0 : pickup.hashCode());
+        result = prime * result + ((price == null) ? 0 : price.hashCode());
+        result = prime * result + ((priceType == null) ? 0 : priceType.hashCode());
+        result = prime * result + ((processorSpeed == null) ? 0 : processorSpeed.hashCode());
+        result = prime * result + Arrays.hashCode(productTypes);
+        result = prime * result + Arrays.hashCode(programmingLanguages);
+        result = prime * result + Arrays.hashCode(propertyTypes);
+        result = prime * result + ((publicationName == null) ? 0 : publicationName.hashCode());
+        result = prime * result + ((publicationVolume == null) ? 0 : publicationVolume.hashCode());
+        result = prime * result + ((publishDate == null) ? 0 : publishDate.hashCode());
+        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
+        result = prime * result + Arrays.hashCode(relatedLinks);
+        result = prime * result + ((reviewType == null) ? 0 : reviewType.hashCode());
+        result = prime * result + ((reviewerType == null) ? 0 : reviewerType.hashCode());
+        result = prime * result + ((salary == null) ? 0 : salary.hashCode());
+        result = prime * result + ((salaryType == null) ? 0 : salaryType.hashCode());
+        result = prime * result + ((schoolDistrict == null) ? 0 : schoolDistrict.hashCode());
+        result = prime * result + ((serviceType == null) ? 0 : serviceType.hashCode());
+        result = prime * result + Arrays.hashCode(shipping);
+        result = prime * result + ((size == null) ? 0 : size.hashCode());
+        result = prime * result + Arrays.hashCode(squareFootages);
+        result = prime * result + Arrays.hashCode(subjectAreas);
+        result = prime * result + Arrays.hashCode(subjects);
+        result = prime * result + ((taxPercent == null) ? 0 : taxPercent.hashCode());
+        result = prime * result + ((taxRegion == null) ? 0 : taxRegion.hashCode());
+        result = prime * result + ((toLocation == null) ? 0 : toLocation.hashCode());
+        result = prime * result + ((travelDateRange == null) ? 0 : travelDateRange.hashCode());
+        result = prime * result + ((university == null) ? 0 : university.hashCode());
+        result = prime * result + ((upc == null) ? 0 : upc.hashCode());
+        result = prime * result + ((urlOfItemBeingReviewed == null) ? 0 : urlOfItemBeingReviewed.hashCode());
+        result = prime * result + ((vehicleType == null) ? 0 : vehicleType.hashCode());
+        result = prime * result + ((vin == null) ? 0 : vin.hashCode());
+        result = prime * result + ((weight == null) ? 0 : weight.hashCode());
+        result = prime * result + ((year == null) ? 0 : year.hashCode());
+        return result;
     }
 
     private Object arrayCopy(Object[] source) {

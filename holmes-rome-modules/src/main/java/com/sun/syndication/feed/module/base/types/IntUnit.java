@@ -91,10 +91,12 @@ public class IntUnit implements CloneableType {
         return value;
     }
 
+    @Override
     public Object clone() {
         return new IntUnit(this.value, this.units);
     }
 
+    @Override
     public String toString() {
         if ((this.units != null) && (this.units.trim().length() > 0)) {
             return this.value + " " + this.units;
@@ -103,6 +105,7 @@ public class IntUnit implements CloneableType {
         }
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof IntUnit)) return false;
         IntUnit f = (IntUnit) o;
@@ -113,5 +116,14 @@ public class IntUnit implements CloneableType {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((units == null) ? 0 : units.hashCode());
+        result = prime * result + value;
+        return result;
     }
 }

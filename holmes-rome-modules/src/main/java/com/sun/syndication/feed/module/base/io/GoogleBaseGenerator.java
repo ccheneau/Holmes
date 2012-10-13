@@ -41,6 +41,7 @@ package com.sun.syndication.feed.module.base.io;
 
 import java.beans.PropertyDescriptor;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -132,9 +133,9 @@ public class GoogleBaseGenerator implements ModuleGenerator {
                 || o instanceof CurrencyEnumeration || o instanceof Size || o instanceof YearType) {
             return this.generateSimpleElement(tagName, o.toString());
         } else if (o instanceof ShortDate) {
-            return this.generateSimpleElement(tagName, GoogleBaseParser.SHORT_DT_FMT.format(o));
+            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(o));
         } else if (o instanceof Date) {
-            return this.generateSimpleElement(tagName, GoogleBaseParser.LONG_DT_FMT.format(o));
+            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(o));
         } else if (o instanceof ShippingType) {
             ShippingType st = (ShippingType) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
@@ -149,8 +150,8 @@ public class GoogleBaseGenerator implements ModuleGenerator {
         } else if (o instanceof DateTimeRange) {
             DateTimeRange dtr = (DateTimeRange) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
-            element.addContent(this.generateSimpleElement("start", GoogleBaseParser.LONG_DT_FMT.format(dtr.getStart())));
-            element.addContent(this.generateSimpleElement("end", GoogleBaseParser.LONG_DT_FMT.format(dtr.getEnd())));
+            element.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getStart())));
+            element.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getEnd())));
 
             return element;
         }

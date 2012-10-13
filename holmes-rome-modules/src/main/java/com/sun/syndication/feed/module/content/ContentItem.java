@@ -134,13 +134,9 @@ public class ContentItem implements Cloneable {
         if (o instanceof ContentItem) {
             ContentItem test = (ContentItem) o;
 
-            if (((test.contentFormat == contentFormat) || (test.contentFormat.equals(contentFormat)))
-                    && ((test.contentEncoding == contentEncoding) || (test.contentEncoding.equals(contentEncoding)))
-                    && ((test.contentFormat == contentFormat) || (test.contentValue.equals(contentValue)))
-                    && ((test.contentAbout == contentAbout) || (test.contentAbout.equals(contentAbout)))
-                    && ((test.contentValueParseType == contentValueParseType) || (test.contentValueParseType.equals(contentValueParseType)))
-                    && ((test.contentValueNamespace == contentValueNamespace) || (test.contentValueNamespace.equals(contentValueNamespace)))
-                    && ((test.contentResource == contentResource) || (test.contentResource.equals(contentResource)))) {
+            if (test.contentFormat.equals(contentFormat) && test.contentEncoding.equals(contentEncoding) && test.contentValue.equals(contentValue)
+                    && test.contentAbout.equals(contentAbout) && test.contentValueParseType.equals(contentValueParseType)
+                    && test.contentValueNamespace.equals(contentValueNamespace) && test.contentResource.equals(contentResource)) {
                 return true;
             } else {
                 return false;
@@ -148,6 +144,21 @@ public class ContentItem implements Cloneable {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((contentAbout == null) ? 0 : contentAbout.hashCode());
+        result = prime * result + ((contentEncoding == null) ? 0 : contentEncoding.hashCode());
+        result = prime * result + ((contentFormat == null) ? 0 : contentFormat.hashCode());
+        result = prime * result + ((contentResource == null) ? 0 : contentResource.hashCode());
+        result = prime * result + ((contentValue == null) ? 0 : contentValue.hashCode());
+        result = prime * result + ((contentValueDOM == null) ? 0 : contentValueDOM.hashCode());
+        result = prime * result + ((contentValueNamespace == null) ? 0 : contentValueNamespace.hashCode());
+        result = prime * result + ((contentValueParseType == null) ? 0 : contentValueParseType.hashCode());
+        return result;
     }
 
     @Override

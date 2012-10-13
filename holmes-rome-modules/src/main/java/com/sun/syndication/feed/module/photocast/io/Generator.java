@@ -41,6 +41,7 @@
 
 package com.sun.syndication.feed.module.photocast.io;
 
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,8 +78,8 @@ public class Generator implements ModuleGenerator {
             element.addContent(generateSimpleElement("feedVersion", FEED_VERSION));
             return;
         }
-        element.addContent(generateSimpleElement("photoDate", Parser.PHOTO_DATE_FORMAT.format(pm.getPhotoDate())));
-        element.addContent(generateSimpleElement("cropDate", Parser.CROP_DATE_FORMAT.format(pm.getCropDate())));
+        element.addContent(generateSimpleElement("photoDate", new SimpleDateFormat(Parser.PHOTO_DATE_FORMAT).format(pm.getPhotoDate())));
+        element.addContent(generateSimpleElement("cropDate", new SimpleDateFormat(Parser.CROP_DATE_FORMAT).format(pm.getCropDate())));
         element.addContent(generateSimpleElement("thumbnail", pm.getThumbnailUrl().toString()));
         element.addContent(generateSimpleElement("image", pm.getImageUrl().toString()));
         Element e = new Element("metadata", NS);

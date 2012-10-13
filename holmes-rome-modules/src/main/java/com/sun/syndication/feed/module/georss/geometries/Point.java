@@ -41,11 +41,19 @@ public final class Point extends AbstractGeometricPrimitive {
         return getPosition().equals(((Point) obj).getPosition());
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+        return result;
+    }
+
     /**
-     * Get the position
-     *
-     * @return the position
-     */
+      * Get the position
+      *
+      * @return the position
+      */
     public Position getPosition() {
         if (pos == null) pos = new Position();
         return pos;

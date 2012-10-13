@@ -41,6 +41,7 @@
 package com.sun.syndication.feed.module.cc;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
@@ -113,6 +114,15 @@ public class CreativeCommonsImpl implements CreativeCommons {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(allLicenses);
+        result = prime * result + Arrays.hashCode(licenses);
+        return result;
     }
 
     @Override

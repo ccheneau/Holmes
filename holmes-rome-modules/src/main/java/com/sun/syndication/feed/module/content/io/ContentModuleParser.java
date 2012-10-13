@@ -132,12 +132,10 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
                     ci.setContentEncoding(encoding.getAttribute("resource", RDF_NS).getValue());
                 }
 
-                if (item != null) {
-                    Attribute about = item.getAttribute("about", RDF_NS);
+                Attribute about = item.getAttribute("about", RDF_NS);
 
-                    if (about != null) {
-                        ci.setContentAbout(about.getValue());
-                    }
+                if (about != null) {
+                    ci.setContentAbout(about.getValue());
                 }
 
                 contentItems.add(ci);

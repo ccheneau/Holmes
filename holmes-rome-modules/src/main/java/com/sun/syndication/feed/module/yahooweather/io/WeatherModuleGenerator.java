@@ -55,9 +55,9 @@ import com.sun.syndication.io.ModuleGenerator;
  */
 public class WeatherModuleGenerator implements ModuleGenerator {
     private static final Namespace NS = Namespace.getNamespace("yweather", YWeatherModule.URI);
-    private static final SimpleDateFormat TIME_ONLY = new SimpleDateFormat("h:mm a");
-    private static final SimpleDateFormat LONG_DATE = new SimpleDateFormat("EEE, d MMM yyyy h:mm a zzz");
-    private static final SimpleDateFormat SHORT_DATE = new SimpleDateFormat("d MMM yyyy");
+    private static final String TIME_ONLY = "h:mm a";
+    private static final String LONG_DATE = "EEE, d MMM yyyy h:mm a zzz";
+    private static final String SHORT_DATE = "d MMM yyyy";
 
     /** Creates a new instance of SlashModuleGenerator */
     public WeatherModuleGenerator() {
@@ -75,11 +75,11 @@ public class WeatherModuleGenerator implements ModuleGenerator {
             Element astro = new Element("astronomy", WeatherModuleGenerator.NS);
 
             if (weather.getAstronomy().getSunrise() != null) {
-                astro.setAttribute("sunrise", TIME_ONLY.format(weather.getAstronomy().getSunrise()).toLowerCase());
+                astro.setAttribute("sunrise", new SimpleDateFormat(TIME_ONLY).format(weather.getAstronomy().getSunrise()).toLowerCase());
             }
 
             if (weather.getAstronomy().getSunrise() != null) {
-                astro.setAttribute("sunset", TIME_ONLY.format(weather.getAstronomy().getSunset()).toLowerCase());
+                astro.setAttribute("sunset", new SimpleDateFormat(TIME_ONLY).format(weather.getAstronomy().getSunset()).toLowerCase());
             }
 
             element.addContent(astro);
@@ -110,7 +110,8 @@ public class WeatherModuleGenerator implements ModuleGenerator {
             }
 
             if (weather.getCondition().getDate() != null) {
-                condition.setAttribute("date", LONG_DATE.format(weather.getCondition().getDate()).replaceAll("AM", "am").replaceAll("PM", "pm"));
+                condition.setAttribute("date",
+                        new SimpleDateFormat(LONG_DATE).format(weather.getCondition().getDate()).replaceAll("AM", "am").replaceAll("PM", "pm"));
             }
 
             condition.setAttribute("temp", Integer.toString(weather.getCondition().getTemperature()));
@@ -175,7 +176,7 @@ public class WeatherModuleGenerator implements ModuleGenerator {
                 }
 
                 if (f.getDate() != null) {
-                    forecast.setAttribute("date", SHORT_DATE.format(f.getDate()));
+                    forecast.setAttribute("date", new SimpleDateFormat(SHORT_DATE).format(f.getDate()));
                 }
 
                 if (f.getDay() != null) {

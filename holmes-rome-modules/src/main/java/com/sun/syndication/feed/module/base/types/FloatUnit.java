@@ -125,6 +125,7 @@ public class FloatUnit implements CloneableType {
      * Duplicates the object.
      * @return Duplicate FloatUnit
      */
+    @Override
     public Object clone() {
         return new FloatUnit(0 + this.value, this.units);
     }
@@ -133,6 +134,7 @@ public class FloatUnit implements CloneableType {
      * Returns a String representation of the object.
      * @return Returns a String representation of the object.
      */
+    @Override
     public String toString() {
         if ((this.units != null) && (this.units.trim().length() > 0)) {
             return this.value + " " + this.units;
@@ -141,6 +143,7 @@ public class FloatUnit implements CloneableType {
         }
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof FloatUnit)) return false;
         FloatUnit f = (FloatUnit) o;
@@ -151,5 +154,14 @@ public class FloatUnit implements CloneableType {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((units == null) ? 0 : units.hashCode());
+        result = prime * result + Float.floatToIntBits(value);
+        return result;
     }
 }

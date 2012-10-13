@@ -75,6 +75,7 @@ public class YearType implements CloneableType {
      * Duplicates this object.
      * @return Cloned Year.
      */
+    @Override
     public Object clone() {
         return new YearType(Integer.toString(this.year));
     }
@@ -83,13 +84,23 @@ public class YearType implements CloneableType {
      * Returns a String representation of this object.
      * @return Returns a String representation of this object.
      */
+    @Override
     public String toString() {
         return Integer.toString(year);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof YearType)) return false;
         if (this.toString().equals(o.toString())) return true;
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + year;
+        return result;
     }
 }

@@ -82,7 +82,7 @@ public class Sort implements Serializable, Cloneable {
      * DataType value for Number information.
      */
     public static final String NUMBER_TYPE = "number";
-    private Namespace namespace = Namespace.XML_NAMESPACE;
+    private transient Namespace namespace = Namespace.XML_NAMESPACE;
     private ObjectBean obj = new ObjectBean(Sort.class, this);
     private String dataType;
     private String element;

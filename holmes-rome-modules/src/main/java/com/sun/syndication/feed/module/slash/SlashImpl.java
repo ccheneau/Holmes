@@ -41,6 +41,8 @@
 
 package com.sun.syndication.feed.module.slash;
 
+import java.util.Arrays;
+
 import com.sun.syndication.feed.impl.EqualsBean;
 
 /**
@@ -147,4 +149,16 @@ public class SlashImpl implements Slash {
 
         return eBean.beanEquals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+        result = prime * result + ((department == null) ? 0 : department.hashCode());
+        result = prime * result + Arrays.hashCode(hitParade);
+        result = prime * result + ((section == null) ? 0 : section.hashCode());
+        return result;
+    }
+
 }

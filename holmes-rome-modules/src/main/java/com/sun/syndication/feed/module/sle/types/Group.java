@@ -56,7 +56,7 @@ import com.sun.syndication.feed.impl.ObjectBean;
 public class Group implements Serializable, Cloneable {
     private static final long serialVersionUID = -7303429881984910769L;
 
-    private Namespace namespace = Namespace.XML_NAMESPACE;
+    private transient Namespace namespace = Namespace.XML_NAMESPACE;
     private ObjectBean obj = new ObjectBean(Group.class, this);
     private String element;
     private String label;
