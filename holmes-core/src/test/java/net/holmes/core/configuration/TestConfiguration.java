@@ -21,6 +21,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 public class TestConfiguration implements IConfiguration {
 
     private LinkedList<ConfigurationNode> videoFolders;
@@ -29,13 +31,13 @@ public class TestConfiguration implements IConfiguration {
     private LinkedList<ConfigurationNode> podcasts;
 
     public TestConfiguration() {
-        videoFolders = new LinkedList<ConfigurationNode>();
+        videoFolders = Lists.newLinkedList();
         videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
-        audioFolders = new LinkedList<ConfigurationNode>();
+        audioFolders = Lists.newLinkedList();
         audioFolders.add(getTestContentFolder("audiosTest", "/audiosTest/"));
-        pictureFolders = new LinkedList<ConfigurationNode>();
+        pictureFolders = Lists.newLinkedList();
         pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
-        podcasts = new LinkedList<ConfigurationNode>();
+        podcasts = Lists.newLinkedList();
         podcasts.add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
     }
 
