@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.http.request;
+package net.holmes.core.http.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
+
 
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
