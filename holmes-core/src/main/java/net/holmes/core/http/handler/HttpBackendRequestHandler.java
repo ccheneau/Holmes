@@ -25,7 +25,6 @@ import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
-
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.IHttpRequestHandler;
@@ -54,7 +53,7 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
- * Handler for backend requests from Holmes administration site
+ * Handler for backend requests from Holmes UI
  */
 public final class HttpBackendRequestHandler implements IHttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpBackendRequestHandler.class);

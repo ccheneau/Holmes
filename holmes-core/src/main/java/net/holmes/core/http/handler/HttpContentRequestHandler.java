@@ -46,7 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Handler to serve contents (i.e. videos, audios or pictures) to UPnP media renderer
+ * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer
  */
 public final class HttpContentRequestHandler implements IHttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);

@@ -45,7 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Handler to serve Holmes administration site pages
+ * Handler for Holmes UI pages
  */
 public final class HttpSiteRequestHandler implements IHttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);

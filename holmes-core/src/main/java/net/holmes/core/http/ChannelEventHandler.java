@@ -18,13 +18,13 @@ package net.holmes.core.http;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
-import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 
 /**
  * Register opened channels to channel group
  */
-public class ChannelEventHandler extends SimpleChannelUpstreamHandler {
+public class ChannelEventHandler extends SimpleChannelHandler {
 
     private final ChannelGroup channelGroup;
 

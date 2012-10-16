@@ -21,7 +21,7 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 public final class HttpRequestException extends Exception {
     private static final long serialVersionUID = 1022835130881123877L;
 
-    private HttpResponseStatus status;
+    private final HttpResponseStatus status;
 
     public HttpRequestException(String message, HttpResponseStatus status) {
         super(message);
