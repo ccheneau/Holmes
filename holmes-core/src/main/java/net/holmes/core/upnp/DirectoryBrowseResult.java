@@ -42,9 +42,9 @@ public class DirectoryBrowseResult {
 
     private long itemCount;
     private long totalCount;
-    private long firstResult;
-    private long maxResults;
     private DIDLContent didl;
+    private final long firstResult;
+    private final long maxResults;
 
     public DirectoryBrowseResult(long firstResult, long maxResults) {
         this.firstResult = firstResult;

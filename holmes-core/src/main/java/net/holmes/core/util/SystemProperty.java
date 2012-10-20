@@ -20,7 +20,7 @@ public enum SystemProperty {
     HOLMES_HOME("net.holmes.home"), //
     USER_HOME("user.home");
 
-    private String name;
+    private final String name;
 
     SystemProperty(String name) {
         this.name = name;

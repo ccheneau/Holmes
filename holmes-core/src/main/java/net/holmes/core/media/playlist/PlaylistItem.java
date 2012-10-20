@@ -21,7 +21,6 @@ public class PlaylistItem {
     private String path;
 
     public PlaylistItem(String label, String path) {
-        super();
         this.label = label;
         this.path = path;
     }

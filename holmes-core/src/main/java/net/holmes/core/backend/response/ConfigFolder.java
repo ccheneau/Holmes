@@ -19,8 +19,8 @@ package net.holmes.core.backend.response;
 import java.util.Collection;
 
 public class ConfigFolder {
-    private String id;
-    private Collection<String> cell;
+    private final String id;
+    private final Collection<String> cell;
 
     public ConfigFolder(String id, Collection<String> cell) {
         this.id = id;

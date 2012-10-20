@@ -196,11 +196,6 @@ public class ConfigurationHandler {
      * Get configuration folders
      */
     private ConfigFolderListResponse getConfigurationFolders(List<ConfigurationNode> configFolders) {
-        ConfigFolderListResponse response = new ConfigFolderListResponse();
-        response.setPage(1);
-        response.setTotal(1);
-        response.setRecords(configFolders.size());
-
         Collection<ConfigFolder> folders = Lists.newArrayList();
         Collection<String> cell;
         for (ConfigurationNode folder : configFolders) {
@@ -210,9 +205,8 @@ public class ConfigurationHandler {
             cell.add(folder.getPath());
             folders.add(new ConfigFolder(folder.getId(), cell));
         }
-        response.setRows(folders);
 
-        return response;
+        return new ConfigFolderListResponse(1, 1, configFolders.size(), folders);
     }
 
     /**

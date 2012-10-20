@@ -75,7 +75,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 Arrays.asList("dc:title"));
         try {
             this.localAddress = getLocalAddress();
-            if (logger.isDebugEnabled()) logger.debug("local address:" + this.localAddress);
         } catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
         }

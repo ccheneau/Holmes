@@ -21,5 +21,4 @@ import java.util.List;
 public interface IPlaylistParser {
 
     public List<PlaylistItem> parse();
-
 }

@@ -24,9 +24,9 @@ public class Folder {
     public static final String STATE_CLOSED = "closed";
     public static final String STATE_OPEN = "open";
 
-    private String data;
-    private String state;
-    private Map<String, String> metadata;
+    private final String data;
+    private final String state;
+    private final Map<String, String> metadata;
 
     public Folder(String title, String path) {
         this.data = title;
@@ -37,10 +37,6 @@ public class Folder {
 
     public String getState() {
         return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public String getData() {

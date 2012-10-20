@@ -23,6 +23,9 @@ public class EditConfigFolderResponse {
     private String operation;
     private int errorCode;
 
+    public EditConfigFolderResponse() {
+    }
+
     public boolean getStatus() {
         return status;
     }

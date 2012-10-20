@@ -81,7 +81,6 @@ public final class UpnpServer implements IServer {
 
     @Override
     public void stop() {
-
         if (upnpService != null) {
             if (logger.isInfoEnabled()) logger.info("Stopping UPnP server");
             upnpService.shutdown();

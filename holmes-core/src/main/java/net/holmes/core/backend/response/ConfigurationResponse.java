@@ -17,12 +17,11 @@
 package net.holmes.core.backend.response;
 
 public class ConfigurationResponse {
-    private String serverName;
-    private Integer httpServerPort;
-    private Boolean prependPodcastItem;
+    private final String serverName;
+    private final Integer httpServerPort;
+    private final Boolean prependPodcastItem;
 
     public ConfigurationResponse(String serverName, Integer httpServerPort, Boolean prependPodcastItem) {
-        super();
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;

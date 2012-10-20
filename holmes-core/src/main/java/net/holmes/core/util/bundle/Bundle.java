@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 public class Bundle implements IBundle {
 
-    private ResourceBundle bundle;
+    private final ResourceBundle bundle;
 
     public Bundle() {
         bundle = ResourceBundle.getBundle("message");

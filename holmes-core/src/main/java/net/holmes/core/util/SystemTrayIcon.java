@@ -35,7 +35,7 @@ import javax.swing.event.PopupMenuListener;
 public class SystemTrayIcon extends TrayIcon {
 
     private JPopupMenu popupMenu;
-    private static JDialog dialog;
+    private static final JDialog dialog;
 
     static {
         dialog = new JDialog((Frame) null, "TrayDialog");
@@ -43,7 +43,7 @@ public class SystemTrayIcon extends TrayIcon {
         dialog.setAlwaysOnTop(true);
     }
 
-    private static PopupMenuListener popupListener = new PopupMenuListener() {
+    private static final PopupMenuListener popupListener = new PopupMenuListener() {
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         }
@@ -57,7 +57,6 @@ public class SystemTrayIcon extends TrayIcon {
         public void popupMenuCanceled(PopupMenuEvent e) {
             dialog.setVisible(false);
         }
-
     };
 
     public SystemTrayIcon(Image image, String tooltip) {
@@ -81,9 +80,7 @@ public class SystemTrayIcon extends TrayIcon {
     }
 
     public void setPopupMenu(JPopupMenu popupMenu) {
-        if (this.popupMenu != null) {
-            this.popupMenu.removePopupMenuListener(popupListener);
-        }
+        if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(popupListener);
 
         if (popupMenu != null) {
             this.popupMenu = popupMenu;

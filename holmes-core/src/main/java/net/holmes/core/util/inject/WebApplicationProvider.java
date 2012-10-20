@@ -31,7 +31,7 @@ import com.sun.jersey.spi.container.WebApplication;
 import com.sun.jersey.spi.container.WebApplicationFactory;
 
 /**
- * Provider for Jersey web application
+ * Guice provider for Jersey web application
  */
 public class WebApplicationProvider implements Provider<WebApplication> {
 

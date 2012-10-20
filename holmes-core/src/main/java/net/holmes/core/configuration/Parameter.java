@@ -21,8 +21,8 @@ public enum Parameter {
     ENABLE_SYSTRAY("enable_systray", "true"), //
     ENABLE_UPNP("enable_upnp", "true");
 
-    private String name;
-    private String defaultValue;
+    private final String name;
+    private final String defaultValue;
 
     Parameter(String name, String defaultValue) {
         this.name = name;

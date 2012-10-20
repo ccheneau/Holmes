@@ -22,7 +22,7 @@ public final class MimeType {
 
     private String type;
     private String subType;
-    private String mimeType;
+    private final String mimeType;
 
     public MimeType(String mimeType) {
         this.mimeType = mimeType;
