@@ -36,14 +36,14 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public final class XmlConfiguration implements IConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(XmlConfiguration.class);
+public final class XmlConfigurationImpl implements Configuration {
+    private static final Logger logger = LoggerFactory.getLogger(XmlConfigurationImpl.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
 
     private XmlRootNode rootNode = null;
 
-    public XmlConfiguration() {
+    public XmlConfigurationImpl() {
         loadConfig();
     }
 

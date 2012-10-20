@@ -25,9 +25,9 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.IMediaService;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
@@ -64,8 +64,8 @@ import org.teleal.cling.support.model.SortCriterion;
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static final Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
-    private IMediaService mediaService;
-    private IConfiguration configuration;
+    private MediaService mediaService;
+    private Configuration configuration;
     private String localAddress;
 
     public ContentDirectoryService() {
@@ -80,11 +80,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
     }
 
-    public void setMediaService(IMediaService mediaService) {
+    public void setMediaService(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 
-    public void setConfiguration(IConfiguration configuration) {
+    public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 

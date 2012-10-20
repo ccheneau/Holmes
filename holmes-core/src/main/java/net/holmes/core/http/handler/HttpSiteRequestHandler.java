@@ -25,9 +25,9 @@ import javax.inject.Inject;
 
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.mimetype.IMimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -47,14 +47,14 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler for Holmes UI pages
  */
-public final class HttpSiteRequestHandler implements IHttpRequestHandler {
+public final class HttpSiteRequestHandler implements HttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
 
-    private final IMimeTypeFactory mimeTypeFactory;
+    private final MimeTypeFactory mimeTypeFactory;
     private final String siteDirectory;
 
     @Inject
-    public HttpSiteRequestHandler(IMimeTypeFactory mimeTypeFactory) {
+    public HttpSiteRequestHandler(MimeTypeFactory mimeTypeFactory) {
         this.mimeTypeFactory = mimeTypeFactory;
         this.siteDirectory = HolmesHomeDirectory.getSiteDirectory();
     }

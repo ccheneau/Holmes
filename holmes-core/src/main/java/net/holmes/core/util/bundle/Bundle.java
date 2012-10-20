@@ -16,18 +16,6 @@
 */
 package net.holmes.core.util.bundle;
 
-import java.util.ResourceBundle;
-
-public class Bundle implements IBundle {
-
-    private final ResourceBundle bundle;
-
-    public Bundle() {
-        bundle = ResourceBundle.getBundle("message");
-    }
-
-    @Override
-    public String getString(String key) {
-        return bundle.getString(key);
-    }
+public interface Bundle {
+    public String getString(String key);
 }

@@ -16,26 +16,26 @@
 */
 package net.holmes.core;
 
-import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.configuration.XmlConfiguration;
-import net.holmes.core.http.HttpRequestHandler;
+import net.holmes.core.configuration.Configuration;
+import net.holmes.core.configuration.XmlConfigurationImpl;
+import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
-import net.holmes.core.http.IChannelPipelineFactory;
-import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.http.HttpServerPipelineFactoryImpl;
+import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpSiteRequestHandler;
-import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.media.index.IMediaIndex;
+import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.index.MediaIndex;
+import net.holmes.core.media.index.MediaIndexImpl;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.WebApplicationProvider;
-import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.jboss.netty.channel.ChannelHandler;
 
@@ -50,26 +50,26 @@ public final class HolmesServerModule extends AbstractModule {
     protected void configure() {
 
         // Bind configuration
-        bind(IConfiguration.class).to(XmlConfiguration.class).in(Singleton.class);
-        bind(IBundle.class).to(Bundle.class).in(Singleton.class);
+        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
+        bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
 
         // Bind media service
-        bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-        bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
-        bind(IMediaIndex.class).to(MediaIndex.class).in(Singleton.class);
+        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
+        bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
+        bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
 
         // Bind servers
-        bind(IServer.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
-        bind(IServer.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
+        bind(Server.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
 
         // Bind Http handlers
-        bind(IChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelHandler.class).to(HttpRequestHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
-        bind(IHttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpSiteRequestHandler.class);
+        bind(HttpServerPipelineFactory.class).to(HttpServerPipelineFactoryImpl.class);
+        bind(ChannelHandler.class).to(HttpChannelHandler.class);
+        bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
+        bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
+        bind(HttpRequestHandler.class).annotatedWith(Names.named("site")).to(HttpSiteRequestHandler.class);
     }
 }

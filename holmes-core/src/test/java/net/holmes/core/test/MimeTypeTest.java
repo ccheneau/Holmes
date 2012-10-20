@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.mimetype.IMimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class MimeTypeTest extends TestCase {
     private static final Logger logger = LoggerFactory.getLogger(MimeTypeTest.class);
 
     @Inject
-    private IMimeTypeFactory mimeTypeFactory;
+    private MimeTypeFactory mimeTypeFactory;
 
     @Override
     @Before

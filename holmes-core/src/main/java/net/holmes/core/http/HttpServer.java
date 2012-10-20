@@ -21,8 +21,8 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-import net.holmes.core.IServer;
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.Server;
+import net.holmes.core.configuration.Configuration;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.group.ChannelGroup;
@@ -36,19 +36,19 @@ import com.sun.jersey.spi.container.WebApplication;
 /**
  * HTTP server main class  
  */
-public final class HttpServer implements IServer {
+public final class HttpServer implements Server {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
     private ServerBootstrap bootstrap = null;
     private final ChannelGroup allChannels;
-    private final IChannelPipelineFactory pipelineFactory;
-    private final IConfiguration configuration;
+    private final HttpServerPipelineFactory pipelineFactory;
+    private final Configuration configuration;
     private final WebApplication application;
 
     @Inject
-    public HttpServer(IChannelPipelineFactory pipelineFactory, WebApplication application, IConfiguration configuration) {
+    public HttpServer(HttpServerPipelineFactory pipelineFactory, WebApplication application, Configuration configuration) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
         this.application = application;

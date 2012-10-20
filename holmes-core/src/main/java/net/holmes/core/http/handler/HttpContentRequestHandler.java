@@ -24,8 +24,8 @@ import javax.inject.Inject;
 
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.IHttpRequestHandler;
-import net.holmes.core.media.IMediaService;
+import net.holmes.core.http.HttpRequestHandler;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
@@ -48,15 +48,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer
  */
-public final class HttpContentRequestHandler implements IHttpRequestHandler {
+public final class HttpContentRequestHandler implements HttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);
 
     private static final String REQUEST_PATH = "/content";
 
-    private final IMediaService mediaService;
+    private final MediaService mediaService;
 
     @Inject
-    public HttpContentRequestHandler(IMediaService mediaService) {
+    public HttpContentRequestHandler(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 
@@ -142,7 +142,7 @@ public final class HttpContentRequestHandler implements IHttpRequestHandler {
     }
 
     /**
-     * Get content node from {@link net.holmes.core.media.IMediaService} 
+     * Get content node from {@link net.holmes.core.media.MediaService} 
      */
     private ContentNode getContentNode(String uri) {
         ContentNode contentNode = null;

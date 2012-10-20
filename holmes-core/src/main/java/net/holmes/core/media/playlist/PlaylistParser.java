@@ -14,16 +14,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core;
+package net.holmes.core.media.playlist;
 
-public interface IServer {
-    /**
-     * Start server
-     */
-    public void start();
+import java.util.List;
 
-    /**
-     * Stop server
-     */
-    public void stop();
+public interface PlaylistParser {
+
+    public List<PlaylistItem> parse();
 }

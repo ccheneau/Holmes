@@ -23,7 +23,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class TestConfiguration implements IConfiguration {
+public class TestConfiguration implements Configuration {
 
     private LinkedList<ConfigurationNode> videoFolders;
     private LinkedList<ConfigurationNode> pictureFolders;

@@ -16,44 +16,6 @@
 */
 package net.holmes.core.util.mimetype;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.io.Files;
-
-public final class MimeTypeFactory implements IMimeTypeFactory {
-    private static final Logger logger = LoggerFactory.getLogger(MimeTypeFactory.class);
-
-    private final Properties properties;
-
-    public MimeTypeFactory() {
-        // Load mime types from property file
-        properties = new Properties();
-        InputStream in = null;
-        try {
-            in = this.getClass().getResourceAsStream("/mimetypes.properties");
-            properties.load(in);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        } finally {
-            try {
-                if (in != null) in.close();
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-    }
-
-    @Override
-    public MimeType getMimeType(String fileName) {
-        // Get file extension
-        String ext = Files.getFileExtension(fileName).toLowerCase();
-
-        // Get mime type
-        return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));
-    }
+public interface MimeTypeFactory {
+    public MimeType getMimeType(String fileName);
 }

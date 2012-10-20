@@ -22,8 +22,8 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.configuration.IConfiguration;
-import net.holmes.core.media.IMediaService;
+import net.holmes.core.configuration.Configuration;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
 
@@ -39,10 +39,10 @@ public class MediaServiceTest extends TestCase {
     private static final Logger logger = LoggerFactory.getLogger(MediaServiceTest.class);
 
     @Inject
-    private IMediaService mediaService;
+    private MediaService mediaService;
 
     @Inject
-    private IConfiguration configuration;
+    private Configuration configuration;
 
     @Override
     @Before

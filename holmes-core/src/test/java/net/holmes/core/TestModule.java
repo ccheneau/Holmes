@@ -16,16 +16,16 @@
 */
 package net.holmes.core;
 
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.TestConfiguration;
-import net.holmes.core.media.IMediaService;
 import net.holmes.core.media.MediaService;
-import net.holmes.core.media.index.IMediaIndex;
+import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.index.MediaIndex;
+import net.holmes.core.media.index.MediaIndexImpl;
+import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.bundle.IBundle;
-import net.holmes.core.util.mimetype.IMimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
+import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -34,13 +34,13 @@ public class TestModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(IConfiguration.class).to(TestConfiguration.class).in(Singleton.class);
-        bind(IBundle.class).to(Bundle.class).in(Singleton.class);
+        bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
+        bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
 
-        bind(IMediaService.class).to(MediaService.class).in(Singleton.class);
-        bind(IMediaIndex.class).to(MediaIndex.class).in(Singleton.class);
+        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
+        bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
 
-        bind(IMimeTypeFactory.class).to(MimeTypeFactory.class).in(Singleton.class);
+        bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
 
     }
 }

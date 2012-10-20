@@ -16,50 +16,10 @@
 */
 package net.holmes.core.http;
 
-import javax.inject.Inject;
-
-import org.jboss.netty.channel.ChannelHandler;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.handler.codec.http.HttpChunkAggregator;
-import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
-import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
-import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 
-import com.google.inject.Injector;
+public interface HttpServerPipelineFactory extends ChannelPipelineFactory {
 
-public final class HttpServerPipelineFactory implements IChannelPipelineFactory {
-
-    private final Injector injector;
-    private ChannelGroup channelGroup = null;
-
-    @Inject
-    public HttpServerPipelineFactory(Injector injector) {
-        this.injector = injector;
-    }
-
-    @Override
-    public ChannelPipeline getPipeline() throws Exception {
-        // Create a default pipeline implementation.
-        ChannelPipeline pipeline = Channels.pipeline();
-
-        // Set default handlers
-        pipeline.addLast("decoder", new HttpRequestDecoder());
-        pipeline.addLast("aggregator", new HttpChunkAggregator(65536));
-        pipeline.addLast("encoder", new HttpResponseEncoder());
-        pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
-
-        // Add event handler for channel registration to channel group
-        pipeline.addLast("channelEvent", new ChannelEventHandler(this.channelGroup));
-
-        // Add http request handler
-        pipeline.addLast("httpRequestHandler", injector.getInstance(ChannelHandler.class));
-        return pipeline;
-    }
-
-    @Override
-    public void setChannelGroup(ChannelGroup channelGroup) {
-        this.channelGroup = channelGroup;
-    }
+    public void setChannelGroup(ChannelGroup channelGroup);
 }

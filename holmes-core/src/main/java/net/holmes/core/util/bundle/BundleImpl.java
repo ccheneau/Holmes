@@ -14,13 +14,20 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.media.index;
+package net.holmes.core.util.bundle;
 
-public interface IMediaIndex {
+import java.util.ResourceBundle;
 
-    public String add(String parentId, String mediaType, String path, String name);
+public class BundleImpl implements Bundle {
 
-    public IndexElement getElement(String uuid);
+    private final ResourceBundle bundle;
 
-    public void put(String uuid, String parentId, String mediaType, String path, String name);
+    public BundleImpl() {
+        bundle = ResourceBundle.getBundle("message");
+    }
+
+    @Override
+    public String getString(String key) {
+        return bundle.getString(key);
+    }
 }

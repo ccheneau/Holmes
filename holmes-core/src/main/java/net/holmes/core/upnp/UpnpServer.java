@@ -20,10 +20,10 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import net.holmes.core.IServer;
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.Server;
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.IMediaService;
+import net.holmes.core.media.MediaService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,16 +45,16 @@ import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
 /**
  * UPnP server main class
  */
-public final class UpnpServer implements IServer {
+public final class UpnpServer implements Server {
     private static final Logger logger = LoggerFactory.getLogger(UpnpServer.class);
 
     private UpnpService upnpService = null;
 
-    private final IMediaService mediaService;
-    private final IConfiguration configuration;
+    private final MediaService mediaService;
+    private final Configuration configuration;
 
     @Inject
-    public UpnpServer(IMediaService mediaService, IConfiguration configuration) {
+    public UpnpServer(MediaService mediaService, Configuration configuration) {
         this.mediaService = mediaService;
         this.configuration = configuration;
     }

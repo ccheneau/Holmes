@@ -16,40 +16,11 @@
 */
 package net.holmes.core.media.index;
 
-import java.util.UUID;
+public interface MediaIndex {
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+    public String add(String parentId, String mediaType, String path, String name);
 
-public class MediaIndex implements IMediaIndex {
+    public IndexElement getElement(String uuid);
 
-    private BiMap<String, IndexElement> elements;
-
-    public MediaIndex() {
-        //elements = Maps.synchronizedBiMap(HashBiMap.<String, IndexElement> create());
-        elements = HashBiMap.create();
-    }
-
-    @Override
-    public IndexElement getElement(String uuid) {
-        return elements.get(uuid);
-    }
-
-    @Override
-    public String add(String parentId, String mediaType, String path, String name) {
-        IndexElement element = new IndexElement(parentId, mediaType, path, name);
-        String uuid = elements.inverse().get(element);
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-            elements.put(uuid, element);
-        }
-        return uuid;
-    }
-
-    @Override
-    public void put(String uuid, String parentId, String mediaType, String path, String name) {
-        if (elements.get(uuid) == null) {
-            elements.put(uuid, new IndexElement(parentId, mediaType, path, name));
-        }
-    }
+    public void put(String uuid, String parentId, String mediaType, String path, String name);
 }

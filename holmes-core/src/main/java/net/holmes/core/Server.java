@@ -14,8 +14,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.util.bundle;
+package net.holmes.core;
 
-public interface IBundle {
-    public String getString(String key);
+public interface Server {
+    /**
+     * Start server
+     */
+    public void start();
+
+    /**
+     * Stop server
+     */
+    public void stop();
 }

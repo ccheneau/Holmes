@@ -34,9 +34,9 @@ import net.holmes.core.backend.response.ConfigFolderListResponse;
 import net.holmes.core.backend.response.ConfigurationResponse;
 import net.holmes.core.backend.response.EditConfigFolderResponse;
 import net.holmes.core.configuration.ConfigurationNode;
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.bundle.Bundle;
 
 import com.google.common.collect.Lists;
 
@@ -53,11 +53,11 @@ public class ConfigurationHandler {
     private static final String EDIT_OPERATION = "edit";
     private static final String DELETE_OPERATION = "del";
 
-    private final IConfiguration configuration;
-    private final IBundle bundle;
+    private final Configuration configuration;
+    private final Bundle bundle;
 
     @Inject
-    public ConfigurationHandler(IConfiguration configuration, IBundle bundle) {
+    public ConfigurationHandler(Configuration configuration, Bundle bundle) {
         this.configuration = configuration;
         this.bundle = bundle;
     }

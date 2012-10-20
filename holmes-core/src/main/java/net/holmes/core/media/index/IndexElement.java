@@ -24,11 +24,11 @@ import com.google.common.collect.Maps;
 public class IndexElement implements Serializable {
     private static final long serialVersionUID = -4133480765408326085L;
 
-    private String parentId;
-    private String mediaType;
-    private String name;
-    private String path;
-    private Map<String, String> metadata;
+    private final String parentId;
+    private final String mediaType;
+    private final String name;
+    private final String path;
+    private final Map<String, String> metadata;
 
     public IndexElement(String parentId, String mediaType, String path, String name) {
         this.parentId = parentId;

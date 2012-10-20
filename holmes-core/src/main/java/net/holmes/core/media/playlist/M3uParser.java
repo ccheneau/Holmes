@@ -29,7 +29,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
-public class M3uParser implements IPlaylistParser {
+public class M3uParser implements PlaylistParser {
     private static final Logger logger = LoggerFactory.getLogger(M3uParser.class);
 
     private final File playlist;

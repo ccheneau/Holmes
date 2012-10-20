@@ -37,11 +37,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
-import net.holmes.core.configuration.IConfiguration;
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemTrayIcon;
-import net.holmes.core.util.bundle.IBundle;
+import net.holmes.core.util.bundle.Bundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,16 +49,16 @@ import org.slf4j.LoggerFactory;
 /**
  * Holmes server main class
  */
-public final class HolmesServer implements IServer {
+public final class HolmesServer implements Server {
     private static final Logger logger = LoggerFactory.getLogger(HolmesServer.class);
 
-    private final IServer httpServer;
-    private final IServer upnpServer;
-    private final IConfiguration configuration;
-    private final IBundle bundle;
+    private final Server httpServer;
+    private final Server upnpServer;
+    private final Configuration configuration;
+    private final Bundle bundle;
 
     @Inject
-    public HolmesServer(@Named("http") IServer httpServer, @Named("upnp") IServer upnpServer, IConfiguration configuration, IBundle bundle) {
+    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, Configuration configuration, Bundle bundle) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.configuration = configuration;

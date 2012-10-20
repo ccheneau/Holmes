@@ -40,7 +40,7 @@ public class Bootstrap {
             Injector injector = Guice.createInjector(new HolmesServerModule());
 
             // Start Holmes server
-            final IServer holmesServer = injector.getInstance(HolmesServer.class);
+            final Server holmesServer = injector.getInstance(HolmesServer.class);
             try {
                 holmesServer.start();
             } catch (RuntimeException e) {

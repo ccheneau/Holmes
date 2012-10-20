@@ -27,7 +27,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.IHttpRequestHandler;
+import net.holmes.core.http.HttpRequestHandler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -55,7 +55,7 @@ import com.sun.jersey.spi.container.WebApplication;
 /**
  * Handler for backend requests from Holmes UI
  */
-public final class HttpBackendRequestHandler implements IHttpRequestHandler {
+public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpBackendRequestHandler.class);
 
     private static final String REQUEST_PATH = "/backend/";

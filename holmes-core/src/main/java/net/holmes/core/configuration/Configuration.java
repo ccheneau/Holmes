@@ -31,7 +31,7 @@ import java.util.List;
  * </ul>
  *
  */
-public interface IConfiguration {
+public interface Configuration {
 
     static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     static final int DEFAULT_HTTP_SERVER_PORT = 8085;
