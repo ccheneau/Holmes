@@ -21,18 +21,14 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 public class Folder {
-    public static final String STATE_CLOSED = "closed";
-    public static final String STATE_OPEN = "open";
-
     private final String data;
-    private final String state;
+    private final String state = "closed";
     private final Map<String, String> metadata;
 
-    public Folder(String title, String path) {
-        this.data = title;
+    public Folder(String data, String path) {
+        this.data = data;
         this.metadata = Maps.newHashMap();
         this.metadata.put("path", path);
-        this.state = STATE_CLOSED;
     }
 
     public String getState() {

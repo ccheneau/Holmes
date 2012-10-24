@@ -18,20 +18,32 @@ package net.holmes.core.backend.response;
 
 import java.util.Collection;
 
-public class ConfigFolder {
-    private final String id;
-    private final Collection<String> cell;
+public class ConfigNodeListResponse {
+    private final int page;
+    private final int total;
+    private final int records;
+    private final Collection<ConfigNode> rows;
 
-    public ConfigFolder(String id, Collection<String> cell) {
-        this.id = id;
-        this.cell = cell;
+    public ConfigNodeListResponse(int page, int total, int records, Collection<ConfigNode> rows) {
+        this.page = page;
+        this.total = total;
+        this.records = records;
+        this.rows = rows;
     }
 
-    public String getId() {
-        return id;
+    public int getPage() {
+        return page;
     }
 
-    public Collection<String> getCell() {
-        return cell;
+    public int getTotal() {
+        return total;
+    }
+
+    public int getRecords() {
+        return records;
+    }
+
+    public Collection<ConfigNode> getRows() {
+        return rows;
     }
 }

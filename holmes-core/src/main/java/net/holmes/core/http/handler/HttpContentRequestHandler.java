@@ -23,8 +23,8 @@ import java.io.RandomAccessFile;
 import javax.inject.Inject;
 
 import net.holmes.core.http.HttpRequestException;
-import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpRequestHandler;
+import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
@@ -92,7 +92,6 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
                 if (token != null && token.length > 1 && token[0].equals("bytes")) {
                     startOffset = Long.parseLong(token[1]);
                 }
-                if (logger.isDebugEnabled()) logger.debug("startOffset: " + startOffset);
             }
 
             // Get file descriptor

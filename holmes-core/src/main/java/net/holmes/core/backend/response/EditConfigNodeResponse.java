@@ -16,14 +16,14 @@
 */
 package net.holmes.core.backend.response;
 
-public class EditConfigFolderResponse {
+public class EditConfigNodeResponse {
     private boolean status;
     private String message;
     private String id;
     private String operation;
     private int errorCode;
 
-    public EditConfigFolderResponse() {
+    public EditConfigNodeResponse() {
     }
 
     public boolean getStatus() {

@@ -36,7 +36,6 @@ import com.google.common.collect.Lists;
 public class UtilHandler {
 
     public UtilHandler() {
-
     }
 
     /**

@@ -29,12 +29,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.holmes.core.backend.response.ConfigFolder;
-import net.holmes.core.backend.response.ConfigFolderListResponse;
+import net.holmes.core.backend.response.ConfigNode;
+import net.holmes.core.backend.response.ConfigNodeListResponse;
 import net.holmes.core.backend.response.ConfigurationResponse;
-import net.holmes.core.backend.response.EditConfigFolderResponse;
-import net.holmes.core.configuration.ConfigurationNode;
+import net.holmes.core.backend.response.EditConfigNodeResponse;
 import net.holmes.core.configuration.Configuration;
+import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.bundle.Bundle;
 
@@ -68,8 +68,8 @@ public class ConfigurationHandler {
     @GET
     @Path("/getVideoFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigFolderListResponse getVideoFolders() {
-        return getConfigurationFolders(configuration.getVideoFolders());
+    public ConfigNodeListResponse getVideoFolders() {
+        return getConfigurationNodes(configuration.getVideoFolders());
     }
 
     /**
@@ -78,8 +78,8 @@ public class ConfigurationHandler {
     @GET
     @Path("/getAudioFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigFolderListResponse getAudioFolders() {
-        return getConfigurationFolders(configuration.getAudioFolders());
+    public ConfigNodeListResponse getAudioFolders() {
+        return getConfigurationNodes(configuration.getAudioFolders());
     }
 
     /**
@@ -88,8 +88,8 @@ public class ConfigurationHandler {
     @GET
     @Path("/getPictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigFolderListResponse getPictureFolders() {
-        return getConfigurationFolders(configuration.getPictureFolders());
+    public ConfigNodeListResponse getPictureFolders() {
+        return getConfigurationNodes(configuration.getPictureFolders());
     }
 
     /**
@@ -98,8 +98,8 @@ public class ConfigurationHandler {
     @GET
     @Path("/getPodcasts")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigFolderListResponse getPodcasts() {
-        return getConfigurationFolders(configuration.getPodcasts());
+    public ConfigNodeListResponse getPodcasts() {
+        return getConfigurationNodes(configuration.getPodcasts());
     }
 
     /**
@@ -108,9 +108,9 @@ public class ConfigurationHandler {
     @POST
     @Path("/editVideoFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditConfigNodeResponse editVideoFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getVideoFolders(), true);
+        return editConfigNode(operation, id, label, path, configuration.getVideoFolders(), true);
     }
 
     /**
@@ -119,9 +119,9 @@ public class ConfigurationHandler {
     @POST
     @Path("/editAudioFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditConfigNodeResponse editAudioFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getAudioFolders(), true);
+        return editConfigNode(operation, id, label, path, configuration.getAudioFolders(), true);
     }
 
     /**
@@ -130,9 +130,9 @@ public class ConfigurationHandler {
     @POST
     @Path("/editPictureFolder")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditConfigNodeResponse editPictureFolder(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getPictureFolders(), true);
+        return editConfigNode(operation, id, label, path, configuration.getPictureFolders(), true);
     }
 
     /**
@@ -141,13 +141,13 @@ public class ConfigurationHandler {
     @POST
     @Path("/editPodcast")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
+    public EditConfigNodeResponse editPodcast(@FormParam("oper") String operation, @FormParam("id") String id, @FormParam("label") String label,
             @FormParam("path") String path) {
-        return editFolder(operation, id, label, path, configuration.getPodcasts(), false);
+        return editConfigNode(operation, id, label, path, configuration.getPodcasts(), false);
     }
 
     /**
-     * Get global configuration
+     * Get configuration
      */
     @GET
     @Path("/getConfiguration")
@@ -163,9 +163,9 @@ public class ConfigurationHandler {
     @POST
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
-    public EditConfigFolderResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") String httpServerPort,
+    public EditConfigNodeResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") String httpServerPort,
             @FormParam("prependPodcastItem") boolean prependPodcastItem) {
-        EditConfigFolderResponse response = new EditConfigFolderResponse();
+        EditConfigNodeResponse response = new EditConfigNodeResponse();
         response.setStatus(true);
         setResponseErrorCode(response, ErrorCode.NO_ERROR);
 
@@ -193,82 +193,81 @@ public class ConfigurationHandler {
     }
 
     /**
-     * Get configuration folders
+     * Get configuration nodes
      */
-    private ConfigFolderListResponse getConfigurationFolders(List<ConfigurationNode> configFolders) {
-        Collection<ConfigFolder> folders = Lists.newArrayList();
+    private ConfigNodeListResponse getConfigurationNodes(List<ConfigurationNode> configNodes) {
+        Collection<ConfigNode> folders = Lists.newArrayList();
         Collection<String> cell;
-        for (ConfigurationNode folder : configFolders) {
+        for (ConfigurationNode node : configNodes) {
             cell = Lists.newArrayList();
-            cell.add(folder.getId());
-            cell.add(folder.getLabel());
-            cell.add(folder.getPath());
-            folders.add(new ConfigFolder(folder.getId(), cell));
+            cell.add(node.getId());
+            cell.add(node.getLabel());
+            cell.add(node.getPath());
+            folders.add(new ConfigNode(node.getId(), cell));
         }
-
-        return new ConfigFolderListResponse(1, 1, configFolders.size(), folders);
+        return new ConfigNodeListResponse(1, 1, configNodes.size(), folders);
     }
 
     /**
-     * Edit configuration folder
+     * Edit configuration node
      */
-    private EditConfigFolderResponse editFolder(String operation, String id, String label, String path, List<ConfigurationNode> folders, boolean isPath) {
-        EditConfigFolderResponse response = new EditConfigFolderResponse();
+    private EditConfigNodeResponse editConfigNode(String operation, String id, String label, String path, List<ConfigurationNode> nodes, boolean isPath) {
+        EditConfigNodeResponse response = new EditConfigNodeResponse();
         response.setStatus(true);
         response.setOperation(operation);
         response.setId(id);
         setResponseErrorCode(response, ErrorCode.NO_ERROR);
 
         if (ADD_OPERATION.equals(operation)) {
-            // Check this folders does not exists
-            ConfigurationNode existingFolder = null;
-            for (ConfigurationNode folder : folders) {
-                if (folder.getLabel().equals(label)) existingFolder = folder;
-                else if (folder.getPath().equals(path)) existingFolder = folder;
+            // Check this node does not exists
+            ConfigurationNode existingNode = null;
+            for (ConfigurationNode node : nodes) {
+                if (node.getLabel().equals(label)) existingNode = node;
+                else if (node.getPath().equals(path)) existingNode = node;
             }
-            if (existingFolder == null) {
-                ErrorCode validate = validatePath(path, isPath);
-                if (validate.getCode() == 0) {
-                    // Add a new folder
-                    ConfigurationNode configDirectory = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
-                    folders.add(configDirectory);
-                    response.setId(configDirectory.getId());
+            if (existingNode == null) {
+                ErrorCode errodeCode = isPath ? validatePath(path) : validateUrl(path);
+                if (errodeCode == ErrorCode.NO_ERROR) {
+                    // Add a new node
+                    ConfigurationNode configNode = new ConfigurationNode(UUID.randomUUID().toString(), label, path);
+                    nodes.add(configNode);
+                    response.setId(configNode.getId());
                 } else {
                     // Path not valid
                     response.setStatus(false);
-                    setResponseErrorCode(response, validate);
+                    setResponseErrorCode(response, errodeCode);
                 }
             } else {
-                // Folder or Podcast already exists
+                // Node already exists
                 response.setStatus(false);
                 if (isPath) setResponseErrorCode(response, ErrorCode.FOLDER_ALREADY_EXISTS);
                 else setResponseErrorCode(response, ErrorCode.PODCAST_ALREADY_EXISTS);
             }
         } else if (EDIT_OPERATION.equals(operation)) {
-            // Check this folders exists
-            ConfigurationNode existingFolder = null;
+            // Check this node exists
+            ConfigurationNode existingNode = null;
             boolean duplicated = false;
-            for (ConfigurationNode folder : folders) {
-                if (folder.getId().equals(id)) existingFolder = folder;
+            for (ConfigurationNode node : nodes) {
+                if (node.getId().equals(id)) existingNode = node;
                 else {
-                    if (folder.getLabel().equals(label)) duplicated = true;
-                    else if (folder.getPath().equals(path)) duplicated = true;
+                    if (node.getLabel().equals(label)) duplicated = true;
+                    else if (node.getPath().equals(path)) duplicated = true;
                 }
             }
-            if (existingFolder != null) {
+            if (existingNode != null) {
                 if (!duplicated) {
-                    ErrorCode validate = validatePath(path, isPath);
-                    if (validate == ErrorCode.NO_ERROR) {
-                        // Edit the folder
-                        existingFolder.setLabel(label);
-                        existingFolder.setPath(path);
+                    ErrorCode errodeCode = isPath ? validatePath(path) : validateUrl(path);
+                    if (errodeCode == ErrorCode.NO_ERROR) {
+                        // Edit node
+                        existingNode.setLabel(label);
+                        existingNode.setPath(path);
                     } else {
                         // Path not valid
                         response.setStatus(false);
-                        setResponseErrorCode(response, validate);
+                        setResponseErrorCode(response, errodeCode);
                     }
                 } else {
-                    // Duplicated folder
+                    // Duplicated node
                     response.setStatus(false);
                     setResponseErrorCode(response, ErrorCode.DUPLICATED_FOLDER);
                 }
@@ -278,16 +277,16 @@ public class ConfigurationHandler {
                 setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
         } else if (DELETE_OPERATION.equals(operation)) {
-            // Check this folders exists
-            ConfigurationNode existingFolder = null;
-            for (ConfigurationNode folder : folders) {
-                if (folder.getId().equals(id)) existingFolder = folder;
+            // Check this node exists
+            ConfigurationNode existingNode = null;
+            for (ConfigurationNode node : nodes) {
+                if (node.getId().equals(id)) existingNode = node;
             }
-            if (existingFolder != null) {
-                // Remove the folder
-                folders.remove(existingFolder);
+            if (existingNode != null) {
+                // Remove the node
+                nodes.remove(existingNode);
             } else {
-                // Unknown folder
+                // Unknown node
                 response.setStatus(false);
                 setResponseErrorCode(response, ErrorCode.UNKNOWN_FOLDER);
             }
@@ -303,30 +302,32 @@ public class ConfigurationHandler {
         return response;
     }
 
-    private void setResponseErrorCode(EditConfigFolderResponse response, ErrorCode errorCode) {
+    private void setResponseErrorCode(EditConfigNodeResponse response, ErrorCode errorCode) {
         response.setErrorCode(errorCode.getCode());
         response.setMessage(bundle.getString("backend.error." + errorCode.getCode()));
     }
 
     /**
-     * Validate path or URL
+     * Validate path
      */
-    private ErrorCode validatePath(String path, boolean isPath) {
-        if (isPath) {
-            // Validate path
-            File file = new File(path);
-            if (!file.exists()) {
-                return ErrorCode.PATH_NOT_EXIST;
-            } else if (!file.canRead() || file.isHidden()) {
-                return ErrorCode.PATH_NOT_READABLE;
-            } else if (!file.isDirectory()) {
-                return ErrorCode.PATH_NOT_DIRECTORY;
-            }
-        } else {
-            // Validate URL
-            if (!path.toLowerCase().startsWith("http://")) {
-                return ErrorCode.MALFORMATTED_URL;
-            }
+    private ErrorCode validatePath(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            return ErrorCode.PATH_NOT_EXIST;
+        } else if (!file.canRead() || file.isHidden()) {
+            return ErrorCode.PATH_NOT_READABLE;
+        } else if (!file.isDirectory()) {
+            return ErrorCode.PATH_NOT_DIRECTORY;
+        }
+        return ErrorCode.NO_ERROR;
+    }
+
+    /**
+     * Validate URL
+     */
+    private ErrorCode validateUrl(String url) {
+        if (!url.toLowerCase().startsWith("http://")) {
+            return ErrorCode.MALFORMATTED_URL;
         }
         return ErrorCode.NO_ERROR;
     }
