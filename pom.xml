@@ -95,8 +95,6 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					<showDeprecation>false</showDeprecation>
-					<showWarnings>false</showWarnings>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -109,7 +107,7 @@
 			<dependency>
 				<groupId>io.netty</groupId>
 				<artifactId>netty</artifactId>
-				<version>3.5.8.Final</version>
+				<version>3.5.9.Final</version>
 			</dependency>
 
 			<!-- slf4j -->
@@ -237,7 +235,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
+				<version>4.11-beta-1</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
