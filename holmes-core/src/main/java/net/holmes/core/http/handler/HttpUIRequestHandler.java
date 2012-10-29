@@ -23,9 +23,7 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
-import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -47,16 +45,16 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler for Holmes UI pages
  */
-public final class HttpSiteRequestHandler implements HttpRequestHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpSiteRequestHandler.class);
+public final class HttpUIRequestHandler implements HttpRequestHandler {
+    private static final Logger logger = LoggerFactory.getLogger(HttpUIRequestHandler.class);
 
     private final MimeTypeFactory mimeTypeFactory;
-    private final String siteDirectory;
+    private final String uiDirectory;
 
     @Inject
-    public HttpSiteRequestHandler(MimeTypeFactory mimeTypeFactory) {
+    public HttpUIRequestHandler(MimeTypeFactory mimeTypeFactory) {
         this.mimeTypeFactory = mimeTypeFactory;
-        this.siteDirectory = HolmesHomeDirectory.getSiteDirectory();
+        this.uiDirectory = HolmesHomeDirectory.getUIDirectory();
     }
 
     @Override
@@ -83,8 +81,8 @@ public final class HttpSiteRequestHandler implements HttpRequestHandler {
 
         try {
             // Get file
-            File file = new File(siteDirectory, fileName);
-            if (!file.exists() || !file.canRead() || file.isHidden()) {
+            File file = new File(uiDirectory, fileName);
+            if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
             }

@@ -24,11 +24,11 @@ import org.jboss.netty.channel.group.ChannelGroup;
 /**
  * Register opened channels to channel group
  */
-public class ChannelEventHandler extends SimpleChannelHandler {
+public class ChannelGroupHandler extends SimpleChannelHandler {
 
     private final ChannelGroup channelGroup;
 
-    public ChannelEventHandler(ChannelGroup channelGroup) {
+    public ChannelGroupHandler(ChannelGroup channelGroup) {
         this.channelGroup = channelGroup;
     }
 

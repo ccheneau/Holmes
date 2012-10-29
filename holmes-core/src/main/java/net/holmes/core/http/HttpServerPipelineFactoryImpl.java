@@ -51,7 +51,7 @@ public final class HttpServerPipelineFactoryImpl implements HttpServerPipelineFa
         pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
 
         // Add event handler for channel registration to channel group
-        pipeline.addLast("channelEvent", new ChannelEventHandler(this.channelGroup));
+        pipeline.addLast("channelGroupHandler", new ChannelGroupHandler(this.channelGroup));
 
         // Add http request handler
         pipeline.addLast("httpChannelHandler", injector.getInstance(ChannelHandler.class));

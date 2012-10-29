@@ -23,8 +23,8 @@ public class HolmesHomeDirectory {
         return getSubDirectory("conf");
     }
 
-    public static String getSiteDirectory() {
-        return getSubDirectory("site");
+    public static String getUIDirectory() {
+        return getSubDirectory("ui");
     }
 
     private static String getSubDirectory(String subDirName) {

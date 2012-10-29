@@ -25,6 +25,9 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.holmes.core.http.handler.HttpRequestException;
+import net.holmes.core.http.handler.HttpRequestHandler;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -54,14 +57,14 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
 
     private final HttpRequestHandler contentRequestHandler;
     private final HttpRequestHandler backendRequestHandler;
-    private final HttpRequestHandler siteRequestHandler;
+    private final HttpRequestHandler uiRequestHandler;
 
     @Inject
     public HttpChannelHandler(@Named("content") HttpRequestHandler contentRequestHandler, @Named("backend") HttpRequestHandler backendRequestHandler,
-            @Named("site") HttpRequestHandler siteRequestHandler) {
+            @Named("ui") HttpRequestHandler uiRequestHandler) {
         this.contentRequestHandler = contentRequestHandler;
         this.backendRequestHandler = backendRequestHandler;
-        this.siteRequestHandler = siteRequestHandler;
+        this.uiRequestHandler = uiRequestHandler;
     }
 
     @Override
@@ -94,7 +97,7 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
             // Dispatch request to proper handler
             if (contentRequestHandler.canProcess(requestPath, request.getMethod())) contentRequestHandler.processRequest(request, e.getChannel());
             else if (backendRequestHandler.canProcess(requestPath, request.getMethod())) backendRequestHandler.processRequest(request, e.getChannel());
-            else if (siteRequestHandler.canProcess(requestPath, request.getMethod())) siteRequestHandler.processRequest(request, e.getChannel());
+            else if (uiRequestHandler.canProcess(requestPath, request.getMethod())) uiRequestHandler.processRequest(request, e.getChannel());
             else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
 
         } catch (HttpRequestException ex) {

@@ -14,21 +14,22 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.http;
+package net.holmes.core.http.handler;
 
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
-public final class HttpRequestException extends Exception {
-    private static final long serialVersionUID = 1022835130881123877L;
+import org.jboss.netty.channel.Channel;
+import org.jboss.netty.handler.codec.http.HttpMethod;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 
-    private final HttpResponseStatus status;
+public interface HttpRequestHandler {
 
-    public HttpRequestException(String message, HttpResponseStatus status) {
-        super(message);
-        this.status = status;
-    }
+    /**
+     * Check if handler can process request
+     */
+    public boolean canProcess(String requestPath, HttpMethod method);
 
-    public HttpResponseStatus getStatus() {
-        return status;
-    }
+    /**
+     * Process request
+     */
+    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
 }

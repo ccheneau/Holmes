@@ -22,8 +22,6 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
-import net.holmes.core.http.HttpRequestException;
-import net.holmes.core.http.HttpRequestHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;

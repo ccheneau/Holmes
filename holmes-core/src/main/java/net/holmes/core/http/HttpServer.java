@@ -42,18 +42,18 @@ public final class HttpServer implements Server {
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
     private ServerBootstrap bootstrap = null;
-    private final ChannelGroup allChannels;
+    private final ChannelGroup channelGroup;
     private final HttpServerPipelineFactory pipelineFactory;
     private final Configuration configuration;
-    private final WebApplication application;
+    private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(HttpServerPipelineFactory pipelineFactory, WebApplication application, Configuration configuration) {
+    public HttpServer(HttpServerPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
-        this.application = application;
+        this.webApplication = webApplication;
         // Init channel group
-        this.allChannels = new DefaultChannelGroup(HttpServer.class.getName());
+        this.channelGroup = new DefaultChannelGroup(HttpServer.class.getName());
     }
 
     @Override
@@ -66,11 +66,11 @@ public final class HttpServer implements Server {
         bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
 
         // Set up the event pipeline factory.
-        pipelineFactory.setChannelGroup(allChannels);
+        pipelineFactory.setChannelGroup(channelGroup);
         bootstrap.setPipelineFactory(pipelineFactory);
 
         // Bind and start server to accept incoming connections.
-        allChannels.add(bootstrap.bind(bindAddress));
+        channelGroup.add(bootstrap.bind(bindAddress));
 
         if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
     }
@@ -80,9 +80,9 @@ public final class HttpServer implements Server {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
         // Stop the server
-        allChannels.close();
+        channelGroup.close();
         if (bootstrap != null) bootstrap.releaseExternalResources();
-        application.destroy();
+        webApplication.destroy();
 
         if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
     }

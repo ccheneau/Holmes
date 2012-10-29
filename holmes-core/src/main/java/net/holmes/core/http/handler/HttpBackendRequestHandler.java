@@ -25,9 +25,7 @@ import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
-import net.holmes.core.http.HttpRequestException;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.HttpRequestHandler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -60,11 +58,11 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
     private static final String REQUEST_PATH = "/backend/";
 
-    private final WebApplication application;
+    private final WebApplication webApplication;
 
     @Inject
-    public HttpBackendRequestHandler(WebApplication application) {
-        this.application = application;
+    public HttpBackendRequestHandler(WebApplication webApplication) {
+        this.webApplication = webApplication;
     }
 
     @Override
@@ -84,11 +82,11 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
 
             // Build request
-            final ContainerRequest cRequest = new ContainerRequest(application, request.getMethod().getName(), baseUri, requestUri, getHeaders(request),
+            final ContainerRequest cRequest = new ContainerRequest(webApplication, request.getMethod().getName(), baseUri, requestUri, getHeaders(request),
                     new ChannelBufferInputStream(request.getContent()));
 
             // Process request
-            application.handleRequest(cRequest, new BackendResponseWriter(channel));
+            webApplication.handleRequest(cRequest, new BackendResponseWriter(channel));
         } catch (URISyntaxException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
