@@ -75,18 +75,16 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
-            // Define base URL
+            // Build backend request
             StringBuilder base = new StringBuilder();
             base.append("http://").append(request.getHeader(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
             final URI baseUri = new URI(base.toString());
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
+            final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().getName(), baseUri, requestUri,
+                    getHeaders(request), new ChannelBufferInputStream(request.getContent()));
 
-            // Build request
-            final ContainerRequest cRequest = new ContainerRequest(webApplication, request.getMethod().getName(), baseUri, requestUri, getHeaders(request),
-                    new ChannelBufferInputStream(request.getContent()));
-
-            // Process request
-            webApplication.handleRequest(cRequest, new BackendResponseWriter(channel));
+            // Process backend request
+            webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
         } catch (URISyntaxException e) {
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
@@ -130,7 +128,6 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             }
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            // Return output stream
             ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
             response.setContent(buffer);
             return new ChannelBufferOutputStream(buffer);

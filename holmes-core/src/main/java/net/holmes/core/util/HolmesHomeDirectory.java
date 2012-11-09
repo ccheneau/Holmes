@@ -28,12 +28,10 @@ public class HolmesHomeDirectory {
     }
 
     private static String getSubDirectory(String subDirName) {
-        StringBuilder homeSubDirectory = new StringBuilder();
-        homeSubDirectory.append(SystemProperty.HOLMES_HOME.getValue()).append(File.separator).append(subDirName);
-        File confDir = new File(homeSubDirectory.toString());
-        if (!confDir.exists() && !confDir.mkdir()) {
-            throw new RuntimeException("Failed to create " + homeSubDirectory.toString());
+        File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), subDirName);
+        if (!confDir.exists()) {
+            throw new RuntimeException(confDir.getAbsolutePath() + " does not exist");
         }
-        return homeSubDirectory.toString();
+        return confDir.getAbsolutePath();
     }
 }

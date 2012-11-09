@@ -49,9 +49,9 @@ public class DirectoryBrowseResult {
     public DirectoryBrowseResult(long firstResult, long maxResults) {
         this.firstResult = firstResult;
         this.maxResults = maxResults;
+        this.didl = new DIDLContent();
         this.itemCount = 0l;
         this.totalCount = 0l;
-        this.didl = new DIDLContent();
     }
 
     public long getItemCount() {

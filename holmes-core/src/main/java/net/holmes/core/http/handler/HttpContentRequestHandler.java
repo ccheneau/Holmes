@@ -82,22 +82,22 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
             }
 
-            // Get startOffset
+            // Get start offset
             long startOffset = 0;
             String range = request.getHeader(HttpHeaders.Names.RANGE);
             if (range != null) {
                 String[] token = range.split("=|-");
-                if (token != null && token.length > 1 && token[0].equals("bytes")) {
+                if (token != null && token.length > 1 && token[0].equals(HttpHeaders.Values.BYTES)) {
                     startOffset = Long.parseLong(token[1]);
                 }
             }
 
             // Get file descriptor
-            RandomAccessFile raf;
+            RandomAccessFile randomFile;
             long fileLength = 0;
             try {
-                raf = new RandomAccessFile(file, "r");
-                fileLength = raf.length();
+                randomFile = new RandomAccessFile(file, "r");
+                fileLength = randomFile.length();
             } catch (IOException e) {
                 throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
             }
@@ -108,7 +108,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
                 HttpHeaders.setContentLength(response, fileLength);
                 response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
-                response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, "bytes");
+                response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, HttpHeaders.Values.BYTES);
             } else if (startOffset > 0 && startOffset < fileLength) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PARTIAL_CONTENT);
                 HttpHeaders.setContentLength(response, fileLength - startOffset);
@@ -123,7 +123,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
             // Write the content.
             try {
-                ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, startOffset, fileLength - startOffset, 8192));
+                ChannelFuture writeFuture = channel.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, 8192));
                 // Decide whether to close the connection or not.
                 if (!HttpHeaders.isKeepAlive(request)) {
                     // Close the connection when the whole content is written out.

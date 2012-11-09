@@ -50,7 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HttpServerHandler redirect Http requests to proper handler
+ * HttpChannelHandler redirect Http requests to proper handler
  */
 public final class HttpChannelHandler extends SimpleChannelHandler {
     private static final Logger logger = LoggerFactory.getLogger(HttpChannelHandler.class);
@@ -122,7 +122,7 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
     }
 
     private void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
-        // Build response
+        // Build error response
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
         response.setHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
         ChannelBuffer buffer = ChannelBuffers.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);

@@ -38,7 +38,7 @@ public class SystemTrayIcon extends TrayIcon {
     private static final JDialog dialog;
 
     static {
-        dialog = new JDialog((Frame) null, "TrayDialog");
+        dialog = new JDialog((Frame) null, "HolmesSysTray");
         dialog.setUndecorated(true);
         dialog.setAlwaysOnTop(true);
     }
