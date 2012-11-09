@@ -55,7 +55,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     public Date getModifedDate() {
-        return new Date(modifedDate.getTime());
+        return modifedDate != null ? new Date(modifedDate.getTime()) : null;
     }
 
     public void setModifedDate(Date modifedDate) {
