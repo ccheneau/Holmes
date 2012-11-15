@@ -39,7 +39,7 @@ Source: "target\holmes-{#MyAppVersion}\bin\startup.bat"; DestDir: "{app}\bin"; F
 Source: "target\holmes-{#MyAppVersion}\holmes.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "target\holmes-{#MyAppVersion}\license.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "target\holmes-{#MyAppVersion}\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "target\holmes-{#MyAppVersion}\site\*"; DestDir: "{app}\site"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "target\holmes-{#MyAppVersion}\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "target\holmes-{#MyAppVersion}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "target\holmes-{#MyAppVersion}\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
