@@ -25,6 +25,7 @@ rem Set java args
 set java_args=-Dnet.holmes.home="%home_path%" -Dfile.encoding=UTF-8
 
 set java=javaw
+if "%JAVA_HOME%" == "" call :find_java_home
 if not "%JAVA_HOME%" == "" set java="%JAVA_HOME%\bin\javaw.exe"
 
 start "Holmes" ""%java%"" -Xmx30m %java_args% -jar "%lib_path%\holmes-core-${project.version}.jar" 
@@ -37,3 +38,7 @@ goto :EOF
 set %2=%~f1
 goto :EOF
 
+:find_java_home
+for /F "skip=2 tokens=2*" %%A in ('reg query "HKLM\Software\JavaSoft\Java Runtime Environment" /v CurrentVersion') do set CurVer=%%B
+for /F "skip=2 tokens=2*" %%A in ('reg query "HKLM\Software\JavaSoft\Java Runtime Environment\%CurVer%" /v JavaHome') do set JAVA_HOME=%%B
+goto :EOF
