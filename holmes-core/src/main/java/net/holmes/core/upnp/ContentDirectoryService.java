@@ -72,7 +72,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         super( // search caps
                 Arrays.asList("dc:title"),
                 // sort caps
-                Arrays.asList("dc:title"));
+                Arrays.asList("dc:title", "dc:date"));
         try {
             this.localAddress = getLocalAddress();
         } catch (UnknownHostException e) {
@@ -116,6 +116,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
                         + " nbresults=" + maxResults);
                 logger.debug("filter: " + filter);
+                if (orderby != null) {
+                    for (SortCriterion sort : orderby) {
+                        logger.debug("orderby: " + sort.toString());
+                    }
+                }
                 try {
                     String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
                     logger.debug("RequestFrom agent: " + userAgent);
@@ -227,7 +232,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     if (mimeType.isMedia()) {
                         if (result.filterResult()) {
                             // Add child item to result
-                            String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), podcastEntryNode.getName());
+                            String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodes.size(),
+                                    podcastEntryNode.getName());
                             result.addItem(parentNode.getId(), podcastEntryNode, entryName);
                         }
                         result.addTotalCount();
@@ -238,11 +244,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Get post-cast entry name. If prepend_podcast_entry_name configuration parameter is set to true, item number is added to title
+     * Get post-cast entry name. If prepend_podcast_entry_name configuration parameter is set to true, 
+     * item number is added to title
      */
-    private String getPodcastEntryName(long count, String title) {
+    private String getPodcastEntryName(long count, long totalCount, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
-            return String.format("%02d - %s", count + 1, title);
+            if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
+            else return String.format("%02d - %s", count + 1, title);
         } else {
             return title;
         }
