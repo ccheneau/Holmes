@@ -21,7 +21,7 @@ $(document).ready(function() {
 	// Initialize i18n
 	$.i18n.properties({
 	    name:'messages', 
-	    path:'bundle/',
+	    path:'/default/bundle/',
 	    mode:'both',
 	    callback: function() {
 	    	// Internationalize i18n elements

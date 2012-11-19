@@ -70,7 +70,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.getPath();
         if ("/".equals(fileName)) {
-            fileName = "/index.html";
+            fileName = "/default/index.html";
         }
 
         if (fileName == null || fileName.trim().isEmpty()) {
