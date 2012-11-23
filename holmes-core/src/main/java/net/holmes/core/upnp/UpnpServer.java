@@ -61,9 +61,9 @@ public final class UpnpServer implements Server {
 
     @Override
     public void start() {
-        if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
         try {
             if (configuration.getParameter(Parameter.ENABLE_UPNP)) {
+                if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
                 upnpService = new UpnpServiceImpl();
 
                 // Add the bound local device to the registry
@@ -72,7 +72,7 @@ public final class UpnpServer implements Server {
 
                 if (logger.isInfoEnabled()) logger.info("UPnP server started");
             } else {
-                if (logger.isInfoEnabled()) logger.info("UPnP is disabled");
+                if (logger.isInfoEnabled()) logger.info("UPnP server is disabled");
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
