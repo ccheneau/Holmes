@@ -19,7 +19,7 @@ package net.holmes.core;
 import java.io.File;
 
 import net.holmes.core.util.HolmesHomeDirectory;
-import net.holmes.core.util.HolmesLock;
+import net.holmes.core.util.SystemUtils;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class Bootstrap {
 
     public static void main(String[] args) {
         // Check lock file
-        if (HolmesLock.lockInstance()) {
+        if (SystemUtils.lockInstance()) {
             // Load log4j configuration
             String logConfig = HolmesHomeDirectory.getConfigDirectory() + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);

@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import net.holmes.core.util.SystemProperty;
+import net.holmes.core.util.SystemUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,15 +51,11 @@ public final class XmlConfigurationImpl implements Configuration {
      * Get Holmes configuration file 
      */
     private File getConfigFile() {
-        StringBuilder confPath = new StringBuilder();
-        confPath.append(SystemProperty.USER_HOME.getValue()).append(File.separator) //
-                .append(".holmes").append(File.separator).append("conf");
+        File fConfPath = new File(SystemUtils.getLocalHolmesDataDir(), "conf");
+        if (!fConfPath.exists() || !fConfPath.isDirectory())
+            if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 
-        // Create holmes user conf directory if it does not exist
-        File fConfPath = new File(confPath.toString());
-        if (!fConfPath.exists() || !fConfPath.isDirectory()) if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + confPath.toString());
-
-        return new File(confPath.toString() + File.separator + CONF_FILE_NAME);
+        return new File(fConfPath.getAbsolutePath() + File.separator + CONF_FILE_NAME);
     }
 
     private void loadConfig() {

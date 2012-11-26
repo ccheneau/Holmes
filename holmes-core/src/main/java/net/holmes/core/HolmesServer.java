@@ -39,8 +39,8 @@ import javax.swing.plaf.FontUIResource;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemTrayIcon;
+import net.holmes.core.util.SystemUtils;
 import net.holmes.core.util.bundle.Bundle;
 
 import org.slf4j.Logger;
@@ -146,8 +146,7 @@ public final class HolmesServer implements Server {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder logFile = new StringBuilder();
-                        logFile.append(SystemProperty.USER_HOME.getValue()).append(File.separator) //
-                                .append(".holmes").append(File.separator) //
+                        logFile.append(SystemUtils.getLocalHolmesDataDir().getAbsolutePath()).append(File.separator) //
                                 .append("log").append(File.separator).append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     } catch (IOException e) {

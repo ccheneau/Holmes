@@ -21,24 +21,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
-public class HolmesLock {
+public class SystemUtils {
     /**
      * Create Holmes lock file
      * @return true on lock success, false if lock file already exists
      */
     public static boolean lockInstance() {
         try {
-            // Get path for lock file
-            StringBuilder homePath = new StringBuilder();
-            homePath.append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
-
-            // Create lock file path if it does not exist
-            File fConfPath = new File(homePath.toString());
-            if (!fConfPath.exists() || !fConfPath.isDirectory())
-                if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + homePath.toString());
-
             // Create lock file
-            final File lockFile = new File(homePath.toString(), "holmes.lock");
+            final File lockFile = new File(getLocalHolmesDataDir(), "holmes.lock");
             final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
             final FileLock fileLock = randomAccessFile.getChannel().tryLock();
             if (fileLock != null) {
@@ -62,4 +53,16 @@ public class HolmesLock {
         }
         return false;
     }
+
+    public static File getLocalHolmesDataDir() {
+        StringBuilder holmesDataDir = new StringBuilder();
+        holmesDataDir.append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
+
+        // Check directory
+        File fDataDir = new File(holmesDataDir.toString());
+        if (!fDataDir.exists() || !fDataDir.isDirectory()) if (!fDataDir.mkdirs()) throw new RuntimeException("Failed to create " + holmesDataDir.toString());
+
+        return fDataDir;
+    }
+
 }
