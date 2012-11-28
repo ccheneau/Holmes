@@ -30,7 +30,8 @@ public class HolmesHomeDirectory {
     private static String getSubDirectory(String subDirName) {
         File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), subDirName);
         if (!confDir.exists()) {
-            throw new RuntimeException(confDir.getAbsolutePath() + " does not exist");
+            throw new RuntimeException(confDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
+                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
         }
         return confDir.getAbsolutePath();
     }
