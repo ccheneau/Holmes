@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 
 import net.holmes.core.http.HttpServer;
+import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
@@ -41,7 +42,6 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.sun.jersey.core.header.InBoundHeaders;
@@ -53,8 +53,9 @@ import com.sun.jersey.spi.container.WebApplication;
 /**
  * Handler for backend requests from Holmes UI
  */
+@Loggable
 public final class HttpBackendRequestHandler implements HttpRequestHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpBackendRequestHandler.class);
+    private Logger logger;
 
     private static final String REQUEST_PATH = "/backend/";
 

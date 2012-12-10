@@ -27,6 +27,7 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.NodeType;
+import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -41,13 +42,13 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer
  */
+@Loggable
 public final class HttpContentRequestHandler implements HttpRequestHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpContentRequestHandler.class);
+    private Logger logger;
 
     private static final String REQUEST_PATH = "/content";
 

@@ -23,37 +23,37 @@ import javax.inject.Inject;
 
 import net.holmes.core.Server;
 import net.holmes.core.configuration.Configuration;
+import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
  * HTTP server main class  
  */
+@Loggable
 public final class HttpServer implements Server {
-    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    private Logger logger;
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
     private ServerBootstrap bootstrap = null;
     private final ChannelGroup channelGroup;
-    private final HttpServerPipelineFactory pipelineFactory;
+    private final ChannelPipelineFactory pipelineFactory;
     private final Configuration configuration;
     private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(HttpServerPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
+    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration, ChannelGroup channelGroup) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
         this.webApplication = webApplication;
-        // Init channel group
-        this.channelGroup = new DefaultChannelGroup(HttpServer.class.getName());
+        this.channelGroup = channelGroup;
     }
 
     @Override
@@ -66,7 +66,6 @@ public final class HttpServer implements Server {
         bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
 
         // Set up the event pipeline factory.
-        pipelineFactory.setChannelGroup(channelGroup);
         bootstrap.setPipelineFactory(pipelineFactory);
 
         // Bind and start server to accept incoming connections.

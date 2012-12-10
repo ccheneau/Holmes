@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -40,13 +41,13 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handler for Holmes UI pages
  */
+@Loggable
 public final class HttpUIRequestHandler implements HttpRequestHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpUIRequestHandler.class);
+    private Logger logger;
 
     private final MimeTypeFactory mimeTypeFactory;
     private final String uiDirectory;

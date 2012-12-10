@@ -27,6 +27,7 @@ import javax.inject.Named;
 
 import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
+import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -35,7 +36,6 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -47,13 +47,13 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * HttpChannelHandler redirect Http requests to proper handler
  */
-public final class HttpChannelHandler extends SimpleChannelHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpChannelHandler.class);
+@Loggable
+public final class HttpChannelHandler extends AbstractHttpChannelHandler {
+    private Logger logger;
 
     private final HttpRequestHandler contentRequestHandler;
     private final HttpRequestHandler backendRequestHandler;

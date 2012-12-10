@@ -14,28 +14,10 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package net.holmes.core.http;
 
-import javax.inject.Inject;
+import org.jboss.netty.channel.SimpleChannelHandler;
 
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ChannelStateEvent;
-import org.jboss.netty.channel.group.ChannelGroup;
-
-/**
- * Register opened channels to channel group
- */
-public class ChannelGroupHandler extends AbstractChannelGroupHandler {
-
-    private final ChannelGroup channelGroup;
-
-    @Inject
-    public ChannelGroupHandler(ChannelGroup channelGroup) {
-        this.channelGroup = channelGroup;
-    }
-
-    @Override
-    public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-        this.channelGroup.add(e.getChannel());
-    }
+public abstract class AbstractChannelGroupHandler extends SimpleChannelHandler {
 }
