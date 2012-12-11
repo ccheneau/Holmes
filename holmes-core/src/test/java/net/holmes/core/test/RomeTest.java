@@ -23,11 +23,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
+import net.holmes.core.util.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -42,8 +42,9 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+@Loggable
 public class RomeTest extends TestCase {
-    private static final Logger logger = LoggerFactory.getLogger(RomeTest.class);
+    private Logger logger;
 
     @Override
     @Before

@@ -26,17 +26,18 @@ import net.holmes.core.configuration.Configuration;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
+import net.holmes.core.util.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+@Loggable
 public class MediaServiceTest extends TestCase {
-    private static final Logger logger = LoggerFactory.getLogger(MediaServiceTest.class);
+    private Logger logger;
 
     @Inject
     private MediaService mediaService;
@@ -49,11 +50,6 @@ public class MediaServiceTest extends TestCase {
     public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
-    }
-
-    @Test
-    public void testMediaService() {
-        logger.debug(configuration.toString());
     }
 
     @Test
