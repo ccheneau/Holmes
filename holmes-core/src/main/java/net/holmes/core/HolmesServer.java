@@ -157,12 +157,12 @@ public final class HolmesServer implements Server {
             }
         });
 
-        // Holmes admin site menu item
-        JMenuItem holmesItem = new JMenuItem(bundle.getString("systray.holmes"));
+        // Holmes ui menu item
+        JMenuItem holmesUiItem = new JMenuItem(bundle.getString("systray.holmes.ui"));
         Font boldFont = UIManager.getFont("MenuItem.bold.font");
-        if (boldFont != null) holmesItem.setFont(boldFont);
+        if (boldFont != null) holmesUiItem.setFont(boldFont);
 
-        holmesItem.addActionListener(new ActionListener() {
+        holmesUiItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {
@@ -179,8 +179,26 @@ public final class HolmesServer implements Server {
             }
         });
 
+        // Holmes ui menu item
+        JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"));
+        holmesSiteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("http://ccheneau.github.com/Holmes/"));
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    } catch (URISyntaxException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+            }
+        });
+
         // Add items to popup menu
-        popupMenu.add(holmesItem);
+        popupMenu.add(holmesUiItem);
+        popupMenu.add(holmesSiteItem);
         popupMenu.add(logsItem);
         popupMenu.addSeparator();
         popupMenu.add(quitItem);
