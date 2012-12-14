@@ -50,12 +50,10 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     private Logger logger;
 
     private final MimeTypeFactory mimeTypeFactory;
-    private final String uiDirectory;
 
     @Inject
     public HttpUIRequestHandler(MimeTypeFactory mimeTypeFactory) {
         this.mimeTypeFactory = mimeTypeFactory;
-        this.uiDirectory = HolmesHomeDirectory.getUIDirectory();
     }
 
     @Override
@@ -82,7 +80,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
         try {
             // Get file
-            File file = new File(uiDirectory, fileName);
+            File file = new File(HolmesHomeDirectory.getInstance().getUIDirectory(), fileName);
             if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);

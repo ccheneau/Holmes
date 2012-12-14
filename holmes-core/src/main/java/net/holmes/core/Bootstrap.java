@@ -29,11 +29,11 @@ import com.google.inject.Injector;
 
 public class Bootstrap {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         // Check lock file
         if (SystemUtils.lockInstance()) {
             // Load log4j configuration
-            String logConfig = HolmesHomeDirectory.getConfigDirectory() + File.separator + "log4j.xml";
+            String logConfig = HolmesHomeDirectory.getInstance().getConfigDirectory() + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
             // Create Guice injector
