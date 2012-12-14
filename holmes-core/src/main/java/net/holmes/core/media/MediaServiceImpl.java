@@ -251,7 +251,7 @@ public final class MediaServiceImpl implements MediaService {
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                         if (rssEntries != null && !rssEntries.isEmpty()) {
                             for (SyndEntry rssEntry : rssEntries) {
-                                // Add node for each feed entries
+                                // Add node for each feed entry
                                 if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
                                     String duration = null;
                                     String iconUrl = null;
