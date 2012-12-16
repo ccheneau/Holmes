@@ -76,7 +76,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelGroup.class).toInstance(new DefaultChannelGroup());
+        bind(ChannelGroup.class).to(DefaultChannelGroup.class).in(Singleton.class);
         bind(AbstractChannelGroupHandler.class).to(ChannelGroupHandler.class);
         bind(AbstractHttpChannelHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);

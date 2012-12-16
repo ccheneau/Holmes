@@ -26,7 +26,6 @@ import org.jboss.netty.channel.group.ChannelGroup;
  * Register opened channels to channel group
  */
 public class ChannelGroupHandler extends AbstractChannelGroupHandler {
-
     private final ChannelGroup channelGroup;
 
     @Inject
