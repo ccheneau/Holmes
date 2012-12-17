@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.holmes</groupId>
 	<artifactId>holmes-parent</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -228,7 +228,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>13.0.1</version>
+				<version>14.0-rc1</version>
 			</dependency>
 
 			<!-- test dependencies -->
