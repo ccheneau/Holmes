@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import net.holmes.core.Server;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.MediaService;
 import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
@@ -38,6 +37,8 @@ import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDADeviceType;
 import org.teleal.cling.model.types.UDN;
 
+import com.google.inject.Injector;
+
 /**
  * UPnP server main class
  */
@@ -47,12 +48,12 @@ public final class UpnpServer implements Server {
 
     private UpnpService upnpService = null;
 
-    private final MediaService mediaService;
+    private final Injector injector;
     private final Configuration configuration;
 
     @Inject
-    public UpnpServer(MediaService mediaService, Configuration configuration) {
-        this.mediaService = mediaService;
+    public UpnpServer(Injector injector, Configuration configuration) {
+        this.injector = injector;
         this.configuration = configuration;
     }
 
@@ -101,8 +102,7 @@ public final class UpnpServer implements Server {
         contentDirectoryService.setManager(serviceManager);
 
         ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
-        contentDirectory.setConfiguration(configuration);
-        contentDirectory.setMediaService(mediaService);
+        injector.injectMembers(contentDirectory);
 
         // Create local device
         return new LocalDevice(identity, type, details, new LocalService[] { contentDirectoryService });
