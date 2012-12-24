@@ -14,26 +14,15 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.http;
+package net.holmes.core.util.inject;
 
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ChannelStateEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.channel.group.ChannelGroup;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Register opened channels to channel group
- */
-public class ChannelGroupHandler extends SimpleChannelHandler {
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-    private final ChannelGroup channelGroup;
-
-    public ChannelGroupHandler(ChannelGroup channelGroup) {
-        this.channelGroup = channelGroup;
-    }
-
-    @Override
-    public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-        this.channelGroup.add(e.getChannel());
-    }
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Loggable {
 }

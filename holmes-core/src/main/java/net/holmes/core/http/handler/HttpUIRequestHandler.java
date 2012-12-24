@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -40,21 +41,19 @@ import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Handler for Holmes UI pages
  */
+@Loggable
 public final class HttpUIRequestHandler implements HttpRequestHandler {
-    private static final Logger logger = LoggerFactory.getLogger(HttpUIRequestHandler.class);
+    private Logger logger;
 
     private final MimeTypeFactory mimeTypeFactory;
-    private final String uiDirectory;
 
     @Inject
     public HttpUIRequestHandler(MimeTypeFactory mimeTypeFactory) {
         this.mimeTypeFactory = mimeTypeFactory;
-        this.uiDirectory = HolmesHomeDirectory.getUIDirectory();
     }
 
     @Override
@@ -81,7 +80,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
         try {
             // Get file
-            File file = new File(uiDirectory, fileName);
+            File file = new File(HolmesHomeDirectory.getInstance().getUIDirectory(), fileName);
             if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);

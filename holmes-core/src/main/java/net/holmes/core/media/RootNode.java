@@ -17,7 +17,6 @@
 package net.holmes.core.media;
 
 public enum RootNode {
-
     ROOT("0", "-1"), //
     VIDEO("1_VIDEOS", "0"), //
     PICTURE("2_PICTURES", "0"), //

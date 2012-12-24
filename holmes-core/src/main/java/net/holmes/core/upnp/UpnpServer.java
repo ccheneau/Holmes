@@ -16,20 +16,16 @@
 */
 package net.holmes.core.upnp;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
 import net.holmes.core.Server;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.MediaService;
+import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.teleal.cling.UpnpService;
 import org.teleal.cling.UpnpServiceImpl;
-import org.teleal.cling.binding.LocalServiceBindingException;
 import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.teleal.cling.model.DefaultServiceManager;
 import org.teleal.cling.model.ValidationException;
@@ -40,22 +36,24 @@ import org.teleal.cling.model.meta.LocalService;
 import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDADeviceType;
 import org.teleal.cling.model.types.UDN;
-import org.teleal.cling.support.connectionmanager.ConnectionManagerService;
+
+import com.google.inject.Injector;
 
 /**
  * UPnP server main class
  */
+@Loggable
 public final class UpnpServer implements Server {
-    private static final Logger logger = LoggerFactory.getLogger(UpnpServer.class);
+    private Logger logger;
 
     private UpnpService upnpService = null;
 
-    private final MediaService mediaService;
+    private final Injector injector;
     private final Configuration configuration;
 
     @Inject
-    public UpnpServer(MediaService mediaService, Configuration configuration) {
-        this.mediaService = mediaService;
+    public UpnpServer(Injector injector, Configuration configuration) {
+        this.injector = injector;
         this.configuration = configuration;
     }
 
@@ -67,8 +65,7 @@ public final class UpnpServer implements Server {
                 upnpService = new UpnpServiceImpl();
 
                 // Add the bound local device to the registry
-                LocalDevice localDevice = createDevice();
-                upnpService.getRegistry().addDevice(localDevice);
+                upnpService.getRegistry().addDevice(createDevice());
 
                 if (logger.isInfoEnabled()) logger.info("UPnP server started");
             } else {
@@ -89,7 +86,7 @@ public final class UpnpServer implements Server {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private LocalDevice createDevice() throws ValidationException, LocalServiceBindingException, IOException {
+    private LocalDevice createDevice() throws ValidationException {
         // Device identity
         DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Holmes UPnP Server"));
 
@@ -105,17 +102,9 @@ public final class UpnpServer implements Server {
         contentDirectoryService.setManager(serviceManager);
 
         ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
-        contentDirectory.setConfiguration(configuration);
-        contentDirectory.setMediaService(mediaService);
-
-        // Connection service
-        LocalService<ConnectionManagerService> connectionService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
-        connectionService.setManager(new DefaultServiceManager<ConnectionManagerService>(connectionService, ConnectionManagerService.class));
+        injector.injectMembers(contentDirectory);
 
         // Create local device
-        LocalService[] services = new LocalService[2];
-        services[0] = contentDirectoryService;
-        services[1] = connectionService;
-        return new LocalDevice(identity, type, details, services);
+        return new LocalDevice(identity, type, details, new LocalService[] { contentDirectoryService });
     }
 }

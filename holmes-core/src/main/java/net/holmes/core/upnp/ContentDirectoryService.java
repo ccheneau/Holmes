@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.MediaService;
@@ -64,8 +66,11 @@ import org.teleal.cling.support.model.SortCriterion;
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static final Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
+    @Inject
     private MediaService mediaService;
+    @Inject
     private Configuration configuration;
+
     private String localAddress;
 
     public ContentDirectoryService() {
@@ -78,14 +83,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         } catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
         }
-    }
-
-    public void setMediaService(MediaService mediaService) {
-        this.mediaService = mediaService;
-    }
-
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     /**

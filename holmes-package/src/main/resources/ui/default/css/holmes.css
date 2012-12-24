@@ -4,18 +4,7 @@ body {
 	background-color: #EEEEEE;
 }
 
-header {
-	height: 100px;
-	width: 100%;
-	border-bottom: 1px solid #434C56;
-}
-
-nav {
-	height: 70px;
-	width: 100%;
-}
-
-#container {
+.container {
     margin: 50px auto;
 	height: 650px;
     width: 960px;
@@ -24,19 +13,27 @@ nav {
 	border-radius: 5px;
 }
 
-#toolbar {
-    margin-left: 600px;
+.container-title {
+	height: 100px;
+	width: 100%;
+	border-bottom: 1px solid #434C56;
 }
 
-#toolbar  ul {
+.toolbar {
+	height: 70px;
+	width: 100%;
+	margin-left: 600px;
+}
+
+.toolbar  ul {
 	list-style-type: none;
 }
 
-#toolbar  li {
+.toolbar  li {
 	float: left;
 }
 
-#toolbar  a {
+.toolbar  a {
 	color: #1F262F;
 	font-size: 13px;
 	font-weight: bold;
@@ -45,11 +42,11 @@ nav {
 	outline: none;
 }
 
-#toolbar  a:hover {
+.toolbar  a:hover {
 	color: #1C94C4;
 }
 
-#toolbar span {
+.toolbar span {
 	display: block;
     height: 20px;
     padding: 0 10px 10px 10px;

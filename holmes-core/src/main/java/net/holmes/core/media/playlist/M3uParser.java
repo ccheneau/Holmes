@@ -21,16 +21,18 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import net.holmes.core.util.inject.Loggable;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
+@Loggable
 public class M3uParser implements PlaylistParser {
-    private static final Logger logger = LoggerFactory.getLogger(M3uParser.class);
+    private Logger logger;
 
     private final File playlist;
 

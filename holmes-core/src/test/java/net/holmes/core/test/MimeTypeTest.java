@@ -20,19 +20,20 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
+import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+@Loggable
 public class MimeTypeTest extends TestCase {
-    private static final Logger logger = LoggerFactory.getLogger(MimeTypeTest.class);
+    private Logger logger;
 
     @Inject
     private MimeTypeFactory mimeTypeFactory;

@@ -19,6 +19,5 @@ package net.holmes.core.media.playlist;
 import java.util.List;
 
 public interface PlaylistParser {
-
     public List<PlaylistItem> parse();
 }

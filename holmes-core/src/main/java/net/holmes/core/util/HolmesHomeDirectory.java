@@ -19,15 +19,31 @@ package net.holmes.core.util;
 import java.io.File;
 
 public class HolmesHomeDirectory {
-    public static String getConfigDirectory() {
-        return getSubDirectory("conf");
+
+    private static HolmesHomeDirectory instance = null;
+
+    private final String confDirectory;
+    private final String uiDirectory;
+
+    private HolmesHomeDirectory() {
+        confDirectory = getSubDirectory("conf");
+        uiDirectory = getSubDirectory("ui");
     }
 
-    public static String getUIDirectory() {
-        return getSubDirectory("ui");
+    public static HolmesHomeDirectory getInstance() {
+        if (instance == null) instance = new HolmesHomeDirectory();
+        return instance;
     }
 
-    private static String getSubDirectory(String subDirName) {
+    public String getConfigDirectory() {
+        return confDirectory;
+    }
+
+    public String getUIDirectory() {
+        return uiDirectory;
+    }
+
+    private String getSubDirectory(String subDirName) {
         File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), subDirName);
         if (!confDir.exists()) {
             throw new RuntimeException(confDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["

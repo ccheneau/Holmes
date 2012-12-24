@@ -29,10 +29,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Configuration;
-import net.holmes.core.media.index.MediaIndex;
+import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.media.index.IndexElement;
+import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
@@ -43,11 +43,11 @@ import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
+import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -62,8 +62,9 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+@Loggable
 public final class MediaServiceImpl implements MediaService {
-    private static final Logger logger = LoggerFactory.getLogger(MediaServiceImpl.class);
+    private Logger logger;
 
     private final Configuration configuration;
     private final MimeTypeFactory mimeTypeFactory;
@@ -250,7 +251,7 @@ public final class MediaServiceImpl implements MediaService {
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                         if (rssEntries != null && !rssEntries.isEmpty()) {
                             for (SyndEntry rssEntry : rssEntries) {
-                                // Add node for each feed entries
+                                // Add node for each feed entry
                                 if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
                                     String duration = null;
                                     String iconUrl = null;

@@ -22,18 +22,22 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.index.MediaIndexImpl;
-import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.bundle.Bundle;
+import net.holmes.core.util.bundle.BundleImpl;
+import net.holmes.core.util.inject.LoggerListener;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.matcher.Matchers;
 
 public class TestModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bindListener(Matchers.any(), new LoggerListener());
+
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
 
@@ -41,6 +45,5 @@ public class TestModule extends AbstractModule {
         bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
 
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
-
     }
 }

@@ -17,43 +17,42 @@
 package net.holmes.core.http;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
 import net.holmes.core.Server;
 import net.holmes.core.configuration.Configuration;
+import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.DefaultChannelGroup;
+import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
  * HTTP server main class  
  */
+@Loggable
 public final class HttpServer implements Server {
-    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    private Logger logger;
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
     private ServerBootstrap bootstrap = null;
-    private final ChannelGroup channelGroup;
-    private final HttpServerPipelineFactory pipelineFactory;
+    private ExecutorService executor = null;
+    private final ChannelPipelineFactory pipelineFactory;
     private final Configuration configuration;
     private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(HttpServerPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
+    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
         this.webApplication = webApplication;
-        // Init channel group
-        this.channelGroup = new DefaultChannelGroup(HttpServer.class.getName());
     }
 
     @Override
@@ -63,14 +62,14 @@ public final class HttpServer implements Server {
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
         // Configure the server.
-        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
+        executor = Executors.newCachedThreadPool();
+        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(executor, executor));
 
         // Set up the event pipeline factory.
-        pipelineFactory.setChannelGroup(channelGroup);
         bootstrap.setPipelineFactory(pipelineFactory);
 
         // Bind and start server to accept incoming connections.
-        channelGroup.add(bootstrap.bind(bindAddress));
+        bootstrap.bind(bindAddress);
 
         if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
     }
@@ -80,8 +79,8 @@ public final class HttpServer implements Server {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
         // Stop the server
-        channelGroup.close();
-        if (bootstrap != null) bootstrap.releaseExternalResources();
+        bootstrap.shutdown();
+        executor.shutdown();
         webApplication.destroy();
 
         if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
