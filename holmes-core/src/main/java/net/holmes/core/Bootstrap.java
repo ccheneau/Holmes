@@ -23,6 +23,7 @@ import net.holmes.core.util.SystemUtils;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -35,6 +36,13 @@ public class Bootstrap {
             // Load log4j configuration
             String logConfig = HolmesHomeDirectory.getInstance().getConfigDirectory() + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
+
+            // Optionally remove existing handlers attached to j.u.l root logger
+            SLF4JBridgeHandler.removeHandlersForRootLogger(); // (since SLF4J 1.6.5)
+
+            // add SLF4JBridgeHandler to j.u.l's root logger, should be done once during
+            // the initialization phase of your application
+            SLF4JBridgeHandler.install();
 
             // Create Guice injector
             Injector injector = Guice.createInjector(new HolmesServerModule());

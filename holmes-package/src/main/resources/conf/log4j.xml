@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration threshold="info" xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
@@ -11,7 +11,7 @@
 			<param name="LevelMax" value="INFO" />
 		</filter>
 	</appender>
-	
+
 	<appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.err" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -21,11 +21,11 @@
 			<param name="LevelMin" value="WARN" />
 		</filter>
 	</appender>
-	
+
 	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="${user.home}/.holmes/log/holmes.log" />
 		<param name="MaxFileSize" value="5MB" />
-		<param name="append" value="false"/>
+		<param name="append" value="false" />
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -33,8 +33,16 @@
 		</layout>
 	</appender>
 
+	<logger name="com.sun.jersey">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.teleal.cling">
+		<level value="error" />
+	</logger>
+	
 	<root>
-		<level value="DEBUG" />
+		<level value="debug" />
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="STDERR" />
 		<appender-ref ref="FILE" />
