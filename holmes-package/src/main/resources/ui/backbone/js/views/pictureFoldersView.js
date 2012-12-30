@@ -11,7 +11,12 @@ var Application = (function (application) {
 		},
 		render : function () {
 			var renderedContent = Mustache.to_html(this.template,
-					{folders : this.collection.toJSON()}
+				{
+					labelName : $.i18n.prop("msg.name"),
+					labelPath : $.i18n.prop("msg.path"),
+					title : $.i18n.prop("msg.picture.title"),
+					folders : this.collection.toJSON()
+				}
 			);
 			this.$el.html(renderedContent);
 		}

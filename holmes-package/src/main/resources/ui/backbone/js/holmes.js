@@ -1,31 +1,52 @@
 yepnope({
 	load: {
-			jquery : '/backbone/js/3rd/jquery-1.8.2.min.js',
-			underscore : '/backbone/js/3rd/underscore-min.js',
-			backbone : '/backbone/js/3rd/backbone-min.js',
-			mustache : '/backbone/js/3rd/mustache.js',
+			// css
+			holmesCss : '/backbone/css/holmes.css',
 			
-			//NameSpace
+			// lib
+			jquery : '/backbone/js/lib/jquery-1.8.2.min.js',
+			jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
+			underscore : '/backbone/js/lib/underscore-min.js',
+			backbone : '/backbone/js/lib/backbone-min.js',
+			mustache : '/backbone/js/lib/mustache.js',
+			
+			// application
 			application : '/backbone/js/application.js',
 
-			//Models
+			// models
 			videoFolders : '/backbone/js/models/videoFolders.js',
 			audioFolders : '/backbone/js/models/audioFolders.js',
 			pictureFolders : '/backbone/js/models/pictureFolders.js',
 			podcasts : '/backbone/js/models/podcasts.js',
 			
-			//Controllers
+			// controllers
 			videoFoldersView : '/backbone/js/views/videoFoldersView.js',
 			audioFoldersView : '/backbone/js/views/audioFoldersView.js',
 			pictureFoldersView : '/backbone/js/views/pictureFoldersView.js',
 			podcastView : '/backbone/js/views/podcastsView.js',
 			
-			//Routes
+			// routes
 			routes : '/backbone/js/routes.js'			
 		},
 	callback : {
 		"routes" : function () {
 			console.log("routes loaded ...");
+			},
+		"jqueryI18n": function () {
+			// Initialize i18n
+			$.i18n.properties({
+			    name:'messages', 
+			    path:'/backbone/bundle/',
+			    mode:'map',
+			    callback: function() {
+			    	// Internationalize i18n elements
+			    	$(".i18n").each( function(i,elem) {
+			    		if ($(elem).data('msg') != undefined)
+			    			$(elem).html(($.i18n.prop($(elem).data('msg'))));
+			    		});
+			    	}
+				});
+			console.log("i18n loaded ...");			
 			}
 		},
 	complete : function () {
