@@ -78,6 +78,16 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
+    public String getTheme() {
+        return DEFAULT_THEME;
+    }
+
+    @Override
+    public void setTheme(String theme) {
+
+    }
+
+    @Override
     public List<ConfigurationNode> getVideoFolders() {
         return this.videoFolders;
     }

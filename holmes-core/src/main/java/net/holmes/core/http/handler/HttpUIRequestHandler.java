@@ -23,6 +23,7 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
+import net.holmes.core.configuration.Configuration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.inject.Loggable;
@@ -49,10 +50,12 @@ import org.slf4j.Logger;
 public final class HttpUIRequestHandler implements HttpRequestHandler {
     private Logger logger;
 
+    private final Configuration configuration;
     private final MimeTypeFactory mimeTypeFactory;
 
     @Inject
-    public HttpUIRequestHandler(MimeTypeFactory mimeTypeFactory) {
+    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory) {
+        this.configuration = configuration;
         this.mimeTypeFactory = mimeTypeFactory;
     }
 
@@ -69,7 +72,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.getPath();
         if ("/".equals(fileName)) {
-            fileName = "/default/index.html";
+            fileName = "/" + configuration.getTheme() + "/index.html";
         }
 
         if (fileName == null || fileName.trim().isEmpty()) {

@@ -133,6 +133,16 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
+    public String getTheme() {
+        return this.rootNode.getTheme();
+    }
+
+    @Override
+    public void setTheme(String theme) {
+        this.rootNode.setTheme(theme);
+    }
+
+    @Override
     public List<ConfigurationNode> getVideoFolders() {
         return this.rootNode.getVideoFolders();
     }
@@ -170,6 +180,7 @@ public final class XmlConfigurationImpl implements Configuration {
     private static final class XmlRootNode {
         private String upnpServerName;
         private Integer httpServerPort;
+        private String theme;
         private LinkedList<ConfigurationNode> videoFolders;
         private LinkedList<ConfigurationNode> pictureFolders;
         private LinkedList<ConfigurationNode> audioFolders;
@@ -182,6 +193,7 @@ public final class XmlConfigurationImpl implements Configuration {
         public void checkDefaultValues() {
             if (this.upnpServerName == null) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
+            if (this.theme == null) this.theme = DEFAULT_THEME;
             if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
             if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
             if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
@@ -206,6 +218,14 @@ public final class XmlConfigurationImpl implements Configuration {
 
         public void setHttpServerPort(Integer httpServerPort) {
             this.httpServerPort = httpServerPort;
+        }
+
+        public String getTheme() {
+            return this.theme;
+        }
+
+        public void setTheme(String theme) {
+            this.theme = theme;
         }
 
         public List<ConfigurationNode> getVideoFolders() {
