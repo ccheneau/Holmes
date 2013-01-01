@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ import java.util.List;
 public interface Configuration {
     public static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     public static final int DEFAULT_HTTP_SERVER_PORT = 8085;
+    public static final String DEFAULT_THEME = "default";
 
     public void saveConfig();
 
@@ -56,4 +57,8 @@ public interface Configuration {
     public Boolean getParameter(Parameter param);
 
     public void setParameter(Parameter param, Boolean value);
+
+    public String getTheme();
+
+    public void setTheme(String theme);
 }

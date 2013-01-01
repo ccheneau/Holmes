@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.handler.codec.http.HttpChunkAggregator;
 import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
@@ -48,11 +49,8 @@ public final class HttpServerPipelineFactory implements ChannelPipelineFactory {
         pipeline.addLast("encoder", new HttpResponseEncoder());
         pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
 
-        // Add event handler for channel registration to channel group
-        pipeline.addLast("channelGroupHandler", injector.getInstance(AbstractChannelGroupHandler.class));
-
         // Add http request handler
-        pipeline.addLast("httpChannelHandler", injector.getInstance(AbstractHttpChannelHandler.class));
+        pipeline.addLast("httpChannelHandler", injector.getInstance(SimpleChannelHandler.class));
         return pipeline;
     }
 }

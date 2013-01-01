@@ -4,17 +4,6 @@ body {
 	background-color: #EEEEEE;
 }
 
-header {
-	height: 100px;
-	width: 100%;
-	border-bottom: 1px solid #434C56;
-}
-
-nav {
-	height: 70px;
-	width: 100%;
-}
-
 .container {
     margin: 50px auto;
 	height: 650px;
@@ -24,8 +13,16 @@ nav {
 	border-radius: 5px;
 }
 
+.container-title {
+	height: 100px;
+	width: 100%;
+	border-bottom: 1px solid #434C56;
+}
+
 .toolbar {
-    margin-left: 600px;
+	height: 70px;
+	width: 100%;
+	margin-left: 600px;
 }
 
 .toolbar  ul {

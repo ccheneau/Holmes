@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 package net.holmes.core.http;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
@@ -27,7 +28,6 @@ import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 
@@ -43,17 +43,16 @@ public final class HttpServer implements Server {
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
     private ServerBootstrap bootstrap = null;
-    private final ChannelGroup channelGroup;
+    private ExecutorService executor = null;
     private final ChannelPipelineFactory pipelineFactory;
     private final Configuration configuration;
     private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration, ChannelGroup channelGroup) {
+    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
         this.pipelineFactory = pipelineFactory;
         this.configuration = configuration;
         this.webApplication = webApplication;
-        this.channelGroup = channelGroup;
     }
 
     @Override
@@ -63,13 +62,14 @@ public final class HttpServer implements Server {
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
         // Configure the server.
-        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
+        executor = Executors.newCachedThreadPool();
+        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(executor, executor));
 
         // Set up the event pipeline factory.
         bootstrap.setPipelineFactory(pipelineFactory);
 
         // Bind and start server to accept incoming connections.
-        channelGroup.add(bootstrap.bind(bindAddress));
+        bootstrap.bind(bindAddress);
 
         if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
     }
@@ -79,8 +79,8 @@ public final class HttpServer implements Server {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
         // Stop the server
-        channelGroup.close();
-        if (bootstrap != null) bootstrap.releaseExternalResources();
+        bootstrap.shutdown();
+        executor.shutdown();
         webApplication.destroy();
 
         if (logger.isInfoEnabled()) logger.info("HTTP server stopped");

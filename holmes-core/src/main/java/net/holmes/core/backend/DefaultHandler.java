@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -41,14 +41,10 @@ import net.holmes.core.util.bundle.Bundle;
 import com.google.common.collect.Lists;
 
 /**
- * Backend REST handler for:
- * <ul>
- * <li>add / update / delete configuration nodes</li>
- * <li>edit global configuration</li>
- *</ul>
+ * Backend handler for default UI
  */
 @Path("/backend/configuration")
-public class ConfigurationHandler {
+public class DefaultHandler {
     private static final String ADD_OPERATION = "add";
     private static final String EDIT_OPERATION = "edit";
     private static final String DELETE_OPERATION = "del";
@@ -57,7 +53,7 @@ public class ConfigurationHandler {
     private final Bundle bundle;
 
     @Inject
-    public ConfigurationHandler(Configuration configuration, Bundle bundle) {
+    public DefaultHandler(Configuration configuration, Bundle bundle) {
         this.configuration = configuration;
         this.bundle = bundle;
     }

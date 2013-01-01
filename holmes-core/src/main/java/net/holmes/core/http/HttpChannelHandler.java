@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -52,7 +53,7 @@ import org.slf4j.Logger;
  * HttpChannelHandler redirect Http requests to proper handler
  */
 @Loggable
-public final class HttpChannelHandler extends AbstractHttpChannelHandler {
+public final class HttpChannelHandler extends SimpleChannelHandler {
     private Logger logger;
 
     private final HttpRequestHandler contentRequestHandler;

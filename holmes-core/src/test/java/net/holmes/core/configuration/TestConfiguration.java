@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,16 @@ public class TestConfiguration implements Configuration {
 
     @Override
     public void setHttpServerPort(Integer httpServerPort) {
+
+    }
+
+    @Override
+    public String getTheme() {
+        return DEFAULT_THEME;
+    }
+
+    @Override
+    public void setTheme(String theme) {
 
     }
 

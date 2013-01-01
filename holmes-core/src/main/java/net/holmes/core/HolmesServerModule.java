@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@ package net.holmes.core;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.XmlConfigurationImpl;
-import net.holmes.core.http.AbstractChannelGroupHandler;
-import net.holmes.core.http.AbstractHttpChannelHandler;
-import net.holmes.core.http.ChannelGroupHandler;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.HttpServerPipelineFactory;
@@ -41,6 +38,7 @@ import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 
@@ -76,9 +74,8 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelGroup.class).toInstance(new DefaultChannelGroup());
-        bind(AbstractChannelGroupHandler.class).to(ChannelGroupHandler.class);
-        bind(AbstractHttpChannelHandler.class).to(HttpChannelHandler.class);
+        bind(ChannelGroup.class).to(DefaultChannelGroup.class).in(Singleton.class);
+        bind(SimpleChannelHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);

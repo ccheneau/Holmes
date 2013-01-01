@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2012-2013  Cedric Cheneau
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+	<head>
+		<title>Holmes UPnP</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<link rel="shortcut icon" type="image/png" href="/backbone/css/images/favicon.png" />
+		<script src="/backbone/js/lib/yepnope.1.5.4-min.js"></script>	 
+		<script src="/backbone/js/holmes.js" type="text/javascript"></script>
+	</head>
+
+	<body>
+		<ul class="menu">
+			<li><a href="#home" class="i18n" data-msg="msg.home.title"></a></li>
+			<li><a href="#videoFolders" class="i18n" data-msg="msg.video.title"></a></li>
+			<li><a href="#audioFolders" class="i18n" data-msg="msg.audio.title"></a></li>
+			<li><a href="#pictureFolders" class="i18n" data-msg="msg.picture.title"></a></li>
+			<li><a href="#podcasts" class="i18n" data-msg="msg.podcast.title"></a></li>
+		</ul>
+		<div id="main_content"></div>
+		
+		<script type="text/template" id="index_template">
+			{{indexMessage}}
+		</script>
+		<script type="text/template" id="folder_list_template">
+			<h1>{{title}}</h1>
+			<hr />
+			{{#folders}}
+				<h2>{{id}}</h2>
+				<b>{{labelName}} : {{name}}</b><br>
+				<p>{{labelPath}}: {{path}}</p>
+			{{/folders}}
+		</script>
+	</body>
+</html>

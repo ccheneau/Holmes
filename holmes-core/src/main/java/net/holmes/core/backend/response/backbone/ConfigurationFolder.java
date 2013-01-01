@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,29 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package net.holmes.core.backend.response.backbone;
 
-package net.holmes.core.http;
+public class ConfigurationFolder {
 
-import org.jboss.netty.channel.SimpleChannelHandler;
+	private final String id;
+	private final String name;
+	private final String path;
+	
+	public ConfigurationFolder(String id, String name, String path) {
+		this.id = id;
+		this.name = name;
+		this.path = path;
+	}
 
-public abstract class AbstractChannelGroupHandler extends SimpleChannelHandler {
+	public String getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPath() {
+		return path;
+	}
 }

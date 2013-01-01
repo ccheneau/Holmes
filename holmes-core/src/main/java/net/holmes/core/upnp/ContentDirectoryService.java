@@ -1,5 +1,5 @@
 /**
-* Copyright (C) 2012  Cedric Cheneau
+* Copyright (C) 2012-2013  Cedric Cheneau
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
@@ -64,8 +66,11 @@ import org.teleal.cling.support.model.SortCriterion;
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static final Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
 
+    @Inject
     private MediaService mediaService;
+    @Inject
     private Configuration configuration;
+
     private String localAddress;
 
     public ContentDirectoryService() {
@@ -78,14 +83,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         } catch (UnknownHostException e) {
             logger.error(e.getMessage(), e);
         }
-    }
-
-    public void setMediaService(MediaService mediaService) {
-        this.mediaService = mediaService;
-    }
-
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     /**
