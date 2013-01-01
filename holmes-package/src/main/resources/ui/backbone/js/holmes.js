@@ -19,19 +19,14 @@ yepnope({
 			pictureFolders : '/backbone/js/models/pictureFolders.js',
 			podcasts : '/backbone/js/models/podcasts.js',
 			
-			// controllers
+			// view controllers
+			defaultView : '/backbone/js/views/defaultView.js',
 			videoFoldersView : '/backbone/js/views/videoFoldersView.js',
 			audioFoldersView : '/backbone/js/views/audioFoldersView.js',
 			pictureFoldersView : '/backbone/js/views/pictureFoldersView.js',
-			podcastView : '/backbone/js/views/podcastsView.js',
-			
-			// routes
-			routes : '/backbone/js/routes.js'			
+			podcastView : '/backbone/js/views/podcastsView.js'
 		},
 	callback : {
-		"routes" : function () {
-			console.log("routes loaded ...");
-			},
 		"jqueryI18n": function () {
 			// Initialize i18n
 			$.i18n.properties({
@@ -51,6 +46,9 @@ yepnope({
 		},
 	complete : function () {
 			console.log('Lauching application ...');
+			
+			window.defaultView = new Application.Views.DefaultView();
+
 			window.videoFolders = new Application.Collections.VideoFolders();
 			window.videoFoldersView = new Application.Views.VideoFoldersView({collection : videoFolders});
 			
@@ -67,9 +65,12 @@ yepnope({
 				videoFolders:videoFolders,
 				audioFolders:audioFolders,
 				pictureFolders:pictureFolders,
-				podcasts:podcasts
+				podcasts:podcasts,
+				defaultView:defaultView
 			});
 			
 			Backbone.history.start();
+			console.log('Application launched');
+
 		}
 });

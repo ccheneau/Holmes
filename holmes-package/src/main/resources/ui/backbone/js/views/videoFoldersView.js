@@ -1,6 +1,6 @@
 var Application = (function (application) {
 	application.Views.VideoFoldersView = Backbone.View.extend({
-		el : $("#video_folder_list"),
+		el : $("#main_content"),
 		initialize : function () {
 			this.template = $("#folder_list_template").html();
 			_.bindAll(this, 'render');

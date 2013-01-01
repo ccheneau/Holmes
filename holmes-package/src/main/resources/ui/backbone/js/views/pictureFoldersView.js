@@ -1,6 +1,6 @@
 var Application = (function (application) {
 	application.Views.PictureFoldersView = Backbone.View.extend({
-		el : $("#picture_folder_list"),
+		el : $("#main_content"),
 		initialize : function () {
 			this.template = $("#folder_list_template").html();
 			_.bindAll(this, 'render');

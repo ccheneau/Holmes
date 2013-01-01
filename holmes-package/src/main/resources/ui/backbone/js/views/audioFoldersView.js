@@ -1,6 +1,6 @@
 var Application = (function (application) {
 	application.Views.AudioFoldersView = Backbone.View.extend({
-		el : $("#audio_folder_list"),
+		el : $("#main_content"),
 		initialize : function () {
 			this.template = $("#folder_list_template").html();
 			_.bindAll(this, 'render');
