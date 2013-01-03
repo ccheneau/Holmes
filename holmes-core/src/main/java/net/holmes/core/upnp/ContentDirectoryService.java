@@ -36,12 +36,10 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.teleal.cling.binding.annotations.UpnpStateVariable;
-import org.teleal.cling.binding.annotations.UpnpStateVariables;
 import org.teleal.cling.model.message.header.UpnpHeader;
 import org.teleal.cling.protocol.sync.ReceivingAction;
 import org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService;
@@ -52,19 +50,9 @@ import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.BrowseResult;
 import org.teleal.cling.support.model.SortCriterion;
 
-@UpnpStateVariables({ @UpnpStateVariable(name = "A_ARG_TYPE_ObjectID", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Result", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_BrowseFlag", sendEvents = false, datatype = "string", allowedValuesEnum = BrowseFlag.class),
-        @UpnpStateVariable(name = "A_ARG_TYPE_SearchCriteria", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Filter", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_ContainerID", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_SortCriteria", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Index", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Count", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_UpdateID", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
+@Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
-    private static final Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
+    private Logger logger;
 
     @Inject
     private MediaService mediaService;
@@ -81,7 +69,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         try {
             this.localAddress = getLocalAddress();
         } catch (UnknownHostException e) {
-            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
