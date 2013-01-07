@@ -120,36 +120,33 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             // Get browse node                
             AbstractNode browseNode = mediaService.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
+            if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
-            if (browseNode != null) {
-                if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
-                    // Browse child nodes
-                    if (browseNode instanceof FolderNode) {
-                        // Add folder child nodes
-                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                        if (childNodes != null && !childNodes.isEmpty()) {
-                            for (AbstractNode childNode : childNodes) {
-                                addNode(objectID, childNode, result);
-                            }
+            if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
+                // Browse child nodes
+                if (browseNode instanceof FolderNode) {
+                    // Add folder child nodes
+                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                    if (childNodes != null && !childNodes.isEmpty()) {
+                        for (AbstractNode childNode : childNodes) {
+                            addNode(objectID, childNode, result);
                         }
-                    } else if (browseNode instanceof PlaylistNode) {
-                        // Add playlist child nodes
-                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                        if (childNodes != null && !childNodes.isEmpty()) {
-                            for (AbstractNode childNode : childNodes) {
-                                addNode(objectID, childNode, result);
-                            }
-                        }
-                    } else if (browseNode instanceof PodcastNode) {
-                        // Add pod-cast entry nodes
-                        addPodcastEntries((PodcastNode) browseNode, result);
                     }
-                } else if (browseFlag == BrowseFlag.METADATA) {
-                    // Get node metadata
-                    addNode(browseNode.getParentId(), browseNode, result);
+                } else if (browseNode instanceof PlaylistNode) {
+                    // Add playlist child nodes
+                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                    if (childNodes != null && !childNodes.isEmpty()) {
+                        for (AbstractNode childNode : childNodes) {
+                            addNode(objectID, childNode, result);
+                        }
+                    }
+                } else if (browseNode instanceof PodcastNode) {
+                    // Add pod-cast entry nodes
+                    addPodcastEntries((PodcastNode) browseNode, result);
                 }
-            } else {
-                throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
+            } else if (browseFlag == BrowseFlag.METADATA) {
+                // Get node metadata
+                addNode(browseNode.getParentId(), browseNode, result);
             }
 
             BrowseResult br = new BrowseResult(new DIDLParser().generate(result.getDidl()), result.getItemCount(), result.getTotalCount());
@@ -180,7 +177,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url.toString());
             }
-            result.addTotalCount();
         } else if (node instanceof FolderNode) {
             if (result.filterResult()) {
                 // Get child counts
@@ -190,8 +186,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add container to result
                 result.addContainer(nodeId, node, childCount);
             }
-            result.addTotalCount();
-        } else if (node instanceof FolderNode) {
+        } else if (node instanceof PlaylistNode) {
             if (result.filterResult()) {
                 // Add playlist to result
                 result.addPlaylist(nodeId, node, 1);
@@ -201,7 +196,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add container to result
                 result.addContainer(nodeId, node, 1);
             }
-            result.addTotalCount();
         }
     }
 
@@ -221,7 +215,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                     podcastEntryNode.getName());
                             result.addItem(parentNode.getId(), podcastEntryNode, entryName);
                         }
-                        result.addTotalCount();
                     }
                 }
             }
