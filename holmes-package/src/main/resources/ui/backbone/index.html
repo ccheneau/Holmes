@@ -32,19 +32,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<li><a href="#pictureFolders" class="i18n" data-msg="msg.picture.title"></a></li>
 			<li><a href="#podcasts" class="i18n" data-msg="msg.podcast.title"></a></li>
 		</ul>
-		<div id="main_content"></div>
+		<div id="main_content"></div>		
+		<div id="admin_content"></div>
 		
 		<script type="text/template" id="index_template">
-			{{indexMessage}}
+			<h1>{{indexMessage}}</h1>
 		</script>
 		<script type="text/template" id="folder_list_template">
+			<h1>{{title}} - <a href="#{{addTarget}}">{{addLabel}}</a></h1>
+			<hr />
+			<table>
+				<thead>
+					<tr>
+						<th>{{nameLabel}}</th>
+						<th>{{pathLabel}}</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+			{{#folders}}
+					<tr>
+						<td>{{name}}</td>
+						<td>{{path}}</td>
+						<td><a href="#{{editTarget}}/{{id}}">{{editLabel}}</a> <a href="#{{removeTarget}}/{{id}}" onclick="return confirm('{{removeConfirm}}');">{{removeLabel}}</a></td>
+					</tr>
+			{{/folders}}
+				</tbody>
+			</table>
+		</script>
+		<script type="text/template" id="folder_edit_template">
 			<h1>{{title}}</h1>
 			<hr />
-			{{#folders}}
-				<h2>{{id}}</h2>
-				<b>{{labelName}} : {{name}}</b><br>
-				<p>{{labelPath}}: {{path}}</p>
-			{{/folders}}
+			id : <span name="id">{{id}}</span><br>
+			<input name="name" type="text" value="{{name}}"/><br/>
+			<input name="path" type="text" value="{{path}}"/><br/>
 		</script>
 	</body>
 </html>
