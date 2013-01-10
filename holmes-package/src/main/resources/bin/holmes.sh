@@ -52,6 +52,12 @@ holmes_start () {
   
   # run holmes
   echo "Starting Holmes"
+  # Following proxy settings can be added to JAVA_ARGS
+  # -Dhttp.proxyHost=proxyhostURL
+  # -Dhttp.proxyPort=proxyPortNumber
+  # -Dhttp.proxyUser=someUserName
+  # -Dhttp.proxyPassword=somePassword
+  
   JAVA_ARGS="-Dnet.holmes.home=$HOLMES_HOME -Dfile.encoding=UTF-8"
   $JAVA -Xmx30m $JAVA_ARGS -jar $HOLMES_HOME/lib/holmes-core-${project.version}.jar 1>$HOME/.holmes/log/systemOut.log 2>$HOME/.holmes/log/systemErr.log &
   sleep 3

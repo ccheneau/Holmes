@@ -16,12 +16,17 @@ REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 setlocal
 
-rem Set library path
+rem Set library and home path
 set bin_path=%~p0
 call :resolve_path "%bin_path%.." home_path
 set lib_path=%home_path%\lib
 
 rem Set java args
+rem Following proxy settings can be added to java_args
+rem -Dhttp.proxyHost=proxyhostURL
+rem -Dhttp.proxyPort=proxyPortNumber
+rem -Dhttp.proxyUser=someUserName
+rem -Dhttp.proxyPassword=somePassword
 set java_args=-Dnet.holmes.home="%home_path%" -Dfile.encoding=UTF-8
 
 set java=javaw
@@ -39,6 +44,7 @@ set %2=%~f1
 goto :EOF
 
 :find_java_home
+rem Find java_home in windows registry
 for /F "skip=2 tokens=2*" %%A in ('reg query "HKLM\Software\JavaSoft\Java Runtime Environment" /v CurrentVersion') do set CurVer=%%B
 for /F "skip=2 tokens=2*" %%A in ('reg query "HKLM\Software\JavaSoft\Java Runtime Environment\%CurVer%" /v JavaHome') do set JAVA_HOME=%%B
 goto :EOF
