@@ -20,17 +20,15 @@ import net.holmes.core.util.MediaType;
 
 public final class MimeType {
 
-    private String type;
-    private String subType;
+    private final String type;
+    private final String subType;
     private final String mimeType;
 
     public MimeType(String mimeType) {
         this.mimeType = mimeType;
         String[] types = mimeType.split("/");
-        if (types != null && types.length > 1) {
-            this.type = types[0];
-            this.subType = types[1];
-        }
+        this.type = types != null && types.length > 1 ? types[0] : null;
+        this.subType = types != null && types.length > 1 ? types[1] : null;
     }
 
     public String getMimeType() {
