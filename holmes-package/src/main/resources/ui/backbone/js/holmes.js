@@ -4,7 +4,7 @@ yepnope({
 			holmesCss : '/backbone/css/holmes.css',
 			
 			// lib
-			jquery : '/backbone/js/lib/jquery-1.8.3.min.js',
+			jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
 			jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 			underscore : '/backbone/js/lib/underscore-min.js',
 			backbone : '/backbone/js/lib/backbone-min.js',
