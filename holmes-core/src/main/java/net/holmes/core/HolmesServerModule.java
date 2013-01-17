@@ -32,6 +32,7 @@ import net.holmes.core.media.index.MediaIndexImpl;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
+import net.holmes.core.util.inject.LocalIPv4Provider;
 import net.holmes.core.util.inject.LoggerListener;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
@@ -59,6 +60,7 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind configuration
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
+        bind(String.class).annotatedWith(Names.named("localIPv4")).toProvider(LocalIPv4Provider.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
