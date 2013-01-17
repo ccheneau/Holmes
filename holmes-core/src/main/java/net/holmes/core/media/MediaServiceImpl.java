@@ -260,7 +260,8 @@ public final class MediaServiceImpl implements MediaService {
                                         duration = itunesInfo.getDuration().toString();
                                     }
                                     MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
-                                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null) {
+                                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null
+                                            && mediaInfo.getMetadata().getThumbnail().length > 0) {
                                         iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
                                     }
                                     for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
