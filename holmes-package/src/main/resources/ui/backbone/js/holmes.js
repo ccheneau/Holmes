@@ -4,7 +4,7 @@ yepnope({
 			holmesCss : '/backbone/css/holmes.css',
 			
 			// lib
-			jquery : '/backbone/js/lib/jquery-1.8.3.min.js',
+			jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
 			jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 			underscore : '/backbone/js/lib/underscore-min.js',
 			backbone : '/backbone/js/lib/backbone-min.js',
@@ -21,10 +21,10 @@ yepnope({
 			
 			// view controllers
 			defaultView : '/backbone/js/views/defaultView.js',
-			videoFoldersView : '/backbone/js/views/videoFoldersView.js',
-			audioFoldersView : '/backbone/js/views/audioFoldersView.js',
-			pictureFoldersView : '/backbone/js/views/pictureFoldersView.js',
-			podcastView : '/backbone/js/views/podcastsView.js'
+			videoFoldersView : '/backbone/js/views/videoFolderListView.js',
+			audioFoldersView : '/backbone/js/views/audioFolderListView.js',
+			pictureFoldersView : '/backbone/js/views/pictureFolderListView.js',
+			podcastView : '/backbone/js/views/podcastListView.js'
 		},
 	callback : {
 		"jqueryI18n": function () {
@@ -45,21 +45,21 @@ yepnope({
 			}
 		},
 	complete : function () {
-			console.log('Lauching application ...');
+			console.log('Launching application ...');
 			
 			window.defaultView = new Application.Views.DefaultView();
 
 			window.videoFolders = new Application.Collections.VideoFolders();
-			window.videoFoldersView = new Application.Views.VideoFoldersView({collection : videoFolders});
+			window.videoFolderListView = new Application.Views.VideoFolderListView({collection : videoFolders});
 			
 			window.audioFolders = new Application.Collections.AudioFolders();
-			window.audioFoldersView = new Application.Views.AudioFoldersView({collection : audioFolders});
+			window.audioFolderListView = new Application.Views.AudioFolderListView({collection : audioFolders});
 			
 			window.pictureFolders = new Application.Collections.PictureFolders();
-			window.pictureFoldersView = new Application.Views.PictureFoldersView({collection : pictureFolders});
+			window.pictureFolderListView = new Application.Views.PictureFolderListView({collection : pictureFolders});
 
 			window.podcasts = new Application.Collections.Podcasts();
-			window.podcastsView = new Application.Views.PodcastsView({collection : podcasts});
+			window.podcastListView = new Application.Views.PodcastListView({collection : podcasts});
 
 			window.router = new Application.Router.RoutesManager({
 				videoFolders:videoFolders,

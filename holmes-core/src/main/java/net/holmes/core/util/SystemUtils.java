@@ -54,11 +54,15 @@ public class SystemUtils {
         return false;
     }
 
+    /**
+     * Get local data directory where Holmes configuration and logs are saved. 
+     * This directory is stored in user home directory
+     */
     public static File getLocalHolmesDataDir() {
         StringBuilder holmesDataDir = new StringBuilder();
         holmesDataDir.append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
 
-        // Check directory
+        // Check directory and create it if it does not exist
         File fDataDir = new File(holmesDataDir.toString());
         if (!fDataDir.exists() || !fDataDir.isDirectory()) if (!fDataDir.mkdirs()) throw new RuntimeException("Failed to create " + holmesDataDir.toString());
 

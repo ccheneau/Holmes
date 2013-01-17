@@ -139,15 +139,12 @@ public class DirectoryBrowseResult {
         itemCount += 1;
     }
 
-    public void addTotalCount() {
-        totalCount += 1;
-    }
-
     /**
      * Filter result according to pagination parameters
      */
     public boolean filterResult() {
-        return maxResults == 0 || (itemCount < maxResults && totalCount >= firstResult);
+        totalCount += 1;
+        return maxResults == 0 || (itemCount < maxResults && totalCount >= firstResult + 1);
     }
 
     private org.teleal.common.util.MimeType getUpnpMimeType(MimeType mimeType) {

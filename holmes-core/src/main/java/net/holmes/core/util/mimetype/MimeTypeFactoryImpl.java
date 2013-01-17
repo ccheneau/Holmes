@@ -20,16 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import net.holmes.core.util.inject.Loggable;
-
-import org.slf4j.Logger;
-
 import com.google.common.io.Files;
 
-@Loggable
 public final class MimeTypeFactoryImpl implements MimeTypeFactory {
-    private Logger logger;
-
     private final Properties properties;
 
     public MimeTypeFactoryImpl() {
@@ -40,12 +33,12 @@ public final class MimeTypeFactoryImpl implements MimeTypeFactory {
             in = this.getClass().getResourceAsStream("/mimetypes.properties");
             properties.load(in);
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            System.err.println(e.getMessage());
         } finally {
             try {
                 if (in != null) in.close();
             } catch (IOException e) {
-                logger.error(e.getMessage(), e);
+                System.err.println(e.getMessage());
             }
         }
     }

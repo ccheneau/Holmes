@@ -16,6 +16,9 @@
 */
 package net.holmes.core.util;
 
+/**
+ * Java system properties used by Holmes
+ */
 public enum SystemProperty {
     HOLMES_HOME("net.holmes.home"), //
     USER_HOME("user.home");

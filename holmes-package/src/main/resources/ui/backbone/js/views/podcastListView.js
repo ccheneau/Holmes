@@ -1,5 +1,5 @@
 var Application = (function (application) {
-	application.Views.AudioFoldersView = Backbone.View.extend({
+	application.Views.PodcastListView = Backbone.View.extend({
 		el : $("#main_content"),
 		initialize : function () {
 			this.template = $("#folder_list_template").html();
@@ -12,10 +12,17 @@ var Application = (function (application) {
 		render : function () {
 			var renderedContent = Mustache.to_html(this.template,
 				{
-					labelName : $.i18n.prop("msg.name"),
-					labelPath : $.i18n.prop("msg.path"),
-					title : $.i18n.prop("msg.audio.title"),
-					folders : this.collection.toJSON()
+					folders : this.collection.toJSON(),
+					title : $.i18n.prop("msg.podcast.title"),
+					nameLabel : $.i18n.prop("msg.name"),
+					pathLabel : $.i18n.prop("msg.url"),
+					addLabel : $.i18n.prop("msg.add"),
+					editLabel : $.i18n.prop("msg.edit"),
+					removeLabel : $.i18n.prop("msg.remove"),
+					editTarget : "editPodcast",
+					addTarget : "addPodcast",
+					removeTarget : "removePodcast",					
+					removeConfirm : $.i18n.prop("msg.podcast.remove.confirm")
 				}
 			);
 			this.$el.html(renderedContent);

@@ -85,7 +85,7 @@ public final class UpnpServer implements Server {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     private LocalDevice createDevice() throws ValidationException {
         // Device identity
         DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier("Holmes UPnP Server"));
@@ -98,11 +98,11 @@ public final class UpnpServer implements Server {
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
-        DefaultServiceManager serviceManager = new DefaultServiceManager(contentDirectoryService, ContentDirectoryService.class);
+        DefaultServiceManager<ContentDirectoryService> serviceManager = new DefaultServiceManager<ContentDirectoryService>(contentDirectoryService,
+                ContentDirectoryService.class);
         contentDirectoryService.setManager(serviceManager);
 
-        ContentDirectoryService contentDirectory = (ContentDirectoryService) serviceManager.getImplementation();
-        injector.injectMembers(contentDirectory);
+        injector.injectMembers(serviceManager.getImplementation());
 
         // Create local device
         return new LocalDevice(identity, type, details, new LocalService[] { contentDirectoryService });

@@ -37,11 +37,10 @@ public class Bootstrap {
             String logConfig = HolmesHomeDirectory.getInstance().getConfigDirectory() + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
-            // Optionally remove existing handlers attached to j.u.l root logger
-            SLF4JBridgeHandler.removeHandlersForRootLogger(); // (since SLF4J 1.6.5)
+            // Remove existing handlers attached to j.u.l root logger
+            SLF4JBridgeHandler.removeHandlersForRootLogger();
 
-            // add SLF4JBridgeHandler to j.u.l's root logger, should be done once during
-            // the initialization phase of your application
+            // Add SLF4JBridgeHandler to j.u.l's root logger
             SLF4JBridgeHandler.install();
 
             // Create Guice injector

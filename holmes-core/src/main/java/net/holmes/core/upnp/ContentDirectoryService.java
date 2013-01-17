@@ -16,16 +16,11 @@
 */
 package net.holmes.core.upnp;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
@@ -36,12 +31,10 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
+import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.teleal.cling.binding.annotations.UpnpStateVariable;
-import org.teleal.cling.binding.annotations.UpnpStateVariables;
 import org.teleal.cling.model.message.header.UpnpHeader;
 import org.teleal.cling.protocol.sync.ReceivingAction;
 import org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService;
@@ -52,25 +45,18 @@ import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.BrowseResult;
 import org.teleal.cling.support.model.SortCriterion;
 
-@UpnpStateVariables({ @UpnpStateVariable(name = "A_ARG_TYPE_ObjectID", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Result", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_BrowseFlag", sendEvents = false, datatype = "string", allowedValuesEnum = BrowseFlag.class),
-        @UpnpStateVariable(name = "A_ARG_TYPE_SearchCriteria", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Filter", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_ContainerID", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_SortCriteria", sendEvents = false, datatype = "string"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Index", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_Count", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_UpdateID", sendEvents = false, datatype = "ui4"),
-        @UpnpStateVariable(name = "A_ARG_TYPE_URI", sendEvents = false, datatype = "uri") })
+@Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
-    private static final Logger logger = LoggerFactory.getLogger(ContentDirectoryService.class);
+    private Logger logger;
 
     @Inject
     private MediaService mediaService;
+
     @Inject
     private Configuration configuration;
 
+    @Inject
+    @Named("localIPv4")
     private String localAddress;
 
     public ContentDirectoryService() {
@@ -78,31 +64,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 Arrays.asList("dc:title"),
                 // sort caps
                 Arrays.asList("dc:title", "dc:date"));
-        try {
-            this.localAddress = getLocalAddress();
-        } catch (UnknownHostException e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
-     */
-    private static String getLocalAddress() throws UnknownHostException {
-        try {
-            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
-                NetworkInterface intf = intfaces.nextElement();
-                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
-                    InetAddress inetAddr = inetAddresses.nextElement();
-                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
-                        return inetAddr.getHostAddress();
-                    }
-                }
-            }
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (SocketException e) {
-            throw new UnknownHostException();
-        }
     }
 
     @Override
@@ -132,36 +93,33 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             // Get browse node                
             AbstractNode browseNode = mediaService.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
+            if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
-            if (browseNode != null) {
-                if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
-                    // Browse child nodes
-                    if (browseNode instanceof FolderNode) {
-                        // Add folder child nodes
-                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                        if (childNodes != null && !childNodes.isEmpty()) {
-                            for (AbstractNode childNode : childNodes) {
-                                addNode(objectID, childNode, result);
-                            }
+            if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
+                // Browse child nodes
+                if (browseNode instanceof FolderNode) {
+                    // Add folder child nodes
+                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                    if (childNodes != null && !childNodes.isEmpty()) {
+                        for (AbstractNode childNode : childNodes) {
+                            addNode(objectID, childNode, result);
                         }
-                    } else if (browseNode instanceof PlaylistNode) {
-                        // Add playlist child nodes
-                        List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                        if (childNodes != null && !childNodes.isEmpty()) {
-                            for (AbstractNode childNode : childNodes) {
-                                addNode(objectID, childNode, result);
-                            }
-                        }
-                    } else if (browseNode instanceof PodcastNode) {
-                        // Add pod-cast entry nodes
-                        addPodcastEntries((PodcastNode) browseNode, result);
                     }
-                } else if (browseFlag == BrowseFlag.METADATA) {
-                    // Get node metadata
-                    addNode(browseNode.getParentId(), browseNode, result);
+                } else if (browseNode instanceof PlaylistNode) {
+                    // Add playlist child nodes
+                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                    if (childNodes != null && !childNodes.isEmpty()) {
+                        for (AbstractNode childNode : childNodes) {
+                            addNode(objectID, childNode, result);
+                        }
+                    }
+                } else if (browseNode instanceof PodcastNode) {
+                    // Add pod-cast entry nodes
+                    addPodcastEntries((PodcastNode) browseNode, result);
                 }
-            } else {
-                throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
+            } else if (browseFlag == BrowseFlag.METADATA) {
+                // Get node metadata
+                addNode(browseNode.getParentId(), browseNode, result);
             }
 
             BrowseResult br = new BrowseResult(new DIDLParser().generate(result.getDidl()), result.getItemCount(), result.getTotalCount());
@@ -192,7 +150,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url.toString());
             }
-            result.addTotalCount();
         } else if (node instanceof FolderNode) {
             if (result.filterResult()) {
                 // Get child counts
@@ -202,8 +159,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add container to result
                 result.addContainer(nodeId, node, childCount);
             }
-            result.addTotalCount();
-        } else if (node instanceof FolderNode) {
+        } else if (node instanceof PlaylistNode) {
             if (result.filterResult()) {
                 // Add playlist to result
                 result.addPlaylist(nodeId, node, 1);
@@ -213,7 +169,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add container to result
                 result.addContainer(nodeId, node, 1);
             }
-            result.addTotalCount();
         }
     }
 
@@ -233,7 +188,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                     podcastEntryNode.getName());
                             result.addItem(parentNode.getId(), podcastEntryNode, entryName);
                         }
-                        result.addTotalCount();
                     }
                 }
             }
