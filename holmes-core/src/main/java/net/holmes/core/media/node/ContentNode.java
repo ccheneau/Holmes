@@ -16,48 +16,34 @@
 */
 package net.holmes.core.media.node;
 
+import java.io.File;
+import java.util.Date;
+
 import net.holmes.core.util.mimetype.MimeType;
 
 public final class ContentNode extends AbstractNode {
-    private MimeType mimeType;
-    private Long size;
-    private String path;
-    private String resolution;
+    private final MimeType mimeType;
+    private final Long size;
+    private final String path;
 
-    public ContentNode() {
-        type = NodeType.TYPE_CONTENT;
+    public ContentNode(String id, String parentId, String name, File file, MimeType mimeType) {
+        super(NodeType.TYPE_CONTENT, id, parentId, name);
+        this.path = file.getAbsolutePath();
+        this.mimeType = mimeType;
+        this.size = file.length();
+        this.modifedDate = new Date(file.lastModified());
     }
 
     public MimeType getMimeType() {
         return this.mimeType;
     }
 
-    public void setMimeType(MimeType mimeType) {
-        this.mimeType = mimeType;
-    }
-
     public Long getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
     public String getPath() {
         return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getResolution() {
-        return resolution;
-    }
-
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
     }
 
     @Override
@@ -69,8 +55,6 @@ public final class ContentNode extends AbstractNode {
         builder.append(size);
         builder.append(", path=");
         builder.append(path);
-        builder.append(", resolution=");
-        builder.append(resolution);
         builder.append(", id=");
         builder.append(id);
         builder.append(", parentId=");

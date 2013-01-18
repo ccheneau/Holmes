@@ -26,7 +26,6 @@ import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
-import net.holmes.core.media.node.NodeType;
 import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.channel.Channel;
@@ -152,7 +151,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         if (contentId != null) {
             AbstractNode node = mediaService.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :" + node);
-            if (node != null && node.getType() == NodeType.TYPE_CONTENT && node instanceof ContentNode) {
+            if (node != null && node instanceof ContentNode) {
                 contentNode = (ContentNode) node;
             }
         }

@@ -17,17 +17,35 @@
 package net.holmes.core.media.node;
 
 public class PlaylistNode extends AbstractNode {
-    private String path;
+    private final String path;
 
-    public PlaylistNode() {
-        type = NodeType.TYPE_PLAYLIST;
+    public PlaylistNode(String id, String parentId, String name, String path) {
+        super(NodeType.TYPE_PLAYLIST, id, parentId, name);
+        this.path = path;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PlaylistNode [path=");
+        builder.append(path);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", parentId=");
+        builder.append(parentId);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", type=");
+        builder.append(type);
+        builder.append(", modifedDate=");
+        builder.append(modifedDate);
+        builder.append(", iconUrl=");
+        builder.append(iconUrl);
+        builder.append("]");
+        return builder.toString();
     }
 }

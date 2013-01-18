@@ -20,12 +20,15 @@ import net.holmes.core.util.mimetype.MimeType;
 
 public final class PodcastEntryNode extends AbstractNode {
     private MimeType mimeType;
-    private Long size;
-    private String url;
-    private String duration;
+    private final Long size;
+    private final String url;
+    private final String duration;
 
-    public PodcastEntryNode() {
-        type = NodeType.TYPE_PODCAST_ENTRY;
+    public PodcastEntryNode(String id, String parentId, String name, Long size, String url, String duration) {
+        super(NodeType.TYPE_PODCAST_ENTRY, id, parentId, name);
+        this.size = size;
+        this.url = url;
+        this.duration = duration;
     }
 
     public MimeType getMimeType() {
@@ -40,24 +43,12 @@ public final class PodcastEntryNode extends AbstractNode {
         return size;
     }
 
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getDuration() {
         return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     @Override
