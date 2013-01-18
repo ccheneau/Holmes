@@ -19,35 +19,30 @@ package net.holmes.core.media.node;
 import java.util.Date;
 
 public abstract class AbstractNode implements Comparable<AbstractNode> {
-    protected String id;
-    protected String parentId;
-    protected String name;
+    protected final String id;
+    protected final String parentId;
+    protected final String name;
+    protected final NodeType type;
     protected Date modifedDate;
-    protected NodeType type;
     protected String iconUrl;
+
+    public AbstractNode(NodeType type, String id, String parentId, String name) {
+        this.type = type;
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+    }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public NodeType getType() {
@@ -59,7 +54,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     public void setModifedDate(Date modifedDate) {
-        this.modifedDate = new Date(modifedDate.getTime());
+        this.modifedDate = modifedDate;
     }
 
     public String getIconUrl() {
@@ -77,22 +72,12 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("AbstractNode [id=");
-        builder.append(id);
-        builder.append(", parentId=");
-        builder.append(parentId);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append(", iconUrl=");
-        builder.append(iconUrl);
-        builder.append("]");
-        return builder.toString();
+    public enum NodeType {
+        TYPE_FOLDER, //
+        TYPE_CONTENT, //
+        TYPE_PODCAST, //
+        TYPE_PODCAST_ENTRY, //
+        TYPE_PLAYLIST;
     }
+
 }
