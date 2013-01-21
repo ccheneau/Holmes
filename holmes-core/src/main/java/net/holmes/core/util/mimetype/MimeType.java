@@ -16,7 +16,7 @@
 */
 package net.holmes.core.util.mimetype;
 
-import net.holmes.core.util.MediaType;
+import net.holmes.core.media.MediaType;
 
 public final class MimeType {
 
