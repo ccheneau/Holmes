@@ -34,6 +34,7 @@ import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LocalIPv4Provider;
 import net.holmes.core.util.inject.LoggerListener;
+import net.holmes.core.util.inject.UiDirectoryProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
@@ -66,6 +67,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
         bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
+        bind(String.class).annotatedWith(Names.named("uiDirectory")).toProvider(UiDirectoryProvider.class).in(Singleton.class);
 
         // Bind servers
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);

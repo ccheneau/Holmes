@@ -18,7 +18,7 @@ package net.holmes.core;
 
 import java.io.File;
 
-import net.holmes.core.util.HolmesHomeDirectory;
+import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemUtils;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -34,7 +34,8 @@ public class Bootstrap {
         // Check lock file
         if (SystemUtils.lockInstance()) {
             // Load log4j configuration
-            String logConfig = HolmesHomeDirectory.getInstance().getConfigDirectory() + File.separator + "log4j.xml";
+            File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
+            String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
 
             // Remove existing handlers attached to j.u.l root logger
