@@ -27,6 +27,7 @@ import javax.inject.Named;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -78,9 +79,8 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         }
 
         if (fileName == null || fileName.trim().isEmpty()) {
-            throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
         }
-
         if (logger.isDebugEnabled()) logger.debug("file name:" + fileName);
 
         try {
@@ -98,12 +98,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
-            String mimeType = mimeTypeFactory.getMimeType(fileName).getMimeType();
+            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
             if (mimeType != null) {
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType);
+                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
             }
 
-            // Write the response.
+            // Write the response header.
             channel.write(response);
 
             // Write the file.

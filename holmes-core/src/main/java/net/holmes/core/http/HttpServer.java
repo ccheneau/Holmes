@@ -79,8 +79,8 @@ public final class HttpServer implements Server {
         if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
 
         // Stop the server
-        bootstrap.shutdown();
-        executor.shutdown();
+        if (bootstrap != null) bootstrap.shutdown();
+        if (executor != null) executor.shutdown();
         webApplication.destroy();
 
         if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
