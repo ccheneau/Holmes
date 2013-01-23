@@ -288,7 +288,8 @@ function initializeFolderTreeDlg() {
 	});
 	folderTree.bind("select_node.jstree", function (e, data) {selectedFolder = data.rslt.obj.data("path"); });
 	folderTree.bind("dblclick.jstree", function (event) {folderTreeDialogOk();});
-	folderDialog = $("#folderTree").dialog({ 
+	folderDialog = $("#folderTree").dialog({
+		modal : true ,
 		autoOpen : false , 
 		title : msg.treeFolder.dialog.title , 
 		height : 300 ,  

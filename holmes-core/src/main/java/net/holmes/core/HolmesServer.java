@@ -140,7 +140,7 @@ public final class HolmesServer implements Server {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder logFile = new StringBuilder();
-                        logFile.append(SystemUtils.getLocalHolmesDataDir().getAbsolutePath()).append(File.separator) //
+                        logFile.append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator) //
                                 .append("log").append(File.separator).append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     } catch (IOException e) {

@@ -52,7 +52,7 @@ public final class XmlConfigurationImpl implements Configuration {
      * Get Holmes configuration file 
      */
     private File getConfigFile() {
-        File fConfPath = new File(SystemUtils.getLocalHolmesDataDir(), "conf");
+        File fConfPath = new File(SystemUtils.getLocalUserDataDir(), "conf");
         if (!fConfPath.exists() || !fConfPath.isDirectory())
             if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 
@@ -61,18 +61,18 @@ public final class XmlConfigurationImpl implements Configuration {
 
     private void loadConfig() {
         boolean configLoaded = false;
-        XStream xs = getXStream();
 
         File confFile = getConfigFile();
         if (confFile.exists() && confFile.canRead()) {
             InputStream in = null;
             try {
+                // Load configuration from XML
                 in = new FileInputStream(confFile);
-                rootNode = (XmlRootNode) xs.fromXML(in);
+                rootNode = (XmlRootNode) getXStream().fromXML(in);
                 configLoaded = true;
-            } catch (FileNotFoundException e) {
-                logger.error(e.getMessage(), e);
+            } catch (FileNotFoundException ignore) {
             } finally {
+                // Close input stream
                 try {
                     if (in != null) in.close();
                 } catch (IOException e) {
@@ -82,17 +82,18 @@ public final class XmlConfigurationImpl implements Configuration {
         }
         if (rootNode == null) rootNode = new XmlRootNode();
         rootNode.checkDefaultValues();
+
+        // Save default config if nothing is loaded
         if (!configLoaded) saveConfig();
     }
 
     @Override
     public void saveConfig() {
-        XStream xs = getXStream();
-
         OutputStream out = null;
         try {
+            // Save configuration to XML
             out = new FileOutputStream(getConfigFile());
-            xs.toXML(rootNode, out);
+            getXStream().toXML(rootNode, out);
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage(), e);
         } finally {

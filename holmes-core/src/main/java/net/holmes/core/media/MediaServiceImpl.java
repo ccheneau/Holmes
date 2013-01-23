@@ -39,7 +39,6 @@ import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
-import net.holmes.core.util.MediaType;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;

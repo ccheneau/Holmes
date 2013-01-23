@@ -29,7 +29,7 @@ public class SystemUtils {
     public static boolean lockInstance() {
         try {
             // Create lock file
-            final File lockFile = new File(getLocalHolmesDataDir(), "holmes.lock");
+            final File lockFile = new File(getLocalUserDataDir(), "holmes.lock");
             final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
             final FileLock fileLock = randomAccessFile.getChannel().tryLock();
             if (fileLock != null) {
@@ -58,7 +58,7 @@ public class SystemUtils {
      * Get local data directory where Holmes configuration and logs are saved. 
      * This directory is stored in user home directory
      */
-    public static File getLocalHolmesDataDir() {
+    public static File getLocalUserDataDir() {
         StringBuilder holmesDataDir = new StringBuilder();
         holmesDataDir.append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
 

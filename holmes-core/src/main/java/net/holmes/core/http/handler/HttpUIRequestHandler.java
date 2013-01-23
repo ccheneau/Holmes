@@ -22,11 +22,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.util.HolmesHomeDirectory;
 import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.jboss.netty.channel.Channel;
@@ -52,11 +53,13 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
     private final Configuration configuration;
     private final MimeTypeFactory mimeTypeFactory;
+    private final String uiDirectory;
 
     @Inject
-    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory) {
+    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory, @Named("uiDirectory") String uiDirectory) {
         this.configuration = configuration;
         this.mimeTypeFactory = mimeTypeFactory;
+        this.uiDirectory = uiDirectory;
     }
 
     @Override
@@ -76,14 +79,13 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         }
 
         if (fileName == null || fileName.trim().isEmpty()) {
-            throw new HttpRequestException("", HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
         }
-
         if (logger.isDebugEnabled()) logger.debug("file name:" + fileName);
 
         try {
             // Get file
-            File file = new File(HolmesHomeDirectory.getInstance().getUIDirectory(), fileName);
+            File file = new File(uiDirectory, fileName);
             if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
@@ -96,12 +98,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
             response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
-            String mimeType = mimeTypeFactory.getMimeType(fileName).getMimeType();
+            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
             if (mimeType != null) {
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType);
+                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
             }
 
-            // Write the response.
+            // Write the response header.
             channel.write(response);
 
             // Write the file.
