@@ -25,17 +25,17 @@ import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.util.mimetype.MimeType;
 
-import org.teleal.cling.support.model.DIDLContent;
-import org.teleal.cling.support.model.DIDLObject;
-import org.teleal.cling.support.model.DIDLObject.Property.DC;
-import org.teleal.cling.support.model.DIDLObject.Property.UPNP;
-import org.teleal.cling.support.model.Res;
-import org.teleal.cling.support.model.container.PlaylistContainer;
-import org.teleal.cling.support.model.container.StorageFolder;
-import org.teleal.cling.support.model.item.Item;
-import org.teleal.cling.support.model.item.Movie;
-import org.teleal.cling.support.model.item.MusicTrack;
-import org.teleal.cling.support.model.item.Photo;
+import org.fourthline.cling.support.model.DIDLContent;
+import org.fourthline.cling.support.model.DIDLObject;
+import org.fourthline.cling.support.model.DIDLObject.Property.DC;
+import org.fourthline.cling.support.model.DIDLObject.Property.UPNP;
+import org.fourthline.cling.support.model.Res;
+import org.fourthline.cling.support.model.container.PlaylistContainer;
+import org.fourthline.cling.support.model.container.StorageFolder;
+import org.fourthline.cling.support.model.item.Item;
+import org.fourthline.cling.support.model.item.Movie;
+import org.fourthline.cling.support.model.item.MusicTrack;
+import org.fourthline.cling.support.model.item.Photo;
 
 public final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
@@ -146,8 +146,8 @@ public final class DirectoryBrowseResult {
         return maxResults == 0 || (itemCount < maxResults && totalCount >= firstResult + 1);
     }
 
-    private org.teleal.common.util.MimeType getUpnpMimeType(MimeType mimeType) {
-        return new org.teleal.common.util.MimeType(mimeType.getType(), mimeType.getSubType());
+    private org.seamless.util.MimeType getUpnpMimeType(MimeType mimeType) {
+        return new org.seamless.util.MimeType(mimeType.getType(), mimeType.getSubType());
     }
 
     private void setMetadata(DIDLObject didlObjet, AbstractNode node) {

@@ -169,23 +169,18 @@
 
 			<!-- cling -->
 			<dependency>
-				<groupId>org.teleal.cling</groupId>
+				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-core</artifactId>
-				<version>1.0.5</version>
+				<version>2.0-alpha1</version>
 			</dependency>
 			<dependency>
-				<groupId>org.teleal.cling</groupId>
+				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-support</artifactId>
-				<version>1.0.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.teleal</groupId>
-				<artifactId>teleal-common</artifactId>
-				<version>1.0.14</version>
+				<version>2.0-alpha1</version>
 				<exclusions>
 					<exclusion>
-						<groupId>com.sun</groupId>
-						<artifactId>tools</artifactId>
+						<artifactId>seamless-swing</artifactId>
+						<groupId>org.seamless</groupId>
 					</exclusion>
 				</exclusions>
 			</dependency>

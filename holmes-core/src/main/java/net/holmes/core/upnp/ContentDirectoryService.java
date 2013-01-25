@@ -33,16 +33,14 @@ import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.inject.Loggable;
 
+import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
+import org.fourthline.cling.support.model.BrowseFlag;
+import org.fourthline.cling.support.model.BrowseResult;
+import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
-import org.teleal.cling.model.message.header.UpnpHeader;
-import org.teleal.cling.protocol.sync.ReceivingAction;
-import org.teleal.cling.support.contentdirectory.AbstractContentDirectoryService;
-import org.teleal.cling.support.contentdirectory.ContentDirectoryErrorCode;
-import org.teleal.cling.support.contentdirectory.ContentDirectoryException;
-import org.teleal.cling.support.contentdirectory.DIDLParser;
-import org.teleal.cling.support.model.BrowseFlag;
-import org.teleal.cling.support.model.BrowseResult;
-import org.teleal.cling.support.model.SortCriterion;
 
 @Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
@@ -78,12 +76,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         logger.debug("orderby: " + sort.toString());
                     }
                 }
-                try {
-                    String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
-                    logger.debug("RequestFrom agent: " + userAgent);
-                } catch (NullPointerException ex) {
-                    logger.debug("RequestFrom agent: Anonymous");
-                }
+                //                try {
+                //                    String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
+                //                    logger.debug("RequestFrom agent: " + userAgent);
+                //                } catch (NullPointerException ex) {
+                //                    logger.debug("RequestFrom agent: Anonymous");
+                //                }
             }
 
             DirectoryBrowseResult result = new DirectoryBrowseResult((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? firstResult : 0,

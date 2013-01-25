@@ -23,19 +23,19 @@ import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.util.inject.Loggable;
 
+import org.fourthline.cling.UpnpService;
+import org.fourthline.cling.UpnpServiceImpl;
+import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
+import org.fourthline.cling.model.DefaultServiceManager;
+import org.fourthline.cling.model.ValidationException;
+import org.fourthline.cling.model.meta.DeviceDetails;
+import org.fourthline.cling.model.meta.DeviceIdentity;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.LocalService;
+import org.fourthline.cling.model.types.DeviceType;
+import org.fourthline.cling.model.types.UDADeviceType;
+import org.fourthline.cling.model.types.UDN;
 import org.slf4j.Logger;
-import org.teleal.cling.UpnpService;
-import org.teleal.cling.UpnpServiceImpl;
-import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
-import org.teleal.cling.model.DefaultServiceManager;
-import org.teleal.cling.model.ValidationException;
-import org.teleal.cling.model.meta.DeviceDetails;
-import org.teleal.cling.model.meta.DeviceIdentity;
-import org.teleal.cling.model.meta.LocalDevice;
-import org.teleal.cling.model.meta.LocalService;
-import org.teleal.cling.model.types.DeviceType;
-import org.teleal.cling.model.types.UDADeviceType;
-import org.teleal.cling.model.types.UDN;
 
 import com.google.inject.Injector;
 
