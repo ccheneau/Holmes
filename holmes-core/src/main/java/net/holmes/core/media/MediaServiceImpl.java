@@ -246,6 +246,7 @@ public final class MediaServiceImpl implements MediaService {
                         reader = new XmlReader(feedSource);
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                         if (rssEntries != null && !rssEntries.isEmpty()) {
+                            MimeType mimeType;
                             for (SyndEntry rssEntry : rssEntries) {
                                 // Add podcast entry node for each feed entry
                                 if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
@@ -261,18 +262,16 @@ public final class MediaServiceImpl implements MediaService {
                                         iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
                                     }
                                     for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                                        PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), //
-                                                parentId, rssEntry.getTitle().trim(), //
-                                                enclosure.getLength(), enclosure.getUrl(), duration);
-                                        podcastEntryNode.setIconUrl(iconUrl);
-                                        if (rssEntry.getPublishedDate() != null) {
+                                        mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
+                                        if (mimeType != null && mimeType.isMedia()) {
+                                            PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), //
+                                                    parentId, rssEntry.getTitle().trim(), mimeType, //
+                                                    enclosure.getLength(), enclosure.getUrl(), duration);
+                                            podcastEntryNode.setIconUrl(iconUrl);
                                             podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
-                                        }
-                                        if (enclosure.getType() != null) {
-                                            podcastEntryNode.setMimeType(new MimeType(enclosure.getType()));
-                                        }
 
-                                        podcastEntryNodes.add(podcastEntryNode);
+                                            podcastEntryNodes.add(podcastEntryNode);
+                                        }
                                     }
                                 }
                             }

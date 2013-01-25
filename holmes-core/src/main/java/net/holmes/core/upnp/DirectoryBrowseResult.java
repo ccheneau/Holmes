@@ -37,12 +37,12 @@ import org.teleal.cling.support.model.item.Movie;
 import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.model.item.Photo;
 
-public class DirectoryBrowseResult {
+public final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private long itemCount;
     private long totalCount;
-    private DIDLContent didl;
+    private final DIDLContent didl;
     private final long firstResult;
     private final long maxResults;
 

@@ -32,7 +32,6 @@ import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
 import net.holmes.core.util.inject.Loggable;
-import net.holmes.core.util.mimetype.MimeType;
 
 import org.slf4j.Logger;
 import org.teleal.cling.model.message.header.UpnpHeader;
@@ -96,30 +95,16 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
-                // Browse child nodes
-                if (browseNode instanceof FolderNode) {
-                    // Add folder child nodes
-                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                    if (childNodes != null && !childNodes.isEmpty()) {
-                        for (AbstractNode childNode : childNodes) {
-                            addNode(objectID, childNode, result);
-                        }
+                // Add child nodes
+                List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                if (childNodes != null && !childNodes.isEmpty()) {
+                    for (AbstractNode childNode : childNodes) {
+                        addNode(objectID, childNode, result, childNodes.size());
                     }
-                } else if (browseNode instanceof PlaylistNode) {
-                    // Add playlist child nodes
-                    List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                    if (childNodes != null && !childNodes.isEmpty()) {
-                        for (AbstractNode childNode : childNodes) {
-                            addNode(objectID, childNode, result);
-                        }
-                    }
-                } else if (browseNode instanceof PodcastNode) {
-                    // Add pod-cast entry nodes
-                    addPodcastEntries((PodcastNode) browseNode, result);
                 }
             } else if (browseFlag == BrowseFlag.METADATA) {
                 // Get node metadata
-                addNode(browseNode.getParentId(), browseNode, result);
+                addNode(browseNode.getParentId(), browseNode, result, 0);
             }
 
             BrowseResult br = new BrowseResult(new DIDLParser().generate(result.getDidl()), result.getItemCount(), result.getTotalCount());
@@ -138,9 +123,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
     }
 
-    private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result) {
-        if (node instanceof ContentNode) {
-            if (result.filterResult()) {
+    private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result, long childNodeSize) {
+        if (result.filterResult()) {
+            if (node instanceof ContentNode) {
                 // Build content url
                 StringBuilder url = new StringBuilder();
                 url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
@@ -149,47 +134,23 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url.toString());
-            }
-        } else if (node instanceof FolderNode) {
-            if (result.filterResult()) {
+            } else if (node instanceof FolderNode) {
                 // Get child counts
                 List<AbstractNode> childNodes = mediaService.getChildNodes(node);
                 int childCount = childNodes != null ? childNodes.size() : 0;
 
                 // Add container to result
                 result.addContainer(nodeId, node, childCount);
-            }
-        } else if (node instanceof PlaylistNode) {
-            if (result.filterResult()) {
+            } else if (node instanceof PlaylistNode) {
                 // Add playlist to result
                 result.addPlaylist(nodeId, node, 1);
-            }
-        } else if (node instanceof PodcastNode) {
-            if (result.filterResult()) {
-                // Add container to result
+            } else if (node instanceof PodcastNode) {
+                // Add podcast to result
                 result.addContainer(nodeId, node, 1);
-            }
-        }
-    }
-
-    private void addPodcastEntries(PodcastNode parentNode, DirectoryBrowseResult result) {
-        // Get pod-cast child nodes
-        List<AbstractNode> childNodes = mediaService.getChildNodes(parentNode);
-        if (childNodes != null && !childNodes.isEmpty()) {
-            PodcastEntryNode podcastEntryNode = null;
-            for (AbstractNode node : childNodes) {
-                if (node instanceof PodcastEntryNode) {
-                    podcastEntryNode = (PodcastEntryNode) node;
-                    MimeType mimeType = podcastEntryNode.getMimeType();
-                    if (mimeType.isMedia()) {
-                        if (result.filterResult()) {
-                            // Add child item to result
-                            String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodes.size(),
-                                    podcastEntryNode.getName());
-                            result.addItem(parentNode.getId(), podcastEntryNode, entryName);
-                        }
-                    }
-                }
+            } else if (node instanceof PodcastEntryNode) {
+                // Add podcast entry to result
+                String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodeSize, node.getName());
+                result.addItem(nodeId, (PodcastEntryNode) node, entryName);
             }
         }
     }

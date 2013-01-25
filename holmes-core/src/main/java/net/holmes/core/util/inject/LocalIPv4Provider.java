@@ -29,7 +29,7 @@ import javax.inject.Provider;
 /**
  * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
  */
-public class LocalIPv4Provider implements Provider<String> {
+public final class LocalIPv4Provider implements Provider<String> {
 
     @Override
     public String get() {
@@ -50,5 +50,4 @@ public class LocalIPv4Provider implements Provider<String> {
             throw new RuntimeException(e);
         }
     }
-
 }

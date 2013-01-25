@@ -29,7 +29,7 @@ import com.google.inject.spi.TypeListener;
 /**
  * Type listener for slf4j logger injection
  */
-public class LoggerListener implements TypeListener {
+public final class LoggerListener implements TypeListener {
 
     public LoggerListener() {
     }

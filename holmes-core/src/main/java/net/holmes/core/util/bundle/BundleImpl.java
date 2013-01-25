@@ -18,7 +18,7 @@ package net.holmes.core.util.bundle;
 
 import java.util.ResourceBundle;
 
-public class BundleImpl implements Bundle {
+public final class BundleImpl implements Bundle {
 
     private final ResourceBundle bundle;
 
