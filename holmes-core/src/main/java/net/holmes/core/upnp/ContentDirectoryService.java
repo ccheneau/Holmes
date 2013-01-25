@@ -76,12 +76,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                         logger.debug("orderby: " + sort.toString());
                     }
                 }
-                //                try {
-                //                    String userAgent = ReceivingAction.getRequestMessage().getHeaders().getFirstHeader(UpnpHeader.Type.USER_AGENT).getString();
-                //                    logger.debug("RequestFrom agent: " + userAgent);
-                //                } catch (NullPointerException ex) {
-                //                    logger.debug("RequestFrom agent: Anonymous");
-                //                }
             }
 
             DirectoryBrowseResult result = new DirectoryBrowseResult((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? firstResult : 0,
@@ -95,7 +89,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 // Add child nodes
                 List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
-                if (childNodes != null && !childNodes.isEmpty()) {
+                if (childNodes != null) {
                     for (AbstractNode childNode : childNodes) {
                         addNode(objectID, childNode, result, childNodes.size());
                     }
