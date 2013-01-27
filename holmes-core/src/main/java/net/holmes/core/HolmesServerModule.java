@@ -33,12 +33,14 @@ import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LocalIPv4Provider;
-import net.holmes.core.util.inject.LoggerListener;
+import net.holmes.core.util.inject.LoggerTypeListener;
+import net.holmes.core.util.inject.UpnpServiceServiceProvider;
 import net.holmes.core.util.inject.UiDirectoryProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
+import org.fourthline.cling.UpnpService;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
@@ -56,7 +58,7 @@ public final class HolmesServerModule extends AbstractModule {
     protected void configure() {
 
         // Bind slf4j loggers
-        bindListener(Matchers.any(), new LoggerListener());
+        bindListener(Matchers.any(), new LoggerTypeListener());
 
         // Bind configuration
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
@@ -75,6 +77,9 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
+
+        // Bind UPnp service
+        bind(UpnpService.class).toProvider(UpnpServiceServiceProvider.class);
 
         // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
