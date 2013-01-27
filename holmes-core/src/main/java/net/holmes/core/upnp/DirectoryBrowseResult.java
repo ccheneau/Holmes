@@ -38,7 +38,7 @@ import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
 
 public final class DirectoryBrowseResult {
-    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     private long itemCount;
     private long totalCount;
@@ -97,7 +97,7 @@ public final class DirectoryBrowseResult {
 
     public void addItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) {
         MimeType mimeType = podcastEntryNode.getMimeType();
-        Res res = new Res(getUpnpMimeType(mimeType), podcastEntryNode.getSize(), podcastEntryNode.getUrl());
+        Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
 
         Item item = null;
@@ -153,11 +153,9 @@ public final class DirectoryBrowseResult {
     private void setMetadata(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
 
-        if (node.getIconUrl() != null) {
-            try {
-                didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
-            } catch (URISyntaxException ignore) {
-            }
+        try {
+            if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+        } catch (URISyntaxException ignore) {
         }
     }
 }

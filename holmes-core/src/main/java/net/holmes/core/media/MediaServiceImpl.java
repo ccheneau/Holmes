@@ -268,7 +268,7 @@ public final class MediaServiceImpl implements MediaService {
                                                     parentId, rssEntry.getTitle().trim(), mimeType, //
                                                     enclosure.getLength(), enclosure.getUrl(), duration);
                                             podcastEntryNode.setIconUrl(iconUrl);
-                                            podcastEntryNode.setModifedDate(rssEntry.getPublishedDate());
+                                            if (rssEntry.getPublishedDate() != null) podcastEntryNode.setModifedDate(rssEntry.getPublishedDate().getTime());
 
                                             podcastEntryNodes.add(podcastEntryNode);
                                         }

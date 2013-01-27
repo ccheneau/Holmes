@@ -17,7 +17,6 @@
 package net.holmes.core.media.node;
 
 import java.io.File;
-import java.util.Date;
 
 import net.holmes.core.media.RootNode;
 
@@ -27,7 +26,7 @@ public final class FolderNode extends AbstractNode {
     public FolderNode(String id, String parentId, String name, File folder) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
         this.path = folder.getAbsolutePath();
-        this.modifedDate = new Date(folder.lastModified());
+        this.modifedDate = folder.lastModified();
     }
 
     public FolderNode(RootNode rootNode, String name) {
