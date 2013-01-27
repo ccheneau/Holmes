@@ -30,12 +30,13 @@ import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.index.MediaIndexImpl;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LocalIPv4Provider;
 import net.holmes.core.util.inject.LoggerTypeListener;
-import net.holmes.core.util.inject.UpnpServiceServiceProvider;
 import net.holmes.core.util.inject.UiDirectoryProvider;
+import net.holmes.core.util.inject.UpnpServiceServiceProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
@@ -74,11 +75,12 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind servers
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(Server.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Server.class).annotatedWith(Names.named("systray")).to(Systray.class).in(Singleton.class);
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
 
-        // Bind UPnp service
+        // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceServiceProvider.class);
 
         // Bind Http handlers

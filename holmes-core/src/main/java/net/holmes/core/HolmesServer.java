@@ -16,31 +16,9 @@
 */
 package net.holmes.core;
 
-import java.awt.AWTException;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
 
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.util.SystemTrayIcon;
-import net.holmes.core.util.SystemUtils;
-import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
@@ -54,15 +32,13 @@ public final class HolmesServer implements Server {
 
     private final Server httpServer;
     private final Server upnpServer;
-    private final Configuration configuration;
-    private final Bundle bundle;
+    private final Server systray;
 
     @Inject
-    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, Configuration configuration, Bundle bundle) {
+    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, @Named("systray") Server systray) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
-        this.configuration = configuration;
-        this.bundle = bundle;
+        this.systray = systray;
     }
 
     @Override
@@ -72,11 +48,7 @@ public final class HolmesServer implements Server {
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
-
-        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY)) {
-            // Add system tray icon
-            if (initUI()) initSystemTrayIcon();
-        }
+        systray.start();
 
         if (logger.isInfoEnabled()) logger.info("Holmes server started");
     }
@@ -86,123 +58,10 @@ public final class HolmesServer implements Server {
         if (logger.isInfoEnabled()) logger.info("Stopping Holmes server");
 
         // Stop Holmes server
+        systray.stop();
         upnpServer.stop();
         httpServer.stop();
 
         if (logger.isInfoEnabled()) logger.info("Holmes server stopped");
-    }
-
-    private boolean initUI() {
-        boolean init = true;
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-            // Add bold font for systray menu item
-            Font menuItemFont = UIManager.getFont("MenuItem.font");
-            if (menuItemFont != null) {
-                FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
-                UIManager.put("MenuItem.bold.font", menuItemBoldFont);
-            }
-        } catch (Exception e) {
-            init = false;
-        }
-        return init;
-    }
-
-    private void initSystemTrayIcon() {
-        // Check the SystemTray is supported
-        if (!SystemTray.isSupported()) {
-            return;
-        }
-
-        // Initialize systray icon
-        final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif"));
-        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, bundle.getString("systray.title"));
-        final SystemTray systemTray = SystemTray.getSystemTray();
-
-        // Create a popup menu
-        final JPopupMenu popupMenu = new JPopupMenu();
-
-        // Quit Holmes menu item
-        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
-        quitItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                System.exit(0);
-            }
-        });
-
-        // Holmes logs menu item
-        JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
-        logsItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        StringBuilder logFile = new StringBuilder();
-                        logFile.append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator) //
-                                .append("log").append(File.separator).append("holmes.log");
-                        Desktop.getDesktop().open(new File(logFile.toString()));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                }
-            }
-        });
-
-        // Holmes ui menu item
-        JMenuItem holmesUiItem = new JMenuItem(bundle.getString("systray.holmes.ui"));
-        Font boldFont = UIManager.getFont("MenuItem.bold.font");
-        if (boldFont != null) holmesUiItem.setFont(boldFont);
-
-        holmesUiItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        StringBuilder holmesUrl = new StringBuilder();
-                        holmesUrl.append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
-                        Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    } catch (URISyntaxException e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                }
-            }
-        });
-
-        // Holmes ui menu item
-        JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"));
-        holmesSiteItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI("http://ccheneau.github.com/Holmes/"));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    } catch (URISyntaxException e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                }
-            }
-        });
-
-        // Add items to popup menu
-        popupMenu.add(holmesUiItem);
-        popupMenu.add(holmesSiteItem);
-        popupMenu.add(logsItem);
-        popupMenu.addSeparator();
-        popupMenu.add(quitItem);
-
-        // Add tray icon
-        systemTrayIcon.setImageAutoSize(true);
-        systemTrayIcon.setPopupMenu(popupMenu);
-        try {
-            systemTray.add(systemTrayIcon);
-        } catch (AWTException e) {
-            logger.error(e.getMessage(), e);
-        }
     }
 }
