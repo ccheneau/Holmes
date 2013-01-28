@@ -22,7 +22,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.configuration.Configuration;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.RootNode;
 import net.holmes.core.media.node.AbstractNode;
@@ -41,9 +40,6 @@ public class MediaServiceTest extends TestCase {
 
     @Inject
     private MediaService mediaService;
-
-    @Inject
-    private Configuration configuration;
 
     @Override
     @Before
