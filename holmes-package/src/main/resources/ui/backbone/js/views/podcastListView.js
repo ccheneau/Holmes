@@ -26,6 +26,33 @@ var Application = (function (application) {
 				}
 			);
 			this.$el.html(renderedContent);
+		},
+		events : {
+			"click #addPodcast" : "onAddPodcast"
+		},
+		onAddPodcast : function() {
+			var that = this;
+			var folderLabel = $("#main_content > [name='folderLabel']").val();
+			var folderPath = $("#main_content > [name='folderPath']").val();
+			var newPodcast = new Application.Models.Podcasts();
+			newPodcast.save({
+						"id" : null,
+						"name" : folderLabel,
+						"path" : folderPath
+					},{
+						success : function() {
+							that.collection.fetch({
+								success:function() {
+									that.render();
+								}
+							});
+						},
+						error : function(model, response) {
+							console.log("save error");
+							console.log(model);
+							console.log(response);
+						}
+					});
 		}
 	});
 	return application;

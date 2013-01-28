@@ -7,7 +7,7 @@ yepnope({
 			jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
 			jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 			underscore : '/backbone/js/lib/underscore-min.js',
-			backbone : '/backbone/js/lib/backbone-min.js',
+			backbone : '/backbone/js/lib/backbone.js',
 			mustache : '/backbone/js/lib/mustache.js',
 			
 			// application
@@ -27,7 +27,7 @@ yepnope({
 			podcastView : '/backbone/js/views/podcastListView.js'
 		},
 	callback : {
-		"jqueryI18n": function () {
+		"jqueryI18n": function() {
 			// Initialize i18n
 			$.i18n.properties({
 			    name:'messages', 
@@ -44,7 +44,7 @@ yepnope({
 			console.log("i18n loaded ...");			
 			}
 		},
-	complete : function () {
+	complete : function() {
 			console.log('Launching application ...');
 			
 			window.defaultView = new Application.Views.DefaultView();

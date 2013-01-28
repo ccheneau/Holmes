@@ -1,11 +1,11 @@
 var Application = (function (application) {
 	application.Models.PictureFolders = Backbone.Model.extend({
-		urlRoot :"/backend/backbone/pictureFolders"
+		urlRoot : "/backend/backbone/pictureFolders"
 	});
 	
 	application.Collections.PictureFolders = Backbone.Collection.extend({
 		model : application.Models.PictureFolders,
-		all : function () {
+		all : function() {
 			this.url = "/backend/backbone/pictureFolders";
 			return this;
 		},

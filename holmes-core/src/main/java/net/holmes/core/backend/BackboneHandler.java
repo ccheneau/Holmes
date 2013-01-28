@@ -18,9 +18,12 @@ package net.holmes.core.backend;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -34,46 +37,89 @@ import com.google.common.collect.Lists;
 @Path("/backend/backbone")
 public class BackboneHandler {
 
-	private final Configuration configuration;
-	
-	@Inject
-	public BackboneHandler(Configuration configuration){
-		this.configuration = configuration;
-	}
-	
+    private final Configuration configuration;
+
+    @Inject
+    public BackboneHandler(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     @GET
     @Path("/videoFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getVideoFolders() {
         return getConfigurationFolders(configuration.getVideoFolders());
     }
-	
+
+    @POST
+    @Path("/videoFolders")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder addVideoFolder(ConfigurationFolder folder) {
+        addFolder(folder, configuration.getVideoFolders());
+        return folder;
+    }
+
     @GET
     @Path("/audioFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
         return getConfigurationFolders(configuration.getAudioFolders());
     }
-    
+
+    @POST
+    @Path("/audioFolders")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder addAudioFolder(ConfigurationFolder folder) {
+        addFolder(folder, configuration.getAudioFolders());
+        return folder;
+    }
+
     @GET
     @Path("/pictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPictureFolders() {
         return getConfigurationFolders(configuration.getPictureFolders());
     }
-    
+
+    @POST
+    @Path("/pictureFolders")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder addPictureFolder(ConfigurationFolder folder) {
+        addFolder(folder, configuration.getPictureFolders());
+        return folder;
+    }
+
     @GET
     @Path("/podcasts")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPodcasts() {
         return getConfigurationFolders(configuration.getPodcasts());
     }
-    
+
+    @POST
+    @Path("/podcasts")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder addPodcast(ConfigurationFolder folder) {
+        addFolder(folder, configuration.getPodcasts());
+        return folder;
+    }
+
     private Collection<ConfigurationFolder> getConfigurationFolders(List<ConfigurationNode> configNodes) {
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
         for (ConfigurationNode node : configNodes) {
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
         }
         return folders;
-    }    
+    }
+
+    private void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes) {
+        //TODO validation
+        folder.setId(UUID.randomUUID().toString());
+        configNodes.add(new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath()));
+        configuration.saveConfig();
+    }
 }

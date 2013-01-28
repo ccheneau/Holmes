@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <html>
 	<head>
 		<title>Holmes UPnP</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="shortcut icon" type="image/png" href="/backbone/css/images/favicon.png" />
 		<script src="/backbone/js/lib/yepnope.1.5.4-min.js"></script>	 
 		<script src="/backbone/js/holmes.js" type="text/javascript"></script>
@@ -39,7 +39,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<h1>{{indexMessage}}</h1>
 		</script>
 		<script type="text/template" id="folder_list_template">
-			<h1>{{title}} - <a href="#{{addTarget}}">{{addLabel}}</a></h1>
+			<h1>{{title}}</h1>
+			<hr />
+				{{nameLabel}} <input name="folderLabel" type="text" /><br />
+				{{pathLabel}} <input name="folderPath" type="text" /><br />
+				<a href="#" id="{{addTarget}}">{{addLabel}}</a>
 			<hr />
 			<table>
 				<thead>
@@ -59,13 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			{{/folders}}
 				</tbody>
 			</table>
-		</script>
-		<script type="text/template" id="folder_edit_template">
-			<h1>{{title}}</h1>
-			<hr />
-			id : <span name="id">{{id}}</span><br>
-			<input name="name" type="text" value="{{name}}"/><br/>
-			<input name="path" type="text" value="{{path}}"/><br/>
+			<br />
 		</script>
 	</body>
 </html>
