@@ -1,10 +1,10 @@
 var Application = (function (application) {
-	application.Models.AudioFolders = Backbone.Model.extend({
+	application.Models.AudioFolder = Backbone.Model.extend({
 		urlRoot : "/backend/backbone/audioFolders"
 	});
 	
 	application.Collections.AudioFolders = Backbone.Collection.extend({
-		model : application.Models.AudioFolders,
+		model : application.Models.AudioFolder,
 		all : function() {
 			this.url = "/backend/backbone/audioFolders";
 			return this;

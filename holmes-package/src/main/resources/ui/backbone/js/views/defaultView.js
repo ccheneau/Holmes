@@ -2,7 +2,7 @@ var Application = (function (application) {
 	application.Views.DefaultView = Backbone.View.extend({
 		el : $("#main_content"),
 		initialize : function () {
-			this.template = $("#index_template").html();
+			this.template = $("#default_template").html();
 		},
 		render : function () {
 			var renderedContent = Mustache.to_html(this.template,
@@ -11,6 +11,7 @@ var Application = (function (application) {
 				}
 			);
 			this.$el.html(renderedContent);
+			$("#admin_content").html("");
 		}
 	});
 	return application;

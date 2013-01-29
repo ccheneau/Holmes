@@ -14,17 +14,21 @@ yepnope({
 			application : '/backbone/js/application.js',
 
 			// models
-			videoFolders : '/backbone/js/models/videoFolders.js',
-			audioFolders : '/backbone/js/models/audioFolders.js',
-			pictureFolders : '/backbone/js/models/pictureFolders.js',
-			podcasts : '/backbone/js/models/podcasts.js',
+			videoFolder : '/backbone/js/models/videoFolder.js',
+			audioFolder : '/backbone/js/models/audioFolder.js',
+			pictureFolder : '/backbone/js/models/pictureFolder.js',
+			podcast : '/backbone/js/models/podcast.js',
 			
 			// view controllers
 			defaultView : '/backbone/js/views/defaultView.js',
-			videoFoldersView : '/backbone/js/views/videoFolderListView.js',
-			audioFoldersView : '/backbone/js/views/audioFolderListView.js',
-			pictureFoldersView : '/backbone/js/views/pictureFolderListView.js',
-			podcastView : '/backbone/js/views/podcastListView.js'
+			videoFolderListView : '/backbone/js/views/videoFolderListView.js',
+			audioFolderListView : '/backbone/js/views/audioFolderListView.js',
+			pictureFolderListView : '/backbone/js/views/pictureFolderListView.js',
+			podcastListView : '/backbone/js/views/podcastListView.js',
+			
+			// admin view controllers
+			videoFolderAdminView : '/backbone/js/views/admin/videoFolderAdminView.js'
+
 		},
 	callback : {
 		"jqueryI18n": function() {
@@ -51,6 +55,7 @@ yepnope({
 
 			window.videoFolders = new Application.Collections.VideoFolders();
 			window.videoFolderListView = new Application.Views.VideoFolderListView({collection : videoFolders});
+			window.videoFolderAdminView = new Application.Views.VideoFolderAdminView({collection : videoFolders});
 			
 			window.audioFolders = new Application.Collections.AudioFolders();
 			window.audioFolderListView = new Application.Views.AudioFolderListView({collection : audioFolders});
@@ -63,6 +68,7 @@ yepnope({
 
 			window.router = new Application.Router.RoutesManager({
 				videoFolders:videoFolders,
+				videoFolderAdminView:videoFolderAdminView,
 				audioFolders:audioFolders,
 				pictureFolders:pictureFolders,
 				podcasts:podcasts,
@@ -71,6 +77,5 @@ yepnope({
 			
 			Backbone.history.start();
 			console.log('Application launched');
-
 		}
 });

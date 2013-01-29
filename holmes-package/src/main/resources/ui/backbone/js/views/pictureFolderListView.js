@@ -13,7 +13,7 @@ var Application = (function (application) {
 			var renderedContent = Mustache.to_html(this.template,
 				{
 					folders : this.collection.toJSON(),
-					title : $.i18n.prop("msg.picture.title"),
+					title : $.i18n.prop("msg.picture.list.title"),
 					nameLabel : $.i18n.prop("msg.name"),
 					pathLabel : $.i18n.prop("msg.path"),
 					addLabel : $.i18n.prop("msg.add"),
@@ -26,6 +26,7 @@ var Application = (function (application) {
 				}
 			);
 			this.$el.html(renderedContent);
+			$("#admin_content").html("");
 		},
 		events : {
 			"click #addPictureFolder" : "onAddPictureFolder"
@@ -34,7 +35,7 @@ var Application = (function (application) {
 			var that = this;
 			var folderLabel = $("#main_content > [name='folderLabel']").val();
 			var folderPath = $("#main_content > [name='folderPath']").val();
-			var newPictureFolder = new Application.Models.PictureFolders();
+			var newPictureFolder = new Application.Models.PictureFolder();
 			newPictureFolder.save({
 						"id" : null,
 						"name" : folderLabel,

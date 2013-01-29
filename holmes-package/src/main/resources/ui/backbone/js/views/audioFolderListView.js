@@ -13,7 +13,7 @@ var Application = (function (application) {
 			var renderedContent = Mustache.to_html(this.template,
 				{
 					folders : this.collection.toJSON(),
-					title : $.i18n.prop("msg.audio.title"),
+					title : $.i18n.prop("msg.audio.list.title"),
 					nameLabel : $.i18n.prop("msg.name"),
 					pathLabel : $.i18n.prop("msg.path"),
 					addLabel : $.i18n.prop("msg.add"),
@@ -26,6 +26,7 @@ var Application = (function (application) {
 				}
 			);
 			this.$el.html(renderedContent);
+			$("#admin_content").html("");
 		},
 		events : {
 			"click #addAudioFolder" : "onAddAudioFolder"
@@ -34,7 +35,7 @@ var Application = (function (application) {
 			var that = this;
 			var folderLabel = $("#main_content > [name='folderLabel']").val();
 			var folderPath = $("#main_content > [name='folderPath']").val();
-			var newAudioFolder = new Application.Models.AudioFolders();
+			var newAudioFolder = new Application.Models.AudioFolder();
 			newAudioFolder.save({
 						"id" : null,
 						"name" : folderLabel,

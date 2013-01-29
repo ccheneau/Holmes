@@ -22,9 +22,12 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -48,7 +51,14 @@ public class BackboneHandler {
     @Path("/videoFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getVideoFolders() {
-        return getConfigurationFolders(configuration.getVideoFolders());
+        return getFolders(configuration.getVideoFolders());
+    }
+
+    @GET
+    @Path("/videoFolders/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder getVideoFolder(@PathParam("id") String id) {
+        return getFolder(id, configuration.getVideoFolders());
     }
 
     @POST
@@ -60,11 +70,29 @@ public class BackboneHandler {
         return folder;
     }
 
+    @PUT
+    @Path("/videoFolders/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder editVideoFolder(@PathParam("id") String id, ConfigurationFolder folder) {
+        editFolder(id, folder, configuration.getVideoFolders());
+        return folder;
+    }
+
+    @DELETE
+    @Path("/videoFolders/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfigurationFolder removeVideoFolder(@PathParam("id") String id) {
+        removeFolder(id, configuration.getVideoFolders());
+        return new ConfigurationFolder(id, null, null);
+    }
+
     @GET
     @Path("/audioFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
-        return getConfigurationFolders(configuration.getAudioFolders());
+        return getFolders(configuration.getAudioFolders());
     }
 
     @POST
@@ -80,7 +108,7 @@ public class BackboneHandler {
     @Path("/pictureFolders")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPictureFolders() {
-        return getConfigurationFolders(configuration.getPictureFolders());
+        return getFolders(configuration.getPictureFolders());
     }
 
     @POST
@@ -96,7 +124,7 @@ public class BackboneHandler {
     @Path("/podcasts")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPodcasts() {
-        return getConfigurationFolders(configuration.getPodcasts());
+        return getFolders(configuration.getPodcasts());
     }
 
     @POST
@@ -108,7 +136,7 @@ public class BackboneHandler {
         return folder;
     }
 
-    private Collection<ConfigurationFolder> getConfigurationFolders(List<ConfigurationNode> configNodes) {
+    private Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes) {
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
         for (ConfigurationNode node : configNodes) {
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
@@ -116,10 +144,49 @@ public class BackboneHandler {
         return folders;
     }
 
+    private ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes) {
+        //TODO validation
+        for (ConfigurationNode node : configNodes) {
+            if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
+        }
+        return null;
+    }
+
     private void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes) {
         //TODO validation
         folder.setId(UUID.randomUUID().toString());
         configNodes.add(new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath()));
         configuration.saveConfig();
+    }
+
+    private void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes) {
+        //TODO validation
+        ConfigurationNode currentNode = null;
+        for (ConfigurationNode node : configNodes) {
+            if (node.getId().equals(id)) {
+                currentNode = node;
+                break;
+            }
+        }
+        if (currentNode != null) {
+            currentNode.setLabel(folder.getName());
+            currentNode.setPath(folder.getPath());
+            configuration.saveConfig();
+        }
+    }
+
+    private void removeFolder(String id, List<ConfigurationNode> configNodes) {
+        //TODO validation
+        ConfigurationNode currentNode = null;
+        for (ConfigurationNode node : configNodes) {
+            if (node.getId().equals(id)) {
+                currentNode = node;
+                break;
+            }
+        }
+        if (currentNode != null) {
+            configNodes.remove(currentNode);
+            configuration.saveConfig();
+        }
     }
 }

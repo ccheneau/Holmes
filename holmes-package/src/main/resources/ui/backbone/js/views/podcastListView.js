@@ -13,7 +13,7 @@ var Application = (function (application) {
 			var renderedContent = Mustache.to_html(this.template,
 				{
 					folders : this.collection.toJSON(),
-					title : $.i18n.prop("msg.podcast.title"),
+					title : $.i18n.prop("msg.podcast.list.title"),
 					nameLabel : $.i18n.prop("msg.name"),
 					pathLabel : $.i18n.prop("msg.url"),
 					addLabel : $.i18n.prop("msg.add"),
@@ -26,15 +26,16 @@ var Application = (function (application) {
 				}
 			);
 			this.$el.html(renderedContent);
+			$("#admin_content").html("");
 		},
 		events : {
 			"click #addPodcast" : "onAddPodcast"
 		},
 		onAddPodcast : function() {
 			var that = this;
-			var folderLabel = $("#main_content > [name='folderLabel']").val();
-			var folderPath = $("#main_content > [name='folderPath']").val();
-			var newPodcast = new Application.Models.Podcasts();
+			var folderLabel = $("#admin_content > [name='folderLabel']").val();
+			var folderPath = $("#admin_content > [name='folderPath']").val();
+			var newPodcast = new Application.Models.Podcast();
 			newPodcast.save({
 						"id" : null,
 						"name" : folderLabel,
