@@ -13,6 +13,9 @@ var Application = (function () {
 			this.podcasts = args.podcasts;
 			this.defaultView = args.defaultView;
 			this.videoFolderAdminView = args.videoFolderAdminView;
+			this.audioFolderAdminView = args.audioFolderAdminView;
+			this.pictureFolderAdminView = args.pictureFolderAdminView;
+			this.podcastAdminView = args.podcastAdminView;
 		},
 		
 		routes : {
