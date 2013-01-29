@@ -27,7 +27,10 @@ yepnope({
 			podcastListView : '/backbone/js/views/podcastListView.js',
 			
 			// admin view controllers
-			videoFolderAdminView : '/backbone/js/views/admin/videoFolderAdminView.js'
+			videoFolderAdminView : '/backbone/js/views/admin/videoFolderAdminView.js',
+			audioFolderAdminView : '/backbone/js/views/admin/audioFolderAdminView.js',
+			pictureFolderAdminView : '/backbone/js/views/admin/pictureFolderAdminView.js',
+			podcastAdminView : '/backbone/js/views/admin/podcastAdminView.js'
 
 		},
 	callback : {
@@ -59,20 +62,26 @@ yepnope({
 			
 			window.audioFolders = new Application.Collections.AudioFolders();
 			window.audioFolderListView = new Application.Views.AudioFolderListView({collection : audioFolders});
+			window.audioFolderAdminView = new Application.Views.AudioFolderAdminView({collection : audioFolders});
 			
 			window.pictureFolders = new Application.Collections.PictureFolders();
 			window.pictureFolderListView = new Application.Views.PictureFolderListView({collection : pictureFolders});
+			window.pictureFolderAdminView = new Application.Views.PictureFolderAdminView({collection : pictureFolders});
 
 			window.podcasts = new Application.Collections.Podcasts();
 			window.podcastListView = new Application.Views.PodcastListView({collection : podcasts});
+			window.podcastAdminView = new Application.Views.PodcastAdminView({collection : podcasts});
 
 			window.router = new Application.Router.RoutesManager({
-				videoFolders:videoFolders,
-				videoFolderAdminView:videoFolderAdminView,
-				audioFolders:audioFolders,
-				pictureFolders:pictureFolders,
-				podcasts:podcasts,
-				defaultView:defaultView
+				videoFolders : videoFolders,
+				videoFolderAdminView : videoFolderAdminView,
+				audioFolders : audioFolders,
+				audioFolderAdminView : audioFolderAdminView,
+				pictureFolders : pictureFolders,
+				pictureFolderAdminView : pictureFolderAdminView,
+				podcasts : podcasts,
+				podcastAdminView : podcastAdminView,
+				defaultView : defaultView
 			});
 			
 			Backbone.history.start();
