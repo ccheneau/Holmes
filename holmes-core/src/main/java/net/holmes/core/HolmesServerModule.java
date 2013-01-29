@@ -16,6 +16,8 @@
 */
 package net.holmes.core;
 
+import net.holmes.core.backend.backbone.BackboneManager;
+import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.XmlConfigurationImpl;
 import net.holmes.core.http.HttpChannelHandler;
@@ -79,6 +81,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
+        bind(BackboneManager.class).to(BackboneManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceServiceProvider.class);
