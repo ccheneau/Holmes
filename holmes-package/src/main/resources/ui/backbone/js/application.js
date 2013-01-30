@@ -145,7 +145,7 @@ var Application = (function () {
 					}
 				});
 		},
-		
+
 		root : function() {
 			this.defaultView.render();
 		},
