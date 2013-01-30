@@ -3,13 +3,14 @@ var Application = (function (application) {
 		el : $("#admin_content"),
 		initialize : function() {
 			this.template = $("#folder_admin_template").html();
+			_.bindAll(this, 'render');			
 		},
 		render : function(podcast) {
 			var renderedContent = Mustache.to_html(this.template,
 				{
 					folder : podcast.toJSON(),
 					nameLabel : $.i18n.prop("msg.name"),
-					pathLabel : $.i18n.prop("msg.path"),
+					pathLabel : $.i18n.prop("msg.url"),
 					addTitle : $.i18n.prop("msg.podcast.add.title"),
 					updateTitle : $.i18n.prop("msg.podcast.update.title"),
 					addLabel : $.i18n.prop("msg.add"),
@@ -50,6 +51,7 @@ var Application = (function (application) {
 							console.log(response);
 						}
 					});
+			return false;
 		}
 	});
 	return application;

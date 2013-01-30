@@ -21,39 +21,11 @@ var Application = (function (application) {
 					removeLabel : $.i18n.prop("msg.remove"),
 					editTarget : "editPictureFolder",
 					addTarget : "addPictureFolder",
-					removeTarget : "removePictureFolder",
-					removeConfirm : $.i18n.prop("msg.picture.remove.confirm")
+					removeTarget : "removePictureFolder"
 				}
 			);
 			this.$el.html(renderedContent);
 			$("#admin_content").html("");
-		},
-		events : {
-			"click #addPictureFolder" : "onAddPictureFolder"
-		},
-		onAddPictureFolder : function() {
-			var that = this;
-			var folderLabel = $("#main_content > [name='folderLabel']").val();
-			var folderPath = $("#main_content > [name='folderPath']").val();
-			var newPictureFolder = new Application.Models.PictureFolder();
-			newPictureFolder.save({
-						"id" : null,
-						"name" : folderLabel,
-						"path" : folderPath
-					},{
-						success : function() {
-							that.collection.fetch({
-								success:function() {
-									that.render();
-								}
-							});
-						},
-						error : function(model, response) {
-							console.log("save error");
-							console.log(model);
-							console.log(response);
-						}
-					});
 		}
 	});
 	return application;

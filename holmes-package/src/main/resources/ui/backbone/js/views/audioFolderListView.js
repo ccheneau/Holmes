@@ -21,39 +21,11 @@ var Application = (function (application) {
 					removeLabel : $.i18n.prop("msg.remove"),
 					editTarget : "editAudioFolder",
 					addTarget : "addAudioFolder",
-					removeTarget : "removeAudioFolder",
-					removeConfirm : $.i18n.prop("msg.audio.remove.confirm")
+					removeTarget : "removeAudioFolder"
 				}
 			);
 			this.$el.html(renderedContent);
 			$("#admin_content").html("");
-		},
-		events : {
-			"click #addAudioFolder" : "onAddAudioFolder"
-		},
-		onAddAudioFolder : function() {
-			var that = this;
-			var folderLabel = $("#main_content > [name='folderLabel']").val();
-			var folderPath = $("#main_content > [name='folderPath']").val();
-			var newAudioFolder = new Application.Models.AudioFolder();
-			newAudioFolder.save({
-						"id" : null,
-						"name" : folderLabel,
-						"path" : folderPath
-					},{
-						success : function() {
-							that.collection.fetch({
-								success:function() {
-									that.render();
-								}
-							});
-						},
-						error : function(model, response) {
-							console.log("save error");
-							console.log(model);
-							console.log(response);
-						}
-					});
 		}
 	});
 	return application;

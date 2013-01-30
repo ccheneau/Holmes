@@ -50,6 +50,7 @@ var Application = (function (application) {
 							console.log(response);
 						}
 					});
+			return false;
 		}
 	});
 	return application;
