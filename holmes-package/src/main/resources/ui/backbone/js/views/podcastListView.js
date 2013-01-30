@@ -2,7 +2,7 @@ var Application = (function(application) {
 	application.Views.PodcastListView = Backbone.View.extend({
 		el : $("#main_content"),
 		initialize : function() {
-			this.template = $("#folder_list_template").html();
+			this.template = application.getTemplate("folderList.html");
 			_.bindAll(this, 'render');
 			this.collection.bind('reset', this.render);
 			this.collection.bind('change', this.render);

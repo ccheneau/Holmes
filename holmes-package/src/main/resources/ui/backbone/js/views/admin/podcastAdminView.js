@@ -2,8 +2,7 @@ var Application = (function (application) {
 	application.Views.PodcastAdminView = Backbone.View.extend({
 		el : $("#admin_content"),
 		initialize : function() {
-			this.template = $("#folder_admin_template").html();
-			_.bindAll(this, 'render');			
+			this.template = application.getTemplate("folderAdmin.html");
 		},
 		render : function(podcast) {
 			var renderedContent = Mustache.to_html(this.template,

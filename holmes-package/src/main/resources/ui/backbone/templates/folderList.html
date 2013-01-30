@@ -1,0 +1,21 @@
+<h1>{{title}} - <a href="#{{addTarget}}">{{addLabel}}</a></h1>
+<hr />
+<table>
+	<thead>
+		<tr>
+			<th>{{nameLabel}}</th>
+			<th>{{pathLabel}}</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+{{#folders}}
+		<tr>
+			<td>{{name}}</td>
+			<td>{{path}}</td>
+			<td><a href="#{{editTarget}}/{{id}}">{{editLabel}}</a> <a href="#{{removeTarget}}/{{id}}" >{{removeLabel}}</a></td>
+		</tr>
+{{/folders}}
+	</tbody>
+</table>
+<br />

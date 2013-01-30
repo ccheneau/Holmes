@@ -2,7 +2,7 @@ var Application = (function (application) {
 	application.Views.PictureFolderAdminView = Backbone.View.extend({
 		el : $("#admin_content"),
 		initialize : function() {
-			this.template = $("#folder_admin_template").html();
+			this.template = application.getTemplate("folderAdmin.html");
 		},
 		render : function(pictureFolder) {
 			var renderedContent = Mustache.to_html(this.template,

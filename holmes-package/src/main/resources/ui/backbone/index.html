@@ -34,53 +34,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 		<div id="main_content"></div>		
 		<div id="admin_content"></div>
-		
-		<script type="text/html" id="default_template">
-			<h1>{{indexMessage}}</h1>
-		</script>
-		
-		<script type="text/html" id="folder_list_template">
-			<h1>{{title}} - <a href="#{{addTarget}}">{{addLabel}}</a></h1>
-			<hr />
-			<table>
-				<thead>
-					<tr>
-						<th>{{nameLabel}}</th>
-						<th>{{pathLabel}}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-			{{#folders}}
-					<tr>
-						<td>{{name}}</td>
-						<td>{{path}}</td>
-						<td><a href="#{{editTarget}}/{{id}}">{{editLabel}}</a> <a href="#{{removeTarget}}/{{id}}" >{{removeLabel}}</a></td>
-					</tr>
-			{{/folders}}
-				</tbody>
-			</table>
-			<br />
-		</script>
-
-		<script type="text/html" id="folder_admin_template">
-			{{#folder.id}}
-				<h1>{{updateTitle}}</h1>
-				<hr />
-					<input name="folderId" type="hidden" value="{{folder.id}}" />
-					{{nameLabel}} <input name="folderLabel" type="text" value="{{folder.name}}"/><br />
-					{{pathLabel}} <input name="folderPath" type="text" value="{{folder.path}}" /><br />
-					<a href="#" id="{{sendTarget}}">{{saveLabel}}</a>
-			{{/folder.id}}
-			{{^folder.id}}
-				<h1>{{addTitle}}</h1>
-				<hr />
-					<input name="folderId" type="hidden"/>
-					{{nameLabel}} <input name="folderLabel" type="text"/><br />
-					{{pathLabel}} <input name="folderPath" type="text"/><br />
-					<a href="#" id="{{sendTarget}}">{{addLabel}}</a>
-			{{/folder.id}}
-			<a href="#{{cancelTarget}}">{{cancelLabel}}</a>
-		</script>
 	</body>
 </html>

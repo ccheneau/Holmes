@@ -1,0 +1,17 @@
+{{#folder.id}}
+	<h1>{{updateTitle}}</h1>
+	<hr />
+		<input name="folderId" type="hidden" value="{{folder.id}}" />
+		{{nameLabel}} <input name="folderLabel" type="text" value="{{folder.name}}"/><br />
+		{{pathLabel}} <input name="folderPath" type="text" value="{{folder.path}}" /><br />
+		<a href="#" id="{{sendTarget}}">{{saveLabel}}</a>
+{{/folder.id}}
+{{^folder.id}}
+	<h1>{{addTitle}}</h1>
+	<hr />
+		<input name="folderId" type="hidden"/>
+		{{nameLabel}} <input name="folderLabel" type="text"/><br />
+		{{pathLabel}} <input name="folderPath" type="text"/><br />
+		<a href="#" id="{{sendTarget}}">{{addLabel}}</a>
+{{/folder.id}}
+<a href="#{{cancelTarget}}">{{cancelLabel}}</a>
