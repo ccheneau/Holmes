@@ -79,7 +79,7 @@ public class PodcastsHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removePodcast(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getVideoFolders());
+        backboneManager.removeFolder(id, configuration.getPodcasts());
         return new ConfigurationFolder(id, null, null);
     }
 }

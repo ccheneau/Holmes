@@ -79,7 +79,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removePictureFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getVideoFolders());
+        backboneManager.removeFolder(id, configuration.getPictureFolders());
         return new ConfigurationFolder(id, null, null);
     }
 }
