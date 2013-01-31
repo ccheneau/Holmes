@@ -1,10 +1,10 @@
 <h4>{{title}} - <a href="#{{addTarget}}">{{addLabel}}</a></h4>
-<table class="table table-bordered table-striped table-condensed">
+    <table class="table table-bordered table-striped table-condensed table-hover">
 	<thead>
 		<tr>
-			<th>{{nameLabel}}</th>
+			<th style="width:30%;">{{nameLabel}}</th>
 			<th>{{pathLabel}}</th>
-			<th></th>
+			<th style="width: 32px"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -12,7 +12,7 @@
 		<tr>
 			<td>{{name}}</td>
 			<td>{{path}}</td>
-			<td><a href="#{{editTarget}}/{{id}}">{{editLabel}}</a> <a href="#{{removeTarget}}/{{id}}" >{{removeLabel}}</a></td>
+			<td><a href="#{{editTarget}}/{{id}}" title="{{editLabel}}"><i class="icon-edit"></i></a> <a href="#{{removeTarget}}/{{id}}" title="{{removeLabel}}" ><i class="icon-trash"></i></a></td>
 		</tr>
 {{/folders}}
 	</tbody>
