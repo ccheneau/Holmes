@@ -1,13 +1,15 @@
 yepnope({
 	load : {
 		// css
+		bootstrapCss : '/backbone/css/bootstrap.min.css',
 		holmesCss : '/backbone/css/holmes.css',
 
 		// lib
 		jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
+		bootstrap : '/backbone/js/lib/bootstrap.min.js',
 		jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 		underscore : '/backbone/js/lib/underscore-min.js',
-		backbone : '/backbone/js/lib/backbone.js',
+		backbone : '/backbone/js/lib/backbone-min.js',
 		mustache : '/backbone/js/lib/mustache.js',
 
 		// application
