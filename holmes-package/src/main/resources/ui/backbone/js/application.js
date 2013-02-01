@@ -14,6 +14,11 @@ var Application = (function() {
 		}).responseText;
 	},
 
+	toggleMenu = function(item) {
+        $('ul.nav > li').removeClass('active');
+        $('#'+ item).addClass('active');                
+	},
+	
 	application.Router.RoutesManager = Backbone.Router.extend({
 		initialize : function(args) {
 			this.videoFolders = args.videoFolders;
@@ -51,6 +56,7 @@ var Application = (function() {
 		},
 
 		videoFolders : function() {
+			toggleMenu('video_folders_menu');
 			this.videoFolders.all().fetch();
 		},
 
@@ -81,6 +87,7 @@ var Application = (function() {
 		},
 
 		audioFolders : function() {
+			toggleMenu('audio_folders_menu');
 			this.audioFolders.all().fetch();
 		},
 
@@ -111,6 +118,7 @@ var Application = (function() {
 		},
 
 		pictureFolders : function() {
+			toggleMenu('picture_folders_menu');
 			this.pictureFolders.all().fetch();
 		},
 
@@ -141,6 +149,7 @@ var Application = (function() {
 		},
 
 		podcasts : function() {
+			toggleMenu('podcasts_menu');
 			this.podcasts.all().fetch();
 		},
 
@@ -171,6 +180,7 @@ var Application = (function() {
 		},
 
 		root : function() {
+			toggleMenu('home_menu');
 			this.defaultView.render();
 		},
 	});

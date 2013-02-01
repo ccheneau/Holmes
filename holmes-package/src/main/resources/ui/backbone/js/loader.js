@@ -1,9 +1,5 @@
 yepnope({
 	load : {
-		// css
-		bootstrapCss : '/backbone/css/bootstrap.min.css',
-		holmesCss : '/backbone/css/holmes.css',
-
 		// lib
 		jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
 		bootstrap : '/backbone/js/lib/bootstrap.min.js',

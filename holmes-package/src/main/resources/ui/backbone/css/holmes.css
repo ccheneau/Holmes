@@ -2,3 +2,8 @@ body {
 	background-color: white;
 	padding-top: 60px;
 }
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+    background-color: #0088CC;
+    color: #FFFFFF;
+}
