@@ -18,12 +18,105 @@ var Application = (function(application) {
 				addLabel : $.i18n.prop("msg.add"),
 				editLabel : $.i18n.prop("msg.edit"),
 				removeLabel : $.i18n.prop("msg.remove"),
-				editTarget : "editAudioFolder",
-				addTarget : "addAudioFolder",
-				removeTarget : "removeAudioFolder"
+				saveLabel : $.i18n.prop("msg.save"),
+				cancelLabel : $.i18n.prop("msg.cancel"),
+				dialogId : "audioDlg",
+				removeTarget : "audioFolderRemove"
 			});
 			this.$el.html(renderedContent);
-			$("#admin_content").html("");
+		},
+		events : {
+			"click .audioDlgAddOpen" : "onAudioDlgAddOpen",
+			"click .audioDlgEditOpen" : "onAudioDlgEditOpen",
+			"click .audioDlgClose" : "onAudioDlgClose",
+			"click .audioDlgSave" : "onAudioDlgSave",
+			"click .audioFolderRemove" : "onAudioFolderRemove",
+		},
+		// open add audio folder dialog
+		onAudioDlgAddOpen : function() {
+			// initialiaze dialog 
+			$("#audioDlgHeader").html($.i18n.prop("msg.audio.add.title"));
+			$("#folderId").val("");
+			$("#folderName").val("");
+			$("#folderPath").val("");
+			$('#audioDlg').modal('show');
+			return false;
+		},
+		// open edit audio folder dialog
+		onAudioDlgEditOpen : function(event) {
+			var folderId = $(event.currentTarget).data('id');
+			// get audio folder
+			var audioFolder = new Application.Models.AudioFolder({id : folderId});
+			audioFolder.fetch({
+				success : function(result) {
+					// initialiaze dialog 
+					$("#audioDlgHeader").html($.i18n.prop("msg.audio.update.title"));
+					$("#folderId").val(result.get('id'));
+					$("#folderName").val(result.get('name'));
+					$("#folderPath").val(result.get('path'));
+					$('#audioDlg').modal('show');
+				},
+				error : function() {
+					//TODO manage error
+					alert("failed to edit");
+				}
+			});
+			return false;
+		},
+		// close dialog
+		onAudioDlgClose : function() {
+			$('#audioDlg').modal('hide');
+			return false;
+		},
+		// save audio folder
+		onAudioDlgSave : function() {
+			var that = this;
+			var folderId = $("#folderId").val();
+			var folderName = $("#folderName").val();
+			var folderPath = $("#folderPath").val();
+			var audioFolder;
+			if (folderId === "") {
+				// this is a new audio folder
+				audioFolder = new Application.Models.AudioFolder();
+			} else {
+				// modify existing audio folder
+				audioFolder = new Application.Models.AudioFolder({id:folderId});
+			}
+			// save audio folder
+			audioFolder.save({
+						"name" : folderName,
+						"path" : folderPath
+					},{
+						success : function() {
+							that.collection.fetch();
+						},
+						error : function(model, response) {
+							//TODO manage error
+							alert("failed to save");
+						}
+					});
+			// close dialog
+			$('#audioDlg').modal('hide');
+			return false;
+		},
+		// remove audio folder
+		onAudioFolderRemove : function(event){
+			//TODO remove confirm
+			if (confirm($.i18n.prop("msg.audio.remove.confirm"))) {
+				var that = this;
+				var folderId = $(event.currentTarget).data('id');
+				var audioFolder = new Application.Models.AudioFolder({id : folderId});
+				audioFolder.destroy({
+					success : function() {
+						that.collection.fetch();
+					},
+					error : function() {
+						//TODO manage error
+						alert("failed to remove");
+					}
+				});
+			}
+			return false;
 		}
 	});
 	return application;

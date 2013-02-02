@@ -18,12 +18,105 @@ var Application = (function(application) {
 				addLabel : $.i18n.prop("msg.add"),
 				editLabel : $.i18n.prop("msg.edit"),
 				removeLabel : $.i18n.prop("msg.remove"),
-				editTarget : "editVideoFolder",
-				addTarget : "addVideoFolder",
-				removeTarget : "removeVideoFolder",
+				saveLabel : $.i18n.prop("msg.save"),
+				cancelLabel : $.i18n.prop("msg.cancel"),
+				dialogId : "videoDlg",
+				removeTarget : "videoFolderRemove"
 			});
 			this.$el.html(renderedContent);
-			$("#admin_content").html("");
+		},
+		events : {
+			"click .videoDlgAddOpen" : "onVideoDlgAddOpen",
+			"click .videoDlgEditOpen" : "onVideoDlgEditOpen",
+			"click .videoDlgClose" : "onVideoDlgClose",
+			"click .videoDlgSave" : "onVideoDlgSave",
+			"click .videoFolderRemove" : "onVideoFolderRemove",
+		},
+		// open add video folder dialog
+		onVideoDlgAddOpen : function() {
+			// initialiaze dialog 
+			$("#videoDlgHeader").html($.i18n.prop("msg.video.add.title"));
+			$("#folderId").val("");
+			$("#folderName").val("");
+			$("#folderPath").val("");
+			$('#videoDlg').modal('show');
+			return false;
+		},
+		// open edit video folder dialog
+		onVideoDlgEditOpen : function(event) {
+			var folderId = $(event.currentTarget).data('id');
+			// get video folder
+			var videoFolder = new Application.Models.VideoFolder({id : folderId});
+			videoFolder.fetch({
+				success : function(result) {
+					// initialiaze dialog 
+					$("#videoDlgHeader").html($.i18n.prop("msg.video.update.title"));
+					$("#folderId").val(result.get('id'));
+					$("#folderName").val(result.get('name'));
+					$("#folderPath").val(result.get('path'));
+					$('#videoDlg').modal('show');
+				},
+				error : function() {
+					//TODO manage error
+					alert("failed to edit");
+				}
+			});
+			return false;
+		},
+		// close dialog
+		onVideoDlgClose : function() {
+			$('#videoDlg').modal('hide');
+			return false;
+		},
+		// save video folder
+		onVideoDlgSave : function() {
+			var that = this;
+			var folderId = $("#folderId").val();
+			var folderName = $("#folderName").val();
+			var folderPath = $("#folderPath").val();
+			var videoFolder;
+			if (folderId === "") {
+				// this is a new video folder
+				videoFolder = new Application.Models.VideoFolder();
+			} else {
+				// modify existing video folder
+				videoFolder = new Application.Models.VideoFolder({id:folderId});
+			}
+			// save video folder
+			videoFolder.save({
+						"name" : folderName,
+						"path" : folderPath
+					},{
+						success : function() {
+							that.collection.fetch();
+						},
+						error : function(model, response) {
+							//TODO manage error
+							alert("failed to save");
+						}
+					});
+			// close dialog
+			$('#videoDlg').modal('hide');
+			return false;
+		},
+		// remove video folder
+		onVideoFolderRemove : function(event){
+			//TODO remove confirm
+			if (confirm($.i18n.prop("msg.video.remove.confirm"))) {
+				var that = this;
+				var folderId = $(event.currentTarget).data('id');
+				var videoFolder = new Application.Models.VideoFolder({id : folderId});
+				videoFolder.destroy({
+					success : function() {
+						that.collection.fetch();
+					},
+					error : function() {
+						//TODO manage error
+						alert("failed to remove");
+					}
+				});
+			}
+			return false;
 		}
 	});
 	return application;

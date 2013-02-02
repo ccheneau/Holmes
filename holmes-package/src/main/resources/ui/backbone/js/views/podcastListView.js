@@ -18,12 +18,105 @@ var Application = (function(application) {
 				addLabel : $.i18n.prop("msg.add"),
 				editLabel : $.i18n.prop("msg.edit"),
 				removeLabel : $.i18n.prop("msg.remove"),
-				editTarget : "editPodcast",
-				addTarget : "addPodcast",
-				removeTarget : "removePodcast"
+				saveLabel : $.i18n.prop("msg.save"),
+				cancelLabel : $.i18n.prop("msg.cancel"),
+				dialogId : "podcastDlg",
+				removeTarget : "podcastRemove"
 			});
 			this.$el.html(renderedContent);
-			$("#admin_content").html("");
+		},
+		events : {
+			"click .podcastDlgAddOpen" : "onPodcastDlgAddOpen",
+			"click .podcastDlgEditOpen" : "onPodcastDlgEditOpen",
+			"click .podcastDlgClose" : "onPodcastDlgClose",
+			"click .podcastDlgSave" : "onPodcastDlgSave",
+			"click .podcastRemove" : "onPodcastRemove",
+		},
+		// open add podcast dialog
+		onPodcastDlgAddOpen : function() {
+			// initialiaze dialog 
+			$("#podcastDlgHeader").html($.i18n.prop("msg.podcast.add.title"));
+			$("#folderId").val("");
+			$("#folderName").val("");
+			$("#folderPath").val("");
+			$('#podcastDlg').modal('show');
+			return false;
+		},
+		// open edit podcast dialog
+		onPodcastDlgEditOpen : function(event) {
+			var folderId = $(event.currentTarget).data('id');
+			// get podcast
+			var podcast = new Application.Models.Podcast({id : folderId});
+			podcast.fetch({
+				success : function(result) {
+					// initialiaze dialog 
+					$("#podcastDlgHeader").html($.i18n.prop("msg.podcast.update.title"));
+					$("#folderId").val(result.get('id'));
+					$("#folderName").val(result.get('name'));
+					$("#folderPath").val(result.get('path'));
+					$('#podcastDlg').modal('show');
+				},
+				error : function() {
+					//TODO manage error
+					alert("failed to edit");
+				}
+			});
+			return false;
+		},
+		// close dialog
+		onPodcastDlgClose : function() {
+			$('#podcastDlg').modal('hide');
+			return false;
+		},
+		// save podcast
+		onPodcastDlgSave : function() {
+			var that = this;
+			var folderId = $("#folderId").val();
+			var folderName = $("#folderName").val();
+			var folderPath = $("#folderPath").val();
+			var podcast;
+			if (folderId === "") {
+				// this is a new podcast
+				podcast = new Application.Models.Podcast();
+			} else {
+				// modify existing podcast
+				podcast = new Application.Models.Podcast({id:folderId});
+			}
+			// save podcast
+			podcast.save({
+						"name" : folderName,
+						"path" : folderPath
+					},{
+						success : function() {
+							that.collection.fetch();
+						},
+						error : function(model, response) {
+							//TODO manage error
+							alert("failed to save");
+						}
+					});
+			// close dialog
+			$('#podcastDlg').modal('hide');
+			return false;
+		},
+		// remove podcast
+		onPodcastRemove : function(event){
+			//TODO remove confirm
+			if (confirm($.i18n.prop("msg.podcast.remove.confirm"))) {
+				var that = this;
+				var folderId = $(event.currentTarget).data('id');
+				var podcast = new Application.Models.Podcast({id : folderId});
+				podcast.destroy({
+					success : function() {
+						that.collection.fetch();
+					},
+					error : function() {
+						//TODO manage error
+						alert("failed to remove");
+					}
+				});
+			}
+			return false;
 		}
 	});
 	return application;

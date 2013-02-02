@@ -23,13 +23,6 @@ yepnope({
 		audioFolderListView : '/backbone/js/views/audioFolderListView.js',
 		pictureFolderListView : '/backbone/js/views/pictureFolderListView.js',
 		podcastListView : '/backbone/js/views/podcastListView.js',
-
-		// admin view controllers
-		videoFolderAdminView : '/backbone/js/views/admin/videoFolderAdminView.js',
-		audioFolderAdminView : '/backbone/js/views/admin/audioFolderAdminView.js',
-		pictureFolderAdminView : '/backbone/js/views/admin/pictureFolderAdminView.js',
-		podcastAdminView : '/backbone/js/views/admin/podcastAdminView.js'
-
 	},
 	callback : {
 		"jqueryI18n" : function() {
@@ -50,7 +43,7 @@ yepnope({
 		}
 	},
 	complete : function() {
-		console.log('Launching application ...');
+		console.log('Launching Holmes UI ...');
 
 		window.defaultView = new Application.Views.DefaultView();
 
@@ -58,15 +51,9 @@ yepnope({
 		window.videoFolderListView = new Application.Views.VideoFolderListView({
 			collection : videoFolders
 		});
-		window.videoFolderAdminView = new Application.Views.VideoFolderAdminView({
-			collection : videoFolders
-		});
 
 		window.audioFolders = new Application.Collections.AudioFolders();
 		window.audioFolderListView = new Application.Views.AudioFolderListView({
-			collection : audioFolders
-		});
-		window.audioFolderAdminView = new Application.Views.AudioFolderAdminView({
 			collection : audioFolders
 		});
 
@@ -74,31 +61,21 @@ yepnope({
 		window.pictureFolderListView = new Application.Views.PictureFolderListView({
 			collection : pictureFolders
 		});
-		window.pictureFolderAdminView = new Application.Views.PictureFolderAdminView({
-			collection : pictureFolders
-		});
 
 		window.podcasts = new Application.Collections.Podcasts();
 		window.podcastListView = new Application.Views.PodcastListView({
 			collection : podcasts
 		});
-		window.podcastAdminView = new Application.Views.PodcastAdminView({
-			collection : podcasts
-		});
 
 		window.router = new Application.Router.RoutesManager({
 			videoFolders : videoFolders,
-			videoFolderAdminView : videoFolderAdminView,
 			audioFolders : audioFolders,
-			audioFolderAdminView : audioFolderAdminView,
 			pictureFolders : pictureFolders,
-			pictureFolderAdminView : pictureFolderAdminView,
 			podcasts : podcasts,
-			podcastAdminView : podcastAdminView,
 			defaultView : defaultView
 		});
 
 		Backbone.history.start();
-		console.log('Application launched');
+		console.log('Holmes UI launched');
 	}
 });
