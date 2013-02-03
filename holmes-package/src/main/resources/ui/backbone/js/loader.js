@@ -7,7 +7,8 @@ yepnope({
 		underscore : '/backbone/js/lib/underscore-min.js',
 		backbone : '/backbone/js/lib/backbone-min.js',
 		mustache : '/backbone/js/lib/mustache.js',
-
+		bootbox : '/backbone/js/lib/bootbox.min.js',
+		
 		// application
 		application : '/backbone/js/application.js',
 

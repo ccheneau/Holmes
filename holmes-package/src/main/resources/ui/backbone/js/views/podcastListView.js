@@ -101,21 +101,22 @@ var Application = (function(application) {
 		},
 		// remove podcast
 		onPodcastRemove : function(event){
-			//TODO remove confirm
-			if (confirm($.i18n.prop("msg.podcast.remove.confirm"))) {
-				var that = this;
-				var folderId = $(event.currentTarget).data('id');
-				var podcast = new Application.Models.Podcast({id : folderId});
-				podcast.destroy({
-					success : function() {
-						that.collection.fetch();
-					},
-					error : function() {
-						//TODO manage error
-						alert("failed to remove");
-					}
-				});
-			}
+			var that = this;
+			bootbox.confirm($.i18n.prop("msg.podcast.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
+				if (result == true) {
+					var folderId = $(event.currentTarget).data('id');
+					var podcast = new Application.Models.Podcast({id : folderId});
+					podcast.destroy({
+						success : function() {
+							that.collection.fetch();
+						},
+						error : function() {
+							//TODO manage error
+							alert("failed to remove");
+						}
+					});
+				}
+			}); 
 			return false;
 		}
 	});
