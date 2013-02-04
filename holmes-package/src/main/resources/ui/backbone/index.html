@@ -28,10 +28,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	</head>
 
 	<body>
-	<div class="navbar">
+	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
-			<div class="container">
-				<span class="brand">Holmes UPnP media server</span>
+			<div class="container-fluid">
+				<div class="row-fluid" >
+					<div class="span5">
+						<div class="brand">Holmes&nbsp;UPnP&nbsp;media&nbsp;server</div>
+						<span id="easter"></span>
+					</div>
+					<div class="span5">
+						<ul class="nav">  
+							<li><a href="http://ccheneau.github.com/Holmes/" target="_blank"><span class="i18n" data-msg="msg.toolbar.holmes.home">Holmes site</span></a></li>
+							<li><a href="https://github.com/ccheneau/Holmes/wiki" target="_blank"><span class="i18n" data-msg="msg.toolbar.wiki">Wiki</span></a></li>
+						</ul>
+					</div>
+					<div class="span2">
+						<p class="navbar-text" id="version">version</p> 
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -50,7 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<div class="span8">
-				<div id="main_content" ></div>
+				<div id="main_content" class="well white"></div>
 			</div>
 		</div>
 	</div>

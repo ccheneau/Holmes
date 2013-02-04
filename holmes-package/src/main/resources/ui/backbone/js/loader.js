@@ -26,6 +26,11 @@ yepnope({
 		podcastListView : '/backbone/js/views/podcastListView.js',
 	},
 	callback : {
+		"jquery" : function() {
+		    $('#easter').click(function() {
+		    	$('body').attr('class','roll');
+		    });			
+		},
 		"jqueryI18n" : function() {
 			// Initialize i18n
 			$.i18n.properties({
@@ -40,7 +45,10 @@ yepnope({
 					});
 				}
 			});
-			console.log("i18n loaded ...");
+			
+		    $.get('/backend/util/getVersion', function(response) {
+		    	$("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
+		    });
 		}
 	},
 	complete : function() {
