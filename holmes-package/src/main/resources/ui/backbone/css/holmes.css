@@ -1,8 +1,55 @@
 body {
 	background-color: white;
+	padding-top: 60px;
 }
 
+#easter {
+    position: absolute;
+    left: 35px;
+    top: 16px;
+	height: 11px;
+	width: 10px;
+}
+
+.nav-tabs > li > a {
+	background-color: white;
+}
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
     background-color: #0088CC;
     color: #FFFFFF;
+}
+
+.sidebar-nav {
+	width: 230px;
+}
+.white {
+	background-color: white;
+}
+
+body.roll { 
+ 	-moz-animation-name: roll; 
+	-moz-animation-duration: 6s; 
+	-moz-animation-iteration-count: 1; 
+	-o-animation-name: roll; 
+	-o-animation-duration: 6s; 
+	-o-animation-iteration-count: 1; 
+	-webkit-animation-name: roll; 
+	-webkit-animation-duration: 6s; 
+    -webkit-animation-iteration-count: 1; 
+}
+
+@-moz-keyframes roll { 
+	100% { 
+		-moz-transform: rotate(1440deg) scale(0,0);
+	}
+} 
+@-o-keyframes roll { 
+	100% { 
+		-o-transform: rotate(1440deg) scale(0,0); 
+	} 
+} 
+@-webkit-keyframes roll {
+	100% { 
+		-webkit-transform: rotate(1440deg) scale(0,0); 
+	} 
 }
