@@ -1,6 +1,8 @@
 body {
-	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	background-color: #EEEEEE;
+	background-color: white;
 }
 
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+    background-color: #0088CC;
+    color: #FFFFFF;
+}

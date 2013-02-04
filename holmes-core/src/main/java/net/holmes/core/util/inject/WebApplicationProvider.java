@@ -33,7 +33,7 @@ import com.sun.jersey.spi.container.WebApplicationFactory;
 /**
  * Guice provider for Jersey web application
  */
-public class WebApplicationProvider implements Provider<WebApplication> {
+public final class WebApplicationProvider implements Provider<WebApplication> {
 
     private final Injector injector;
 

@@ -16,14 +16,13 @@
 */
 package net.holmes.core.media.node;
 
-import java.util.Date;
 
 public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected final String id;
     protected final String parentId;
     protected final String name;
     protected final NodeType type;
-    protected Date modifedDate;
+    protected Long modifedDate;
     protected String iconUrl;
 
     public AbstractNode(NodeType type, String id, String parentId, String name) {
@@ -49,11 +48,11 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         return type;
     }
 
-    public Date getModifedDate() {
-        return modifedDate != null ? new Date(modifedDate.getTime()) : null;
+    public Long getModifedDate() {
+        return modifedDate;
     }
 
-    public void setModifedDate(Date modifedDate) {
+    public void setModifedDate(Long modifedDate) {
         this.modifedDate = modifedDate;
     }
 

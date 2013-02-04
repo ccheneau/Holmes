@@ -17,7 +17,6 @@
 package net.holmes.core.media.node;
 
 import java.io.File;
-import java.util.Date;
 
 import net.holmes.core.util.mimetype.MimeType;
 
@@ -31,7 +30,7 @@ public final class ContentNode extends AbstractNode {
         this.path = file.getAbsolutePath();
         this.mimeType = mimeType;
         this.size = file.length();
-        this.modifedDate = new Date(file.lastModified());
+        this.modifedDate = file.lastModified();
     }
 
     public MimeType getMimeType() {

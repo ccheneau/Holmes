@@ -37,10 +37,10 @@
 		<level value="error" />
 	</logger>
 
-	<logger name="org.teleal.cling">
+	<logger name="org.fourthline.cling">
 		<level value="error" />
 	</logger>
-	
+
 	<root>
 		<level value="debug" />
 		<appender-ref ref="STDOUT" />

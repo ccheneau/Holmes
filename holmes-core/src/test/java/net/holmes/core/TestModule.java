@@ -24,7 +24,7 @@ import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.index.MediaIndexImpl;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
-import net.holmes.core.util.inject.LoggerListener;
+import net.holmes.core.util.inject.LoggerTypeListener;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
@@ -36,7 +36,7 @@ public class TestModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bindListener(Matchers.any(), new LoggerListener());
+        bindListener(Matchers.any(), new LoggerTypeListener());
 
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);

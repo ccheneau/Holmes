@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.holmes</groupId>
 	<artifactId>holmes-parent</artifactId>
-	<version>0.3.1</version>
+	<version>0.3.2</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -107,7 +107,7 @@
 			<dependency>
 				<groupId>io.netty</groupId>
 				<artifactId>netty</artifactId>
-				<version>3.6.1.Final</version>
+				<version>3.6.2.Final</version>
 			</dependency>
 
 			<!-- slf4j -->
@@ -157,7 +157,7 @@
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
-				<version>1.4.3</version>
+				<version>1.4.4</version>
 			</dependency>
 
 			<!-- guice -->
@@ -169,23 +169,18 @@
 
 			<!-- cling -->
 			<dependency>
-				<groupId>org.teleal.cling</groupId>
+				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-core</artifactId>
-				<version>1.0.5</version>
+				<version>2.0-alpha1</version>
 			</dependency>
 			<dependency>
-				<groupId>org.teleal.cling</groupId>
+				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-support</artifactId>
-				<version>1.0.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.teleal</groupId>
-				<artifactId>teleal-common</artifactId>
-				<version>1.0.14</version>
+				<version>2.0-alpha1</version>
 				<exclusions>
 					<exclusion>
-						<groupId>com.sun</groupId>
-						<artifactId>tools</artifactId>
+						<artifactId>seamless-swing</artifactId>
+						<groupId>org.seamless</groupId>
 					</exclusion>
 				</exclusions>
 			</dependency>

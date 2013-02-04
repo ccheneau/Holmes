@@ -16,6 +16,8 @@
 */
 package net.holmes.core;
 
+import net.holmes.core.backend.backbone.BackboneManager;
+import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.XmlConfigurationImpl;
 import net.holmes.core.http.HttpChannelHandler;
@@ -30,15 +32,18 @@ import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.index.MediaIndexImpl;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LocalIPv4Provider;
-import net.holmes.core.util.inject.LoggerListener;
+import net.holmes.core.util.inject.LoggerTypeListener;
 import net.holmes.core.util.inject.UiDirectoryProvider;
+import net.holmes.core.util.inject.UpnpServiceProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
+import org.fourthline.cling.UpnpService;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
@@ -56,7 +61,7 @@ public final class HolmesServerModule extends AbstractModule {
     protected void configure() {
 
         // Bind slf4j loggers
-        bindListener(Matchers.any(), new LoggerListener());
+        bindListener(Matchers.any(), new LoggerTypeListener());
 
         // Bind configuration
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
@@ -72,9 +77,14 @@ public final class HolmesServerModule extends AbstractModule {
         // Bind servers
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(Server.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Server.class).annotatedWith(Names.named("systray")).to(Systray.class).in(Singleton.class);
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
+        bind(BackboneManager.class).to(BackboneManagerImpl.class).in(Singleton.class);
+
+        // Bind Upnp service
+        bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);

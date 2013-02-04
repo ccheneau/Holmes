@@ -19,24 +19,21 @@ package net.holmes.core.media.node;
 import net.holmes.core.util.mimetype.MimeType;
 
 public final class PodcastEntryNode extends AbstractNode {
-    private MimeType mimeType;
+    private final MimeType mimeType;
     private final Long size;
     private final String url;
     private final String duration;
 
-    public PodcastEntryNode(String id, String parentId, String name, Long size, String url, String duration) {
+    public PodcastEntryNode(String id, String parentId, String name, MimeType mimeType, Long size, String url, String duration) {
         super(NodeType.TYPE_PODCAST_ENTRY, id, parentId, name);
         this.size = size;
         this.url = url;
         this.duration = duration;
+        this.mimeType = mimeType;
     }
 
     public MimeType getMimeType() {
         return this.mimeType;
-    }
-
-    public void setMimeType(MimeType mimeType) {
-        this.mimeType = mimeType;
     }
 
     public Long getSize() {

@@ -1,9 +1,23 @@
-var Application = (function () {
+var Application = (function() {
 	var application = {};
 	application.Models = {};
 	application.Collections = {};
 	application.Views = {};
 	application.Router = {};
+
+	application.getTemplate = function(template) {
+		return $.ajax({
+			type : "GET",
+			url : "/backbone/templates/" + template,
+			async : false,
+			cache : true
+		}).responseText;
+	},
+
+	toggleMenu = function(item) {
+        $('ul.nav > li').removeClass('active');
+        $('#'+ item).addClass('active');                
+	},
 	
 	application.Router.RoutesManager = Backbone.Router.extend({
 		initialize : function(args) {
@@ -13,32 +27,34 @@ var Application = (function () {
 			this.podcasts = args.podcasts;
 			this.defaultView = args.defaultView;
 		},
-		
 		routes : {
 			"videoFolders" : "videoFolders",
 			"audioFolders" : "audioFolders",
 			"pictureFolders" : "pictureFolders",
 			"podcasts" : "podcasts",
+
 			"*path" : "root"
 		},
-		
-		videoFolders : function () {
+
+		videoFolders : function() {
+			toggleMenu('video_folders_menu');
 			this.videoFolders.all().fetch();
 		},
-		
-		audioFolders : function () {
+
+		audioFolders : function() {
+			toggleMenu('audio_folders_menu');
 			this.audioFolders.all().fetch();
 		},
-		
-		pictureFolders : function () {
+		pictureFolders : function() {
+			toggleMenu('picture_folders_menu');
 			this.pictureFolders.all().fetch();
 		},
-		
-		podcasts : function () {
+		podcasts : function() {
+			toggleMenu('podcasts_menu');
 			this.podcasts.all().fetch();
 		},
-		
-		root : function () {
+		root : function() {
+			toggleMenu('home_menu');
 			this.defaultView.render();
 		},
 	});

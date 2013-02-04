@@ -29,9 +29,9 @@ import com.google.inject.spi.TypeListener;
 /**
  * Type listener for slf4j logger injection
  */
-public class LoggerListener implements TypeListener {
+public final class LoggerTypeListener implements TypeListener {
 
-    public LoggerListener() {
+    public LoggerTypeListener() {
     }
 
     @Override

@@ -111,8 +111,7 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext context, ExceptionEvent event) throws Exception {
         Channel channel = event.getChannel();
-        Throwable cause = event.getCause();
-        if (cause instanceof TooLongFrameException) {
+        if (event.getCause() instanceof TooLongFrameException) {
             sendError(context, HttpResponseStatus.BAD_REQUEST);
             return;
         }

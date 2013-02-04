@@ -1,0 +1,45 @@
+<div class="page-header"><h3>{{title}} - <a href="#" class="{{dialogId}}AddOpen btn btn-link">{{addLabel}}</a></h3></div>
+     
+    <!-- Modal Dialog -->
+    <div id="{{dialogId}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{dialogId}}Header" aria-hidden="true">
+    	<div class="modal-header">
+    		<button type="button" class="close {{dialogId}}Close" aria-hidden="true">×</button>
+    		<h3 id="{{dialogId}}Header">...</h3>
+    	</div>
+    	<div class="modal-body">
+			<input id="folderId" type="hidden"/>
+			<div class="input-prepend">
+				<span class="add-on">{{nameLabel}}</span><input class="input-medium" id="folderName" type="text" required="required"/>
+			</div>
+			<div class="input-prepend">
+				<span class="add-on">{{pathLabel}}</span><input class="input-xlarge" id="folderPath" type="text" required="required"/>
+			</div>
+    	</div>
+    	<div class="modal-footer">
+    		<button class="btn {{dialogId}}Close" aria-hidden="true">{{cancelLabel}}</button>
+    		<button class="btn btn-primary {{dialogId}}Save">{{saveLabel}}</button>
+    	</div>
+    </div>
+    
+    <table class="table table-bordered table-striped table-condensed table-hover">
+	<thead>
+		<tr>
+			<th style="width:30%;">{{nameLabel}}</th>
+			<th>{{pathLabel}}</th>
+			<th style="width: 32px"></th>
+		</tr>
+	</thead>
+	<tbody>
+{{#folders}}
+		<tr>
+			<td>{{name}}</td>
+			<td>{{path}}</td>
+			<td>
+				<a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><i class="icon-edit"></i></a>
+				<a href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}" ><i class="icon-trash"></i></a>
+			</td>
+		</tr>
+{{/folders}}
+	</tbody>
+</table>
+<br />

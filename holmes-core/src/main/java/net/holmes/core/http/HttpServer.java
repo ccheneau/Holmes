@@ -57,7 +57,7 @@ public final class HttpServer implements Server {
 
     @Override
     public void start() {
-        if (logger.isInfoEnabled()) logger.info("Starting HTTP server");
+        logger.info("Starting HTTP server");
 
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
@@ -71,18 +71,18 @@ public final class HttpServer implements Server {
         // Bind and start server to accept incoming connections.
         bootstrap.bind(bindAddress);
 
-        if (logger.isInfoEnabled()) logger.info("HTTP server bound on " + bindAddress);
+        logger.info("HTTP server bound on " + bindAddress);
     }
 
     @Override
     public void stop() {
-        if (logger.isInfoEnabled()) logger.info("Stopping HTTP server");
+        logger.info("Stopping HTTP server");
 
         // Stop the server
         if (bootstrap != null) bootstrap.shutdown();
         if (executor != null) executor.shutdown();
         webApplication.destroy();
 
-        if (logger.isInfoEnabled()) logger.info("HTTP server stopped");
+        logger.info("HTTP server stopped");
     }
 }

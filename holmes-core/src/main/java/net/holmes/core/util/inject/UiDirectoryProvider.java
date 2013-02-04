@@ -23,7 +23,7 @@ import javax.inject.Provider;
 
 import net.holmes.core.util.SystemProperty;
 
-public class UiDirectoryProvider implements Provider<String> {
+public final class UiDirectoryProvider implements Provider<String> {
 
     @Override
     public String get() {
