@@ -19,6 +19,9 @@ body {
     color: #FFFFFF;
 }
 
+.sidebar-nav {
+	width: 230px;
+}
 .white {
 	background-color: white;
 }
