@@ -38,13 +38,13 @@ import org.fourthline.cling.model.types.UDN;
 
 import com.google.inject.Injector;
 
-public class UpnpServiceServiceProvider implements Provider<UpnpService> {
+public class UpnpServiceProvider implements Provider<UpnpService> {
 
     private final Injector injector;
     private final Configuration configuration;
 
     @Inject
-    public UpnpServiceServiceProvider(Injector injector, Configuration configuration) {
+    public UpnpServiceProvider(Injector injector, Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
     }

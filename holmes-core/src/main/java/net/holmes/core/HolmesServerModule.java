@@ -38,7 +38,7 @@ import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LocalIPv4Provider;
 import net.holmes.core.util.inject.LoggerTypeListener;
 import net.holmes.core.util.inject.UiDirectoryProvider;
-import net.holmes.core.util.inject.UpnpServiceServiceProvider;
+import net.holmes.core.util.inject.UpnpServiceProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
@@ -84,7 +84,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(BackboneManager.class).to(BackboneManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
-        bind(UpnpService.class).toProvider(UpnpServiceServiceProvider.class);
+        bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
         bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
