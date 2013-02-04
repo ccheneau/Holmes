@@ -43,25 +43,25 @@ public final class HolmesServer implements Server {
 
     @Override
     public void start() {
-        if (logger.isInfoEnabled()) logger.info("Starting Holmes server");
+        logger.info("Starting Holmes server");
 
         // Start Holmes server
         httpServer.start();
         upnpServer.start();
         systray.start();
 
-        if (logger.isInfoEnabled()) logger.info("Holmes server started");
+        logger.info("Holmes server started");
     }
 
     @Override
     public void stop() {
-        if (logger.isInfoEnabled()) logger.info("Stopping Holmes server");
+        logger.info("Stopping Holmes server");
 
         // Stop Holmes server
         systray.stop();
         upnpServer.stop();
         httpServer.stop();
 
-        if (logger.isInfoEnabled()) logger.info("Holmes server stopped");
+        logger.info("Holmes server stopped");
     }
 }

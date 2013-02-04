@@ -49,20 +49,20 @@ public final class UpnpServer implements Server {
     @Override
     public void start() {
         if (configuration.getParameter(Parameter.ENABLE_UPNP)) {
-            if (logger.isInfoEnabled()) logger.info("Starting UPnP server");
+            logger.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
-            if (logger.isInfoEnabled()) logger.info("UPnP server started");
+            logger.info("UPnP server started");
         } else {
-            if (logger.isInfoEnabled()) logger.info("UPnP server is disabled");
+            logger.info("UPnP server is disabled");
         }
     }
 
     @Override
     public void stop() {
         if (upnpService != null) {
-            if (logger.isInfoEnabled()) logger.info("Stopping UPnP server");
+            logger.info("Stopping UPnP server");
             upnpService.shutdown();
-            if (logger.isInfoEnabled()) logger.info("UPnP server stopped");
+            logger.info("UPnP server stopped");
         }
     }
 }
