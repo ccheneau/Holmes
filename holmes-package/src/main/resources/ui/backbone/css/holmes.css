@@ -15,9 +15,10 @@ body {
 	background-color: white;
 }
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:visited {
     background-color: #0088CC;
     color: #FFFFFF;
+    font-weight: bold;
 }
 
 .sidebar-nav {
