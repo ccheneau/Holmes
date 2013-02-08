@@ -20,6 +20,7 @@ yepnope({
 
 		// view controllers
 		defaultView : '/backbone/js/views/defaultView.js',
+		settingsView : '/backbone/js/views/settingsView.js',
 		videoFolderListView : '/backbone/js/views/videoFolderListView.js',
 		audioFolderListView : '/backbone/js/views/audioFolderListView.js',
 		pictureFolderListView : '/backbone/js/views/pictureFolderListView.js',
@@ -55,6 +56,7 @@ yepnope({
 		console.log('Launching Holmes UI ...');
 
 		window.defaultView = new Application.Views.DefaultView();
+		window.settingsView = new Application.Views.SettingsView();
 
 		window.videoFolders = new Application.Collections.VideoFolders();
 		window.videoFolderListView = new Application.Views.VideoFolderListView({
@@ -81,7 +83,8 @@ yepnope({
 			audioFolders : audioFolders,
 			pictureFolders : pictureFolders,
 			podcasts : podcasts,
-			defaultView : defaultView
+			defaultView : defaultView,
+			settingsView : settingsView
 		});
 
 		Backbone.history.start();

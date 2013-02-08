@@ -1,0 +1,13 @@
+<div class="page-header"><h3>{{title}}</h3></div>
+<div class="input-prepend">
+	<span class="add-on">{{settingsServerName}}</span><input id="settings_server_name" type="text" required="required" value="{{settingsServerNameValue}}"/>
+</div>
+<br />
+<div class="input-prepend">
+	<span class="add-on">{{settingsServerPort}}</span><input id="settings_http_server_port" type="number" size="6" min="1024" max="99999" required="required" value="{{settingsServerPortValue}}"/>
+</div>
+<br />
+<label><input id="chk_prependPodcastItem" type="checkbox" name="prependPodcastItem" {{settingsPrependPodcastItemChecked}} /><span>{{settingsPrependPodcastItem}}</span></label>
+<br />
+<button class="btn SettingsCancel">{{cancel}}</button>
+<button class="btn btn-primary SettingsSave">{{save}}</button>
