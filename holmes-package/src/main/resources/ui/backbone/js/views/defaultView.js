@@ -9,7 +9,6 @@ var Application = (function(application) {
 				indexMessage : $.i18n.prop("msg.welcome")
 			});
 			this.$el.html(renderedContent);
-			$("#admin_content").html("");
 		}
 	});
 	return application;
