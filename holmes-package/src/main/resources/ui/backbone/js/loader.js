@@ -1,7 +1,7 @@
 yepnope({
 	load : {
 		// lib
-		jquery : '/backbone/js/lib/jquery-1.9.0.min.js',
+		jquery : '/backbone/js/lib/jquery-1.9.1.min.js',
 		bootstrap : '/backbone/js/lib/bootstrap.min.js',
 		jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 		underscore : '/backbone/js/lib/underscore-min.js',
