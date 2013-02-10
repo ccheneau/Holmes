@@ -21,22 +21,22 @@ import java.util.Collection;
 import java.util.List;
 
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
+import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.ConfigurationNode;
 
-/**
- * @author Cedric
- *
- */
 public interface BackboneManager {
 
-    public abstract Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes);
+    public Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes);
 
-    public abstract ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes);
+    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes);
 
-    public abstract void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes);
+    public void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast);
 
-    public abstract void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes);
+    public void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast);
 
-    public abstract void removeFolder(String id, List<ConfigurationNode> configNodes);
+    public void removeFolder(String id, List<ConfigurationNode> configNodes, boolean podcast);
 
+    public Settings getSettings();
+
+    public void updateSettings(Settings settings);
 }

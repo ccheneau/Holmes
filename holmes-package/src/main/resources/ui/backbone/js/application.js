@@ -26,13 +26,14 @@ var Application = (function() {
 			this.pictureFolders = args.pictureFolders;
 			this.podcasts = args.podcasts;
 			this.defaultView = args.defaultView;
+			this.settingsView = args.settingsView;
 		},
 		routes : {
 			"videoFolders" : "videoFolders",
 			"audioFolders" : "audioFolders",
 			"pictureFolders" : "pictureFolders",
 			"podcasts" : "podcasts",
-
+			"settings" : "settings",
 			"*path" : "root"
 		},
 
@@ -52,6 +53,10 @@ var Application = (function() {
 		podcasts : function() {
 			toggleMenu('podcasts_menu');
 			this.podcasts.all().fetch();
+		},
+		settings : function() {
+			toggleMenu('settings_menu');
+			this.settingsView.render();			
 		},
 		root : function() {
 			toggleMenu('home_menu');

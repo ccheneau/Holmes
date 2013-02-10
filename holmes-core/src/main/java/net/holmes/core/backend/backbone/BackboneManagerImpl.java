@@ -24,12 +24,15 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
+import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationNode;
+import net.holmes.core.configuration.Parameter;
 
 import com.google.common.collect.Lists;
 
 public final class BackboneManagerImpl implements BackboneManager {
+
     private final Configuration configuration;
 
     @Inject
@@ -37,9 +40,6 @@ public final class BackboneManagerImpl implements BackboneManager {
         this.configuration = configuration;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.backend.backbone.BackboneManager#getFolders(java.util.List)
-     */
     @Override
     public Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes) {
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
@@ -49,9 +49,6 @@ public final class BackboneManagerImpl implements BackboneManager {
         return folders;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.backend.backbone.BackboneManager#getFolder(java.lang.String, java.util.List)
-     */
     @Override
     public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes) {
         //TODO validation
@@ -61,22 +58,16 @@ public final class BackboneManagerImpl implements BackboneManager {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.backend.backbone.BackboneManager#addFolder(net.holmes.core.backend.response.backbone.ConfigurationFolder, java.util.List)
-     */
     @Override
-    public void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes) {
+    public void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
         //TODO validation
         folder.setId(UUID.randomUUID().toString());
         configNodes.add(new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath()));
         configuration.saveConfig();
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.backend.backbone.BackboneManager#editFolder(java.lang.String, net.holmes.core.backend.response.backbone.ConfigurationFolder, java.util.List)
-     */
     @Override
-    public void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes) {
+    public void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
         //TODO validation
         ConfigurationNode currentNode = null;
         for (ConfigurationNode node : configNodes) {
@@ -92,11 +83,8 @@ public final class BackboneManagerImpl implements BackboneManager {
         }
     }
 
-    /* (non-Javadoc)
-     * @see net.holmes.core.backend.backbone.BackboneManager#removeFolder(java.lang.String, java.util.List)
-     */
     @Override
-    public void removeFolder(String id, List<ConfigurationNode> configNodes) {
+    public void removeFolder(String id, List<ConfigurationNode> configNodes, boolean podcast) {
         //TODO validation
         ConfigurationNode currentNode = null;
         for (ConfigurationNode node : configNodes) {
@@ -109,6 +97,21 @@ public final class BackboneManagerImpl implements BackboneManager {
             configNodes.remove(currentNode);
             configuration.saveConfig();
         }
+    }
+
+    @Override
+    public Settings getSettings() {
+        return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
+                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME));
+    }
+
+    @Override
+    public void updateSettings(Settings settings) {
+        //TODO validation
+        configuration.setUpnpServerName(settings.getServerName());
+        configuration.setHttpServerPort(settings.getHttpServerPort());
+        configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
+        configuration.saveConfig();
     }
 
 }

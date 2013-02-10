@@ -61,7 +61,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addPictureFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getPictureFolders());
+        backboneManager.addFolder(folder, configuration.getPictureFolders(), false);
         return folder;
     }
 
@@ -70,7 +70,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editPictureFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getPictureFolders());
+        backboneManager.editFolder(id, folder, configuration.getPictureFolders(), false);
         return folder;
     }
 
@@ -79,7 +79,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removePictureFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getPictureFolders());
+        backboneManager.removeFolder(id, configuration.getPictureFolders(), false);
         return new ConfigurationFolder(id, null, null);
     }
 }

@@ -61,7 +61,7 @@ public class VideoFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addVideoFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getVideoFolders());
+        backboneManager.addFolder(folder, configuration.getVideoFolders(), false);
         return folder;
     }
 
@@ -70,7 +70,7 @@ public class VideoFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editVideoFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getVideoFolders());
+        backboneManager.editFolder(id, folder, configuration.getVideoFolders(), false);
         return folder;
     }
 
@@ -79,7 +79,7 @@ public class VideoFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removeVideoFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getVideoFolders());
+        backboneManager.removeFolder(id, configuration.getVideoFolders(), false);
         return new ConfigurationFolder(id, null, null);
     }
 }
