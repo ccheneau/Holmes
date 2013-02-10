@@ -61,7 +61,7 @@ public class PodcastsHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addPodcast(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getPodcasts());
+        backboneManager.addFolder(folder, configuration.getPodcasts(), true);
         return folder;
     }
 
@@ -70,7 +70,7 @@ public class PodcastsHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editPodcast(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getPodcasts());
+        backboneManager.editFolder(id, folder, configuration.getPodcasts(), true);
         return folder;
     }
 
@@ -79,7 +79,7 @@ public class PodcastsHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removePodcast(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getPodcasts());
+        backboneManager.removeFolder(id, configuration.getPodcasts(), true);
         return new ConfigurationFolder(id, null, null);
     }
 }

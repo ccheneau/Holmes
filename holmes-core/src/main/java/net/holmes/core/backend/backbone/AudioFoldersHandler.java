@@ -61,7 +61,7 @@ public class AudioFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addAudioFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getAudioFolders());
+        backboneManager.addFolder(folder, configuration.getAudioFolders(), false);
         return folder;
     }
 
@@ -70,7 +70,7 @@ public class AudioFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editAudioFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getAudioFolders());
+        backboneManager.editFolder(id, folder, configuration.getAudioFolders(), false);
         return folder;
     }
 
@@ -79,7 +79,7 @@ public class AudioFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removeAudioFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getAudioFolders());
+        backboneManager.removeFolder(id, configuration.getAudioFolders(), false);
         return new ConfigurationFolder(id, null, null);
     }
 }

@@ -1,13 +1,22 @@
 <div class="page-header"><h3>{{title}}</h3></div>
-<div class="input-prepend">
-	<span class="add-on">{{settingsServerName}}</span><input id="settings_server_name" type="text" required="required" value="{{settingsServerNameValue}}"/>
+<div class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">{{settingsServerName}}</label>
+		<div class="controls">
+			<input id="settingsServerName" type="text" class="input-medium" required="required" value="{{settings.serverName}}"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">{{settingsServerPort}}</label>
+		<div class="controls">
+			<input id="settingsHttpServerPort" type="number" class="input-small" size="6" min="1024" max="99999" required="required" value="{{settings.httpServerPort}}"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox"><input id="chkPrependPodcastItem" type="checkbox" {{#settings.prependPodcastItem}}checked{{/settings.prependPodcastItem}} /><span>{{settingsPrependPodcastItem}}</span></label>
+		</div>
+	</div>
+	<button class="btn btn-primary" id="btnSettingsSave">{{save}}</button>	
+	<button class="btn" id="btnSettingsCancel">{{cancel}}</button>
 </div>
-<br />
-<div class="input-prepend">
-	<span class="add-on">{{settingsServerPort}}</span><input id="settings_http_server_port" type="number" size="6" min="1024" max="99999" required="required" value="{{settingsServerPortValue}}"/>
-</div>
-<br />
-<label><input id="chk_prependPodcastItem" type="checkbox" name="prependPodcastItem" {{settingsPrependPodcastItemChecked}} /><span>{{settingsPrependPodcastItem}}</span></label>
-<br />
-<button class="btn SettingsCancel">{{cancel}}</button>
-<button class="btn btn-primary SettingsSave">{{save}}</button>
