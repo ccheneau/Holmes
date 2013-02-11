@@ -25,14 +25,13 @@ var Application = (function(application) {
 			"click #btnSettingsCancel" : "onSettingsCancel"
 		},
 		onSettingsSave : function() {
-			var that = this;
 	    	$.post(this.url,
 	        		{serverName : $("#settingsServerName").val(),
 	        			httpServerPort : $("#settingsHttpServerPort").val(),
 	        			prependPodcastItem : $("#chkPrependPodcastItem").is(':checked') ? "true":"false"
 	        		})
-	        		.done(function() { that.render()})
-	        		.fail(function() { alert("error"); });
+	        		.done(function() {$("#messagebox").message({text: $.i18n.prop("msg.settings.saved"), type: "success"});})
+	        		.fail(function(request) {$("#messagebox").message({text: request.responseText, type: "error"});});
 		},
 		onSettingsCancel : function() {
 			this.render();

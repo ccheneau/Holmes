@@ -28,16 +28,19 @@ import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.util.bundle.Bundle;
 
 import com.google.common.collect.Lists;
 
 public final class BackboneManagerImpl implements BackboneManager {
 
     private final Configuration configuration;
+    private final Bundle bundle;
 
     @Inject
-    public BackboneManagerImpl(Configuration configuration) {
+    public BackboneManagerImpl(Configuration configuration, Bundle bundle) {
         this.configuration = configuration;
+        this.bundle = bundle;
     }
 
     @Override
@@ -107,7 +110,11 @@ public final class BackboneManagerImpl implements BackboneManager {
 
     @Override
     public void updateSettings(Settings settings) {
-        //TODO validation
+        if (settings.getServerName() == null || settings.getServerName().trim().length() == 0)
+            throw new IllegalArgumentException(bundle.getString("backend.settings.server.name.error"));
+        if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < 1024 || settings.getHttpServerPort() > 9999)
+            throw new IllegalArgumentException(bundle.getString("backend.settings.http.port.error"));
+
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
