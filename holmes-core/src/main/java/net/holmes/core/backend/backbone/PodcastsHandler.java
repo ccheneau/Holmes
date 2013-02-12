@@ -54,7 +54,7 @@ public class PodcastsHandler {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getPodcast(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getPodcasts());
+        return backboneManager.getFolder(id, configuration.getPodcasts(), true);
     }
 
     @POST

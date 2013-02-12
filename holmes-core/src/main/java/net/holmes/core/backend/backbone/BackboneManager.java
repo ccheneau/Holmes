@@ -28,7 +28,7 @@ public interface BackboneManager {
 
     public Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes);
 
-    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes);
+    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes, boolean podcast);
 
     public void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast);
 

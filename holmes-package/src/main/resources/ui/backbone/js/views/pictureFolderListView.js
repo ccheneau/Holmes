@@ -88,6 +88,9 @@ var Application = (function(application) {
 						"path" : folderPath
 					},{
 						success : function() {
+							// close dialog
+							$('#pictureDlg').modal('hide');
+							// fetch collection
 							that.collection.fetch();
 						},
 						error : function(model, response) {
@@ -95,8 +98,6 @@ var Application = (function(application) {
 							alert("failed to save");
 						}
 					});
-			// close dialog
-			$('#pictureDlg').modal('hide');
 			return false;
 		},
 		// remove picture folder

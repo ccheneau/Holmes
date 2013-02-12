@@ -54,7 +54,7 @@ public class AudioFoldersHandler {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getAudioFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getAudioFolders());
+        return backboneManager.getFolder(id, configuration.getAudioFolders(), false);
     }
 
     @POST

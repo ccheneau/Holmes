@@ -54,7 +54,7 @@ public class PictureFoldersHandler {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getPictureFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getPictureFolders());
+        return backboneManager.getFolder(id, configuration.getPictureFolders(), false);
     }
 
     @POST

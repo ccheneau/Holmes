@@ -53,7 +53,7 @@ public final class BackboneManagerImpl implements BackboneManager {
     }
 
     @Override
-    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes) {
+    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes, boolean podcast) {
         //TODO validation
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
