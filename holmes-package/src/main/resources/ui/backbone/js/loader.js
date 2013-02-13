@@ -9,6 +9,9 @@ yepnope({
 		mustache : '/backbone/js/lib/mustache.js',
 		bootbox : '/backbone/js/lib/bootbox.min.js',
 		
+		// plugins
+		message : '/backbone/js/plugins/message.js',
+		
 		// application
 		application : '/backbone/js/application.js',
 
@@ -31,11 +34,6 @@ yepnope({
 		    $('#easter').click(function() {
 		    	$('body').attr('class','roll');
 		    });
-		    (function ($) {
-		    	$.fn.message = function(options) {
-		    		this.html("<div class='alert alert-" + options.type + " alert-block fade in'><button class='close' data-dismiss='alert' type='button'>×</button><strong>" + options.text + "</strong></div>");
-		    	};
-		    })(jQuery);
 		},
 		"jqueryI18n" : function() {
 			// Initialize i18n

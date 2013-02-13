@@ -34,7 +34,7 @@ var Application = (function(application) {
 		},
 		// open add video folder dialog
 		onVideoDlgAddOpen : function() {
-			// initialiaze dialog 
+			// initialize dialog 
 			$("#videoDlgHeader").html($.i18n.prop("msg.video.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
@@ -56,9 +56,8 @@ var Application = (function(application) {
 					$("#folderPath").val(result.get('path'));
 					$('#videoDlg').modal('show');
 				},
-				error : function() {
-					//TODO manage error
-					alert("failed to edit");
+				error : function(model,response) {
+					bootbox.alert(response.responseText);
 				}
 			});
 			return false;
@@ -72,8 +71,8 @@ var Application = (function(application) {
 		onVideoDlgSave : function() {
 			var that = this;
 			var folderId = $("#folderId").val();
-			var folderName = $("#folderName").val();
-			var folderPath = $("#folderPath").val();
+			var folderName = $("#folderName").val().trim();
+			var folderPath = $("#folderPath").val().trim();
 			var videoFolder;
 			if (folderId === "") {
 				// this is a new video folder
@@ -94,8 +93,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							//TODO manage error
-							alert("failed to save");
+							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
 			return false;
@@ -103,17 +101,18 @@ var Application = (function(application) {
 		// remove video folder
 		onVideoFolderRemove : function(event){
 			var that = this;
+			// confirm dialog
 			bootbox.confirm($.i18n.prop("msg.video.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var videoFolder = new Application.Models.VideoFolder({id : folderId});
 					videoFolder.destroy({
 						success : function() {
+							// fetch collection
 							that.collection.fetch();
 						},
-						error : function() {
-							//TODO manage error
-							alert("failed to remove");
+						error : function(model, response) {
+							bootbox.alert(response.responseText);
 						}
 					});
 				}

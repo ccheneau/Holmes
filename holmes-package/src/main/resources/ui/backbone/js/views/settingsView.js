@@ -26,8 +26,8 @@ var Application = (function(application) {
 		},
 		onSettingsSave : function() {
 	    	$.post(this.url,
-	        		{serverName : $("#settingsServerName").val(),
-	        			httpServerPort : $("#settingsHttpServerPort").val(),
+	        		{serverName : $("#settingsServerName").val().trim(),
+	        			httpServerPort : $("#settingsHttpServerPort").val().trim(),
 	        			prependPodcastItem : $("#chkPrependPodcastItem").is(':checked') ? "true":"false"
 	        		})
 	        		.done(function() {$("#messagebox").message({text: $.i18n.prop("msg.settings.saved"), type: "success"});})

@@ -48,17 +48,16 @@ var Application = (function(application) {
 			// get audio folder
 			var audioFolder = new Application.Models.AudioFolder({id : folderId});
 			audioFolder.fetch({
-				success : function(result) {
-					// initialiaze dialog 
+				success : function(model) {
+					// initialize dialog 
 					$("#audioDlgHeader").html($.i18n.prop("msg.audio.update.title"));
-					$("#folderId").val(result.get('id'));
-					$("#folderName").val(result.get('name'));
-					$("#folderPath").val(result.get('path'));
+					$("#folderId").val(model.get('id'));
+					$("#folderName").val(model.get('name'));
+					$("#folderPath").val(model.get('path'));
 					$('#audioDlg').modal('show');
 				},
-				error : function() {
-					//TODO manage error
-					alert("failed to edit");
+				error : function(model,response) {
+					bootbox.alert(response.responseText);
 				}
 			});
 			return false;
@@ -72,8 +71,8 @@ var Application = (function(application) {
 		onAudioDlgSave : function() {
 			var that = this;
 			var folderId = $("#folderId").val();
-			var folderName = $("#folderName").val();
-			var folderPath = $("#folderPath").val();
+			var folderName = $("#folderName").val().trim();
+			var folderPath = $("#folderPath").val().trim();
 			var audioFolder;
 			if (folderId === "") {
 				// this is a new audio folder
@@ -94,8 +93,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							//TODO manage error
-							alert("failed to save");
+							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
 			return false;
@@ -103,17 +101,18 @@ var Application = (function(application) {
 		// remove audio folder
 		onAudioFolderRemove : function(event){
 			var that = this;
+			// confirm dialog
 			bootbox.confirm($.i18n.prop("msg.audio.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var audioFolder = new Application.Models.AudioFolder({id : folderId});
 					audioFolder.destroy({
 						success : function() {
+							// fetch collection
 							that.collection.fetch();
 						},
-						error : function() {
-							//TODO manage error
-							alert("failed to remove");
+						error : function(model, response) {
+							bootbox.alert(response.responseText);
 						}
 					});
 				}
