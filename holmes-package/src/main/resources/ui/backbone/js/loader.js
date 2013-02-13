@@ -9,6 +9,9 @@ yepnope({
 		mustache : '/backbone/js/lib/mustache.js',
 		bootbox : '/backbone/js/lib/bootbox.min.js',
 		
+		// plugins
+		message : '/backbone/js/plugins/message.js',
+		
 		// application
 		application : '/backbone/js/application.js',
 
@@ -30,7 +33,7 @@ yepnope({
 		"jquery" : function() {
 		    $('#easter').click(function() {
 		    	$('body').attr('class','roll');
-		    });			
+		    });
 		},
 		"jqueryI18n" : function() {
 			// Initialize i18n

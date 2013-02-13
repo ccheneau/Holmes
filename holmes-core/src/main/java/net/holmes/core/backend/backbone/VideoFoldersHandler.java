@@ -54,7 +54,7 @@ public class VideoFoldersHandler {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getVideoFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getVideoFolders());
+        return backboneManager.getFolder(id, configuration.getVideoFolders(), false);
     }
 
     @POST

@@ -34,7 +34,7 @@ var Application = (function(application) {
 		},
 		// open add picture folder dialog
 		onPictureDlgAddOpen : function() {
-			// initialiaze dialog 
+			// initialize dialog 
 			$("#pictureDlgHeader").html($.i18n.prop("msg.picture.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
@@ -48,17 +48,16 @@ var Application = (function(application) {
 			// get picture folder
 			var pictureFolder = new Application.Models.PictureFolder({id : folderId});
 			pictureFolder.fetch({
-				success : function(result) {
+				success : function(model) {
 					// initialiaze dialog 
 					$("#pictureDlgHeader").html($.i18n.prop("msg.picture.update.title"));
-					$("#folderId").val(result.get('id'));
-					$("#folderName").val(result.get('name'));
-					$("#folderPath").val(result.get('path'));
+					$("#folderId").val(model.get('id'));
+					$("#folderName").val(model.get('name'));
+					$("#folderPath").val(model.get('path'));
 					$('#pictureDlg').modal('show');
 				},
-				error : function() {
-					//TODO manage error
-					alert("failed to edit");
+				error : function(model,response) {
+					bootbox.alert(response.responseText);
 				}
 			});
 			return false;
@@ -72,8 +71,8 @@ var Application = (function(application) {
 		onPictureDlgSave : function() {
 			var that = this;
 			var folderId = $("#folderId").val();
-			var folderName = $("#folderName").val();
-			var folderPath = $("#folderPath").val();
+			var folderName = $("#folderName").val().trim();
+			var folderPath = $("#folderPath").val().trim();
 			var pictureFolder;
 			if (folderId === "") {
 				// this is a new picture folder
@@ -88,31 +87,32 @@ var Application = (function(application) {
 						"path" : folderPath
 					},{
 						success : function() {
+							// close dialog
+							$('#pictureDlg').modal('hide');
+							// fetch collection
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							//TODO manage error
-							alert("failed to save");
+							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
-			// close dialog
-			$('#pictureDlg').modal('hide');
 			return false;
 		},
 		// remove picture folder
 		onPictureFolderRemove : function(event){
 			var that = this;
+			// confirm dialog
 			bootbox.confirm($.i18n.prop("msg.picture.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var pictureFolder = new Application.Models.PictureFolder({id : folderId});
 					pictureFolder.destroy({
 						success : function() {
+							// fetch collection
 							that.collection.fetch();
 						},
-						error : function() {
-							//TODO manage error
-							alert("failed to remove");
+						error : function(model, response) {
+							bootbox.alert(response.responseText);
 						}
 					});
 				}

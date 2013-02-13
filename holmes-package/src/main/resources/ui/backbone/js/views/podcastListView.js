@@ -49,16 +49,15 @@ var Application = (function(application) {
 			var podcast = new Application.Models.Podcast({id : folderId});
 			podcast.fetch({
 				success : function(result) {
-					// initialiaze dialog 
+					// initialize dialog 
 					$("#podcastDlgHeader").html($.i18n.prop("msg.podcast.update.title"));
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));
 					$("#folderPath").val(result.get('path'));
 					$('#podcastDlg').modal('show');
 				},
-				error : function() {
-					//TODO manage error
-					alert("failed to edit");
+				error : function(model,response) {
+					bootbox.alert(response.responseText);
 				}
 			});
 			return false;
@@ -72,8 +71,8 @@ var Application = (function(application) {
 		onPodcastDlgSave : function() {
 			var that = this;
 			var folderId = $("#folderId").val();
-			var folderName = $("#folderName").val();
-			var folderPath = $("#folderPath").val();
+			var folderName = $("#folderName").val().trim();
+			var folderPath = $("#folderPath").val().trim();
 			var podcast;
 			if (folderId === "") {
 				// this is a new podcast
@@ -88,31 +87,32 @@ var Application = (function(application) {
 						"path" : folderPath
 					},{
 						success : function() {
+							// close dialog
+							$('#podcastDlg').modal('hide');
+							// fetch collection
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							//TODO manage error
-							alert("failed to save");
+							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
-			// close dialog
-			$('#podcastDlg').modal('hide');
 			return false;
 		},
 		// remove podcast
 		onPodcastRemove : function(event){
 			var that = this;
+			// confirm dialog
 			bootbox.confirm($.i18n.prop("msg.podcast.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var podcast = new Application.Models.Podcast({id : folderId});
 					podcast.destroy({
 						success : function() {
+							// fetch collection
 							that.collection.fetch();
 						},
-						error : function() {
-							//TODO manage error
-							alert("failed to remove");
+						error : function(model, response) {
+							bootbox.alert(response.responseText);
 						}
 					});
 				}
