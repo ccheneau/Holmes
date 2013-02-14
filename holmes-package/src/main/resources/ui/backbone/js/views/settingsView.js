@@ -14,6 +14,7 @@ var Application = (function(application) {
 					settingsServerName : $.i18n.prop("msg.settings.serverName"),
 					settingsServerPort : $.i18n.prop("msg.settings.httpServerPort"),
 					settingsPrependPodcastItem : $.i18n.prop("msg.settings.prependPodcastItem"),
+					settingsEnableExternalSubtitles : $.i18n.prop("msg.settings.enableExternalSubtitles"),
 					cancel : $.i18n.prop("msg.cancel"),
 					save : $.i18n.prop("msg.save")
 				});
@@ -28,7 +29,8 @@ var Application = (function(application) {
 	    	$.post(this.url,
 	        		{serverName : $("#settingsServerName").val().trim(),
 	        			httpServerPort : $("#settingsHttpServerPort").val().trim(),
-	        			prependPodcastItem : $("#chkPrependPodcastItem").is(':checked') ? "true":"false"
+	        			prependPodcastItem : $("#chkPrependPodcastItem").is(':checked') ? "true":"false",
+	        			enableExternalSubtitles : $("#chkEnableExternalSubtitles").is(':checked') ? "true":"false"
 	        		})
 	        		.done(function() {$("#messagebox").message({text: $.i18n.prop("msg.settings.saved"), type: "success"});})
 	        		.fail(function(request) {$("#messagebox").message({text: request.responseText, type: "error"});});

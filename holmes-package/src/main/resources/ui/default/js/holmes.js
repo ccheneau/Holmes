@@ -52,7 +52,8 @@ $(document).ready(function() {
     	$.post('/backend/configuration/editConfiguration',
     		{serverName : $("#text_server_name").val(),
     			httpServerPort : $("#text_http_server_port").val(),
-    			prependPodcastItem : $("#chk_prependPodcastItem").is(':checked') ? "true":"false"
+    			prependPodcastItem : $("#chk_prependPodcastItem").is(':checked') ? "true":"false",
+    			enableExternalSubtitles : $("#chk_enableExternalSubtitles").is(':checked') ? "true":"false"
     		},
     		function(response) {
     			if (response.status){
@@ -264,6 +265,7 @@ function getConfiguration() {
     	$("#text_server_name").val(response.serverName);
     	$("#text_http_server_port").val(response.httpServerPort);
     	$("#chk_prependPodcastItem").attr('checked', response.prependPodcastItem);
+    	$("#chk_enableExternalSubtitles").attr('checked', response.enableExternalSubtitles);
     });
 }
 

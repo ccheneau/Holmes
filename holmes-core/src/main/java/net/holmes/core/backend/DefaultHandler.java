@@ -150,7 +150,7 @@ public class DefaultHandler {
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationResponse getConfiguration() {
         return new ConfigurationResponse(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
-                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME));
+                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME), configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
     }
 
     /**
@@ -160,7 +160,7 @@ public class DefaultHandler {
     @Path("/editConfiguration")
     @Produces(MediaType.APPLICATION_JSON)
     public EditConfigNodeResponse editConfiguration(@FormParam("serverName") String serverName, @FormParam("httpServerPort") String httpServerPort,
-            @FormParam("prependPodcastItem") boolean prependPodcastItem) {
+            @FormParam("prependPodcastItem") boolean prependPodcastItem, @FormParam("enableExternalSubtitles") boolean enableExternalSubtitles) {
         EditConfigNodeResponse response = new EditConfigNodeResponse();
         response.setStatus(true);
         setResponseErrorCode(response, ErrorCode.NO_ERROR);
@@ -183,6 +183,7 @@ public class DefaultHandler {
             configuration.setUpnpServerName(serverName.trim());
             configuration.setHttpServerPort(iHttpServerPort);
             configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, prependPodcastItem);
+            configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, enableExternalSubtitles);
             configuration.saveConfig();
         }
         return response;

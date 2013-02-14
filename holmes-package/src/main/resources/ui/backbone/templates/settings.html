@@ -18,6 +18,11 @@
 			<label class="checkbox"><input id="chkPrependPodcastItem" type="checkbox" {{#settings.prependPodcastItem}}checked{{/settings.prependPodcastItem}} /><span>{{settingsPrependPodcastItem}}</span></label>
 		</div>
 	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox"><input id="chkEnableExternalSubtitles" type="checkbox" {{#settings.enableExternalSubtitles}}checked{{/settings.enableExternalSubtitles}} /><span>{{settingsEnableExternalSubtitles}}</span></label>
+		</div>
+	</div>
 	<button class="btn btn-primary" id="btnSettingsSave">{{save}}</button>	
 	<button class="btn" id="btnSettingsCancel">{{cancel}}</button>
 </div>

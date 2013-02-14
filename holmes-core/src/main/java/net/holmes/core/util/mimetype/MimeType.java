@@ -17,6 +17,7 @@
 package net.holmes.core.util.mimetype;
 
 import net.holmes.core.media.MediaType;
+import net.holmes.core.media.MediaType.Subtype;
 
 public final class MimeType {
 
@@ -57,6 +58,10 @@ public final class MimeType {
 
     public boolean isImage() {
         return MediaType.TYPE_IMAGE.getValue().equals(type);
+    }
+
+    public boolean isSubTitle() {
+        return MediaType.TYPE_APPLICATION.getValue().equals(type) && Subtype.SUBTYPE_SUBTITLE.getValue().equals(subType);
     }
 
     @Override

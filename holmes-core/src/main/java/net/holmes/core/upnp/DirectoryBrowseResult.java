@@ -36,6 +36,7 @@ import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.Movie;
 import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
+import org.fourthline.cling.support.model.item.TextItem;
 
 public final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
@@ -88,14 +89,17 @@ public final class DirectoryBrowseResult {
         } else if (mimeType.isImage()) {
             // Add image item
             item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
+        } else if (mimeType.isSubTitle()) {
+            // Add subtitle item
+            item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
         }
         if (item != null) {
             setMetadata(item, contentNode);
-            addItem(item);
+            addItemToDidl(item);
         }
     }
 
-    public void addItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) {
+    public void addPodcastItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
@@ -113,11 +117,12 @@ public final class DirectoryBrowseResult {
         }
         if (item != null) {
             setMetadata(item, podcastEntryNode);
-            addItem(item);
+            addItemToDidl(item);
         }
     }
 
-    private void addItem(Item item) {
+    private void addItemToDidl(Item item) {
+        // Add item to didl
         didl.addItem(item);
         itemCount += 1;
     }

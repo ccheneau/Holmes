@@ -142,7 +142,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             } else if (node instanceof PodcastEntryNode) {
                 // Add podcast entry to result
                 String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodeSize, node.getName());
-                result.addItem(nodeId, (PodcastEntryNode) node, entryName);
+                result.addPodcastItem(nodeId, (PodcastEntryNode) node, entryName);
             }
         }
     }

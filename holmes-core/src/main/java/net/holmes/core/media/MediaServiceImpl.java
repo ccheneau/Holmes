@@ -29,6 +29,7 @@ import javax.inject.Inject;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationNode;
+import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.index.IndexElement;
 import net.holmes.core.media.index.MediaIndex;
 import net.holmes.core.media.node.AbstractNode;
@@ -320,7 +321,9 @@ public final class MediaServiceImpl implements MediaService {
                 node = new PlaylistNode(nodeId, parentId, file.getName(), file.getAbsolutePath());
             } else if (mimeType.getType().equals(mediaType)) {
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
-            }
+            } else if (mimeType.isSubTitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
+
         }
         return node;
     }

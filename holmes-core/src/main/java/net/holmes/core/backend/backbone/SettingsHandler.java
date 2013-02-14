@@ -45,7 +45,7 @@ public class SettingsHandler {
 
     @POST
     public void updateSettings(@FormParam("serverName") String serverName, @FormParam("httpServerPort") Integer httpServerPort,
-            @FormParam("prependPodcastItem") Boolean prependPodcastItem) {
-        backboneManager.updateSettings(new Settings(serverName, httpServerPort, prependPodcastItem));
+            @FormParam("prependPodcastItem") Boolean prependPodcastItem, @FormParam("enableExternalSubtitles") Boolean enableExternalSubtitles) {
+        backboneManager.updateSettings(new Settings(serverName, httpServerPort, prependPodcastItem, enableExternalSubtitles));
     }
 }
