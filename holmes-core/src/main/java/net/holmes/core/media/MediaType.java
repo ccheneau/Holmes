@@ -21,7 +21,8 @@ public enum MediaType {
     TYPE_AUDIO("audio"), //
     TYPE_IMAGE("image"), //
     TYPE_PODCAST("podcast"), //
-    TYPE_PLAYLIST("playlist");
+    TYPE_PLAYLIST("playlist"), //
+    TYPE_APPLICATION("application");
 
     private final String value;
 
@@ -31,5 +32,19 @@ public enum MediaType {
 
     public String getValue() {
         return this.value;
+    }
+
+    public enum Subtype {
+        SUBTYPE_SUBTITLE("x-subrip");
+
+        private final String value;
+
+        Subtype(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
     }
 }

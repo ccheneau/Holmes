@@ -21,14 +21,16 @@ public class Settings {
     private String serverName;
     private Integer httpServerPort;
     private Boolean prependPodcastItem;
+    private Boolean enableExternalSubtitles;
 
     public Settings() {
     }
 
-    public Settings(String serverName, Integer httpServerPort, Boolean prependPodcastItem) {
+    public Settings(String serverName, Integer httpServerPort, Boolean prependPodcastItem, Boolean enableExternalSubtitles) {
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
+        this.enableExternalSubtitles = enableExternalSubtitles;
     }
 
     public String getServerName() {
@@ -53,5 +55,13 @@ public class Settings {
 
     public void setPrependPodcastItem(Boolean prependPodcastItem) {
         this.prependPodcastItem = prependPodcastItem;
+    }
+
+    public Boolean getEnableExternalSubtitles() {
+        return enableExternalSubtitles;
+    }
+
+    public void setEnableExternalSubtitles(Boolean enableExternalSubtitles) {
+        this.enableExternalSubtitles = enableExternalSubtitles;
     }
 }

@@ -20,11 +20,13 @@ public class ConfigurationResponse {
     private final String serverName;
     private final Integer httpServerPort;
     private final Boolean prependPodcastItem;
+    private final Boolean enableExternalSubtitles;
 
-    public ConfigurationResponse(String serverName, Integer httpServerPort, Boolean prependPodcastItem) {
+    public ConfigurationResponse(String serverName, Integer httpServerPort, Boolean prependPodcastItem, Boolean enableExternalSubtitles) {
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
+        this.enableExternalSubtitles = enableExternalSubtitles;
     }
 
     public String getServerName() {
@@ -37,5 +39,9 @@ public class ConfigurationResponse {
 
     public Boolean getPrependPodcastItem() {
         return prependPodcastItem;
+    }
+
+    public Boolean getEnableExternalSubtitles() {
+        return enableExternalSubtitles;
     }
 }

@@ -115,7 +115,7 @@ public final class BackboneManagerImpl implements BackboneManager {
     @Override
     public Settings getSettings() {
         return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
-                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME));
+                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME), configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
     }
 
     @Override
@@ -127,6 +127,7 @@ public final class BackboneManagerImpl implements BackboneManager {
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
+        configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
         configuration.saveConfig();
     }
 
