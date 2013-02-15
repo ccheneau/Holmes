@@ -36,7 +36,7 @@ yepnope({
 		    });
 		},
 		"jqueryI18n" : function() {
-			// Initialize i18n
+			// initialize i18n
 			$.i18n.properties({
 				name : 'messages',
 				path : '/backbone/bundle/',
@@ -50,6 +50,7 @@ yepnope({
 				}
 			});
 			
+			// get Holmes version
 		    $.get('/backend/util/getVersion', function(response) {
 		    	$("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
 		    });

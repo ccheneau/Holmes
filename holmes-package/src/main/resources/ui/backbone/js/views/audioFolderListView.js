@@ -34,7 +34,7 @@ var Application = (function(application) {
 		},
 		// open add audio folder dialog
 		onAudioDlgAddOpen : function() {
-			// initialiaze dialog 
+			// initialize dialog 
 			$("#audioDlgHeader").html($.i18n.prop("msg.audio.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
