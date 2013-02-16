@@ -181,7 +181,7 @@ public final class MediaManagerImpl implements MediaManager {
                 // Add podcast nodes
                 for (ConfigurationNode contentFolder : contentFolders) {
                     // Add node to mediaIndex
-                    mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel());
+                    mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel(), false);
                     // Add child node
                     nodes.add(new PodcastNode(contentFolder.getId(), RootNode.PODCAST.getId(), contentFolder.getLabel(), contentFolder.getPath()));
                 }
@@ -191,7 +191,7 @@ public final class MediaManagerImpl implements MediaManager {
                     File file = new File(contentFolder.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         // Add node to mediaIndex
-                        mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel());
+                        mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel(), true);
                         // Add child node
                         nodes.add(new FolderNode(contentFolder.getId(), rootNodeId, contentFolder.getLabel(), file));
                     }
@@ -212,7 +212,7 @@ public final class MediaManagerImpl implements MediaManager {
                 AbstractNode node = null;
                 if (file.canRead() && !file.isHidden()) {
                     // Add node to mediaIndex
-                    String nodeId = mediaIndexManager.add(parentId, mediaType, file.getAbsolutePath(), null);
+                    String nodeId = mediaIndexManager.add(parentId, mediaType, file.getAbsolutePath(), null, true);
                     if (file.isDirectory()) {
                         // Add folder node
                         node = new FolderNode(nodeId, parentId, file.getName(), file);
@@ -303,7 +303,7 @@ public final class MediaManagerImpl implements MediaManager {
             for (PlaylistItem item : items) {
                 MimeType mimeType = mimeTypeFactory.getMimeType(item.getPath());
                 if (mimeType.isMedia()) {
-                    String nodeId = mediaIndexManager.add(parentId, mimeType.getType(), item.getPath(), item.getLabel());
+                    String nodeId = mediaIndexManager.add(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true);
                     nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
                 }
             }

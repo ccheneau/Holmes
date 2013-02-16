@@ -44,11 +44,11 @@ public class MediaIndexTest extends TestCase {
      */
     @Test
     public void testAddMediaIndex() {
-        String uuid1 = mediaIndex.add("parentId", "mediaType", "path", "name");
-        String uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name");
+        String uuid1 = mediaIndex.add("parentId", "mediaType", "path", "name", true);
+        String uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name", true);
         assertEquals(uuid1, uuid2);
 
-        uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name2");
+        uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name2", true);
         assertFalse(uuid1.equals(uuid2));
     }
 }

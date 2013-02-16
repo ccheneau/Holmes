@@ -14,15 +14,34 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package net.holmes.core.media.index;
 
-public interface MediaIndexManager {
+import java.util.concurrent.TimeUnit;
 
-    public MediaIndexElement get(String uuid);
+import javax.inject.Inject;
 
-    public String add(String parentId, String mediaType, String path, String name, boolean localPath);
+import net.holmes.core.util.inject.Loggable;
 
-    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath);
+import com.google.common.util.concurrent.AbstractScheduledService;
 
-    public void clean();
+@Loggable
+public final class MediaIndexCleanerService extends AbstractScheduledService {
+
+    private final MediaIndexManager mediaIndexManager;
+
+    @Inject
+    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager) {
+        this.mediaIndexManager = mediaIndexManager;
+    }
+
+    @Override
+    protected void runOneIteration() throws Exception {
+        mediaIndexManager.clean();
+    }
+
+    @Override
+    protected Scheduler scheduler() {
+        return Scheduler.newFixedRateSchedule(0, 15, TimeUnit.MINUTES);
+    }
 }

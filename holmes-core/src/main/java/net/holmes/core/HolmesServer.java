@@ -23,6 +23,8 @@ import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
 
+import com.google.common.util.concurrent.AbstractScheduledService;
+
 /**
  * Holmes server main class
  */
@@ -33,12 +35,15 @@ public final class HolmesServer implements Server {
     private final Server httpServer;
     private final Server upnpServer;
     private final Server systray;
+    private final AbstractScheduledService mediaIndexCleanerService;
 
     @Inject
-    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, @Named("systray") Server systray) {
+    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, @Named("systray") Server systray,
+            @Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.systray = systray;
+        this.mediaIndexCleanerService = mediaIndexCleanerService;
     }
 
     @Override
@@ -49,6 +54,7 @@ public final class HolmesServer implements Server {
         httpServer.start();
         upnpServer.start();
         systray.start();
+        mediaIndexCleanerService.start();
 
         logger.info("Holmes server started");
     }
@@ -58,6 +64,7 @@ public final class HolmesServer implements Server {
         logger.info("Stopping Holmes server");
 
         // Stop Holmes server
+        mediaIndexCleanerService.stop();
         systray.stop();
         upnpServer.stop();
         httpServer.stop();

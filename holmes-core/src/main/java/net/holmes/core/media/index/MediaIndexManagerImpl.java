@@ -16,13 +16,23 @@
 */
 package net.holmes.core.media.index;
 
+import java.io.File;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
+
+import net.holmes.core.util.inject.Loggable;
+
+import org.slf4j.Logger;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+@Loggable
 public class MediaIndexManagerImpl implements MediaIndexManager {
+    private Logger logger;
 
     private BiMap<String, MediaIndexElement> elements;
 
@@ -37,8 +47,8 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public String add(String parentId, String mediaType, String path, String name) {
-        MediaIndexElement element = new MediaIndexElement(parentId, mediaType, path, name);
+    public String add(String parentId, String mediaType, String path, String name, boolean localPath) {
+        MediaIndexElement element = new MediaIndexElement(parentId, mediaType, path, name, localPath);
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
@@ -48,9 +58,27 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public void put(String uuid, String parentId, String mediaType, String path, String name) {
+    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath) {
         if (elements.get(uuid) == null) {
-            elements.put(uuid, new MediaIndexElement(parentId, mediaType, path, name));
+            elements.put(uuid, new MediaIndexElement(parentId, mediaType, path, name, localPath));
+        }
+    }
+
+    @Override
+    public void clean() {
+        List<String> toRemove = Lists.newArrayList();
+        for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
+            if (indexEntry.getValue().isLocalPath()) {
+                if (!new File(indexEntry.getValue().getPath()).exists()) {
+                    toRemove.add(indexEntry.getKey());
+                    logger.debug("Remove entry {} from media index", indexEntry.getValue().getPath());
+                }
+            }
+        }
+        if (!toRemove.isEmpty()) {
+            for (String indexkey : toRemove) {
+                elements.remove(indexkey);
+            }
         }
     }
 }

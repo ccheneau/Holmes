@@ -16,23 +16,19 @@
 */
 package net.holmes.core.media.index;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-
 public class MediaIndexElement {
     private final String parentId;
     private final String mediaType;
     private final String name;
     private final String path;
-    private final Map<String, String> metadata;
+    private final boolean localPath;
 
-    public MediaIndexElement(String parentId, String mediaType, String path, String name) {
+    public MediaIndexElement(String parentId, String mediaType, String path, String name, boolean localPath) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
         this.name = name;
-        this.metadata = Maps.newHashMap();
+        this.localPath = localPath;
     }
 
     public String getParentId() {
@@ -51,16 +47,16 @@ public class MediaIndexElement {
         return name;
     }
 
-    public Map<String, String> getMetadata() {
-        return metadata;
+    public boolean isLocalPath() {
+        return localPath;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (localPath ? 1231 : 1237);
         result = prime * result + ((mediaType == null) ? 0 : mediaType.hashCode());
-        result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
@@ -73,12 +69,10 @@ public class MediaIndexElement {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         MediaIndexElement other = (MediaIndexElement) obj;
+        if (localPath != other.localPath) return false;
         if (mediaType == null) {
             if (other.mediaType != null) return false;
         } else if (!mediaType.equals(other.mediaType)) return false;
-        if (metadata == null) {
-            if (other.metadata != null) return false;
-        } else if (!metadata.equals(other.metadata)) return false;
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
