@@ -39,11 +39,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#audioDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit audio folder dialog
 		onAudioDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get audio folder
 			var audioFolder = new Application.Models.AudioFolder({id : folderId});
@@ -54,7 +55,7 @@ var Application = (function(application) {
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
 					$("#folderPath").val(model.get('path'));
-					$('#audioDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +65,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onAudioDlgClose : function() {
-			$('#audioDlg').modal('hide');
+			this.hideDialog();
 			return false;
 		},
 		// save audio folder
@@ -88,7 +89,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#audioDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -118,6 +119,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#audioDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#audioDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#audioDlg').modal('hide');
 		}
 	});
 	return application;

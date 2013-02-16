@@ -39,11 +39,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#videoDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit video folder dialog
 		onVideoDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get video folder
 			var videoFolder = new Application.Models.VideoFolder({id : folderId});
@@ -54,7 +55,7 @@ var Application = (function(application) {
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));
 					$("#folderPath").val(result.get('path'));
-					$('#videoDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +65,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onVideoDlgClose : function() {
-			$('#videoDlg').modal('hide');
+			this.hideDialog();
 			return false;
 		},
 		// save video folder
@@ -88,7 +89,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#videoDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -118,6 +119,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#videoDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#videoDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#videoDlg').modal('hide');
 		}
 	});
 	return application;

@@ -39,11 +39,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#pictureDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit picture folder dialog
 		onPictureDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get picture folder
 			var pictureFolder = new Application.Models.PictureFolder({id : folderId});
@@ -54,7 +55,7 @@ var Application = (function(application) {
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
 					$("#folderPath").val(model.get('path'));
-					$('#pictureDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +65,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onPictureDlgClose : function() {
-			$('#pictureDlg').modal('hide');
+			this.hideDialog();
 			return false;
 		},
 		// save picture folder
@@ -88,7 +89,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#pictureDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -118,6 +119,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#pictureDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#pictureDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#pictureDlg').modal('hide');
 		}
 	});
 	return application;
