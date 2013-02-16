@@ -16,21 +16,18 @@
 */
 package net.holmes.core.media.index;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class IndexElement implements Serializable {
-    private static final long serialVersionUID = -4133480765408326085L;
-
+public class MediaIndexElement {
     private final String parentId;
     private final String mediaType;
     private final String name;
     private final String path;
     private final Map<String, String> metadata;
 
-    public IndexElement(String parentId, String mediaType, String path, String name) {
+    public MediaIndexElement(String parentId, String mediaType, String path, String name) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
@@ -63,6 +60,7 @@ public class IndexElement implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((mediaType == null) ? 0 : mediaType.hashCode());
+        result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
@@ -74,19 +72,19 @@ public class IndexElement implements Serializable {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        IndexElement other = (IndexElement) obj;
+        MediaIndexElement other = (MediaIndexElement) obj;
         if (mediaType == null) {
             if (other.mediaType != null) return false;
         } else if (!mediaType.equals(other.mediaType)) return false;
-
+        if (metadata == null) {
+            if (other.metadata != null) return false;
+        } else if (!metadata.equals(other.metadata)) return false;
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
-
         if (parentId == null) {
             if (other.parentId != null) return false;
         } else if (!parentId.equals(other.parentId)) return false;
-
         if (path == null) {
             if (other.path != null) return false;
         } else if (!path.equals(other.path)) return false;

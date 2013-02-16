@@ -16,13 +16,12 @@
 */
 package net.holmes.core.media.node;
 
-import net.holmes.core.media.RootNode;
 
 public final class PodcastNode extends AbstractNode {
     private final String url;
 
-    public PodcastNode(String id, String name, String url) {
-        super(NodeType.TYPE_PODCAST, id, RootNode.PODCAST.getId(), name);
+    public PodcastNode(String id, String parentId, String name, String url) {
+        super(NodeType.TYPE_PODCAST, id, parentId, name);
         this.url = url;
     }
 

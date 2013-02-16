@@ -24,7 +24,7 @@ import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.MediaService;
+import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
@@ -47,7 +47,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private Logger logger;
 
     @Inject
-    private MediaService mediaService;
+    private MediaManager mediaManager;
 
     @Inject
     private Configuration configuration;
@@ -82,13 +82,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     (browseFlag == BrowseFlag.DIRECT_CHILDREN) ? maxResults : 1);
 
             // Get browse node                
-            AbstractNode browseNode = mediaService.getNode(objectID);
+            AbstractNode browseNode = mediaManager.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
             if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 // Add child nodes
-                List<AbstractNode> childNodes = mediaService.getChildNodes(browseNode);
+                List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
                 if (childNodes != null) {
                     for (AbstractNode childNode : childNodes) {
                         addNode(objectID, childNode, result, childNodes.size());
@@ -128,7 +128,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url.toString());
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+                List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
                 int childCount = childNodes != null ? childNodes.size() : 0;
 
                 // Add container to result
@@ -141,7 +141,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addContainer(nodeId, node, 1);
             } else if (node instanceof PodcastEntryNode) {
                 // Add podcast entry to result
-                String entryName = getPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodeSize, node.getName());
+                String entryName = formatPodcastEntryName(result.getItemCount() + result.getFirstResult(), childNodeSize, node.getName());
                 result.addPodcastItem(nodeId, (PodcastEntryNode) node, entryName);
             }
         }
@@ -151,7 +151,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * Get post-cast entry name. If prepend_podcast_entry_name configuration parameter is set to true, 
      * item number is added to title
      */
-    private String getPodcastEntryName(long count, long totalCount, String title) {
+    private String formatPodcastEntryName(long count, long totalCount, String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);

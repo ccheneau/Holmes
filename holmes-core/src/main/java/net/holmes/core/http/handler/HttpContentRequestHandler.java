@@ -23,7 +23,7 @@ import java.io.RandomAccessFile;
 import javax.inject.Inject;
 
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.media.MediaService;
+import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.util.inject.Loggable;
@@ -51,11 +51,11 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
     private static final String REQUEST_PATH = "/content";
 
-    private final MediaService mediaService;
+    private final MediaManager mediaManager;
 
     @Inject
-    public HttpContentRequestHandler(MediaService mediaService) {
-        this.mediaService = mediaService;
+    public HttpContentRequestHandler(MediaManager mediaManager) {
+        this.mediaManager = mediaManager;
     }
 
     @Override
@@ -139,7 +139,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     /**
-     * Get content node from {@link net.holmes.core.media.MediaService} 
+     * Get content node from {@link net.holmes.core.media.MediaManager} 
      */
     private ContentNode getContentNode(String uri) {
         ContentNode contentNode = null;
@@ -149,7 +149,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         if (logger.isDebugEnabled()) logger.debug("file Id :" + contentId);
 
         if (contentId != null) {
-            AbstractNode node = mediaService.getNode(contentId);
+            AbstractNode node = mediaManager.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :" + node);
             if (node != null && node instanceof ContentNode) {
                 contentNode = (ContentNode) node;

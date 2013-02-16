@@ -20,24 +20,25 @@ import java.util.UUID;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 
-public class MediaIndexImpl implements MediaIndex {
+public class MediaIndexManagerImpl implements MediaIndexManager {
 
-    private BiMap<String, IndexElement> elements;
+    private BiMap<String, MediaIndexElement> elements;
 
-    public MediaIndexImpl() {
-        //elements = Maps.synchronizedBiMap(HashBiMap.<String, IndexElement> create());
-        elements = HashBiMap.create();
+    public MediaIndexManagerImpl() {
+        elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
+        //elements = HashBiMap.create();
     }
 
     @Override
-    public IndexElement getElement(String uuid) {
+    public MediaIndexElement get(String uuid) {
         return elements.get(uuid);
     }
 
     @Override
     public String add(String parentId, String mediaType, String path, String name) {
-        IndexElement element = new IndexElement(parentId, mediaType, path, name);
+        MediaIndexElement element = new MediaIndexElement(parentId, mediaType, path, name);
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
@@ -49,7 +50,7 @@ public class MediaIndexImpl implements MediaIndex {
     @Override
     public void put(String uuid, String parentId, String mediaType, String path, String name) {
         if (elements.get(uuid) == null) {
-            elements.put(uuid, new IndexElement(parentId, mediaType, path, name));
+            elements.put(uuid, new MediaIndexElement(parentId, mediaType, path, name));
         }
     }
 }

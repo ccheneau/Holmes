@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.media.index.MediaIndex;
+import net.holmes.core.media.index.MediaIndexManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import com.google.inject.Injector;
 
 public class MediaIndexTest extends TestCase {
     @Inject
-    private MediaIndex mediaIndex;
+    private MediaIndexManager mediaIndex;
 
     @Override
     @Before
