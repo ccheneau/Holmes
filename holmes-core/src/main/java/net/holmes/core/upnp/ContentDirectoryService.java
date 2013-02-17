@@ -70,10 +70,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (logger.isDebugEnabled()) {
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
                         + " nbresults=" + maxResults);
-                logger.debug("filter: " + filter);
+                logger.debug("filter: {}", filter);
                 if (orderby != null) {
                     for (SortCriterion sort : orderby) {
-                        logger.debug("orderby: " + sort.toString());
+                        logger.debug("orderby: {}", sort.toString());
                     }
                 }
             }
@@ -83,7 +83,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
             // Get browse node                
             AbstractNode browseNode = mediaManager.getNode(objectID);
-            if (logger.isDebugEnabled()) logger.debug("browse node:" + browseNode);
+            if (logger.isDebugEnabled()) logger.debug("browse node:{}", browseNode);
             if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
@@ -101,8 +101,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
             BrowseResult br = new BrowseResult(new DIDLParser().generate(result.getDidl()), result.getItemCount(), result.getTotalCount());
             if (logger.isDebugEnabled()) {
-                logger.debug("itemCount:" + result.getItemCount());
-                logger.debug("totalCount:" + result.getTotalCount());
+                logger.debug("itemCount:{}", result.getItemCount());
+                logger.debug("totalCount:{}", result.getTotalCount());
                 logger.debug(br.getResult());
             }
             return br;

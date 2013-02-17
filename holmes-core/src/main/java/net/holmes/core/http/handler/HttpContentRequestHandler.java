@@ -146,11 +146,11 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
         String contentId = decoder.getParameters().get("id").get(0);
 
-        if (logger.isDebugEnabled()) logger.debug("file Id :" + contentId);
+        if (logger.isDebugEnabled()) logger.debug("file Id :{}", contentId);
 
         if (contentId != null) {
             AbstractNode node = mediaManager.getNode(contentId);
-            if (logger.isDebugEnabled()) logger.debug("node :" + node);
+            if (logger.isDebugEnabled()) logger.debug("node :{}", node);
             if (node != null && node instanceof ContentNode) {
                 contentNode = (ContentNode) node;
             }

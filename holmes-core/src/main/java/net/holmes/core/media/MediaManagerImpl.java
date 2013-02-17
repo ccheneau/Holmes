@@ -86,7 +86,7 @@ public final class MediaManagerImpl implements MediaManager {
     @Override
     public AbstractNode getNode(String nodeId) {
         AbstractNode node = null;
-        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:" + nodeId);
+        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:{}", nodeId);
 
         RootNode rootNode = RootNode.getById(nodeId);
         if (rootNode != null) {
@@ -117,13 +117,13 @@ public final class MediaManagerImpl implements MediaManager {
                 }
             }
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:" + node);
+        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:{}", node);
         return node;
     }
 
     @Override
     public List<AbstractNode> getChildNodes(AbstractNode parentNode) {
-        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
+        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:{}", parentNode.getId());
 
         List<AbstractNode> childNodes = null;
         if (RootNode.ROOT.getId().equals(parentNode.getId())) {
@@ -167,7 +167,7 @@ public final class MediaManagerImpl implements MediaManager {
             }
         }
 
-        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :" + childNodes);
+        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :{}", childNodes);
         return childNodes;
     }
 

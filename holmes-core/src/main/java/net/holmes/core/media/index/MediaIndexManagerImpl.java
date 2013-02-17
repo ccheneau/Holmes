@@ -71,7 +71,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             if (indexEntry.getValue().isLocalPath()) {
                 if (!new File(indexEntry.getValue().getPath()).exists()) {
                     toRemove.add(indexEntry.getKey());
-                    logger.debug("Remove entry {} from media index", indexEntry.getValue().getPath());
+                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index", indexEntry.getValue().getPath());
                 }
             }
         }
