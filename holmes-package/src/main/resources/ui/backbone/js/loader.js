@@ -9,6 +9,8 @@ yepnope({
 		backbone : '/backbone/js/lib/backbone-min.js',
 		mustache : '/backbone/js/lib/mustache.js',
 		bootbox : '/backbone/js/lib/bootbox.min.js',
+		jstree : '/backbone/js/lib/jquery.jstree.js',
+		folderSelectBox : '/backbone/js/lib/folder-select-box.js',
 		
 		// plugins
 		message : '/backbone/js/plugins/message.js',
@@ -55,6 +57,9 @@ yepnope({
 		    $.get('/backend/util/getVersion', function(response) {
 		    	$("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
 		    });
+		},
+		"folderSelectBox" : function() {
+			folderSelectBox.init('/backend/util/getChildFolders','select a folder', 'okk');
 		}
 	},
 	complete : function() {

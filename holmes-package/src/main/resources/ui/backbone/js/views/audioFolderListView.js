@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "audioDlg",
 				removeTarget : "audioFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .audioDlgEditOpen" : "onAudioDlgEditOpen",
 			"click .audioDlgClose" : "onAudioDlgClose",
 			"click .audioDlgSave" : "onAudioDlgSave",
+			"click .audioDlgBrowse" : "onAudioDlgBrowse",
 			"click .audioFolderRemove" : "onAudioFolderRemove",
 		},
 		// open add audio folder dialog
@@ -97,6 +99,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onAudioDlgBrowse : function (){
+			bootbox.alert("browse");
 			return false;
 		},
 		// remove audio folder

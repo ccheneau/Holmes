@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "videoDlg",
 				removeTarget : "videoFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .videoDlgEditOpen" : "onVideoDlgEditOpen",
 			"click .videoDlgClose" : "onVideoDlgClose",
 			"click .videoDlgSave" : "onVideoDlgSave",
+			"click .videoDlgBrowse" : "onVideoDlgBrowse",
 			"click .videoFolderRemove" : "onVideoFolderRemove",
 		},
 		// open add video folder dialog
@@ -97,6 +99,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onVideoDlgBrowse : function (){
+			bootbox.alert("browse");
 			return false;
 		},
 		// remove video folder
