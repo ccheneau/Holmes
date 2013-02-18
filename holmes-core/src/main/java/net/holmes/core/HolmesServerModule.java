@@ -27,10 +27,11 @@ import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.media.MediaServiceImpl;
-import net.holmes.core.media.index.MediaIndex;
-import net.holmes.core.media.index.MediaIndexImpl;
+import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.index.MediaIndexCleanerService;
+import net.holmes.core.media.index.MediaIndexManager;
+import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
@@ -49,6 +50,7 @@ import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 
+import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
@@ -69,9 +71,10 @@ public final class HolmesServerModule extends AbstractModule {
         bind(String.class).annotatedWith(Names.named("localIPv4")).toProvider(LocalIPv4Provider.class).in(Singleton.class);
 
         // Bind media service
-        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
-        bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
+        bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
         bind(String.class).annotatedWith(Names.named("uiDirectory")).toProvider(UiDirectoryProvider.class).in(Singleton.class);
 
         // Bind servers

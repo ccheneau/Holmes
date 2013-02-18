@@ -24,6 +24,9 @@ import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.ConfigurationNode;
 
+/**
+ * Manager for requests coming from backbone UI
+ */
 public interface BackboneManager {
 
     public Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes);

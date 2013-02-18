@@ -18,8 +18,6 @@ package net.holmes.core.media.node;
 
 import java.io.File;
 
-import net.holmes.core.media.RootNode;
-
 public final class FolderNode extends AbstractNode {
     private final String path;
 
@@ -29,8 +27,8 @@ public final class FolderNode extends AbstractNode {
         this.modifedDate = folder.lastModified();
     }
 
-    public FolderNode(RootNode rootNode, String name) {
-        super(NodeType.TYPE_FOLDER, rootNode.getId(), rootNode.getParentId(), name);
+    public FolderNode(String id, String parentId, String name) {
+        super(NodeType.TYPE_FOLDER, id, parentId, name);
         this.path = null;
 
     }

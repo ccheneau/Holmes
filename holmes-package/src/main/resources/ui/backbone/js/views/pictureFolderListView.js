@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "pictureDlg",
 				removeTarget : "pictureFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .pictureDlgEditOpen" : "onPictureDlgEditOpen",
 			"click .pictureDlgClose" : "onPictureDlgClose",
 			"click .pictureDlgSave" : "onPictureDlgSave",
+			"click .pictureDlgBrowse" : "onPictureDlgBrowse",
 			"click .pictureFolderRemove" : "onPictureFolderRemove",
 		},
 		// open add picture folder dialog
@@ -39,11 +41,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#pictureDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit picture folder dialog
 		onPictureDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get picture folder
 			var pictureFolder = new Application.Models.PictureFolder({id : folderId});
@@ -54,7 +57,7 @@ var Application = (function(application) {
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
 					$("#folderPath").val(model.get('path'));
-					$('#pictureDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +67,8 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onPictureDlgClose : function() {
-			$('#pictureDlg').modal('hide');
+			folderSelectBox.hide();
+			this.hideDialog();
 			return false;
 		},
 		// save picture folder
@@ -74,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var pictureFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new picture folder
 				pictureFolder = new Application.Models.PictureFolder();
@@ -88,7 +93,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#pictureDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -96,6 +101,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onPictureDlgBrowse : function (){
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove picture folder
@@ -118,6 +128,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#pictureDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#pictureDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#pictureDlg').modal('hide');
 		}
 	});
 	return application;

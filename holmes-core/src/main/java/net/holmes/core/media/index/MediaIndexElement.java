@@ -16,26 +16,19 @@
 */
 package net.holmes.core.media.index;
 
-import java.io.Serializable;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-
-public class IndexElement implements Serializable {
-    private static final long serialVersionUID = -4133480765408326085L;
-
+public class MediaIndexElement {
     private final String parentId;
     private final String mediaType;
     private final String name;
     private final String path;
-    private final Map<String, String> metadata;
+    private final boolean localPath;
 
-    public IndexElement(String parentId, String mediaType, String path, String name) {
+    public MediaIndexElement(String parentId, String mediaType, String path, String name, boolean localPath) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
         this.name = name;
-        this.metadata = Maps.newHashMap();
+        this.localPath = localPath;
     }
 
     public String getParentId() {
@@ -54,14 +47,15 @@ public class IndexElement implements Serializable {
         return name;
     }
 
-    public Map<String, String> getMetadata() {
-        return metadata;
+    public boolean isLocalPath() {
+        return localPath;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (localPath ? 1231 : 1237);
         result = prime * result + ((mediaType == null) ? 0 : mediaType.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
@@ -74,19 +68,17 @@ public class IndexElement implements Serializable {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        IndexElement other = (IndexElement) obj;
+        MediaIndexElement other = (MediaIndexElement) obj;
+        if (localPath != other.localPath) return false;
         if (mediaType == null) {
             if (other.mediaType != null) return false;
         } else if (!mediaType.equals(other.mediaType)) return false;
-
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
-
         if (parentId == null) {
             if (other.parentId != null) return false;
         } else if (!parentId.equals(other.parentId)) return false;
-
         if (path == null) {
             if (other.path != null) return false;
         } else if (!path.equals(other.path)) return false;

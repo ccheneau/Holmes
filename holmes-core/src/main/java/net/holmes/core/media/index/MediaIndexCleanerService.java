@@ -14,32 +14,31 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.backend.response;
 
-import java.util.Map;
+package net.holmes.core.media.index;
 
-import com.google.common.collect.Maps;
+import java.util.concurrent.TimeUnit;
 
-public class Folder {
-    private final String data;
-    private final String state = "closed";
-    private final Map<String, String> metadata;
+import javax.inject.Inject;
 
-    public Folder(String data, String path) {
-        this.data = data;
-        this.metadata = Maps.newHashMap();
-        this.metadata.put("path", path);
+import com.google.common.util.concurrent.AbstractScheduledService;
+
+public final class MediaIndexCleanerService extends AbstractScheduledService {
+
+    private final MediaIndexManager mediaIndexManager;
+
+    @Inject
+    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager) {
+        this.mediaIndexManager = mediaIndexManager;
     }
 
-    public String getState() {
-        return state;
+    @Override
+    protected void runOneIteration() throws Exception {
+        mediaIndexManager.clean();
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public Map<String, String> getMetadata() {
-        return metadata;
+    @Override
+    protected Scheduler scheduler() {
+        return Scheduler.newFixedRateSchedule(0, 15, TimeUnit.MINUTES);
     }
 }

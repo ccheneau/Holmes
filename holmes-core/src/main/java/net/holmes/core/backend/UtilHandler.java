@@ -19,6 +19,7 @@ package net.holmes.core.backend;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -27,10 +28,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.holmes.core.backend.response.Folder;
 import net.holmes.core.util.SystemProperty;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @Path("/backend/util")
 public class UtilHandler {
@@ -89,5 +90,29 @@ public class UtilHandler {
             }
         }
         return folders;
+    }
+
+    public class Folder {
+        private final String data;
+        private final String state = "closed";
+        private final Map<String, String> metadata;
+
+        public Folder(String data, String path) {
+            this.data = data;
+            this.metadata = Maps.newHashMap();
+            this.metadata.put("path", path);
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public Map<String, String> getMetadata() {
+            return metadata;
+        }
     }
 }

@@ -22,8 +22,8 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.media.RootNode;
+import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaManagerImpl.RootNode;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.util.inject.Loggable;
 
@@ -35,11 +35,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 @Loggable
-public class MediaServiceTest extends TestCase {
+public class MediaManagerTest extends TestCase {
     private Logger logger;
 
     @Inject
-    private MediaService mediaService;
+    private MediaManager mediaManager;
 
     @Override
     @Before
@@ -50,11 +50,11 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootNode() {
-        AbstractNode node = mediaService.getNode(RootNode.ROOT.getId());
+        AbstractNode node = mediaManager.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
-        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 4);
@@ -63,17 +63,17 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootVideoNode() {
-        AbstractNode node = mediaService.getNode(RootNode.VIDEO.getId());
+        AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
-        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(nodes.size(), 1);
@@ -83,17 +83,17 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootAudioNode() {
-        AbstractNode node = mediaService.getNode(RootNode.AUDIO.getId());
+        AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
-        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(nodes.size(), 1);
@@ -102,17 +102,17 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPictureNode() {
-        AbstractNode node = mediaService.getNode(RootNode.PICTURE.getId());
+        AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
-        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);
         logger.debug(childNodes.toString());
 
-        List<AbstractNode> nodes = mediaService.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(nodes.size(), 1);
@@ -121,11 +121,11 @@ public class MediaServiceTest extends TestCase {
 
     @Test
     public void testGetRootPodcastNode() {
-        AbstractNode node = mediaService.getNode(RootNode.PODCAST.getId());
+        AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);
         logger.debug(node.toString());
 
-        List<AbstractNode> childNodes = mediaService.getChildNodes(node);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);

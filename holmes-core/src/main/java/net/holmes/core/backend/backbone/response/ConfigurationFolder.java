@@ -23,7 +23,6 @@ public final class ConfigurationFolder {
     private String path;
 
     public ConfigurationFolder() {
-
     }
 
     public ConfigurationFolder(String id, String name, String path) {
@@ -55,5 +54,4 @@ public final class ConfigurationFolder {
     public void setPath(String path) {
         this.path = path;
     }
-
 }

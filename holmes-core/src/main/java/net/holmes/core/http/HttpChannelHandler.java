@@ -74,9 +74,9 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
 
         if (logger.isDebugEnabled()) {
             logger.debug("[START] messageReceived event:" + e);
-            logger.debug("Request uri: " + request.getUri());
+            logger.debug("Request uri: {}", request.getUri());
             for (Entry<String, String> entry : request.getHeaders()) {
-                logger.debug("Request header: " + entry.getKey() + " ==> " + entry.getValue());
+                logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
             }
 
             if (request.getMethod().equals(HttpMethod.POST)) {
@@ -86,7 +86,7 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
                     Map<String, List<String>> params = queryStringDecoder.getParameters();
                     if (params != null) {
                         for (Entry<String, List<String>> entry : params.entrySet()) {
-                            logger.debug("Post parameter: " + entry.getKey() + " => " + entry.getValue());
+                            logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
                         }
                     }
                 }
@@ -128,7 +128,7 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
         ChannelBuffer buffer = ChannelBuffers.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
         response.setContent(buffer);
 
-        if (logger.isDebugEnabled()) logger.debug("sendError: " + buffer);
+        if (logger.isDebugEnabled()) logger.debug("sendError: {}", buffer);
 
         // Close the connection as soon as the error message is sent.
         context.getChannel().write(response).addListener(ChannelFutureListener.CLOSE);

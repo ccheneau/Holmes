@@ -39,11 +39,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#podcastDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit podcast dialog
 		onPodcastDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get podcast
 			var podcast = new Application.Models.Podcast({id : folderId});
@@ -54,7 +55,7 @@ var Application = (function(application) {
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));
 					$("#folderPath").val(result.get('path'));
-					$('#podcastDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +65,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onPodcastDlgClose : function() {
-			$('#podcastDlg').modal('hide');
+			this.hideDialog();
 			return false;
 		},
 		// save podcast
@@ -88,7 +89,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#podcastDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -118,6 +119,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#podcastDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#podcastDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#podcastDlg').modal('hide');
 		}
 	});
 	return application;

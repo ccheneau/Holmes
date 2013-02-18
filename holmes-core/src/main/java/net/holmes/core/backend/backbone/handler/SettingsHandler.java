@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.backend.backbone;
+package net.holmes.core.backend.backbone.handler;
 
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.Settings;
 
 @Path("/backend/backbone/settings")

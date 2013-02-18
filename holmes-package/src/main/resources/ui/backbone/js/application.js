@@ -5,6 +5,7 @@ var Application = (function() {
 	application.Views = {};
 	application.Router = {};
 
+	// get view template
 	application.getTemplate = function(template) {
 		return $.ajax({
 			type : "GET",
@@ -14,11 +15,13 @@ var Application = (function() {
 		}).responseText;
 	},
 
+	// toggle nav menu
 	toggleMenu = function(item) {
         $('ul.nav > li').removeClass('active');
         $('#'+ item).addClass('active');                
 	},
 	
+	// implements router
 	application.Router.RoutesManager = Backbone.Router.extend({
 		initialize : function(args) {
 			this.videoFolders = args.videoFolders;

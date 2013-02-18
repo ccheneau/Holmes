@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.backend.backbone;
+package net.holmes.core.backend.backbone.handler;
 
 import java.util.Collection;
 
@@ -29,6 +29,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.configuration.Configuration;
 

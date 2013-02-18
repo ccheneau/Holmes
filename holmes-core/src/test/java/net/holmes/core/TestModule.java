@@ -18,10 +18,10 @@ package net.holmes.core;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.TestConfiguration;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.media.MediaServiceImpl;
-import net.holmes.core.media.index.MediaIndex;
-import net.holmes.core.media.index.MediaIndexImpl;
+import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.index.MediaIndexManager;
+import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.inject.LoggerTypeListener;
@@ -41,8 +41,8 @@ public class TestModule extends AbstractModule {
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
 
-        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
-        bind(MediaIndex.class).to(MediaIndexImpl.class).in(Singleton.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+        bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
 
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
     }

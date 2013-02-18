@@ -14,35 +14,24 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.media;
+package net.holmes.core.backend._default.response;
 
-public enum RootNode {
-    ROOT("0", "-1"), //
-    VIDEO("1_VIDEOS", "0"), //
-    PICTURE("2_PICTURES", "0"), //
-    AUDIO("3_AUDIOS", "0"), //
-    PODCAST("4_PODCASTS", "0");
+import java.util.Collection;
 
-    private String id;
-    private String parentId;
+public class ConfigNode {
+    private final String id;
+    private final Collection<String> cell;
 
-    RootNode(String id, String parentId) {
+    public ConfigNode(String id, Collection<String> cell) {
         this.id = id;
-        this.parentId = parentId;
+        this.cell = cell;
     }
 
     public String getId() {
-        return this.id;
+        return id;
     }
 
-    public String getParentId() {
-        return this.parentId;
-    }
-
-    public static RootNode getById(String id) {
-        for (RootNode rootNode : RootNode.values()) {
-            if (rootNode.id.equals(id)) return rootNode;
-        }
-        return null;
+    public Collection<String> getCell() {
+        return cell;
     }
 }

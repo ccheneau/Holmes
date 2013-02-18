@@ -42,7 +42,6 @@ public final class LoggerTypeListener implements TypeListener {
                     encounter.register(new Slf4jMembersInjector<T>(field));
                     break;
                 }
-
             }
         }
     }

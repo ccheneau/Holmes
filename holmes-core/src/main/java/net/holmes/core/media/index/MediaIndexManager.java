@@ -16,11 +16,13 @@
 */
 package net.holmes.core.media.index;
 
-public interface MediaIndex {
+public interface MediaIndexManager {
 
-    public String add(String parentId, String mediaType, String path, String name);
+    public MediaIndexElement get(String uuid);
 
-    public IndexElement getElement(String uuid);
+    public String add(String parentId, String mediaType, String path, String name, boolean localPath);
 
-    public void put(String uuid, String parentId, String mediaType, String path, String name);
+    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath);
+
+    public void clean();
 }

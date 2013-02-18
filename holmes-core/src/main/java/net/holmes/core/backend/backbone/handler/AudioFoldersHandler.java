@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.backend.backbone;
+package net.holmes.core.backend.backbone.handler;
 
 import java.util.Collection;
 
@@ -29,39 +29,40 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.configuration.Configuration;
 
-@Path("/backend/backbone/pictureFolders")
-public class PictureFoldersHandler {
+@Path("/backend/backbone/audioFolders")
+public class AudioFoldersHandler {
 
     private final Configuration configuration;
     private final BackboneManager backboneManager;
 
     @Inject
-    public PictureFoldersHandler(Configuration configuration, BackboneManager backboneManager) {
+    public AudioFoldersHandler(Configuration configuration, BackboneManager backboneManager) {
         this.backboneManager = backboneManager;
         this.configuration = configuration;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ConfigurationFolder> getPictureFolders() {
-        return backboneManager.getFolders(configuration.getPictureFolders());
+    public Collection<ConfigurationFolder> getAudioFolders() {
+        return backboneManager.getFolders(configuration.getAudioFolders());
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder getPictureFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getPictureFolders(), false);
+    public ConfigurationFolder getAudioFolder(@PathParam("id") String id) {
+        return backboneManager.getFolder(id, configuration.getAudioFolders(), false);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder addPictureFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getPictureFolders(), false);
+    public ConfigurationFolder addAudioFolder(ConfigurationFolder folder) {
+        backboneManager.addFolder(folder, configuration.getAudioFolders(), false);
         return folder;
     }
 
@@ -69,8 +70,8 @@ public class PictureFoldersHandler {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder editPictureFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getPictureFolders(), false);
+    public ConfigurationFolder editAudioFolder(@PathParam("id") String id, ConfigurationFolder folder) {
+        backboneManager.editFolder(id, folder, configuration.getAudioFolders(), false);
         return folder;
     }
 
@@ -78,8 +79,8 @@ public class PictureFoldersHandler {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder removePictureFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getPictureFolders(), false);
+    public ConfigurationFolder removeAudioFolder(@PathParam("id") String id) {
+        backboneManager.removeFolder(id, configuration.getAudioFolders(), false);
         return new ConfigurationFolder(id, null, null);
     }
 }

@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.backend;
+package net.holmes.core.backend._default;
 
 import java.io.File;
 import java.util.Collection;
@@ -29,10 +29,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.holmes.core.backend.response.ConfigNode;
-import net.holmes.core.backend.response.ConfigNodeListResponse;
-import net.holmes.core.backend.response.ConfigurationResponse;
-import net.holmes.core.backend.response.EditConfigNodeResponse;
+import net.holmes.core.backend._default.response.ConfigNode;
+import net.holmes.core.backend._default.response.ConfigNodeListResponse;
+import net.holmes.core.backend._default.response.ConfigurationResponse;
+import net.holmes.core.backend._default.response.EditConfigNodeResponse;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;

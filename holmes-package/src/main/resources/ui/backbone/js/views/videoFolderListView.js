@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "videoDlg",
 				removeTarget : "videoFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .videoDlgEditOpen" : "onVideoDlgEditOpen",
 			"click .videoDlgClose" : "onVideoDlgClose",
 			"click .videoDlgSave" : "onVideoDlgSave",
+			"click .videoDlgBrowse" : "onVideoDlgBrowse",
 			"click .videoFolderRemove" : "onVideoFolderRemove",
 		},
 		// open add video folder dialog
@@ -39,11 +41,12 @@ var Application = (function(application) {
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#videoDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit video folder dialog
 		onVideoDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get video folder
 			var videoFolder = new Application.Models.VideoFolder({id : folderId});
@@ -54,7 +57,7 @@ var Application = (function(application) {
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));
 					$("#folderPath").val(result.get('path'));
-					$('#videoDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +67,8 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onVideoDlgClose : function() {
-			$('#videoDlg').modal('hide');
+			folderSelectBox.hide();
+			this.hideDialog();
 			return false;
 		},
 		// save video folder
@@ -74,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var videoFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new video folder
 				videoFolder = new Application.Models.VideoFolder();
@@ -88,7 +93,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#videoDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -96,6 +101,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onVideoDlgBrowse : function (){
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove video folder
@@ -118,6 +128,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#videoDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#videoDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#videoDlg').modal('hide');
 		}
 	});
 	return application;

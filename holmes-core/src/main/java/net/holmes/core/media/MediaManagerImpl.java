@@ -30,8 +30,8 @@ import javax.inject.Inject;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.index.IndexElement;
-import net.holmes.core.media.index.MediaIndex;
+import net.holmes.core.media.index.MediaIndexElement;
+import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.media.node.FolderNode;
@@ -60,21 +60,21 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 @Loggable
-public final class MediaServiceImpl implements MediaService {
+public final class MediaManagerImpl implements MediaManager {
     private Logger logger;
 
     private final Configuration configuration;
     private final MimeTypeFactory mimeTypeFactory;
     private final Bundle bundle;
-    private final MediaIndex mediaIndex;
+    private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     @Inject
-    public MediaServiceImpl(Configuration configuration, MimeTypeFactory mimeTypeFactory, Bundle bundle, MediaIndex mediaIndex) {
+    public MediaManagerImpl(Configuration configuration, MimeTypeFactory mimeTypeFactory, Bundle bundle, MediaIndexManager mediaIndexManager) {
         this.configuration = configuration;
         this.mimeTypeFactory = mimeTypeFactory;
         this.bundle = bundle;
-        this.mediaIndex = mediaIndex;
+        this.mediaIndexManager = mediaIndexManager;
 
         // Initialize podcast cache
         this.podcastCache = CacheBuilder.newBuilder() //
@@ -86,19 +86,19 @@ public final class MediaServiceImpl implements MediaService {
     @Override
     public AbstractNode getNode(String nodeId) {
         AbstractNode node = null;
-        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:" + nodeId);
+        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:{}", nodeId);
 
         RootNode rootNode = RootNode.getById(nodeId);
         if (rootNode != null) {
             // Root node
-            node = new FolderNode(rootNode, bundle.getString("rootNode." + rootNode.getId()));
+            node = new FolderNode(rootNode.getId(), rootNode.getParentId(), bundle.getString("rootNode." + rootNode.getId()));
         } else if (nodeId != null) {
             // Get node in mediaIndex
-            IndexElement indexElement = mediaIndex.getElement(nodeId);
+            MediaIndexElement indexElement = mediaIndexManager.get(nodeId);
             if (indexElement != null) {
                 if (MediaType.TYPE_PODCAST.getValue().equals(indexElement.getMediaType())) {
                     // Podcast node
-                    node = new PodcastNode(nodeId, indexElement.getName(), indexElement.getPath());
+                    node = new PodcastNode(nodeId, RootNode.PODCAST.getId(), indexElement.getName(), indexElement.getPath());
                 } else if (MediaType.TYPE_PLAYLIST.getValue().equals(indexElement.getMediaType())) {
                     // Playlist node
                     node = new PlaylistNode(nodeId, indexElement.getParentId(), indexElement.getName(), indexElement.getPath());
@@ -117,37 +117,37 @@ public final class MediaServiceImpl implements MediaService {
                 }
             }
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:" + node);
+        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:{}", node);
         return node;
     }
 
     @Override
     public List<AbstractNode> getChildNodes(AbstractNode parentNode) {
-        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:" + parentNode.getId());
+        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:{}", parentNode.getId());
 
         List<AbstractNode> childNodes = null;
         if (RootNode.ROOT.getId().equals(parentNode.getId())) {
             // Child nodes of root are audio, video, picture and pod-cast root nodes
             childNodes = Lists.newArrayList();
-            childNodes.add(new FolderNode(RootNode.AUDIO, bundle.getString("rootNode." + RootNode.AUDIO.getId())));
-            childNodes.add(new FolderNode(RootNode.VIDEO, bundle.getString("rootNode." + RootNode.VIDEO.getId())));
-            childNodes.add(new FolderNode(RootNode.PICTURE, bundle.getString("rootNode." + RootNode.PICTURE.getId())));
-            childNodes.add(new FolderNode(RootNode.PODCAST, bundle.getString("rootNode." + RootNode.PODCAST.getId())));
+            childNodes.add(new FolderNode(RootNode.AUDIO.getId(), RootNode.AUDIO.getParentId(), bundle.getString("rootNode." + RootNode.AUDIO.getId())));
+            childNodes.add(new FolderNode(RootNode.VIDEO.getId(), RootNode.VIDEO.getParentId(), bundle.getString("rootNode." + RootNode.VIDEO.getId())));
+            childNodes.add(new FolderNode(RootNode.PICTURE.getId(), RootNode.PICTURE.getParentId(), bundle.getString("rootNode." + RootNode.PICTURE.getId())));
+            childNodes.add(new FolderNode(RootNode.PODCAST.getId(), RootNode.PODCAST.getParentId(), bundle.getString("rootNode." + RootNode.PODCAST.getId())));
         } else if (RootNode.AUDIO.getId().equals(parentNode.getId())) {
-            // Child nodes of audio are audio folders stored in configuration
+            // Child nodes of audio root are audio folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getAudioFolders(), false, MediaType.TYPE_AUDIO);
         } else if (RootNode.VIDEO.getId().equals(parentNode.getId())) {
-            // Child nodes of video are video folders stored in configuration
+            // Child nodes of video root are video folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getVideoFolders(), false, MediaType.TYPE_VIDEO);
         } else if (RootNode.PICTURE.getId().equals(parentNode.getId())) {
-            // Child nodes of pitcure are picture folders stored in configuration
+            // Child nodes of pitcure root are picture folders stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPictureFolders(), false, MediaType.TYPE_IMAGE);
         } else if (RootNode.PODCAST.getId().equals(parentNode.getId())) {
-            // Child nodes of podcast are pod-cast URLs stored in configuration
+            // Child nodes of podcast root are pod-cast URLs stored in configuration
             childNodes = getConfigurationChildNodes(parentNode.getId(), configuration.getPodcasts(), true, MediaType.TYPE_PODCAST);
         } else if (parentNode.getId() != null) {
             // Get node in mediaIndex
-            IndexElement indexElement = mediaIndex.getElement(parentNode.getId());
+            MediaIndexElement indexElement = mediaIndexManager.get(parentNode.getId());
             if (indexElement != null) {
                 if (MediaType.TYPE_PODCAST.getValue().equals(indexElement.getMediaType())) {
                     // Get podcast child nodes
@@ -167,7 +167,7 @@ public final class MediaServiceImpl implements MediaService {
             }
         }
 
-        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :" + childNodes);
+        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :{}", childNodes);
         return childNodes;
     }
 
@@ -181,9 +181,9 @@ public final class MediaServiceImpl implements MediaService {
                 // Add podcast nodes
                 for (ConfigurationNode contentFolder : contentFolders) {
                     // Add node to mediaIndex
-                    mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel());
+                    mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel(), false);
                     // Add child node
-                    nodes.add(new PodcastNode(contentFolder.getId(), contentFolder.getLabel(), contentFolder.getPath()));
+                    nodes.add(new PodcastNode(contentFolder.getId(), RootNode.PODCAST.getId(), contentFolder.getLabel(), contentFolder.getPath()));
                 }
             } else {
                 // Add folder nodes
@@ -191,7 +191,7 @@ public final class MediaServiceImpl implements MediaService {
                     File file = new File(contentFolder.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         // Add node to mediaIndex
-                        mediaIndex.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel());
+                        mediaIndexManager.put(contentFolder.getId(), rootNodeId, mediaType.getValue(), contentFolder.getPath(), contentFolder.getLabel(), true);
                         // Add child node
                         nodes.add(new FolderNode(contentFolder.getId(), rootNodeId, contentFolder.getLabel(), file));
                     }
@@ -212,7 +212,7 @@ public final class MediaServiceImpl implements MediaService {
                 AbstractNode node = null;
                 if (file.canRead() && !file.isHidden()) {
                     // Add node to mediaIndex
-                    String nodeId = mediaIndex.add(parentId, mediaType, file.getAbsolutePath(), null);
+                    String nodeId = mediaIndexManager.add(parentId, mediaType, file.getAbsolutePath(), null, true);
                     if (file.isDirectory()) {
                         // Add folder node
                         node = new FolderNode(nodeId, parentId, file.getName(), file);
@@ -303,7 +303,7 @@ public final class MediaServiceImpl implements MediaService {
             for (PlaylistItem item : items) {
                 MimeType mimeType = mimeTypeFactory.getMimeType(item.getPath());
                 if (mimeType.isMedia()) {
-                    String nodeId = mediaIndex.add(parentId, mimeType.getType(), item.getPath(), item.getLabel());
+                    String nodeId = mediaIndexManager.add(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true);
                     nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
                 }
             }
@@ -326,5 +326,36 @@ public final class MediaServiceImpl implements MediaService {
 
         }
         return node;
+    }
+
+    public enum RootNode {
+        ROOT("0", "-1"), //
+        VIDEO("1_VIDEOS", "0"), //
+        PICTURE("2_PICTURES", "0"), //
+        AUDIO("3_AUDIOS", "0"), //
+        PODCAST("4_PODCASTS", "0");
+
+        private String id;
+        private String parentId;
+
+        private RootNode(String id, String parentId) {
+            this.id = id;
+            this.parentId = parentId;
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public String getParentId() {
+            return this.parentId;
+        }
+
+        public static RootNode getById(String id) {
+            for (RootNode rootNode : RootNode.values()) {
+                if (rootNode.id.equals(id)) return rootNode;
+            }
+            return null;
+        }
     }
 }

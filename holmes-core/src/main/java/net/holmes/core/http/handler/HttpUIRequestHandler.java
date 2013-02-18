@@ -81,13 +81,13 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         if (fileName == null || fileName.trim().isEmpty()) {
             throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
         }
-        if (logger.isDebugEnabled()) logger.debug("file name:" + fileName);
+        if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);
 
         try {
             // Get file
             File file = new File(uiDirectory, fileName);
             if (!file.exists()) {
-                if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
+                if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
             }
 
@@ -115,7 +115,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
         } catch (FileNotFoundException e) {
-            if (logger.isDebugEnabled()) logger.debug("resource not found:" + fileName);
+            if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
             throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
         } catch (IOException e) {
             if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);

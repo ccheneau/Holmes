@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "audioDlg",
 				removeTarget : "audioFolderRemove"
 			});
@@ -30,20 +31,22 @@ var Application = (function(application) {
 			"click .audioDlgEditOpen" : "onAudioDlgEditOpen",
 			"click .audioDlgClose" : "onAudioDlgClose",
 			"click .audioDlgSave" : "onAudioDlgSave",
+			"click .audioDlgBrowse" : "onAudioDlgBrowse",
 			"click .audioFolderRemove" : "onAudioFolderRemove",
 		},
 		// open add audio folder dialog
 		onAudioDlgAddOpen : function() {
-			// initialiaze dialog 
+			// initialize dialog 
 			$("#audioDlgHeader").html($.i18n.prop("msg.audio.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
-			$('#audioDlg').modal('show');
+			this.showDialog();
 			return false;
 		},
 		// open edit audio folder dialog
 		onAudioDlgEditOpen : function(event) {
+			var that = this;
 			var folderId = $(event.currentTarget).data('id');
 			// get audio folder
 			var audioFolder = new Application.Models.AudioFolder({id : folderId});
@@ -54,7 +57,7 @@ var Application = (function(application) {
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
 					$("#folderPath").val(model.get('path'));
-					$('#audioDlg').modal('show');
+					that.showDialog();
 				},
 				error : function(model,response) {
 					bootbox.alert(response.responseText);
@@ -64,7 +67,8 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onAudioDlgClose : function() {
-			$('#audioDlg').modal('hide');
+			folderSelectBox.hide();
+			this.hideDialog();
 			return false;
 		},
 		// save audio folder
@@ -74,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var audioFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new audio folder
 				audioFolder = new Application.Models.AudioFolder();
@@ -88,7 +93,7 @@ var Application = (function(application) {
 					},{
 						success : function() {
 							// close dialog
-							$('#audioDlg').modal('hide');
+							that.hideDialog();
 							// fetch collection
 							that.collection.fetch();
 						},
@@ -96,6 +101,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onAudioDlgBrowse : function (){
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove audio folder
@@ -118,6 +128,17 @@ var Application = (function(application) {
 				}
 			}); 
 			return false;
+		},
+		showDialog : function(){
+			$("#messagebox").html("");
+			$("#audioDlg").draggable({
+				handle: ".modal-header",
+				start : function(event, ui) {ui.helper.removeClass('fade');}
+			});
+			$('#audioDlg').modal('show');
+		},
+		hideDialog : function(){
+			$('#audioDlg').modal('hide');
 		}
 	});
 	return application;
