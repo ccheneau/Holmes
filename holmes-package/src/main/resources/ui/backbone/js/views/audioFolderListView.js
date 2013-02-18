@@ -67,6 +67,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onAudioDlgClose : function() {
+			folderSelectBox.hide();
 			this.hideDialog();
 			return false;
 		},
@@ -77,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var audioFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new audio folder
 				audioFolder = new Application.Models.AudioFolder();
@@ -103,7 +105,7 @@ var Application = (function(application) {
 		},
 		// Show browse dialog
 		onAudioDlgBrowse : function (){
-			bootbox.alert("browse");
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove audio folder

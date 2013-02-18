@@ -28,6 +28,14 @@ body {
 	background-color: white;
 }
 
+.modal-header {
+	cursor: move;
+}
+
+.ui-dialog {
+	z-index: 9999 !important; 
+}
+
 body.roll { 
  	-moz-animation-name: roll; 
 	-moz-animation-duration: 6s; 

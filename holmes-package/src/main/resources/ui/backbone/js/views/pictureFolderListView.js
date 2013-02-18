@@ -67,6 +67,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onPictureDlgClose : function() {
+			folderSelectBox.hide();
 			this.hideDialog();
 			return false;
 		},
@@ -77,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var pictureFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new picture folder
 				pictureFolder = new Application.Models.PictureFolder();
@@ -103,7 +105,7 @@ var Application = (function(application) {
 		},
 		// Show browse dialog
 		onPictureDlgBrowse : function (){
-			bootbox.alert("browse");
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove picture folder

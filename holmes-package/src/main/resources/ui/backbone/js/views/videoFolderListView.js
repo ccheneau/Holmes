@@ -67,6 +67,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onVideoDlgClose : function() {
+			folderSelectBox.hide();
 			this.hideDialog();
 			return false;
 		},
@@ -77,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var videoFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new video folder
 				videoFolder = new Application.Models.VideoFolder();
@@ -103,7 +105,7 @@ var Application = (function(application) {
 		},
 		// Show browse dialog
 		onVideoDlgBrowse : function (){
-			bootbox.alert("browse");
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove video folder

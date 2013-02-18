@@ -2,7 +2,7 @@ yepnope({
 	load : {
 		// lib
 		jquery : '/backbone/js/lib/jquery-1.9.1.min.js',
-		jqueryUI : '/backbone/js/lib/jquery-ui-1.10.0.min.js',
+		jqueryUI : '/backbone/js/lib/jquery-ui-1.10.0.custom.min.js',
 		bootstrap : '/backbone/js/lib/bootstrap.min.js',
 		jqueryI18n : '/backbone/js/lib/jquery.i18n.properties-min-1.0.9.js',
 		underscore : '/backbone/js/lib/underscore-min.js',
@@ -59,7 +59,8 @@ yepnope({
 		    });
 		},
 		"folderSelectBox" : function() {
-			folderSelectBox.init('/backend/util/getChildFolders','select a folder', 'okk');
+			folderSelectBox.init('/backend/util/getChildFolders',
+					$.i18n.prop("msg.select.folder.title"), $.i18n.prop("msg.cancel"), $.i18n.prop("msg.ok"));
 		}
 	},
 	complete : function() {
