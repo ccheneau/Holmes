@@ -16,7 +16,10 @@ var folderSelectBox = (function() {
 	// Public
 	return {
 	    init: function(url, title, cancelLabel, okLabel) {
-	    	//TODO add folderTree div to dom
+	    	// add div to body
+	    	$('body').append('<div id="folderTree"></div>');
+	    	
+	    	// build folder tree
 	    	_folderTree = $("#folderTree").jstree({ 
 	    		"json_data" : {
 	    			"ajax" : {
@@ -30,8 +33,11 @@ var folderSelectBox = (function() {
 	    		"themes" : {"dots" : false},
 	    		"plugins" : [ "themes", "json_data", "ui" ]
 	    	});
+	    	// bind folder tree events
 	    	_folderTree.bind("select_node.jstree", function (e, data) {_selectedFolder = data.rslt.obj.data("path"); });
 	    	_folderTree.bind("dblclick.jstree", function (event) {_folderTreeDialogOnOk();});
+	    	
+	    	// build folder dialog
 	    	_folderDialog = $("#folderTree").dialog({
 	    		modal : false ,
 	    		autoOpen : false , 
@@ -40,17 +46,20 @@ var folderSelectBox = (function() {
 	    		buttons: [{ text : cancelLabel , class: 'btn', click : _folderTreeDialogOnCancel},
 	    		          { text : okLabel , class: 'btn btn-primary', click : _folderTreeDialogOnOk}]
 	    	});
+	    	
+	    	// dialog style hack
 	    	$('.ui-dialog-titlebar-close').html('x');
 	    	$('.ui-dialog-titlebar-close').css('margin','-11px 0 0');
 	    },
 	    show : function(linkedItem) {
+	    	// show dialog
 	    	_linkedItem = linkedItem;
 	    	_selectedFolder = '';
+	    	$("#folderTree").jstree("deselect_all");
 	    	_folderDialog.dialog('open');
 	    },
-	    hide : function(linkedItem) {
-	    	_linkedItem = linkedItem;
-	    	_selectedFolder = '';
+	    hide : function() {
+	    	// hide dialog
 	    	_folderDialog.dialog('close');
 	    }
 	};
