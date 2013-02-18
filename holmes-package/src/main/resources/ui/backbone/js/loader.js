@@ -10,10 +10,10 @@ yepnope({
 		mustache : '/backbone/js/lib/mustache.js',
 		bootbox : '/backbone/js/lib/bootbox.min.js',
 		jstree : '/backbone/js/lib/jquery.jstree.js',
-		folderSelectBox : '/backbone/js/lib/folder-select-box.js',
 		
 		// plugins
 		message : '/backbone/js/plugins/message.js',
+		folderSelectBox : '/backbone/js/plugins/folder-select-box.js',
 		
 		// application
 		application : '/backbone/js/application.js',
