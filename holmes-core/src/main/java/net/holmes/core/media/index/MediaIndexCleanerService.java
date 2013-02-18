@@ -21,11 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import net.holmes.core.util.inject.Loggable;
-
 import com.google.common.util.concurrent.AbstractScheduledService;
 
-@Loggable
 public final class MediaIndexCleanerService extends AbstractScheduledService {
 
     private final MediaIndexManager mediaIndexManager;
