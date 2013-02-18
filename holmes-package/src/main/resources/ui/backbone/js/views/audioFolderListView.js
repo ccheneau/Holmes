@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "audioDlg",
 				removeTarget : "audioFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .audioDlgEditOpen" : "onAudioDlgEditOpen",
 			"click .audioDlgClose" : "onAudioDlgClose",
 			"click .audioDlgSave" : "onAudioDlgSave",
+			"click .audioDlgBrowse" : "onAudioDlgBrowse",
 			"click .audioFolderRemove" : "onAudioFolderRemove",
 		},
 		// open add audio folder dialog
@@ -65,6 +67,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onAudioDlgClose : function() {
+			folderSelectBox.hide();
 			this.hideDialog();
 			return false;
 		},
@@ -75,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var audioFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new audio folder
 				audioFolder = new Application.Models.AudioFolder();
@@ -97,6 +101,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onAudioDlgBrowse : function (){
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove audio folder

@@ -20,6 +20,7 @@ var Application = (function(application) {
 				removeLabel : $.i18n.prop("msg.remove"),
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
+				browsable : true,
 				dialogId : "pictureDlg",
 				removeTarget : "pictureFolderRemove"
 			});
@@ -30,6 +31,7 @@ var Application = (function(application) {
 			"click .pictureDlgEditOpen" : "onPictureDlgEditOpen",
 			"click .pictureDlgClose" : "onPictureDlgClose",
 			"click .pictureDlgSave" : "onPictureDlgSave",
+			"click .pictureDlgBrowse" : "onPictureDlgBrowse",
 			"click .pictureFolderRemove" : "onPictureFolderRemove",
 		},
 		// open add picture folder dialog
@@ -65,6 +67,7 @@ var Application = (function(application) {
 		},
 		// close dialog
 		onPictureDlgClose : function() {
+			folderSelectBox.hide();
 			this.hideDialog();
 			return false;
 		},
@@ -75,6 +78,7 @@ var Application = (function(application) {
 			var folderName = $("#folderName").val().trim();
 			var folderPath = $("#folderPath").val().trim();
 			var pictureFolder;
+			folderSelectBox.hide();
 			if (folderId === "") {
 				// this is a new picture folder
 				pictureFolder = new Application.Models.PictureFolder();
@@ -97,6 +101,11 @@ var Application = (function(application) {
 							$("#messagebox").message({text: response.responseText, type: "error"});
 						}
 					});
+			return false;
+		},
+		// Show browse dialog
+		onPictureDlgBrowse : function (){
+			folderSelectBox.show($("#folderPath"));
 			return false;
 		},
 		// remove picture folder
