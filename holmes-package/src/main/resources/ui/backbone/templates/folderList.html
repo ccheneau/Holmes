@@ -31,14 +31,14 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
 	<thead>
 		<tr>
-			<th style="width:30%;">{{nameLabel}}</th>
+			<th style="width:33%;">{{nameLabel}}</th>
 			<th>{{pathLabel}}</th>
 			<th style="width: 32px"></th>
 		</tr>
 	</thead>
 	<tbody>
 {{#folders}}
-		<tr>
+		<tr class="{{dialogId}}EditOpen" data-id="{{id}}">
 			<td>{{name}}</td>
 			<td>{{path}}</td>
 			<td>

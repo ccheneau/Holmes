@@ -33,7 +33,7 @@ var Application = (function(application) {
 	        			enableExternalSubtitles : $("#chkEnableExternalSubtitles").is(':checked') ? "true":"false"
 	        		})
 	        		.done(function() {$("#messagebox").message({text: $.i18n.prop("msg.settings.saved"), type: "success"});})
-	        		.fail(function(request) {$("#messagebox").message({text: request.responseText, type: "error"});});
+	        		.fail(function(response) {$("#messagebox").message({text: response.responseText || response.statusText, type: "error"});});
 		},
 		onSettingsCancel : function() {
 			this.render();

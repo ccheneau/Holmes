@@ -28,7 +28,8 @@ var Application = (function(application) {
 		},
 		events : {
 			"click .audioDlgAddOpen" : "onAudioDlgAddOpen",
-			"click .audioDlgEditOpen" : "onAudioDlgEditOpen",
+			"click a.audioDlgEditOpen" : "onAudioDlgEditOpen",
+			"dblclick tr.audioDlgEditOpen" : "onAudioDlgEditOpen",
 			"click .audioDlgClose" : "onAudioDlgClose",
 			"click .audioDlgSave" : "onAudioDlgSave",
 			"click .audioDlgBrowse" : "onAudioDlgBrowse",
@@ -60,7 +61,7 @@ var Application = (function(application) {
 					that.showDialog();
 				},
 				error : function(model,response) {
-					bootbox.alert(response.responseText);
+					bootbox.alert(response.responseText || response.statusText);
 				}
 			});
 			return false;
@@ -98,7 +99,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							$("#messagebox").message({text: response.responseText, type: "error"});
+							$("#messagebox").message({text: response.responseText || response.statusText, type: "error"});
 						}
 					});
 			return false;
@@ -122,7 +123,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							bootbox.alert(response.responseText);
+							bootbox.alert(response.responseText || response.statusText);
 						}
 					});
 				}

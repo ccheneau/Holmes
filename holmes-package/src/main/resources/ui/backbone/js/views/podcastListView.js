@@ -27,7 +27,8 @@ var Application = (function(application) {
 		},
 		events : {
 			"click .podcastDlgAddOpen" : "onPodcastDlgAddOpen",
-			"click .podcastDlgEditOpen" : "onPodcastDlgEditOpen",
+			"click a.podcastDlgEditOpen" : "onPodcastDlgEditOpen",
+			"dblclick tr.podcastDlgEditOpen" : "onPodcastDlgEditOpen",
 			"click .podcastDlgClose" : "onPodcastDlgClose",
 			"click .podcastDlgSave" : "onPodcastDlgSave",
 			"click .podcastRemove" : "onPodcastRemove",
@@ -58,7 +59,7 @@ var Application = (function(application) {
 					that.showDialog();
 				},
 				error : function(model,response) {
-					bootbox.alert(response.responseText);
+					bootbox.alert(response.responseText || response.statusText);
 				}
 			});
 			return false;
@@ -94,7 +95,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							$("#messagebox").message({text: response.responseText, type: "error"});
+							$("#messagebox").message({text: response.responseText || response.statusText, type: "error"});
 						}
 					});
 			return false;
@@ -113,7 +114,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							bootbox.alert(response.responseText);
+							bootbox.alert(response.responseText || response.statusText);
 						}
 					});
 				}
