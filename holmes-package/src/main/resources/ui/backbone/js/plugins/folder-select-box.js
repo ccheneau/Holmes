@@ -40,6 +40,7 @@ var folderSelectBox = (function() {
 	    	// build folder dialog
 	    	_folderDialog = $("#folderTree").dialog({
 	    		modal : false ,
+	    		dialogClass : 'modal-dialog',
 	    		autoOpen : false , 
 	    		title : title , 
 	    		height : 300 ,

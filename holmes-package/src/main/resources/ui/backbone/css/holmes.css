@@ -11,28 +11,29 @@ body {
 	width: 10px;
 }
 
-.nav-tabs > li > a {
+.sidebar-nav {
+	width: 230px;
+}
+
+.sidebar-tabs > li > a {
 	background-color: white;
 }
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:visited {
+.sidebar-tabs > .active > a, .sidebar-tabs > .active > a:hover, .sidebar-tabs > .active > a:visited {
     background-color: #0088CC;
     color: #FFFFFF;
     font-weight: bold;
 }
 
-.sidebar-nav {
-	width: 230px;
-}
-.white {
+.white-bg {
 	background-color: white;
 }
 
-.modal-header {
+.movable-header {
 	cursor: move;
 }
 
-.ui-dialog {
+.modal-dialog {
 	z-index: 9999 !important; 
 }
 
