@@ -27,10 +27,18 @@ import net.holmes.core.configuration.Configuration;
 import net.holmes.core.util.inject.Loggable;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.handler.codec.http.HttpChunkAggregator;
+import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
+import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
+import org.jboss.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 
+import com.google.inject.Injector;
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
@@ -44,13 +52,13 @@ public final class HttpServer implements Server {
 
     private ServerBootstrap bootstrap = null;
     private ExecutorService executor = null;
-    private final ChannelPipelineFactory pipelineFactory;
+    private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
-        this.pipelineFactory = pipelineFactory;
+    public HttpServer(Injector injector, WebApplication webApplication, Configuration configuration) {
+        this.injector = injector;
         this.configuration = configuration;
         this.webApplication = webApplication;
     }
@@ -66,7 +74,22 @@ public final class HttpServer implements Server {
         bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(executor, executor));
 
         // Set up the event pipeline factory.
-        bootstrap.setPipelineFactory(pipelineFactory);
+        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+            @Override
+            public ChannelPipeline getPipeline() throws Exception {
+                ChannelPipeline pipeline = Channels.pipeline();
+
+                // Set default handlers
+                pipeline.addLast("decoder", new HttpRequestDecoder());
+                pipeline.addLast("aggregator", new HttpChunkAggregator(65536));
+                pipeline.addLast("encoder", new HttpResponseEncoder());
+                pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
+
+                // Add http channel handler
+                pipeline.addLast("httpChannelHandler", injector.getInstance(SimpleChannelHandler.class));
+                return pipeline;
+            }
+        });
 
         // Bind and start server to accept incoming connections.
         bootstrap.bind(bindAddress);
