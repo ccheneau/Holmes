@@ -41,5 +41,5 @@ public interface BackboneManager {
 
     public Settings getSettings();
 
-    public void updateSettings(Settings settings);
+    public void saveSettings(Settings settings);
 }

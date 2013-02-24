@@ -46,7 +46,7 @@ public class SettingsHandler {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateSettings(Settings settings) {
-        backboneManager.updateSettings(settings);
+    public void saveSettings(Settings settings) {
+        backboneManager.saveSettings(settings);
     }
 }

@@ -109,7 +109,6 @@ public final class BackboneManagerImpl implements BackboneManager {
         }
         configNodes.remove(currentNode);
         configuration.saveConfig();
-
     }
 
     @Override
@@ -119,7 +118,7 @@ public final class BackboneManagerImpl implements BackboneManager {
     }
 
     @Override
-    public void updateSettings(Settings settings) {
+    public void saveSettings(Settings settings) {
         if (Strings.isNullOrEmpty(settings.getServerName())) throw new IllegalArgumentException(bundle.getString("backend.settings.server.name.error"));
         if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < 1024 || settings.getHttpServerPort() > 9999)
             throw new IllegalArgumentException(bundle.getString("backend.settings.http.port.error"));
@@ -146,7 +145,6 @@ public final class BackboneManagerImpl implements BackboneManager {
             File file = new File(folder.getPath());
             if (!file.exists() || !file.canRead() || file.isHidden() || !file.isDirectory())
                 throw new IllegalArgumentException(bundle.getString("backend.folder.path.unknown.error"));
-
         }
     }
 
