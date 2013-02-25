@@ -16,6 +16,20 @@
 */
 package net.holmes.core.http.handler;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.stream.ChunkedFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -28,18 +42,6 @@ import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
 import net.holmes.core.util.inject.Loggable;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
 
 /**
@@ -64,7 +66,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
@@ -84,7 +86,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
             // Get start offset
             long startOffset = 0;
-            String range = request.getHeader(HttpHeaders.Names.RANGE);
+            String range = request.headers().get(HttpHeaders.Names.RANGE);
             if (range != null) {
                 String[] token = range.split("=|-");
                 if (token != null && token.length > 1 && token[0].equals(HttpHeaders.Values.BYTES)) {
@@ -105,18 +107,21 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
             // Build response header
             HttpResponse response = null;
             if (startOffset == 0) {
-                response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+                response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
                 HttpHeaders.setContentLength(response, fileLength);
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
-                response.setHeader(HttpHeaders.Names.ACCEPT_RANGES, HttpHeaders.Values.BYTES);
+                response.headers().add(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
+                response.headers().add(HttpHeaders.Names.ACCEPT_RANGES, HttpHeaders.Values.BYTES);
             } else if (startOffset > 0 && startOffset < fileLength) {
                 response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PARTIAL_CONTENT);
                 HttpHeaders.setContentLength(response, fileLength - startOffset);
-                response.setHeader(HttpHeaders.Names.CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
+                response.headers().add(HttpHeaders.Names.CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
             } else {
                 throw new HttpRequestException("Invalid start offset", HttpResponseStatus.BAD_REQUEST);
             }
-            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+            if (HttpHeaders.isKeepAlive(request)) {
+                response.headers().add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+            }
+            response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
             // Write the response.
             channel.write(response);
@@ -144,7 +149,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     private ContentNode getContentNode(String uri) {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
-        String contentId = decoder.getParameters().get("id").get(0);
+        String contentId = decoder.parameters().get("id").get(0);
 
         if (logger.isDebugEnabled()) logger.debug("file Id :{}", contentId);
 

@@ -16,7 +16,7 @@
 */
 package net.holmes.core.http.handler;
 
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 public final class HttpRequestException extends Exception {
     private static final long serialVersionUID = 1022835130881123877L;

@@ -16,7 +16,22 @@
 */
 package net.holmes.core.http;
 
-import java.io.IOException;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundMessageHandlerAdapter;
+import io.netty.handler.codec.TooLongFrameException;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.util.CharsetUtil;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -29,31 +44,13 @@ import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.util.inject.Loggable;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ExceptionEvent;
-import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.handler.codec.frame.TooLongFrameException;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-import org.jboss.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 
 /**
- * HttpChannelHandler redirect Http requests to proper handler
+ * HttpChannelHandler redirect HTTP requests to proper handler
  */
 @Loggable
-public final class HttpChannelHandler extends SimpleChannelHandler {
+public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapter<FullHttpRequest> {
     private Logger logger;
 
     private final HttpRequestHandler contentRequestHandler;
@@ -69,21 +66,18 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws IOException {
-        HttpRequest request = (HttpRequest) e.getMessage();
+    protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("[START] messageReceived event:" + e);
-            logger.debug("Request uri: {}", request.getUri());
-            for (Entry<String, String> entry : request.getHeaders()) {
+            logger.debug("[START] messageReceived url:{}", request.getUri());
+            for (Entry<String, String> entry : request.headers()) {
                 logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
             }
 
             if (request.getMethod().equals(HttpMethod.POST)) {
-                ChannelBuffer content = request.getContent();
-                if (content.readable()) {
-                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + content.toString(Charset.forName("utf-8")));
-                    Map<String, List<String>> params = queryStringDecoder.getParameters();
+                if (request.data().isReadable()) {
+                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.data().toString(Charset.forName("utf-8")));
+                    Map<String, List<String>> params = queryStringDecoder.parameters();
                     if (params != null) {
                         for (Entry<String, List<String>> entry : params.entrySet()) {
                             logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
@@ -93,12 +87,12 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
             }
         }
 
-        String requestPath = new QueryStringDecoder(request.getUri()).getPath();
+        String requestPath = new QueryStringDecoder(request.getUri()).path();
         try {
             // Dispatch request to proper handler
-            if (contentRequestHandler.canProcess(requestPath, request.getMethod())) contentRequestHandler.processRequest(request, e.getChannel());
-            else if (backendRequestHandler.canProcess(requestPath, request.getMethod())) backendRequestHandler.processRequest(request, e.getChannel());
-            else if (uiRequestHandler.canProcess(requestPath, request.getMethod())) uiRequestHandler.processRequest(request, e.getChannel());
+            if (contentRequestHandler.canProcess(requestPath, request.getMethod())) contentRequestHandler.processRequest(request, ctx.channel());
+            else if (backendRequestHandler.canProcess(requestPath, request.getMethod())) backendRequestHandler.processRequest(request, ctx.channel());
+            else if (uiRequestHandler.canProcess(requestPath, request.getMethod())) uiRequestHandler.processRequest(request, ctx.channel());
             else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
 
         } catch (HttpRequestException ex) {
@@ -109,28 +103,25 @@ public final class HttpChannelHandler extends SimpleChannelHandler {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext context, ExceptionEvent event) throws Exception {
-        Channel channel = event.getChannel();
-        if (event.getCause() instanceof TooLongFrameException) {
-            sendError(context, HttpResponseStatus.BAD_REQUEST);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        if (cause instanceof TooLongFrameException) {
+            sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
         }
-
-        if (channel.isConnected() && !event.getFuture().isSuccess()) {
-            sendError(context, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
+        if (logger.isDebugEnabled()) logger.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
+        if (ctx.channel().isActive()) sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
     }
 
     private void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
         // Build error response
-        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
-        response.setHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        ChannelBuffer buffer = ChannelBuffers.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
-        response.setContent(buffer);
+        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buffer);
+        response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
-        if (logger.isDebugEnabled()) logger.debug("sendError: {}", buffer);
+        if (logger.isDebugEnabled()) logger.debug("sendError: {}", status.toString());
 
         // Close the connection as soon as the error message is sent.
-        context.getChannel().write(response).addListener(ChannelFutureListener.CLOSE);
+        context.channel().write(response).addListener(ChannelFutureListener.CLOSE);
     }
+
 }
