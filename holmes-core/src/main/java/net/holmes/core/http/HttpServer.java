@@ -18,10 +18,17 @@ package net.holmes.core.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.channel.ChannelInboundMessageHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 import java.net.InetSocketAddress;
 
@@ -68,7 +75,18 @@ public final class HttpServer implements Server {
         bootstrap.group(new NioEventLoopGroup()) //
                 .channel(NioServerSocketChannel.class) //
                 .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.HEAP_BY_DEFAULT) //
-                .childHandler(injector.getInstance(ChannelInitializer.class));
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline pipeline = ch.pipeline();
+                        pipeline.addLast("decoder", new HttpRequestDecoder()) //
+                                .addLast("aggregator", new HttpObjectAggregator(65536))//
+                                .addLast("encoder", new HttpResponseEncoder())//
+                                .addLast("chunkedWriter", new ChunkedWriteHandler())//
+                                // Add HTTP request handler
+                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundMessageHandler.class));
+                    }
+                });
 
         // Bind and start server to accept incoming connections.
         try {

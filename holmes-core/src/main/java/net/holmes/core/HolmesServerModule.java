@@ -17,13 +17,11 @@
 package net.holmes.core;
 
 import io.netty.channel.ChannelInboundMessageHandler;
-import io.netty.channel.ChannelInitializer;
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.XmlConfigurationImpl;
 import net.holmes.core.http.HttpChannelHandler;
-import net.holmes.core.http.HttpChannelInitializer;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
@@ -88,7 +86,6 @@ public final class HolmesServerModule extends AbstractModule {
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
-        bind(ChannelInitializer.class).to(HttpChannelInitializer.class);
         bind(ChannelInboundMessageHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
