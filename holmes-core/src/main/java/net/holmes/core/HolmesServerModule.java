@@ -16,13 +16,13 @@
 */
 package net.holmes.core;
 
+import io.netty.channel.ChannelInboundMessageHandler;
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.XmlConfigurationImpl;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.HttpServerPipelineFactory;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
@@ -45,10 +45,6 @@ import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.fourthline.cling.UpnpService;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.DefaultChannelGroup;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
@@ -90,9 +86,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
-        bind(ChannelPipelineFactory.class).to(HttpServerPipelineFactory.class);
-        bind(ChannelGroup.class).to(DefaultChannelGroup.class).in(Singleton.class);
-        bind(SimpleChannelHandler.class).to(HttpChannelHandler.class);
+        bind(ChannelInboundMessageHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);

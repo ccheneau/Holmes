@@ -75,6 +75,7 @@ public class Systray implements Server {
 
     @Override
     public void stop() {
+        // Nothing
     }
 
     private boolean initUI() {
@@ -157,7 +158,7 @@ public class Systray implements Server {
             }
         });
 
-        // Holmes ui menu item
+        // Holmes site menu item
         JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"));
         holmesSiteItem.addActionListener(new ActionListener() {
             @Override
@@ -174,9 +175,28 @@ public class Systray implements Server {
             }
         });
 
+        // Holmes wiki menu item
+        JMenuItem holmesWikiItem = new JMenuItem(bundle.getString("systray.holmes.wiki"));
+        holmesWikiItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://github.com/ccheneau/Holmes/wiki"));
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    } catch (URISyntaxException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+            }
+        });
+
         // Add items to popup menu
         popupMenu.add(holmesUiItem);
+        popupMenu.addSeparator();
         popupMenu.add(holmesSiteItem);
+        popupMenu.add(holmesWikiItem);
         popupMenu.add(logsItem);
         popupMenu.addSeparator();
         popupMenu.add(quitItem);

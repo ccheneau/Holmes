@@ -18,7 +18,7 @@
 package net.holmes.core.backend.backbone.handler;
 
 import javax.inject.Inject;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -45,8 +45,8 @@ public class SettingsHandler {
     }
 
     @POST
-    public void updateSettings(@FormParam("serverName") String serverName, @FormParam("httpServerPort") Integer httpServerPort,
-            @FormParam("prependPodcastItem") Boolean prependPodcastItem, @FormParam("enableExternalSubtitles") Boolean enableExternalSubtitles) {
-        backboneManager.updateSettings(new Settings(serverName, httpServerPort, prependPodcastItem, enableExternalSubtitles));
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void saveSettings(Settings settings) {
+        backboneManager.saveSettings(settings);
     }
 }

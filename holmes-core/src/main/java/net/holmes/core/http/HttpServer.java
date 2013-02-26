@@ -16,9 +16,21 @@
 */
 package net.holmes.core.http;
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.channel.ChannelInboundMessageHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.stream.ChunkedWriteHandler;
+
 import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -26,11 +38,9 @@ import net.holmes.core.Server;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.util.inject.Loggable;
 
-import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 
+import com.google.inject.Injector;
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
@@ -42,17 +52,17 @@ public final class HttpServer implements Server {
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
-    private ServerBootstrap bootstrap = null;
-    private ExecutorService executor = null;
-    private final ChannelPipelineFactory pipelineFactory;
+    private final ServerBootstrap bootstrap;
+    private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
 
     @Inject
-    public HttpServer(ChannelPipelineFactory pipelineFactory, WebApplication webApplication, Configuration configuration) {
-        this.pipelineFactory = pipelineFactory;
+    public HttpServer(Injector injector, WebApplication webApplication, Configuration configuration) {
+        this.injector = injector;
         this.configuration = configuration;
         this.webApplication = webApplication;
+        this.bootstrap = new ServerBootstrap();
     }
 
     @Override
@@ -62,14 +72,28 @@ public final class HttpServer implements Server {
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
         // Configure the server.
-        executor = Executors.newCachedThreadPool();
-        bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(executor, executor));
-
-        // Set up the event pipeline factory.
-        bootstrap.setPipelineFactory(pipelineFactory);
+        bootstrap.group(new NioEventLoopGroup()) //
+                .channel(NioServerSocketChannel.class) //
+                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.HEAP_BY_DEFAULT) //
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline pipeline = ch.pipeline();
+                        pipeline.addLast("decoder", new HttpRequestDecoder()) //
+                                .addLast("aggregator", new HttpObjectAggregator(65536))//
+                                .addLast("encoder", new HttpResponseEncoder())//
+                                .addLast("chunkedWriter", new ChunkedWriteHandler())//
+                                // Add HTTP request handler
+                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundMessageHandler.class));
+                    }
+                });
 
         // Bind and start server to accept incoming connections.
-        bootstrap.bind(bindAddress);
+        try {
+            bootstrap.bind(bindAddress).sync();
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage(), e);
+        }
 
         logger.info("HTTP server bound on " + bindAddress);
     }
@@ -79,8 +103,7 @@ public final class HttpServer implements Server {
         logger.info("Stopping HTTP server");
 
         // Stop the server
-        if (bootstrap != null) bootstrap.shutdown();
-        if (executor != null) executor.shutdown();
+        bootstrap.shutdown();
         webApplication.destroy();
 
         logger.info("HTTP server stopped");

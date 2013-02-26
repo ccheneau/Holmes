@@ -16,6 +16,19 @@
 */
 package net.holmes.core.http.handler;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.stream.ChunkedFile;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,18 +43,6 @@ import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-import org.jboss.netty.handler.stream.ChunkedFile;
 import org.slf4j.Logger;
 
 /**
@@ -68,12 +69,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        String fileName = decoder.getPath();
+        String fileName = decoder.path();
         if ("/".equals(fileName)) {
             fileName = "/" + configuration.getTheme() + "/index.html";
         }
@@ -95,14 +96,16 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             RandomAccessFile raf = new RandomAccessFile(file, "r");
 
             // Define response header
-            HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
-            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+            response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
             if (mimeType != null) {
-                response.setHeader(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
+                response.headers().add(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
             }
-
+            if (HttpHeaders.isKeepAlive(request)) {
+                response.headers().add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+            }
             // Write the response header.
             channel.write(response);
 

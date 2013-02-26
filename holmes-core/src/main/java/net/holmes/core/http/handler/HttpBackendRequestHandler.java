@@ -16,6 +16,19 @@
 */
 package net.holmes.core.http.handler;
 
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -28,19 +41,6 @@ import javax.inject.Inject;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.util.inject.Loggable;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBufferInputStream;
-import org.jboss.netty.buffer.ChannelBufferOutputStream;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-import org.jboss.netty.handler.codec.http.HttpResponse;
-import org.jboss.netty.handler.codec.http.HttpResponseStatus;
-import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.slf4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -72,17 +72,17 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
             // Build backend request
             StringBuilder base = new StringBuilder();
-            base.append("http://").append(request.getHeader(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
+            base.append("http://").append(request.headers().get(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
             final URI baseUri = new URI(base.toString());
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
-            final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().getName(), baseUri, requestUri,
-                    getHeaders(request), new ChannelBufferInputStream(request.getContent()));
+            final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().name(), baseUri, requestUri, getHeaders(request),
+                    new ByteBufInputStream(request.data()));
 
             // Process backend request
             webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
@@ -98,8 +98,8 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private InBoundHeaders getHeaders(HttpRequest request) {
         InBoundHeaders headers = new InBoundHeaders();
 
-        for (String name : request.getHeaderNames()) {
-            headers.put(name, request.getHeaders(name));
+        for (Entry<String, String> header : request.headers()) {
+            headers.add(header.getKey(), header.getValue());
         }
         return headers;
     }
@@ -111,7 +111,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private final static class BackendResponseWriter implements ContainerResponseWriter {
 
         private final Channel channel;
-        private HttpResponse response;
+        private FullHttpResponse response;
 
         private BackendResponseWriter(Channel channel) {
             this.channel = channel;
@@ -120,18 +120,16 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         @Override
         public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException {
             // Set http headers
-            response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
+            response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = Lists.newArrayList();
                 for (Object v : headerEntry.getValue())
                     values.add(ContainerResponse.getHeaderValue(v));
-                response.setHeader(headerEntry.getKey(), values);
+                response.headers().add(headerEntry.getKey(), values);
             }
-            response.setHeader(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+            response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-            response.setContent(buffer);
-            return new ChannelBufferOutputStream(buffer);
+            return new ByteBufOutputStream(response.data());
         }
 
         @Override

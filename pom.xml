@@ -31,6 +31,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4j.version>1.7.2</slf4j.version>
+		<cling.version>2.0-alpha2</cling.version>
+		<jersey.version>1.17</jersey.version>
+		<guava.version>14.0-rc3</guava.version>
+		<junit.version>4.11</junit.version>
+		<netty.version>4.0.0.Beta1</netty.version>
+		<log4j.version>1.2.17</log4j.version>
+		<xstream.version>1.4.4</xstream.version>
+		<guice.version>3.0</guice.version>
+		<rome.version>1.0</rome.version>
 	</properties>
 
 	<build>
@@ -106,25 +116,50 @@
 			<!-- netty -->
 			<dependency>
 				<groupId>io.netty</groupId>
-				<artifactId>netty</artifactId>
-				<version>3.6.2.Final</version>
+				<artifactId>netty-common</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-buffer</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-transport</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-codec</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-codec-http</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-handler</artifactId>
+				<version>${netty.version}</version>
 			</dependency>
 
 			<!-- slf4j -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.2</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
-				<version>1.7.2</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.2</version>
+				<version>${slf4j.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 
@@ -132,7 +167,7 @@
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
+				<version>${log4j.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.jms</groupId>
@@ -157,21 +192,21 @@
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
-				<version>1.4.4</version>
+				<version>${xstream.version}</version>
 			</dependency>
 
 			<!-- guice -->
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<version>3.0</version>
+				<version>${guice.version}</version>
 			</dependency>
 
 			<!-- cling -->
 			<dependency>
 				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-core</artifactId>
-				<version>2.0-alpha2</version>
+				<version>${cling.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.sun</groupId>
@@ -182,7 +217,7 @@
 			<dependency>
 				<groupId>org.fourthline.cling</groupId>
 				<artifactId>cling-support</artifactId>
-				<version>2.0-alpha2</version>
+				<version>${cling.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.seamless</groupId>
@@ -195,29 +230,29 @@
 			<dependency>
 				<groupId>rome</groupId>
 				<artifactId>rome</artifactId>
-				<version>1.0</version>
+				<version>${rome.version}</version>
 			</dependency>
 
 			<!-- jersey -->
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>1.17</version>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-core</artifactId>
-				<version>1.17</version>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-json</artifactId>
-				<version>1.17</version>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-guice</artifactId>
-				<version>1.17</version>
+				<version>${jersey.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.google.inject.extensions</groupId>
@@ -234,14 +269,14 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>14.0-rc3</version>
+				<version>${guava.version}</version>
 			</dependency>
 
 			<!-- test dependencies -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

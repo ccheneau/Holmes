@@ -23,6 +23,7 @@ yepnope({
 		audioFolder : '/backbone/js/models/audioFolder.js',
 		pictureFolder : '/backbone/js/models/pictureFolder.js',
 		podcast : '/backbone/js/models/podcast.js',
+		settings : '/backbone/js/models/settings.js',
 
 		// view controllers
 		defaultView : '/backbone/js/views/defaultView.js',

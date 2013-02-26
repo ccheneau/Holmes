@@ -17,9 +17,9 @@
 package net.holmes.core.http.handler;
 
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.jboss.netty.handler.codec.http.HttpRequest;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
 
 public interface HttpRequestHandler {
 
@@ -31,5 +31,5 @@ public interface HttpRequestHandler {
     /**
      * Process request
      */
-    public void processRequest(HttpRequest request, Channel channel) throws HttpRequestException;
+    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
 }
