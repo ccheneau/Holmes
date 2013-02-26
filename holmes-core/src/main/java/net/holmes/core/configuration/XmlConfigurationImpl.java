@@ -32,6 +32,7 @@ import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -192,9 +193,9 @@ public final class XmlConfigurationImpl implements Configuration {
          * Check config default values
          */
         public void checkDefaultValues() {
-            if (this.upnpServerName == null) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
-            if (this.httpServerPort == null) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
-            if (this.theme == null) this.theme = DEFAULT_THEME;
+            if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
+            if (this.httpServerPort == null || this.httpServerPort <= 1024) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
+            if (Strings.isNullOrEmpty(this.theme)) this.theme = DEFAULT_THEME;
             if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
             if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
             if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
