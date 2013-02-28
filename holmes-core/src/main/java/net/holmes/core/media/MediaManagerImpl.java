@@ -38,6 +38,7 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
+import net.holmes.core.media.node.RootNode;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.bundle.Bundle;
@@ -326,36 +327,5 @@ public final class MediaManagerImpl implements MediaManager {
 
         }
         return node;
-    }
-
-    public enum RootNode {
-        ROOT("0", "-1"), //
-        VIDEO("1_VIDEOS", "0"), //
-        PICTURE("2_PICTURES", "0"), //
-        AUDIO("3_AUDIOS", "0"), //
-        PODCAST("4_PODCASTS", "0");
-
-        private String id;
-        private String parentId;
-
-        private RootNode(String id, String parentId) {
-            this.id = id;
-            this.parentId = parentId;
-        }
-
-        public String getId() {
-            return this.id;
-        }
-
-        public String getParentId() {
-            return this.parentId;
-        }
-
-        public static RootNode getById(String id) {
-            for (RootNode rootNode : RootNode.values()) {
-                if (rootNode.id.equals(id)) return rootNode;
-            }
-            return null;
-        }
     }
 }

@@ -24,5 +24,7 @@ public interface MediaIndexManager {
 
     public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath);
 
+    public void remove(String uuid);
+
     public void clean();
 }

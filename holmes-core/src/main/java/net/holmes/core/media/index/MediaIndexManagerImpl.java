@@ -17,10 +17,11 @@
 package net.holmes.core.media.index;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import net.holmes.core.media.node.RootNode;
 import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
@@ -65,20 +66,41 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
+    public void remove(String uuid) {
+        if (elements.get(uuid) != null) {
+            elements.remove(uuid);
+        }
+    }
+
+    @Override
     public void clean() {
-        List<String> toRemove = Lists.newArrayList();
+        String elId = null;
+        MediaIndexElement elValue = null;
+        Collection<String> toRemove = Lists.newArrayList();
+
+        // Search elements to remove
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
-            if (indexEntry.getValue().isLocalPath()) {
-                if (!new File(indexEntry.getValue().getPath()).exists()) {
-                    toRemove.add(indexEntry.getKey());
-                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index", indexEntry.getValue().getPath());
+            elId = indexEntry.getKey();
+            elValue = indexEntry.getValue();
+            if (RootNode.getById(elId) == null) {
+                // Check parent id is still in index (only for non root nodes)
+                if (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId())) {
+                    toRemove.add(elId);
+                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
+                }
+            }
+            // Check element is still on file system
+            else if (elValue.isLocalPath()) {
+                if (!new File(elValue.getPath()).exists()) {
+                    toRemove.add(elId);
+                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
                 }
             }
         }
-        if (!toRemove.isEmpty()) {
-            for (String indexkey : toRemove) {
-                elements.remove(indexkey);
-            }
+
+        // Remove elements
+        for (String id : toRemove) {
+            elements.remove(id);
         }
     }
 }
