@@ -170,6 +170,11 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
+    public Integer getIntParameter(Parameter prop) {
+        return this.rootNode.getIntParameter(prop);
+    }
+
+    @Override
     public void setParameter(Parameter param, Boolean value) {
         this.rootNode.setParameter(param, value);
     }
@@ -249,7 +254,13 @@ public final class XmlConfigurationImpl implements Configuration {
         public Boolean getParameter(Parameter param) {
             String value = (String) this.parameters.get(param.getName());
             if (value == null) value = param.getDefaultValue();
-            return Boolean.parseBoolean(value);
+            return Boolean.valueOf(value);
+        }
+
+        public Integer getIntParameter(Parameter param) {
+            String value = (String) this.parameters.get(param.getName());
+            if (value == null) value = param.getDefaultValue();
+            return Integer.valueOf(value);
         }
 
         public void setParameter(Parameter param, Boolean value) {

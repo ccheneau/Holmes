@@ -56,6 +56,8 @@ public interface Configuration {
 
     public Boolean getParameter(Parameter param);
 
+    public Integer getIntParameter(Parameter prop);
+
     public void setParameter(Parameter param, Boolean value);
 
     public String getTheme();

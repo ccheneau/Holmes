@@ -113,6 +113,11 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
+    public Integer getIntParameter(Parameter prop) {
+        return 0;
+    }
+
+    @Override
     public void setParameter(Parameter param, Boolean value) {
     }
 

@@ -79,8 +79,8 @@ public final class MediaManagerImpl implements MediaManager {
 
         // Initialize podcast cache
         this.podcastCache = CacheBuilder.newBuilder() //
-                .maximumSize(50) //
-                .expireAfterWrite(2, TimeUnit.HOURS) //
+                .maximumSize(configuration.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS)) //
+                .expireAfterWrite(configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS) //
                 .build();
     }
 
