@@ -16,6 +16,8 @@
 */
 package net.holmes.core.backend.backbone.handler;
 
+import static net.holmes.core.media.node.RootNode.VIDEO;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -31,38 +33,35 @@ import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
-import net.holmes.core.configuration.Configuration;
 
 @Path("/backend/backbone/videoFolders")
 public class VideoFoldersHandler {
 
-    private final Configuration configuration;
     private final BackboneManager backboneManager;
 
     @Inject
-    public VideoFoldersHandler(Configuration configuration, BackboneManager backboneManager) {
+    public VideoFoldersHandler(BackboneManager backboneManager) {
         this.backboneManager = backboneManager;
-        this.configuration = configuration;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getVideoFolders() {
-        return backboneManager.getFolders(configuration.getVideoFolders());
+        return backboneManager.getFolders(VIDEO);
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getVideoFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getVideoFolders(), false);
+        return backboneManager.getFolder(id, VIDEO);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addVideoFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getVideoFolders(), false);
+        backboneManager.addFolder(folder, VIDEO);
         return folder;
     }
 
@@ -71,7 +70,7 @@ public class VideoFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editVideoFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getVideoFolders(), false);
+        backboneManager.editFolder(id, folder, VIDEO);
         return folder;
     }
 
@@ -80,7 +79,7 @@ public class VideoFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removeVideoFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getVideoFolders(), false);
+        backboneManager.removeFolder(id, VIDEO);
         return new ConfigurationFolder(id, null, null);
     }
 }

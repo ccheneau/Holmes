@@ -18,26 +18,27 @@ package net.holmes.core.configuration;
 
 import java.io.File;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
+
+import net.holmes.core.media.node.RootNode;
 
 import com.google.common.collect.Lists;
 
 public class TestConfiguration implements Configuration {
 
-    private LinkedList<ConfigurationNode> videoFolders;
-    private LinkedList<ConfigurationNode> pictureFolders;
-    private LinkedList<ConfigurationNode> audioFolders;
-    private LinkedList<ConfigurationNode> podcasts;
+    private List<ConfigurationNode> videoFolders;
+    private List<ConfigurationNode> pictureFolders;
+    private List<ConfigurationNode> audioFolders;
+    private List<ConfigurationNode> podcasts;
 
     public TestConfiguration() {
-        videoFolders = Lists.newLinkedList();
+        videoFolders = Lists.newArrayList();
         videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
-        audioFolders = Lists.newLinkedList();
+        audioFolders = Lists.newArrayList();
         audioFolders.add(getTestContentFolder("audiosTest", "/audiosTest/"));
-        pictureFolders = Lists.newLinkedList();
+        pictureFolders = Lists.newArrayList();
         pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
-        podcasts = Lists.newLinkedList();
+        podcasts = Lists.newArrayList();
         podcasts.add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
     }
 
@@ -88,23 +89,26 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public List<ConfigurationNode> getVideoFolders() {
-        return this.videoFolders;
-    }
+    public List<ConfigurationNode> getFolders(RootNode rootNode) {
+        List<ConfigurationNode> folders = null;
+        switch (rootNode) {
+        case AUDIO:
+            folders = this.audioFolders;
+            break;
+        case PICTURE:
+            folders = this.pictureFolders;
+            break;
+        case PODCAST:
+            folders = this.podcasts;
+            break;
+        case VIDEO:
+            folders = this.videoFolders;
+            break;
 
-    @Override
-    public List<ConfigurationNode> getPodcasts() {
-        return this.podcasts;
-    }
-
-    @Override
-    public List<ConfigurationNode> getAudioFolders() {
-        return this.audioFolders;
-    }
-
-    @Override
-    public List<ConfigurationNode> getPictureFolders() {
-        return this.pictureFolders;
+        default:
+            break;
+        }
+        return folders;
     }
 
     @Override

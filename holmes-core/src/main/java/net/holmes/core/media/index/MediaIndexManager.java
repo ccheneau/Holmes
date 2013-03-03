@@ -20,11 +20,13 @@ public interface MediaIndexManager {
 
     public MediaIndexElement get(String uuid);
 
-    public String add(String parentId, String mediaType, String path, String name, boolean localPath);
+    public String add(MediaIndexElement element);
 
-    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath);
+    public void put(String uuid, MediaIndexElement element);
 
     public void remove(String uuid);
+
+    public void removeChilds(String uuid);
 
     public void clean();
 }

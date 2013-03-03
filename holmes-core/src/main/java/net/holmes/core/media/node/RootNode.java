@@ -17,20 +17,23 @@
 
 package net.holmes.core.media.node;
 
+import net.holmes.core.media.MediaType;
 
 public enum RootNode {
-    ROOT("0", "-1"), //
-    VIDEO("1_VIDEOS", "0"), //
-    PICTURE("2_PICTURES", "0"), //
-    AUDIO("3_AUDIOS", "0"), //
-    PODCAST("4_PODCASTS", "0");
+    ROOT("0", "-1", null), //
+    VIDEO("1_VIDEOS", "0", MediaType.TYPE_VIDEO), //
+    PICTURE("2_PICTURES", "0", MediaType.TYPE_IMAGE), //
+    AUDIO("3_AUDIOS", "0", MediaType.TYPE_AUDIO), //
+    PODCAST("4_PODCASTS", "0", MediaType.TYPE_PODCAST);
 
     private String id;
     private String parentId;
+    private MediaType mediaType;
 
-    private RootNode(String id, String parentId) {
+    private RootNode(String id, String parentId, MediaType mediaType) {
         this.id = id;
         this.parentId = parentId;
+        this.mediaType = mediaType;
     }
 
     public String getId() {
@@ -39,6 +42,10 @@ public enum RootNode {
 
     public String getParentId() {
         return this.parentId;
+    }
+
+    public MediaType getMediaType() {
+        return this.mediaType;
     }
 
     public static RootNode getById(String id) {

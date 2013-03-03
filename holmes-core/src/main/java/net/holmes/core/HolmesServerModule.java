@@ -17,6 +17,9 @@
 package net.holmes.core;
 
 import io.netty.channel.ChannelInboundMessageHandler;
+
+import java.util.concurrent.Executors;
+
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
@@ -36,8 +39,8 @@ import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
+import net.holmes.core.util.inject.CustomTypeListener;
 import net.holmes.core.util.inject.LocalIPv4Provider;
-import net.holmes.core.util.inject.LoggerTypeListener;
 import net.holmes.core.util.inject.UiDirectoryProvider;
 import net.holmes.core.util.inject.UpnpServiceProvider;
 import net.holmes.core.util.inject.WebApplicationProvider;
@@ -46,6 +49,8 @@ import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.fourthline.cling.UpnpService;
 
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -54,14 +59,15 @@ import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
 
 public final class HolmesServerModule extends AbstractModule {
+    //    private EventBus eventBus = new EventBus("Holmes EventBus");
+    private EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
 
     @Override
     protected void configure() {
 
-        // Bind slf4j loggers
-        bindListener(Matchers.any(), new LoggerTypeListener());
-
-        // Bind configuration
+        // Bind utils
+        bind(EventBus.class).toInstance(eventBus);
+        bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
         bind(String.class).annotatedWith(Names.named("localIPv4")).toProvider(LocalIPv4Provider.class).in(Singleton.class);

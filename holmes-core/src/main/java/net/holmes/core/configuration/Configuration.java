@@ -18,6 +18,8 @@ package net.holmes.core.configuration;
 
 import java.util.List;
 
+import net.holmes.core.media.node.RootNode;
+
 /**
  * Holmes configuration contains:
  * <ul>
@@ -46,13 +48,7 @@ public interface Configuration {
 
     public void setHttpServerPort(Integer httpServerPort);
 
-    public List<ConfigurationNode> getVideoFolders();
-
-    public List<ConfigurationNode> getPodcasts();
-
-    public List<ConfigurationNode> getAudioFolders();
-
-    public List<ConfigurationNode> getPictureFolders();
+    public List<ConfigurationNode> getFolders(RootNode rootNode);
 
     public Boolean getParameter(Parameter param);
 

@@ -16,6 +16,8 @@
 */
 package net.holmes.core.backend.backbone.handler;
 
+import static net.holmes.core.media.node.RootNode.PICTURE;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -31,38 +33,35 @@ import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
-import net.holmes.core.configuration.Configuration;
 
 @Path("/backend/backbone/pictureFolders")
 public class PictureFoldersHandler {
 
-    private final Configuration configuration;
     private final BackboneManager backboneManager;
 
     @Inject
-    public PictureFoldersHandler(Configuration configuration, BackboneManager backboneManager) {
+    public PictureFoldersHandler(BackboneManager backboneManager) {
         this.backboneManager = backboneManager;
-        this.configuration = configuration;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPictureFolders() {
-        return backboneManager.getFolders(configuration.getPictureFolders());
+        return backboneManager.getFolders(PICTURE);
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getPictureFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getPictureFolders(), false);
+        return backboneManager.getFolder(id, PICTURE);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addPictureFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getPictureFolders(), false);
+        backboneManager.addFolder(folder, PICTURE);
         return folder;
     }
 
@@ -71,7 +70,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editPictureFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getPictureFolders(), false);
+        backboneManager.editFolder(id, folder, PICTURE);
         return folder;
     }
 
@@ -80,7 +79,7 @@ public class PictureFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removePictureFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getPictureFolders(), false);
+        backboneManager.removeFolder(id, PICTURE);
         return new ConfigurationFolder(id, null, null);
     }
 }

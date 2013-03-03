@@ -15,30 +15,18 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.backend.backbone;
+package net.holmes.core.media.index;
 
-import java.util.Collection;
-
-import net.holmes.core.backend.backbone.response.ConfigurationFolder;
-import net.holmes.core.backend.backbone.response.Settings;
+import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.media.node.RootNode;
 
 /**
- * Manager for requests coming from backbone UI
+ * Factory for media index elements
  */
-public interface BackboneManager {
+public class MediaIndexElementFactory {
 
-    public Collection<ConfigurationFolder> getFolders(RootNode rootNode);
-
-    public ConfigurationFolder getFolder(String id, RootNode rootNode);
-
-    public void addFolder(ConfigurationFolder folder, RootNode rootNode);
-
-    public void editFolder(String id, ConfigurationFolder folder, RootNode rootNode);
-
-    public void removeFolder(String id, RootNode rootNode);
-
-    public Settings getSettings();
-
-    public void saveSettings(Settings settings);
+    public static MediaIndexElement get(RootNode rootNode, ConfigurationNode configNode) {
+        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),
+                rootNode != RootNode.PODCAST);
+    }
 }

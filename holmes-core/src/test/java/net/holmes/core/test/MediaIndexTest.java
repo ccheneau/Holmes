@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
+import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
 
 import org.junit.Before;
@@ -44,11 +45,11 @@ public class MediaIndexTest extends TestCase {
      */
     @Test
     public void testAddMediaIndex() {
-        String uuid1 = mediaIndex.add("parentId", "mediaType", "path", "name", true);
-        String uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name", true);
+        String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
+        String uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
         assertEquals(uuid1, uuid2);
 
-        uuid2 = mediaIndex.add("parentId", "mediaType", "path", "name2", true);
+        uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name2", true));
         assertFalse(uuid1.equals(uuid2));
     }
 }

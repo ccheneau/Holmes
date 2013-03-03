@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import net.holmes.core.media.node.RootNode;
 import net.holmes.core.util.SystemUtils;
 import net.holmes.core.util.inject.Loggable;
 
@@ -145,23 +146,26 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public List<ConfigurationNode> getVideoFolders() {
-        return this.rootNode.getVideoFolders();
-    }
+    public List<ConfigurationNode> getFolders(RootNode rootNode) {
+        List<ConfigurationNode> folders = null;
+        switch (rootNode) {
+        case AUDIO:
+            folders = this.rootNode.getAudioFolders();
+            break;
+        case PICTURE:
+            folders = this.rootNode.getPictureFolders();
+            break;
+        case PODCAST:
+            folders = this.rootNode.getPodcasts();
+            break;
+        case VIDEO:
+            folders = this.rootNode.getVideoFolders();
+            break;
 
-    @Override
-    public List<ConfigurationNode> getPodcasts() {
-        return this.rootNode.getPodcasts();
-    }
-
-    @Override
-    public List<ConfigurationNode> getAudioFolders() {
-        return this.rootNode.getAudioFolders();
-    }
-
-    @Override
-    public List<ConfigurationNode> getPictureFolders() {
-        return this.rootNode.getPictureFolders();
+        default:
+            break;
+        }
+        return folders;
     }
 
     @Override

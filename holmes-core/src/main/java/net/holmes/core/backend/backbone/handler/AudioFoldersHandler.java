@@ -16,6 +16,8 @@
 */
 package net.holmes.core.backend.backbone.handler;
 
+import static net.holmes.core.media.node.RootNode.AUDIO;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -31,38 +33,35 @@ import javax.ws.rs.core.MediaType;
 
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
-import net.holmes.core.configuration.Configuration;
 
 @Path("/backend/backbone/audioFolders")
 public class AudioFoldersHandler {
 
-    private final Configuration configuration;
     private final BackboneManager backboneManager;
 
     @Inject
-    public AudioFoldersHandler(Configuration configuration, BackboneManager backboneManager) {
+    public AudioFoldersHandler(BackboneManager backboneManager) {
         this.backboneManager = backboneManager;
-        this.configuration = configuration;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
-        return backboneManager.getFolders(configuration.getAudioFolders());
+        return backboneManager.getFolders(AUDIO);
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder getAudioFolder(@PathParam("id") String id) {
-        return backboneManager.getFolder(id, configuration.getAudioFolders(), false);
+        return backboneManager.getFolder(id, AUDIO);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder addAudioFolder(ConfigurationFolder folder) {
-        backboneManager.addFolder(folder, configuration.getAudioFolders(), false);
+        backboneManager.addFolder(folder, AUDIO);
         return folder;
     }
 
@@ -71,7 +70,7 @@ public class AudioFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder editAudioFolder(@PathParam("id") String id, ConfigurationFolder folder) {
-        backboneManager.editFolder(id, folder, configuration.getAudioFolders(), false);
+        backboneManager.editFolder(id, folder, AUDIO);
         return folder;
     }
 
@@ -80,7 +79,7 @@ public class AudioFoldersHandler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ConfigurationFolder removeAudioFolder(@PathParam("id") String id) {
-        backboneManager.removeFolder(id, configuration.getAudioFolders(), false);
+        backboneManager.removeFolder(id, AUDIO);
         return new ConfigurationFolder(id, null, null);
     }
 }

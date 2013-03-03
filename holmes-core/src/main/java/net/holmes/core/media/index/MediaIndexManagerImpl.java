@@ -35,11 +35,11 @@ import com.google.common.collect.Maps;
 public class MediaIndexManagerImpl implements MediaIndexManager {
     private Logger logger;
 
-    private BiMap<String, MediaIndexElement> elements;
+    private final BiMap<String, MediaIndexElement> elements;
 
     public MediaIndexManagerImpl() {
-        elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
-        //elements = HashBiMap.create();
+        this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
+        //this.elements = HashBiMap.create();
     }
 
     @Override
@@ -48,8 +48,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public String add(String parentId, String mediaType, String path, String name, boolean localPath) {
-        MediaIndexElement element = new MediaIndexElement(parentId, mediaType, path, name, localPath);
+    public String add(MediaIndexElement element) {
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
@@ -59,21 +58,38 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath) {
-        if (elements.get(uuid) == null) {
-            elements.put(uuid, new MediaIndexElement(parentId, mediaType, path, name, localPath));
-        }
+    public void put(String uuid, MediaIndexElement element) {
+        if (elements.get(uuid) == null) elements.put(uuid, element);
     }
 
     @Override
     public void remove(String uuid) {
-        if (elements.get(uuid) != null) {
-            elements.remove(uuid);
+        if (elements.get(uuid) != null) elements.remove(uuid);
+    }
+
+    @Override
+    public synchronized void removeChilds(String uuid) {
+        MediaIndexElement elValue = null;
+        Collection<String> toRemove = Lists.newArrayList();
+
+        // Search elements to remove
+        for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
+            elValue = indexEntry.getValue();
+            // Check parent id
+            if (elValue.getParentId().equals(uuid) || toRemove.contains(elValue.getParentId())) {
+                toRemove.add(indexEntry.getKey());
+                if (logger.isDebugEnabled()) logger.debug("Remove child entry {} from media index", elValue.toString());
+            }
+        }
+
+        // Remove elements
+        for (String id : toRemove) {
+            elements.remove(id);
         }
     }
 
     @Override
-    public void clean() {
+    public synchronized void clean() {
         String elId = null;
         MediaIndexElement elValue = null;
         Collection<String> toRemove = Lists.newArrayList();
