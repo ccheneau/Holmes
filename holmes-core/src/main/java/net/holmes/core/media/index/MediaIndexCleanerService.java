@@ -21,15 +21,20 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import net.holmes.core.configuration.Configuration;
+import net.holmes.core.configuration.Parameter;
+
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 public final class MediaIndexCleanerService extends AbstractScheduledService {
 
+    private final Configuration configuration;
     private final MediaIndexManager mediaIndexManager;
 
     @Inject
-    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager) {
+    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager, Configuration configuration) {
         this.mediaIndexManager = mediaIndexManager;
+        this.configuration = configuration;
     }
 
     @Override
@@ -39,6 +44,6 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(0, 15, TimeUnit.MINUTES);
+        return Scheduler.newFixedRateSchedule(0, configuration.getIntParameter(Parameter.MEDIA_INDEX_CLEAN_DELAY_MINUTES), TimeUnit.MINUTES);
     }
 }

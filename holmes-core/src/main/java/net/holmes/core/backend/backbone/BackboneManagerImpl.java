@@ -17,6 +17,10 @@
 
 package net.holmes.core.backend.backbone;
 
+import static net.holmes.core.configuration.ConfigurationEvent.EventType.ADD;
+import static net.holmes.core.configuration.ConfigurationEvent.EventType.DELETE;
+import static net.holmes.core.configuration.ConfigurationEvent.EventType.UPDATE;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -27,26 +31,32 @@ import javax.inject.Inject;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.Configuration;
+import net.holmes.core.configuration.ConfigurationEvent;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.media.node.RootNode;
 import net.holmes.core.util.bundle.Bundle;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
 
 public final class BackboneManagerImpl implements BackboneManager {
 
     private final Configuration configuration;
+    private final EventBus eventBus;
     private final Bundle bundle;
 
     @Inject
-    public BackboneManagerImpl(Configuration configuration, Bundle bundle) {
+    public BackboneManagerImpl(Configuration configuration, EventBus eventBus, Bundle bundle) {
         this.configuration = configuration;
+        this.eventBus = eventBus;
         this.bundle = bundle;
     }
 
     @Override
-    public Collection<ConfigurationFolder> getFolders(List<ConfigurationNode> configNodes) {
+    public Collection<ConfigurationFolder> getFolders(RootNode rootNode) {
+        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
         for (ConfigurationNode node : configNodes) {
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
@@ -55,25 +65,40 @@ public final class BackboneManagerImpl implements BackboneManager {
     }
 
     @Override
-    public ConfigurationFolder getFolder(String id, List<ConfigurationNode> configNodes, boolean podcast) {
+    public ConfigurationFolder getFolder(String id, RootNode rootNode) {
+        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
-        if (podcast) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
+        if (rootNode == RootNode.PODCAST) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
         else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
     }
 
     @Override
-    public void addFolder(ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
+    public void addFolder(ConfigurationFolder folder, RootNode rootNode) {
+        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        boolean podcast = rootNode == RootNode.PODCAST;
+
+        // Validate
         validateFolder(folder, podcast);
         validateDuplicatedFolder(null, folder, configNodes, podcast);
         folder.setId(UUID.randomUUID().toString());
-        configNodes.add(new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath()));
+
+        // Save config
+        ConfigurationNode newNode = new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath());
+        configNodes.add(newNode);
         configuration.saveConfig();
+
+        // Post event
+        eventBus.post(new ConfigurationEvent(ADD, newNode, rootNode));
     }
 
     @Override
-    public void editFolder(String id, ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
+    public void editFolder(String id, ConfigurationFolder folder, RootNode rootNode) {
+        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        boolean podcast = (rootNode == RootNode.PODCAST);
+
+        // Validate
         validateFolder(folder, podcast);
         validateDuplicatedFolder(id, folder, configNodes, podcast);
         ConfigurationNode currentNode = null;
@@ -83,19 +108,28 @@ public final class BackboneManagerImpl implements BackboneManager {
                 break;
             }
         }
-
         if (currentNode == null) {
             if (podcast) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
             else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
         }
 
-        currentNode.setLabel(folder.getName());
-        currentNode.setPath(folder.getPath());
-        configuration.saveConfig();
+        // Save config if name or path has changed
+        if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
+            currentNode.setLabel(folder.getName());
+            currentNode.setPath(folder.getPath());
+            configuration.saveConfig();
+
+            // Post Event
+            eventBus.post(new ConfigurationEvent(UPDATE, currentNode, rootNode));
+        }
     }
 
     @Override
-    public void removeFolder(String id, List<ConfigurationNode> configNodes, boolean podcast) {
+    public void removeFolder(String id, RootNode rootNode) {
+        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        boolean podcast = (rootNode == RootNode.PODCAST);
+
+        // Validate
         ConfigurationNode currentNode = null;
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) {
@@ -107,8 +141,13 @@ public final class BackboneManagerImpl implements BackboneManager {
             if (podcast) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
             else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
         }
+
+        // Save config
         configNodes.remove(currentNode);
         configuration.saveConfig();
+
+        // Post Event
+        eventBus.post(new ConfigurationEvent(DELETE, currentNode, rootNode));
     }
 
     @Override

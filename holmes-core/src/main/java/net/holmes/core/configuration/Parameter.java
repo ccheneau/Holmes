@@ -20,7 +20,10 @@ public enum Parameter {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
     ENABLE_SYSTRAY("enable_systray", "true"), //
     ENABLE_UPNP("enable_upnp", "true"), //
-    ENABLE_EXTERNAL_SUBTITLES("enable_external_subtitles", "true");
+    ENABLE_EXTERNAL_SUBTITLES("enable_external_subtitles", "true"), //
+    PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"), //
+    PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"), //
+    MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15");
 
     private final String name;
     private final String defaultValue;

@@ -17,10 +17,11 @@
 package net.holmes.core.media.index;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import net.holmes.core.media.node.RootNode;
 import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
@@ -34,11 +35,11 @@ import com.google.common.collect.Maps;
 public class MediaIndexManagerImpl implements MediaIndexManager {
     private Logger logger;
 
-    private BiMap<String, MediaIndexElement> elements;
+    private final BiMap<String, MediaIndexElement> elements;
 
     public MediaIndexManagerImpl() {
-        elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
-        //elements = HashBiMap.create();
+        this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
+        //this.elements = HashBiMap.create();
     }
 
     @Override
@@ -47,8 +48,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public String add(String parentId, String mediaType, String path, String name, boolean localPath) {
-        MediaIndexElement element = new MediaIndexElement(parentId, mediaType, path, name, localPath);
+    public String add(MediaIndexElement element) {
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
@@ -58,27 +58,65 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public void put(String uuid, String parentId, String mediaType, String path, String name, boolean localPath) {
-        if (elements.get(uuid) == null) {
-            elements.put(uuid, new MediaIndexElement(parentId, mediaType, path, name, localPath));
+    public void put(String uuid, MediaIndexElement element) {
+        if (elements.get(uuid) == null) elements.put(uuid, element);
+    }
+
+    @Override
+    public void remove(String uuid) {
+        if (elements.get(uuid) != null) elements.remove(uuid);
+    }
+
+    @Override
+    public synchronized void removeChilds(String uuid) {
+        MediaIndexElement elValue = null;
+        Collection<String> toRemove = Lists.newArrayList();
+
+        // Search elements to remove
+        for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
+            elValue = indexEntry.getValue();
+            // Check parent id
+            if (elValue.getParentId().equals(uuid) || toRemove.contains(elValue.getParentId())) {
+                toRemove.add(indexEntry.getKey());
+                if (logger.isDebugEnabled()) logger.debug("Remove child entry {} from media index", elValue.toString());
+            }
+        }
+
+        // Remove elements
+        for (String id : toRemove) {
+            elements.remove(id);
         }
     }
 
     @Override
-    public void clean() {
-        List<String> toRemove = Lists.newArrayList();
+    public synchronized void clean() {
+        String elId = null;
+        MediaIndexElement elValue = null;
+        Collection<String> toRemove = Lists.newArrayList();
+
+        // Search elements to remove
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
-            if (indexEntry.getValue().isLocalPath()) {
-                if (!new File(indexEntry.getValue().getPath()).exists()) {
-                    toRemove.add(indexEntry.getKey());
-                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index", indexEntry.getValue().getPath());
+            elId = indexEntry.getKey();
+            elValue = indexEntry.getValue();
+            if (RootNode.getById(elId) == null) {
+                // Check parent id is still in index (only for non root nodes)
+                if (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId())) {
+                    toRemove.add(elId);
+                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
+                }
+            }
+            // Check element is still on file system
+            else if (elValue.isLocalPath()) {
+                if (!new File(elValue.getPath()).exists()) {
+                    toRemove.add(elId);
+                    if (logger.isDebugEnabled()) logger.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
                 }
             }
         }
-        if (!toRemove.isEmpty()) {
-            for (String indexkey : toRemove) {
-                elements.remove(indexkey);
-            }
+
+        // Remove elements
+        for (String id : toRemove) {
+            elements.remove(id);
         }
     }
 }

@@ -16,7 +16,11 @@
 */
 package net.holmes.core.media.index;
 
-public class MediaIndexElement {
+import java.io.Serializable;
+
+public class MediaIndexElement implements Serializable {
+    private static final long serialVersionUID = -7736893745535506209L;
+
     private final String parentId;
     private final String mediaType;
     private final String name;
@@ -83,5 +87,22 @@ public class MediaIndexElement {
             if (other.path != null) return false;
         } else if (!path.equals(other.path)) return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("MediaIndexElement [parentId=");
+        builder.append(parentId);
+        builder.append(", mediaType=");
+        builder.append(mediaType);
+        builder.append(", name=");
+        builder.append(name);
+        builder.append(", path=");
+        builder.append(path);
+        builder.append(", localPath=");
+        builder.append(localPath);
+        builder.append("]");
+        return builder.toString();
     }
 }
