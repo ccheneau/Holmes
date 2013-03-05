@@ -94,7 +94,7 @@ public final class DirectoryBrowseResult {
             item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
         }
         if (item != null) {
-            setMetadata(item, contentNode);
+            setDidlMetadata(item, contentNode);
             addItemToDidl(item);
         }
     }
@@ -116,7 +116,7 @@ public final class DirectoryBrowseResult {
             item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
         }
         if (item != null) {
-            setMetadata(item, podcastEntryNode);
+            setDidlMetadata(item, podcastEntryNode);
             addItemToDidl(item);
         }
     }
@@ -129,7 +129,7 @@ public final class DirectoryBrowseResult {
 
     public void addContainer(String parentNodeId, AbstractNode node, int childCount) {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
-        setMetadata(folder, node);
+        setDidlMetadata(folder, node);
 
         didl.addContainer(folder);
         itemCount += 1;
@@ -137,7 +137,7 @@ public final class DirectoryBrowseResult {
 
     public void addPlaylist(String parentNodeId, AbstractNode node, int childCount) {
         PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, childCount);
-        setMetadata(playlist, node);
+        setDidlMetadata(playlist, node);
 
         didl.addContainer(playlist);
         itemCount += 1;
@@ -155,7 +155,7 @@ public final class DirectoryBrowseResult {
         return new org.seamless.util.MimeType(mimeType.getType(), mimeType.getSubType());
     }
 
-    private void setMetadata(DIDLObject didlObjet, AbstractNode node) {
+    private void setDidlMetadata(DIDLObject didlObjet, AbstractNode node) {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
 
         try {

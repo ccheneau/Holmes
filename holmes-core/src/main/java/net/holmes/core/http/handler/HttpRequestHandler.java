@@ -16,12 +16,12 @@
 */
 package net.holmes.core.http.handler;
 
-
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 
 public interface HttpRequestHandler {
+    public final static Integer CHUNK_SIZE = 8192;
 
     /**
      * Check if handler can process request

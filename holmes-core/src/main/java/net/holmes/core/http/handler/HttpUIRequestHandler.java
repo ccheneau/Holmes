@@ -110,7 +110,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             channel.write(response);
 
             // Write the file.
-            ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, 0, raf.length(), 8192));
+            ChannelFuture writeFuture = channel.write(new ChunkedFile(raf, 0, raf.length(), CHUNK_SIZE));
 
             // Decide whether to close the connection or not.
             if (!HttpHeaders.isKeepAlive(request)) {

@@ -43,6 +43,7 @@ public final class XmlConfigurationImpl implements Configuration {
     private Logger logger;
 
     private static final String CONF_FILE_NAME = "config.xml";
+    private static final String CONF_PATH = "conf";
 
     private XmlRootNode rootNode = null;
 
@@ -54,7 +55,7 @@ public final class XmlConfigurationImpl implements Configuration {
      * Get Holmes configuration file 
      */
     private File getConfigFile() {
-        File fConfPath = new File(SystemUtils.getLocalUserDataDir(), "conf");
+        File fConfPath = new File(SystemUtils.getLocalUserDataDir(), CONF_PATH);
         if (!fConfPath.exists() || !fConfPath.isDirectory())
             if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 

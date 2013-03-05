@@ -36,9 +36,6 @@ import com.google.common.collect.Maps;
 @Path("/backend/util")
 public class UtilHandler {
 
-    public UtilHandler() {
-    }
-
     /**
      * Get holmes version
      */
