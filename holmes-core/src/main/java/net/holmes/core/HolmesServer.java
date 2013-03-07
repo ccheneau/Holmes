@@ -23,6 +23,8 @@ import net.holmes.core.util.inject.Loggable;
 
 import org.slf4j.Logger;
 
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
@@ -70,5 +72,10 @@ public final class HolmesServer implements Server {
         httpServer.stop();
 
         logger.info("Holmes server stopped");
+    }
+
+    @Subscribe
+    public void handleDeadEvent(DeadEvent deadEvent) {
+        logger.warn("Event not handled: {}", deadEvent.getEvent().toString());
     }
 }
