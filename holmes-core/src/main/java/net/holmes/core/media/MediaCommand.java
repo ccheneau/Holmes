@@ -14,24 +14,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.media.index;
 
-import java.util.Map.Entry;
-import java.util.Set;
+package net.holmes.core.media;
 
-public interface MediaIndexManager {
+public class MediaCommand {
+    private final CommandType type;
+    private final String parameter;
 
-    public MediaIndexElement get(String uuid);
+    public MediaCommand(CommandType type, String parameter) {
+        this.type = type;
+        this.parameter = parameter;
+    }
 
-    public String add(MediaIndexElement element);
+    public CommandType getType() {
+        return type;
+    }
 
-    public void put(String uuid, MediaIndexElement element);
+    public String getParameter() {
+        return parameter;
+    }
 
-    public void remove(String uuid);
+    public enum CommandType {
+        SCAN_ALL, SCAN_NODE;
+    }
 
-    public void removeChilds(String uuid);
-
-    public void clean();
-
-    public Set<Entry<String, MediaIndexElement>> getElements();
 }

@@ -19,6 +19,7 @@ package net.holmes.core.media.index;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import net.holmes.core.media.node.RootNode;
@@ -113,10 +114,14 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
                 }
             }
         }
-
         // Remove elements
         for (String id : toRemove) {
             elements.remove(id);
         }
+    }
+
+    @Override
+    public Set<Entry<String, MediaIndexElement>> getElements() {
+        return elements.entrySet();
     }
 }

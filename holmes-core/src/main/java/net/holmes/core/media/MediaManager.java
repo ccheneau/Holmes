@@ -23,8 +23,6 @@ import net.holmes.core.media.node.AbstractNode;
 public interface MediaManager {
     /**
      * Get node
-     * @param nodeId
-     * @return
      */
     public AbstractNode getNode(String nodeId);
 
@@ -32,4 +30,14 @@ public interface MediaManager {
      * Get child nodes
      */
     public List<AbstractNode> getChildNodes(AbstractNode parentNode);
+
+    /**
+     * Perform a full scan
+     */
+    public void scanAll();
+
+    /**
+     * Scan a specific node
+     */
+    public void scanNode(AbstractNode node, boolean recursive);
 }

@@ -20,6 +20,7 @@ package net.holmes.core.backend.backbone;
 import java.util.Collection;
 
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
+import net.holmes.core.backend.backbone.response.IndexElement;
 import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.media.node.RootNode;
 
@@ -41,4 +42,8 @@ public interface BackboneManager {
     public Settings getSettings();
 
     public void saveSettings(Settings settings);
+
+    public Collection<IndexElement> getMediaIndexElements();
+
+    public void scanAllMedia();
 }

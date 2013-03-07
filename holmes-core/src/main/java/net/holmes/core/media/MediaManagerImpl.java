@@ -181,6 +181,23 @@ public final class MediaManagerImpl implements MediaManager {
         return childNodes;
     }
 
+    @Override
+    public void scanAll() {
+        AbstractNode rootNode = getNode(RootNode.ROOT.getId());
+        scanNode(rootNode, true);
+    }
+
+    @Override
+    public void scanNode(AbstractNode node, boolean recursive) {
+        if (!(node instanceof PodcastNode)) {
+            List<AbstractNode> childNodes = getChildNodes(node);
+            if (recursive && childNodes != null) {
+                for (AbstractNode childNode : childNodes)
+                    scanNode(childNode, recursive);
+            }
+        }
+    }
+
     /**
      * Get childs of a configuration node (child nodes are stored in configuration)
      */
@@ -385,4 +402,19 @@ public final class MediaManagerImpl implements MediaManager {
             logger.error("Unknown event");
         }
     }
+
+    @Subscribe
+    public void handleCommand(MediaCommand command) {
+        switch (command.getType()) {
+        case SCAN_ALL:
+            scanAll();
+            break;
+        case SCAN_NODE:
+            AbstractNode node = getNode(command.getParameter());
+            if (node != null) scanNode(node, true);
+            break;
+        }
+
+    }
+
 }

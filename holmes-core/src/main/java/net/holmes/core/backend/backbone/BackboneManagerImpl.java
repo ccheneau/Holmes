@@ -24,16 +24,22 @@ import static net.holmes.core.configuration.ConfigurationEvent.EventType.UPDATE;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
+import net.holmes.core.backend.backbone.response.IndexElement;
 import net.holmes.core.backend.backbone.response.Settings;
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationEvent;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.media.MediaCommand;
+import net.holmes.core.media.MediaCommand.CommandType;
+import net.holmes.core.media.index.MediaIndexElement;
+import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.node.RootNode;
 import net.holmes.core.util.bundle.Bundle;
 
@@ -46,9 +52,11 @@ public final class BackboneManagerImpl implements BackboneManager {
     private final Configuration configuration;
     private final EventBus eventBus;
     private final Bundle bundle;
+    private final MediaIndexManager mediaIndexManager;
 
     @Inject
-    public BackboneManagerImpl(Configuration configuration, EventBus eventBus, Bundle bundle) {
+    public BackboneManagerImpl(MediaIndexManager mediaIndexManager, Configuration configuration, EventBus eventBus, Bundle bundle) {
+        this.mediaIndexManager = mediaIndexManager;
         this.configuration = configuration;
         this.eventBus = eventBus;
         this.bundle = bundle;
@@ -167,6 +175,21 @@ public final class BackboneManagerImpl implements BackboneManager {
         configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
         configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
         configuration.saveConfig();
+    }
+
+    @Override
+    public Collection<IndexElement> getMediaIndexElements() {
+        Collection<IndexElement> indexElements = Lists.newArrayList();
+        for (Entry<String, MediaIndexElement> elementEntry : mediaIndexManager.getElements()) {
+            indexElements.add(new IndexElement(elementEntry.getKey(), elementEntry.getValue().getParentId(), elementEntry.getValue().getMediaType(),
+                    elementEntry.getValue().getName(), elementEntry.getValue().getPath()));
+        }
+        return indexElements;
+    }
+
+    @Override
+    public void scanAllMedia() {
+        eventBus.post(new MediaCommand(CommandType.SCAN_ALL, null));
     }
 
     private void validateFolder(ConfigurationFolder folder, boolean podcast) {
