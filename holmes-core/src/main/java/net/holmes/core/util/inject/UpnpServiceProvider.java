@@ -17,6 +17,8 @@
 
 package net.holmes.core.util.inject;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -30,6 +32,7 @@ import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.ValidationException;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.DeviceIdentity;
+import org.fourthline.cling.model.meta.Icon;
 import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.LocalService;
 import org.fourthline.cling.model.types.DeviceType;
@@ -75,8 +78,11 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
 
         // Create local device
         try {
-            upnpService.getRegistry().addDevice(new LocalDevice(identity, type, details, new LocalService[] { contentDirectoryService }));
+            Icon icon = new Icon("image/png", 48, 48, 32, getClass().getResource("/logo.png"));
+            upnpService.getRegistry().addDevice(new LocalDevice(identity, type, details, icon, new LocalService[] { contentDirectoryService }));
         } catch (ValidationException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return upnpService;

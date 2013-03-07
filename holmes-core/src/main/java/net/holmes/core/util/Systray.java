@@ -102,7 +102,7 @@ public class Systray implements Server {
         }
 
         // Initialize systray icon
-        final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/systray.gif"));
+        final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
         final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, bundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
