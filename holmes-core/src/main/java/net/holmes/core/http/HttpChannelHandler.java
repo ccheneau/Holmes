@@ -42,7 +42,7 @@ import javax.inject.Named;
 
 import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 

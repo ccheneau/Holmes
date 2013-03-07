@@ -14,12 +14,13 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core;
+package net.holmes.core.inject;
 
 import io.netty.channel.ChannelInboundMessageHandler;
 
 import java.util.concurrent.Executors;
 
+import net.holmes.core.Server;
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
@@ -30,6 +31,10 @@ import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
+import net.holmes.core.inject.provider.LocalIPv4Provider;
+import net.holmes.core.inject.provider.UiDirectoryProvider;
+import net.holmes.core.inject.provider.UpnpServiceProvider;
+import net.holmes.core.inject.provider.WebApplicationProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.index.MediaIndexCleanerService;
@@ -39,11 +44,6 @@ import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
-import net.holmes.core.util.inject.CustomTypeListener;
-import net.holmes.core.util.inject.LocalIPv4Provider;
-import net.holmes.core.util.inject.UiDirectoryProvider;
-import net.holmes.core.util.inject.UpnpServiceProvider;
-import net.holmes.core.util.inject.WebApplicationProvider;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 

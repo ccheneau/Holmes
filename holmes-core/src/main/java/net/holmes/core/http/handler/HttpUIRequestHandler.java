@@ -39,7 +39,7 @@ import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 

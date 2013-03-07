@@ -18,13 +18,13 @@ package net.holmes.core;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.TestConfiguration;
+import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
-import net.holmes.core.util.inject.CustomTypeListener;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 

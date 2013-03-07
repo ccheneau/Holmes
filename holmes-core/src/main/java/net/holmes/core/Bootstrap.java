@@ -18,6 +18,7 @@ package net.holmes.core;
 
 import java.io.File;
 
+import net.holmes.core.inject.HolmesServerModule;
 import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemUtils;
 
@@ -36,6 +37,7 @@ public class Bootstrap {
             // Load log4j configuration
             File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
             String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
+
             if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
             else throw new RuntimeException(logConfig + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
                     + SystemProperty.HOLMES_HOME.getValue() + "] system property");

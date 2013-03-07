@@ -23,7 +23,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;

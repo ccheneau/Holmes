@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 

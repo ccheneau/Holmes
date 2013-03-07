@@ -36,6 +36,7 @@ import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationEvent;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.inject.Loggable;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
@@ -49,7 +50,6 @@ import net.holmes.core.media.node.RootNode;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.inject.Loggable;
 import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 

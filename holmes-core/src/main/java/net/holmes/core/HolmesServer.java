@@ -19,7 +19,7 @@ package net.holmes.core;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 

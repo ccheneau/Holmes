@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.util.inject;
+package net.holmes.core.inject.provider;
 
 import java.io.IOException;
 

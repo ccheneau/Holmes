@@ -39,7 +39,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.util.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 

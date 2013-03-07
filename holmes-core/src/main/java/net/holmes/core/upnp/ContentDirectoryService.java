@@ -24,6 +24,7 @@ import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.inject.Loggable;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.media.node.ContentNode;
@@ -31,7 +32,6 @@ import net.holmes.core.media.node.FolderNode;
 import net.holmes.core.media.node.PlaylistNode;
 import net.holmes.core.media.node.PodcastEntryNode;
 import net.holmes.core.media.node.PodcastNode;
-import net.holmes.core.util.inject.Loggable;
 
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
