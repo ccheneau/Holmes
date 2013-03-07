@@ -38,6 +38,7 @@ import org.fourthline.cling.model.meta.LocalService;
 import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
+import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 
 import com.google.inject.Injector;
 
@@ -70,16 +71,19 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
-        DefaultServiceManager<ContentDirectoryService> serviceManager = new DefaultServiceManager<ContentDirectoryService>(contentDirectoryService,
-                ContentDirectoryService.class);
-        contentDirectoryService.setManager(serviceManager);
+        contentDirectoryService.setManager(new DefaultServiceManager<ContentDirectoryService>(
+                contentDirectoryService, ContentDirectoryService.class));
+        injector.injectMembers(contentDirectoryService.getManager().getImplementation());
 
-        injector.injectMembers(serviceManager.getImplementation());
+        // Connection service
+        LocalService<ConnectionManagerService> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
+        connectionManagerService.setManager(new DefaultServiceManager<ConnectionManagerService>(connectionManagerService, ConnectionManagerService.class));
 
         // Create local device
         try {
             Icon icon = new Icon("image/png", 48, 48, 32, getClass().getResource("/logo.png"));
-            upnpService.getRegistry().addDevice(new LocalDevice(identity, type, details, icon, new LocalService[] { contentDirectoryService }));
+            upnpService.getRegistry().addDevice(
+                    new LocalDevice(identity, type, details, icon, new LocalService[] { connectionManagerService, contentDirectoryService }));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
