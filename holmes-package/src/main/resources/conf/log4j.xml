@@ -4,8 +4,9 @@
 
 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
+		<param name="Encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
+			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMax" value="INFO" />
@@ -14,8 +15,9 @@
 
 	<appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.err" />
+		<param name="Encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
+			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="WARN" />
@@ -23,13 +25,14 @@
 	</appender>
 
 	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${user.home}/.holmes/log/holmes.log" />
+		<param name="File" value="${user.home}/.holmes/log/holmes.log" />
+		<param name="Encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5MB" />
 		<param name="append" value="false" />
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%d] (%c:%L) - %m%n" />
+			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
 		</layout>
 	</appender>
 
