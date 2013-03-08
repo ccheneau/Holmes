@@ -22,6 +22,8 @@ import net.holmes.core.inject.HolmesServerModule;
 import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemUtils;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -34,19 +36,8 @@ public class Bootstrap {
     public static void main(String... args) {
         // Check lock file
         if (SystemUtils.lockInstance()) {
-            // Load log4j configuration
-            File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
-            String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
-
-            if (new File(logConfig).exists()) DOMConfigurator.configureAndWatch(logConfig, 10000l);
-            else throw new RuntimeException(logConfig + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
-                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
-
-            // Remove existing handlers attached to j.u.l root logger
-            SLF4JBridgeHandler.removeHandlersForRootLogger();
-
-            // Add SLF4JBridgeHandler to j.u.l's root logger
-            SLF4JBridgeHandler.install();
+            // Load log4j
+            loadLog4j(args.length > 0 && "debug".equals(args[0]));
 
             // Create Guice injector
             Injector injector = Guice.createInjector(new HolmesServerModule());
@@ -71,5 +62,25 @@ public class Bootstrap {
             System.err.println("Holmes is already running");
             System.exit(1);
         }
+    }
+
+    private static void loadLog4j(boolean debug) {
+        // Load log4j configuration
+        File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
+        String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
+
+        if (new File(logConfig).exists()) {
+            if (debug) {
+                DOMConfigurator.configure(logConfig);
+                LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
+            } else DOMConfigurator.configureAndWatch(logConfig, 10000l);
+        } else throw new RuntimeException(logConfig + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
+                + SystemProperty.HOLMES_HOME.getValue() + "] system property");
+
+        // Remove existing handlers attached to j.u.l root logger
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+
+        // Add SLF4JBridgeHandler to j.u.l's root logger
+        SLF4JBridgeHandler.install();
     }
 }
