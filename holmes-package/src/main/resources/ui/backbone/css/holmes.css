@@ -37,6 +37,15 @@ body {
 	z-index: 9999 !important; 
 }
 
+.input-prepend .add-on-50 {
+	min-width: 50px;
+	text-align: left;
+}
+
+.input-xlarge-400 {
+    width: 400px;
+}
+
 body.roll { 
  	-moz-animation-name: roll; 
 	-moz-animation-duration: 6s; 
