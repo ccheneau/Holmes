@@ -18,6 +18,14 @@ package net.holmes.core.inject;
 
 import io.netty.channel.ChannelInboundMessageHandler;
 
+import java.io.File;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import net.holmes.core.Server;
@@ -31,8 +39,7 @@ import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
-import net.holmes.core.inject.provider.LocalIPv4Provider;
-import net.holmes.core.inject.provider.UiDirectoryProvider;
+import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.inject.provider.WebApplicationProvider;
 import net.holmes.core.media.MediaManager;
@@ -40,7 +47,9 @@ import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.index.MediaIndexCleanerService;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
+import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
@@ -49,11 +58,13 @@ import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.fourthline.cling.UpnpService;
 
+import com.google.common.cache.Cache;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
@@ -70,14 +81,16 @@ public final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
-        bind(String.class).annotatedWith(Names.named("localIPv4")).toProvider(LocalIPv4Provider.class).in(Singleton.class);
+        bindConstant().annotatedWith(Names.named("localIPv4")).to(getLocalIPV4());
+        bindConstant().annotatedWith(Names.named("uiDirectory")).to(getUiDirectory());
+        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
+        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
-        bind(String.class).annotatedWith(Names.named("uiDirectory")).toProvider(UiDirectoryProvider.class).in(Singleton.class);
 
         // Bind servers
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
@@ -96,5 +109,39 @@ public final class HolmesServerModule extends AbstractModule {
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
+    }
+
+    /**
+     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
+     */
+    public String getLocalIPV4() {
+        try {
+            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
+                NetworkInterface intf = intfaces.nextElement();
+                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
+                    InetAddress inetAddr = inetAddresses.nextElement();
+                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
+                        return inetAddr.getHostAddress();
+                    }
+                }
+            }
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get UI base directory
+     */
+    public String getUiDirectory() {
+        File uiDir = new File(SystemProperty.HOLMES_HOME.getValue(), "ui");
+        if (!uiDir.exists()) {
+            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
+                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
+        }
+        return uiDir.getAbsolutePath();
     }
 }

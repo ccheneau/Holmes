@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationEvent;
@@ -56,7 +56,6 @@ import net.holmes.core.util.mimetype.MimeTypeFactory;
 import org.slf4j.Logger;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
@@ -79,17 +78,13 @@ public final class MediaManagerImpl implements MediaManager {
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     @Inject
-    public MediaManagerImpl(Configuration configuration, MimeTypeFactory mimeTypeFactory, Bundle bundle, MediaIndexManager mediaIndexManager) {
+    public MediaManagerImpl(Configuration configuration, MimeTypeFactory mimeTypeFactory, Bundle bundle, MediaIndexManager mediaIndexManager,
+            @Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache) {
         this.configuration = configuration;
         this.mimeTypeFactory = mimeTypeFactory;
         this.bundle = bundle;
         this.mediaIndexManager = mediaIndexManager;
-
-        // Initialize podcast cache
-        this.podcastCache = CacheBuilder.newBuilder() //
-                .maximumSize(configuration.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS)) //
-                .expireAfterWrite(configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS) //
-                .build();
+        this.podcastCache = podcastCache;
     }
 
     @Override

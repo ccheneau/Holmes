@@ -33,7 +33,7 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 /**
- * Type listener for slf4j logger injection
+ * Type listener for slf4j logger injection and event bus registration 
  */
 public final class CustomTypeListener implements TypeListener {
 
@@ -65,7 +65,6 @@ public final class CustomTypeListener implements TypeListener {
                 }
             }
         }
-
     }
 
     /**
