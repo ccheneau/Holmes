@@ -42,6 +42,9 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 
 import com.google.inject.Injector;
 
+/**
+ * Guice provider for UPnP service
+ */
 public class UpnpServiceProvider implements Provider<UpnpService> {
 
     private final Injector injector;
@@ -71,8 +74,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
-        contentDirectoryService.setManager(new DefaultServiceManager<ContentDirectoryService>(
-                contentDirectoryService, ContentDirectoryService.class));
+        contentDirectoryService.setManager(new DefaultServiceManager<ContentDirectoryService>(contentDirectoryService, ContentDirectoryService.class));
         injector.injectMembers(contentDirectoryService.getManager().getImplementation());
 
         // Connection service

@@ -33,7 +33,7 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 /**
- * Type listener for slf4j logger injection and event bus registration 
+ * Guice type listener for slf4j logger injection and event bus registration 
  */
 public final class CustomTypeListener implements TypeListener {
 
@@ -68,7 +68,7 @@ public final class CustomTypeListener implements TypeListener {
     }
 
     /**
-     * Inject SLF4J loggers
+     * Inject SLF4J logger
      */
     private static class Slf4jMembersInjector<T> implements MembersInjector<T> {
         private final Field field;
