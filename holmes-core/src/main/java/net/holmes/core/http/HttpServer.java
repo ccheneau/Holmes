@@ -74,7 +74,7 @@ public final class HttpServer implements Server {
         // Configure the server.
         bootstrap.group(new NioEventLoopGroup()) //
                 .channel(NioServerSocketChannel.class) //
-                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.HEAP_BY_DEFAULT) //
+                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {

@@ -66,7 +66,7 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    public void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
 
         if (logger.isDebugEnabled()) {
             logger.debug("[START] messageReceived url:{}", request.getUri());
