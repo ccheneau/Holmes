@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
  * Holmes server main class
@@ -37,15 +36,15 @@ public final class HolmesServer implements Server {
     private final Server httpServer;
     private final Server upnpServer;
     private final Server systray;
-    private final AbstractScheduledService mediaIndexCleanerService;
+    private final Server scheduler;
 
     @Inject
     public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, @Named("systray") Server systray,
-            @Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService) {
+            @Named("scheduler") Server scheduler) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.systray = systray;
-        this.mediaIndexCleanerService = mediaIndexCleanerService;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -56,7 +55,7 @@ public final class HolmesServer implements Server {
         httpServer.start();
         upnpServer.start();
         systray.start();
-        mediaIndexCleanerService.start();
+        scheduler.start();
 
         logger.info("Holmes server started");
     }
@@ -66,7 +65,7 @@ public final class HolmesServer implements Server {
         logger.info("Stopping Holmes server");
 
         // Stop Holmes server
-        mediaIndexCleanerService.stop();
+        scheduler.stop();
         systray.stop();
         upnpServer.stop();
         httpServer.stop();

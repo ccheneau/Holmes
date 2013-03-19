@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.inject;
+package net.holmes.core;
 
 import io.netty.channel.ChannelInboundMessageHandler;
 
@@ -28,7 +28,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-import net.holmes.core.Server;
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
 import net.holmes.core.configuration.Configuration;
@@ -39,6 +38,7 @@ import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
+import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.inject.provider.WebApplicationProvider;
@@ -96,6 +96,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(Server.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
         bind(Server.class).annotatedWith(Names.named("systray")).to(Systray.class).in(Singleton.class);
+        bind(Server.class).annotatedWith(Names.named("scheduler")).to(HolmesScheduler.class).in(Singleton.class);
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);

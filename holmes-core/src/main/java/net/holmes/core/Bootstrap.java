@@ -18,7 +18,6 @@ package net.holmes.core;
 
 import java.io.File;
 
-import net.holmes.core.inject.HolmesServerModule;
 import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.SystemUtils;
 
