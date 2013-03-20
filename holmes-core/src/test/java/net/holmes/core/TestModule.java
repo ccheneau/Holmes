@@ -16,21 +16,28 @@
 */
 package net.holmes.core;
 
+import java.util.List;
+
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.TestConfiguration;
 import net.holmes.core.inject.CustomTypeListener;
+import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
+import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
+import com.google.common.cache.Cache;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
+import com.google.inject.name.Names;
 
 public class TestModule extends AbstractModule {
 
@@ -45,5 +52,8 @@ public class TestModule extends AbstractModule {
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
 
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
+
+        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
+        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
     }
 }
