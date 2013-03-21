@@ -16,11 +16,16 @@
 */
 package net.holmes.core.upnp;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
@@ -52,15 +57,35 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Inject
     private Configuration configuration;
 
-    @Inject
-    @Named("localIPv4")
-    private String localAddress;
+    private static final String LOCAL_ADDRESS = getLocalIPV4();
 
     public ContentDirectoryService() {
         super( // search caps
                 Arrays.asList("dc:title"),
                 // sort caps
                 Arrays.asList("dc:title", "dc:date"));
+    }
+
+    /**
+     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
+     */
+    private static String getLocalIPV4() {
+        try {
+            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
+                NetworkInterface intf = intfaces.nextElement();
+                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
+                    InetAddress inetAddr = inetAddresses.nextElement();
+                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
+                        return inetAddr.getHostAddress();
+                    }
+                }
+            }
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -119,10 +144,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (result.filterResult()) {
             if (node instanceof ContentNode) {
                 // Build content url
-                StringBuilder url = new StringBuilder();
-                url.append("http://").append(localAddress).append(":").append(configuration.getHttpServerPort());
-                url.append("/content?id=");
-                url.append(node.getId());
+                StringBuilder url = new StringBuilder().append("http://").append(LOCAL_ADDRESS).append(":").append(configuration.getHttpServerPort())//
+                        .append("/content?id=").append(node.getId());
 
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url.toString());

@@ -18,13 +18,6 @@ package net.holmes.core;
 
 import io.netty.channel.ChannelInboundMessageHandler;
 
-import java.io.File;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -49,7 +42,6 @@ import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.upnp.UpnpServer;
-import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.Systray;
 import net.holmes.core.util.bundle.Bundle;
 import net.holmes.core.util.bundle.BundleImpl;
@@ -70,6 +62,7 @@ import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
 
 public final class HolmesServerModule extends AbstractModule {
+
     //    private EventBus eventBus = new EventBus("Holmes EventBus");
     private EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
 
@@ -81,8 +74,6 @@ public final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
-        bindConstant().annotatedWith(Names.named("localIPv4")).to(getLocalIPV4());
-        bindConstant().annotatedWith(Names.named("uiDirectory")).to(getUiDirectory());
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
 
@@ -110,39 +101,5 @@ public final class HolmesServerModule extends AbstractModule {
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
-    }
-
-    /**
-     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
-     */
-    public String getLocalIPV4() {
-        try {
-            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
-                NetworkInterface intf = intfaces.nextElement();
-                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
-                    InetAddress inetAddr = inetAddresses.nextElement();
-                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
-                        return inetAddr.getHostAddress();
-                    }
-                }
-            }
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get UI base directory
-     */
-    public String getUiDirectory() {
-        File uiDir = new File(SystemProperty.HOLMES_HOME.getValue(), "ui");
-        if (!uiDir.exists()) {
-            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
-                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
-        }
-        return uiDir.getAbsolutePath();
     }
 }

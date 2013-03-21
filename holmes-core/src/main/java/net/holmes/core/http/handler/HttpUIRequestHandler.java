@@ -35,11 +35,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.Loggable;
+import net.holmes.core.util.SystemProperty;
 import net.holmes.core.util.mimetype.MimeType;
 import net.holmes.core.util.mimetype.MimeTypeFactory;
 
@@ -52,15 +52,27 @@ import org.slf4j.Logger;
 public final class HttpUIRequestHandler implements HttpRequestHandler {
     private Logger logger;
 
+    private static final String UI_DIRECTORY = getUiDirectory("ui");
+
     private final Configuration configuration;
     private final MimeTypeFactory mimeTypeFactory;
-    private final String uiDirectory;
 
     @Inject
-    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory, @Named("uiDirectory") String uiDirectory) {
+    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory) {
         this.configuration = configuration;
         this.mimeTypeFactory = mimeTypeFactory;
-        this.uiDirectory = uiDirectory;
+    }
+
+    /**
+     * Get UI base directory
+     */
+    private static String getUiDirectory(String uiSubDir) {
+        File uiDir = new File(SystemProperty.HOLMES_HOME.getValue(), uiSubDir);
+        if (!uiDir.exists()) {
+            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
+                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
+        }
+        return uiDir.getAbsolutePath();
     }
 
     @Override
@@ -86,7 +98,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
         try {
             // Get file
-            File file = new File(uiDirectory, fileName);
+            File file = new File(UI_DIRECTORY, fileName);
             if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
