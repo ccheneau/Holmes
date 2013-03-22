@@ -28,19 +28,24 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 public class HolmesScheduler implements Server {
 
     private final AbstractScheduledService mediaIndexCleanerService;
+    private final AbstractScheduledService podcastCacheCleanerService;
 
     @Inject
-    public HolmesScheduler(@Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService) {
+    public HolmesScheduler(@Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService,
+            @Named("podcastCacheCleaner") AbstractScheduledService podcastCacheCleanerService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
+        this.podcastCacheCleanerService = podcastCacheCleanerService;
     }
 
     @Override
     public void start() {
         mediaIndexCleanerService.start();
+        podcastCacheCleanerService.start();
     }
 
     @Override
     public void stop() {
+        podcastCacheCleanerService.stop();
         mediaIndexCleanerService.stop();
     }
 }

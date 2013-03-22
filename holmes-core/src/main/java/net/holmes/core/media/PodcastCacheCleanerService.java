@@ -15,31 +15,38 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.media.index;
+package net.holmes.core.media;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.media.node.AbstractNode;
 
+import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
-public final class MediaIndexCleanerService extends AbstractScheduledService {
+/**
+ * Clean podcast cache
+ */
+public class PodcastCacheCleanerService extends AbstractScheduledService {
 
-    private final MediaIndexManager mediaIndexManager;
+    private final Cache<String, List<AbstractNode>> podcastCache;
     private final int cleanDelayMinutes;
 
     @Inject
-    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager, Configuration configuration) {
-        this.mediaIndexManager = mediaIndexManager;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_INDEX_CLEAN_DELAY_MINUTES);
+    public PodcastCacheCleanerService(@Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache, Configuration configuration) {
+        this.podcastCache = podcastCache;
+        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() throws Exception {
-        mediaIndexManager.clean();
+        podcastCache.cleanUp();
     }
 
     @Override

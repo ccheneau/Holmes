@@ -57,12 +57,10 @@ public final class CustomTypeListener implements TypeListener {
         }
 
         // Register to event bus
-        if (eventBus != null) {
-            for (Method method : type.getRawType().getMethods()) {
-                if (method.isAnnotationPresent(Subscribe.class)) {
-                    encounter.register(new EventBusRegisterListener<T>(eventBus));
-                    break;
-                }
+        for (Method method : type.getRawType().getMethods()) {
+            if (method.isAnnotationPresent(Subscribe.class)) {
+                encounter.register(new EventBusRegisterListener<T>(eventBus));
+                break;
             }
         }
     }
