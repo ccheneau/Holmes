@@ -2,7 +2,7 @@ var Application = (function(application) {
 	application.Views.VideoFolderListView = Backbone.View.extend({
 		el : $("#main_content"),
 		initialize : function() {
-			this.template = application.getTemplate("folderList.html");
+			this.template = $.getTemplate("folderList.html");
 			_.bindAll(this, 'render');
 			this.collection.bind('reset', this.render);
 			this.collection.bind('change', this.render);

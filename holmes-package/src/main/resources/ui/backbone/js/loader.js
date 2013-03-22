@@ -12,8 +12,9 @@ yepnope({
 		jstree : '/backbone/js/lib/jquery.jstree.js',
 		
 		// plugins
-		message : '/backbone/js/plugins/message.js',
 		folderSelectBox : '/backbone/js/plugins/folder-select-box.js',
+		message : '/backbone/js/plugins/jq-message.js',
+		template : '/backbone/js/plugins/jq-template.js',
 		
 		// application
 		application : '/backbone/js/application.js',

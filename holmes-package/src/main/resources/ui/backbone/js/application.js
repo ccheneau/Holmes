@@ -5,16 +5,6 @@ var Application = (function() {
 	application.Views = {};
 	application.Router = {};
 
-	// get view template
-	application.getTemplate = function(template) {
-		return $.ajax({
-			type : "GET",
-			url : "/backbone/templates/" + template,
-			async : false,
-			cache : true
-		}).responseText;
-	},
-
 	// toggle nav menu
 	toggleMenu = function(item) {
         $('ul.nav > li').removeClass('active');

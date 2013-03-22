@@ -3,7 +3,7 @@ var Application = (function(application) {
 		el : $("#main_content"),
 		url : '/backend/backbone/settings',
 		initialize : function() {
-			this.template = application.getTemplate("settings.html");
+			this.template = $.getTemplate("settings.html");
 		},
 		render : function() {
 			var that = this;

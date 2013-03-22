@@ -1,3 +1,6 @@
+/**
+ * Select local folder dialog box
+ */
 var folderSelectBox = (function() {
     var _selectedFolder = '',
     _linkedItem,
