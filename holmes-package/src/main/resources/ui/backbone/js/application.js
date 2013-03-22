@@ -42,20 +42,20 @@ var Application = (function() {
 
 		videoFolders : function() {
 			toggleMenu('video_folders_menu');
-			this.videoFolders.all().fetch();
+			this.videoFolders.fetch({reset: true});
 		},
 
 		audioFolders : function() {
 			toggleMenu('audio_folders_menu');
-			this.audioFolders.all().fetch();
+			this.audioFolders.fetch({reset: true});
 		},
 		pictureFolders : function() {
 			toggleMenu('picture_folders_menu');
-			this.pictureFolders.all().fetch();
+			this.pictureFolders.fetch({reset: true});
 		},
 		podcasts : function() {
 			toggleMenu('podcasts_menu');
-			this.podcasts.all().fetch();
+			this.podcasts.fetch({reset: true});
 		},
 		settings : function() {
 			toggleMenu('settings_menu');

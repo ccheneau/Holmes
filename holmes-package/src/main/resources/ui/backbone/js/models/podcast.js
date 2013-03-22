@@ -5,10 +5,7 @@ var Application = (function(application) {
 
 	application.Collections.Podcasts = Backbone.Collection.extend({
 		model : application.Models.Podcast,
-		all : function() {
-			this.url = "/backend/backbone/podcasts";
-			return this;
-		},
+		url : "/backend/backbone/podcasts"
 	});
 	return application;
 }(Application));

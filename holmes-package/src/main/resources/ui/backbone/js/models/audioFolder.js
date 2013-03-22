@@ -5,10 +5,7 @@ var Application = (function(application) {
 
 	application.Collections.AudioFolders = Backbone.Collection.extend({
 		model : application.Models.AudioFolder,
-		all : function() {
-			this.url = "/backend/backbone/audioFolders";
-			return this;
-		},
+		url : "/backend/backbone/audioFolders"
 	});
 	return application;
 }(Application));

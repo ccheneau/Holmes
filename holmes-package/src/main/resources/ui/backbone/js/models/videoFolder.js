@@ -5,10 +5,7 @@ var Application = (function(application) {
 
 	application.Collections.VideoFolders = Backbone.Collection.extend({
 		model : application.Models.VideoFolder,
-		all : function() {
-			this.url = "/backend/backbone/videoFolders";
-			return this;
-		}
+		url : "/backend/backbone/videoFolders"
 	});
 	return application;
 }(Application));
