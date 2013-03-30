@@ -50,5 +50,4 @@ public class PodcastCacheProvider implements Provider<Cache<String, List<Abstrac
                 .expireAfterWrite(configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS) //
                 .build();
     }
-
 }

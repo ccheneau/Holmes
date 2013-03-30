@@ -29,22 +29,27 @@ public class HolmesScheduler implements Server {
 
     private final AbstractScheduledService mediaIndexCleanerService;
     private final AbstractScheduledService podcastCacheCleanerService;
+    private final AbstractScheduledService mediaScannerService;
 
     @Inject
-    public HolmesScheduler(@Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService,
-            @Named("podcastCacheCleaner") AbstractScheduledService podcastCacheCleanerService) {
+    public HolmesScheduler(@Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService, //
+            @Named("podcastCacheCleaner") AbstractScheduledService podcastCacheCleanerService, //
+            @Named("mediaScanner") AbstractScheduledService mediaScannerService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
         this.podcastCacheCleanerService = podcastCacheCleanerService;
+        this.mediaScannerService = mediaScannerService;
     }
 
     @Override
     public void start() {
         mediaIndexCleanerService.start();
         podcastCacheCleanerService.start();
+        mediaScannerService.start();
     }
 
     @Override
     public void stop() {
+        mediaScannerService.stop();
         podcastCacheCleanerService.stop();
         mediaIndexCleanerService.stop();
     }

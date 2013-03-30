@@ -37,6 +37,7 @@ import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.inject.provider.WebApplicationProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.MediaScannerService;
 import net.holmes.core.media.PodcastCacheCleanerService;
 import net.holmes.core.media.index.MediaIndexCleanerService;
 import net.holmes.core.media.index.MediaIndexManager;
@@ -75,15 +76,18 @@ public final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
-        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
-        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
+        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
+        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
+
+        // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(PodcastCacheCleanerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaScanner")).to(MediaScannerService.class);
 
         // Bind servers
         bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);

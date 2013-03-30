@@ -19,8 +19,6 @@ package net.holmes.core.inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +37,6 @@ public final class CustomTypeListener implements TypeListener {
 
     private final EventBus eventBus;
 
-    @Inject
     public CustomTypeListener(EventBus eventBus) {
         this.eventBus = eventBus;
     }

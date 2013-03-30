@@ -36,8 +36,8 @@ import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.ConfigurationEvent;
 import net.holmes.core.configuration.ConfigurationNode;
 import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.MediaCommand;
-import net.holmes.core.media.MediaCommand.CommandType;
+import net.holmes.core.media.MediaEvent;
+import net.holmes.core.media.MediaEvent.MediaEventType;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.node.RootNode;
@@ -189,7 +189,7 @@ public final class BackboneManagerImpl implements BackboneManager {
 
     @Override
     public void scanAllMedia() {
-        eventBus.post(new MediaCommand(CommandType.SCAN_ALL, null));
+        eventBus.post(new MediaEvent(MediaEventType.SCAN_ALL, null));
     }
 
     private void validateFolder(ConfigurationFolder folder, boolean podcast) {

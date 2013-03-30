@@ -23,10 +23,18 @@ import javax.inject.Inject;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
+import net.holmes.core.inject.Loggable;
+
+import org.slf4j.Logger;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 
+/**
+ * Scheduled service used to clean index
+ */
+@Loggable
 public final class MediaIndexCleanerService extends AbstractScheduledService {
+    private Logger logger;
 
     private final MediaIndexManager mediaIndexManager;
     private final int cleanDelayMinutes;
@@ -39,11 +47,13 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() throws Exception {
+        if (logger.isDebugEnabled()) logger.debug("Launch media index cleaner");
         mediaIndexManager.clean();
     }
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES);
+        if (cleanDelayMinutes > 0) return Scheduler.newFixedRateSchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES);
+        return null;
     }
 }

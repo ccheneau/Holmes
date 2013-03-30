@@ -89,7 +89,7 @@ public class UtilHandler {
         return folders;
     }
 
-    public class Folder {
+    public static class Folder {
         private final String data;
         private final String state = "closed";
         private final Map<String, String> metadata;

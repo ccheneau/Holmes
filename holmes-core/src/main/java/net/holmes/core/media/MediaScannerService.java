@@ -17,47 +17,44 @@
 
 package net.holmes.core.media;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import net.holmes.core.configuration.Configuration;
 import net.holmes.core.configuration.Parameter;
 import net.holmes.core.inject.Loggable;
-import net.holmes.core.media.node.AbstractNode;
 
 import org.slf4j.Logger;
 
-import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service user to clean podcast cache
+ * Scheduled service used to scan all media
  */
 @Loggable
-public class PodcastCacheCleanerService extends AbstractScheduledService {
+public class MediaScannerService extends AbstractScheduledService {
     private Logger logger;
 
-    private final Cache<String, List<AbstractNode>> podcastCache;
-    private final int cleanDelayMinutes;
+    private final MediaManager mediaManager;
+    private final int scanAllDelayMinutes;
 
     @Inject
-    public PodcastCacheCleanerService(@Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache, Configuration configuration) {
-        this.podcastCache = podcastCache;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
+    public MediaScannerService(MediaManager mediaManager, Configuration configuration) {
+        this.mediaManager = mediaManager;
+        this.scanAllDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_SCAN_ALL_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() throws Exception {
         if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
-        podcastCache.cleanUp();
+        mediaManager.scanAll();
     }
 
     @Override
     protected Scheduler scheduler() {
-        if (cleanDelayMinutes > 0) return Scheduler.newFixedRateSchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES);
+        if (scanAllDelayMinutes > 0) return Scheduler.newFixedRateSchedule(scanAllDelayMinutes, scanAllDelayMinutes, TimeUnit.MINUTES);
         return null;
     }
+
 }

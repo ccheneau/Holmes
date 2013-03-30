@@ -19,6 +19,9 @@ package net.holmes.core.util.mimetype;
 import net.holmes.core.media.MediaType;
 import net.holmes.core.media.MediaType.Subtype;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+
 public final class MimeType {
 
     private final String type;
@@ -27,9 +30,9 @@ public final class MimeType {
 
     public MimeType(String mimeType) {
         this.mimeType = mimeType;
-        String[] types = mimeType.split("/");
-        this.type = types != null && types.length > 1 ? types[0] : null;
-        this.subType = types != null && types.length > 1 ? types[1] : null;
+        Iterable<String> iter = Splitter.on('/').split(mimeType);
+        this.type = Iterables.getFirst(iter, "");
+        this.subType = Iterables.getLast(iter, "");
     }
 
     public String getMimeType() {

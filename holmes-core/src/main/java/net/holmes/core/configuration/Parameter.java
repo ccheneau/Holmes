@@ -24,7 +24,8 @@ public enum Parameter {
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"), //
     PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"), //
     PODCAST_CACHE_CLEAN_DELAY_MINUTES("podcast_cache_clean_delay_minutes", "60"), //
-    MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15");
+    MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15"), //
+    MEDIA_SCAN_ALL_DELAY_MINUTES("media_scan_all_delay_minutes", "0");
 
     private final String name;
     private final String defaultValue;

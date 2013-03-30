@@ -189,7 +189,7 @@ public final class XmlConfigurationImpl implements Configuration {
         return this.rootNode.toString();
     }
 
-    private static final class XmlRootNode {
+    private final class XmlRootNode {
         private String upnpServerName;
         private Integer httpServerPort;
         private String theme;

@@ -184,7 +184,7 @@ public final class MediaManagerImpl implements MediaManager {
 
     @Override
     public void scanNode(AbstractNode node, boolean recursive) {
-        if (!(node instanceof PodcastNode)) {
+        if (node instanceof FolderNode) {
             List<AbstractNode> childNodes = getChildNodes(node);
             if (recursive && childNodes != null) {
                 for (AbstractNode childNode : childNodes)
@@ -399,7 +399,7 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Subscribe
-    public void handleCommand(MediaCommand command) {
+    public void handleCommand(MediaEvent command) {
         switch (command.getType()) {
         case SCAN_ALL:
             scanAll();

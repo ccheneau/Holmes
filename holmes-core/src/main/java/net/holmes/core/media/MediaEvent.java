@@ -17,16 +17,16 @@
 
 package net.holmes.core.media;
 
-public class MediaCommand {
-    private final CommandType type;
+public class MediaEvent {
+    private final MediaEventType type;
     private final String parameter;
 
-    public MediaCommand(CommandType type, String parameter) {
+    public MediaEvent(MediaEventType type, String parameter) {
         this.type = type;
         this.parameter = parameter;
     }
 
-    public CommandType getType() {
+    public MediaEventType getType() {
         return type;
     }
 
@@ -34,7 +34,7 @@ public class MediaCommand {
         return parameter;
     }
 
-    public enum CommandType {
+    public enum MediaEventType {
         SCAN_ALL, SCAN_NODE;
     }
 
