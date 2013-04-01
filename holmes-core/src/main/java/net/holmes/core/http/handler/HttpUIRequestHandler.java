@@ -45,6 +45,8 @@ import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.slf4j.Logger;
 
+import com.google.common.base.Strings;
+
 /**
  * Handler for Holmes UI pages
  */
@@ -86,15 +88,16 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        String fileName = decoder.path();
+        String fileName = decoder.path().trim();
         if ("/".equals(fileName)) {
-            fileName = "/" + configuration.getTheme() + "/index.html";
+            fileName = new StringBuilder().append("/").append(configuration.getTheme()).append("/index.html").toString();
         }
 
-        if (fileName == null || fileName.trim().isEmpty()) {
+        if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);
+
+        if (Strings.isNullOrEmpty(fileName)) {
             throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
         }
-        if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);
 
         try {
             // Get file

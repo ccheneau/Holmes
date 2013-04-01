@@ -77,8 +77,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
         try {
             // Build backend request
-            StringBuilder base = new StringBuilder();
-            base.append("http://").append(request.headers().get(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
+            StringBuilder base = new StringBuilder().append("http://").append(request.headers().get(HttpHeaders.Names.HOST)).append(REQUEST_PATH);
             final URI baseUri = new URI(base.toString());
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
             final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().name(), baseUri, requestUri, getHeaders(request),
