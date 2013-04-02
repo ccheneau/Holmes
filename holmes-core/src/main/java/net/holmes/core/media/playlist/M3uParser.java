@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.inject.Loggable;
 
 import org.slf4j.Logger;
 

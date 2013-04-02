@@ -20,7 +20,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import net.holmes.core.media.node.RootNode;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.ConfigurationNode;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.media.RootNode;
 
 import com.google.common.collect.Lists;
 

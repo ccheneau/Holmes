@@ -22,8 +22,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-import net.holmes.core.inject.Loggable;
-import net.holmes.core.media.node.RootNode;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.media.RootNode;
 
 import org.slf4j.Logger;
 

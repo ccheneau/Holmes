@@ -21,10 +21,17 @@ import io.netty.channel.ChannelInboundMessageHandler;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import net.holmes.common.Service;
+import net.holmes.common.SystrayService;
+import net.holmes.common.bundle.Bundle;
+import net.holmes.common.bundle.BundleImpl;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.XmlConfigurationImpl;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.mimetype.MimeTypeManager;
+import net.holmes.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.backend.backbone.BackboneManager;
 import net.holmes.core.backend.backbone.BackboneManagerImpl;
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.XmlConfigurationImpl;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
@@ -42,13 +49,7 @@ import net.holmes.core.media.PodcastCacheCleanerService;
 import net.holmes.core.media.index.MediaIndexCleanerService;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
-import net.holmes.core.media.node.AbstractNode;
 import net.holmes.core.upnp.UpnpServer;
-import net.holmes.core.util.Systray;
-import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.bundle.BundleImpl;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
-import net.holmes.core.util.mimetype.MimeTypeFactoryImpl;
 
 import org.fourthline.cling.UpnpService;
 
@@ -79,7 +80,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bind(MimeTypeFactory.class).to(MimeTypeFactoryImpl.class).in(Singleton.class);
+        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
@@ -90,10 +91,10 @@ public final class HolmesServerModule extends AbstractModule {
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaScanner")).to(MediaScannerService.class);
 
         // Bind servers
-        bind(Server.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
-        bind(Server.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
-        bind(Server.class).annotatedWith(Names.named("systray")).to(Systray.class).in(Singleton.class);
-        bind(Server.class).annotatedWith(Names.named("scheduler")).to(HolmesScheduler.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);

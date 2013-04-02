@@ -27,16 +27,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.media.ContentNode;
+import net.holmes.common.media.FolderNode;
+import net.holmes.common.media.PlaylistNode;
+import net.holmes.common.media.PodcastEntryNode;
+import net.holmes.common.media.PodcastNode;
 import net.holmes.core.media.MediaManager;
-import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.media.node.ContentNode;
-import net.holmes.core.media.node.FolderNode;
-import net.holmes.core.media.node.PlaylistNode;
-import net.holmes.core.media.node.PodcastEntryNode;
-import net.holmes.core.media.node.PodcastNode;
 
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;

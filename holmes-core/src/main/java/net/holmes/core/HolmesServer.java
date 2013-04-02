@@ -19,7 +19,8 @@ package net.holmes.core;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.Service;
+import net.holmes.common.inject.Loggable;
 
 import org.slf4j.Logger;
 
@@ -30,17 +31,17 @@ import com.google.common.eventbus.Subscribe;
  * Holmes server main class
  */
 @Loggable
-public final class HolmesServer implements Server {
+public final class HolmesServer implements Service {
     private Logger logger;
 
-    private final Server httpServer;
-    private final Server upnpServer;
-    private final Server systray;
-    private final Server scheduler;
+    private final Service httpServer;
+    private final Service upnpServer;
+    private final Service systray;
+    private final Service scheduler;
 
     @Inject
-    public HolmesServer(@Named("http") Server httpServer, @Named("upnp") Server upnpServer, @Named("systray") Server systray,
-            @Named("scheduler") Server scheduler) {
+    public HolmesServer(@Named("http") Service httpServer, @Named("upnp") Service upnpServer, @Named("systray") Service systray,
+            @Named("scheduler") Service scheduler) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.systray = systray;

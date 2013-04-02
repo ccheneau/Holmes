@@ -16,10 +16,10 @@
 */
 package net.holmes.core.media;
 
-import static net.holmes.core.media.node.RootNode.AUDIO;
-import static net.holmes.core.media.node.RootNode.PICTURE;
-import static net.holmes.core.media.node.RootNode.PODCAST;
-import static net.holmes.core.media.node.RootNode.VIDEO;
+import static net.holmes.common.media.RootNode.AUDIO;
+import static net.holmes.common.media.RootNode.PICTURE;
+import static net.holmes.common.media.RootNode.PODCAST;
+import static net.holmes.common.media.RootNode.VIDEO;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,26 +32,27 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.ConfigurationEvent;
-import net.holmes.core.configuration.ConfigurationNode;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.bundle.Bundle;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.ConfigurationEvent;
+import net.holmes.common.configuration.ConfigurationNode;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.media.ContentNode;
+import net.holmes.common.media.FolderNode;
+import net.holmes.common.media.MediaType;
+import net.holmes.common.media.PlaylistNode;
+import net.holmes.common.media.PodcastEntryNode;
+import net.holmes.common.media.PodcastNode;
+import net.holmes.common.media.RootNode;
+import net.holmes.common.mimetype.MimeType;
+import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
-import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.media.node.ContentNode;
-import net.holmes.core.media.node.FolderNode;
-import net.holmes.core.media.node.PlaylistNode;
-import net.holmes.core.media.node.PodcastEntryNode;
-import net.holmes.core.media.node.PodcastNode;
-import net.holmes.core.media.node.RootNode;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
-import net.holmes.core.util.bundle.Bundle;
-import net.holmes.core.util.mimetype.MimeType;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.slf4j.Logger;
 
@@ -72,16 +73,16 @@ public final class MediaManagerImpl implements MediaManager {
     private Logger logger;
 
     private final Configuration configuration;
-    private final MimeTypeFactory mimeTypeFactory;
+    private final MimeTypeManager mimeTypeManager;
     private final Bundle bundle;
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     @Inject
-    public MediaManagerImpl(Configuration configuration, MimeTypeFactory mimeTypeFactory, Bundle bundle, MediaIndexManager mediaIndexManager,
+    public MediaManagerImpl(Configuration configuration, MimeTypeManager mimeTypeManager, Bundle bundle, MediaIndexManager mediaIndexManager,
             @Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache) {
         this.configuration = configuration;
-        this.mimeTypeFactory = mimeTypeFactory;
+        this.mimeTypeManager = mimeTypeManager;
         this.bundle = bundle;
         this.mediaIndexManager = mediaIndexManager;
         this.podcastCache = podcastCache;
@@ -330,7 +331,7 @@ public final class MediaManagerImpl implements MediaManager {
         List<PlaylistItem> items = new M3uParser(new File(path)).parse();
         if (items != null) {
             for (PlaylistItem item : items) {
-                MimeType mimeType = mimeTypeFactory.getMimeType(item.getPath());
+                MimeType mimeType = mimeTypeManager.getMimeType(item.getPath());
                 if (mimeType.isMedia()) {
                     String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true));
                     nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
@@ -353,7 +354,7 @@ public final class MediaManagerImpl implements MediaManager {
         AbstractNode node = null;
 
         // Check mime type
-        MimeType mimeType = mimeTypeFactory.getMimeType(file.getName());
+        MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
         if (mimeType != null) {
             if (mimeType.getType().equals(MediaType.TYPE_PLAYLIST.getValue())) {
                 node = new PlaylistNode(nodeId, parentId, file.getName(), file.getAbsolutePath());

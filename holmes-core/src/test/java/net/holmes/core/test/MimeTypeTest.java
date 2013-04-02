@@ -19,10 +19,10 @@ package net.holmes.core.test;
 import javax.inject.Inject;
 
 import junit.framework.TestCase;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.mimetype.MimeType;
+import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.TestModule;
-import net.holmes.core.inject.Loggable;
-import net.holmes.core.util.mimetype.MimeType;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class MimeTypeTest extends TestCase {
     private Logger logger;
 
     @Inject
-    private MimeTypeFactory mimeTypeFactory;
+    private MimeTypeManager mimeTypeManager;
 
     @Override
     @Before
@@ -53,7 +53,7 @@ public class MimeTypeTest extends TestCase {
         try {
             String fileName = "movie.avi";
 
-            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
+            MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNotNull(mimeType);
             logger.debug(mimeType.toString());
@@ -72,7 +72,7 @@ public class MimeTypeTest extends TestCase {
         try {
             String fileName = "movie.blabla";
 
-            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
+            MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNull(mimeType);
         } catch (Exception e) {

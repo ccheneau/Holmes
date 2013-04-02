@@ -16,7 +16,7 @@
 */
 package net.holmes.core.backend.backbone.handler;
 
-import static net.holmes.core.media.node.RootNode.VIDEO;
+import static net.holmes.common.media.RootNode.VIDEO;
 
 import java.util.Collection;
 

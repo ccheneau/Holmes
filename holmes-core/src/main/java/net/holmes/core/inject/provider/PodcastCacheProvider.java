@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.media.node.AbstractNode;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.media.AbstractNode;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

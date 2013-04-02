@@ -18,10 +18,10 @@ package net.holmes.core.upnp;
 
 import javax.inject.Inject;
 
-import net.holmes.core.Server;
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.Service;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.inject.Loggable;
 
 import org.fourthline.cling.UpnpService;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ import com.google.inject.Injector;
  * UPnP server main class
  */
 @Loggable
-public final class UpnpServer implements Server {
+public final class UpnpServer implements Service {
     private Logger logger;
 
     private UpnpService upnpService = null;

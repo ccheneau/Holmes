@@ -18,7 +18,7 @@ package net.holmes.core.media;
 
 import java.util.List;
 
-import net.holmes.core.media.node.AbstractNode;
+import net.holmes.common.media.AbstractNode;
 
 public interface MediaManager {
     /**

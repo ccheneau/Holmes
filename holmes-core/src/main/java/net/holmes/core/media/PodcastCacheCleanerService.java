@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.Parameter;
-import net.holmes.core.inject.Loggable;
-import net.holmes.core.media.node.AbstractNode;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.media.AbstractNode;
 
 import org.slf4j.Logger;
 

@@ -19,6 +19,8 @@ package net.holmes.core.inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import net.holmes.common.inject.Loggable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

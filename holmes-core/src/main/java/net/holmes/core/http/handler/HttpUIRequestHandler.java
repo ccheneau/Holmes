@@ -36,12 +36,12 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
-import net.holmes.core.configuration.Configuration;
+import net.holmes.common.SystemProperty;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.mimetype.MimeType;
+import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.Loggable;
-import net.holmes.core.util.SystemProperty;
-import net.holmes.core.util.mimetype.MimeType;
-import net.holmes.core.util.mimetype.MimeTypeFactory;
 
 import org.slf4j.Logger;
 
@@ -57,12 +57,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     private static final String UI_DIRECTORY = getUiDirectory("ui");
 
     private final Configuration configuration;
-    private final MimeTypeFactory mimeTypeFactory;
+    private final MimeTypeManager mimeTypeManager;
 
     @Inject
-    public HttpUIRequestHandler(Configuration configuration, MimeTypeFactory mimeTypeFactory) {
+    public HttpUIRequestHandler(Configuration configuration, MimeTypeManager mimeTypeManager) {
         this.configuration = configuration;
-        this.mimeTypeFactory = mimeTypeFactory;
+        this.mimeTypeManager = mimeTypeManager;
     }
 
     /**
@@ -114,7 +114,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             HttpHeaders.setContentLength(response, raf.length());
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
-            MimeType mimeType = mimeTypeFactory.getMimeType(fileName);
+            MimeType mimeType = mimeTypeManager.getMimeType(fileName);
             if (mimeType != null) {
                 response.headers().add(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
             }

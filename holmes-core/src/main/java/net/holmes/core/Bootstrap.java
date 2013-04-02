@@ -18,8 +18,9 @@ package net.holmes.core;
 
 import java.io.File;
 
-import net.holmes.core.util.SystemProperty;
-import net.holmes.core.util.SystemUtils;
+import net.holmes.common.Service;
+import net.holmes.common.SystemProperty;
+import net.holmes.common.SystemUtils;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -42,7 +43,7 @@ public class Bootstrap {
             Injector injector = Guice.createInjector(new HolmesServerModule());
 
             // Start Holmes server
-            final Server holmesServer = injector.getInstance(HolmesServer.class);
+            final Service holmesServer = injector.getInstance(HolmesServer.class);
             try {
                 holmesServer.start();
             } catch (RuntimeException e) {

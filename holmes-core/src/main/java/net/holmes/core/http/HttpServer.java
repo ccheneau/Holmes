@@ -34,9 +34,9 @@ import java.net.InetSocketAddress;
 
 import javax.inject.Inject;
 
-import net.holmes.core.Server;
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.Service;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.inject.Loggable;
 
 import org.slf4j.Logger;
 
@@ -47,7 +47,7 @@ import com.sun.jersey.spi.container.WebApplication;
  * HTTP server main class  
  */
 @Loggable
-public final class HttpServer implements Server {
+public final class HttpServer implements Service {
     private Logger logger;
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";

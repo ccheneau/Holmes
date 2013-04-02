@@ -16,7 +16,7 @@
 */
 package net.holmes.core.backend.backbone.handler;
 
-import static net.holmes.core.media.node.RootNode.AUDIO;
+import static net.holmes.common.media.RootNode.AUDIO;
 
 import java.util.Collection;
 

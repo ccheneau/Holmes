@@ -20,10 +20,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
-import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.media.node.ContentNode;
-import net.holmes.core.media.node.PodcastEntryNode;
-import net.holmes.core.util.mimetype.MimeType;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.media.ContentNode;
+import net.holmes.common.media.PodcastEntryNode;
+import net.holmes.common.mimetype.MimeType;
 
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;

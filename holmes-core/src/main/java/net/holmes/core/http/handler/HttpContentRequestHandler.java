@@ -38,11 +38,11 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import net.holmes.common.inject.Loggable;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.media.ContentNode;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.Loggable;
 import net.holmes.core.media.MediaManager;
-import net.holmes.core.media.node.AbstractNode;
-import net.holmes.core.media.node.ContentNode;
 
 import org.slf4j.Logger;
 

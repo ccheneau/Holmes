@@ -19,10 +19,10 @@ package net.holmes.core.backend.backbone;
 
 import java.util.Collection;
 
+import net.holmes.common.media.RootNode;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.backend.backbone.response.IndexElement;
 import net.holmes.core.backend.backbone.response.Settings;
-import net.holmes.core.media.node.RootNode;
 
 /**
  * Manager for requests coming from backbone UI

@@ -17,9 +17,9 @@
 
 package net.holmes.core.backend.backbone;
 
-import static net.holmes.core.configuration.ConfigurationEvent.EventType.ADD;
-import static net.holmes.core.configuration.ConfigurationEvent.EventType.DELETE;
-import static net.holmes.core.configuration.ConfigurationEvent.EventType.UPDATE;
+import static net.holmes.common.configuration.ConfigurationEvent.EventType.ADD;
+import static net.holmes.common.configuration.ConfigurationEvent.EventType.DELETE;
+import static net.holmes.common.configuration.ConfigurationEvent.EventType.UPDATE;
 
 import java.io.File;
 import java.util.Collection;
@@ -29,19 +29,19 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import net.holmes.common.bundle.Bundle;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.ConfigurationEvent;
+import net.holmes.common.configuration.ConfigurationNode;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.common.media.RootNode;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.backend.backbone.response.IndexElement;
 import net.holmes.core.backend.backbone.response.Settings;
-import net.holmes.core.configuration.Configuration;
-import net.holmes.core.configuration.ConfigurationEvent;
-import net.holmes.core.configuration.ConfigurationNode;
-import net.holmes.core.configuration.Parameter;
 import net.holmes.core.media.MediaEvent;
 import net.holmes.core.media.MediaEvent.MediaEventType;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
-import net.holmes.core.media.node.RootNode;
-import net.holmes.core.util.bundle.Bundle;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;

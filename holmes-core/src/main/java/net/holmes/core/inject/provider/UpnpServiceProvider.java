@@ -22,7 +22,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.holmes.core.configuration.Configuration;
+import net.holmes.common.configuration.Configuration;
 import net.holmes.core.upnp.ContentDirectoryService;
 
 import org.fourthline.cling.UpnpService;

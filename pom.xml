@@ -293,6 +293,7 @@
 	</repositories>
 
 	<modules>
+		<module>holmes-common</module>
 		<module>holmes-core</module>
 		<module>holmes-package</module>
 		<module>holmes-rome-modules</module>
