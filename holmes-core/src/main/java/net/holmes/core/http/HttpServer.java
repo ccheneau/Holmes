@@ -22,6 +22,7 @@ import io.netty.channel.ChannelInboundMessageHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -52,17 +53,17 @@ public final class HttpServer implements Service {
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
 
-    private final ServerBootstrap bootstrap;
     private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
+    private final EventLoopGroup eventLoopGroup;
 
     @Inject
     public HttpServer(Injector injector, WebApplication webApplication, Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
         this.webApplication = webApplication;
-        this.bootstrap = new ServerBootstrap();
+        this.eventLoopGroup = new NioEventLoopGroup();
     }
 
     @Override
@@ -72,7 +73,8 @@ public final class HttpServer implements Service {
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
         // Configure the server.
-        bootstrap.group(new NioEventLoopGroup()) //
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        bootstrap.group(eventLoopGroup) //
                 .channel(NioServerSocketChannel.class) //
                 .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -103,7 +105,7 @@ public final class HttpServer implements Service {
         logger.info("Stopping HTTP server");
 
         // Stop the server
-        bootstrap.shutdown();
+        eventLoopGroup.shutdown();
         webApplication.destroy();
 
         logger.info("HTTP server stopped");
