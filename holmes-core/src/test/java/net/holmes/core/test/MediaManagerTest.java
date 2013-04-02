@@ -21,10 +21,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import junit.framework.TestCase;
-import net.holmes.common.inject.Loggable;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.media.RootNode;
 import net.holmes.core.TestModule;
+import net.holmes.core.inject.Loggable;
 import net.holmes.core.media.MediaManager;
 
 import org.junit.Before;

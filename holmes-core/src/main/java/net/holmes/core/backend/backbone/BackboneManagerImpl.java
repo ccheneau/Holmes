@@ -22,6 +22,7 @@ import static net.holmes.common.configuration.ConfigurationEvent.EventType.DELET
 import static net.holmes.common.configuration.ConfigurationEvent.EventType.UPDATE;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -35,6 +36,7 @@ import net.holmes.common.configuration.ConfigurationEvent;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
 import net.holmes.common.media.RootNode;
+import net.holmes.core.backend.backbone.exception.ConfigurationException;
 import net.holmes.core.backend.backbone.response.ConfigurationFolder;
 import net.holmes.core.backend.backbone.response.IndexElement;
 import net.holmes.core.backend.backbone.response.Settings;
@@ -95,7 +97,11 @@ public final class BackboneManagerImpl implements BackboneManager {
         // Save config
         ConfigurationNode newNode = new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath());
         configNodes.add(newNode);
-        configuration.saveConfig();
+        try {
+            configuration.saveConfig();
+        } catch (IOException e) {
+            throw new ConfigurationException(e);
+        }
 
         // Post event
         eventBus.post(new ConfigurationEvent(ADD, newNode, rootNode));
@@ -125,7 +131,11 @@ public final class BackboneManagerImpl implements BackboneManager {
         if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
             currentNode.setLabel(folder.getName());
             currentNode.setPath(folder.getPath());
-            configuration.saveConfig();
+            try {
+                configuration.saveConfig();
+            } catch (IOException e) {
+                throw new ConfigurationException(e);
+            }
 
             // Post Event
             eventBus.post(new ConfigurationEvent(UPDATE, currentNode, rootNode));
@@ -152,7 +162,11 @@ public final class BackboneManagerImpl implements BackboneManager {
 
         // Save config
         configNodes.remove(currentNode);
-        configuration.saveConfig();
+        try {
+            configuration.saveConfig();
+        } catch (IOException e) {
+            throw new ConfigurationException(e);
+        }
 
         // Post Event
         eventBus.post(new ConfigurationEvent(DELETE, currentNode, rootNode));
@@ -174,7 +188,11 @@ public final class BackboneManagerImpl implements BackboneManager {
         configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
         configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
-        configuration.saveConfig();
+        try {
+            configuration.saveConfig();
+        } catch (IOException e) {
+            throw new ConfigurationException(e);
+        }
     }
 
     @Override

@@ -28,26 +28,21 @@ import java.util.List;
 import java.util.Properties;
 
 import net.holmes.common.SystemUtils;
-import net.holmes.common.inject.Loggable;
 import net.holmes.common.media.RootNode;
-
-import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-@Loggable
 public final class XmlConfigurationImpl implements Configuration {
-    private Logger logger;
 
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
 
     private XmlRootNode rootNode = null;
 
-    public XmlConfigurationImpl() {
+    public XmlConfigurationImpl() throws IOException {
         loadConfig();
     }
 
@@ -62,7 +57,7 @@ public final class XmlConfigurationImpl implements Configuration {
         return new File(fConfPath.getAbsolutePath() + File.separator + CONF_FILE_NAME);
     }
 
-    private void loadConfig() {
+    private void loadConfig() throws IOException {
         boolean configLoaded = false;
 
         File confFile = getConfigFile();
@@ -76,11 +71,7 @@ public final class XmlConfigurationImpl implements Configuration {
             } catch (FileNotFoundException ignore) {
             } finally {
                 // Close input stream
-                try {
-                    if (in != null) in.close();
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
+                if (in != null) in.close();
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
@@ -91,20 +82,14 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public void saveConfig() {
+    public void saveConfig() throws IOException {
         OutputStream out = null;
         try {
             // Save configuration to XML
             out = new FileOutputStream(getConfigFile());
             getXStream().toXML(rootNode, out);
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage(), e);
         } finally {
-            try {
-                if (out != null) out.close();
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
+            if (out != null) out.close();
         }
     }
 

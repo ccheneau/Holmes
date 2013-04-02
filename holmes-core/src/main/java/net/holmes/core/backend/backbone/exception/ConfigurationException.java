@@ -14,15 +14,14 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.common.inject;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package net.holmes.core.backend.backbone.exception;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public class ConfigurationException extends RuntimeException {
+    private static final long serialVersionUID = 4365631762884392538L;
 
-@Target(TYPE)
-@Retention(RUNTIME)
-public @interface Loggable {
+    public ConfigurationException(Throwable ex) {
+        super(ex);
+    }
+
 }

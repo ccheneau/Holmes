@@ -37,7 +37,7 @@ import javax.inject.Inject;
 
 import net.holmes.common.Service;
 import net.holmes.common.configuration.Configuration;
-import net.holmes.common.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 

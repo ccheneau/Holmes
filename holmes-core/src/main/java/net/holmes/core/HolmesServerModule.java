@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import net.holmes.common.Service;
-import net.holmes.common.SystrayService;
 import net.holmes.common.bundle.Bundle;
 import net.holmes.common.bundle.BundleImpl;
 import net.holmes.common.configuration.Configuration;

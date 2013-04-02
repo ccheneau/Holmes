@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.common;
+package net.holmes.core;
 
 import java.awt.AWTException;
 import java.awt.Desktop;
@@ -44,10 +44,12 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
 
+import net.holmes.common.Service;
+import net.holmes.common.SystemUtils;
 import net.holmes.common.bundle.Bundle;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
-import net.holmes.common.inject.Loggable;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 

@@ -16,6 +16,7 @@
 */
 package net.holmes.common.configuration;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.holmes.common.media.RootNode;
@@ -38,7 +39,7 @@ public interface Configuration {
     public static final int DEFAULT_HTTP_SERVER_PORT = 8085;
     public static final String DEFAULT_THEME = "backbone";
 
-    public void saveConfig();
+    public void saveConfig() throws IOException;
 
     public String getUpnpServerName();
 

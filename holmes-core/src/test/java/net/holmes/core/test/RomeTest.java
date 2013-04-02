@@ -22,8 +22,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.holmes.common.inject.Loggable;
 import net.holmes.core.TestModule;
+import net.holmes.core.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;

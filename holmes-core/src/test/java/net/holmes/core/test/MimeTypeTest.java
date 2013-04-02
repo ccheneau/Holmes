@@ -19,10 +19,10 @@ package net.holmes.core.test;
 import javax.inject.Inject;
 
 import junit.framework.TestCase;
-import net.holmes.common.inject.Loggable;
 import net.holmes.common.mimetype.MimeType;
 import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.TestModule;
+import net.holmes.core.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;

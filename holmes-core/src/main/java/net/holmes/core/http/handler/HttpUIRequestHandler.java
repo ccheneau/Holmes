@@ -38,10 +38,10 @@ import javax.inject.Inject;
 
 import net.holmes.common.SystemProperty;
 import net.holmes.common.configuration.Configuration;
-import net.holmes.common.inject.Loggable;
 import net.holmes.common.mimetype.MimeType;
 import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
+import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 
