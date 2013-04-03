@@ -36,6 +36,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.inject.Inject;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -56,6 +58,9 @@ import org.slf4j.Logger;
 @Loggable
 public class SystrayService implements Service {
     private Logger logger;
+
+    private static final String HOLMES_SITE_URL = "http://ccheneau.github.com/Holmes";
+    private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
 
     private final Configuration configuration;
     private final Bundle bundle;
@@ -111,7 +116,8 @@ public class SystrayService implements Service {
         final JPopupMenu popupMenu = new JPopupMenu();
 
         // Quit Holmes menu item
-        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"));
+        Icon holmesExitIcon = new ImageIcon(getClass().getResource("/icon-exit.png"));
+        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"), holmesExitIcon);
         quitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -126,8 +132,7 @@ public class SystrayService implements Service {
             public void actionPerformed(ActionEvent arg0) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        StringBuilder logFile = new StringBuilder();
-                        logFile.append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator) //
+                        StringBuilder logFile = new StringBuilder().append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator)
                                 .append("log").append(File.separator).append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     } catch (IOException e) {
@@ -138,7 +143,8 @@ public class SystrayService implements Service {
         });
 
         // Holmes ui menu item
-        JMenuItem holmesUiItem = new JMenuItem(bundle.getString("systray.holmes.ui"));
+        Icon holmesUiIcon = new ImageIcon(getClass().getResource("/icon-logo.png"));
+        JMenuItem holmesUiItem = new JMenuItem(bundle.getString("systray.holmes.ui"), holmesUiIcon);
         Font boldFont = UIManager.getFont("MenuItem.bold.font");
         if (boldFont != null) holmesUiItem.setFont(boldFont);
 
@@ -147,8 +153,7 @@ public class SystrayService implements Service {
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        StringBuilder holmesUrl = new StringBuilder();
-                        holmesUrl.append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
+                        StringBuilder holmesUrl = new StringBuilder().append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
                         Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
@@ -160,13 +165,14 @@ public class SystrayService implements Service {
         });
 
         // Holmes site menu item
-        JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"));
+        Icon holmesSiteIcon = new ImageIcon(getClass().getResource("/icon-site.png"));
+        JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"), holmesSiteIcon);
         holmesSiteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        Desktop.getDesktop().browse(new URI("http://ccheneau.github.com/Holmes/"));
+                        Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL));
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     } catch (URISyntaxException e) {
@@ -183,7 +189,7 @@ public class SystrayService implements Service {
             public void actionPerformed(ActionEvent evt) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        Desktop.getDesktop().browse(new URI("https://github.com/ccheneau/Holmes/wiki"));
+                        Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL));
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     } catch (URISyntaxException e) {
