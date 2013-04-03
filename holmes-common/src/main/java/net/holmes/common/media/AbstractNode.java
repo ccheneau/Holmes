@@ -16,7 +16,6 @@
 */
 package net.holmes.common.media;
 
-
 public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected final String id;
     protected final String parentId;
@@ -71,6 +70,44 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((iconUrl == null) ? 0 : iconUrl.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((modifedDate == null) ? 0 : modifedDate.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        AbstractNode other = (AbstractNode) obj;
+        if (iconUrl == null) {
+            if (other.iconUrl != null) return false;
+        } else if (!iconUrl.equals(other.iconUrl)) return false;
+        if (id == null) {
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
+        if (modifedDate == null) {
+            if (other.modifedDate != null) return false;
+        } else if (!modifedDate.equals(other.modifedDate)) return false;
+        if (name == null) {
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
+        if (parentId == null) {
+            if (other.parentId != null) return false;
+        } else if (!parentId.equals(other.parentId)) return false;
+        if (type != other.type) return false;
+        return true;
+    }
+
     public enum NodeType {
         TYPE_FOLDER, //
         TYPE_CONTENT, //
@@ -78,5 +115,4 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         TYPE_PODCAST_ENTRY, //
         TYPE_PLAYLIST;
     }
-
 }

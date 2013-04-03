@@ -15,8 +15,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.common.configuration;
+package net.holmes.common.event;
 
+import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.media.RootNode;
 
 public class ConfigurationEvent {

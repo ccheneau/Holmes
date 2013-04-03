@@ -34,9 +34,10 @@ import javax.inject.Named;
 
 import net.holmes.common.bundle.Bundle;
 import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.ConfigurationEvent;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
+import net.holmes.common.event.ConfigurationEvent;
+import net.holmes.common.event.MediaEvent;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.media.ContentNode;
 import net.holmes.common.media.FolderNode;
@@ -372,12 +373,12 @@ public final class MediaManagerImpl implements MediaManager {
      * @param event
      */
     @Subscribe
-    public void handleConfigEvent(ConfigurationEvent event) {
-        if (logger.isDebugEnabled()) logger.debug("event received: " + event);
+    public void handleConfigEvent(ConfigurationEvent configurationEvent) {
+        if (logger.isDebugEnabled()) logger.debug("Configuration event received: {}", configurationEvent.toString());
 
-        ConfigurationNode configNode = event.getNode();
-        RootNode rootNode = event.getRootNode();
-        switch (event.getType()) {
+        ConfigurationNode configNode = configurationEvent.getNode();
+        RootNode rootNode = configurationEvent.getRootNode();
+        switch (configurationEvent.getType()) {
         case ADD:
             // Add node to mediaIndex
             mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.get(rootNode, configNode));
@@ -396,21 +397,25 @@ public final class MediaManagerImpl implements MediaManager {
             break;
         default:
             logger.error("Unknown event");
+            break;
         }
     }
 
     @Subscribe
-    public void handleCommand(MediaEvent command) {
-        switch (command.getType()) {
+    public void handleMediaEvent(MediaEvent mediaEvent) {
+        if (logger.isDebugEnabled()) logger.debug("Media event received: {}", mediaEvent.toString());
+
+        switch (mediaEvent.getType()) {
         case SCAN_ALL:
             scanAll();
             break;
         case SCAN_NODE:
-            AbstractNode node = getNode(command.getParameter());
+            AbstractNode node = getNode(mediaEvent.getParameter());
             if (node != null) scanNode(node, true);
             break;
+        default:
+            logger.error("Unknown event");
+            break;
         }
-
     }
-
 }

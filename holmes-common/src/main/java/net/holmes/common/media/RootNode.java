@@ -17,7 +17,6 @@
 
 package net.holmes.common.media;
 
-
 public enum RootNode {
     ROOT("0", "-1", null), //
     VIDEO("1_VIDEOS", "0", MediaType.TYPE_VIDEO), //

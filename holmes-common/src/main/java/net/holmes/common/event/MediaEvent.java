@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.media;
+package net.holmes.common.event;
 
 public class MediaEvent {
     private final MediaEventType type;
@@ -34,8 +34,18 @@ public class MediaEvent {
         return parameter;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("MediaEvent [type=");
+        builder.append(type);
+        builder.append(", parameter=");
+        builder.append(parameter);
+        builder.append("]");
+        return builder.toString();
+    }
+
     public enum MediaEventType {
         SCAN_ALL, SCAN_NODE;
     }
-
 }
