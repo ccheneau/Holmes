@@ -23,7 +23,10 @@ import net.holmes.common.media.RootNode;
 /**
  * Factory for media index elements
  */
-public class MediaIndexElementFactory {
+public final class MediaIndexElementFactory {
+
+    private MediaIndexElementFactory() {
+    }
 
     public static MediaIndexElement get(RootNode rootNode, ConfigurationNode configNode) {
         return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),

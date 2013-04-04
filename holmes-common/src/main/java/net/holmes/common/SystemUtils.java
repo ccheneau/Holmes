@@ -21,7 +21,13 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
-public class SystemUtils {
+public final class SystemUtils {
+
+    private static final String LOCK_FILE = "holmes.lock";
+
+    private SystemUtils() {
+    }
+
     /**
      * Create Holmes lock file
      * @return true on lock success, false if lock file already exists
@@ -29,7 +35,7 @@ public class SystemUtils {
     public static boolean lockInstance() {
         try {
             // Create lock file
-            final File lockFile = new File(getLocalUserDataDir(), "holmes.lock");
+            final File lockFile = new File(getLocalUserDataDir(), LOCK_FILE);
             final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
             final FileLock fileLock = randomAccessFile.getChannel().tryLock();
             if (fileLock != null) {
