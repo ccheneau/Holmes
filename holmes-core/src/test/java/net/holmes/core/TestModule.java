@@ -17,9 +17,8 @@
 package net.holmes.core;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
-import net.holmes.common.bundle.Bundle;
-import net.holmes.common.bundle.BundleImpl;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.mimetype.MimeTypeManager;
@@ -41,14 +40,15 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
 public class TestModule extends AbstractModule {
-    private EventBus eventBus = new EventBus("Holmes EventBus");
+    private final EventBus eventBus = new EventBus("Holmes EventBus");
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
 
     @Override
     protected void configure() {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
 
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
-        bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
+        bind(ResourceBundle.class).toInstance(resourceBundle);
 
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);

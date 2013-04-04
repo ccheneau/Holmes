@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.swing.Icon;
@@ -48,7 +49,6 @@ import javax.swing.plaf.FontUIResource;
 
 import net.holmes.common.Service;
 import net.holmes.common.SystemUtils;
-import net.holmes.common.bundle.Bundle;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
 import net.holmes.core.inject.Loggable;
@@ -63,12 +63,12 @@ public class SystrayService implements Service {
     private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
 
     private final Configuration configuration;
-    private final Bundle bundle;
+    private final ResourceBundle resourceBundle;
 
     @Inject
-    public SystrayService(Configuration configuration, Bundle bundle) {
+    public SystrayService(Configuration configuration, ResourceBundle resourceBundle) {
         this.configuration = configuration;
-        this.bundle = bundle;
+        this.resourceBundle = resourceBundle;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class SystrayService implements Service {
 
         // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
-        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, bundle.getString("systray.title"));
+        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
@@ -117,7 +117,7 @@ public class SystrayService implements Service {
 
         // Quit Holmes menu item
         Icon holmesExitIcon = new ImageIcon(getClass().getResource("/icon-exit.png"));
-        JMenuItem quitItem = new JMenuItem(bundle.getString("systray.quit"), holmesExitIcon);
+        JMenuItem quitItem = new JMenuItem(resourceBundle.getString("systray.quit"), holmesExitIcon);
         quitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -126,7 +126,7 @@ public class SystrayService implements Service {
         });
 
         // Holmes logs menu item
-        JMenuItem logsItem = new JMenuItem(bundle.getString("systray.logs"));
+        JMenuItem logsItem = new JMenuItem(resourceBundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -144,7 +144,7 @@ public class SystrayService implements Service {
 
         // Holmes ui menu item
         Icon holmesUiIcon = new ImageIcon(getClass().getResource("/icon-logo.png"));
-        JMenuItem holmesUiItem = new JMenuItem(bundle.getString("systray.holmes.ui"), holmesUiIcon);
+        JMenuItem holmesUiItem = new JMenuItem(resourceBundle.getString("systray.holmes.ui"), holmesUiIcon);
         Font boldFont = UIManager.getFont("MenuItem.bold.font");
         if (boldFont != null) holmesUiItem.setFont(boldFont);
 
@@ -166,7 +166,7 @@ public class SystrayService implements Service {
 
         // Holmes site menu item
         Icon holmesSiteIcon = new ImageIcon(getClass().getResource("/icon-site.png"));
-        JMenuItem holmesSiteItem = new JMenuItem(bundle.getString("systray.holmes.home"), holmesSiteIcon);
+        JMenuItem holmesSiteItem = new JMenuItem(resourceBundle.getString("systray.holmes.home"), holmesSiteIcon);
         holmesSiteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -183,7 +183,7 @@ public class SystrayService implements Service {
         });
 
         // Holmes wiki menu item
-        JMenuItem holmesWikiItem = new JMenuItem(bundle.getString("systray.holmes.wiki"));
+        JMenuItem holmesWikiItem = new JMenuItem(resourceBundle.getString("systray.holmes.wiki"));
         holmesWikiItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {

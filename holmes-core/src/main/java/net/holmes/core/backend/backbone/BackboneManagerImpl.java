@@ -26,11 +26,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-import net.holmes.common.bundle.Bundle;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
@@ -53,15 +53,15 @@ public final class BackboneManagerImpl implements BackboneManager {
 
     private final Configuration configuration;
     private final EventBus eventBus;
-    private final Bundle bundle;
+    private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
 
     @Inject
-    public BackboneManagerImpl(MediaIndexManager mediaIndexManager, Configuration configuration, EventBus eventBus, Bundle bundle) {
+    public BackboneManagerImpl(MediaIndexManager mediaIndexManager, Configuration configuration, EventBus eventBus, ResourceBundle resourceBundle) {
         this.mediaIndexManager = mediaIndexManager;
         this.configuration = configuration;
         this.eventBus = eventBus;
-        this.bundle = bundle;
+        this.resourceBundle = resourceBundle;
     }
 
     @Override
@@ -80,8 +80,8 @@ public final class BackboneManagerImpl implements BackboneManager {
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
-        if (rootNode == RootNode.PODCAST) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
-        else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
+        if (rootNode == RootNode.PODCAST) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
+        else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
     }
 
     @Override
@@ -123,8 +123,8 @@ public final class BackboneManagerImpl implements BackboneManager {
             }
         }
         if (currentNode == null) {
-            if (podcast) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
-            else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
+            if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
+            else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
         }
 
         // Save config if name or path has changed
@@ -156,8 +156,8 @@ public final class BackboneManagerImpl implements BackboneManager {
             }
         }
         if (currentNode == null) {
-            if (podcast) throw new IllegalArgumentException(bundle.getString("backend.podcast.unknown.error"));
-            else throw new IllegalArgumentException(bundle.getString("backend.folder.unknown.error"));
+            if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
+            else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
         }
 
         // Save config
@@ -180,9 +180,10 @@ public final class BackboneManagerImpl implements BackboneManager {
 
     @Override
     public void saveSettings(Settings settings) {
-        if (Strings.isNullOrEmpty(settings.getServerName())) throw new IllegalArgumentException(bundle.getString("backend.settings.server.name.error"));
+        if (Strings.isNullOrEmpty(settings.getServerName()))
+            throw new IllegalArgumentException(resourceBundle.getString("backend.settings.server.name.error"));
         if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < 1024 || settings.getHttpServerPort() > 9999)
-            throw new IllegalArgumentException(bundle.getString("backend.settings.http.port.error"));
+            throw new IllegalArgumentException(resourceBundle.getString("backend.settings.http.port.error"));
 
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
@@ -212,19 +213,19 @@ public final class BackboneManagerImpl implements BackboneManager {
 
     private void validateFolder(ConfigurationFolder folder, boolean podcast) {
         // Check folder's name and path are not empty
-        if (podcast && Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(bundle.getString("backend.podcast.name.error"));
-        else if (podcast && Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(bundle.getString("backend.podcast.url.error"));
-        else if (Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(bundle.getString("backend.folder.name.error"));
-        else if (Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(bundle.getString("backend.folder.path.error"));
+        if (podcast && Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.name.error"));
+        else if (podcast && Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.error"));
+        else if (Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(resourceBundle.getString("backend.folder.name.error"));
+        else if (Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.error"));
 
         // Check folder's path is correct
         if (podcast) {
             if (!folder.getPath().toLowerCase().startsWith("http://"))
-                throw new IllegalArgumentException(bundle.getString("backend.podcast.url.malformatted.error"));
+                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.malformatted.error"));
         } else {
             File file = new File(folder.getPath());
             if (!file.exists() || !file.canRead() || file.isHidden() || !file.isDirectory())
-                throw new IllegalArgumentException(bundle.getString("backend.folder.path.unknown.error"));
+                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.unknown.error"));
         }
     }
 
@@ -233,11 +234,14 @@ public final class BackboneManagerImpl implements BackboneManager {
         for (ConfigurationNode node : configNodes) {
             if (excludedId != null && node.getId().equals(folder.getId())) continue;
 
-            if (podcast && node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(bundle.getString("backend.podcast.already.exist.error"));
+            if (podcast && node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(
+                    resourceBundle.getString("backend.podcast.already.exist.error"));
             else if (podcast && node.getPath().equals(folder.getPath())) throw new IllegalArgumentException(
-                    bundle.getString("backend.podcast.already.exist.error"));
-            else if (node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(bundle.getString("backend.folder.already.exist.error"));
-            else if (node.getPath().equals(folder.getPath())) throw new IllegalArgumentException(bundle.getString("backend.folder.already.exist.error"));
+                    resourceBundle.getString("backend.podcast.already.exist.error"));
+            else if (node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(
+                    resourceBundle.getString("backend.folder.already.exist.error"));
+            else if (node.getPath().equals(folder.getPath()))
+                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
         }
     }
 }

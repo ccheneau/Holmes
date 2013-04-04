@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +33,6 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.holmes.common.bundle.Bundle;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
@@ -75,16 +75,16 @@ public final class MediaManagerImpl implements MediaManager {
 
     private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
-    private final Bundle bundle;
+    private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     @Inject
-    public MediaManagerImpl(Configuration configuration, MimeTypeManager mimeTypeManager, Bundle bundle, MediaIndexManager mediaIndexManager,
+    public MediaManagerImpl(Configuration configuration, MimeTypeManager mimeTypeManager, ResourceBundle resourceBundle, MediaIndexManager mediaIndexManager,
             @Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
-        this.bundle = bundle;
+        this.resourceBundle = resourceBundle;
         this.mediaIndexManager = mediaIndexManager;
         this.podcastCache = podcastCache;
     }
@@ -97,7 +97,7 @@ public final class MediaManagerImpl implements MediaManager {
         RootNode rootNode = RootNode.getById(nodeId);
         if (rootNode != null) {
             // Root node
-            node = new FolderNode(rootNode.getId(), rootNode.getParentId(), bundle.getString("rootNode." + rootNode.getId()));
+            node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
         } else if (nodeId != null) {
             // Get node in mediaIndex
             MediaIndexElement indexElement = mediaIndexManager.get(nodeId);
@@ -138,10 +138,10 @@ public final class MediaManagerImpl implements MediaManager {
             case ROOT:
                 // Child nodes of root are audio, video, picture and pod-cast root nodes
                 childNodes = Lists.newArrayList();
-                childNodes.add(new FolderNode(AUDIO.getId(), AUDIO.getParentId(), bundle.getString("rootNode." + AUDIO.getId())));
-                childNodes.add(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), bundle.getString("rootNode." + VIDEO.getId())));
-                childNodes.add(new FolderNode(PICTURE.getId(), PICTURE.getParentId(), bundle.getString("rootNode." + PICTURE.getId())));
-                childNodes.add(new FolderNode(PODCAST.getId(), PODCAST.getParentId(), bundle.getString("rootNode." + PODCAST.getId())));
+                childNodes.add(new FolderNode(AUDIO.getId(), AUDIO.getParentId(), resourceBundle.getString("rootNode." + AUDIO.getId())));
+                childNodes.add(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), resourceBundle.getString("rootNode." + VIDEO.getId())));
+                childNodes.add(new FolderNode(PICTURE.getId(), PICTURE.getParentId(), resourceBundle.getString("rootNode." + PICTURE.getId())));
+                childNodes.add(new FolderNode(PODCAST.getId(), PODCAST.getParentId(), resourceBundle.getString("rootNode." + PODCAST.getId())));
                 break;
             case AUDIO:
             case VIDEO:

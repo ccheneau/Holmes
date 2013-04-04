@@ -19,11 +19,10 @@ package net.holmes.core;
 import io.netty.channel.ChannelInboundMessageHandler;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
 import net.holmes.common.Service;
-import net.holmes.common.bundle.Bundle;
-import net.holmes.common.bundle.BundleImpl;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.XmlConfigurationImpl;
 import net.holmes.common.media.AbstractNode;
@@ -66,7 +65,8 @@ import com.sun.jersey.spi.container.WebApplication;
 public final class HolmesServerModule extends AbstractModule {
 
     //    private EventBus eventBus = new EventBus("Holmes EventBus");
-    private EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
+    private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
 
     @Override
     protected void configure() {
@@ -75,7 +75,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(EventBus.class).toInstance(eventBus);
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
-        bind(Bundle.class).to(BundleImpl.class).in(Singleton.class);
+        bind(ResourceBundle.class).toInstance(resourceBundle);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
