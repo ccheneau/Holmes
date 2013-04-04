@@ -14,35 +14,21 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.holmes.core.test;
-
-import javax.inject.Inject;
+package net.holmes.common.mimetype;
 
 import junit.framework.TestCase;
-import net.holmes.common.mimetype.MimeType;
-import net.holmes.common.mimetype.MimeTypeManager;
-import net.holmes.core.TestModule;
-import net.holmes.core.inject.Loggable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-@Loggable
 public class MimeTypeTest extends TestCase {
-    private Logger logger;
 
-    @Inject
     private MimeTypeManager mimeTypeManager;
 
     @Override
     @Before
     public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
+        mimeTypeManager = new MimeTypeManagerImpl();
     }
 
     /**
@@ -56,8 +42,8 @@ public class MimeTypeTest extends TestCase {
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNotNull(mimeType);
-            logger.debug(mimeType.toString());
             assertEquals("video", mimeType.getType());
+            assertEquals("x-msvideo", mimeType.getSubType());
             assertEquals("video/x-msvideo", mimeType.getMimeType());
         } catch (Exception e) {
             fail(e.getMessage());
@@ -65,10 +51,10 @@ public class MimeTypeTest extends TestCase {
     }
 
     /**
-     * Test wrong mime type.
+     * Test bad mime type.
      */
     @Test
-    public void testWrongMimeType() {
+    public void testBadMimeType() {
         try {
             String fileName = "movie.blabla";
 
