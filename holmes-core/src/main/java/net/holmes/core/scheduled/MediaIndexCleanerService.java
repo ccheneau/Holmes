@@ -15,44 +15,41 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.media;
+package net.holmes.core.scheduled;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
-import net.holmes.common.media.AbstractNode;
 import net.holmes.core.inject.Loggable;
+import net.holmes.core.media.index.MediaIndexManager;
 
 import org.slf4j.Logger;
 
-import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service user to clean podcast cache
+ * Scheduled service used to clean index
  */
 @Loggable
-public class PodcastCacheCleanerService extends AbstractScheduledService {
+public final class MediaIndexCleanerService extends AbstractScheduledService {
     private Logger logger;
 
-    private final Cache<String, List<AbstractNode>> podcastCache;
+    private final MediaIndexManager mediaIndexManager;
     private final int cleanDelayMinutes;
 
     @Inject
-    public PodcastCacheCleanerService(@Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache, Configuration configuration) {
-        this.podcastCache = podcastCache;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
+    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager, Configuration configuration) {
+        this.mediaIndexManager = mediaIndexManager;
+        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_INDEX_CLEAN_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() throws Exception {
-        if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
-        podcastCache.cleanUp();
+        if (logger.isDebugEnabled()) logger.debug("Launch media index cleaner");
+        mediaIndexManager.clean();
     }
 
     @Override

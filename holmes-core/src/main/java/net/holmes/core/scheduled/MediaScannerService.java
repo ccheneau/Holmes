@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.media;
+package net.holmes.core.scheduled;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
 import net.holmes.core.inject.Loggable;
+import net.holmes.core.media.MediaManager;
 
 import org.slf4j.Logger;
 

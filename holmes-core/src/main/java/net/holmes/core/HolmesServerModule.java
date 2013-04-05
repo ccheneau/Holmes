@@ -42,11 +42,11 @@ import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.inject.provider.WebApplicationProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
-import net.holmes.core.media.MediaScannerService;
-import net.holmes.core.media.PodcastCacheCleanerService;
-import net.holmes.core.media.index.MediaIndexCleanerService;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
+import net.holmes.core.scheduled.MediaIndexCleanerService;
+import net.holmes.core.scheduled.MediaScannerService;
+import net.holmes.core.scheduled.PodcastCacheCleanerService;
 import net.holmes.core.upnp.UpnpServer;
 
 import org.fourthline.cling.UpnpService;

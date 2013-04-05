@@ -15,40 +15,44 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.holmes.core.media.index;
+package net.holmes.core.scheduled;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
+import net.holmes.common.media.AbstractNode;
 import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 
+import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service used to clean index
+ * Scheduled service user to clean podcast cache
  */
 @Loggable
-public final class MediaIndexCleanerService extends AbstractScheduledService {
+public class PodcastCacheCleanerService extends AbstractScheduledService {
     private Logger logger;
 
-    private final MediaIndexManager mediaIndexManager;
+    private final Cache<String, List<AbstractNode>> podcastCache;
     private final int cleanDelayMinutes;
 
     @Inject
-    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager, Configuration configuration) {
-        this.mediaIndexManager = mediaIndexManager;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_INDEX_CLEAN_DELAY_MINUTES);
+    public PodcastCacheCleanerService(@Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache, Configuration configuration) {
+        this.podcastCache = podcastCache;
+        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() throws Exception {
-        if (logger.isDebugEnabled()) logger.debug("Launch media index cleaner");
-        mediaIndexManager.clean();
+        if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
+        podcastCache.cleanUp();
     }
 
     @Override
