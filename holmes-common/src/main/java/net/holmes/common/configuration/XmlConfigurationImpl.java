@@ -122,16 +122,6 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public String getTheme() {
-        return this.rootNode.getTheme();
-    }
-
-    @Override
-    public void setTheme(String theme) {
-        this.rootNode.setTheme(theme);
-    }
-
-    @Override
     public List<ConfigurationNode> getFolders(RootNode rootNode) {
         List<ConfigurationNode> folders = null;
         switch (rootNode) {
@@ -177,12 +167,15 @@ public final class XmlConfigurationImpl implements Configuration {
     private final class XmlRootNode {
         private String upnpServerName;
         private Integer httpServerPort;
-        private String theme;
         private LinkedList<ConfigurationNode> videoFolders;
         private LinkedList<ConfigurationNode> pictureFolders;
         private LinkedList<ConfigurationNode> audioFolders;
         private LinkedList<ConfigurationNode> podcasts;
         private Properties parameters;
+
+        @SuppressWarnings("unused")
+        @Deprecated
+        private transient String theme;
 
         /**
          * Check config default values
@@ -190,7 +183,6 @@ public final class XmlConfigurationImpl implements Configuration {
         public void checkDefaultValues() {
             if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null || this.httpServerPort <= 1024) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
-            if (Strings.isNullOrEmpty(this.theme)) this.theme = DEFAULT_THEME;
             if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
             if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
             if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
@@ -215,14 +207,6 @@ public final class XmlConfigurationImpl implements Configuration {
 
         public void setHttpServerPort(Integer httpServerPort) {
             this.httpServerPort = httpServerPort;
-        }
-
-        public String getTheme() {
-            return this.theme;
-        }
-
-        public void setTheme(String theme) {
-            this.theme = theme;
         }
 
         public List<ConfigurationNode> getVideoFolders() {

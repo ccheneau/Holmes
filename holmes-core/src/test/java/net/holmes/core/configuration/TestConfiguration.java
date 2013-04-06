@@ -82,16 +82,6 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public String getTheme() {
-        return DEFAULT_THEME;
-    }
-
-    @Override
-    public void setTheme(String theme) {
-
-    }
-
-    @Override
     public List<ConfigurationNode> getFolders(RootNode rootNode) {
         List<ConfigurationNode> folders = null;
         switch (rootNode) {

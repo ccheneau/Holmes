@@ -37,7 +37,6 @@ import java.io.RandomAccessFile;
 import javax.inject.Inject;
 
 import net.holmes.common.SystemProperty;
-import net.holmes.common.configuration.Configuration;
 import net.holmes.common.mimetype.MimeType;
 import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
@@ -56,12 +55,10 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
     private static final String UI_DIRECTORY = getUiDirectory("ui");
 
-    private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
 
     @Inject
-    public HttpUIRequestHandler(Configuration configuration, MimeTypeManager mimeTypeManager) {
-        this.configuration = configuration;
+    public HttpUIRequestHandler(MimeTypeManager mimeTypeManager) {
         this.mimeTypeManager = mimeTypeManager;
     }
 
@@ -90,7 +87,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();
         if ("/".equals(fileName)) {
-            fileName = new StringBuilder().append("/").append(configuration.getTheme()).append("/index.html").toString();
+            fileName = new StringBuilder().append("/index.html").toString();
         }
 
         if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);

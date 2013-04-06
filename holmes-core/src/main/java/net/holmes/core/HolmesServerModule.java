@@ -28,8 +28,8 @@ import net.holmes.common.configuration.XmlConfigurationImpl;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.common.mimetype.MimeTypeManagerImpl;
-import net.holmes.core.backend.backbone.BackboneManager;
-import net.holmes.core.backend.backbone.BackboneManagerImpl;
+import net.holmes.core.backend.BackendManager;
+import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
@@ -97,7 +97,7 @@ public final class HolmesServerModule extends AbstractModule {
 
         // Bind Jersey application
         bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
-        bind(BackboneManager.class).to(BackboneManagerImpl.class).in(Singleton.class);
+        bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
