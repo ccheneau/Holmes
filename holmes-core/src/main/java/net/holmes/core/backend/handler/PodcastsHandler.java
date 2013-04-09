@@ -35,7 +35,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
 @Path("/backend/podcasts")
-public class PodcastsHandler {
+public final class PodcastsHandler {
 
     private final BackendManager backendManager;
 

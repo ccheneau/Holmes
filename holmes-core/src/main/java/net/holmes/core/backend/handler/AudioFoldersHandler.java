@@ -35,7 +35,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
 @Path("/backend/audioFolders")
-public class AudioFoldersHandler {
+public final class AudioFoldersHandler {
 
     private final BackendManager backendManager;
 

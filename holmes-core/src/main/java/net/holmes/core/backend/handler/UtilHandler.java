@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @Path("/backend/util")
-public class UtilHandler {
+public final class UtilHandler {
 
     /**
      * Get holmes version
@@ -91,13 +91,14 @@ public class UtilHandler {
 
     public static class Folder {
         private final String data;
-        private final String state = "closed";
+        private final String state;
         private final Map<String, String> metadata;
 
         public Folder(String data, String path) {
             this.data = data;
             this.metadata = Maps.newHashMap();
             this.metadata.put("path", path);
+            this.state = "closed";
         }
 
         public String getState() {

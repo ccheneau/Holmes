@@ -17,13 +17,16 @@
 
 package net.holmes.core.backend.response;
 
-public class IndexElement {
+public final class IndexElement {
 
-    private final String id;
-    private final String parentId;
-    private final String mediaType;
-    private final String name;
-    private final String path;
+    private String id;
+    private String parentId;
+    private String mediaType;
+    private String name;
+    private String path;
+
+    public IndexElement() {
+    }
 
     public IndexElement(String id, String parentId, String mediaType, String name, String path) {
         this.id = id;
@@ -37,19 +40,75 @@ public class IndexElement {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getParentId() {
         return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getMediaType() {
         return mediaType;
     }
 
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getPath() {
         return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((mediaType == null) ? 0 : mediaType.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        IndexElement other = (IndexElement) obj;
+        if (id == null) {
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
+        if (mediaType == null) {
+            if (other.mediaType != null) return false;
+        } else if (!mediaType.equals(other.mediaType)) return false;
+        if (name == null) {
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
+        if (parentId == null) {
+            if (other.parentId != null) return false;
+        } else if (!parentId.equals(other.parentId)) return false;
+        if (path == null) {
+            if (other.path != null) return false;
+        } else if (!path.equals(other.path)) return false;
+        return true;
     }
 }

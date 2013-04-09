@@ -29,7 +29,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.Settings;
 
 @Path("/backend/settings")
-public class SettingsHandler {
+public final class SettingsHandler {
 
     private final BackendManager backendManager;
 

@@ -35,7 +35,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
 @Path("/backend/videoFolders")
-public class VideoFoldersHandler {
+public final class VideoFoldersHandler {
 
     private final BackendManager backendManager;
 

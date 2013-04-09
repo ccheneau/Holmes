@@ -30,5 +30,4 @@ public class ConfigurationExceptionMapper implements ExceptionMapper<Configurati
                 .type(MediaType.TEXT_PLAIN) //
                 .entity(e.getMessage()).build();
     }
-
 }

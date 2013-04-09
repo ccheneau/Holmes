@@ -32,7 +32,6 @@ import com.google.common.cache.CacheBuilder;
 
 /**
  * Guice provider for podcast cache
- *
  */
 public class PodcastCacheProvider implements Provider<Cache<String, List<AbstractNode>>> {
 

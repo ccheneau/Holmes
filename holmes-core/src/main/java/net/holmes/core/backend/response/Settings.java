@@ -17,7 +17,8 @@
 
 package net.holmes.core.backend.response;
 
-public class Settings {
+public final class Settings {
+
     private String serverName;
     private Integer httpServerPort;
     private Boolean prependPodcastItem;
@@ -63,5 +64,37 @@ public class Settings {
 
     public void setEnableExternalSubtitles(Boolean enableExternalSubtitles) {
         this.enableExternalSubtitles = enableExternalSubtitles;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((enableExternalSubtitles == null) ? 0 : enableExternalSubtitles.hashCode());
+        result = prime * result + ((httpServerPort == null) ? 0 : httpServerPort.hashCode());
+        result = prime * result + ((prependPodcastItem == null) ? 0 : prependPodcastItem.hashCode());
+        result = prime * result + ((serverName == null) ? 0 : serverName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        Settings other = (Settings) obj;
+        if (enableExternalSubtitles == null) {
+            if (other.enableExternalSubtitles != null) return false;
+        } else if (!enableExternalSubtitles.equals(other.enableExternalSubtitles)) return false;
+        if (httpServerPort == null) {
+            if (other.httpServerPort != null) return false;
+        } else if (!httpServerPort.equals(other.httpServerPort)) return false;
+        if (prependPodcastItem == null) {
+            if (other.prependPodcastItem != null) return false;
+        } else if (!prependPodcastItem.equals(other.prependPodcastItem)) return false;
+        if (serverName == null) {
+            if (other.serverName != null) return false;
+        } else if (!serverName.equals(other.serverName)) return false;
+        return true;
     }
 }

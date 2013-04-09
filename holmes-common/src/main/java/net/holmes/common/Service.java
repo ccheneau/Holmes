@@ -18,12 +18,12 @@ package net.holmes.common;
 
 public interface Service {
     /**
-     * Start server
+     * Start service
      */
     public void start();
 
     /**
-     * Stop server
+     * Stop service
      */
     public void stop();
 }

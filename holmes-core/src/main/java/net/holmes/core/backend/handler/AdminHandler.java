@@ -30,7 +30,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.IndexElement;
 
 @Path("/backend/admin")
-public class AdminHandler {
+public final class AdminHandler {
 
     private final BackendManager backendManager;
 

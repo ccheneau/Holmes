@@ -23,5 +23,4 @@ public class ConfigurationException extends RuntimeException {
     public ConfigurationException(Throwable ex) {
         super(ex);
     }
-
 }

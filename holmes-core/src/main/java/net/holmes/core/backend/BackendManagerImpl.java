@@ -200,8 +200,8 @@ public final class BackendManagerImpl implements BackendManager {
     public Collection<IndexElement> getMediaIndexElements() {
         Collection<IndexElement> indexElements = Lists.newArrayList();
         for (Entry<String, MediaIndexElement> elementEntry : mediaIndexManager.getElements()) {
-            indexElements.add(new IndexElement(elementEntry.getKey(), elementEntry.getValue().getParentId(), elementEntry.getValue().getMediaType(),
-                    elementEntry.getValue().getName(), elementEntry.getValue().getPath()));
+            MediaIndexElement el = elementEntry.getValue();
+            indexElements.add(new IndexElement(elementEntry.getKey(), el.getParentId(), el.getMediaType(), el.getName(), el.getPath()));
         }
         return indexElements;
     }
@@ -211,6 +211,12 @@ public final class BackendManagerImpl implements BackendManager {
         eventBus.post(new MediaEvent(MediaEventType.SCAN_ALL, null));
     }
 
+    /**
+     * Check folder does not already existalidate folder
+     * 
+     * @param folder
+     * @param podcast
+     */
     private void validateFolder(ConfigurationFolder folder, boolean podcast) {
         // Check folder's name and path are not empty
         if (podcast && Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.name.error"));
@@ -218,30 +224,39 @@ public final class BackendManagerImpl implements BackendManager {
         else if (Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(resourceBundle.getString("backend.folder.name.error"));
         else if (Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.error"));
 
-        // Check folder's path is correct
         if (podcast) {
+            // Check podcast URL is correct
             if (!folder.getPath().toLowerCase().startsWith("http://"))
                 throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.malformatted.error"));
         } else {
+            // Check folder path is correct
             File file = new File(folder.getPath());
             if (!file.exists() || !file.canRead() || file.isHidden() || !file.isDirectory())
                 throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.unknown.error"));
         }
     }
 
-    // Check folder does not already exist
+    /**
+     * Check folder does not already exist
+     * 
+     * @param excludedId
+     * @param folder
+     * @param configNodes
+     * @param podcast
+     */
     private void validateDuplicatedFolder(String excludedId, ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
         for (ConfigurationNode node : configNodes) {
-            if (excludedId != null && node.getId().equals(folder.getId())) continue;
+            if (excludedId != null && excludedId.equals(node.getId())) continue;
 
-            if (podcast && node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(
-                    resourceBundle.getString("backend.podcast.already.exist.error"));
-            else if (podcast && node.getPath().equals(folder.getPath())) throw new IllegalArgumentException(
-                    resourceBundle.getString("backend.podcast.already.exist.error"));
-            else if (node.getLabel().equals(folder.getName())) throw new IllegalArgumentException(
-                    resourceBundle.getString("backend.folder.already.exist.error"));
-            else if (node.getPath().equals(folder.getPath()))
+            if (podcast && node.getLabel().equals(folder.getName())) {
+                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
+            } else if (podcast && node.getPath().equals(folder.getPath())) {
+                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
+            } else if (node.getLabel().equals(folder.getName())) {
                 throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
+            } else if (node.getPath().equals(folder.getPath())) {
+                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
+            }
         }
     }
 }

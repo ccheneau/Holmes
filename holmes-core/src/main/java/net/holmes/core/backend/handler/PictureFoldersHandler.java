@@ -35,7 +35,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
 @Path("/backend/pictureFolders")
-public class PictureFoldersHandler {
+public final class PictureFoldersHandler {
 
     private final BackendManager backendManager;
 
