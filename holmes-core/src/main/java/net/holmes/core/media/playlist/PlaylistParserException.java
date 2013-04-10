@@ -14,10 +14,25 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package net.holmes.core.media.playlist;
 
-import java.util.List;
+public class PlaylistParserException extends Exception {
+    private static final long serialVersionUID = -5068408691447981899L;
 
-public interface PlaylistParser {
-    List<PlaylistItem> parse() throws PlaylistParserException;
+    public PlaylistParserException() {
+        super();
+    }
+
+    public PlaylistParserException(String arg0, Throwable arg1) {
+        super(arg0, arg1);
+    }
+
+    public PlaylistParserException(String arg0) {
+        super(arg0);
+    }
+
+    public PlaylistParserException(Throwable arg0) {
+        super(arg0);
+    }
 }

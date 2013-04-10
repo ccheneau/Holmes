@@ -35,24 +35,24 @@ import net.holmes.common.media.RootNode;
  *
  */
 public interface Configuration {
-    public static final String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    public static final int DEFAULT_HTTP_SERVER_PORT = 8085;
+    String DEFAULT_UPNP_SERVER_NAME = "Holmes";
+    int DEFAULT_HTTP_SERVER_PORT = 8085;
 
-    public void saveConfig() throws IOException;
+    void saveConfig() throws IOException;
 
-    public String getUpnpServerName();
+    String getUpnpServerName();
 
-    public void setUpnpServerName(String upnpServerName);
+    void setUpnpServerName(String upnpServerName);
 
-    public Integer getHttpServerPort();
+    Integer getHttpServerPort();
 
-    public void setHttpServerPort(Integer httpServerPort);
+    void setHttpServerPort(Integer httpServerPort);
 
-    public List<ConfigurationNode> getFolders(RootNode rootNode);
+    List<ConfigurationNode> getFolders(RootNode rootNode);
 
-    public Boolean getParameter(Parameter param);
+    Boolean getParameter(Parameter param);
 
-    public Integer getIntParameter(Parameter prop);
+    Integer getIntParameter(Parameter prop);
 
-    public void setParameter(Parameter param, Boolean value);
+    void setParameter(Parameter param, Boolean value);
 }

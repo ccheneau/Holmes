@@ -17,5 +17,5 @@
 package net.holmes.common.mimetype;
 
 public interface MimeTypeManager {
-    public MimeType getMimeType(String fileName);
+    MimeType getMimeType(String fileName);
 }

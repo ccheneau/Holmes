@@ -51,8 +51,8 @@ public final class XmlConfigurationImpl implements Configuration {
      */
     private File getConfigFile() {
         File fConfPath = new File(SystemUtils.getLocalUserDataDir(), CONF_PATH);
-        if (!fConfPath.exists() || !fConfPath.isDirectory())
-            if (!fConfPath.mkdirs()) throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
+        if ((!fConfPath.exists() || !fConfPath.isDirectory()) && !fConfPath.mkdirs())
+            throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 
         return new File(fConfPath.getAbsolutePath() + File.separator + CONF_FILE_NAME);
     }
@@ -68,7 +68,8 @@ public final class XmlConfigurationImpl implements Configuration {
                 in = new FileInputStream(confFile);
                 rootNode = (XmlRootNode) getXStream().fromXML(in);
                 configLoaded = true;
-            } catch (FileNotFoundException ignore) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace(System.err);
             } finally {
                 // Close input stream
                 if (in != null) in.close();

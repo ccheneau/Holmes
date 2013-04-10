@@ -110,7 +110,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void editFolder(String id, ConfigurationFolder folder, RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        boolean podcast = (rootNode == RootNode.PODCAST);
+        boolean podcast = rootNode == RootNode.PODCAST;
 
         // Validate
         validateFolder(folder, podcast);
@@ -145,7 +145,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void removeFolder(String id, RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        boolean podcast = (rootNode == RootNode.PODCAST);
+        boolean podcast = rootNode == RootNode.PODCAST;
 
         // Validate
         ConfigurationNode currentNode = null;

@@ -20,10 +20,10 @@ public interface Service {
     /**
      * Start service
      */
-    public void start();
+    void start();
 
     /**
      * Stop service
      */
-    public void stop();
+    void stop();
 }

@@ -20,6 +20,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -140,7 +141,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
     }
 
-    private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result, long childNodeSize) {
+    private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result, long childNodeSize) throws URISyntaxException {
         if (result.filterResult()) {
             if (node instanceof ContentNode) {
                 // Build content url

@@ -21,15 +21,15 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 
 public interface HttpRequestHandler {
-    public final static Integer CHUNK_SIZE = 8192;
+    Integer CHUNK_SIZE = 8192;
 
     /**
      * Check if handler can process request
      */
-    public boolean canProcess(String requestPath, HttpMethod method);
+    boolean canProcess(String requestPath, HttpMethod method);
 
     /**
      * Process request
      */
-    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
+    void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
 }

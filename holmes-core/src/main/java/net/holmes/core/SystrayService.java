@@ -43,6 +43,7 @@ import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
@@ -59,7 +60,7 @@ import org.slf4j.Logger;
 public class SystrayService implements Service {
     private Logger logger;
 
-    private static final String HOLMES_SITE_URL = "http://ccheneau.github.com/Holmes";
+    private static final String HOLMES_SITE_URL = "http://ccheneau.github.io/Holmes/";
     private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
 
     private final Configuration configuration;
@@ -73,10 +74,8 @@ public class SystrayService implements Service {
 
     @Override
     public void start() {
-        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY)) {
-            // Add system tray icon
-            if (initUI()) initSystemTrayIcon();
-        }
+        // Add system tray icon
+        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUI()) initSystemTrayIcon();
     }
 
     @Override
@@ -85,7 +84,7 @@ public class SystrayService implements Service {
     }
 
     private boolean initUI() {
-        boolean init = true;
+        boolean result = true;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -95,10 +94,16 @@ public class SystrayService implements Service {
                 FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
                 UIManager.put("MenuItem.bold.font", menuItemBoldFont);
             }
-        } catch (Exception e) {
-            init = false;
+        } catch (ClassNotFoundException e) {
+            result = false;
+        } catch (InstantiationException e) {
+            result = false;
+        } catch (IllegalAccessException e) {
+            result = false;
+        } catch (UnsupportedLookAndFeelException e) {
+            result = false;
         }
-        return init;
+        return result;
     }
 
     private void initSystemTrayIcon() {
@@ -120,7 +125,7 @@ public class SystrayService implements Service {
         JMenuItem quitItem = new JMenuItem(resourceBundle.getString("systray.quit"), holmesExitIcon);
         quitItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         });

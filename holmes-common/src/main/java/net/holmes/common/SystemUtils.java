@@ -69,7 +69,7 @@ public final class SystemUtils {
 
         // Check directory and create it if it does not exist
         File fDataDir = new File(holmesDataDir.toString());
-        if (!fDataDir.exists() || !fDataDir.isDirectory()) if (!fDataDir.mkdirs()) throw new RuntimeException("Failed to create " + holmesDataDir.toString());
+        if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs()) throw new RuntimeException("Failed to create " + holmesDataDir.toString());
 
         return fDataDir;
     }

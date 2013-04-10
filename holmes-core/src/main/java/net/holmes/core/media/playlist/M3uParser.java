@@ -21,18 +21,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import net.holmes.core.inject.Loggable;
-
-import org.slf4j.Logger;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
-@Loggable
 public class M3uParser implements PlaylistParser {
-    private Logger logger;
 
     private final File playlist;
 
@@ -41,7 +35,7 @@ public class M3uParser implements PlaylistParser {
     }
 
     @Override
-    public List<PlaylistItem> parse() {
+    public List<PlaylistItem> parse() throws PlaylistParserException {
         List<PlaylistItem> items = null;
         Charset charset = Files.getFileExtension(playlist.getName()).toLowerCase().equals("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");
         try {
@@ -51,7 +45,7 @@ public class M3uParser implements PlaylistParser {
                 else items = parseM3u(lines);
             }
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            throw new PlaylistParserException(e);
         }
         return items;
     }

@@ -21,17 +21,17 @@ import java.util.Set;
 
 public interface MediaIndexManager {
 
-    public MediaIndexElement get(String uuid);
+    MediaIndexElement get(String uuid);
 
-    public String add(MediaIndexElement element);
+    String add(MediaIndexElement element);
 
-    public void put(String uuid, MediaIndexElement element);
+    void put(String uuid, MediaIndexElement element);
 
-    public void remove(String uuid);
+    void remove(String uuid);
 
-    public void removeChilds(String uuid);
+    void removeChilds(String uuid);
 
-    public void clean();
+    void clean();
 
-    public Set<Entry<String, MediaIndexElement>> getElements();
+    Set<Entry<String, MediaIndexElement>> getElements();
 }

@@ -29,21 +29,21 @@ import net.holmes.core.backend.response.Settings;
  */
 public interface BackendManager {
 
-    public Collection<ConfigurationFolder> getFolders(RootNode rootNode);
+    Collection<ConfigurationFolder> getFolders(RootNode rootNode);
 
-    public ConfigurationFolder getFolder(String id, RootNode rootNode);
+    ConfigurationFolder getFolder(String id, RootNode rootNode);
 
-    public void addFolder(ConfigurationFolder folder, RootNode rootNode);
+    void addFolder(ConfigurationFolder folder, RootNode rootNode);
 
-    public void editFolder(String id, ConfigurationFolder folder, RootNode rootNode);
+    void editFolder(String id, ConfigurationFolder folder, RootNode rootNode);
 
-    public void removeFolder(String id, RootNode rootNode);
+    void removeFolder(String id, RootNode rootNode);
 
-    public Settings getSettings();
+    Settings getSettings();
 
-    public void saveSettings(Settings settings);
+    void saveSettings(Settings settings);
 
-    public Collection<IndexElement> getMediaIndexElements();
+    Collection<IndexElement> getMediaIndexElements();
 
-    public void scanAllMedia();
+    void scanAllMedia();
 }

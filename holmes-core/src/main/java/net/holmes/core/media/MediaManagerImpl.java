@@ -54,6 +54,7 @@ import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
+import net.holmes.core.media.playlist.PlaylistParserException;
 
 import org.slf4j.Logger;
 
@@ -302,8 +303,6 @@ public final class MediaManagerImpl implements MediaManager {
                                 }
                             }
                         }
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
                     } finally {
                         // Close the reader
                         try {
@@ -329,16 +328,22 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private List<AbstractNode> getPlaylistChildNodes(String parentId, String path) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        List<PlaylistItem> items = new M3uParser(new File(path)).parse();
-        if (items != null) {
-            for (PlaylistItem item : items) {
-                MimeType mimeType = mimeTypeManager.getMimeType(item.getPath());
-                if (mimeType.isMedia()) {
-                    String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true));
-                    nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
+
+        try {
+            List<PlaylistItem> items = new M3uParser(new File(path)).parse();
+            if (items != null) {
+                for (PlaylistItem item : items) {
+                    MimeType mimeType = mimeTypeManager.getMimeType(item.getPath());
+                    if (mimeType.isMedia()) {
+                        String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true));
+                        nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
+                    }
                 }
             }
+        } catch (PlaylistParserException e) {
+            logger.error(e.getMessage(), e);
         }
+
         return nodes;
     }
 

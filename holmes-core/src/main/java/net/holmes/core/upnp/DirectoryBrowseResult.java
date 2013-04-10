@@ -75,7 +75,7 @@ public final class DirectoryBrowseResult {
         return didl;
     }
 
-    public void addItem(String parentNodeId, ContentNode contentNode, String url) {
+    public void addItem(String parentNodeId, ContentNode contentNode, String url) throws URISyntaxException {
         MimeType mimeType = contentNode.getMimeType();
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
 
@@ -99,7 +99,7 @@ public final class DirectoryBrowseResult {
         }
     }
 
-    public void addPodcastItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) {
+    public void addPodcastItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) throws URISyntaxException {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
@@ -127,7 +127,7 @@ public final class DirectoryBrowseResult {
         itemCount += 1;
     }
 
-    public void addContainer(String parentNodeId, AbstractNode node, int childCount) {
+    public void addContainer(String parentNodeId, AbstractNode node, int childCount) throws URISyntaxException {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
         setDidlMetadata(folder, node);
 
@@ -135,7 +135,7 @@ public final class DirectoryBrowseResult {
         itemCount += 1;
     }
 
-    public void addPlaylist(String parentNodeId, AbstractNode node, int childCount) {
+    public void addPlaylist(String parentNodeId, AbstractNode node, int childCount) throws URISyntaxException {
         PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, childCount);
         setDidlMetadata(playlist, node);
 
@@ -148,19 +148,15 @@ public final class DirectoryBrowseResult {
      */
     public boolean filterResult() {
         totalCount += 1;
-        return maxResults == 0 || (itemCount < maxResults && totalCount >= firstResult + 1);
+        return maxResults == 0 || itemCount < maxResults && totalCount >= firstResult + 1;
     }
 
     private org.seamless.util.MimeType getUpnpMimeType(MimeType mimeType) {
         return new org.seamless.util.MimeType(mimeType.getType(), mimeType.getSubType());
     }
 
-    private void setDidlMetadata(DIDLObject didlObjet, AbstractNode node) {
+    private void setDidlMetadata(DIDLObject didlObjet, AbstractNode node) throws URISyntaxException {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
-
-        try {
-            if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
-        } catch (URISyntaxException ignore) {
-        }
+        if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
     }
 }

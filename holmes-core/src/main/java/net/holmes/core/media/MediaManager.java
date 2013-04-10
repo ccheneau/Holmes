@@ -24,20 +24,20 @@ public interface MediaManager {
     /**
      * Get node
      */
-    public AbstractNode getNode(String nodeId);
+    AbstractNode getNode(String nodeId);
 
     /**
      * Get child nodes
      */
-    public List<AbstractNode> getChildNodes(AbstractNode parentNode);
+    List<AbstractNode> getChildNodes(AbstractNode parentNode);
 
     /**
      * Perform a full scan
      */
-    public void scanAll();
+    void scanAll();
 
     /**
      * Scan a specific node
      */
-    public void scanNode(AbstractNode node, boolean recursive);
+    void scanNode(AbstractNode node, boolean recursive);
 }
