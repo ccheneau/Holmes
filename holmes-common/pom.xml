@@ -8,6 +8,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>holmes-common</artifactId>
+	<name>Holmes Common</name>
+	<description>Holmes Common</description>
+	<url>http://ccheneau.github.io/Holmes/</url>
 
 	<dependencies>
 		<!-- xstream -->

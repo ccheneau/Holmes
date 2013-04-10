@@ -5,6 +5,9 @@
 	<artifactId>holmes-parent</artifactId>
 	<version>0.4.0</version>
 	<packaging>pom</packaging>
+	<name>Holmes Parent</name>
+	<description>Holmes Parent</description>
+	<url>http://ccheneau.github.io/Holmes/</url>
 
 	<licenses>
 		<license>
@@ -29,9 +32,15 @@
 		</developer>
 	</developers>
 
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ccheneau/Holmes/issues</url>
+	</issueManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<dependency.locations.enabled>false</dependency.locations.enabled>
 		<cling.version>2.0-alpha2</cling.version>
 		<guava.version>14.0.1</guava.version>
 		<guice.version>3.0</guice.version>
@@ -49,11 +58,11 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.0</version>
+					<version>3.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.7</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -61,7 +70,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.13</version>
+					<version>2.14</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-source-plugin</artifactId>
@@ -110,8 +119,12 @@
 					<version>2.3</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-jxr-plugin</artifactId>
-					<version>2.3</version>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.10</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -302,7 +315,6 @@
 	<reporting>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
 			</plugin>
 			<plugin>
@@ -310,7 +322,6 @@
 				<artifactId>findbugs-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 			</plugin>
 		</plugins>
@@ -321,8 +332,11 @@
 			<id>4thline.org-repo</id>
 			<url>http://4thline.org/m2</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 

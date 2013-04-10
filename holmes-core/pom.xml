@@ -8,6 +8,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>holmes-core</artifactId>
+	<name>Holmes Core</name>
+	<description>Holmes Core</description>
+	<url>http://ccheneau.github.io/Holmes/</url>
 
 	<build>
 		<plugins>
