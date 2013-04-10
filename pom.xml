@@ -31,6 +31,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<cling.version>2.0-alpha2</cling.version>
 		<guava.version>14.0.1</guava.version>
 		<guice.version>3.0</guice.version>
@@ -95,6 +96,23 @@
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.0</version>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -108,7 +126,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
 	</build>
 
 	<dependencyManagement>
@@ -281,6 +298,23 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<repositories>
 		<repository>
