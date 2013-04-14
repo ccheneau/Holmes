@@ -18,13 +18,35 @@ package net.holmes.common.media;
 
 import net.holmes.common.mimetype.MimeType;
 
+/**
+ * Podcast entry node.
+ */
 public final class PodcastEntryNode extends AbstractNode {
     private final MimeType mimeType;
     private final Long size;
     private final String url;
     private final String duration;
 
-    public PodcastEntryNode(String id, String parentId, String name, MimeType mimeType, Long size, String url, String duration) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     * @param mimeType 
+     *      mime type
+     * @param size 
+     *      size
+     * @param url 
+     *      url
+     * @param duration 
+     *      duration
+     */
+    public PodcastEntryNode(final String id, final String parentId, final String name, final MimeType mimeType, final Long size, final String url,
+            final String duration) {
         super(NodeType.TYPE_PODCAST_ENTRY, id, parentId, name);
         this.size = size;
         this.url = url;
@@ -60,7 +82,7 @@ public final class PodcastEntryNode extends AbstractNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;

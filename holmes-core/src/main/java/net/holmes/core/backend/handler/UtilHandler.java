@@ -33,11 +33,16 @@ import net.holmes.common.SystemProperty;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+/**
+ * Handler for util REST requests.
+ */
 @Path("/backend/util")
 public final class UtilHandler {
 
     /**
-     * Get holmes version
+     * Get Holmes version.
+     * 
+     * @return version
      */
     @GET
     @Path("/getVersion")
@@ -48,12 +53,16 @@ public final class UtilHandler {
     }
 
     /**
-     * Get child folders
+     * Get child folders.
+     * 
+     * @param parentPath
+     *      parent path
+     * @return child folders
      */
     @POST
     @Path("/getChildFolders")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Folder> getChildFolders(@FormParam("path") String parentPath) {
+    public Collection<Folder> getChildFolders(@FormParam("path") final String parentPath) {
         Collection<Folder> folders = Lists.newArrayList();
 
         if (parentPath == null || parentPath.equals("none")) {
@@ -74,7 +83,7 @@ public final class UtilHandler {
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
                 File[] childDirs = fPath.listFiles(new FileFilter() {
                     @Override
-                    public boolean accept(File file) {
+                    public boolean accept(final File file) {
                         return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".")
                                 && file.listFiles() != null;
                     }
@@ -89,12 +98,22 @@ public final class UtilHandler {
         return folders;
     }
 
+    /**
+     * Folder.
+     */
     public static class Folder {
         private final String data;
         private final String state;
         private final Map<String, String> metadata;
 
-        public Folder(String data, String path) {
+        /**
+         * Constructor.
+         * @param data
+         *      folder data
+         * @param path
+         *      folder path
+         */
+        public Folder(final String data, final String path) {
             this.data = data;
             this.metadata = Maps.newHashMap();
             this.metadata.put("path", path);

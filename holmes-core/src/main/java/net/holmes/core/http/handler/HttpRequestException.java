@@ -18,12 +18,23 @@ package net.holmes.core.http.handler;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+/**
+ * Http request exception.
+ */
 public final class HttpRequestException extends Exception {
     private static final long serialVersionUID = 1022835130881123877L;
 
     private final HttpResponseStatus status;
 
-    public HttpRequestException(String message, HttpResponseStatus status) {
+    /**
+     * Constructor.
+     * 
+     * @param message
+     *      message
+     * @param status
+     *      status
+     */
+    public HttpRequestException(final String message, final HttpResponseStatus status) {
         super(message);
         this.status = status;
     }

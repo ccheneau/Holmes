@@ -31,14 +31,20 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 /**
- * Guice provider for podcast cache
+ * Guice provider for podcast cache.
  */
 public class PodcastCacheProvider implements Provider<Cache<String, List<AbstractNode>>> {
 
     private final Configuration configuration;
 
+    /**
+     * Constructor.
+     * 
+     * @param configuration
+     *      configuration
+     */
     @Inject
-    public PodcastCacheProvider(Configuration configuration) {
+    public PodcastCacheProvider(final Configuration configuration) {
         this.configuration = configuration;
     }
 

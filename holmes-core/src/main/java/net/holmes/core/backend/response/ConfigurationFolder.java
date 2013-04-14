@@ -16,16 +16,31 @@
 */
 package net.holmes.core.backend.response;
 
+/**
+ * Configuration folder.
+ */
 public final class ConfigurationFolder {
 
     private String id;
     private String name;
     private String path;
 
+    /**
+     * Constructor.
+     */
     public ConfigurationFolder() {
     }
 
-    public ConfigurationFolder(String id, String name, String path) {
+    /**
+     * Constructor.
+     * @param id
+     *      folder id
+     * @param name
+     *      folder name
+     * @param path
+     *      folder path
+     */
+    public ConfigurationFolder(final String id, final String name, final String path) {
         this.id = id;
         this.name = name;
         this.path = path;
@@ -35,7 +50,7 @@ public final class ConfigurationFolder {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -43,7 +58,7 @@ public final class ConfigurationFolder {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -51,7 +66,7 @@ public final class ConfigurationFolder {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 
@@ -66,7 +81,7 @@ public final class ConfigurationFolder {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

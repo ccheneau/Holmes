@@ -20,16 +20,32 @@ import io.netty.channel.Channel;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 
+/**
+ * Http request handler.
+ */
 public interface HttpRequestHandler {
     Integer CHUNK_SIZE = 8192;
 
     /**
-     * Check if handler can process request
+     * Check if handler can process request.
+     *
+     * @param requestPath
+     *      request path
+     * @param method
+     *      Http method
+     * @return true if handler can process request
      */
     boolean canProcess(String requestPath, HttpMethod method);
 
     /**
-     * Process request
+     * Process request.
+     * 
+     * @param request
+     *      Http request
+     * @param channel
+     *      Channel
+     * @throws HttpRequestException
+     *      Http request exception
      */
     void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
 }

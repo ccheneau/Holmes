@@ -47,7 +47,7 @@ import org.slf4j.Logger;
 import com.google.common.base.Strings;
 
 /**
- * Handler for Holmes UI pages
+ * Handler for Holmes UI pages.
  */
 @Loggable
 public final class HttpUIRequestHandler implements HttpRequestHandler {
@@ -57,15 +57,25 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
     private final MimeTypeManager mimeTypeManager;
 
+    /**
+     * Constructor.
+     * 
+     * @param mimeTypeManager
+     *      mime type manager
+     */
     @Inject
-    public HttpUIRequestHandler(MimeTypeManager mimeTypeManager) {
+    public HttpUIRequestHandler(final MimeTypeManager mimeTypeManager) {
         this.mimeTypeManager = mimeTypeManager;
     }
 
     /**
-     * Get UI base directory
+     * Get UI base directory.
+     * 
+     * @param uiSubDir
+     *      UI sub directory
+     * @return UI directory
      */
-    private static String getUiDirectory(String uiSubDir) {
+    private static String getUiDirectory(final String uiSubDir) {
         File uiDir = new File(SystemProperty.HOLMES_HOME.getValue(), uiSubDir);
         if (!uiDir.exists()) {
             throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
@@ -75,12 +85,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(String requestPath, HttpMethod method) {
+    public boolean canProcess(final String requestPath, final HttpMethod method) {
         return method.equals(HttpMethod.GET);
     }
 
     @Override
-    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         // Get file name

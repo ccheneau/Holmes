@@ -29,16 +29,29 @@ import javax.ws.rs.core.MediaType;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.IndexElement;
 
+/**
+ * Administration handler for REST requests.
+ */
 @Path("/backend/admin")
 public final class AdminHandler {
 
     private final BackendManager backendManager;
 
+    /**
+     * Constructor.
+     *
+     * @param backendManager 
+     */
     @Inject
-    public AdminHandler(BackendManager backendManager) {
+    public AdminHandler(final BackendManager backendManager) {
         this.backendManager = backendManager;
     }
 
+    /**
+     * Get media index elements.
+     *
+     * @return media index elements
+     */
     @GET
     @Path("/indexElements")
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,9 +59,12 @@ public final class AdminHandler {
         return backendManager.getMediaIndexElements();
     }
 
+    /**
+     * Scan all medias.
+     */
     @POST
     @Path("/scanAll")
-    public void scanAllMedia() {
-        backendManager.scanAllMedia();
+    public void scanAllMedias() {
+        backendManager.scanAllMedias();
     }
 }

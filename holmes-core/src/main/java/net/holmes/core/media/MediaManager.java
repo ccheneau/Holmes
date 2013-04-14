@@ -20,24 +20,40 @@ import java.util.List;
 
 import net.holmes.common.media.AbstractNode;
 
+/**
+ * Media manager.
+ */
 public interface MediaManager {
     /**
-     * Get node
+     * Get node.
+     * 
+     * @param nodeId
+     *      node id
+     * @return node
      */
     AbstractNode getNode(String nodeId);
 
     /**
-     * Get child nodes
+     * Get child nodes.
+     * 
+     * @param parentNode
+     *      parent node
+     * @return child nodes
      */
     List<AbstractNode> getChildNodes(AbstractNode parentNode);
 
     /**
-     * Perform a full scan
+     * Perform a full scan.
      */
     void scanAll();
 
     /**
-     * Scan a specific node
+     * Scan a specific node.
+     * 
+     * @param parentNode
+     *      parent node to scan
+     * @param recursive
+     *      whether to scan child nodes
      */
-    void scanNode(AbstractNode node, boolean recursive);
+    void scanNode(AbstractNode parentNode, boolean recursive);
 }

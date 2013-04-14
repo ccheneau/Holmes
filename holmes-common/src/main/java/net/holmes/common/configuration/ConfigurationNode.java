@@ -16,12 +16,26 @@
 */
 package net.holmes.common.configuration;
 
+/**
+ * Configuration node.
+ */
 public final class ConfigurationNode {
+
     private String id;
     private String label;
     private String path;
 
-    public ConfigurationNode(String id, String label, String path) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param label 
+     *      node label
+     * @param path 
+     *      node path
+     */
+    public ConfigurationNode(final String id, final String label, final String path) {
         this.id = id;
         this.label = label;
         this.path = path;
@@ -31,7 +45,7 @@ public final class ConfigurationNode {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -39,7 +53,7 @@ public final class ConfigurationNode {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
@@ -47,7 +61,7 @@ public final class ConfigurationNode {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 
@@ -62,7 +76,7 @@ public final class ConfigurationNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

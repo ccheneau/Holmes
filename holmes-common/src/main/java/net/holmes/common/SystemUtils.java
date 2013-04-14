@@ -21,15 +21,21 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
+/**
+ * SystemUtils.
+ */
 public final class SystemUtils {
 
     private static final String LOCK_FILE = "holmes.lock";
 
+    /**
+     * Constructor.
+     */
     private SystemUtils() {
     }
 
     /**
-     * Create Holmes lock file
+     * Create Holmes lock file.
      * @return true on lock success, false if lock file already exists
      */
     public static boolean lockInstance() {
@@ -61,8 +67,10 @@ public final class SystemUtils {
     }
 
     /**
-     * Get local data directory where Holmes configuration and logs are saved. 
-     * This directory is stored in user home directory
+     * Get local data directory where Holmes configuration and logs are saved.
+     * This directory is stored in user home directory.
+     *
+     * @return local user data dir
      */
     public static File getLocalUserDataDir() {
         StringBuilder holmesDataDir = new StringBuilder().append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");

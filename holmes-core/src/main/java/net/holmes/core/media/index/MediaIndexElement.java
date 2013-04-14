@@ -18,6 +18,11 @@ package net.holmes.core.media.index;
 
 import java.io.Serializable;
 
+/**
+ * Media index element.
+ * @author Cedric
+ *
+ */
 public class MediaIndexElement implements Serializable {
     private static final long serialVersionUID = -7736893745535506209L;
 
@@ -27,7 +32,21 @@ public class MediaIndexElement implements Serializable {
     private final String path;
     private final boolean localPath;
 
-    public MediaIndexElement(String parentId, String mediaType, String path, String name, boolean localPath) {
+    /**
+     * Constructor.
+     *
+     * @param parentId 
+     *      parent id
+     * @param mediaType 
+     *      media type
+     * @param path 
+     *      path
+     * @param name 
+     *      name
+     * @param localPath 
+     *      local path
+     */
+    public MediaIndexElement(final String parentId, final String mediaType, final String path, final String name, final boolean localPath) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.path = path;
@@ -68,7 +87,7 @@ public class MediaIndexElement implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

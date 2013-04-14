@@ -47,7 +47,7 @@ import net.holmes.core.inject.Loggable;
 import org.slf4j.Logger;
 
 /**
- * HttpChannelHandler redirect HTTP requests to proper handler
+ * HttpChannelHandler redirect HTTP requests to proper handler.
  */
 @Loggable
 public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapter<FullHttpRequest> {
@@ -57,16 +57,26 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     private final HttpRequestHandler backendRequestHandler;
     private final HttpRequestHandler uiRequestHandler;
 
+    /**
+     * Constructor.
+     * 
+     * @param contentRequestHandler
+     *      content request handler
+     * @param backendRequestHandler
+     *      backend request handler
+     * @param uiRequestHandler
+     *      UI request handler
+     */
     @Inject
-    public HttpChannelHandler(@Named("content") HttpRequestHandler contentRequestHandler, @Named("backend") HttpRequestHandler backendRequestHandler,
-            @Named("ui") HttpRequestHandler uiRequestHandler) {
+    public HttpChannelHandler(@Named("content") final HttpRequestHandler contentRequestHandler,
+            @Named("backend") final HttpRequestHandler backendRequestHandler, @Named("ui") final HttpRequestHandler uiRequestHandler) {
         this.contentRequestHandler = contentRequestHandler;
         this.backendRequestHandler = backendRequestHandler;
         this.uiRequestHandler = uiRequestHandler;
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    public void messageReceived(final ChannelHandlerContext ctx, final FullHttpRequest request) throws Exception {
 
         if (logger.isDebugEnabled()) {
             logger.debug("[START] messageReceived url:{}", request.getUri());
@@ -101,7 +111,7 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         if (cause instanceof TooLongFrameException) {
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
@@ -110,7 +120,15 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
         if (ctx.channel().isActive()) sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
+    /**
+     * Send error.
+     * 
+     * @param context
+     *      channel context
+     * @param status
+     *      response status
+     */
+    private void sendError(final ChannelHandlerContext context, final HttpResponseStatus status) {
         // Build error response
         ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buffer);
@@ -121,5 +139,4 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
         // Close the connection as soon as the error message is sent.
         context.channel().write(response).addListener(ChannelFutureListener.CLOSE);
     }
-
 }

@@ -16,11 +16,22 @@
 */
 package net.holmes.core.media.playlist;
 
+/**
+ * Playlist item.
+ */
 public class PlaylistItem {
-    private String label;
-    private String path;
+    private final String label;
+    private final String path;
 
-    public PlaylistItem(String label, String path) {
+    /**
+     * Constructor.
+     *
+     * @param label 
+     *      label
+     * @param path 
+     *      path
+     */
+    public PlaylistItem(final String label, final String path) {
         this.label = label;
         this.path = path;
     }

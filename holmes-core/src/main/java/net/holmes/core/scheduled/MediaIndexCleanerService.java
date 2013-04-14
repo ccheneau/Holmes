@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service used to clean index
+ * Scheduled service used to clean index.
  */
 @Loggable
 public final class MediaIndexCleanerService extends AbstractScheduledService {
@@ -40,8 +40,16 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
     private final MediaIndexManager mediaIndexManager;
     private final int cleanDelayMinutes;
 
+    /**
+     * Constructor.
+     *
+     * @param mediaIndexManager 
+     *      media index manager
+     * @param configuration 
+     *      configuration
+     */
     @Inject
-    public MediaIndexCleanerService(MediaIndexManager mediaIndexManager, Configuration configuration) {
+    public MediaIndexCleanerService(final MediaIndexManager mediaIndexManager, final Configuration configuration) {
         this.mediaIndexManager = mediaIndexManager;
         this.cleanDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_INDEX_CLEAN_DELAY_MINUTES);
     }

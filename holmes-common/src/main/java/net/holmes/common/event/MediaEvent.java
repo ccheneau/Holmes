@@ -17,11 +17,22 @@
 
 package net.holmes.common.event;
 
+/**
+ * Media event.
+ */
 public class MediaEvent {
     private final MediaEventType type;
     private final String parameter;
 
-    public MediaEvent(MediaEventType type, String parameter) {
+    /**
+     * Constructor.
+     *
+     * @param type 
+     *      media type
+     * @param parameter 
+     *      parameter
+     */
+    public MediaEvent(final MediaEventType type, final String parameter) {
         this.type = type;
         this.parameter = parameter;
     }
@@ -45,6 +56,9 @@ public class MediaEvent {
         return builder.toString();
     }
 
+    /**
+     * Media event type.
+     */
     public enum MediaEventType {
         SCAN_ALL, SCAN_NODE;
     }

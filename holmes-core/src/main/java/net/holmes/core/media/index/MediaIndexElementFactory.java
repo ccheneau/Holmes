@@ -21,14 +21,26 @@ import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.media.RootNode;
 
 /**
- * Factory for media index elements
+ * Factory for media index elements.
  */
 public final class MediaIndexElementFactory {
 
+    /**
+     * Constructor.
+     */
     private MediaIndexElementFactory() {
     }
 
-    public static MediaIndexElement get(RootNode rootNode, ConfigurationNode configNode) {
+    /**
+     * Gets the media index element.
+     *
+     * @param rootNode 
+     *      root node
+     * @param configNode 
+     *      config node
+     * @return media index element
+     */
+    public static MediaIndexElement get(final RootNode rootNode, final ConfigurationNode configNode) {
         return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),
                 rootNode != RootNode.PODCAST);
     }

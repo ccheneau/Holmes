@@ -25,7 +25,7 @@ import net.holmes.common.Service;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Manages scheduled services
+ * Manages scheduled services.
  */
 public class HolmesSchedulerService implements Service {
 
@@ -33,10 +33,19 @@ public class HolmesSchedulerService implements Service {
     private final AbstractScheduledService podcastCacheCleanerService;
     private final AbstractScheduledService mediaScannerService;
 
+    /**
+     * Constructor.
+     * @param mediaIndexCleanerService
+     *      media index cleaner
+     * @param podcastCacheCleanerService
+     *      pdcast cache cleaner
+     * @param mediaScannerService
+     *      media scanner
+     */
     @Inject
-    public HolmesSchedulerService(@Named("mediaIndexCleaner") AbstractScheduledService mediaIndexCleanerService, //
-            @Named("podcastCacheCleaner") AbstractScheduledService podcastCacheCleanerService, //
-            @Named("mediaScanner") AbstractScheduledService mediaScannerService) {
+    public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService, //
+            @Named("podcastCacheCleaner") final AbstractScheduledService podcastCacheCleanerService, //
+            @Named("mediaScanner") final AbstractScheduledService mediaScannerService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
         this.podcastCacheCleanerService = podcastCacheCleanerService;
         this.mediaScannerService = mediaScannerService;

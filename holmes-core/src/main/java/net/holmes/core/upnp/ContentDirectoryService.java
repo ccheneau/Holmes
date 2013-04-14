@@ -48,6 +48,9 @@ import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
 
+/**
+ * Content directory service.
+ */
 @Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private Logger logger;
@@ -60,15 +63,18 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     private static final String LOCAL_ADDRESS = getLocalIPV4();
 
+    /**
+     * Constructor.
+     */
     public ContentDirectoryService() {
-        super( // search caps
-                Arrays.asList("dc:title"),
-                // sort caps
-                Arrays.asList("dc:title", "dc:date"));
+        super(Arrays.asList("dc:title"), // search caps
+                Arrays.asList("dc:title", "dc:date")); // sort caps
     }
 
     /**
-     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux)
+     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux).
+     * 
+     * @return local IPv4 address
      */
     private static String getLocalIPV4() {
         try {
@@ -90,8 +96,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     @Override
-    public BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults, SortCriterion[] orderby)
-            throws ContentDirectoryException {
+    public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
+            final SortCriterion[] orderby) throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
@@ -141,7 +147,20 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
     }
 
-    private void addNode(String nodeId, AbstractNode node, DirectoryBrowseResult result, long childNodeSize) throws URISyntaxException {
+    /**
+     * Adds node.
+     *
+     * @param nodeId
+     *      node id
+     * @param node 
+     *      node
+     * @param result 
+     *      result
+     * @param childNodeSize 
+     *      child node size
+     * @throws URISyntaxException URI syntax exception
+     */
+    private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long childNodeSize) throws URISyntaxException {
         if (result.filterResult()) {
             if (node instanceof ContentNode) {
                 // Build content url
@@ -172,10 +191,19 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Get post-cast entry name. If prepend_podcast_entry_name configuration parameter is set to true, 
-     * item number is added to title
+     * Get post-cast entry name.
+     * If prepend_podcast_entry_name configuration parameter is set to true,
+     * item number is added to title.
+     *
+     * @param count 
+     *      post-cast entry count
+     * @param totalCount 
+     *      post-cast entry total count
+     * @param title 
+     *       title
+     * @return post-cast entry name
      */
-    private String formatPodcastEntryName(long count, long totalCount, String title) {
+    private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);

@@ -17,6 +17,9 @@
 
 package net.holmes.core.backend.response;
 
+/**
+ * Settings.
+ */
 public final class Settings {
 
     private String serverName;
@@ -24,10 +27,25 @@ public final class Settings {
     private Boolean prependPodcastItem;
     private Boolean enableExternalSubtitles;
 
+    /**
+     * Default constructeur.
+     */
     public Settings() {
     }
 
-    public Settings(String serverName, Integer httpServerPort, Boolean prependPodcastItem, Boolean enableExternalSubtitles) {
+    /**
+     * Constructeur.
+     * 
+     * @param serverName
+     *      server name
+     * @param httpServerPort
+     *      Http server port
+     * @param prependPodcastItem
+     *      prepend podcast item
+     * @param enableExternalSubtitles
+     *      enable external subtitles
+     */
+    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem, final Boolean enableExternalSubtitles) {
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
@@ -38,7 +56,7 @@ public final class Settings {
         return serverName;
     }
 
-    public void setServerName(String serverName) {
+    public void setServerName(final String serverName) {
         this.serverName = serverName;
     }
 
@@ -46,7 +64,7 @@ public final class Settings {
         return httpServerPort;
     }
 
-    public void setHttpServerPort(Integer httpServerPort) {
+    public void setHttpServerPort(final Integer httpServerPort) {
         this.httpServerPort = httpServerPort;
     }
 
@@ -54,7 +72,7 @@ public final class Settings {
         return prependPodcastItem;
     }
 
-    public void setPrependPodcastItem(Boolean prependPodcastItem) {
+    public void setPrependPodcastItem(final Boolean prependPodcastItem) {
         this.prependPodcastItem = prependPodcastItem;
     }
 
@@ -62,7 +80,7 @@ public final class Settings {
         return enableExternalSubtitles;
     }
 
-    public void setEnableExternalSubtitles(Boolean enableExternalSubtitles) {
+    public void setEnableExternalSubtitles(final Boolean enableExternalSubtitles) {
         this.enableExternalSubtitles = enableExternalSubtitles;
     }
 
@@ -78,7 +96,7 @@ public final class Settings {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

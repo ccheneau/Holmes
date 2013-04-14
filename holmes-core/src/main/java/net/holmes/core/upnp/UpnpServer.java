@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import com.google.inject.Injector;
 
 /**
- * UPnP server main class
+ * UPnP server main class.
  */
 @Loggable
 public final class UpnpServer implements Service {
@@ -40,8 +40,16 @@ public final class UpnpServer implements Service {
     private final Injector injector;
     private final Configuration configuration;
 
+    /**
+     * Constructor.
+     *
+     * @param injector 
+     *      Guice injector
+     * @param configuration 
+     *      configuration
+     */
     @Inject
-    public UpnpServer(Injector injector, Configuration configuration) {
+    public UpnpServer(final Injector injector, final Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
     }

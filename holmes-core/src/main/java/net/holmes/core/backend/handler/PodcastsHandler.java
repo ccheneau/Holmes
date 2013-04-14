@@ -34,51 +34,94 @@ import javax.ws.rs.core.MediaType;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
+/**
+ * Handler for podcast REST requests.
+ */
 @Path("/backend/podcasts")
 public final class PodcastsHandler {
 
     private final BackendManager backendManager;
 
+    /**
+     * Constructor.
+     * @param backendManager
+     *      backend manager
+     */
     @Inject
-    public PodcastsHandler(BackendManager backendManager) {
+    public PodcastsHandler(final BackendManager backendManager) {
         this.backendManager = backendManager;
     }
 
+    /**
+     * Get podcasts.
+     *
+     * @return  podcasts
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPodcasts() {
         return backendManager.getFolders(PODCAST);
     }
 
+    /**
+     * Get podcasts.
+     * 
+     * @param id
+     *      podcasts id
+     * @return podcasts
+     */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder getPodcast(@PathParam("id") String id) {
+    public ConfigurationFolder getPodcast(@PathParam("id") final String id) {
         return backendManager.getFolder(id, PODCAST);
     }
 
+    /**
+     * Add podcast.
+     * 
+     * @param folder
+     *      podcast to add
+     * @return added podcast
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder addPodcast(ConfigurationFolder folder) {
+    public ConfigurationFolder addPodcast(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, PODCAST);
         return folder;
     }
 
+    /**
+     * Edit podcast.
+     * 
+     * @param id
+     *      podcast id
+     * @param folder
+     *      podcast value
+     * @return edited podcast
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder editPodcast(@PathParam("id") String id, ConfigurationFolder folder) {
+    public ConfigurationFolder editPodcast(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, PODCAST);
         return folder;
     }
 
+    /**
+     * Remove podcast.
+     * 
+     * @param id
+     *      podcast id to remove
+     * @return removed podcast
+     */
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder removePodcast(@PathParam("id") String id) {
+    public ConfigurationFolder removePodcast(@PathParam("id") final String id) {
         backendManager.removeFolder(id, PODCAST);
         return new ConfigurationFolder(id, null, null);
     }

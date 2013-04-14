@@ -56,6 +56,9 @@ import net.holmes.core.inject.Loggable;
 
 import org.slf4j.Logger;
 
+/**
+ * Manages system tray icon.
+ */
 @Loggable
 public class SystrayService implements Service {
     private Logger logger;
@@ -66,8 +69,15 @@ public class SystrayService implements Service {
     private final Configuration configuration;
     private final ResourceBundle resourceBundle;
 
+    /**
+     * Constructor.
+     * @param configuration
+     *      configuration
+     * @param resourceBundle
+     *      resource bundle
+     */
     @Inject
-    public SystrayService(Configuration configuration, ResourceBundle resourceBundle) {
+    public SystrayService(final Configuration configuration, final ResourceBundle resourceBundle) {
         this.configuration = configuration;
         this.resourceBundle = resourceBundle;
     }
@@ -83,6 +93,10 @@ public class SystrayService implements Service {
         // Nothing
     }
 
+    /**
+     * UI initialization.
+     * @return true on success
+     */
     private boolean initUI() {
         boolean result = true;
         try {
@@ -106,6 +120,9 @@ public class SystrayService implements Service {
         return result;
     }
 
+    /**
+     * Initialize system tray icon.
+     */
     private void initSystemTrayIcon() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
@@ -125,7 +142,7 @@ public class SystrayService implements Service {
         JMenuItem quitItem = new JMenuItem(resourceBundle.getString("systray.quit"), holmesExitIcon);
         quitItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(final ActionEvent event) {
                 System.exit(0);
             }
         });
@@ -134,7 +151,7 @@ public class SystrayService implements Service {
         JMenuItem logsItem = new JMenuItem(resourceBundle.getString("systray.logs"));
         logsItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder logFile = new StringBuilder().append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator)
@@ -155,7 +172,7 @@ public class SystrayService implements Service {
 
         holmesUiItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         StringBuilder holmesUrl = new StringBuilder().append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
@@ -174,7 +191,7 @@ public class SystrayService implements Service {
         JMenuItem holmesSiteItem = new JMenuItem(resourceBundle.getString("systray.holmes.home"), holmesSiteIcon);
         holmesSiteItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL));
@@ -191,7 +208,7 @@ public class SystrayService implements Service {
         JMenuItem holmesWikiItem = new JMenuItem(resourceBundle.getString("systray.holmes.wiki"));
         holmesWikiItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL));
@@ -224,62 +241,79 @@ public class SystrayService implements Service {
     }
 
     /**
-     * System tray icon 
+     * System tray icon.
      * Freely inspired from <a href="http://grepcode.com/file/repo1.maven.org/maven2/org.jvnet.hudson.plugins.hudsontrayapp/client-jdk16/0.7.3/org/jdesktop/swinghelper/tray/JXTrayIcon.java">org.jdesktop.swinghelper.tray.JXTrayIcon</a> class (under LGPL v2.1 license)
      */
     public static class SystemTrayIcon extends TrayIcon {
 
         private JPopupMenu popupMenu;
-        private static final JDialog dialog;
+        private static final JDialog DIALOG;
 
         static {
-            dialog = new JDialog((Frame) null, "HolmesSysTray");
-            dialog.setUndecorated(true);
-            dialog.setAlwaysOnTop(true);
+            DIALOG = new JDialog((Frame) null, "HolmesSysTray");
+            DIALOG.setUndecorated(true);
+            DIALOG.setAlwaysOnTop(true);
         }
 
-        private static final PopupMenuListener popupListener = new PopupMenuListener() {
+        private static final PopupMenuListener POPUP_LISTENER = new PopupMenuListener() {
             @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
             }
 
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                dialog.setVisible(false);
+            public void popupMenuWillBecomeInvisible(final PopupMenuEvent event) {
+                DIALOG.setVisible(false);
             }
 
             @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-                dialog.setVisible(false);
+            public void popupMenuCanceled(final PopupMenuEvent event) {
+                DIALOG.setVisible(false);
             }
         };
 
-        public SystemTrayIcon(Image image, String tooltip) {
+        /**
+         * SystemTrayIcon Constructor.
+         * @param image
+         *      icon image
+         * @param tooltip
+         *      icon tooltip
+         */
+        public SystemTrayIcon(final Image image, final String tooltip) {
             super(image, tooltip);
             addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    showPopupMenu(e);
+                public void mouseClicked(final MouseEvent event) {
+                    showPopupMenu(event);
                 }
             });
         }
 
-        private void showPopupMenu(MouseEvent e) {
+        /**
+         * Show popup menu.
+         * @param event
+         *      mose event
+         */
+        private void showPopupMenu(final MouseEvent event) {
             if (popupMenu != null) {
                 Dimension size = popupMenu.getPreferredSize();
-                dialog.setLocation(e.getX(), e.getY() - size.height);
-                dialog.setVisible(true);
-                popupMenu.show(dialog.getContentPane(), 0, 0);
-                dialog.toFront();
+                DIALOG.setLocation(event.getX(), event.getY() - size.height);
+                DIALOG.setVisible(true);
+                popupMenu.show(DIALOG.getContentPane(), 0, 0);
+                DIALOG.toFront();
             }
         }
 
-        public void setPopupMenu(JPopupMenu popupMenu) {
-            if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(popupListener);
+        /**
+         * Set popup menu.
+         * @param popupMenu
+         *      popup menu
+         */
+        public void setPopupMenu(final JPopupMenu popupMenu) {
+            if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(POPUP_LISTENER);
 
             if (popupMenu != null) {
                 this.popupMenu = popupMenu;
-                this.popupMenu.addPopupMenuListener(popupListener);
+                this.popupMenu.addPopupMenuListener(POPUP_LISTENER);
             }
         }
     }

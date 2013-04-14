@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service used to scan all media
+ * Scheduled service used to scan all media.
  */
 @Loggable
 public class MediaScannerService extends AbstractScheduledService {
@@ -40,8 +40,16 @@ public class MediaScannerService extends AbstractScheduledService {
     private final MediaManager mediaManager;
     private final int scanAllDelayMinutes;
 
+    /**
+     * Constructor.
+     *
+     * @param mediaManager 
+     *      media manager
+     * @param configuration 
+     *      configuration
+     */
     @Inject
-    public MediaScannerService(MediaManager mediaManager, Configuration configuration) {
+    public MediaScannerService(final MediaManager mediaManager, final Configuration configuration) {
         this.mediaManager = mediaManager;
         this.scanAllDelayMinutes = configuration.getIntParameter(Parameter.MEDIA_SCAN_ALL_DELAY_MINUTES);
     }

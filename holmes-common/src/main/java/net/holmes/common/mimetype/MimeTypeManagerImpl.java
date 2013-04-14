@@ -22,9 +22,16 @@ import java.util.Properties;
 
 import com.google.common.io.Files;
 
+/**
+ * Mime type manager implementation.
+ *
+ */
 public final class MimeTypeManagerImpl implements MimeTypeManager {
     private final Properties properties;
 
+    /**
+     * Constructor.
+     */
     public MimeTypeManagerImpl() {
         // Load mime types from property file
         properties = new Properties();
@@ -44,7 +51,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     }
 
     @Override
-    public MimeType getMimeType(String fileName) {
+    public MimeType getMimeType(final String fileName) {
         // Get file extension
         String ext = Files.getFileExtension(fileName).toLowerCase();
 

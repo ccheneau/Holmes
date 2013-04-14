@@ -17,6 +17,9 @@
 
 package net.holmes.core.backend.response;
 
+/**
+ * Index element.
+ */
 public final class IndexElement {
 
     private String id;
@@ -25,10 +28,27 @@ public final class IndexElement {
     private String name;
     private String path;
 
+    /**
+     * Constructor.
+     */
     public IndexElement() {
     }
 
-    public IndexElement(String id, String parentId, String mediaType, String name, String path) {
+    /**
+     * Constructor.
+     * 
+     * @param id
+     *      index element id
+     * @param parentId
+     *      index element parent id
+     * @param mediaType
+     *      index element media type
+     * @param name
+     *      index element name
+     * @param path
+     *      index element path
+     */
+    public IndexElement(final String id, final String parentId, final String mediaType, final String name, final String path) {
         this.id = id;
         this.parentId = parentId;
         this.mediaType = mediaType;
@@ -40,7 +60,7 @@ public final class IndexElement {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -48,7 +68,7 @@ public final class IndexElement {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(final String parentId) {
         this.parentId = parentId;
     }
 
@@ -56,7 +76,7 @@ public final class IndexElement {
         return mediaType;
     }
 
-    public void setMediaType(String mediaType) {
+    public void setMediaType(final String mediaType) {
         this.mediaType = mediaType;
     }
 
@@ -64,7 +84,7 @@ public final class IndexElement {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -72,7 +92,7 @@ public final class IndexElement {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 
@@ -89,7 +109,7 @@ public final class IndexElement {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

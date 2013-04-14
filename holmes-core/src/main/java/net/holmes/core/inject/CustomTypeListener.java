@@ -19,7 +19,6 @@ package net.holmes.core.inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,18 +31,24 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 /**
- * Guice type listener for slf4j logger injection and event bus registration 
+ * Guice type listener for slf4j logger injection and event bus registration.
  */
 public final class CustomTypeListener implements TypeListener {
 
     private final EventBus eventBus;
 
-    public CustomTypeListener(EventBus eventBus) {
+    /**
+     * Constructor.
+     * 
+     * @param eventBus
+     *      event bus
+     */
+    public CustomTypeListener(final EventBus eventBus) {
         this.eventBus = eventBus;
     }
 
     @Override
-    public <T> void hear(TypeLiteral<T> type, TypeEncounter<T> encounter) {
+    public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
         // Inject slf4j logger
         if (type.getRawType().isAnnotationPresent(Loggable.class)) {
             for (Field field : type.getRawType().getDeclaredFields()) {
@@ -64,20 +69,26 @@ public final class CustomTypeListener implements TypeListener {
     }
 
     /**
-     * Inject SLF4J logger
+     * Inject SLF4J logger.
      */
     private static class Slf4jMembersInjector<T> implements MembersInjector<T> {
         private final Field field;
         private final Logger logger;
 
-        public Slf4jMembersInjector(Field field) {
+        /**
+         * Constructor.
+         * 
+         * @param field
+         *      field
+         */
+        public Slf4jMembersInjector(final Field field) {
             this.field = field;
             this.logger = LoggerFactory.getLogger(field.getDeclaringClass());
             this.field.setAccessible(true);
         }
 
         @Override
-        public void injectMembers(T t) {
+        public void injectMembers(final T t) {
             try {
                 field.set(t, logger);
             } catch (IllegalAccessException e) {
@@ -87,17 +98,23 @@ public final class CustomTypeListener implements TypeListener {
     }
 
     /**
-     * Register class to event bus
+     * Register class to event bus.
      */
     private static class EventBusRegisterListener<T> implements InjectionListener<T> {
         private final EventBus eventBus;
 
-        public EventBusRegisterListener(EventBus eventBus) {
+        /**
+         * Constructor.
+         * 
+         * @param eventBus
+         *      event bus
+         */
+        public EventBusRegisterListener(final EventBus eventBus) {
             this.eventBus = eventBus;
         }
 
         @Override
-        public void afterInjection(T injectee) {
+        public void afterInjection(final T injectee) {
             eventBus.register(injectee);
         }
     }

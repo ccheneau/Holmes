@@ -28,25 +28,44 @@ import javax.ws.rs.core.MediaType;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.Settings;
 
+/**
+ * Handler for settings REST requests.
+ */
 @Path("/backend/settings")
 public final class SettingsHandler {
 
     private final BackendManager backendManager;
 
+    /**
+     * Constructor.
+     * @param backendManager
+     *      backend manager
+     */
     @Inject
-    public SettingsHandler(BackendManager backendManager) {
+    public SettingsHandler(final BackendManager backendManager) {
         this.backendManager = backendManager;
     }
 
+    /**
+     * Get settings.
+     * 
+     * @return settings
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Settings getSettings() {
         return backendManager.getSettings();
     }
 
+    /**
+     * Save settings.
+     * 
+     * @param settings
+     *      Settings to save
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveSettings(Settings settings) {
+    public void saveSettings(final Settings settings) {
         backendManager.saveSettings(settings);
     }
 }

@@ -16,6 +16,9 @@
 */
 package net.holmes.common.media;
 
+/**
+ * Meadia type.
+ */
 public enum MediaType {
     TYPE_VIDEO("video"), //
     TYPE_AUDIO("audio"), //
@@ -26,7 +29,13 @@ public enum MediaType {
 
     private final String value;
 
-    MediaType(String value) {
+    /**
+     * Constructor.
+     *
+     * @param value 
+     *      value
+     */
+    MediaType(final String value) {
         this.value = value;
     }
 
@@ -34,12 +43,21 @@ public enum MediaType {
         return this.value;
     }
 
+    /**
+     * Media sub type.
+     */
     public enum Subtype {
         SUBTYPE_SUBTITLE("x-subrip");
 
         private final String value;
 
-        Subtype(String value) {
+        /**
+         * Constructor.
+         *
+         * @param value 
+         *      value
+         */
+        Subtype(final String value) {
             this.value = value;
         }
 

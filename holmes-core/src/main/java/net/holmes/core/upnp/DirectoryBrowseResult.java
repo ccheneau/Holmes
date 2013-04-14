@@ -38,6 +38,9 @@ import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
 import org.fourthline.cling.support.model.item.TextItem;
 
+/**
+ * UPnP directory browse result.
+ */
 public final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -47,12 +50,20 @@ public final class DirectoryBrowseResult {
     private final long firstResult;
     private final long maxResults;
 
-    public DirectoryBrowseResult(long firstResult, long maxResults) {
+    /**
+     * Constructor.
+     *
+     * @param firstResult 
+     *      first result
+     * @param maxResults 
+     *      max results
+     */
+    public DirectoryBrowseResult(final long firstResult, final long maxResults) {
         this.firstResult = firstResult;
         this.maxResults = maxResults;
         this.didl = new DIDLContent();
-        this.itemCount = 0l;
-        this.totalCount = 0l;
+        this.itemCount = 0L;
+        this.totalCount = 0L;
     }
 
     public long getItemCount() {
@@ -75,7 +86,18 @@ public final class DirectoryBrowseResult {
         return didl;
     }
 
-    public void addItem(String parentNodeId, ContentNode contentNode, String url) throws URISyntaxException {
+    /**
+     * Adds item to result.
+     *
+     * @param parentNodeId 
+     *      parent node id
+     * @param contentNode 
+     *      content node
+     * @param url 
+     *      content url
+     * @throws URISyntaxException URI syntax exception
+     */
+    public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws URISyntaxException {
         MimeType mimeType = contentNode.getMimeType();
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
 
@@ -95,11 +117,22 @@ public final class DirectoryBrowseResult {
         }
         if (item != null) {
             setDidlMetadata(item, contentNode);
-            addItemToDidl(item);
+            addItem(item);
         }
     }
 
-    public void addPodcastItem(String parentNodeId, PodcastEntryNode podcastEntryNode, String entryName) throws URISyntaxException {
+    /**
+     * Adds podcast item to result.
+     *
+     * @param parentNodeId 
+     *      parent node id
+     * @param podcastEntryNode 
+     *      podcast entry node
+     * @param entryName 
+     *      podcast entry name
+     * @throws URISyntaxException URI syntax exception
+     */
+    public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws URISyntaxException {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
@@ -117,17 +150,34 @@ public final class DirectoryBrowseResult {
         }
         if (item != null) {
             setDidlMetadata(item, podcastEntryNode);
-            addItemToDidl(item);
+            addItem(item);
         }
     }
 
-    private void addItemToDidl(Item item) {
+    /**
+     * Adds item to result.
+     *
+     * @param item 
+     *      item
+     */
+    private void addItem(final Item item) {
         // Add item to didl
         didl.addItem(item);
         itemCount += 1;
     }
 
-    public void addContainer(String parentNodeId, AbstractNode node, int childCount) throws URISyntaxException {
+    /**
+     * Adds container to result.
+     *
+     * @param parentNodeId 
+     *      parent node id
+     * @param node 
+     *      container node
+     * @param childCount 
+     *      child count
+     * @throws URISyntaxException URI syntax exception
+     */
+    public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
         setDidlMetadata(folder, node);
 
@@ -135,7 +185,18 @@ public final class DirectoryBrowseResult {
         itemCount += 1;
     }
 
-    public void addPlaylist(String parentNodeId, AbstractNode node, int childCount) throws URISyntaxException {
+    /**
+     * Adds the playlist to result.
+     *
+     * @param parentNodeId 
+     *      parent node id
+     * @param node 
+     *      playlist node
+     * @param childCount 
+     *      child count
+     * @throws URISyntaxException URI syntax exception
+     */
+    public void addPlaylist(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
         PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, childCount);
         setDidlMetadata(playlist, node);
 
@@ -144,18 +205,36 @@ public final class DirectoryBrowseResult {
     }
 
     /**
-     * Filter result according to pagination parameters
+     * Filter result according to pagination parameters.
+     *
+     * @return true, if successful
      */
     public boolean filterResult() {
         totalCount += 1;
         return maxResults == 0 || itemCount < maxResults && totalCount >= firstResult + 1;
     }
 
-    private org.seamless.util.MimeType getUpnpMimeType(MimeType mimeType) {
+    /**
+     * Gets UPnP mime type.
+     *
+     * @param mimeType 
+     *      mime type
+     * @return UPnP mime type
+     */
+    private org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
         return new org.seamless.util.MimeType(mimeType.getType(), mimeType.getSubType());
     }
 
-    private void setDidlMetadata(DIDLObject didlObjet, AbstractNode node) throws URISyntaxException {
+    /**
+     * Sets the didl metadata.
+     *
+     * @param didlObjet 
+     *      didl objet
+     * @param node 
+     *      node
+     * @throws URISyntaxException !URI syntax exception
+     */
+    private void setDidlMetadata(final DIDLObject didlObjet, final AbstractNode node) throws URISyntaxException {
         if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
         if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
     }

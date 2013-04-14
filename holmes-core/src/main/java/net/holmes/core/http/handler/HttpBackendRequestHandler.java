@@ -51,7 +51,7 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
- * Handler for backend requests from Holmes UI
+ * Handler for backend requests from Holmes UI.
  */
 @Loggable
 public final class HttpBackendRequestHandler implements HttpRequestHandler {
@@ -61,18 +61,24 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
     private final WebApplication webApplication;
 
+    /**
+     * Constructor.
+     * 
+     * @param webApplication
+     *      web application
+     */
     @Inject
-    public HttpBackendRequestHandler(WebApplication webApplication) {
+    public HttpBackendRequestHandler(final WebApplication webApplication) {
         this.webApplication = webApplication;
     }
 
     @Override
-    public boolean canProcess(String requestPath, HttpMethod method) {
+    public boolean canProcess(final String requestPath, final HttpMethod method) {
         return requestPath.startsWith(REQUEST_PATH);
     }
 
     @Override
-    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
@@ -94,7 +100,13 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         }
     }
 
-    private InBoundHeaders getHeaders(HttpRequest request) {
+    /**
+     * Get headers.
+     * @param request
+     *      Http request
+     * @return inbound headers
+     */
+    private InBoundHeaders getHeaders(final HttpRequest request) {
         InBoundHeaders headers = new InBoundHeaders();
 
         for (Entry<String, String> header : request.headers()) {
@@ -104,20 +116,26 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     }
 
     /**
-     * Response writer for backend requests     
+     * Response writer for backend requests.
      *
      */
-    private final static class BackendResponseWriter implements ContainerResponseWriter {
+    public static final class BackendResponseWriter implements ContainerResponseWriter {
 
         private final Channel channel;
         private FullHttpResponse response;
 
-        private BackendResponseWriter(Channel channel) {
+        /**
+         * Constructor.
+         * 
+         * @param channel
+         *      channel
+         */
+        private BackendResponseWriter(final Channel channel) {
             this.channel = channel;
         }
 
         @Override
-        public OutputStream writeStatusAndHeaders(long contentLength, ContainerResponse cResponse) throws IOException {
+        public OutputStream writeStatusAndHeaders(final long contentLength, final ContainerResponse cResponse) throws IOException {
             // Set http headers
             response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {

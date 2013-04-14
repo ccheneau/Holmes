@@ -35,19 +35,27 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+/**
+ * XML configuration implementation.
+ */
 public final class XmlConfigurationImpl implements Configuration {
-
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
-
     private XmlRootNode rootNode = null;
 
+    /**
+     * Constructor.
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public XmlConfigurationImpl() throws IOException {
         loadConfig();
     }
 
     /**
-     * Get Holmes configuration file 
+     * Get Holmes configuration file.
+     *
+     * @return configuration file
      */
     private File getConfigFile() {
         File fConfPath = new File(SystemUtils.getLocalUserDataDir(), CONF_PATH);
@@ -57,6 +65,11 @@ public final class XmlConfigurationImpl implements Configuration {
         return new File(fConfPath.getAbsolutePath() + File.separator + CONF_FILE_NAME);
     }
 
+    /**
+     * Load configuration.
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private void loadConfig() throws IOException {
         boolean configLoaded = false;
 
@@ -94,6 +107,11 @@ public final class XmlConfigurationImpl implements Configuration {
         }
     }
 
+    /**
+     * Gets XStream.
+     *
+     * @return XStream
+     */
     private XStream getXStream() {
         XStream xs = new XStream(new DomDriver("UTF-8"));
         xs.alias("config", XmlRootNode.class);
@@ -108,7 +126,7 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public void setUpnpServerName(String upnpServerName) {
+    public void setUpnpServerName(final String upnpServerName) {
         this.rootNode.setUpnpServerName(upnpServerName);
     }
 
@@ -118,14 +136,14 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public void setHttpServerPort(Integer httpServerPort) {
+    public void setHttpServerPort(final Integer httpServerPort) {
         this.rootNode.setHttpServerPort(httpServerPort);
     }
 
     @Override
-    public List<ConfigurationNode> getFolders(RootNode rootNode) {
+    public List<ConfigurationNode> getFolders(final RootNode folderRootNode) {
         List<ConfigurationNode> folders = null;
-        switch (rootNode) {
+        switch (folderRootNode) {
         case AUDIO:
             folders = this.rootNode.getAudioFolders();
             break;
@@ -146,17 +164,17 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public Boolean getParameter(Parameter prop) {
-        return this.rootNode.getParameter(prop);
+    public Boolean getParameter(final Parameter param) {
+        return this.rootNode.getParameter(param);
     }
 
     @Override
-    public Integer getIntParameter(Parameter prop) {
-        return this.rootNode.getIntParameter(prop);
+    public Integer getIntParameter(final Parameter param) {
+        return this.rootNode.getIntParameter(param);
     }
 
     @Override
-    public void setParameter(Parameter param, Boolean value) {
+    public void setParameter(final Parameter param, final Boolean value) {
         this.rootNode.setParameter(param, value);
     }
 
@@ -165,7 +183,11 @@ public final class XmlConfigurationImpl implements Configuration {
         return this.rootNode.toString();
     }
 
+    /**
+     * Xml root node.
+     */
     private final class XmlRootNode {
+
         private String upnpServerName;
         private Integer httpServerPort;
         private LinkedList<ConfigurationNode> videoFolders;
@@ -179,11 +201,11 @@ public final class XmlConfigurationImpl implements Configuration {
         private transient String theme;
 
         /**
-         * Check config default values
+         * Check config default values.
          */
         public void checkDefaultValues() {
             if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
-            if (this.httpServerPort == null || this.httpServerPort <= 1024) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
+            if (this.httpServerPort == null || this.httpServerPort <= Configuration.MIN_HTTP_SERVER_PORT) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
             if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
             if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
             if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
@@ -198,7 +220,7 @@ public final class XmlConfigurationImpl implements Configuration {
             return this.upnpServerName;
         }
 
-        public void setUpnpServerName(String upnpServerName) {
+        public void setUpnpServerName(final String upnpServerName) {
             this.upnpServerName = upnpServerName;
         }
 
@@ -206,7 +228,7 @@ public final class XmlConfigurationImpl implements Configuration {
             return this.httpServerPort;
         }
 
-        public void setHttpServerPort(Integer httpServerPort) {
+        public void setHttpServerPort(final Integer httpServerPort) {
             this.httpServerPort = httpServerPort;
         }
 
@@ -226,19 +248,41 @@ public final class XmlConfigurationImpl implements Configuration {
             return this.pictureFolders;
         }
 
-        public Boolean getParameter(Parameter param) {
+        /**
+         * Gets parameter.
+         *
+         * @param param 
+         *      parameter
+         * @return parameter boolean value
+         */
+        public Boolean getParameter(final Parameter param) {
             String value = (String) this.parameters.get(param.getName());
             if (value == null) value = param.getDefaultValue();
             return Boolean.valueOf(value);
         }
 
-        public Integer getIntParameter(Parameter param) {
+        /**
+         * Gets int parameter value.
+         *
+         * @param param 
+         *      parameter
+         * @return int parameter value
+         */
+        public Integer getIntParameter(final Parameter param) {
             String value = (String) this.parameters.get(param.getName());
             if (value == null) value = param.getDefaultValue();
             return Integer.valueOf(value);
         }
 
-        public void setParameter(Parameter param, Boolean value) {
+        /**
+         * Sets the parameter.
+         *
+         * @param param 
+         *      parameter
+         * @param value 
+         *      parameter value
+         */
+        public void setParameter(final Parameter param, final Boolean value) {
             this.parameters.setProperty(param.getName(), value.toString());
         }
     }

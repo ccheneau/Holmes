@@ -20,12 +20,25 @@ package net.holmes.common.event;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.media.RootNode;
 
+/**
+ * Configuration event.
+ */
 public class ConfigurationEvent {
     private final EventType type;
     private final ConfigurationNode node;
     private final RootNode rootNode;
 
-    public ConfigurationEvent(EventType type, ConfigurationNode node, RootNode rootNode) {
+    /**
+     * Constructor.
+     *
+     * @param type 
+     *      event type
+     * @param node 
+     *      configuration node
+     * @param rootNode 
+     *      root node
+     */
+    public ConfigurationEvent(final EventType type, final ConfigurationNode node, final RootNode rootNode) {
         this.type = type;
         this.node = node;
         this.rootNode = rootNode;
@@ -56,6 +69,9 @@ public class ConfigurationEvent {
         return builder.toString();
     }
 
+    /**
+     * Event type.
+     */
     public enum EventType {
         ADD, UPDATE, DELETE
     }

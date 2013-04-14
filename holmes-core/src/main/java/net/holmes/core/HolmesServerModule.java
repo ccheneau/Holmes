@@ -62,6 +62,9 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
 
+/**
+ * Guice module. 
+ */
 public final class HolmesServerModule extends AbstractModule {
 
     //    private EventBus eventBus = new EventBus("Holmes EventBus");

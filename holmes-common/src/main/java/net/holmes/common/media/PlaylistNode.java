@@ -16,10 +16,25 @@
 */
 package net.holmes.common.media;
 
+/**
+ * Playlist node.
+ */
 public class PlaylistNode extends AbstractNode {
     private final String path;
 
-    public PlaylistNode(String id, String parentId, String name, String path) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     * @param path 
+     *      node path
+     */
+    public PlaylistNode(final String id, final String parentId, final String name, final String path) {
         super(NodeType.TYPE_PLAYLIST, id, parentId, name);
         this.path = path;
     }
@@ -37,7 +52,7 @@ public class PlaylistNode extends AbstractNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;

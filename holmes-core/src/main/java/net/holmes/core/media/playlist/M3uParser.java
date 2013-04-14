@@ -26,11 +26,20 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
+/**
+ * M3U playlist parser.
+ */
 public class M3uParser implements PlaylistParser {
 
     private final File playlist;
 
-    public M3uParser(File playlist) {
+    /**
+     * Constructor.
+     *
+     * @param playlist 
+     *      playlist
+     */
+    public M3uParser(final File playlist) {
         this.playlist = playlist;
     }
 
@@ -51,9 +60,13 @@ public class M3uParser implements PlaylistParser {
     }
 
     /**
-     * Parse extended m3u
+     * Parse extended m3u.
+     *
+     * @param lines 
+     *      playlist file lines
+     * @return playlist items
      */
-    private List<PlaylistItem> parseM3uExt(List<String> lines) {
+    private List<PlaylistItem> parseM3uExt(final List<String> lines) {
         List<PlaylistItem> items = Lists.newArrayList();
         File playlistDir = playlist.getParentFile();
         String currentLabel = null;
@@ -77,9 +90,13 @@ public class M3uParser implements PlaylistParser {
     }
 
     /**
-     * Parse simple m3u playlist
+     * Parse simple m3u playlist.
+     *
+     * @param lines
+     *      playlist file lines
+     * @return playlist items
      */
-    private List<PlaylistItem> parseM3u(List<String> lines) {
+    private List<PlaylistItem> parseM3u(final List<String> lines) {
         List<PlaylistItem> items = Lists.newArrayList();
         File playlistDir = playlist.getParentFile();
         for (String line : lines) {

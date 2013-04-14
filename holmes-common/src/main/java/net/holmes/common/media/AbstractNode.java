@@ -16,6 +16,9 @@
 */
 package net.holmes.common.media;
 
+/**
+ * Abstract node.
+ */
 public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected final String id;
     protected final String parentId;
@@ -24,7 +27,19 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected Long modifedDate;
     protected String iconUrl;
 
-    public AbstractNode(NodeType type, String id, String parentId, String name) {
+    /**
+     * Constructor.
+     *
+     * @param type 
+     *      node type
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node  parent id
+     * @param name 
+     *      node name
+     */
+    public AbstractNode(final NodeType type, final String id, final String parentId, final String name) {
         this.type = type;
         this.id = id;
         this.parentId = parentId;
@@ -51,7 +66,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         return modifedDate;
     }
 
-    public void setModifedDate(Long modifedDate) {
+    public void setModifedDate(final Long modifedDate) {
         this.modifedDate = modifedDate;
     }
 
@@ -59,12 +74,12 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         return iconUrl;
     }
 
-    public void setIconUrl(String iconUrl) {
+    public void setIconUrl(final String iconUrl) {
         this.iconUrl = iconUrl;
     }
 
     @Override
-    public int compareTo(AbstractNode o) {
+    public int compareTo(final AbstractNode o) {
         if (this.getType() == o.getType()) return this.name.compareTo(o.name);
         else if (this.getType() == NodeType.TYPE_FOLDER) return -1;
         else return 1;
@@ -84,7 +99,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
@@ -108,6 +123,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         return true;
     }
 
+    /**
+     * Node type.
+     */
     public enum NodeType {
         TYPE_FOLDER, //
         TYPE_CONTENT, //

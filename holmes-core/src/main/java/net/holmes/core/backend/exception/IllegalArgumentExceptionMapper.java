@@ -23,11 +23,14 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * Map illegal argument exception to Http response.
+ */
 @Provider
 public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
 
     @Override
-    public Response toResponse(IllegalArgumentException e) {
+    public Response toResponse(final IllegalArgumentException e) {
         return Response.status(Status.BAD_REQUEST)//
                 .type(MediaType.TEXT_PLAIN) //
                 .entity(e.getMessage()).build();

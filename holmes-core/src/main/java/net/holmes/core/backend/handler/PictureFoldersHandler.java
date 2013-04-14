@@ -34,51 +34,94 @@ import javax.ws.rs.core.MediaType;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
+/**
+ * Handler for picture folders REST requests.
+ */
 @Path("/backend/pictureFolders")
 public final class PictureFoldersHandler {
 
     private final BackendManager backendManager;
 
+    /**
+     * Constructor.
+     * @param backendManager
+     *      backend manager
+     */
     @Inject
-    public PictureFoldersHandler(BackendManager backendManager) {
+    public PictureFoldersHandler(final BackendManager backendManager) {
         this.backendManager = backendManager;
     }
 
+    /**
+     * Get picture folders.
+     *
+     * @return  picture folders
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPictureFolders() {
         return backendManager.getFolders(PICTURE);
     }
 
+    /**
+     * Get picture folder.
+     * 
+     * @param id
+     *      picture folder id
+     * @return picture folder
+     */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder getPictureFolder(@PathParam("id") String id) {
+    public ConfigurationFolder getPictureFolder(@PathParam("id") final String id) {
         return backendManager.getFolder(id, PICTURE);
     }
 
+    /**
+     * Add picture folder.
+     * 
+     * @param folder
+     *      picture folder to add
+     * @return added picture folder
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder addPictureFolder(ConfigurationFolder folder) {
+    public ConfigurationFolder addPictureFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, PICTURE);
         return folder;
     }
 
+    /**
+     * Edit picture folder.
+     * 
+     * @param id
+     *      picture folder id
+     * @param folder
+     *      picture value
+     * @return edited picture folder
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder editPictureFolder(@PathParam("id") String id, ConfigurationFolder folder) {
+    public ConfigurationFolder editPictureFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, PICTURE);
         return folder;
     }
 
+    /**
+     * Remove picture folder.
+     * 
+     * @param id
+     *      picture folder id to remove
+     * @return removed picture folder
+     */
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder removePictureFolder(@PathParam("id") String id) {
+    public ConfigurationFolder removePictureFolder(@PathParam("id") final String id) {
         backendManager.removeFolder(id, PICTURE);
         return new ConfigurationFolder(id, null, null);
     }

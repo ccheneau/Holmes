@@ -17,7 +17,7 @@
 package net.holmes.common;
 
 /**
- * Java system properties used by Holmes
+ * Java system properties used by Holmes.
  */
 public enum SystemProperty {
     HOLMES_HOME("net.holmes.home"), //
@@ -25,7 +25,13 @@ public enum SystemProperty {
 
     private final String name;
 
-    SystemProperty(String name) {
+    /**
+     * Constructor.
+     *
+     * @param name 
+     *      name
+     */
+    SystemProperty(final String name) {
         this.name = name;
     }
 

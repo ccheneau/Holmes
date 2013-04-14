@@ -49,6 +49,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 
+/**
+ * Backend manager implementation.
+ */
 public final class BackendManagerImpl implements BackendManager {
 
     private final Configuration configuration;
@@ -56,8 +59,20 @@ public final class BackendManagerImpl implements BackendManager {
     private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
 
+    /**
+     * Constructor.
+     * @param mediaIndexManager
+     *      media index manager
+     * @param configuration
+     *      configuration
+     * @param eventBus
+     *      event bus
+     * @param resourceBundle
+     *      resource bundle
+     */
     @Inject
-    public BackendManagerImpl(MediaIndexManager mediaIndexManager, Configuration configuration, EventBus eventBus, ResourceBundle resourceBundle) {
+    public BackendManagerImpl(final MediaIndexManager mediaIndexManager, final Configuration configuration, final EventBus eventBus,
+            final ResourceBundle resourceBundle) {
         this.mediaIndexManager = mediaIndexManager;
         this.configuration = configuration;
         this.eventBus = eventBus;
@@ -65,7 +80,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public Collection<ConfigurationFolder> getFolders(RootNode rootNode) {
+    public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
         for (ConfigurationNode node : configNodes) {
@@ -75,7 +90,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public ConfigurationFolder getFolder(String id, RootNode rootNode) {
+    public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
@@ -85,7 +100,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public void addFolder(ConfigurationFolder folder, RootNode rootNode) {
+    public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         boolean podcast = rootNode == RootNode.PODCAST;
 
@@ -108,7 +123,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public void editFolder(String id, ConfigurationFolder folder, RootNode rootNode) {
+    public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         boolean podcast = rootNode == RootNode.PODCAST;
 
@@ -143,7 +158,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public void removeFolder(String id, RootNode rootNode) {
+    public void removeFolder(final String id, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         boolean podcast = rootNode == RootNode.PODCAST;
 
@@ -179,10 +194,11 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public void saveSettings(Settings settings) {
+    public void saveSettings(final Settings settings) {
         if (Strings.isNullOrEmpty(settings.getServerName()))
             throw new IllegalArgumentException(resourceBundle.getString("backend.settings.server.name.error"));
-        if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < 1024 || settings.getHttpServerPort() > 9999)
+        if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < Configuration.MIN_HTTP_SERVER_PORT
+                || settings.getHttpServerPort() > Configuration.MAX_HTTP_SERVER_PORT)
             throw new IllegalArgumentException(resourceBundle.getString("backend.settings.http.port.error"));
 
         configuration.setUpnpServerName(settings.getServerName());
@@ -207,17 +223,19 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     @Override
-    public void scanAllMedia() {
+    public void scanAllMedias() {
         eventBus.post(new MediaEvent(MediaEventType.SCAN_ALL, null));
     }
 
     /**
-     * Check folder does not already existalidate folder
+     * Check folder does not already existalidate folder.
      * 
      * @param folder
+     *      folder to validate
      * @param podcast
+     *      true if folder is a podcast
      */
-    private void validateFolder(ConfigurationFolder folder, boolean podcast) {
+    private void validateFolder(final ConfigurationFolder folder, final boolean podcast) {
         // Check folder's name and path are not empty
         if (podcast && Strings.isNullOrEmpty(folder.getName())) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.name.error"));
         else if (podcast && Strings.isNullOrEmpty(folder.getPath())) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.error"));
@@ -237,14 +255,19 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     /**
-     * Check folder does not already exist
+     * Check folder does not already exist.
      * 
      * @param excludedId
+     *      node id to exclude
      * @param folder
+     *      folder to check
      * @param configNodes
+     *      configuration nodes
      * @param podcast
+     *      true if folder is a podcast
      */
-    private void validateDuplicatedFolder(String excludedId, ConfigurationFolder folder, List<ConfigurationNode> configNodes, boolean podcast) {
+    private void validateDuplicatedFolder(final String excludedId, final ConfigurationFolder folder, final List<ConfigurationNode> configNodes,
+            final boolean podcast) {
         for (ConfigurationNode node : configNodes) {
             if (excludedId != null && excludedId.equals(node.getId())) continue;
 

@@ -17,6 +17,9 @@
 
 package net.holmes.common.media;
 
+/**
+ * Root node.
+ */
 public enum RootNode {
     ROOT("0", "-1", null), //
     VIDEO("1_VIDEOS", "0", MediaType.TYPE_VIDEO), //
@@ -28,7 +31,17 @@ public enum RootNode {
     private String parentId;
     private MediaType mediaType;
 
-    private RootNode(String id, String parentId, MediaType mediaType) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node  parent id
+     * @param mediaType 
+     *      media type
+     */
+    private RootNode(final String id, final String parentId, final MediaType mediaType) {
         this.id = id;
         this.parentId = parentId;
         this.mediaType = mediaType;
@@ -46,7 +59,14 @@ public enum RootNode {
         return this.mediaType;
     }
 
-    public static RootNode getById(String id) {
+    /**
+     * Gets root node by id.
+     *
+     * @param id 
+     *      node id
+     * @return the root node
+     */
+    public static RootNode getById(final String id) {
         for (RootNode rootNode : RootNode.values()) {
             if (rootNode.id.equals(id)) return rootNode;
         }

@@ -18,16 +18,41 @@ package net.holmes.common.media;
 
 import java.io.File;
 
+/**
+ * Folder node.
+ */
 public final class FolderNode extends AbstractNode {
     private final String path;
 
-    public FolderNode(String id, String parentId, String name, File folder) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     * @param folder 
+     *      node folder
+     */
+    public FolderNode(final String id, final String parentId, final String name, final File folder) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
         this.path = folder.getAbsolutePath();
         this.modifedDate = folder.lastModified();
     }
 
-    public FolderNode(String id, String parentId, String name) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     */
+    public FolderNode(final String id, final String parentId, final String name) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
         this.path = null;
 
@@ -46,7 +71,7 @@ public final class FolderNode extends AbstractNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;

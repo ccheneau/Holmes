@@ -34,51 +34,94 @@ import javax.ws.rs.core.MediaType;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 
+/**
+ * Handler for audio folders REST requests.
+ */
 @Path("/backend/audioFolders")
 public final class AudioFoldersHandler {
 
     private final BackendManager backendManager;
 
+    /**
+     * Constructor.
+     * @param backendManager
+     *      backend manager
+     */
     @Inject
-    public AudioFoldersHandler(BackendManager backendManager) {
+    public AudioFoldersHandler(final BackendManager backendManager) {
         this.backendManager = backendManager;
     }
 
+    /**
+     * Get audio folders.
+     *
+     * @return  audio folders
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
         return backendManager.getFolders(AUDIO);
     }
 
+    /**
+     * Get audio folder.
+     * 
+     * @param id
+     *      audio folder id
+     * @return audio folder
+     */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder getAudioFolder(@PathParam("id") String id) {
+    public ConfigurationFolder getAudioFolder(@PathParam("id") final String id) {
         return backendManager.getFolder(id, AUDIO);
     }
 
+    /**
+     * Add audio folder.
+     * 
+     * @param folder
+     *      audio folder to add
+     * @return added audio folder
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder addAudioFolder(ConfigurationFolder folder) {
+    public ConfigurationFolder addAudioFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, AUDIO);
         return folder;
     }
 
+    /**
+     * Edit audio folder.
+     * 
+     * @param id
+     *      audio folder id
+     * @param folder
+     *      folder value
+     * @return edited audio folder
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder editAudioFolder(@PathParam("id") String id, ConfigurationFolder folder) {
+    public ConfigurationFolder editAudioFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, AUDIO);
         return folder;
     }
 
+    /**
+     * Remove audio folder.
+     * 
+     * @param id
+     *      audio folder id to remove
+     * @return removed audio folder
+     */
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ConfigurationFolder removeAudioFolder(@PathParam("id") String id) {
+    public ConfigurationFolder removeAudioFolder(@PathParam("id") final String id) {
         backendManager.removeFolder(id, AUDIO);
         return new ConfigurationFolder(id, null, null);
     }

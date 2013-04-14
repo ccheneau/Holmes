@@ -18,6 +18,16 @@ package net.holmes.core.media.playlist;
 
 import java.util.List;
 
+/**
+ * Playlist parser.
+ */
 public interface PlaylistParser {
+
+    /**
+     * Parses the playlist.
+     *
+     * @return Playlist items
+     * @throws PlaylistParserException playlist parser exception
+     */
     List<PlaylistItem> parse() throws PlaylistParserException;
 }

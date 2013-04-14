@@ -37,7 +37,7 @@ public class OSQuery implements Cloneable, Serializable {
     private String searchTerms;
 
     /**
-     * Default constructor. All properties are set to <b>null</b>.
+     * Constructor. All properties are set to <b>null</b>.
      * <p>
      */
     public OSQuery() {

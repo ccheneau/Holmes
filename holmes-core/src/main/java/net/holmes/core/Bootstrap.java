@@ -31,9 +31,25 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class Bootstrap {
+/**
+ * Bootstrap for Holmes - main class.
+ */
+public final class Bootstrap {
 
-    public static void main(String... args) {
+    private static final long LOG4J_WATCH_DELAY = 10000L;
+
+    /**
+     * Private constructor.
+     */
+    private Bootstrap() {
+    }
+
+    /**
+     * Holmes launcher.
+     * @param args 
+     *      command line arguments
+     */
+    public static void main(final String... args) {
         // Check lock file
         if (SystemUtils.lockInstance()) {
             // Load log4j
@@ -64,7 +80,12 @@ public class Bootstrap {
         }
     }
 
-    private static void loadLog4j(boolean debug) {
+    /**
+     * Configure Log4j.
+     * @param debug
+     *      activate debug mode
+     */
+    private static void loadLog4j(final boolean debug) {
         // Load log4j configuration
         File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
         String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
@@ -73,7 +94,7 @@ public class Bootstrap {
             if (debug) {
                 DOMConfigurator.configure(logConfig);
                 LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
-            } else DOMConfigurator.configureAndWatch(logConfig, 10000l);
+            } else DOMConfigurator.configureAndWatch(logConfig, LOG4J_WATCH_DELAY);
         } else throw new RuntimeException(logConfig + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
                 + SystemProperty.HOLMES_HOME.getValue() + "] system property");
 

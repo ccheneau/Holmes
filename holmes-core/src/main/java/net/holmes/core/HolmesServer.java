@@ -28,7 +28,7 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 
 /**
- * Holmes server main class
+ * Holmes server main class.
  */
 @Loggable
 public final class HolmesServer implements Service {
@@ -39,9 +39,20 @@ public final class HolmesServer implements Service {
     private final Service systray;
     private final Service scheduler;
 
+    /**
+     * Constructor.
+     * @param httpServer
+     *      Http server
+     * @param upnpServer
+     *      UPnP server
+     * @param systray
+     *      Systray
+     * @param scheduler
+     *      Scheduler
+     */
     @Inject
-    public HolmesServer(@Named("http") Service httpServer, @Named("upnp") Service upnpServer, @Named("systray") Service systray,
-            @Named("scheduler") Service scheduler) {
+    public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("systray") final Service systray,
+            @Named("scheduler") final Service scheduler) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.systray = systray;
@@ -74,8 +85,13 @@ public final class HolmesServer implements Service {
         logger.info("Holmes server stopped");
     }
 
+    /**
+     * Receive dead event from event bus.
+     * @param deadEvent
+     *      Dead event
+     */
     @Subscribe
-    public void handleDeadEvent(DeadEvent deadEvent) {
+    public void handleDeadEvent(final DeadEvent deadEvent) {
         logger.warn("Event not handled: {}", deadEvent.getEvent().toString());
     }
 }

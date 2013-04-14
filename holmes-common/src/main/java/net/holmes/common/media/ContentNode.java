@@ -20,12 +20,29 @@ import java.io.File;
 
 import net.holmes.common.mimetype.MimeType;
 
+/**
+ * Content node.
+ */
 public final class ContentNode extends AbstractNode {
     private final MimeType mimeType;
     private final Long size;
     private final String path;
 
-    public ContentNode(String id, String parentId, String name, File file, MimeType mimeType) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     * @param file 
+     *      node file
+     * @param mimeType 
+     *      mime type
+     */
+    public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType) {
         super(NodeType.TYPE_CONTENT, id, parentId, name);
         this.path = file.getAbsolutePath();
         this.mimeType = mimeType;
@@ -56,7 +73,7 @@ public final class ContentNode extends AbstractNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;

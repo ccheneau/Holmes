@@ -21,13 +21,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
+/**
+ * Map configuration exception to Http response.
+ */
+@Provider
 public class ConfigurationExceptionMapper implements ExceptionMapper<ConfigurationException> {
 
     @Override
-    public Response toResponse(ConfigurationException e) {
+    public Response toResponse(final ConfigurationException exception) {
         return Response.status(Status.INTERNAL_SERVER_ERROR)//
                 .type(MediaType.TEXT_PLAIN) //
-                .entity(e.getMessage()).build();
+                .entity(exception.getMessage()).build();
     }
 }

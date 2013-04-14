@@ -34,7 +34,7 @@ import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service user to clean podcast cache
+ * Scheduled service used to clean podcast cache.
  */
 @Loggable
 public class PodcastCacheCleanerService extends AbstractScheduledService {
@@ -43,8 +43,16 @@ public class PodcastCacheCleanerService extends AbstractScheduledService {
     private final Cache<String, List<AbstractNode>> podcastCache;
     private final int cleanDelayMinutes;
 
+    /**
+     * Constructor.
+     *
+     * @param podcastCache 
+     *      podcast cache
+     * @param configuration 
+     *      configuration
+     */
     @Inject
-    public PodcastCacheCleanerService(@Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache, Configuration configuration) {
+    public PodcastCacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache, final Configuration configuration) {
         this.podcastCache = podcastCache;
         this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
     }

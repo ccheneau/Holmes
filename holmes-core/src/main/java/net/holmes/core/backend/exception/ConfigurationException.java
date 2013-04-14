@@ -17,10 +17,18 @@
 
 package net.holmes.core.backend.exception;
 
+/**
+ * Configuration exception.
+ */
 public class ConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 4365631762884392538L;
 
-    public ConfigurationException(Throwable ex) {
-        super(ex);
+    /**
+     * Constructor.
+     * * @param exception
+     *      base exception
+     */
+    public ConfigurationException(final Throwable exception) {
+        super(exception);
     }
 }

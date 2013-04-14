@@ -70,6 +70,9 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+/**
+ * Media manager implementation.
+ */
 @Loggable
 public final class MediaManagerImpl implements MediaManager {
     private Logger logger;
@@ -80,9 +83,23 @@ public final class MediaManagerImpl implements MediaManager {
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
+    /**
+     * Constructor.
+     *
+     * @param configuration 
+     *      configuration
+     * @param mimeTypeManager 
+     *      mime type manager
+     * @param resourceBundle 
+     *      resource bundle
+     * @param mediaIndexManager 
+     *      media index manager
+     * @param podcastCache 
+     *      podcast cache
+     */
     @Inject
-    public MediaManagerImpl(Configuration configuration, MimeTypeManager mimeTypeManager, ResourceBundle resourceBundle, MediaIndexManager mediaIndexManager,
-            @Named("podcastCache") Cache<String, List<AbstractNode>> podcastCache) {
+    public MediaManagerImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final ResourceBundle resourceBundle,
+            final MediaIndexManager mediaIndexManager, @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.resourceBundle = resourceBundle;
@@ -91,7 +108,7 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Override
-    public AbstractNode getNode(String nodeId) {
+    public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
         if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:{}", nodeId);
 
@@ -129,7 +146,7 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Override
-    public List<AbstractNode> getChildNodes(AbstractNode parentNode) {
+    public List<AbstractNode> getChildNodes(final AbstractNode parentNode) {
         if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:{}", parentNode.getId());
 
         List<AbstractNode> childNodes = null;
@@ -186,9 +203,9 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Override
-    public void scanNode(AbstractNode node, boolean recursive) {
-        if (node instanceof FolderNode) {
-            List<AbstractNode> childNodes = getChildNodes(node);
+    public void scanNode(final AbstractNode parentNode, final boolean recursive) {
+        if (parentNode instanceof FolderNode) {
+            List<AbstractNode> childNodes = getChildNodes(parentNode);
             if (recursive && childNodes != null) {
                 for (AbstractNode childNode : childNodes)
                     scanNode(childNode, recursive);
@@ -197,9 +214,13 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Get childs of a configuration node (child nodes are stored in configuration)
+     * Get childs of a configuration node (child nodes are stored in configuration).
+     *
+     * @param rootNode 
+     *      root node
+     * @return configuration child nodes
      */
-    private List<AbstractNode> getConfigurationChildNodes(RootNode rootNode) {
+    private List<AbstractNode> getConfigurationChildNodes(final RootNode rootNode) {
         List<AbstractNode> nodes = Lists.newArrayList();
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         if (configNodes != null && !configNodes.isEmpty()) {
@@ -228,9 +249,17 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Get childs of a folder node
+     * Get childs of a folder node.
+     *
+     * @param parentId 
+     *      parent id
+     * @param folder 
+     *      folder
+     * @param mediaType 
+     *      media type
+     * @return folder child nodes
      */
-    private List<AbstractNode> getFolderChildNodes(String parentId, File folder, String mediaType) {
+    private List<AbstractNode> getFolderChildNodes(final String parentId, final File folder, final String mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
         File[] files = folder.listFiles();
         if (files != null) {
@@ -254,7 +283,12 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * A pod-cast is a RSS feed URL
+     * A pod-cast is a RSS feed URL.
+     *
+     * @param parentId 
+     *      parent id
+     * @param url 
+     *      podcast url
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
@@ -321,12 +355,15 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Get childs of playlist node
-     * @param parentId
-     * @param path
-     * @return
+     * Get childs of playlist node.
+     *
+     * @param parentId 
+     *      parent id
+     * @param path 
+     *      path
+     * @return playlist child nodes
      */
-    private List<AbstractNode> getPlaylistChildNodes(String parentId, String path) {
+    private List<AbstractNode> getPlaylistChildNodes(final String parentId, final String path) {
         List<AbstractNode> nodes = Lists.newArrayList();
 
         try {
@@ -348,15 +385,19 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Build file node
-     * 
-     * @param nodeId
-     * @param parentId
-     * @param file
-     * @param mediaType
-     * @return
+     * Build file node.
+     *
+     * @param nodeId 
+     *      node id
+     * @param parentId 
+     *      parent id
+     * @param file 
+     *      file
+     * @param mediaType 
+     *      media type
+     * @return built node
      */
-    private AbstractNode buildFileNode(String nodeId, String parentId, File file, String mediaType) {
+    private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final String mediaType) {
         AbstractNode node = null;
 
         // Check mime type
@@ -374,11 +415,13 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Configuration has changed, update media index
-     * @param event
+     * Configuration has changed, update media index.
+     * 
+     * @param configurationEvent
+     *      configuration event
      */
     @Subscribe
-    public void handleConfigEvent(ConfigurationEvent configurationEvent) {
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
         if (logger.isDebugEnabled()) logger.debug("Configuration event received: {}", configurationEvent.toString());
 
         ConfigurationNode configNode = configurationEvent.getNode();
@@ -406,8 +449,14 @@ public final class MediaManagerImpl implements MediaManager {
         }
     }
 
+    /**
+     * Handle media event.
+     *
+     * @param mediaEvent 
+     *      media event
+     */
     @Subscribe
-    public void handleMediaEvent(MediaEvent mediaEvent) {
+    public void handleMediaEvent(final MediaEvent mediaEvent) {
         if (logger.isDebugEnabled()) logger.debug("Media event received: {}", mediaEvent.toString());
 
         switch (mediaEvent.getType()) {

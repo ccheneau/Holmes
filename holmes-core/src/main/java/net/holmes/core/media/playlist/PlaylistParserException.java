@@ -17,22 +17,48 @@
 
 package net.holmes.core.media.playlist;
 
+/**
+ * Playlist parser exception.
+ */
 public class PlaylistParserException extends Exception {
     private static final long serialVersionUID = -5068408691447981899L;
 
+    /**
+     * Constructor.
+     */
     public PlaylistParserException() {
         super();
     }
 
-    public PlaylistParserException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
+    /**
+     * Constructor.
+     *
+     * @param message 
+     *      message
+     * @param exception 
+     *      exception
+     */
+    public PlaylistParserException(final String message, final Throwable exception) {
+        super(message, exception);
     }
 
-    public PlaylistParserException(String arg0) {
-        super(arg0);
+    /**
+     * Constructor.
+     *
+     * @param message 
+     *      message
+     */
+    public PlaylistParserException(final String message) {
+        super(message);
     }
 
-    public PlaylistParserException(Throwable arg0) {
-        super(arg0);
+    /**
+     * Constructor.
+     *
+     * @param exception 
+     *      exception
+     */
+    public PlaylistParserException(final Throwable exception) {
+        super(exception);
     }
 }

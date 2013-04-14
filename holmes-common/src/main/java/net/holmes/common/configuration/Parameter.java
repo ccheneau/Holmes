@@ -16,6 +16,9 @@
 */
 package net.holmes.common.configuration;
 
+/**
+ * Configuration parameter.
+ */
 public enum Parameter {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
     ENABLE_SYSTRAY("enable_systray", "true"), //
@@ -30,7 +33,15 @@ public enum Parameter {
     private final String name;
     private final String defaultValue;
 
-    Parameter(String name, String defaultValue) {
+    /**
+     * Constructor.
+     *
+     * @param name 
+     *      parameter name
+     * @param defaultValue 
+     *      parameter default value
+     */
+    Parameter(final String name, final String defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
     }

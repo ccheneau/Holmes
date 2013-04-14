@@ -32,24 +32,30 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+/**
+ * Media index manager implementation.
+ */
 @Loggable
 public class MediaIndexManagerImpl implements MediaIndexManager {
     private Logger logger;
 
     private final BiMap<String, MediaIndexElement> elements;
 
+    /**
+     * Constructor.
+     */
     public MediaIndexManagerImpl() {
         this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
         //this.elements = HashBiMap.create();
     }
 
     @Override
-    public MediaIndexElement get(String uuid) {
+    public MediaIndexElement get(final String uuid) {
         return elements.get(uuid);
     }
 
     @Override
-    public String add(MediaIndexElement element) {
+    public String add(final MediaIndexElement element) {
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
@@ -59,17 +65,17 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public void put(String uuid, MediaIndexElement element) {
+    public void put(final String uuid, final MediaIndexElement element) {
         if (elements.get(uuid) == null) elements.put(uuid, element);
     }
 
     @Override
-    public void remove(String uuid) {
+    public void remove(final String uuid) {
         if (elements.get(uuid) != null) elements.remove(uuid);
     }
 
     @Override
-    public synchronized void removeChilds(String uuid) {
+    public synchronized void removeChilds(final String uuid) {
         MediaIndexElement elValue = null;
         Collection<String> toRemove = Lists.newArrayList();
 

@@ -40,15 +40,22 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import com.google.inject.Injector;
 
 /**
- * Guice provider for UPnP service
+ * Guice provider for UPnP service.
  */
 public class UpnpServiceProvider implements Provider<UpnpService> {
 
     private final Injector injector;
     private final Configuration configuration;
 
+    /**
+     * Constructor.
+     * @param injector
+     *      Guice injector
+     * @param configuration
+     *      configuration
+     */
     @Inject
-    public UpnpServiceProvider(Injector injector, Configuration configuration) {
+    public UpnpServiceProvider(final Injector injector, final Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
     }
@@ -80,8 +87,10 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
 
         // Create local device
         try {
-            upnpService.getRegistry().addDevice(
-                    new LocalDevice(identity, type, details, new LocalService[] { connectionManagerService, contentDirectoryService }));
+            LocalService<?>[] services = new LocalService[2];
+            services[0] = connectionManagerService;
+            services[1] = contentDirectoryService;
+            upnpService.getRegistry().addDevice(new LocalDevice(identity, type, details, services));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }

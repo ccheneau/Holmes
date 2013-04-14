@@ -22,37 +22,85 @@ import java.util.List;
 import net.holmes.common.media.RootNode;
 
 /**
- * Holmes configuration contains:
- * <ul>
- * <li>UPnP server name</li>
- * <li>HTTP server port</li>
- * <li>video folders</li>
- * <li>audio folders</li>
- * <li>picture folder</li>
- * <li>pod-cast URLs</li>
- * <li>misc. parameters</li>
- * </ul>
- *
+ * Holmes configuration.
  */
 public interface Configuration {
     String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     int DEFAULT_HTTP_SERVER_PORT = 8085;
+    int MIN_HTTP_SERVER_PORT = 1024;
+    int MAX_HTTP_SERVER_PORT = 9999;
 
+    /**
+     * Save configuraton.
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     void saveConfig() throws IOException;
 
+    /**
+     * Gets UPnP server name.
+     *
+     * @return UPnP server name
+     */
     String getUpnpServerName();
 
+    /**
+     * Sets UPnP server name.
+     *
+     * @param upnpServerName 
+     *      new UPnP server name
+     */
     void setUpnpServerName(String upnpServerName);
 
+    /**
+     * Gets http server port.
+     *
+     * @return http server port
+     */
     Integer getHttpServerPort();
 
+    /**
+     * Sets the http server port.
+     *
+     * @param httpServerPort 
+     *      new http server port
+     */
     void setHttpServerPort(Integer httpServerPort);
 
-    List<ConfigurationNode> getFolders(RootNode rootNode);
+    /**
+     * Gets the folders.
+     *
+     * @param folderRootNode 
+     *      folder root node
+     * @return folders
+     */
+    List<ConfigurationNode> getFolders(RootNode folderRootNode);
 
+    /**
+     * Gets the parameter.
+     *
+     * @param param 
+     *      parameter
+     * @return parameter
+     */
     Boolean getParameter(Parameter param);
 
-    Integer getIntParameter(Parameter prop);
+    /**
+     * Gets the int parameter.
+     *
+     * @param param 
+     *      parameter
+     * @return parameter as int
+     */
+    Integer getIntParameter(Parameter param);
 
+    /**
+     * Sets parameter.
+     *
+     * @param param 
+     *      parameter
+     * @param value 
+     *      parameter value
+     */
     void setParameter(Parameter param, Boolean value);
 }

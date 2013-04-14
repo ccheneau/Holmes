@@ -16,14 +16,17 @@
 */
 package net.holmes.common;
 
+/**
+ * Holmes service.
+ */
 public interface Service {
     /**
-     * Start service
+     * Start service.
      */
     void start();
 
     /**
-     * Stop service
+     * Stop service.
      */
     void stop();
 }

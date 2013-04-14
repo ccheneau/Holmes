@@ -16,10 +16,25 @@
 */
 package net.holmes.common.media;
 
+/**
+ * Podcast node.
+ */
 public final class PodcastNode extends AbstractNode {
     private final String url;
 
-    public PodcastNode(String id, String parentId, String name, String url) {
+    /**
+     * Constructor.
+     *
+     * @param id 
+     *      node id
+     * @param parentId 
+     *      node parent id
+     * @param name 
+     *      node name
+     * @param url 
+     *      node url
+     */
+    public PodcastNode(final String id, final String parentId, final String name, final String url) {
         super(NodeType.TYPE_PODCAST, id, parentId, name);
         this.url = url;
     }
@@ -37,7 +52,7 @@ public final class PodcastNode extends AbstractNode {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;

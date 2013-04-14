@@ -22,13 +22,22 @@ import net.holmes.common.media.MediaType.Subtype;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 
+/**
+ * Mime type.
+ */
 public final class MimeType {
 
     private final String type;
     private final String subType;
     private final String mimeType;
 
-    public MimeType(String mimeType) {
+    /**
+     * Constructor.
+     *
+     * @param mimeType 
+     *      mime type
+     */
+    public MimeType(final String mimeType) {
         this.mimeType = mimeType;
         Iterable<String> iter = Splitter.on('/').split(mimeType);
         this.type = Iterables.getFirst(iter, "");
@@ -78,7 +87,7 @@ public final class MimeType {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;

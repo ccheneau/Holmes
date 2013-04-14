@@ -47,29 +47,35 @@ import net.holmes.core.media.MediaManager;
 import org.slf4j.Logger;
 
 /**
- * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer
+ * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer.
  */
 @Loggable
 public final class HttpContentRequestHandler implements HttpRequestHandler {
     private Logger logger;
 
     private static final String REQUEST_PATH = "/content";
-    private static Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
+    private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
 
     private final MediaManager mediaManager;
 
+    /**
+     * Default constructot.
+     * 
+     * @param mediaManager
+     *      media manager
+     */
     @Inject
-    public HttpContentRequestHandler(MediaManager mediaManager) {
+    public HttpContentRequestHandler(final MediaManager mediaManager) {
         this.mediaManager = mediaManager;
     }
 
     @Override
-    public boolean canProcess(String requestPath, HttpMethod method) {
+    public boolean canProcess(final String requestPath, final HttpMethod method) {
         return method.equals(HttpMethod.GET) && requestPath.startsWith(REQUEST_PATH);
     }
 
     @Override
-    public void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
         if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
 
         try {
@@ -146,9 +152,13 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     /**
-     * Get content node from {@link net.holmes.core.media.MediaManager} 
+     * Get content node from {@link net.holmes.core.media.MediaManager}.
+     * 
+     * @param uri
+     *      Uri
+     * @return content node
      */
-    private ContentNode getContentNode(String uri) {
+    private ContentNode getContentNode(final String uri) {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
 

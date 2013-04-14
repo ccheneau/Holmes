@@ -45,21 +45,32 @@ import com.google.inject.Injector;
 import com.sun.jersey.spi.container.WebApplication;
 
 /**
- * HTTP server main class  
+ * HTTP server main class.
  */
 @Loggable
 public final class HttpServer implements Service {
     private Logger logger;
 
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
+    private static final int MAX_CONTENT_LENGTH = 65536;
 
     private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
     private final EventLoopGroup eventLoopGroup;
 
+    /**
+     * Constructor.
+     * 
+     * @param injector
+     *      injector
+     * @param webApplication
+     *      web application
+     * @param configuration
+     *      configuration
+     */
     @Inject
-    public HttpServer(Injector injector, WebApplication webApplication, Configuration configuration) {
+    public HttpServer(final Injector injector, final WebApplication webApplication, final Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
         this.webApplication = webApplication;
@@ -79,10 +90,10 @@ public final class HttpServer implements Service {
                 .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
+                    protected void initChannel(final SocketChannel channel) throws Exception {
+                        ChannelPipeline pipeline = channel.pipeline();
                         pipeline.addLast("decoder", new HttpRequestDecoder()) //
-                                .addLast("aggregator", new HttpObjectAggregator(65536))//
+                                .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))//
                                 .addLast("encoder", new HttpResponseEncoder())//
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())//
                                 // Add HTTP request handler
