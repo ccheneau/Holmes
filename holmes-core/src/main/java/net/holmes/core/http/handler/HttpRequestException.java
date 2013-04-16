@@ -24,7 +24,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 public final class HttpRequestException extends Exception {
     private static final long serialVersionUID = 1022835130881123877L;
 
-    private final HttpResponseStatus status;
+    private final transient HttpResponseStatus status;
 
     /**
      * Constructor.

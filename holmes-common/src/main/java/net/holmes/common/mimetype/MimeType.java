@@ -16,8 +16,8 @@
 */
 package net.holmes.common.mimetype;
 
-import net.holmes.common.media.MediaType;
-import net.holmes.common.media.MediaType.Subtype;
+import net.holmes.common.MediaType;
+import net.holmes.common.MediaType.Subtype;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;

@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.holmes.common.MediaType;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
@@ -41,7 +42,6 @@ import net.holmes.common.event.MediaEvent;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.media.ContentNode;
 import net.holmes.common.media.FolderNode;
-import net.holmes.common.media.MediaType;
 import net.holmes.common.media.PlaylistNode;
 import net.holmes.common.media.PodcastEntryNode;
 import net.holmes.common.media.PodcastNode;

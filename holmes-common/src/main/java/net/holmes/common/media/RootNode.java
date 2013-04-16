@@ -17,6 +17,8 @@
 
 package net.holmes.common.media;
 
+import net.holmes.common.MediaType;
+
 /**
  * Root node.
  */

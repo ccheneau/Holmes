@@ -60,7 +60,7 @@ import org.slf4j.Logger;
  * Manages system tray icon.
  */
 @Loggable
-public class SystrayService implements Service {
+public final class SystrayService implements Service {
     private Logger logger;
 
     private static final String HOLMES_SITE_URL = "http://ccheneau.github.io/Holmes/";
