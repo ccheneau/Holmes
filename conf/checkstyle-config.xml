@@ -51,7 +51,11 @@
 		</module>
 		<module name="JavadocType" />
 		<!-- <module name="JavadocVariable" /> -->
-		<module name="JavadocStyle" />
+		<module name="JavadocStyle">
+			<property name="scope" value="public" />
+			<property name="checkFirstSentence" value="false"/>
+			<property name="checkHtml" value="false"/>
+		</module>
 
 
 		<!-- Checks for Naming Conventions. -->
@@ -94,7 +98,7 @@
 		<!-- See http://checkstyle.sf.net/config_sizes.html -->
 		<module name="LineLength">
 			<property name="max" value="300" />
-			<property name="ignorePattern" value="^ *\* *[^ ]+$"/>
+			<property name="ignorePattern" value="^ *\* *[^ ]+$" />
 		</module>
 		<module name="MethodLength" />
 		<module name="ParameterNumber" />
@@ -141,8 +145,8 @@
 		<module name="IllegalInstantiation" />
 		<module name="InnerAssignment" />
 		<module name="MagicNumber">
-			<property name="ignoreHashCodeMethod" value="true"/>
-			<property name="ignoreNumbers" value="-1,0,1,2,99"/>
+			<property name="ignoreHashCodeMethod" value="true" />
+			<property name="ignoreNumbers" value="-1,0,1,2,99" />
 		</module>
 		<module name="MissingSwitchDefault" />
 		<module name="RedundantThrows" />
@@ -156,7 +160,7 @@
 		<module name="HideUtilityClassConstructor" />
 		<module name="InterfaceIsType" />
 		<module name="VisibilityModifier">
-			<property name="protectedAllowed" value="true"/>
+			<property name="protectedAllowed" value="true" />
 		</module>
 
 
