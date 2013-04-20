@@ -86,17 +86,15 @@ public class ModuleParserRSS2 implements ModuleParser {
                 while (lit.hasNext()) {
                     Element licenseTag = (Element) lit.next();
                     License license = License.findByValue(licenseTag.getTextTrim());
-                    if (!licenses.contains(license))
-                    ;
-                    licenses.add(license);
+                    if (!licenses.contains(license)) licenses.add(license);
                 }
             }
             if (licenses.size() > 0) {
-                module.setAllLicenses(licenses.toArray(new License[0]));
+                module.setAllLicenses(new License[0]);
             }
         }
         // do element local
-        ArrayList<License> licenses = new ArrayList<License>();
+        List<License> licenses = new ArrayList<License>();
         List<?> licenseTags = element.getChildren("license", NS);
         Iterator<?> it = licenseTags.iterator();
         while (it.hasNext()) {
@@ -104,7 +102,7 @@ public class ModuleParserRSS2 implements ModuleParser {
             licenses.add(License.findByValue(licenseTag.getTextTrim()));
         }
         if (licenses.size() > 0) {
-            module.setLicenses(licenses.toArray(new License[0]));
+            module.setLicenses(new License[0]);
         }
 
         if (module.getLicenses() != null && module.getAllLicenses() != null) {

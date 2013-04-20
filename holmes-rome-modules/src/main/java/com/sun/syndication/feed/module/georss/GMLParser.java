@@ -103,7 +103,7 @@ public class GMLParser implements ModuleParser {
                 if (linearRingElement != null) {
                     Element posListElement = linearRingElement.getChild("posList", GeoRSSModule.GML_NS);
                     if (posListElement != null) {
-                        if (poly == null) poly = new Polygon();
+                        poly = new Polygon();
                         poly.setExterior(new LinearRing(parsePosList(posListElement)));
                     }
                 }

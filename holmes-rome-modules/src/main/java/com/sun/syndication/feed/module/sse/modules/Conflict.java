@@ -45,6 +45,10 @@ public class Conflict extends SSEModule {
     private String by;
     private Item conflictItem;
 
+    public Conflict() {
+        conflictItem = null;
+    }
+
     @Override
     public void copyFrom(Object obj) {
         Conflict conflict = (Conflict) obj;

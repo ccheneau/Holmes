@@ -39,6 +39,8 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
+
 import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 
 /**
@@ -46,7 +48,9 @@ import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class IntUnit implements CloneableType {
+public class IntUnit implements CloneableType<IntUnit>, Serializable {
+    private static final long serialVersionUID = 5856378395819544767L;
+
     private String units;
     private int value;
 
@@ -92,13 +96,14 @@ public class IntUnit implements CloneableType {
     }
 
     @Override
-    public Object clone() {
+    public IntUnit clone() throws CloneNotSupportedException {
+        super.clone();
         return new IntUnit(this.value, this.units);
     }
 
     @Override
     public String toString() {
-        if ((this.units != null) && (this.units.trim().length() > 0)) {
+        if (this.units != null && this.units.trim().length() > 0) {
             return this.value + " " + this.units;
         } else {
             return Integer.toString(value);
@@ -109,12 +114,11 @@ public class IntUnit implements CloneableType {
     public boolean equals(Object o) {
         if (!(o instanceof IntUnit)) return false;
         IntUnit f = (IntUnit) o;
-        if (f.getValue() != this.value) {
-            return false;
-        }
-        if (this.units == f.getUnits() || (this.units != null && this.units.equals(f.getUnits()))) {
-            return true;
-        }
+        if (f.getValue() != this.value) return false;
+
+        if (this.units == null && f.units == null) return true;
+        else if (this.units != null && this.units.equals(f.getUnits())) return true;
+
         return false;
     }
 

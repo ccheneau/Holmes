@@ -52,7 +52,7 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
      */
     @Override
     public String getNamespaceUri() {
-        return ModuleParser.TEMP.getURI();
+        return ModuleParserImpl.TEMP.getURI();
     }
 
     /**
@@ -66,9 +66,9 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
     public Module parse(Element element) {
         SleEntryImpl sle = new SleEntryImpl();
         ArrayList<EntryValue> values = new ArrayList<EntryValue>();
-        List<?> groups = element.getChildren("group", ModuleParser.TEMP);
+        List<?> groups = element.getChildren("group", ModuleParserImpl.TEMP);
 
-        for (int i = 0; (groups != null) && (i < groups.size()); i++) {
+        for (int i = 0; groups != null && i < groups.size(); i++) {
             Element group = (Element) groups.get(i);
             StringValue value = new StringValue();
             value.setElement(group.getAttributeValue("element"));
@@ -80,15 +80,15 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
         }
 
         sle.setGroupValues(values.toArray(new EntryValue[values.size()]));
-        values = (values.size() == 0) ? values : new ArrayList<EntryValue>();
+        values = values.size() == 0 ? values : new ArrayList<EntryValue>();
 
-        List<?> sorts = element.getChildren("sort", ModuleParser.TEMP);
+        List<?> sorts = element.getChildren("sort", ModuleParserImpl.TEMP);
 
-        for (int i = 0; (sorts != null) && (i < sorts.size()); i++) {
+        for (int i = 0; sorts != null && i < sorts.size(); i++) {
             Element sort = (Element) sorts.get(i);
             String dataType = sort.getAttributeValue("data-type");
 
-            if ((dataType == null) || dataType.equals(Sort.TEXT_TYPE)) {
+            if (dataType == null || dataType.equals(Sort.TEXT_TYPE)) {
                 StringValue value = new StringValue();
                 value.setElement(sort.getAttributeValue("element"));
                 value.setLabel(sort.getAttributeValue("label"));
@@ -104,14 +104,9 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
                 value.setLabel(sort.getAttributeValue("label"));
                 if (sort.getAttributeValue("ns") != null) value.setNamespace(Namespace.getNamespace(sort.getAttributeValue("ns")));
                 else value.setNamespace(Namespace.NO_NAMESPACE);
-                Date dateValue = null;
 
-                try {
-                    dateValue = DateParser.parseRFC822(sort.getAttributeValue("value"));
-                    dateValue = (dateValue == null) ? DateParser.parseW3CDateTime(sort.getAttributeValue("value")) : dateValue;
-                } catch (Exception e) {
-                    ; // ignore parse exceptions
-                }
+                Date dateValue = DateParser.parseRFC822(sort.getAttributeValue("value"));
+                dateValue = dateValue == null ? DateParser.parseW3CDateTime(sort.getAttributeValue("value")) : dateValue;
 
                 value.setValue(dateValue);
                 values.add(value);
@@ -126,7 +121,6 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
                 try {
                     value.setValue(new BigDecimal(sort.getAttributeValue("value")));
                 } catch (NumberFormatException nfe) {
-                    ; // ignore
                     values.add(value);
                     element.removeContent(sort);
                 }

@@ -21,22 +21,17 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
-
 import java.io.Serializable;
 import java.net.URI;
+
+import com.sun.syndication.feed.impl.EqualsBean;
+import com.sun.syndication.feed.impl.ToStringBean;
 
 /**
  * <strong>&lt;media:thumbnail&gt;</strong></p>
  *
  *
  * <p>Allows particular images to be used as representative images for the media object. If multiple thumbnails are included, and time coding is not at play, it is assumed that the images are in order of importance. It has 1 required attribute and 3 optional attributes.</p>
- *
- *
- *
- *
- *
  *         <pre>        &lt;media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" /&gt;</pre>
  * <p><em>url</em> specifies the url of the thumbnail. It is a required attribute.</p>        <p> <em>height</em> specifies the height of the thumbnail. It is an optional attribute.</p>
  *        <p> <em>width</em> specifies the width of the thumbnail. It is an optional attribute.</p>
@@ -120,22 +115,27 @@ public class Thumbnail implements Cloneable, Serializable {
         return thumbWidth;
     }
 
-    public Object clone() {
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Thumbnail(this.thumbUrl, this.thumbWidth, this.thumbHeight);
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
 

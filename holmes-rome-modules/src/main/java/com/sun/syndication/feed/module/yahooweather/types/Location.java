@@ -144,7 +144,8 @@ public class Location implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Location(this.city, this.region, this.country);
     }
 }

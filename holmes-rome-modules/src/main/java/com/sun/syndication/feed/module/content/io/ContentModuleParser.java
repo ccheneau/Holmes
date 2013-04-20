@@ -51,15 +51,17 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 
+import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.content.ContentItem;
 import com.sun.syndication.feed.module.content.ContentModule;
 import com.sun.syndication.feed.module.content.ContentModuleImpl;
+import com.sun.syndication.io.ModuleParser;
 
 /**
  * @version $Revision: 1.3 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ContentModuleParser implements com.sun.syndication.io.ModuleParser {
+public class ContentModuleParser implements ModuleParser {
     private static final Namespace CONTENT_NS = Namespace.getNamespace("content", ContentModule.URI);
     private static final Namespace RDF_NS = Namespace.getNamespace("rdf", ContentModule.RDF_URI);
 
@@ -74,7 +76,7 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
 
     @SuppressWarnings("unchecked")
     @Override
-    public com.sun.syndication.feed.module.Module parse(org.jdom.Element element) {
+    public Module parse(Element element) {
         boolean foundSomething = false;
         ContentModule cm = new ContentModuleImpl();
         List<?> encodeds = element.getChildren("encoded", CONTENT_NS);
@@ -112,7 +114,7 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
                         ci.setContentValueParseType(value.getAttributeValue("parseType", RDF_NS));
                     }
 
-                    if ((ci.getContentValueParseType() != null) && ci.getContentValueParseType().equals("Literal")) {
+                    if (ci.getContentValueParseType() != null && ci.getContentValueParseType().equals("Literal")) {
                         ci.setContentValue(getXmlInnerText(value));
                         contentStrings.add(getXmlInnerText(value));
                         ci.setContentValueNamespaces(value.getAdditionalNamespaces());
@@ -146,7 +148,7 @@ public class ContentModuleParser implements com.sun.syndication.io.ModuleParser 
         cm.setContentItems(contentItems);
         cm.setContents(contentStrings);
 
-        return (foundSomething) ? cm : null;
+        return foundSomething ? cm : null;
     }
 
     protected String getXmlInnerText(Element e) {

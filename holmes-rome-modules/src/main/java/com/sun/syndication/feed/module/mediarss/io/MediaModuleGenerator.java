@@ -164,13 +164,13 @@ public class MediaModuleGenerator implements ModuleGenerator {
         String[] keywords = m.getKeywords();
 
         if (keywords.length > 0) {
-            String keyword = keywords[0];
+            StringBuilder keyword = new StringBuilder();
+            keyword.append(keywords[0]);
 
             for (int i = 1; i < keywords.length; i++) {
-                keyword += (", " + keywords[i]);
+                keyword.append(", ").append(keywords[i]);
             }
-
-            this.addNotNullElement(e, "keywords", keyword);
+            this.addNotNullElement(e, "keywords", keyword.toString());
         }
 
         Rating[] rats = m.getRatings();
@@ -231,7 +231,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
     }
 
     protected void addNotNullAttribute(Element target, String name, Object value) {
-        if ((target == null) || (value == null)) {
+        if (target == null || value == null) {
             return;
         } else {
             target.setAttribute(name, value.toString());

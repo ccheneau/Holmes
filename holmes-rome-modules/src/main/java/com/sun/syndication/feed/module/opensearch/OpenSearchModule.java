@@ -21,7 +21,5 @@ import com.sun.syndication.feed.module.Module;
  * @author Michael W. Nassif (enrouteinc@gmail.com)
  */
 public interface OpenSearchModule extends Module, OpenSearchResponse {
-
-    public final static String URI = "http://a9.com/-/spec/opensearch/1.1/";
-
+    String URI = "http://a9.com/-/spec/opensearch/1.1/";
 }

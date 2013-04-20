@@ -84,7 +84,7 @@ public interface Wanted extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryNotes Additional instructions to explain the item’s delivery process.
      */
-    public void setDeliveryNotes(String deliveryNotes);
+    void setDeliveryNotes(String deliveryNotes);
 
     /**
      * Additional instructions to explain the item’s delivery process.
@@ -122,7 +122,7 @@ public interface Wanted extends GlobalInterface {
      *        </tbody></table>
      * @return Additional instructions to explain the item’s delivery process.
      */
-    public String getDeliveryNotes();
+    String getDeliveryNotes();
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -161,7 +161,7 @@ public interface Wanted extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryRadius The maximum distance you will deliver an item in any direction.
      */
-    public void setDeliveryRadius(FloatUnit deliveryRadius);
+    void setDeliveryRadius(FloatUnit deliveryRadius);
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -200,7 +200,7 @@ public interface Wanted extends GlobalInterface {
      *        </tbody></table>
      * @return The maximum distance you will deliver an item in any direction.
      */
-    public FloatUnit getDeliveryRadius();
+    FloatUnit getDeliveryRadius();
 
     /**
          * Location of the property.
@@ -250,7 +250,7 @@ public interface Wanted extends GlobalInterface {
          * </tbody></table>
          * @param location Location of the property.
          */
-    public void setLocation(String location);
+    void setLocation(String location);
 
     /**
      * Location of the property.
@@ -300,6 +300,6 @@ public interface Wanted extends GlobalInterface {
      * </tbody></table>
      * @return Location of the property.
      */
-    public String getLocation();
+    String getLocation();
 
 }

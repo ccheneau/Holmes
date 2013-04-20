@@ -73,7 +73,7 @@ public class ITunesGenerator implements ModuleGenerator {
     public void generate(Module module, Element element) {
         Element root = element;
 
-        while ((root.getParent() != null) && root.getParent() instanceof Element) {
+        while (root.getParent() != null && root.getParent() instanceof Element) {
             root = (Element) root.getParent();
         }
 
@@ -137,19 +137,13 @@ public class ITunesGenerator implements ModuleGenerator {
             element.addContent(this.generateSimpleElement("explicit", "no"));
         }
 
-        if (itunes.getKeywords() != null) {
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < itunes.getKeywords().length; i++) {
-                if (i != 0) {
-                    sb.append(", ");
-                }
-
-                sb.append(itunes.getKeywords()[i]);
-            }
-
-            element.addContent(this.generateSimpleElement("keywords", sb.toString()));
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < itunes.getKeywords().length; i++) {
+            if (i != 0) sb.append(", ");
+            sb.append(itunes.getKeywords()[i]);
         }
+
+        element.addContent(this.generateSimpleElement("keywords", sb.toString()));
 
         if (itunes.getSubtitle() != null) {
             element.addContent(this.generateSimpleElement("subtitle", itunes.getSubtitle()));

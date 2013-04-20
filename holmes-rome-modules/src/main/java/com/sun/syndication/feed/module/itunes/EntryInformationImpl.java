@@ -56,6 +56,7 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
      * Creates a new instance of EntryInformationImpl
      */
     public EntryInformationImpl() {
+        super();
     }
 
     /**
@@ -77,7 +78,7 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
     }
 
     /**
-     * Defined by the ROME module API
+     * Defined by the ROME module API.
      * @param obj Object to copy from
      */
     @Override
@@ -92,20 +93,20 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
 
         this.setExplicit(info.getExplicit());
 
-        if (info.getKeywords() != null) {
-            this.setKeywords(info.getKeywords().clone());
-        }
+        this.setKeywords(info.getKeywords().clone());
 
         this.setSubtitle(info.getSubtitle());
         this.setSummary(info.getSummary());
     }
 
     /**
-     * Required by the ROME API
+     * Required by the ROME API.
      * @return A clone of this module object
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         EntryInformationImpl info = new EntryInformationImpl();
         info.copyFrom(this);
 

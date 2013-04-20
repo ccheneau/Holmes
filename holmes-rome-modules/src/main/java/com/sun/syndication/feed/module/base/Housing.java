@@ -84,7 +84,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @param agents An array of agent name Strings, not to exceed 10 in lenght.
      */
-    public void setAgents(String[] agents);
+    void setAgents(String[] agents);
 
     /**
      * An array of agent name Strings, not to exceed 10 in lenght.
@@ -117,7 +117,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @return An array of agent name Strings, not to exceed 10 in lenght.
      */
-    public String[] getAgents();
+    String[] getAgents();
 
     /**
      * The area of the real estate.
@@ -151,7 +151,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @param area The area of the real estate
      */
-    public void setArea(IntUnit area);
+    void setArea(IntUnit area);
 
     /**
      * The area of the real estate.
@@ -185,7 +185,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @return The area of the real estate
      */
-    public IntUnit getArea();
+    IntUnit getArea();
 
     /**
      * The number of bathrooms.
@@ -234,7 +234,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param bathrooms The number of bathrooms.
      */
-    public void setBathrooms(Float bathrooms);
+    void setBathrooms(Float bathrooms);
 
     /**
      * The number of bathrooms.
@@ -283,7 +283,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return number of bathrooms
      */
-    public Float getBathrooms();
+    Float getBathrooms();
 
     /**
      * Number of bedrooms.
@@ -320,7 +320,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param bedrooms Number of bedrooms.
      */
-    public void setBedrooms(Integer bedrooms);
+    void setBedrooms(Integer bedrooms);
 
     /**
      * Number of bedrooms.
@@ -358,7 +358,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Number of bedrooms
      */
-    public Integer getBedrooms();
+    Integer getBedrooms();
 
     /**
      * Currency  of the price amount for an item.
@@ -399,7 +399,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @param value Currency  of the price amount for an item.
      */
-    public void setCurrency(CurrencyEnumeration value);
+    void setCurrency(CurrencyEnumeration value);
 
     /**
      * Currency  of the price amount for an item.
@@ -440,7 +440,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @return Currency  of the price amount for an item.
      */
-    public CurrencyEnumeration getCurrency();
+    CurrencyEnumeration getCurrency();
 
     /**
      * Homeowners association dues on the property.
@@ -474,7 +474,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @param hoaDues Homeowners association dues on the property.
      */
-    public void setHoaDues(Float hoaDues);
+    void setHoaDues(Float hoaDues);
 
     /**
      * Homeowners association dues on the property.
@@ -508,7 +508,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @return Homeowners association dues on the property.
      */
-    public Float getHoaDues();
+    Float getHoaDues();
 
     /**
      * Indicates whether this property is for sale or not.
@@ -553,7 +553,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @param forSale Indicates whether this property is for sale or not.
      */
-    public void setListingType(Boolean forSale);
+    void setListingType(Boolean forSale);
 
     /**
      * Indicates whether this property is for sale or not.
@@ -598,7 +598,7 @@ public interface Housing extends GlobalInterface {
      *        </tbody></table>
      * @return  Indicates whether this property is for sale or not.
      */
-    public Boolean getListingType();
+    Boolean getListingType();
 
     /**
      * Location of the property.
@@ -648,7 +648,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param location Location of the property.
      */
-    public void setLocation(String location);
+    void setLocation(String location);
 
     /**
      * Location of the property.
@@ -698,7 +698,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Location of the property.
      */
-    public String getLocation();
+    String getLocation();
 
     /**
      * Payment Methods acceptable for the property.
@@ -755,7 +755,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param paymentAccepted Payment Methods acceptable for the property.
      */
-    public void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
+    void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
 
     /**
      * Payment Methods acceptable for the property.
@@ -812,7 +812,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return  Payment Methods acceptable for the property.
      */
-    public PaymentTypeEnumeration[] getPaymentAccepted();
+    PaymentTypeEnumeration[] getPaymentAccepted();
 
     /**
      * Additional payment information.
@@ -857,7 +857,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param paymentNotes Additional payment information.
      */
-    public void setPaymentNotes(String paymentNotes);
+    void setPaymentNotes(String paymentNotes);
 
     /**
      * Additional payment information.
@@ -902,7 +902,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Additional payment information.
      */
-    public String getPaymentNotes();
+    String getPaymentNotes();
 
     /**
      * Price for the property.
@@ -956,7 +956,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param price Price for the property.
      */
-    public void setPrice(FloatUnit price);
+    void setPrice(FloatUnit price);
 
     /**
      * Price for the property.
@@ -1010,7 +1010,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Price for the property.
      */
-    public FloatUnit getPrice();
+    FloatUnit getPrice();
 
     /**
      * Price type information.
@@ -1056,7 +1056,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param priceType Price type information.
      */
-    public void setPriceType(PriceTypeEnumeration priceType);
+    void setPriceType(PriceTypeEnumeration priceType);
 
     /**
      * Price type information.
@@ -1102,7 +1102,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Price type information.
      */
-    public PriceTypeEnumeration getPriceType();
+    PriceTypeEnumeration getPriceType();
 
     /**
      * Types of property represented here. Limit 10.
@@ -1146,7 +1146,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param propertyTypes Types of property represented here. Limit 10.
      */
-    public void setPropertyTypes(String[] propertyTypes);
+    void setPropertyTypes(String[] propertyTypes);
 
     /**
      * Types of property represented here.
@@ -1190,7 +1190,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Types of property represented here. Limit 10.
      */
-    public String[] getPropertyTypes();
+    String[] getPropertyTypes();
 
     /**
      * School district a property is in.
@@ -1235,7 +1235,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param schoolDistrict School district a property is in.
      */
-    public void setSchoolDistrict(String schoolDistrict);
+    void setSchoolDistrict(String schoolDistrict);
 
     /**
      * School district a property is in.
@@ -1280,7 +1280,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return School district a property is in.
      */
-    public String getSchoolDistrict();
+    String getSchoolDistrict();
 
     /**
      * Percentage tax rate.
@@ -1323,7 +1323,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param taxPercent Percentage tax rate.
      */
-    public void setTaxPercent(Float taxPercent);
+    void setTaxPercent(Float taxPercent);
 
     /**
      * Percentage tax rate.
@@ -1366,7 +1366,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Percentage tax rate.
      */
-    public Float getTaxPercent();
+    Float getTaxPercent();
 
     /**
      * Geographical region a tax rate applies to.
@@ -1411,7 +1411,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param taxRegion Geographical region a tax rate applies to.
      */
-    public void setTaxRegion(String taxRegion);
+    void setTaxRegion(String taxRegion);
 
     /**
      * Geographical region a tax rate applies to.
@@ -1456,7 +1456,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return Geographical region a tax rate applies to.
      */
-    public String getTaxRegion();
+    String getTaxRegion();
 
     /**
      * The four digit model year or year built.
@@ -1507,7 +1507,7 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @param year The four digit model year or year built.
      */
-    public void setYear(YearType year);
+    void setYear(YearType year);
 
     /**
      * The four digit model year or year built.
@@ -1558,5 +1558,5 @@ public interface Housing extends GlobalInterface {
      * </tbody></table>
      * @return The four digit model year or year built.
      */
-    public YearType getYear();
+    YearType getYear();
 }

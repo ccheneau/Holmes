@@ -14,7 +14,6 @@
  */
 package com.sun.syndication.feed.module.opensearch.impl;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import com.sun.syndication.feed.module.opensearch.entity.OSQuery;
  * @author Michael W. Nassif (enrouteinc@gmail.com)
  * OpenSearch Module implementation
  */
-public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule, Serializable {
+public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule {
     private static final long serialVersionUID = 1L;
 
     private int totalResults = -1;

@@ -47,7 +47,7 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  */
-public class Subcategory implements Serializable {
+public class Subcategory implements Cloneable, Serializable {
     private static final long serialVersionUID = -8563595355552684061L;
 
     private String name;
@@ -82,9 +82,11 @@ public class Subcategory implements Serializable {
     /**
      * Clones the object.
      * @return Clone of the object.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         Subcategory sc = new Subcategory();
         sc.setName(this.getName());
 

@@ -34,7 +34,7 @@ public class DateValue implements EntryValue {
     private ObjectBean obj = new ObjectBean(DateValue.class, this);
     private String element;
     private String label;
-    private Namespace namespace = Namespace.XML_NAMESPACE;
+    private transient Namespace namespace = Namespace.XML_NAMESPACE;
 
     /** Creates a new instance of DateValue */
     public DateValue() {
@@ -93,7 +93,8 @@ public class DateValue implements EntryValue {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         DateValue clone = new DateValue();
         clone.setElement(this.getElement());
         clone.setLabel(this.getLabel());
@@ -104,7 +105,9 @@ public class DateValue implements EntryValue {
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof DateValue) return obj.equals(((DateValue) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        return false;
     }
 
     @Override

@@ -22,8 +22,6 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
-
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
@@ -38,7 +36,7 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * <p><em>algo</em> indicates the algorithm used to create the hash. Possible values are 'md5' and 'sha-1'. Default value is 'md5'. It is an optional attribute.
  * @author cooper
  */
-public class Hash extends AbstractSchemeValue implements Serializable {
+public class Hash extends AbstractSchemeValue {
     private static final long serialVersionUID = 3566980635881544337L;
 
     /**
@@ -66,18 +64,21 @@ public class Hash extends AbstractSchemeValue implements Serializable {
         return super.getScheme();
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
 

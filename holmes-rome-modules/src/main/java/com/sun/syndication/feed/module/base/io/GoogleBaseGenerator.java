@@ -40,6 +40,7 @@
 package com.sun.syndication.feed.module.base.io;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -97,32 +98,38 @@ public class GoogleBaseGenerator implements ModuleGenerator {
 
     @Override
     public void generate(Module module, Element element) {
-        GoogleBaseImpl mod = (GoogleBaseImpl) module;
-        PropertyDescriptor[] pds = GoogleBaseParser.pds;
+        if (module instanceof GoogleBaseImpl) {
+            GoogleBaseImpl mod = (GoogleBaseImpl) module;
+            PropertyDescriptor[] pds = GoogleBaseParser.pds;
 
-        for (int i = 0; i < pds.length; i++) {
-            String tagName = GoogleBaseParser.PROPS2TAGS.getProperty(pds[i].getName());
+            for (int i = 0; i < pds.length; i++) {
+                String tagName = GoogleBaseParser.PROPS2TAGS.getProperty(pds[i].getName());
 
-            if (tagName == null) {
-                continue;
-            }
-
-            Object[] values = null;
-
-            try {
-                if (pds[i].getPropertyType().isArray()) {
-                    values = (Object[]) pds[i].getReadMethod().invoke(mod, (Object[]) null);
-                } else {
-                    values = new Object[] { pds[i].getReadMethod().invoke(mod, (Object[]) null) };
+                if (tagName == null) {
+                    continue;
                 }
 
-                for (int j = 0; (values != null) && (j < values.length); j++) {
-                    if (values[j] != null) {
-                        element.addContent(this.generateTag(values[j], tagName));
+                Object[] values = null;
+
+                try {
+                    if (pds[i].getPropertyType().isArray()) {
+                        values = (Object[]) pds[i].getReadMethod().invoke(mod, (Object[]) null);
+                    } else {
+                        values = new Object[] { pds[i].getReadMethod().invoke(mod, (Object[]) null) };
                     }
+
+                    for (int j = 0; values != null && j < values.length; j++) {
+                        if (values[j] != null) {
+                            element.addContent(this.generateTag(values[j], tagName));
+                        }
+                    }
+                } catch (InvocationTargetException e) {
+                    logger.log(Level.WARNING, e.getMessage());
+                } catch (IllegalAccessException e) {
+                    logger.log(Level.WARNING, e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    logger.log(Level.WARNING, e.getMessage());
                 }
-            } catch (Exception e) {
-                logger.log(Level.WARNING, e.getMessage());
             }
         }
     }

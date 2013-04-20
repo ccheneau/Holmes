@@ -62,7 +62,8 @@ public class Group implements Serializable, Cloneable {
     private String label;
 
     /**
-     * Creates a new instance of Group
+     * Creates a new instance of Group.
+     * 
      * @param namespace Namespace of the element
      * @param element Name of the element
      * @param label Label for the grouping.
@@ -98,13 +99,16 @@ public class Group implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Group(namespace, element, label);
     }
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof Group) return obj.equals(((Group) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

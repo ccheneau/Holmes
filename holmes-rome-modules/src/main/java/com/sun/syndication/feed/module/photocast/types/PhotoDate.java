@@ -53,7 +53,7 @@ import java.util.Date;
 public class PhotoDate extends Date {
     private static final long serialVersionUID = -3610656763669753517L;
 
-    private static final long Y2K = 946616400531l;
+    private static final long Y2K = 946616400531L;
     private static final double DAY = 24 * 60 * 60 * 1000;
 
     /** Creates a new instance of PhotoDate */
@@ -70,7 +70,7 @@ public class PhotoDate extends Date {
     }
 
     /**
-     * Creates a new instance of PhotoDate with the fractional 
+     * Creates a new instance of PhotoDate with the fractional.
      * number of days since 00:00:00 01/01/00.
      * @param photoDateValue fractional number of days since 00:00:00 01/01/00
      */
@@ -82,7 +82,7 @@ public class PhotoDate extends Date {
     }
 
     /**
-     * Returns a string representing the fractional 
+     * Returns a string representing the fractional.
      * number of days since 00:00:00 01/01/00.
      * @return Returns a string representing the fractional 
      * number of days since 00:00:00 01/01/00.
@@ -102,4 +102,8 @@ public class PhotoDate extends Date {
         else return false;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode() + 0;
+    }
 }

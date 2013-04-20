@@ -69,41 +69,33 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
 
     @Override
     public void generate(Module module, Element element) {
+        if (module instanceof OpenSearchModule) {
+            OpenSearchModule osm = (OpenSearchModule) module;
 
-        OpenSearchModule osm = (OpenSearchModule) module;
+            if (osm.getItemsPerPage() > -1) {
+                element.addContent(generateSimpleElement("itemsPerPage", Integer.toString(osm.getItemsPerPage())));
+            }
 
-        if (osm.getItemsPerPage() > -1) {
-            element.addContent(generateSimpleElement("itemsPerPage", Integer.toString(osm.getItemsPerPage())));
-        }
+            if (osm.getTotalResults() > -1) {
+                element.addContent(generateSimpleElement("totalResults", Integer.toString(osm.getTotalResults())));
+            }
 
-        if (osm.getTotalResults() > -1) {
-            element.addContent(generateSimpleElement("totalResults", Integer.toString(osm.getTotalResults())));
-        }
+            int startIndex = osm.getStartIndex() > 0 ? osm.getStartIndex() : 1;
+            element.addContent(generateSimpleElement("startIndex", Integer.toString(startIndex)));
 
-        int startIndex = (osm.getStartIndex() > 0) ? osm.getStartIndex() : 1;
-        element.addContent(generateSimpleElement("startIndex", Integer.toString(startIndex)));
-
-        if (osm.getQueries() != null) {
-
-            List<OSQuery> queries = osm.getQueries();
-
-            for (Iterator<OSQuery> iter = queries.iterator(); iter.hasNext();) {
-                OSQuery query = iter.next();
-                if (query != null) {
-                    element.addContent(generateQueryElement(query));
+            if (osm.getQueries() != null) {
+                List<OSQuery> queries = osm.getQueries();
+                for (Iterator<OSQuery> iter = queries.iterator(); iter.hasNext();) {
+                    OSQuery query = iter.next();
+                    if (query != null) element.addContent(generateQueryElement(query));
                 }
             }
-        }
-
-        if (osm.getLink() != null) {
-            element.addContent(generateLinkElement(osm.getLink()));
+            if (osm.getLink() != null) element.addContent(generateLinkElement(osm.getLink()));
         }
     }
 
     protected Element generateQueryElement(OSQuery query) {
-
         Element qElement = new Element("Query", OS_NS);
-
         if (query.getRole() != null) {
             Attribute roleAttribute = new Attribute("role", query.getRole());
             qElement.setAttribute(roleAttribute);

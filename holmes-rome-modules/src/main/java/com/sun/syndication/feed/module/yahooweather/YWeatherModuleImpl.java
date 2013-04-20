@@ -72,19 +72,47 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     @Override
     public void copyFrom(Object o) {
         YWeatherModuleImpl from = (YWeatherModuleImpl) o;
-        this.setAstronomy((from.getAstronomy() != null) ? (Astronomy) from.getAstronomy().clone() : null);
-        this.setCondition((from.getCondition() != null) ? (Condition) from.getCondition().clone() : null);
-        this.setLocation((from.getLocation() != null) ? (Location) from.getLocation().clone() : null);
-        this.setUnits((from.getUnits() != null) ? (Units) from.getUnits().clone() : null);
-        this.setWind((from.getWind() != null) ? (Wind) from.getWind().clone() : null);
+        try {
+            this.setAstronomy((from.getAstronomy() != null) ? (Astronomy) from.getAstronomy().clone() : null);
+        } catch (CloneNotSupportedException e) {
+            this.setAstronomy(null);
+        }
+        try {
+            this.setCondition((from.getCondition() != null) ? (Condition) from.getCondition().clone() : null);
+        } catch (CloneNotSupportedException e1) {
+            this.setCondition(null);
+        }
+        try {
+            this.setLocation((from.getLocation() != null) ? (Location) from.getLocation().clone() : null);
+        } catch (CloneNotSupportedException e1) {
+            this.setLocation(null);
+        }
+        try {
+            this.setUnits((from.getUnits() != null) ? (Units) from.getUnits().clone() : null);
+        } catch (CloneNotSupportedException e1) {
+            this.setUnits(null);
+        }
+        try {
+            this.setWind((from.getWind() != null) ? (Wind) from.getWind().clone() : null);
+        } catch (CloneNotSupportedException e1) {
+            this.setWind(null);
+        }
 
-        this.setAtmosphere((from.getAtmosphere() != null) ? (Atmosphere) from.getAtmosphere().clone() : null);
+        try {
+            this.setAtmosphere((from.getAtmosphere() != null) ? (Atmosphere) from.getAtmosphere().clone() : null);
+        } catch (CloneNotSupportedException e) {
+            this.setAtmosphere(null);
+        }
 
         if (from.getForecasts() != null) {
             this.forecasts = new Forecast[from.forecasts.length];
 
             for (int i = 0; i < from.forecasts.length; i++) {
-                this.forecasts[i] = (from.forecasts[i] != null) ? (Forecast) from.forecasts[i].clone() : null;
+                try {
+                    this.forecasts[i] = (from.forecasts[i] != null) ? (Forecast) from.forecasts[i].clone() : null;
+                } catch (CloneNotSupportedException e) {
+                    this.forecasts[i] = null;
+                }
             }
         } else {
             this.forecasts = null;
@@ -161,6 +189,6 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
         this.atmosphere = atmosphere;
     }
 
-    public static interface CopyFromInterface extends YWeatherFeedModule, YWeatherEntryModule {
+    public interface CopyFromInterface extends YWeatherFeedModule, YWeatherEntryModule {
     }
 }

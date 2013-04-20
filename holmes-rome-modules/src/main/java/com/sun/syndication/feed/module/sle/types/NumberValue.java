@@ -34,9 +34,11 @@ public class NumberValue implements EntryValue {
     private ObjectBean obj = new ObjectBean(NumberValue.class, this);
     private String element;
     private String label;
-    private Namespace namespace = Namespace.XML_NAMESPACE;
+    private transient Namespace namespace = Namespace.XML_NAMESPACE;
 
-    /** Creates a new instance of NumberValue */
+    /** 
+     * Creates a new instance of NumberValue.
+     */
     public NumberValue() {
     }
 
@@ -68,7 +70,8 @@ public class NumberValue implements EntryValue {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         NumberValue clone = new NumberValue();
         clone.setElement(this.getElement());
         clone.setLabel(this.getLabel());
@@ -80,7 +83,9 @@ public class NumberValue implements EntryValue {
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof NumberValue) return obj.equals(((NumberValue) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

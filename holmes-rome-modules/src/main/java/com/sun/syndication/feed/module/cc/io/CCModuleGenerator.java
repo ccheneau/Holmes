@@ -82,10 +82,12 @@ public class CCModuleGenerator implements ModuleGenerator {
         while (root.getParentElement() != null) {
             root = root.getParentElement();
         }
-        if (root.getNamespace().equals(RDF) || root.getNamespace().equals(RSS)) {
-            generateRSS1((CreativeCommons) module, element);
-        } else {
-            generateRSS2((CreativeCommons) module, element);
+        if (module instanceof CreativeCommons) {
+            if (root.getNamespace().equals(RDF) || root.getNamespace().equals(RSS)) {
+                generateRSS1((CreativeCommons) module, element);
+            } else {
+                generateRSS2((CreativeCommons) module, element);
+            }
         }
     }
 

@@ -107,11 +107,9 @@ public class OpenSearchModuleParser implements ModuleParser {
 
         e = dcRoot.getChild("link", OS_NS);
 
-        if (e != null) {
-            osm.setLink(parseLink(e, baseURI));
-        }
+        if (e != null) osm.setLink(parseLink(e, baseURI));
 
-        return (foundSomething) ? osm : null;
+        return foundSomething ? osm : null;
     }
 
     private static OSQuery parseQuery(Element e) {
@@ -155,36 +153,26 @@ public class OpenSearchModuleParser implements ModuleParser {
 
         Link link = new Link();
 
-        String att = e.getAttributeValue("rel");//getAtomNamespace()); DONT KNOW WHY DOESN'T WORK
+        String att = e.getAttributeValue("rel");
+        if (att != null) link.setRel(att);
 
+        att = e.getAttributeValue("type");
+        if (att != null) link.setType(att);
+
+        att = e.getAttributeValue("href");
         if (att != null) {
-            link.setRel(att);
+            if (isRelativeURI(att)) link.setHref(resolveURI(baseURI, e, ""));
+            else link.setHref(att);
         }
 
-        att = e.getAttributeValue("type");//getAtomNamespace()); DONT KNOW WHY DOESN'T WORK
-
-        if (att != null) {
-            link.setType(att);
-        }
-
-        att = e.getAttributeValue("href");//getAtomNamespace()); DONT KNOW WHY DOESN'T WORK
-
-        if (att != null) {
-
-            if (isRelativeURI(att)) { //
-                link.setHref(resolveURI(baseURI, e, ""));
-            } else {
-                link.setHref(att);
-            }
-        }
-
-        att = e.getAttributeValue("hreflang");//getAtomNamespace()); DONT KNOW WHY DOESN'T WORK
-
+        att = e.getAttributeValue("hreflang");
         if (att != null) {
             link.setHreflang(att);
         }
-
-        att = e.getAttributeValue("length");//getAtomNamespace()); DONT KNOW WHY DOESN'T WORK
+        att = e.getAttributeValue("length");
+        if (att != null) {
+            link.setLength(Integer.valueOf(att));
+        }
 
         return link;
     }
@@ -198,7 +186,7 @@ public class OpenSearchModuleParser implements ModuleParser {
 
     /** Use xml:base attributes at feed and entry level to resolve relative links */
     private static String resolveURI(URL baseURI, Parent parent, String url) {
-        url = (url.equals(".") || url.equals("./")) ? "" : url;
+        url = url.equals(".") || url.equals("./") ? "" : url;
         if (isRelativeURI(url) && parent != null && parent instanceof Element) {
             Attribute baseAtt = ((Element) parent).getAttribute("base", Namespace.XML_NAMESPACE);
             String xmlBase = (baseAtt == null) ? "" : baseAtt.getValue();

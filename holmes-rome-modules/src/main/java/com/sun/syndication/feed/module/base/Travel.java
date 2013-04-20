@@ -92,7 +92,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @param value Currency  of the price amount for an item.
      */
-    public void setCurrency(CurrencyEnumeration value);
+    void setCurrency(CurrencyEnumeration value);
 
     /**
      * Currency  of the price amount for an item.
@@ -133,7 +133,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @return Currency  of the price amount for an item.
      */
-    public CurrencyEnumeration getCurrency();
+    CurrencyEnumeration getCurrency();
 
     /**
      * Additional instructions to explain the item’s delivery process.
@@ -171,7 +171,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryNotes Additional instructions to explain the item’s delivery process.
      */
-    public void setDeliveryNotes(String deliveryNotes);
+    void setDeliveryNotes(String deliveryNotes);
 
     /**
      * Additional instructions to explain the item’s delivery process.
@@ -209,7 +209,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @return Additional instructions to explain the item’s delivery process.
      */
-    public String getDeliveryNotes();
+    String getDeliveryNotes();
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -248,7 +248,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryRadius The maximum distance you will deliver an item in any direction.
      */
-    public void setDeliveryRadius(FloatUnit deliveryRadius);
+    void setDeliveryRadius(FloatUnit deliveryRadius);
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -287,7 +287,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @return The maximum distance you will deliver an item in any direction.
      */
-    public FloatUnit getDeliveryRadius();
+    FloatUnit getDeliveryRadius();
 
     /**
      * Starting city and state/country of the trip.
@@ -329,7 +329,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @param fromLocation Starting city and state/country of the trip.
      */
-    public void setFromLocation(String fromLocation);
+    void setFromLocation(String fromLocation);
 
     /**
      * Starting city and state/country of the trip.
@@ -371,7 +371,7 @@ public interface Travel extends GlobalInterface {
      *        </tbody></table>
      * @return Starting city and state/country of the trip.
      */
-    public String getFromLocation();
+    String getFromLocation();
 
     /**
      * Acceptable payment methods for item purchases.
@@ -427,7 +427,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param paymentAccepted Acceptable payment methods for item purchases.
      */
-    public void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
+    void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
 
     /**
      * Acceptable payment methods for item purchases.
@@ -483,7 +483,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Acceptable payment methods for item purchases.
      */
-    public PaymentTypeEnumeration[] getPaymentAccepted();
+    PaymentTypeEnumeration[] getPaymentAccepted();
 
     /**
      * Additional instructions to explain a payment policy.
@@ -529,7 +529,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param paymentNotes Additional instructions to explain a payment policy.
      */
-    public void setPaymentNotes(String paymentNotes);
+    void setPaymentNotes(String paymentNotes);
 
     /**
      * Additional instructions to explain a payment policy.
@@ -575,7 +575,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Additional instructions to explain a payment policy.
      */
-    public String getPaymentNotes();
+    String getPaymentNotes();
 
     /**
      * Price of the item.
@@ -628,7 +628,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Price of the item.
      */
-    public FloatUnit getPrice();
+    FloatUnit getPrice();
 
     /**
      * The type of pricing for the item.
@@ -673,7 +673,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param priceType The type of pricing for the item.
      */
-    public void setPriceType(PriceTypeEnumeration priceType);
+    void setPriceType(PriceTypeEnumeration priceType);
 
     /**
      * The type of pricing for the item.
@@ -718,7 +718,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return The type of pricing for the item.
      */
-    public PriceTypeEnumeration getPriceType();
+    PriceTypeEnumeration getPriceType();
 
     /**
      * Quantity available.
@@ -772,7 +772,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param quantity Quantity available.
      */
-    public void setQuantity(Integer quantity);
+    void setQuantity(Integer quantity);
 
     /**
      * Quantity available.
@@ -826,7 +826,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Quantity available.
      */
-    public Integer getQuantity();
+    Integer getQuantity();
 
     /**
      * Tax rate associated with the event.
@@ -870,7 +870,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param taxPercent Tax rate associated with the event.
      */
-    public void setTaxPercent(Float taxPercent);
+    void setTaxPercent(Float taxPercent);
 
     /**
     * Tax rate associated with the service.
@@ -914,7 +914,7 @@ public interface Travel extends GlobalInterface {
     * </tbody></table>
     * @return Tax rate associated with the event.
     */
-    public Float getTaxPercent();
+    Float getTaxPercent();
 
     /**
      * Region where tax applies.
@@ -961,7 +961,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param taxRegion Region where tax applies.
      */
-    public void setTaxRegion(String taxRegion);
+    void setTaxRegion(String taxRegion);
 
     /**
      * Region where tax applies.
@@ -1008,7 +1008,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Region where tax applies.
      */
-    public String getTaxRegion();
+    String getTaxRegion();
 
     /**
      * Destination city and state/country of the trip.
@@ -1060,7 +1060,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param toLocation Destination city and state/country of the trip.
      */
-    public void setToLocation(String toLocation);
+    void setToLocation(String toLocation);
 
     /**
      * Destination city and state/country of the trip.
@@ -1112,7 +1112,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Destination city and state/country of the trip.
      */
-    public String getToLocation();
+    String getToLocation();
 
     /**
      * Departure date and time of the trip.
@@ -1165,7 +1165,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param travelDateRange Departure date and time of the trip.
      */
-    public void setTravelDateRange(DateTimeRange travelDateRange);
+    void setTravelDateRange(DateTimeRange travelDateRange);
 
     /**
      * Departure date and time of the trip.
@@ -1218,7 +1218,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Departure date and time of the trip.
      */
-    public DateTimeRange getTravelDateRange();
+    DateTimeRange getTravelDateRange();
 
     /**
      * Location of the property.
@@ -1268,7 +1268,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @param location Location of the property.
      */
-    public void setLocation(String location);
+    void setLocation(String location);
 
     /**
      * Location of the property.
@@ -1318,7 +1318,7 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Location of the property.
      */
-    public String getLocation();
+    String getLocation();
 
     /**
      * Shipping options available for an item.
@@ -1375,6 +1375,6 @@ public interface Travel extends GlobalInterface {
      * </tbody></table>
      * @return Shipping options available for an item.
      */
-    public ShippingType[] getShipping();
+    ShippingType[] getShipping();
 
 }

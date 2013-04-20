@@ -82,7 +82,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param age Age of the individual.
      */
-    public void setAge(Integer age);
+    void setAge(Integer age);
 
     /**
      * Age of the individual.
@@ -119,7 +119,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Age of the individual.
      */
-    public Integer getAge();
+    Integer getAge();
 
     /**
      * Education of the individual.
@@ -150,7 +150,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param education Education of the individual.
      */
-    public void setEducation(String education);
+    void setEducation(String education);
 
     /**
      * Education of the individual.
@@ -181,7 +181,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Education of the individual.
      */
-    public String getEducation();
+    String getEducation();
 
     /**
      * Individuals employer.
@@ -212,7 +212,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param employer Individuals employer.
      */
-    public void setEmployer(String employer);
+    void setEmployer(String employer);
 
     /**
      * Individuals employer.
@@ -243,7 +243,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Individuals employer.
      */
-    public String getEmployer();
+    String getEmployer();
 
     /**
      * Ethnicity of the individual in the People profiles bulk upload entry.
@@ -278,7 +278,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param ethnicities Ethnicity of the individual in the People profiles bulk upload entry.
      */
-    public void setEthnicities(String[] ethnicities);
+    void setEthnicities(String[] ethnicities);
 
     /**
      * Ethnicity of the individual in the People profiles bulk upload entry.
@@ -313,7 +313,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Ethnicity of the individual in the People profiles bulk upload entry.
      */
-    public String[] getEthnicities();
+    String[] getEthnicities();
 
     /**
      * Gender of an individual in a People profiles bulk upload.
@@ -348,7 +348,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param gender Gender of an individual in a People profiles bulk upload.
      */
-    public void setGender(GenderEnumeration gender);
+    void setGender(GenderEnumeration gender);
 
     /**
      * Gender of an individual in a People profiles bulk upload.
@@ -383,7 +383,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Gender of an individual in a People profiles bulk upload.
      */
-    public GenderEnumeration getGender();
+    GenderEnumeration getGender();
 
     /**
      * Interest of a person being profiled.
@@ -418,7 +418,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @param interestedIn Interest of a person being profiled.
      */
-    public void setInterestedIn(String[] interestedIn);
+    void setInterestedIn(String[] interestedIn);
 
     /**
      * Interest of a person being profiled.
@@ -453,7 +453,7 @@ public interface Person extends GlobalInterface {
      *        </tbody></table>
      * @return Interest of a person being profiled.
      */
-    public String[] getInterestedIn();
+    String[] getInterestedIn();
 
     /**
      * Location of a person.
@@ -503,7 +503,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @param location Location of a person.
      */
-    public void setLocation(String location);
+    void setLocation(String location);
 
     /**
      * Location of a person.
@@ -553,7 +553,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @return  Location of a person.
      */
-    public String getLocation();
+    String getLocation();
 
     /**
      * Marital status of an individual.
@@ -601,7 +601,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @param maritalStatus Marital status of an individual.
      */
-    public void setMaritalStatus(String maritalStatus);
+    void setMaritalStatus(String maritalStatus);
 
     /**
      * Marital status of an individual.
@@ -649,7 +649,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @return  Marital status of an individual.
      */
-    public String getMaritalStatus();
+    String getMaritalStatus();
 
     /**
      * Occupation of an individual.
@@ -694,7 +694,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @param occupation Occupation of an individual.
      */
-    public void setOccupation(String occupation);
+    void setOccupation(String occupation);
 
     /**
      * Occupation of an individual.
@@ -739,7 +739,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @return  Occupation of an individual.
      */
-    public String getOccupation();
+    String getOccupation();
 
     /**
      * Individual's sexual orientation.
@@ -782,7 +782,7 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @param sexualOrientation Individual's sexual orientation.
      */
-    public void setSexualOrientation(String sexualOrientation);
+    void setSexualOrientation(String sexualOrientation);
 
     /**
      * Individual's sexual orientation.
@@ -825,5 +825,5 @@ public interface Person extends GlobalInterface {
      * </tbody></table>
      * @return  Individual's sexual orientation.
      */
-    public String getSexualOrientation();
+    String getSexualOrientation();
 }

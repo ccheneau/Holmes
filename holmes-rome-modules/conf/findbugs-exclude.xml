@@ -1,0 +1,29 @@
+<FindBugsFilter>
+	<Match>
+		<Bug pattern="DM_CONVERT_CASE" />
+	</Match>
+	<Match>
+		<Bug pattern="MS_MUTABLE_ARRAY" />
+	</Match>
+	<Match>
+		<Bug pattern="MS_MUTABLE_HASHTABLE" />
+	</Match>
+	<Match>
+		<Bug pattern="EI_EXPOSE_REP" />
+	</Match>
+	<Match>
+		<Bug pattern="EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Bug pattern="FE_FLOATING_POINT_EQUALITY" />
+	</Match>
+	<Match>
+		<Bug pattern="DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE" />
+	</Match>
+	<Match>
+		<Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" />
+	</Match>
+	<Match>
+		<Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
+	</Match>
+</FindBugsFilter>

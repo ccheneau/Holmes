@@ -53,14 +53,16 @@ import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
+import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.content.ContentItem;
 import com.sun.syndication.feed.module.content.ContentModule;
+import com.sun.syndication.io.ModuleGenerator;
 
 /**
  * @version $Revision: 1.2 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGenerator {
+public class ContentModuleGenerator implements ModuleGenerator {
     private static final Namespace CONTENT_NS = Namespace.getNamespace("content", ContentModule.URI);
     private static final Namespace RDF_NS = Namespace.getNamespace("rdf", ContentModule.RDF_URI);
     private static final Set<Namespace> NAMESPACES;
@@ -76,11 +78,11 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
     }
 
     @Override
-    public void generate(com.sun.syndication.feed.module.Module module, org.jdom.Element element) {
+    public void generate(Module module, Element element) {
         // this is not necessary, it is done to avoid the namespace definition in every item.
         Element root = element;
 
-        while ((root.getParent() != null) && root.getParent() instanceof Element) {
+        while (root.getParent() != null && root.getParent() instanceof Element) {
             root = (Element) root.getParent();
         }
 
@@ -97,13 +99,13 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
         //
         if (encodeds != null) {
             for (int i = 0; i < encodeds.size(); i++) {
-                element.addContent(generateCDATAElement("encoded", encodeds.get(i).toString()));
+                element.addContent(generateCDATAElement("encoded", encodeds.get(i)));
             }
         }
 
         List<ContentItem> contentItems = cm.getContentItems();
 
-        if ((contentItems != null) && (contentItems.size() > 0)) {
+        if (contentItems != null && contentItems.size() > 0) {
             Element items = new Element("items", CONTENT_NS);
             Element bag = new Element("Bag", RDF_NS);
             items.addContent(bag);
@@ -190,7 +192,7 @@ public class ContentModuleGenerator implements com.sun.syndication.io.ModuleGene
     }
 
     @Override
-    public java.util.Set<Namespace> getNamespaces() {
+    public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 }

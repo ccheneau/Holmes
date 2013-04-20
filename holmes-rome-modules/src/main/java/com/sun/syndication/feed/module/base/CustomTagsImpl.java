@@ -54,7 +54,8 @@ public class CustomTagsImpl implements CustomTags {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         CustomTagsImpl cti = new CustomTagsImpl();
         cti.values = new ArrayList<CustomTag>(this.values);
         return cti;

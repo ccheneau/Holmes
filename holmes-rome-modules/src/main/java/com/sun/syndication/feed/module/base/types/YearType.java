@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -47,11 +48,21 @@ import java.util.Date;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class YearType implements CloneableType {
+public class YearType implements CloneableType<YearType>, Serializable {
+    private static final long serialVersionUID = 6665024169931158722L;
+
     /**
      * year value
      */
     int year;
+
+    /**
+     * Creates a new year from a string value.
+     * @param year String to parse.
+     */
+    public YearType(int year) {
+        this.year = year;
+    }
 
     /**
      * Creates a new year from a string value.
@@ -74,10 +85,12 @@ public class YearType implements CloneableType {
     /**
      * Duplicates this object.
      * @return Cloned Year.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
-        return new YearType(Integer.toString(this.year));
+    public YearType clone() throws CloneNotSupportedException {
+        super.clone();
+        return new YearType(this.year);
     }
 
     /**

@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /** Represents a time range.
@@ -46,7 +47,9 @@ import java.util.Date;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  */
-public class DateTimeRange implements CloneableType {
+public class DateTimeRange implements CloneableType<DateTimeRange>, Serializable {
+    private static final long serialVersionUID = -8822337768309868970L;
+
     /**
      * end time
      */
@@ -85,9 +88,11 @@ public class DateTimeRange implements CloneableType {
     /**
      * Clones the object
      * @return Duplicate of this object.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public DateTimeRange clone() throws CloneNotSupportedException {
+        super.clone();
         DateTimeRange retValue = new DateTimeRange(null, null);
 
         if (this.getStart() != null) {
@@ -112,7 +117,7 @@ public class DateTimeRange implements CloneableType {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DateTimeRange) || o == null) return false;
+        if (o == null || !(o instanceof DateTimeRange)) return false;
         DateTimeRange d = (DateTimeRange) o;
         if (this.start == d.getStart() && this.end == d.getEnd()) {
             return true;

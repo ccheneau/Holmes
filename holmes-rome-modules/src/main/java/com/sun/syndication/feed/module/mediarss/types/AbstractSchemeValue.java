@@ -35,7 +35,7 @@ public abstract class AbstractSchemeValue implements Serializable {
     private String value;
 
     public AbstractSchemeValue(String scheme, String value) {
-        if ((scheme == null) || (value == null)) {
+        if (scheme == null || value == null) {
             throw new NullPointerException("Scheme and value cannot be null.");
         }
 

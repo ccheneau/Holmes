@@ -83,32 +83,29 @@ public class ModuleParserRSS1 implements ModuleParser {
                 Element licenseTag = (Element) it.next();
                 String licenseURI = licenseTag.getAttributeValue("about", RDF);
                 if (licenseURI == null) continue;
-                License license = License.findByValue(licenseURI);
-                {
-                    ArrayList<Behaviour> permitsValues = new ArrayList<Behaviour>();
-                    ArrayList<Behaviour> requiresValues = new ArrayList<Behaviour>();
-                    List<?> permitsTags = licenseTag.getChildren("permits", NS);
-                    Iterator<?> sit = permitsTags.iterator();
-                    while (sit.hasNext()) {
-                        Element permitTag = (Element) sit.next();
-                        permitsValues.add(License.Behaviour.findByValue(permitTag.getAttributeValue("resource", RDF)));
-                    }
-                    List<?> requiresTags = licenseTag.getChildren("requires", NS);
-                    sit = requiresTags.iterator();
-                    while (sit.hasNext()) {
-                        Element requireTag = (Element) sit.next();
-                        requiresValues.add(License.Behaviour.findByValue(requireTag.getAttributeValue("resource", RDF)));
-                    }
-                    license = new License(licenseURI, requiresValues.toArray(new License.Behaviour[requiresValues.size()]),
-                            permitsValues.toArray(new License.Behaviour[permitsValues.size()]));
 
+                ArrayList<Behaviour> permitsValues = new ArrayList<Behaviour>();
+                ArrayList<Behaviour> requiresValues = new ArrayList<Behaviour>();
+                List<?> permitsTags = licenseTag.getChildren("permits", NS);
+                Iterator<?> sit = permitsTags.iterator();
+                while (sit.hasNext()) {
+                    Element permitTag = (Element) sit.next();
+                    permitsValues.add(License.Behaviour.findByValue(permitTag.getAttributeValue("resource", RDF)));
                 }
+                List<?> requiresTags = licenseTag.getChildren("requires", NS);
+                sit = requiresTags.iterator();
+                while (sit.hasNext()) {
+                    Element requireTag = (Element) sit.next();
+                    requiresValues.add(License.Behaviour.findByValue(requireTag.getAttributeValue("resource", RDF)));
+                }
+                License license = new License(licenseURI, requiresValues.toArray(new License.Behaviour[requiresValues.size()]),
+                        permitsValues.toArray(new License.Behaviour[permitsValues.size()]));
 
                 licenses.add(license);
             }
-            module.setAllLicenses(licenses.toArray(new License[0]));
+            module.setAllLicenses(new License[0]);
         }
-        ArrayList<License> licenses = new ArrayList<License>();
+        List<License> licenses = new ArrayList<License>();
         List<?> licenseTags = element.getChildren("license", NS);
         Iterator<?> lit = licenseTags.iterator();
         while (lit.hasNext()) {

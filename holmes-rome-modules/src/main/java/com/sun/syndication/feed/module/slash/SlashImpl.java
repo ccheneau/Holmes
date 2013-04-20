@@ -114,7 +114,8 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         SlashImpl si = new SlashImpl();
         si.copyFrom(this);
         return si;
@@ -127,7 +128,7 @@ public class SlashImpl implements Slash {
 
     private Integer[] arrayCopy(Integer[] source) {
         if (source == null) {
-            return null;
+            return new Integer[0];
         }
 
         Integer[] array = new Integer[source.length];

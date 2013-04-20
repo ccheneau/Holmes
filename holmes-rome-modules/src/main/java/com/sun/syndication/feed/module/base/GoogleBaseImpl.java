@@ -39,6 +39,7 @@
 package com.sun.syndication.feed.module.base;
 
 import java.lang.reflect.Array;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
@@ -167,7 +168,7 @@ public class GoogleBaseImpl implements GoogleBase {
     private Size size;
 
     /** string:sexual_orientation */
-    private String SexualOrientation;
+    private String sexualOrientation;
 
     /** string apparel_type */
     private String apparelType;
@@ -269,7 +270,7 @@ public class GoogleBaseImpl implements GoogleBase {
     private String vin;
 
     /** string:url_of_item_being_reviewed */
-    private URL urlOfItemBeingReviewed;
+    private URI urlOfItemBeingReviewed;
 
     /** string:year */
     private YearType year;
@@ -570,7 +571,7 @@ public class GoogleBaseImpl implements GoogleBase {
 
     @Override
     public void setExpirationDate(Date expirationDate) {
-        if ((expirationDate != null) && !(expirationDate instanceof ShortDate)) {
+        if (expirationDate != null && !(expirationDate instanceof ShortDate)) {
             this.expirationDate = new ShortDate(expirationDate);
         } else {
             this.expirationDate = null;
@@ -1009,7 +1010,7 @@ public class GoogleBaseImpl implements GoogleBase {
 
     @Override
     public void setPublishDate(Date publishDate) {
-        if ((publishDate != null) && !(publishDate instanceof ShortDate)) {
+        if (publishDate != null && !(publishDate instanceof ShortDate)) {
             this.publishDate = new ShortDate(publishDate);
         } else {
             this.publishDate = null;
@@ -1112,13 +1113,13 @@ public class GoogleBaseImpl implements GoogleBase {
     }
 
     @Override
-    public void setSexualOrientation(String SexualOrientation) {
-        this.SexualOrientation = SexualOrientation;
+    public void setSexualOrientation(String sexualOrientation) {
+        this.sexualOrientation = sexualOrientation;
     }
 
     @Override
     public String getSexualOrientation() {
-        return SexualOrientation;
+        return sexualOrientation;
     }
 
     @Override
@@ -1237,12 +1238,12 @@ public class GoogleBaseImpl implements GoogleBase {
     }
 
     @Override
-    public void setUrlOfItemBeingReviewed(URL urlOfItemBeingReviewed) {
+    public void setUrlOfItemBeingReviewed(URI urlOfItemBeingReviewed) {
         this.urlOfItemBeingReviewed = urlOfItemBeingReviewed;
     }
 
     @Override
-    public URL getUrlOfItemBeingReviewed() {
+    public URI getUrlOfItemBeingReviewed() {
         return urlOfItemBeingReviewed;
     }
 
@@ -1289,6 +1290,7 @@ public class GoogleBaseImpl implements GoogleBase {
     @Override
     public Object clone() throws CloneNotSupportedException {
         try {
+            super.clone();
             GoogleBaseImpl gbi = new GoogleBaseImpl();
             gbi.copyFrom(this);
 
@@ -1411,7 +1413,7 @@ public class GoogleBaseImpl implements GoogleBase {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((SexualOrientation == null) ? 0 : SexualOrientation.hashCode());
+        result = prime * result + ((sexualOrientation == null) ? 0 : sexualOrientation.hashCode());
         result = prime * result + Arrays.hashCode(actors);
         result = prime * result + ((age == null) ? 0 : age.hashCode());
         result = prime * result + Arrays.hashCode(agents);
@@ -1520,11 +1522,15 @@ public class GoogleBaseImpl implements GoogleBase {
         return array;
     }
 
-    private Object cloneOrNull(CloneableType o) {
+    private Object cloneOrNull(CloneableType<?> o) {
         if (o == null) {
             return null;
         } else {
-            return o.clone();
+            try {
+                return o.clone();
+            } catch (CloneNotSupportedException e) {
+                return null;
+            }
         }
     }
 

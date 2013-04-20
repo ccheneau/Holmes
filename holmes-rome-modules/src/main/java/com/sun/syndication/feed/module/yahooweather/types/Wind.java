@@ -158,7 +158,8 @@ public class Wind implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Wind(this.chill, this.direction, this.speed);
     }
 }

@@ -42,7 +42,9 @@ public class LabelNamespaceElement {
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof LabelNamespaceElement) return obj.equals(((LabelNamespaceElement) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

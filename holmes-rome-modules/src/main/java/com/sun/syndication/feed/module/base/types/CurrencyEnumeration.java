@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -47,7 +48,9 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class CurrencyEnumeration {
+public class CurrencyEnumeration implements Cloneable, Serializable {
+    private static final long serialVersionUID = -5330436610589233391L;
+
     private static final HashMap<String, CurrencyEnumeration> lookup = new HashMap<String, CurrencyEnumeration>();
 
     //<xs:restriction base="xs:string">
@@ -585,7 +588,8 @@ public class CurrencyEnumeration {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return this;
     }
 

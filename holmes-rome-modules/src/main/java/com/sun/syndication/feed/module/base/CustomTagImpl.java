@@ -19,6 +19,7 @@
  */
 package com.sun.syndication.feed.module.base;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
 
@@ -31,7 +32,7 @@ import com.sun.syndication.feed.module.base.types.ShortDate;
  * @version $Revision: 1.1 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class CustomTagImpl implements CustomTag {
+public class CustomTagImpl implements CustomTag, Cloneable {
     private static final long serialVersionUID = -5923754991476434312L;
 
     private Object value;
@@ -214,6 +215,7 @@ public class CustomTagImpl implements CustomTag {
       */
     @Override
     public Object clone() throws CloneNotSupportedException {
+        super.clone();
         CustomTagImpl cti = new CustomTagImpl(this.name, "");
         cti.value = this.value;
         return cti;
@@ -224,7 +226,9 @@ public class CustomTagImpl implements CustomTag {
         return "[custom name=\"" + this.name + "\" value=\"" + this.value.toString() + "\"]";
     }
 
-    public static class Location {
+    public static class Location implements Cloneable, Serializable {
+        private static final long serialVersionUID = 5534836674772027424L;
+
         private String value;
 
         public Location(String value) {
@@ -236,7 +240,8 @@ public class CustomTagImpl implements CustomTag {
         }
 
         @Override
-        public Object clone() {
+        public Object clone() throws CloneNotSupportedException {
+            super.clone();
             return new Location(this.value);
         }
 

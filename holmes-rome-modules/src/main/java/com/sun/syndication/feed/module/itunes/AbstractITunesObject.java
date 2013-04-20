@@ -46,7 +46,7 @@ package com.sun.syndication.feed.module.itunes;
  * @version $Revision: 1.4 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneable {
+public abstract class AbstractITunesObject implements ITunes, Cloneable {
     private static final long serialVersionUID = -1507584666860485534L;
 
     /**
@@ -70,6 +70,10 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
     private String[] keywords;
     private String subtitle;
     private String summary;
+
+    public AbstractITunesObject() {
+        keywords = null;
+    }
 
     /**
      * Defined by the ROME module API
@@ -99,9 +103,12 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
     /**
      * Required by the ROME API
      * @return A clone of this module object
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public abstract Object clone();
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /**
      * Returns the author string for this feed or entry
@@ -226,7 +233,7 @@ public abstract class AbstractITunesObject implements ITunes, java.lang.Cloneabl
         sb.append(this.getExplicit());
         sb.append(" Keywords: ");
 
-        if (this.getKeywords() != null) {
+        if (keywords != null) {
             for (int i = 0; i < keywords.length; i++) {
                 sb.append("'" + this.getKeywords()[i] + "'");
             }

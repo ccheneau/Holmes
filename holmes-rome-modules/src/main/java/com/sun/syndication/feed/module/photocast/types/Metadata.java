@@ -41,6 +41,8 @@
 
 package com.sun.syndication.feed.module.photocast.types;
 
+import java.io.Serializable;
+
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
@@ -49,7 +51,8 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * the apple-wallpapers:metadata tag in the photocast module.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Metadata {
+public class Metadata implements Serializable {
+    private static final long serialVersionUID = -2411638714904160863L;
 
     private PhotoDate photoDate;
     private String comments;
@@ -84,18 +87,21 @@ public class Metadata {
      * Returns a String representation of the metadata object.
      * @return Returns a String representation of the metadata object.
      */
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(Metadata.class, this);
 
         return tsBean.toString();
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(Metadata.class, this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(Metadata.class, this);
 

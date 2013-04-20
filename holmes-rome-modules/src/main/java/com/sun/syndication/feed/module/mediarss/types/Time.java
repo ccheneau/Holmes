@@ -64,12 +64,12 @@ public class Time implements Serializable {
         count--;
 
         if (count >= 0) {
-            milliseconds += (Long.parseLong(values[count]) * MINUTE);
+            milliseconds += Long.parseLong(values[count]) * MINUTE;
             count--;
         }
 
         if (count >= 0) {
-            milliseconds += (Long.parseLong(values[count]) * HOUR);
+            milliseconds += Long.parseLong(values[count]) * HOUR;
         }
     }
 
@@ -95,10 +95,10 @@ public class Time implements Serializable {
     public String toString() {
         long value = this.milliseconds;
         long hours = value / HOUR;
-        value -= (hours * HOUR);
+        value -= hours * HOUR;
 
         long minutes = value / MINUTE;
-        value -= (minutes * MINUTE);
+        value -= minutes * MINUTE;
 
         double seconds = (double) value / (double) SECOND;
 

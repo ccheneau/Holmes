@@ -53,6 +53,7 @@ public class OSQuery implements Cloneable, Serializable {
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return _objBean.clone();
     }
 
@@ -65,7 +66,8 @@ public class OSQuery implements Cloneable, Serializable {
      */
     @Override
     public boolean equals(Object other) {
-        return _objBean.equals(other);
+        if (other instanceof OSQuery) return _objBean.equals(((OSQuery) other)._objBean);
+        return false;
     }
 
     /**

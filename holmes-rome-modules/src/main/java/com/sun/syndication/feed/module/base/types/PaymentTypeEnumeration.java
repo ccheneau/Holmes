@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -46,7 +47,9 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class PaymentTypeEnumeration {
+public class PaymentTypeEnumeration implements Cloneable, Serializable {
+    private static final long serialVersionUID = 6444069283656132873L;
+
     private static final HashMap<String, PaymentTypeEnumeration> lookup = new HashMap<String, PaymentTypeEnumeration>();
     public static final PaymentTypeEnumeration CASH = new PaymentTypeEnumeration("Cash");
     public static final PaymentTypeEnumeration CHECK = new PaymentTypeEnumeration("Check");
@@ -74,7 +77,8 @@ public class PaymentTypeEnumeration {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return this;
     }
 

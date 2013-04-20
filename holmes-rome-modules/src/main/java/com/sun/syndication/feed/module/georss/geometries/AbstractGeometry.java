@@ -31,9 +31,4 @@ public abstract class AbstractGeometry implements Cloneable, Serializable {
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj != null && obj.getClass() == getClass();
-    }
 }

@@ -22,6 +22,7 @@
 package com.sun.syndication.feed.module.mediarss.io;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -59,7 +60,7 @@ import com.sun.syndication.io.impl.NumberParser;
 public class MediaModuleParser implements ModuleParser {
     private static final Logger logger = Logger.getLogger(MediaModuleParser.class.getName());
 
-    /*
+    /**
      * Namespace instance for this URI.
      */
     private static final Namespace NS = Namespace.getNamespace(MediaModule.URI);
@@ -101,94 +102,88 @@ public class MediaModuleParser implements ModuleParser {
         List<?> contents = e.getChildren("content", getNS());
         ArrayList<MediaContent> values = new ArrayList<MediaContent>();
 
-        try {
-            for (int i = 0; (contents != null) && (i < contents.size()); i++) {
-                Element content = (Element) contents.get(i);
-                MediaContent mc = null;
+        for (int i = 0; contents != null && i < contents.size(); i++) {
+            Element content = (Element) contents.get(i);
+            MediaContent mc = null;
 
-                if (content.getAttributeValue("url") != null) {
-                    try {
-                        mc = new MediaContent(new UrlReference(new URI(content.getAttributeValue("url"))));
-                        mc.setPlayer(parsePlayer(content));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-                } else {
-                    mc = new MediaContent(parsePlayer(content));
+            if (content.getAttributeValue("url") != null) {
+                try {
+                    mc = new MediaContent(new UrlReference(new URI(content.getAttributeValue("url"))));
+                    mc.setPlayer(parsePlayer(content));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
                 }
-                if (mc != null) {
-                    values.add(mc);
-                    try {
-                        mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : new Integer(content.getAttributeValue("channels")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-                    try {
-                        mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : new Float(content.getAttributeValue("bitrate")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-                    try {
-                        mc.setDuration((content.getAttributeValue("duration") == null) ? null : new Long(content.getAttributeValue("duration")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-
-                    String expression = content.getAttributeValue("expression");
-
-                    if (expression != null) {
-                        if (expression.equalsIgnoreCase("full")) {
-                            mc.setExpression(Expression.FULL);
-                        } else if (expression.equalsIgnoreCase("sample")) {
-                            mc.setExpression(Expression.SAMPLE);
-                        } else if (expression.equalsIgnoreCase("nonstop")) {
-                            mc.setExpression(Expression.NONSTOP);
-                        }
-                    }
-
-                    try {
-                        mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-                    try {
-                        mc.setFramerate((content.getAttributeValue("framerate") == null) ? null : NumberParser.parseFloat(content
-                                .getAttributeValue("framerate")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-                    try {
-                        mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-
-                    mc.setLanguage(content.getAttributeValue("lang"));
-                    mc.setMetadata(parseMetadata(content));
-                    try {
-                        mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content
-                                .getAttributeValue("samplingrate")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-
-                    mc.setType(content.getAttributeValue("type"));
-                    try {
-                        mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
-                    } catch (Exception ex) {
-                        logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-                    }
-
-                    mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.getBoolean(content.getAttributeValue("isDefault")));
-                } else {
-                    logger.log(Level.WARNING, "Could not find MediaContent.");
-                }
-
+            } else {
+                mc = new MediaContent(parsePlayer(content));
             }
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, "Exception parsing content tag.", ex);
-        }
+            if (mc != null) {
+                values.add(mc);
+                try {
+                    mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : new Integer(content.getAttributeValue("channels")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+                try {
+                    mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : new Float(content.getAttributeValue("bitrate")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+                try {
+                    mc.setDuration((content.getAttributeValue("duration") == null) ? null : new Long(content.getAttributeValue("duration")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
 
+                String expression = content.getAttributeValue("expression");
+
+                if (expression != null) {
+                    if (expression.equalsIgnoreCase("full")) {
+                        mc.setExpression(Expression.FULL);
+                    } else if (expression.equalsIgnoreCase("sample")) {
+                        mc.setExpression(Expression.SAMPLE);
+                    } else if (expression.equalsIgnoreCase("nonstop")) {
+                        mc.setExpression(Expression.NONSTOP);
+                    }
+                }
+
+                try {
+                    mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+                try {
+                    mc.setFramerate((content.getAttributeValue("framerate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("framerate")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+                try {
+                    mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+
+                mc.setLanguage(content.getAttributeValue("lang"));
+                mc.setMetadata(parseMetadata(content));
+                try {
+                    mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content
+                            .getAttributeValue("samplingrate")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+
+                mc.setType(content.getAttributeValue("type"));
+                try {
+                    mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "Exception parsing content tag.", ex);
+                }
+
+                mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.getBoolean(content.getAttributeValue("isDefault")));
+            } else {
+                logger.log(Level.WARNING, "Could not find MediaContent.");
+            }
+
+        }
         return values.toArray(new MediaContent[values.size()]);
     }
 
@@ -196,13 +191,13 @@ public class MediaModuleParser implements ModuleParser {
         List<?> groups = e.getChildren("group", getNS());
         ArrayList<MediaGroup> values = new ArrayList<MediaGroup>();
 
-        for (int i = 0; (groups != null) && (i < groups.size()); i++) {
+        for (int i = 0; groups != null && i < groups.size(); i++) {
             Element group = (Element) groups.get(i);
             MediaGroup g = new MediaGroup(parseContent(group));
 
             for (int j = 0; j < g.getContents().length; j++) {
                 if (g.getContents()[j].isDefaultContent()) {
-                    g.setDefaultContentIndex(new Integer(j));
+                    g.setDefaultContentIndex(Integer.valueOf(j));
 
                     break;
                 }
@@ -222,7 +217,7 @@ public class MediaModuleParser implements ModuleParser {
             List<?> categories = e.getChildren("category", getNS());
             ArrayList<Category> values = new ArrayList<Category>();
 
-            for (int i = 0; (categories != null) && (i < categories.size()); i++) {
+            for (int i = 0; categories != null && i < categories.size(); i++) {
                 try {
                     Element cat = (Element) categories.get(i);
                     values.add(new Category(cat.getAttributeValue("scheme"), cat.getAttributeValue("label"), cat.getText()));
@@ -250,7 +245,7 @@ public class MediaModuleParser implements ModuleParser {
             List<?> credits = e.getChildren("credit", getNS());
             ArrayList<Credit> values = new ArrayList<Credit>();
 
-            for (int i = 0; (credits != null) && (i < credits.size()); i++) {
+            for (int i = 0; credits != null && i < credits.size(); i++) {
                 try {
                     Element cred = (Element) credits.get(i);
                     values.add(new Credit(cred.getAttributeValue("scheme"), cred.getAttributeValue("role"), cred.getText()));
@@ -303,7 +298,7 @@ public class MediaModuleParser implements ModuleParser {
             List<?> ratings = e.getChildren("rating", getNS());
             ArrayList<Rating> values = new ArrayList<Rating>();
 
-            for (int i = 0; (ratings != null) && (i < ratings.size()); i++) {
+            for (int i = 0; ratings != null && i < ratings.size(); i++) {
                 try {
                     Element rat = (Element) ratings.get(i);
                     if (rat.getText() != null && rat.getAttributeValue("scheme") != null)
@@ -320,7 +315,7 @@ public class MediaModuleParser implements ModuleParser {
             List<?> texts = e.getChildren("text", getNS());
             ArrayList<Text> values = new ArrayList<Text>();
 
-            for (int i = 0; (texts != null) && (i < texts.size()); i++) {
+            for (int i = 0; texts != null && i < texts.size(); i++) {
                 try {
                     Element text = (Element) texts.get(i);
                     Time start = (text.getAttributeValue("start") == null) ? null : new Time(text.getAttributeValue("start"));
@@ -338,7 +333,7 @@ public class MediaModuleParser implements ModuleParser {
             List<?> thumbnails = e.getChildren("thumbnail", getNS());
             ArrayList<Thumbnail> values = new ArrayList<Thumbnail>();
 
-            for (int i = 0; (thumbnails != null) && (i < thumbnails.size()); i++) {
+            for (int i = 0; thumbnails != null && i < thumbnails.size(); i++) {
                 try {
                     Element thumb = (Element) thumbnails.get(i);
                     if (thumb.getValue().startsWith("http")) {
@@ -349,7 +344,7 @@ public class MediaModuleParser implements ModuleParser {
                         Integer height = (thumb.getAttributeValue("height") == null) ? null : new Integer(thumb.getAttributeValue("height"));
                         values.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
                     }
-                } catch (Exception ex) {
+                } catch (URISyntaxException ex) {
                     logger.log(Level.WARNING, "Exception parsing thumbnail tag.", ex);
                 }
             }
@@ -398,7 +393,7 @@ public class MediaModuleParser implements ModuleParser {
         {
             Element adult = e.getChild("adult", getNS());
 
-            if ((adult != null) && (md.getRatings().length == 0)) {
+            if (adult != null && md.getRatings().length == 0) {
                 Rating[] r = new Rating[1];
 
                 if (adult.getTextTrim().equals("true")) {

@@ -41,6 +41,7 @@
  */
 package com.sun.syndication.feed.module.content;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.jdom.Content;
@@ -51,18 +52,28 @@ import org.jdom.Namespace;
  * @version $Revision: 1.1 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ContentItem implements Cloneable {
+public class ContentItem implements Cloneable, Serializable {
+    private static final long serialVersionUID = -7770793252868977275L;
+
     private String contentFormat;
     private String contentEncoding;
     private String contentValue;
     private List<Content> contentValueDOM;
     private String contentAbout;
     private String contentValueParseType;
-    private List<Namespace> contentValueNamespace;
+    private transient List<Namespace> contentValueNamespace;
     private String contentResource;
 
     /** Creates a new instance of ContentItem */
     public ContentItem() {
+        contentFormat = null;
+        contentEncoding = null;
+        contentValue = null;
+        contentAbout = null;
+        contentValueParseType = null;
+        contentResource = null;
+        contentValueNamespace = null;
+        contentValueDOM = null;
     }
 
     public String getContentFormat() {
@@ -162,7 +173,8 @@ public class ContentItem implements Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         ContentItem o = new ContentItem();
         o.contentAbout = this.contentAbout;
         o.contentEncoding = this.contentEncoding;

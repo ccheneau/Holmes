@@ -21,8 +21,6 @@
  */
 package com.sun.syndication.feed.module.mediarss;
 
-import java.io.Serializable;
-
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 import com.sun.syndication.feed.module.mediarss.types.MediaContent;
@@ -33,7 +31,7 @@ import com.sun.syndication.feed.module.mediarss.types.Metadata;
  * Represents information for an Entry/Item level.
  * @author Nathanial X. Freitas
  */
-public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryModule, Cloneable, Serializable {
+public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryModule {
     private static final long serialVersionUID = -1564409507033924835L;
 
     /*
@@ -62,6 +60,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * MediaContent items for the entry
      * @return MediaContent items for the entry
      */
+    @Override
     public MediaContent[] getMediaContents() {
         return mediaContents;
     }
@@ -78,32 +77,38 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * MediaGroups for the entry
      * @return MediaGroups for the entry
      */
+    @Override
     public MediaGroup[] getMediaGroups() {
         return mediaGroups;
     }
 
-    public Object clone() {
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         MediaEntryModuleImpl m = new MediaEntryModuleImpl();
-        m.setMediaContents((MediaContent[]) mediaContents.clone());
-        m.setMediaGroups((MediaGroup[]) mediaGroups.clone());
+        m.setMediaContents(mediaContents.clone());
+        m.setMediaGroups(mediaGroups.clone());
         m.setMetadata((getMetadata() == null) ? null : (Metadata) getMetadata().clone());
         m.setPlayer(getPlayer());
 
         return m;
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(MediaEntryModuleImpl.class, this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(MediaEntryModuleImpl.class, this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(MediaEntryModuleImpl.class, this);
 

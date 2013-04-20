@@ -32,11 +32,12 @@ public class SSE091Generator implements DelegatingModuleGenerator {
     private RSS20Generator parentGenerator;
 
     public SSE091Generator() {
+        parentGenerator = null;
     }
 
     @Override
     public void setFeedGenerator(WireFeedGenerator feedGenerator) {
-        parentGenerator = (RSS20Generator) feedGenerator;
+        if (feedGenerator instanceof RSS20Generator) parentGenerator = (RSS20Generator) feedGenerator;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class SSE091Generator implements DelegatingModuleGenerator {
             Sharing sharing = (Sharing) sseModule;
             // add sse namespace
             Element root = element;
-            while ((root.getParent() != null) && root.getParent() instanceof Element) {
+            while (root.getParent() != null && root.getParent() instanceof Element) {
                 root = (Element) root.getParent();
             }
             root.addNamespaceDeclaration(SSEModule.SSE_NS);

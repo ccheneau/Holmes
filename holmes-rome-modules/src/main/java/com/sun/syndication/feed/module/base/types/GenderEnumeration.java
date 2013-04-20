@@ -39,12 +39,16 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
+
 /** Simple enumeration for Genders.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class GenderEnumeration implements CloneableType {
+public class GenderEnumeration implements CloneableType<GenderEnumeration>, Serializable {
+    private static final long serialVersionUID = 6096020371247096159L;
+
     /** Men */
     public static final GenderEnumeration MALE = new GenderEnumeration("Male");
     /** Women */
@@ -77,11 +81,15 @@ public class GenderEnumeration implements CloneableType {
         return this.value;
     }
 
-    /** Returns a reference to the same object. :P */
-    public Object clone() {
+    /** Returns a reference to the same object. :P 
+     * @throws CloneNotSupportedException */
+    @Override
+    public GenderEnumeration clone() throws CloneNotSupportedException {
+        super.clone();
         return this;
     }
 
+    @Override
     public String toString() {
         return value;
     }

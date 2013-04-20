@@ -147,13 +147,16 @@ public class Sort implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Sort(namespace, element, dataType, label, defaultOrder);
     }
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof Sort) return obj.equals(((Sort) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

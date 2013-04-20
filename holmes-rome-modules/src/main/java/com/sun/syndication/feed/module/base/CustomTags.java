@@ -30,10 +30,10 @@ import com.sun.syndication.feed.module.Module;
  */
 public interface CustomTags extends Module {
 
-    public static final String URI = "http://base.google.com/cns/1.0";
+    String URI = "http://base.google.com/cns/1.0";
 
-    public List<CustomTag> getValues();
+    List<CustomTag> getValues();
 
-    public void setValues(List<CustomTag> values);
+    void setValues(List<CustomTag> values);
 
 }

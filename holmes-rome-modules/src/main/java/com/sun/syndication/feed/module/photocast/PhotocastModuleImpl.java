@@ -126,7 +126,8 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         PhotocastModuleImpl pm = new PhotocastModuleImpl();
         pm.setPhotoDate((this.getPhotoDate() == null) ? null : (Date) this.getPhotoDate().clone());
         pm.setCropDate((this.getCropDate() == null) ? null : (Date) this.getCropDate().clone());

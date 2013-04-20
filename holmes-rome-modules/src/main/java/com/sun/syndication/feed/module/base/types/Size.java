@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /** Represents the size on an item in 2 or 3 dimensions.
@@ -46,7 +47,9 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  */
-public class Size implements CloneableType {
+public class Size implements CloneableType<Size>, Serializable {
+    private static final long serialVersionUID = -4572252960766282573L;
+
     /**
      * height
      */
@@ -123,9 +126,11 @@ public class Size implements CloneableType {
     /**
      * Duplicates this object.
      * @return A duplicate Size object.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public Size clone() throws CloneNotSupportedException {
+        super.clone();
         if (this.height != null) {
             return new Size(this.length, this.width, this.height);
         } else {

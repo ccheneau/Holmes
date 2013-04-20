@@ -47,53 +47,53 @@ import java.util.List;
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface ContentModule extends com.sun.syndication.feed.module.Module {
-    public static final String URI = "http://purl.org/rss/1.0/modules/content/";
-    public static final String RDF_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+    String URI = "http://purl.org/rss/1.0/modules/content/";
+    String RDF_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
     /** Returns a List of Strings containing the New Syntax Encoded values
      * are in the element.
      * @return List of content Strings
      */
-    public List<String> getEncodeds();
+    List<String> getEncodeds();
 
     /** Sets a List of Strings containing the New Syntax Encoded values
      * are in the element.
      * @return List of content Strings
      */
-    public void setEncodeds(List<String> encodeds);
+    void setEncodeds(List<String> encodeds);
 
     @Override
-    public void copyFrom(Object obj);
+    void copyFrom(Object obj);
 
     @Override
-    public Class<?> getInterface();
+    Class<?> getInterface();
 
     @Override
-    public String getUri();
+    String getUri();
 
-    public String toString(String str);
+    String toString(String str);
 
     /** Contains a list of ContentItems that represent the "Original Syntax" set.
      * @see com.totsp.xml.syndication.content.ContentItem
      * @return List of ContentItems.
      */
-    public List<ContentItem> getContentItems();
+    List<ContentItem> getContentItems();
 
     /** Contains a list of ContentItems that represent the "Original Syntax" set.
      * @see com.totsp.xml.syndication.content.ContentItem
      * @param List of ContentItems.
      */
-    public void setContentItems(List<ContentItem> list);
+    void setContentItems(List<ContentItem> list);
 
     /** Returns a List of Strings containing whatever new or original syntax items
      * are in the element.
      * @return List of content Strings
      */
-    public List<String> getContents();
+    List<String> getContents();
 
     /** Sets a List of Strings containing whatever new or original syntax items
      * are in the element.
      * @return List of content Strings
      */
-    public void setContents(List<String> contents);
+    void setContents(List<String> contents);
 }

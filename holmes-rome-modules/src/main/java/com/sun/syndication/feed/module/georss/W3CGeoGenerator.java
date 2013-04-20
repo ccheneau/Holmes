@@ -97,20 +97,22 @@ public class W3CGeoGenerator implements ModuleGenerator {
             element.addContent(pointElement);
         }
 
-        GeoRSSModule geoRSSModule = (GeoRSSModule) module;
-        AbstractGeometry geometry = geoRSSModule.getGeometry();
+        if (module instanceof GeoRSSModule) {
+            GeoRSSModule geoRSSModule = (GeoRSSModule) module;
+            AbstractGeometry geometry = geoRSSModule.getGeometry();
 
-        if (geometry instanceof Point) {
-            Position pos = ((Point) geometry).getPosition();
+            if (geometry instanceof Point) {
+                Position pos = ((Point) geometry).getPosition();
 
-            Element latElement = new Element("lat", GeoRSSModule.W3CGEO_NS);
-            latElement.addContent(String.valueOf(pos.getLatitude()));
-            pointElement.addContent(latElement);
-            Element lngElement = new Element("long", GeoRSSModule.W3CGEO_NS);
-            lngElement.addContent(String.valueOf(pos.getLongitude()));
-            pointElement.addContent(lngElement);
-        } else {
-            logger.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
+                Element latElement = new Element("lat", GeoRSSModule.W3CGEO_NS);
+                latElement.addContent(String.valueOf(pos.getLatitude()));
+                pointElement.addContent(latElement);
+                Element lngElement = new Element("long", GeoRSSModule.W3CGEO_NS);
+                lngElement.addContent(String.valueOf(pos.getLongitude()));
+                pointElement.addContent(lngElement);
+            } else {
+                logger.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
+            }
         }
     }
 }

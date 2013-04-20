@@ -155,9 +155,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
         this.setBlock(info.getBlock());
 
         this.getCategories().clear();
-        if (info.getCategories() != null) {
-            this.getCategories().addAll(info.getCategories());
-        }
+        this.getCategories().addAll(info.getCategories());
 
         this.setExplicit(info.getExplicit());
 
@@ -169,9 +167,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
             Logger.getAnonymousLogger().fine("Error copying URL:" + info.getImage());
         }
 
-        if (info.getKeywords() != null) {
-            this.setKeywords(info.getKeywords().clone());
-        }
+        this.setKeywords(info.getKeywords().clone());
 
         this.setOwnerEmailAddress(info.getOwnerEmailAddress());
         this.setOwnerName(info.getOwnerName());
@@ -183,9 +179,11 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * Returns a copy of this FeedInformationImpl object
      * 
      * @return Returns a copy of this FeedInformationImpl object
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         FeedInformationImpl info = new FeedInformationImpl();
         info.copyFrom(this);
 

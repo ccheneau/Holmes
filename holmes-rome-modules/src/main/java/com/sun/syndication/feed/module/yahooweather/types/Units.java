@@ -174,7 +174,8 @@ public class Units implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Units(this.temperature, this.distance, this.pressure, this.speed);
     }
 }

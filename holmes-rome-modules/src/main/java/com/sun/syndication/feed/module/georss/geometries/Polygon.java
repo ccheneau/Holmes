@@ -17,7 +17,7 @@ import java.util.List;
  * Polygon, a surface object bounded by one external ring and zero or more internal rings 
  * @author runaas
  */
-public final class Polygon extends AbstractSurface implements Cloneable {
+public final class Polygon extends AbstractSurface {
     private static final long serialVersionUID = -691747021168579678L;
 
     private AbstractRing exterior;
@@ -25,7 +25,7 @@ public final class Polygon extends AbstractSurface implements Cloneable {
 
     /** Creates a new instance of Polygon */
     public Polygon() {
-
+        interior = new ArrayList<AbstractRing>();
     }
 
     @Override
@@ -48,9 +48,8 @@ public final class Polygon extends AbstractSurface implements Cloneable {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         Polygon pol = (Polygon) obj;
-        if (exterior == null && pol.exterior == null)
-        ;
-        else if (exterior == null || pol.exterior == null) return false;
+
+        if (exterior == null || pol.exterior == null) return false;
         else if (!exterior.equals(pol.exterior)) return false;
 
         // Not efficient.... (but the number of internal ringr is usually small).

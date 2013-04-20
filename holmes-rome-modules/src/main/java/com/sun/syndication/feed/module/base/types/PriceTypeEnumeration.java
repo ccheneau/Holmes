@@ -39,12 +39,16 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
+
 /**
  * Enumeration of values suitable for "price_type" or "salary_type".
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class PriceTypeEnumeration implements CloneableType {
+public class PriceTypeEnumeration implements CloneableType<PriceTypeEnumeration>, Serializable {
+    private static final long serialVersionUID = -6442993402333024099L;
+
     /**
      * Indicates the value is a starting value.
      */
@@ -90,8 +94,11 @@ public class PriceTypeEnumeration implements CloneableType {
     /**
      * Returns a duplicate of this instance
      * @return The same instance.
+     * @throws CloneNotSupportedException 
      */
-    public Object clone() {
+    @Override
+    public PriceTypeEnumeration clone() throws CloneNotSupportedException {
+        super.clone();
         return this;
     }
 
@@ -99,6 +106,7 @@ public class PriceTypeEnumeration implements CloneableType {
      * Returns the string value of this instance.
      * @return Returns the string value of this instance.
      */
+    @Override
     public String toString() {
         return value;
     }

@@ -50,7 +50,7 @@ import java.util.Date;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class ShortDate extends Date implements CloneableType {
+public class ShortDate extends Date implements CloneableType<ShortDate> {
     private static final long serialVersionUID = -6612985324845135483L;
 
     /** Creates a new instance of ShortDate */
@@ -79,7 +79,8 @@ public class ShortDate extends Date implements CloneableType {
      * @return Duplicate of the object.
      */
     @Override
-    public Object clone() {
+    public ShortDate clone() {
+        super.clone();
         return new ShortDate(this.getTime());
     }
 }

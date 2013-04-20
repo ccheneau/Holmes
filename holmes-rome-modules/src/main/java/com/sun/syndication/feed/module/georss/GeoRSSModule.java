@@ -30,7 +30,7 @@ import com.sun.syndication.feed.module.georss.geometries.Position;
  * @author Marc Wick
  * @version $Id: GeoRSSModule.java,v 1.8 2007/06/06 09:47:32 marcwick Exp $
  */
-public abstract class GeoRSSModule extends ModuleImpl implements Cloneable {
+public abstract class GeoRSSModule extends ModuleImpl {
     private static final long serialVersionUID = 1712562163154541544L;
 
     protected AbstractGeometry geometry;
@@ -132,12 +132,8 @@ public abstract class GeoRSSModule extends ModuleImpl implements Cloneable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        try {
-            GeoRSSModule retval = (GeoRSSModule) super.clone();
-            if (geometry != null) retval.geometry = (AbstractGeometry) geometry.clone();
-            return retval;
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
+        GeoRSSModule retval = (GeoRSSModule) super.clone();
+        if (geometry != null) retval.geometry = (AbstractGeometry) geometry.clone();
+        return retval;
     }
 }

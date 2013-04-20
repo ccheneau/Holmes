@@ -19,9 +19,14 @@ package com.sun.syndication.feed.module.georss;
 import org.jdom.Element;
 
 import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.georss.GMLParser;
+import com.sun.syndication.feed.module.georss.geometries.Envelope;
+import com.sun.syndication.feed.module.georss.geometries.LineString;
+import com.sun.syndication.feed.module.georss.geometries.LinearRing;
+import com.sun.syndication.feed.module.georss.geometries.Point;
+import com.sun.syndication.feed.module.georss.geometries.Polygon;
+import com.sun.syndication.feed.module.georss.geometries.Position;
+import com.sun.syndication.feed.module.georss.geometries.PositionList;
 import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.feed.module.georss.geometries.*;
 
 /**
  * SimpleParser is a parser for the GeoRSS Simple format.
@@ -37,6 +42,7 @@ public class SimpleParser implements ModuleParser {
      *
      * @see com.sun.syndication.io.ModuleParser#getNamespaceUri()
      */
+    @Override
     public String getNamespaceUri() {
         return GeoRSSModule.GEORSS_GEORSS_URI;
     }
@@ -56,6 +62,7 @@ public class SimpleParser implements ModuleParser {
      *
      * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
      */
+    @Override
     public Module parse(Element element) {
         Module geoRssModule = parseSimple(element);
         return geoRssModule;

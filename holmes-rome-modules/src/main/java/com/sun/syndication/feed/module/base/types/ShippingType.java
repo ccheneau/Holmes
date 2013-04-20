@@ -39,6 +39,7 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -46,7 +47,9 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class ShippingType implements CloneableType {
+public class ShippingType implements CloneableType<ShippingType>, Serializable {
+    private static final long serialVersionUID = -5076766886242328762L;
+
     /**
      * price of the shipping.
      */
@@ -99,9 +102,11 @@ public class ShippingType implements CloneableType {
     /**
      * Clones this object.
      * @return Duplicate ShippingType object.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public ShippingType clone() throws CloneNotSupportedException {
+        super.clone();
         return new ShippingType(this.price, this.service, this.country);
     }
 
@@ -134,7 +139,9 @@ public class ShippingType implements CloneableType {
     /**
      * Enumeration class of valid options for ServiceType.
      */
-    public static class ServiceEnumeration {
+    public static class ServiceEnumeration implements Serializable {
+        private static final long serialVersionUID = 8712370303535197427L;
+
         /**
         * Looks up a ServiceEnumeration based on the string value.
         */

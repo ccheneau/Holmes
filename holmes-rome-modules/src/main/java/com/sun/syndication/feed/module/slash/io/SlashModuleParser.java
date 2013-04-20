@@ -70,7 +70,7 @@ public class SlashModuleParser implements ModuleParser {
 
     @Override
     public Module parse(Element element) {
-        SlashImpl si = new SlashImpl();
+        Slash si = new SlashImpl();
         Element tag = element.getChild("hit_parade", SlashModuleParser.NS);
         if (tag != null) {
             StringTokenizer tok = new StringTokenizer(tag.getText(), ",");
@@ -80,25 +80,21 @@ public class SlashModuleParser implements ModuleParser {
             }
             si.setHitParade(hp);
         }
-        tag = null;
         tag = element.getChild("comments", SlashModuleParser.NS);
         if (tag != null) {
             si.setComments(new Integer(tag.getText()));
         }
-        tag = null;
         tag = element.getChild("department", SlashModuleParser.NS);
         if (tag != null) {
             si.setDepartment(tag.getText().trim());
         }
-        tag = null;
         tag = element.getChild("section", SlashModuleParser.NS);
         if (tag != null) {
             si.setSection(tag.getText().trim());
         }
-        if (si.getHitParade() != null || si.getComments() != null || si.getDepartment() != null || si.getSection() != null) {
+        if (si.getHitParade().length > 0 || si.getComments() != null || si.getDepartment() != null || si.getSection() != null) {
             return si;
         }
         return null;
     }
-
 }

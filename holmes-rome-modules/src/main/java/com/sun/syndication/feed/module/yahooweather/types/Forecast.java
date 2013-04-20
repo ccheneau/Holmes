@@ -151,7 +151,7 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     /**
-     * Low temperature
+     * Low temperature.
      * @param low the forecasted low temperature for this day
      * @see Units
      */
@@ -169,7 +169,7 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     /**
-     * High temperature
+     * High temperature.
      * @param high the forecasted high temperature for this day
      * @see Units
      */
@@ -187,7 +187,7 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     /**
-     * Text summary
+     * Text summary.
      * @param text a textual description of conditions, for example, "Partly
      *              Cloudy"
      */
@@ -196,7 +196,7 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     /**
-     * Condition code
+     * Condition code.
      * @return the condition code for this forecast
      */
     public ConditionCode getCode() {
@@ -204,7 +204,7 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     /**
-     * Condition code
+     * Condition code.
      * @param code the condition code for this forecast
      */
     public void setCode(ConditionCode code) {
@@ -227,7 +227,8 @@ public class Forecast implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Forecast(this.day, (this.date != null) ? new Date(this.date.getTime()) : null, this.low, this.high, this.text, this.code);
     }
 }

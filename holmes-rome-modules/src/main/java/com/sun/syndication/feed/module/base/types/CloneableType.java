@@ -44,6 +44,6 @@ package com.sun.syndication.feed.module.base.types;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public interface CloneableType extends Cloneable {
-    public Object clone();
+public interface CloneableType<T> extends Cloneable {
+    T clone() throws CloneNotSupportedException;
 }

@@ -36,11 +36,12 @@ public class SSE091Parser implements DelegatingModuleParser {
 
     /** Creates a new instance of SSE091Parser */
     public SSE091Parser() {
+        rssParser = null;
     }
 
     @Override
     public void setFeedParser(WireFeedParser feedParser) {
-        this.rssParser = (RSS20Parser) feedParser;
+        if (feedParser instanceof RSS20Parser) this.rssParser = (RSS20Parser) feedParser;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class SSE091Parser implements DelegatingModuleParser {
     }
 
     @Override
-    public Module parse(org.jdom.Element element) {
+    public Module parse(Element element) {
         SSEModule sseModule = null;
         String name = element.getName();
 
@@ -148,7 +149,7 @@ public class SSE091Parser implements DelegatingModuleParser {
         // reach up to grab the sharing element out of the root
         Element root = start;
 
-        while ((root.getParent() != null) && root.getParent() instanceof Element) {
+        while (root.getParent() != null && root.getParent() instanceof Element) {
             root = (Element) root.getParent();
         }
         return root;
@@ -170,7 +171,7 @@ public class SSE091Parser implements DelegatingModuleParser {
     private Element getFirstContent(Element element, String name) {
         List<?> filterList = element.getContent(new ContentFilter(name));
         Element firstContent = null;
-        if ((filterList != null) && (filterList.size() > 0)) {
+        if (filterList != null && filterList.size() > 0) {
             firstContent = (Element) filterList.get(0);
         }
         return firstContent;
@@ -189,7 +190,7 @@ public class SSE091Parser implements DelegatingModuleParser {
 
     private String parseStringAttribute(Element syncChild, String attrName) {
         Attribute idAttribute = syncChild.getAttribute(attrName);
-        return (idAttribute != null ? idAttribute.getValue().trim() : null);
+        return idAttribute != null ? idAttribute.getValue().trim() : null;
     }
 
     private Integer parseIntegerAttribute(Element sharingChild, String attrName) {
@@ -197,9 +198,10 @@ public class SSE091Parser implements DelegatingModuleParser {
         Integer integerAttr = null;
         if (integerAttribute != null) {
             try {
-                integerAttr = new Integer(integerAttribute.getIntValue());
+                integerAttr = Integer.valueOf(integerAttribute.getIntValue());
             } catch (DataConversionException e) {
                 // dont use the data
+                integerAttr = null;
             }
         }
         return integerAttr;
@@ -213,6 +215,7 @@ public class SSE091Parser implements DelegatingModuleParser {
                 attrValue = Boolean.valueOf(attribute.getBooleanValue());
             } catch (DataConversionException e) {
                 // dont use the data
+                attrValue = null;
             }
         }
         return attrValue;
@@ -240,7 +243,7 @@ public class SSE091Parser implements DelegatingModuleParser {
 
         @Override
         public boolean matches(Object object) {
-            return (object instanceof Element) && name.equals(((Element) object).getName());
+            return object instanceof Element && name.equals(((Element) object).getName());
         }
     }
 }

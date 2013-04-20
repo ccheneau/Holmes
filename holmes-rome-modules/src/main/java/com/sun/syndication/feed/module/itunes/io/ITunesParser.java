@@ -81,7 +81,7 @@ public class ITunesParser implements ModuleParser {
     }
 
     @Override
-    public com.sun.syndication.feed.module.Module parse(org.jdom.Element element) {
+    public com.sun.syndication.feed.module.Module parse(Element element) {
         AbstractITunesObject module = null;
 
         if (element.getName().equals("channel")) {
@@ -107,7 +107,7 @@ public class ITunesParser implements ModuleParser {
 
             Element image = element.getChild("image", ns);
 
-            if ((image != null) && (image.getAttributeValue("href") != null)) {
+            if (image != null && image.getAttributeValue("href") != null) {
                 try {
                     URL imageURL = new URL(image.getAttributeValue("href").trim());
                     feedInfo.setImage(imageURL);
@@ -119,7 +119,7 @@ public class ITunesParser implements ModuleParser {
             List<?> categories = element.getChildren("category", ns);
             for (Iterator<?> it = categories.iterator(); it.hasNext();) {
                 Element category = (Element) it.next();
-                if ((category != null) && (category.getAttribute("text") != null)) {
+                if (category != null && category.getAttribute("text") != null) {
                     Category cat = new Category();
                     cat.setName(category.getAttribute("text").getValue().trim());
 
@@ -164,7 +164,7 @@ public class ITunesParser implements ModuleParser {
 
             Element explicit = element.getChild("explicit", ns);
 
-            if ((explicit != null) && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes")) {
+            if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes")) {
                 module.setExplicit(true);
             }
 

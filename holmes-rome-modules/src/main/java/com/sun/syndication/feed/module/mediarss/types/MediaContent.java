@@ -289,7 +289,7 @@ public class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * The metadata for the item
+     * The metadata for the item.
      * @return The metadata for the item
      */
     public Metadata getMetadata() {
@@ -399,7 +399,8 @@ public class MediaContent implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         MediaContent c = new MediaContent(getReference());
         c.setAudioChannels(getAudioChannels());
         c.setBitrate(getBitrate());

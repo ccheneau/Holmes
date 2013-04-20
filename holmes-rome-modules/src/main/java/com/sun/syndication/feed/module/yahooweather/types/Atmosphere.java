@@ -173,7 +173,8 @@ public class Atmosphere implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Atmosphere(this.humidity, this.visibility, this.pressure, this.change);
     }
 

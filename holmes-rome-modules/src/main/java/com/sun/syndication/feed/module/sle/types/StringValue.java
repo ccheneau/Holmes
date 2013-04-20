@@ -32,7 +32,7 @@ public class StringValue implements EntryValue {
     private String element;
     private String label;
     private String value;
-    private Namespace namespace = Namespace.XML_NAMESPACE;
+    private transient Namespace namespace = Namespace.XML_NAMESPACE;
 
     /** Creates a new instance of StringValue */
     public StringValue() {
@@ -66,7 +66,8 @@ public class StringValue implements EntryValue {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         StringValue clone = new StringValue();
         clone.setElement(this.getElement());
         clone.setLabel(this.getLabel());
@@ -78,7 +79,9 @@ public class StringValue implements EntryValue {
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof StringValue) return obj.equals(((StringValue) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

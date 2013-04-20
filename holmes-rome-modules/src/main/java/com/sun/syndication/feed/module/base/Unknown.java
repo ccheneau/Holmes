@@ -51,27 +51,27 @@ import com.sun.syndication.feed.module.base.types.IntUnit;
  *         Cooper</a>
  */
 public interface Unknown extends GlobalInterface {
-    public void setLicenses(String[] licenses);
+    void setLicenses(String[] licenses);
 
-    public String[] getLicenses();
+    String[] getLicenses();
 
-    public void setOperatingSystems(String systems);
+    void setOperatingSystems(String systems);
 
-    public String getOperatingSystems();
+    String getOperatingSystems();
 
-    public void setProgrammingLanguages(String[] languages);
+    void setProgrammingLanguages(String[] languages);
 
-    public String[] getProgrammingLanguages();
+    String[] getProgrammingLanguages();
 
-    public void setRelatedLinks(URL[] links);
+    void setRelatedLinks(URL[] links);
 
-    public URL[] getRelatedLinks();
+    URL[] getRelatedLinks();
 
-    public void setSquareFootages(IntUnit[] squareFootages);
+    void setSquareFootages(IntUnit[] squareFootages);
 
-    public IntUnit[] getSquareFootages();
+    IntUnit[] getSquareFootages();
 
-    public void setSubjectAreas(String[] subjectAreas);
+    void setSubjectAreas(String[] subjectAreas);
 
-    public String[] getSubjectAreas();
+    String[] getSubjectAreas();
 }

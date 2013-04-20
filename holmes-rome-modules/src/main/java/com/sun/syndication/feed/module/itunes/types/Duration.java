@@ -74,7 +74,7 @@ public class Duration implements Serializable {
     }
 
     /**
-     * Creates a new instance of Duration specifying a length in milliseconds
+     * Creates a new instance of Duration specifying a length in milliseconds.
      * @param milliseconds Creates a new instance of Duration specifying a length in milliseconds 
      */
     public Duration(final long milliseconds) {
@@ -82,13 +82,13 @@ public class Duration implements Serializable {
     }
 
     /**
-     * Creates a new duration object with the given hours, minutes and seconds
+     * Creates a new duration object with the given hours, minutes and seconds.
      * @param hours number of hours
      * @param minutes number of minutes
      * @param seconds number of seconds
      */
     public Duration(final int hours, final int minutes, final float seconds) {
-        this.setMilliseconds((hours * HOUR) + (minutes * MINUTE) + (long) (seconds * SECOND));
+        this.setMilliseconds(hours * HOUR + minutes * MINUTE + (long) (seconds * SECOND));
     }
 
     /**
@@ -119,7 +119,7 @@ public class Duration implements Serializable {
      */
     @Override
     public String toString() {
-        Time time = new Time();
+        Time time = new Time(this);
 
         return NUM_FORMAT.format(time.hours) + ":" + NUM_FORMAT.format(time.minutes) + ":" + NUM_FORMAT.format(Math.round(time.seconds));
     }
@@ -140,13 +140,13 @@ public class Duration implements Serializable {
         this.milliseconds = milliseconds;
     }
 
-    private class Time {
+    private static class Time {
         int hours;
         int minutes;
         float seconds;
 
-        public Time() {
-            long time = getMilliseconds();
+        public Time(Duration duration) {
+            long time = duration.getMilliseconds();
             hours = (int) (time / HOUR);
             time = time - hours * HOUR;
             minutes = (int) (time / MINUTE);

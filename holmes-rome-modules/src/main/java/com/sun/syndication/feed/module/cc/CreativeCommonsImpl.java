@@ -96,7 +96,8 @@ public class CreativeCommonsImpl implements CreativeCommons {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         CreativeCommonsImpl clone = new CreativeCommonsImpl();
         clone.copyFrom(this);
         return clone;

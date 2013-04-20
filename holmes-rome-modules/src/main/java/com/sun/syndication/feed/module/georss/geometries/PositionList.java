@@ -31,8 +31,8 @@ public class PositionList implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         PositionList retval = (PositionList) super.clone();
-        if (latitude != null) retval.latitude = (latitude.clone());
-        if (longitude != null) retval.longitude = (longitude.clone());
+        if (latitude != null) retval.latitude = latitude.clone();
+        if (longitude != null) retval.longitude = longitude.clone();
         retval.size = size;
         return retval;
     }

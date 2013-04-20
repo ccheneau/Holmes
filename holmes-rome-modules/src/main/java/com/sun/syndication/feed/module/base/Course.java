@@ -98,7 +98,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @param courseDateRange The timeframe a course is running
      */
-    public void setCourseDateRange(DateTimeRange courseDateRange);
+    void setCourseDateRange(DateTimeRange courseDateRange);
 
     /**
      * The timeframe a course is running.
@@ -151,7 +151,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @return The timeframe a course is running
      */
-    public DateTimeRange getCourseDateRange();
+    DateTimeRange getCourseDateRange();
 
     /**
      * ID code associated with a course.
@@ -188,7 +188,7 @@ public interface Course extends GlobalInterface {
      *        </tbody></table>
      * @param courseNumber ID code associated with a course
      */
-    public void setCourseNumber(String courseNumber);
+    void setCourseNumber(String courseNumber);
 
     /**
      * ID code associated with a course.
@@ -226,7 +226,7 @@ public interface Course extends GlobalInterface {
      *        </tbody></table>
      * @return ID code associated with a course
      */
-    public String getCourseNumber();
+    String getCourseNumber();
 
     /**
      * Time a class is in session.
@@ -263,7 +263,7 @@ public interface Course extends GlobalInterface {
      *        </tbody></table>
      * @param courseTimes Time a class is in session
      */
-    public void setCourseTimes(String courseTimes);
+    void setCourseTimes(String courseTimes);
 
     /**
      * Time a class is in session.
@@ -301,7 +301,7 @@ public interface Course extends GlobalInterface {
      *        </tbody></table>
      * @return Time a class is in session
      */
-    public String getCourseTimes();
+    String getCourseTimes();
 
     /**
      * Salary for this position.
@@ -348,7 +348,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @param salary Salary for this position
      */
-    public void setSalary(Float salary);
+    void setSalary(Float salary);
 
     /**
      * Salary for this position.
@@ -394,7 +394,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @return Salary for this position
      */
-    public Float getSalary();
+    Float getSalary();
 
     /**
      * Topics of study for a course.
@@ -436,7 +436,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @param subject Topics of study for a course
      */
-    public void setSubjects(String[] subject);
+    void setSubjects(String[] subject);
 
     /**
      * Topics of study for a course.
@@ -478,7 +478,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @return Topics of study for a course
      */
-    public String[] getSubjects();
+    String[] getSubjects();
 
     /**
      * Name of the school at which a class is offered.
@@ -520,7 +520,7 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @param university Name of the school at which a class is offered.
      */
-    public void setUniversity(String university);
+    void setUniversity(String university);
 
     /**
      * Name of the school at which a class is offered.
@@ -562,5 +562,5 @@ public interface Course extends GlobalInterface {
      * </tbody></table>
      * @return Name of the school at which a class is offered.
      */
-    public String getUniversity();
+    String getUniversity();
 }

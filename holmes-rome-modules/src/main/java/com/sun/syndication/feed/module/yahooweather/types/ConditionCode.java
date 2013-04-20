@@ -342,7 +342,7 @@ public class ConditionCode implements Serializable {
         this.code = code;
         this.description = description;
 
-        Object old = ConditionCode.LOOKUP.put(new Integer(code), this);
+        Object old = ConditionCode.LOOKUP.put(Integer.valueOf(code), this);
 
         if (old != null) {
             throw new RuntimeException("Duplicate condition code!");
@@ -371,7 +371,7 @@ public class ConditionCode implements Serializable {
      * @return a ConditionCode instance or null
      */
     public static ConditionCode fromCode(int code) {
-        return ConditionCode.LOOKUP.get(new Integer(code));
+        return ConditionCode.LOOKUP.get(Integer.valueOf(code));
     }
 
     @Override

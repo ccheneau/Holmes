@@ -22,8 +22,6 @@
  */
 package com.sun.syndication.feed.module.mediarss;
 
-import java.io.Serializable;
-
 import com.sun.syndication.feed.module.ModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
@@ -33,7 +31,7 @@ import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
  * This class represents feed/channel level elements for MediaRSS
  * @author cooper
  */
-public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializable {
+public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     private static final long serialVersionUID = 1506805082848531979L;
 
     private Metadata metadata;
@@ -98,7 +96,8 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         MediaModuleImpl m = new MediaModuleImpl();
         m.setMetadata((Metadata) metadata.clone());
         m.setPlayer(player);
@@ -109,7 +108,11 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule, Serializ
     @Override
     public void copyFrom(Object obj) {
         MediaModule m = (MediaModule) obj;
-        this.metadata = (Metadata) m.getMetadata().clone();
+        try {
+            this.metadata = (Metadata) m.getMetadata().clone();
+        } catch (CloneNotSupportedException e) {
+            this.metadata = null;
+        }
         this.player = m.getPlayer();
     }
 }

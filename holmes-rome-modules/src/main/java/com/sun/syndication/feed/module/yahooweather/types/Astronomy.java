@@ -80,7 +80,8 @@ public class Astronomy implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Astronomy((this.getSunrise() != null) ? new Date(this.getSunrise().getTime()) : null, (this.getSunset() != null) ? new Date(this.getSunset()
                 .getTime()) : null);
     }

@@ -108,7 +108,7 @@ public class CustomTagParser implements ModuleParser {
                             logger.log(Level.WARNING, "Unable to parse URL type on " + child.getName(), e);
                         }
                     } else if (type.equals("boolean")) {
-                        tags.add(new CustomTagImpl(child.getName(), new Boolean(child.getTextTrim().toLowerCase())));
+                        tags.add(new CustomTagImpl(child.getName(), Boolean.valueOf(child.getTextTrim().toLowerCase())));
                     } else if (type.equals("location")) {
                         tags.add(new CustomTagImpl(child.getName(), new CustomTagImpl.Location(child.getText())));
                     } else {

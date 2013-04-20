@@ -180,7 +180,8 @@ public class Condition implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new Condition(this.text, this.code, this.temperature, (this.date != null) ? new Date(this.date.getTime()) : null);
     }
 }

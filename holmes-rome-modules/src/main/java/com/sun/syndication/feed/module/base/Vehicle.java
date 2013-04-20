@@ -95,7 +95,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param color Color of an item.
      */
-    public void setColors(String[] color);
+    void setColors(String[] color);
 
     /**
      * Color of an item.
@@ -139,7 +139,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Color of an item.
      */
-    public String[] getColors();
+    String[] getColors();
 
     /**
      * Condition of the item. For example: new, used, or refurbished.
@@ -178,7 +178,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @param condition Condition of the item. For example: new, used, or refurbished.
      */
-    public void setCondition(String condition);
+    void setCondition(String condition);
 
     /**
      * Condition of the item. For example: new, used, or refurbished.
@@ -217,7 +217,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @return Condition of the item. For example: new, used, or refurbished.
      */
-    public String getCondition();
+    String getCondition();
 
     /**
      * Currency  of the price amount for an item.
@@ -258,7 +258,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @param value Currency  of the price amount for an item.
      */
-    public void setCurrency(CurrencyEnumeration value);
+    void setCurrency(CurrencyEnumeration value);
 
     /**
      * Currency  of the price amount for an item.
@@ -299,7 +299,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @return Currency  of the price amount for an item.
      */
-    public CurrencyEnumeration getCurrency();
+    CurrencyEnumeration getCurrency();
 
     /**
      * Additional instructions to explain the item’s delivery process.
@@ -337,7 +337,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryNotes Additional instructions to explain the item’s delivery process.
      */
-    public void setDeliveryNotes(String deliveryNotes);
+    void setDeliveryNotes(String deliveryNotes);
 
     /**
      * Additional instructions to explain the item’s delivery process.
@@ -375,7 +375,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @return Additional instructions to explain the item’s delivery process.
      */
-    public String getDeliveryNotes();
+    String getDeliveryNotes();
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -414,7 +414,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @param deliveryRadius The maximum distance you will deliver an item in any direction.
      */
-    public void setDeliveryRadius(FloatUnit deliveryRadius);
+    void setDeliveryRadius(FloatUnit deliveryRadius);
 
     /**
      * The maximum distance you will deliver an item in any direction.
@@ -453,7 +453,7 @@ public interface Vehicle extends GlobalInterface {
      *        </tbody></table>
      * @return The maximum distance you will deliver an item in any direction.
      */
-    public FloatUnit getDeliveryRadius();
+    FloatUnit getDeliveryRadius();
 
     /**
      * Location of a property. Should include street, city, state, postal code, and country, in that order.
@@ -503,7 +503,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param location Location of a property. Should include street, city, state, postal code, and country, in that order.
      */
-    public void setLocation(String location);
+    void setLocation(String location);
 
     /**
      * Location of a property. Should include street, city, state, postal code, and country, in that order.
@@ -553,7 +553,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Location of a property. Should include street, city, state, postal code, and country, in that order.
      */
-    public String getLocation();
+    String getLocation();
 
     /**
      * The vehicle manufacturer.
@@ -597,7 +597,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param make The vehicle manufacturer.
      */
-    public void setMake(String make);
+    void setMake(String make);
 
     /**
      * The vehicle manufacturer.
@@ -641,7 +641,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return The vehicle manufacturer.
      */
-    public String getMake();
+    String getMake();
 
     /**
      * Current mileage of the vehicle.
@@ -684,7 +684,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param mileage Current mileage of the vehicle.
      */
-    public void setMileage(Integer mileage);
+    void setMileage(Integer mileage);
 
     /**
      * Current mileage of the vehicle.
@@ -727,7 +727,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Current mileage of the vehicle.
      */
-    public Integer getMileage();
+    Integer getMileage();
 
     /**
      * The vehicle model.
@@ -761,7 +761,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param model The vehicle model.
      */
-    public void setModel(String model);
+    void setModel(String model);
 
     /**
      * The vehicle model.
@@ -795,7 +795,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return The vehicle model.
      */
-    public String getModel();
+    String getModel();
 
     /**
          * Payment Methods acceptable for the service.
@@ -852,7 +852,7 @@ public interface Vehicle extends GlobalInterface {
          * </tbody></table>
          * @param paymentAccepted Payment Methods acceptable for the service.
          */
-    public void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
+    void setPaymentAccepted(PaymentTypeEnumeration[] paymentAccepted);
 
     /**
      * Payment Methods acceptable for the service.
@@ -909,7 +909,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Payment Methods acceptable for the service.
      */
-    public PaymentTypeEnumeration[] getPaymentAccepted();
+    PaymentTypeEnumeration[] getPaymentAccepted();
 
     /**
      * Additional payment information.
@@ -954,7 +954,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param paymentNotes Additional payment information.
      */
-    public void setPaymentNotes(String paymentNotes);
+    void setPaymentNotes(String paymentNotes);
 
     /**
      * Additional payment information.
@@ -999,7 +999,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Additional payment information.
      */
-    public String getPaymentNotes();
+    String getPaymentNotes();
 
     /**
      * Price for the service.
@@ -1053,7 +1053,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param price Price for the service.
      */
-    public void setPrice(FloatUnit price);
+    void setPrice(FloatUnit price);
 
     /**
      * Price for the service.
@@ -1107,7 +1107,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Price for the service.
      */
-    public FloatUnit getPrice();
+    FloatUnit getPrice();
 
     /**
      * Price type information.
@@ -1153,7 +1153,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param priceType Price type information.
      */
-    public void setPriceType(PriceTypeEnumeration priceType);
+    void setPriceType(PriceTypeEnumeration priceType);
 
     /**
      * Price type information.
@@ -1199,7 +1199,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Price type information.
      */
-    public PriceTypeEnumeration getPriceType();
+    PriceTypeEnumeration getPriceType();
 
     /**
      * Quantity available.
@@ -1253,7 +1253,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param quantity Quantity available.
      */
-    public void setQuantity(Integer quantity);
+    void setQuantity(Integer quantity);
 
     /**
      * Quantity available.
@@ -1307,7 +1307,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Quantity available.
      */
-    public Integer getQuantity();
+    Integer getQuantity();
 
     /**
      * Shipping options available for an item.
@@ -1364,7 +1364,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param shipping Shipping options available for an item.
      */
-    public void setShipping(ShippingType[] shipping);
+    void setShipping(ShippingType[] shipping);
 
     /**
      * Shipping options available for an item.
@@ -1421,7 +1421,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Shipping options available for an item.
      */
-    public ShippingType[] getShipping();
+    ShippingType[] getShipping();
 
     /**
      * Tax rate associated with the item.
@@ -1465,7 +1465,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param taxPercent Tax rate associated with the event.
      */
-    public void setTaxPercent(Float taxPercent);
+    void setTaxPercent(Float taxPercent);
 
     /**
     * Tax rate associated with the item.
@@ -1509,7 +1509,7 @@ public interface Vehicle extends GlobalInterface {
     * </tbody></table>
     * @return Tax rate associated with the event.
     */
-    public Float getTaxPercent();
+    Float getTaxPercent();
 
     /**
      * Region where tax applies.
@@ -1556,7 +1556,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param taxRegion Region where tax applies.
      */
-    public void setTaxRegion(String taxRegion);
+    void setTaxRegion(String taxRegion);
 
     /**
      * Region where tax applies.
@@ -1603,7 +1603,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Region where tax applies.
      */
-    public String getTaxRegion();
+    String getTaxRegion();
 
     /**
      * The type of vehicle: Car, motorcycle, scooter, etc.
@@ -1648,7 +1648,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param vehicleType The type of vehicle: Car, motorcycle, scooter, etc.
      */
-    public void setVehicleType(String vehicleType);
+    void setVehicleType(String vehicleType);
 
     /**
      * The type of vehicle: Car, motorcycle, scooter, etc.
@@ -1693,7 +1693,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return The type of vehicle: Car, motorcycle, scooter, etc.
      */
-    public String getVehicleType();
+    String getVehicleType();
 
     /**
      * Vehicle Identification Number.
@@ -1736,7 +1736,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param vin Vehicle Identification Number.
      */
-    public void setVin(String vin);
+    void setVin(String vin);
 
     /**
      * Vehicle Identification Number.
@@ -1779,7 +1779,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return Vehicle Identification Number.
      */
-    public String getVin();
+    String getVin();
 
     /**
      * The four digit model year or year built. 
@@ -1832,7 +1832,7 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @param year The four digit model year or year built. 
      */
-    public void setYear(YearType year);
+    void setYear(YearType year);
 
     /**
      * The four digit model year or year built. 
@@ -1885,5 +1885,5 @@ public interface Vehicle extends GlobalInterface {
      * </tbody></table>
      * @return The four digit model year or year built. 
      */
-    public YearType getYear();
+    YearType getYear();
 }

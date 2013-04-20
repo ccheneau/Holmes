@@ -49,13 +49,13 @@ import com.sun.syndication.feed.module.cc.types.License;
  */
 public interface CreativeCommons extends Module {
 
-    public static final String URI = "rome:CreativeCommons";
+    String URI = "rome:CreativeCommons";
 
-    public License[] getAllLicenses();
+    License[] getAllLicenses();
 
-    public void setAllLicenses(License[] licenses);
+    void setAllLicenses(License[] licenses);
 
-    public License[] getLicenses();
+    License[] getLicenses();
 
-    public void setLicenses(License[] license);
+    void setLicenses(License[] license);
 }

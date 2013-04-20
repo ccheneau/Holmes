@@ -39,6 +39,8 @@
  */
 package com.sun.syndication.feed.module.base.types;
 
+import java.io.Serializable;
+
 import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 
 /** This class represents a quantity consisting of a float value and an optional
@@ -47,7 +49,8 @@ import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class FloatUnit implements CloneableType {
+public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
+    private static final long serialVersionUID = 6637187031089641048L;
     /**
      * Units
      */
@@ -124,9 +127,11 @@ public class FloatUnit implements CloneableType {
     /**
      * Duplicates the object.
      * @return Duplicate FloatUnit
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public FloatUnit clone() throws CloneNotSupportedException {
+        super.clone();
         return new FloatUnit(0 + this.value, this.units);
     }
 
@@ -136,7 +141,7 @@ public class FloatUnit implements CloneableType {
      */
     @Override
     public String toString() {
-        if ((this.units != null) && (this.units.trim().length() > 0)) {
+        if (this.units != null && this.units.trim().length() > 0) {
             return this.value + " " + this.units;
         } else {
             return Float.toString(value);
@@ -147,12 +152,11 @@ public class FloatUnit implements CloneableType {
     public boolean equals(Object o) {
         if (!(o instanceof FloatUnit)) return false;
         FloatUnit f = (FloatUnit) o;
-        if (f.getValue() != this.value) {
-            return false;
-        }
-        if (this.units == f.getUnits() || (this.units != null && this.units.equals(f.getUnits()))) {
-            return true;
-        }
+        if (f.getValue() != this.value) return false;
+
+        if (this.units == null && f.units == null) return true;
+        else if (this.units != null && this.units.equals(f.getUnits())) return true;
+
         return false;
     }
 

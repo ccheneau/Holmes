@@ -62,7 +62,7 @@ public class RSS20YahooParser extends RSS20Parser {
         Element rssRoot = document.getRootElement();
         Namespace defaultNS = rssRoot.getNamespace();
 
-        ok = (defaultNS != null) && defaultNS.equals(getRSSNamespace());
+        ok = defaultNS != null && defaultNS.equals(getRSSNamespace());
 
         return ok;
     }

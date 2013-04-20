@@ -35,7 +35,7 @@ public class Sync extends SSEModule {
         version = sync.version;
         conflict = sync.conflict;
         id = sync.id;
-        history = (sync.history == null ? null : (History) sync.history.clone());
+        history = sync.history == null ? null : (History) sync.history.clone();
         if (sync.conflicts != null) {
             conflicts = new ArrayList<Conflict>();
             conflicts.addAll(sync.conflicts);

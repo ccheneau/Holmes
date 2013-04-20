@@ -19,7 +19,7 @@ package com.sun.syndication.feed.module.sle;
 
 import com.sun.syndication.feed.impl.ObjectBean;
 import com.sun.syndication.feed.module.sle.io.LabelNamespaceElement;
-import com.sun.syndication.feed.module.sle.io.ModuleParser;
+import com.sun.syndication.feed.module.sle.io.ModuleParserImpl;
 import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
@@ -105,11 +105,12 @@ public class SleEntryImpl implements SleEntry {
      */
     @Override
     public String getUri() {
-        return ModuleParser.TEMP.getURI();
+        return ModuleParserImpl.TEMP.getURI();
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return obj.clone();
     }
 
@@ -133,7 +134,9 @@ public class SleEntryImpl implements SleEntry {
 
     @Override
     public boolean equals(Object o) {
-        return obj.equals(o);
+        if (o instanceof SleEntryImpl) return obj.equals(((SleEntryImpl) o).obj);
+        else if (o instanceof ObjectBean) return obj.equals(o);
+        else return false;
     }
 
     @Override

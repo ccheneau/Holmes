@@ -109,20 +109,17 @@ public class License implements Serializable {
         // current licenses, then make a new one with the same permissions.
         if (found == null && uri.startsWith("http://") && uri.toLowerCase().indexOf("creativecommons.org") != -1) {
             Iterator<String> it = License.lookupLicense.keySet().iterator();
-            while (it.hasNext() && (found == null)) {
-                try {
-                    String key = it.next();
-                    if (key.startsWith(CC_START)) {
-                        String licensePath = key.substring(CC_START.length(), key.length());
-                        StringTokenizer tok = new StringTokenizer(licensePath, "/");
-                        String license = tok.nextToken();
-                        /*String version = */tok.nextToken();
-                        if (uri.toLowerCase().indexOf("creativecommons.org/licenses/" + license) != -1) {
-                            License current = lookupLicense.get(key);
-                            found = new License(uri, current.getRequires(), current.getPermits());
-                        }
+            while (it.hasNext() && found == null) {
+                String key = it.next();
+                if (key.startsWith(CC_START)) {
+                    String licensePath = key.substring(CC_START.length(), key.length());
+                    StringTokenizer tok = new StringTokenizer(licensePath, "/");
+                    String license = tok.nextToken();
+                    /*String version = */tok.nextToken();
+                    if (uri.toLowerCase().indexOf("creativecommons.org/licenses/" + license) != -1) {
+                        License current = lookupLicense.get(key);
+                        found = new License(uri, current.getRequires(), current.getPermits());
                     }
-                } catch (Exception e) {
                 }
             }
         }

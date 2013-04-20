@@ -107,72 +107,74 @@ public class GMLGenerator implements ModuleGenerator {
         Element whereElement = new Element("where", GeoRSSModule.SIMPLE_NS);
         element.addContent(whereElement);
 
-        GeoRSSModule geoRSSModule = (GeoRSSModule) module;
-        AbstractGeometry geometry = geoRSSModule.getGeometry();
+        if (module instanceof GeoRSSModule) {
+            GeoRSSModule geoRSSModule = (GeoRSSModule) module;
+            AbstractGeometry geometry = geoRSSModule.getGeometry();
 
-        if (geometry instanceof Point) {
-            Position pos = ((Point) geometry).getPosition();
+            if (geometry instanceof Point) {
+                Position pos = ((Point) geometry).getPosition();
 
-            Element pointElement = new Element("Point", GeoRSSModule.GML_NS);
-            whereElement.addContent(pointElement);
+                Element pointElement = new Element("Point", GeoRSSModule.GML_NS);
+                whereElement.addContent(pointElement);
 
-            Element posElement = new Element("pos", GeoRSSModule.GML_NS);
-            posElement.addContent(String.valueOf(pos.getLatitude()) + " " + String.valueOf(pos.getLongitude()));
-            pointElement.addContent(posElement);
-        }
-
-        else if (geometry instanceof LineString) {
-            PositionList posList = ((LineString) geometry).getPositionList();
-
-            Element lineElement = new Element("LineString", GeoRSSModule.GML_NS);
-            lineElement.addContent(createPosListElement(posList));
-            whereElement.addContent(lineElement);
-        } else if (geometry instanceof Polygon) {
-            Element polygonElement = new Element("Polygon", GeoRSSModule.GML_NS);
-            {
-                AbstractRing ring = ((Polygon) geometry).getExterior();
-                if (ring instanceof LinearRing) {
-                    Element exteriorElement = new Element("exterior", GeoRSSModule.GML_NS);
-                    polygonElement.addContent(exteriorElement);
-                    Element ringElement = new Element("LinearRing", GeoRSSModule.GML_NS);
-                    exteriorElement.addContent(ringElement);
-                    ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
-
-                } else {
-                    logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
-                }
+                Element posElement = new Element("pos", GeoRSSModule.GML_NS);
+                posElement.addContent(String.valueOf(pos.getLatitude()) + " " + String.valueOf(pos.getLongitude()));
+                pointElement.addContent(posElement);
             }
-            List<AbstractRing> interiorList = ((Polygon) geometry).getInterior();
-            Iterator<AbstractRing> it = interiorList.iterator();
-            while (it.hasNext()) {
-                AbstractRing ring = it.next();
-                if (ring instanceof LinearRing) {
-                    Element interiorElement = new Element("interior", GeoRSSModule.GML_NS);
-                    polygonElement.addContent(interiorElement);
-                    Element ringElement = new Element("LinearRing", GeoRSSModule.GML_NS);
-                    interiorElement.addContent(ringElement);
-                    ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
 
-                } else {
-                    logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
+            else if (geometry instanceof LineString) {
+                PositionList posList = ((LineString) geometry).getPositionList();
+
+                Element lineElement = new Element("LineString", GeoRSSModule.GML_NS);
+                lineElement.addContent(createPosListElement(posList));
+                whereElement.addContent(lineElement);
+            } else if (geometry instanceof Polygon) {
+                Element polygonElement = new Element("Polygon", GeoRSSModule.GML_NS);
+                {
+                    AbstractRing ring = ((Polygon) geometry).getExterior();
+                    if (ring instanceof LinearRing) {
+                        Element exteriorElement = new Element("exterior", GeoRSSModule.GML_NS);
+                        polygonElement.addContent(exteriorElement);
+                        Element ringElement = new Element("LinearRing", GeoRSSModule.GML_NS);
+                        exteriorElement.addContent(ringElement);
+                        ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
+
+                    } else {
+                        logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
+                    }
                 }
+                List<AbstractRing> interiorList = ((Polygon) geometry).getInterior();
+                Iterator<AbstractRing> it = interiorList.iterator();
+                while (it.hasNext()) {
+                    AbstractRing ring = it.next();
+                    if (ring instanceof LinearRing) {
+                        Element interiorElement = new Element("interior", GeoRSSModule.GML_NS);
+                        polygonElement.addContent(interiorElement);
+                        Element ringElement = new Element("LinearRing", GeoRSSModule.GML_NS);
+                        interiorElement.addContent(ringElement);
+                        ringElement.addContent(createPosListElement(((LinearRing) ring).getPositionList()));
+
+                    } else {
+                        logger.log(Level.WARNING, "GeoRSS GML format can't handle rings of type: " + ring.getClass().getName());
+                    }
+                }
+                whereElement.addContent(polygonElement);
+            } else if (geometry instanceof Envelope) {
+                Envelope envelope = (Envelope) geometry;
+                Element envelopeElement = new Element("Envelope", GeoRSSModule.GML_NS);
+                whereElement.addContent(envelopeElement);
+
+                Element lowerElement = new Element("lowerCorner", GeoRSSModule.GML_NS);
+                lowerElement.addContent(String.valueOf(envelope.getMinLatitude()) + " " + String.valueOf(envelope.getMinLongitude()));
+                envelopeElement.addContent(lowerElement);
+
+                Element upperElement = new Element("upperCorner", GeoRSSModule.GML_NS);
+                upperElement.addContent(String.valueOf(envelope.getMaxLatitude()) + " " + String.valueOf(envelope.getMaxLongitude()));
+                envelopeElement.addContent(upperElement);
+
+            } else {
+                logger.log(Level.WARNING, "GeoRSS GML format can't handle geometries of type: " + geometry.getClass().getName());
             }
-            whereElement.addContent(polygonElement);
-        } else if (geometry instanceof Envelope) {
-            Envelope envelope = (Envelope) geometry;
-            Element envelopeElement = new Element("Envelope", GeoRSSModule.GML_NS);
-            whereElement.addContent(envelopeElement);
-
-            Element lowerElement = new Element("lowerCorner", GeoRSSModule.GML_NS);
-            lowerElement.addContent(String.valueOf(envelope.getMinLatitude()) + " " + String.valueOf(envelope.getMinLongitude()));
-            envelopeElement.addContent(lowerElement);
-
-            Element upperElement = new Element("upperCorner", GeoRSSModule.GML_NS);
-            upperElement.addContent(String.valueOf(envelope.getMaxLatitude()) + " " + String.valueOf(envelope.getMaxLongitude()));
-            envelopeElement.addContent(upperElement);
-
-        } else {
-            logger.log(Level.WARNING, "GeoRSS GML format can't handle geometries of type: " + geometry.getClass().getName());
         }
     }
 }

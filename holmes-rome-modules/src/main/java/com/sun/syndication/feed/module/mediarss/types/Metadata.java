@@ -23,17 +23,14 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
-
 import java.io.Serializable;
 import java.net.URI;
 
+import com.sun.syndication.feed.impl.EqualsBean;
+import com.sun.syndication.feed.impl.ToStringBean;
+
 /**
- *
- *
- *
- * Optional Elements
+ * Optional Elements.
  *        <p> The following elements are optional and may appear as sub-elements of &lt;channel&gt;, &lt;item&gt;, &lt;media:content&gt; and/or &lt;media:group&gt;.
  *
  *
@@ -577,8 +574,11 @@ public class Metadata implements Cloneable, Serializable {
      * <pre>        &lt;media:copyright url="http://blah.com/additional-info.html"&gt;2005 FooBar Media&lt;/media:copyright&gt;</pre>
      * <p><em>url</em> is the url for a terms of use page or additional copyright information. If the media is operating under a Creative Commons license, the Creative Commons module should be used instead. It is an optional attribute.</p>
      * @return Link to more copyright information.
+     * @throws CloneNotSupportedException 
      */
-    public Object clone() {
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         Metadata md = new Metadata();
         md.setCategories(getCategories());
         md.setCopyright(getCopyright());
@@ -598,18 +598,21 @@ public class Metadata implements Cloneable, Serializable {
         return md;
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(Metadata.class, this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(Metadata.class, this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(Metadata.class, this);
 

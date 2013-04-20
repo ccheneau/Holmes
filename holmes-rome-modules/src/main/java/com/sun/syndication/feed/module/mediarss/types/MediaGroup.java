@@ -127,22 +127,27 @@ public class MediaGroup implements Cloneable, Serializable {
         return metadata;
     }
 
-    public Object clone() {
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         return new MediaGroup(getContents(), getDefaultContentIndex(), getMetadata());
     }
 
+    @Override
     public boolean equals(Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
 
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
 

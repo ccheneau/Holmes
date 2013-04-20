@@ -50,82 +50,81 @@ import com.sun.syndication.feed.module.Module;
  */
 public interface ITunes extends Module {
 
-    public static final String URI = AbstractITunesObject.URI;
+    String URI = AbstractITunesObject.URI;
 
     /**
-     * Returns the author string for this feed or entry
+     * Returns the author string for this feed or entry.
      * @return Returns the author string for this feed or entry
      */
-    public String getAuthor();
+    String getAuthor();
 
     /**
-     * Sets the author string for this feed or entry
+     * Sets the author string for this feed or entry.
      * @param author Sets the author string for this feed or entry
      */
-    public void setAuthor(String author);
+    void setAuthor(String author);
 
     /**
-     * Boolean as to whether to block this feed or entry
+     * Boolean as to whether to block this feed or entry.
      * @return Boolean as to whether to block this feed or entry
      */
-    public boolean getBlock();
+    boolean getBlock();
 
     /**
-     * Boolean as to whether to block this feed or entry
+     * Boolean as to whether to block this feed or entry.
      * @param block Boolean as to whether to block this feed or entry
      */
-    public void setBlock(boolean block);
+    void setBlock(boolean block);
 
     /**
-     * Boolean as to whether this feed or entry contains adult content
+     * Boolean as to whether this feed or entry contains adult content.
      * @return Boolean as to whether this feed or entry contains adult content
      */
-    public boolean getExplicit();
+    boolean getExplicit();
 
     /**
-     * Boolean as to whether this feed or entry contains adult content
+     * Boolean as to whether this feed or entry contains adult content.
      * @param explicit Boolean as to whether this feed or entry contains adult content
      */
-    public void setExplicit(boolean explicit);
+    void setExplicit(boolean explicit);
 
     /**
-     * A list of keywords for this feed or entry
+     * A list of keywords for this feed or entry.
      *
      * Must not contain spaces
      * @return A list of keywords for this feed or entry
      */
-    public String[] getKeywords();
+    String[] getKeywords();
 
     /**
-     * A list of keywords for this feed or entry
+     * A list of keywords for this feed or entry.
      *
      * Must not contain spaces
      * @param keywords A list of keywords for this feed or enty
      */
-    public void setKeywords(String[] keywords);
+    void setKeywords(String[] keywords);
 
     /**
-     * A subtitle for this feed or entry
+     * A subtitle for this feed or entry.
      * @return A subtitle for this feed or entry
      */
-    public String getSubtitle();
+    String getSubtitle();
 
     /**
-     * A subtitle for this feed or entry
+     * A subtitle for this feed or entry.
      * @param subtitle A subtitle for this feed or entry
      */
-    public void setSubtitle(String subtitle);
+    void setSubtitle(String subtitle);
 
     /**
-     * A subtitle for this feed or entry
+     * A subtitle for this feed or entry.
      * @return A subtitle for this feed or entry
      */
-    public String getSummary();
+    String getSummary();
 
     /**
-     * A subtitle for this feed or entry
+     * A subtitle for this feed or entry.
      * @param summary A subtitle for this feed or entry
      */
-    public void setSummary(String summary);
-
+    void setSummary(String summary);
 }

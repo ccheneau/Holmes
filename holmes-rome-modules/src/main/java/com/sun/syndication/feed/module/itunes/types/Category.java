@@ -54,11 +54,14 @@ public class Category implements Serializable, Cloneable {
     private String name;
     private Subcategory subcategory;
 
-    /** Creates a new instance of Category */
+    /** 
+     * Creates a new instance of Category.
+    */
     public Category() {
     }
 
-    /** Creates a new instance of Category with a given name.
+    /** 
+     * Creates a new instance of Category with a given name.
      * @param name Name of the category.
      */
     public Category(String name) {
@@ -100,9 +103,11 @@ public class Category implements Serializable, Cloneable {
     /**
      * Returns a copy of this category.
      * @return Returns a copy of this category.
+     * @throws CloneNotSupportedException 
      */
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         Category c = new Category();
         c.setName(this.getName());
 
