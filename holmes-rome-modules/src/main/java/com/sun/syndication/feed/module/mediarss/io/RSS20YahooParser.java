@@ -29,20 +29,27 @@ import com.sun.syndication.feed.WireFeed;
 import com.sun.syndication.io.impl.RSS20Parser;
 
 /**
+ * The Class RSS20YahooParser.
+ *
  * @author Nathanial X. Freitas
- *
- *
  */
 public class RSS20YahooParser extends RSS20Parser {
-    //the Yahoo Namespace URI they sometimes use in the returns for video.search.yahoo.com RSS feed
+    /** the Yahoo Namespace URI they sometimes use in the returns for video.search.yahoo.com RSS feed. */
     private static final String RSS_URI = "urn:yahoo:yn";
 
-    //<rss xmlns:media="http://tools.search.yahoo.com/mrss/" xmlns="urn:yahoo:yn" version="2.0">
+    /**
+     * Constructor.
+     */
     public RSS20YahooParser() {
         this("rss_2.0yahoo");
     }
 
-    protected RSS20YahooParser(String type) {
+    /**
+     * Constructor.
+     *
+     * @param type the type
+     */
+    protected RSS20YahooParser(final String type) {
         super(type);
     }
 
@@ -56,7 +63,7 @@ public class RSS20YahooParser extends RSS20Parser {
      * @return <b>true</b> if the document is RSS1., <b>false</b> otherwise.
      */
     @Override
-    public boolean isMyType(Document document) {
+    public boolean isMyType(final Document document) {
         boolean ok = false;
 
         Element rssRoot = document.getRootElement();
@@ -82,9 +89,11 @@ public class RSS20YahooParser extends RSS20Parser {
      * After we parse the feed we put "rss_2.0" in it (so converters and generators work)
      * this parser is a phantom.
      *
+     * @param rssRoot the rss root
+     * @return wire feed
      */
     @Override
-    protected WireFeed parseChannel(Element rssRoot) {
+    protected WireFeed parseChannel(final Element rssRoot) {
         WireFeed wFeed = super.parseChannel(rssRoot);
         wFeed.setFeedType("rss_2.0");
 

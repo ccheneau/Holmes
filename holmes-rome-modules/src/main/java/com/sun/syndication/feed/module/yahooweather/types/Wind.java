@@ -83,7 +83,7 @@ public class Wind implements Serializable, Cloneable {
      * @param direction direction of wind in degrees
      * @param speed speed of wind
      */
-    public Wind(int chill, int direction, int speed) {
+    public Wind(final int chill, final int direction, final int speed) {
         super();
         this.chill = chill;
         this.direction = direction;
@@ -91,7 +91,7 @@ public class Wind implements Serializable, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 
@@ -119,7 +119,7 @@ public class Wind implements Serializable, Cloneable {
      * @param chill int temperature value
      * @see Units
      */
-    public void setChill(int chill) {
+    public void setChill(final int chill) {
         this.chill = chill;
     }
 
@@ -135,7 +135,7 @@ public class Wind implements Serializable, Cloneable {
      * Direction of wind in degrees
      * @param direction int direction of wind.
      */
-    public void setDirection(int direction) {
+    public void setDirection(final int direction) {
         this.direction = direction;
     }
 
@@ -153,7 +153,7 @@ public class Wind implements Serializable, Cloneable {
      * @param speed int speed of wind
      * @see Units
      */
-    public void setSpeed(int speed) {
+    public void setSpeed(final int speed) {
         this.speed = speed;
     }
 

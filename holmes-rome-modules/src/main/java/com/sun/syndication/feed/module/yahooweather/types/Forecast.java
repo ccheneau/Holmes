@@ -97,7 +97,7 @@ public class Forecast implements Serializable, Cloneable {
      *              Cloudy"
      * @param code ConditionCode instance for this forcast.
      */
-    public Forecast(String day, Date date, int low, int high, String text, ConditionCode code) {
+    public Forecast(final String day, final Date date, final int low, final int high, final String text, final ConditionCode code) {
         super();
         this.day = day;
         this.date = date;
@@ -121,7 +121,7 @@ public class Forecast implements Serializable, Cloneable {
      * @param day day of the week to which this forecast applies. Possible values
      *             are Mon Tue Wed Thu Fri Sat Sun (string)
      */
-    public void setDay(String day) {
+    public void setDay(final String day) {
         this.day = day;
     }
 
@@ -137,7 +137,7 @@ public class Forecast implements Serializable, Cloneable {
      * For date.
      * @param date the date to which this forecast applies
      */
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -155,7 +155,7 @@ public class Forecast implements Serializable, Cloneable {
      * @param low the forecasted low temperature for this day
      * @see Units
      */
-    public void setLow(int low) {
+    public void setLow(final int low) {
         this.low = low;
     }
 
@@ -173,7 +173,7 @@ public class Forecast implements Serializable, Cloneable {
      * @param high the forecasted high temperature for this day
      * @see Units
      */
-    public void setHigh(int high) {
+    public void setHigh(final int high) {
         this.high = high;
     }
 
@@ -191,7 +191,7 @@ public class Forecast implements Serializable, Cloneable {
      * @param text a textual description of conditions, for example, "Partly
      *              Cloudy"
      */
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
@@ -207,12 +207,12 @@ public class Forecast implements Serializable, Cloneable {
      * Condition code.
      * @param code the condition code for this forecast
      */
-    public void setCode(ConditionCode code) {
+    public void setCode(final ConditionCode code) {
         this.code = code;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 

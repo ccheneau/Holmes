@@ -31,12 +31,15 @@ import com.sun.syndication.io.impl.RSS20Generator;
 public class SSE091Generator implements DelegatingModuleGenerator {
     private RSS20Generator parentGenerator;
 
+    /**
+     * Constructor.
+     */
     public SSE091Generator() {
         parentGenerator = null;
     }
 
     @Override
-    public void setFeedGenerator(WireFeedGenerator feedGenerator) {
+    public void setFeedGenerator(final WireFeedGenerator feedGenerator) {
         if (feedGenerator instanceof RSS20Generator) parentGenerator = (RSS20Generator) feedGenerator;
     }
 
@@ -58,8 +61,11 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         return SSEModule.NAMESPACES;
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.io.ModuleGenerator#generate(com.sun.syndication.feed.module.Module, org.jdom.Element)
+     */
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof SSEModule)) {
             return;
         }
@@ -81,7 +87,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateSharing(Sharing sharing, Element parent) {
+    /**
+     * Generate sharing.
+     *
+     * @param sharing the sharing
+     * @param parent the parent
+     */
+    private void generateSharing(final Sharing sharing, final Element parent) {
         // inject sse sharingModule element
         Element sharingElement = new Element(Sharing.NAME, SSEModule.SSE_NS);
         generateAttribute(sharingElement, Sharing.UNTIL_ATTRIBUTE, sharing.getUntil());
@@ -99,7 +111,12 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateRelated(Related related) {
+    /**
+     * Generate related.
+     *
+     * @param related the related
+     */
+    private void generateRelated(final Related related) {
         Element relatedElement = new Element(Related.NAME, SSEModule.SSE_NS);
         generateAttribute(relatedElement, Related.SINCE_ATTRIBUTE, related.getSince());
         generateAttribute(relatedElement, Related.UNTIL_ATTRIBUTE, related.getUntil());
@@ -108,7 +125,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         generateAttribute(relatedElement, Related.TYPE_ATTRIBUTE, related.getType());
     }
 
-    protected void generateSync(Sync sync, Element parent) {
+    /**
+     * Generate sync.
+     *
+     * @param sync the sync
+     * @param parent the parent
+     */
+    protected void generateSync(final Sync sync, final Element parent) {
         Element syncElement = new Element(Sync.NAME, SSEModule.SSE_NS);
         generateAttribute(syncElement, Sync.DELETED_ATTRIBUTE, sync.isDeleted());
         generateAttribute(syncElement, Sync.VERSION_ATTRIBUTE, sync.getVersion());
@@ -119,7 +142,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         parent.addContent(syncElement);
     }
 
-    private void generateConflicts(Element syncElement, List<Conflict> conflicts) {
+    /**
+     * Generate conflicts.
+     *
+     * @param syncElement the sync element
+     * @param conflicts the conflicts
+     */
+    private void generateConflicts(final Element syncElement, final List<Conflict> conflicts) {
         if (conflicts != null) {
             Element conflictsElement = new Element(Conflicts.NAME, SSEModule.SSE_NS);
             for (Iterator<Conflict> confictIter = conflicts.iterator(); confictIter.hasNext();) {
@@ -135,7 +164,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateItem(Element conflictElement, Item item) {
+    /**
+     * Generate item.
+     *
+     * @param conflictElement the conflict element
+     * @param item the item
+     */
+    private void generateItem(final Element conflictElement, final Item item) {
         if (item != null) {
             Element itemElement = new Element("item");
             parentGenerator.populateItem(item, itemElement, 0);
@@ -144,7 +179,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateHistory(Element syncElement, History history) {
+    /**
+     * Generate history.
+     *
+     * @param syncElement the sync element
+     * @param history the history
+     */
+    private void generateHistory(final Element syncElement, final History history) {
         if (history != null) {
             Element historyElement = new Element(History.NAME, SSEModule.SSE_NS);
             generateAttribute(historyElement, History.BY_ATTRIBUTE, history.getBy());
@@ -154,7 +195,13 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateUpdates(Element historyElement, List<Update> updates) {
+    /**
+     * Generate updates.
+     *
+     * @param historyElement the history element
+     * @param updates the updates
+     */
+    private void generateUpdates(final Element historyElement, final List<Update> updates) {
         if (updates != null) {
             for (Iterator<Update> updateIter = updates.iterator(); updateIter.hasNext();) {
                 Element updateElement = new Element(Update.NAME, SSEModule.SSE_NS);
@@ -166,13 +213,26 @@ public class SSE091Generator implements DelegatingModuleGenerator {
         }
     }
 
-    private void generateAttribute(Element syncElement, String attrName, Object attribute) {
+    /**
+     * Generate attribute.
+     *
+     * @param syncElement the sync element
+     * @param attrName the attr name
+     * @param attribute the attribute
+     */
+    private void generateAttribute(final Element syncElement, final String attrName, final Object attribute) {
         if (attribute != null) {
             syncElement.setAttribute(attrName, toString(attribute));
         }
     }
 
-    private String toString(Object o) {
+    /**
+     * To string.
+     *
+     * @param o the o
+     * @return string
+     */
+    private String toString(final Object o) {
         if (o != null) {
             if (o instanceof Date) {
                 return DateParser.formatRFC822((Date) o);

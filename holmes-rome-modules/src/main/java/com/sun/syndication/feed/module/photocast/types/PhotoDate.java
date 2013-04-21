@@ -65,7 +65,7 @@ public class PhotoDate extends Date {
      * Creates a new instance of PhotoDate with the timestamp provided.
      * @param time milliseconds time
      */
-    public PhotoDate(long time) {
+    public PhotoDate(final long time) {
         super(time);
     }
 
@@ -74,7 +74,7 @@ public class PhotoDate extends Date {
      * number of days since 00:00:00 01/01/00.
      * @param photoDateValue fractional number of days since 00:00:00 01/01/00
      */
-    public PhotoDate(double photoDateValue) {
+    public PhotoDate(final double photoDateValue) {
         BigDecimal d = new BigDecimal(photoDateValue);
         d = d.multiply(new BigDecimal(DAY));
         d = d.add(new BigDecimal(Y2K));
@@ -97,9 +97,8 @@ public class PhotoDate extends Date {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof Date || ((Date) o).getTime() / 1000 == this.getTime() / 1000) return true;
-        else return false;
+    public boolean equals(final Object o) {
+        return o instanceof Date || ((Date) o).getTime() / 1000 == this.getTime() / 1000;
     }
 
     @Override

@@ -25,7 +25,8 @@ package com.sun.syndication.feed.module.mediarss.types;
 
 import java.io.Serializable;
 
-/** Simple data bean parent for scheme-value type entities.
+/** 
+ * Simple data bean parent for scheme-value type entities.
  *
  * @author cooper
  */
@@ -34,11 +35,14 @@ public abstract class AbstractSchemeValue implements Serializable {
     private String scheme;
     private String value;
 
-    public AbstractSchemeValue(String scheme, String value) {
-        if (scheme == null || value == null) {
-            throw new NullPointerException("Scheme and value cannot be null.");
-        }
-
+    /**
+     * Constructor.
+     *
+     * @param scheme the scheme
+     * @param value the value
+     */
+    public AbstractSchemeValue(final String scheme, final String value) {
+        if (scheme == null || value == null) throw new NullPointerException("Scheme or value cannot be null.");
         this.scheme = scheme;
         this.value = value;
     }

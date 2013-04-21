@@ -46,22 +46,33 @@ package com.sun.syndication.feed.module.content;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.syndication.feed.module.ModuleImpl;
+
 /**
  * @version $Revision: 1.4 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImpl implements ContentModule {
+public class ContentModuleImpl extends ModuleImpl implements ContentModule {
     private static final long serialVersionUID = 5321734934971547821L;
 
     private List<String> encodeds;
     private List<String> contents;
     private List<ContentItem> contentItems;
 
+    /**
+     * Constructor.
+     */
     public ContentModuleImpl() {
         super(ContentModuleImpl.class, URI);
     }
 
-    protected ContentModuleImpl(java.lang.Class<?> beanClass, java.lang.String uri) {
+    /**
+     * Constructor.
+     *
+     * @param beanClass the bean class
+     * @param uri the uri
+     */
+    protected ContentModuleImpl(final Class<?> beanClass, final String uri) {
         super(beanClass, uri);
     }
 
@@ -72,12 +83,12 @@ public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImp
     }
 
     @Override
-    public void setEncodeds(List<String> encodeds) {
+    public void setEncodeds(final List<String> encodeds) {
         this.encodeds = encodeds;
     }
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         ContentModule cm = (ContentModule) obj;
         this.setEncodeds(cm.getEncodeds());
         this.setContentItems(cm.getContentItems());
@@ -96,7 +107,7 @@ public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImp
     }
 
     @Override
-    public void setContentItems(List<ContentItem> list) {
+    public void setContentItems(final List<ContentItem> list) {
         this.contentItems = list;
     }
 
@@ -107,12 +118,12 @@ public class ContentModuleImpl extends com.sun.syndication.feed.module.ModuleImp
     }
 
     @Override
-    public void setContents(List<String> contents) {
+    public void setContents(final List<String> contents) {
         this.contents = contents;
     }
 
     @Override
-    public String toString(String str) {
+    public String toString() {
         return contentItems.toString();
     }
 }

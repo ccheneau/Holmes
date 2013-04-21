@@ -62,7 +62,7 @@ public class Metadata implements Serializable {
      * @param photoDate PhotoDate value to use
      * @param comments comments about this photo.
      */
-    public Metadata(PhotoDate photoDate, String comments) {
+    public Metadata(final PhotoDate photoDate, final String comments) {
         this.photoDate = photoDate == null ? new PhotoDate() : photoDate;
         this.comments = comments == null ? "" : comments;
     }
@@ -90,21 +90,18 @@ public class Metadata implements Serializable {
     @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(Metadata.class, this);
-
         return tsBean.toString();
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(Metadata.class, this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(Metadata.class, this);
-
         return equals.beanHashCode();
     }
 }

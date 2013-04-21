@@ -50,16 +50,34 @@ import com.sun.syndication.feed.module.yahooweather.types.Wind;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModule, YWeatherFeedModule {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5385569481249542934L;
 
+    /** The location. */
     private Location location;
+
+    /** The astronomy. */
     private Astronomy astronomy;
+
+    /** The atmosphere. */
     private Atmosphere atmosphere;
+
+    /** The units. */
     private Units units;
+
+    /** The condition. */
     private Condition condition;
+
+    /** The wind. */
     private Wind wind;
+
+    /** The forecasts. */
     private Forecast[] forecasts;
 
+    /**
+     * Constructor.
+     */
     public YWeatherModuleImpl() {
         super(YWeatherModuleImpl.class, YWeatherModule.URI);
     }
@@ -69,8 +87,11 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
         return CopyFromInterface.class;
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.CopyFrom#copyFrom(java.lang.Object)
+     */
     @Override
-    public void copyFrom(Object o) {
+    public void copyFrom(final Object o) {
         YWeatherModuleImpl from = (YWeatherModuleImpl) o;
         try {
             this.setAstronomy((from.getAstronomy() != null) ? (Astronomy) from.getAstronomy().clone() : null);
@@ -125,7 +146,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setLocation(Location location) {
+    public void setLocation(final Location location) {
         this.location = location;
     }
 
@@ -135,7 +156,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setAstronomy(Astronomy astronomy) {
+    public void setAstronomy(final Astronomy astronomy) {
         this.astronomy = astronomy;
     }
 
@@ -145,7 +166,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setUnits(Units units) {
+    public void setUnits(final Units units) {
         this.units = units;
     }
 
@@ -155,7 +176,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setCondition(Condition condition) {
+    public void setCondition(final Condition condition) {
         this.condition = condition;
     }
 
@@ -165,7 +186,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setForecasts(Forecast[] forecasts) {
+    public void setForecasts(final Forecast[] forecasts) {
         this.forecasts = forecasts;
     }
 
@@ -175,7 +196,7 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setWind(Wind wind) {
+    public void setWind(final Wind wind) {
         this.wind = wind;
     }
 
@@ -185,10 +206,13 @@ public class YWeatherModuleImpl extends ModuleImpl implements YWeatherEntryModul
     }
 
     @Override
-    public void setAtmosphere(Atmosphere atmosphere) {
+    public void setAtmosphere(final Atmosphere atmosphere) {
         this.atmosphere = atmosphere;
     }
 
+    /**
+     * The Interface CopyFromInterface.
+     */
     public interface CopyFromInterface extends YWeatherFeedModule, YWeatherEntryModule {
     }
 }

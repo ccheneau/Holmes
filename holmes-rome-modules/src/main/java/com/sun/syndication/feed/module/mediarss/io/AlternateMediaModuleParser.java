@@ -19,15 +19,23 @@ public class AlternateMediaModuleParser extends MediaModuleParser {
 
     private static final Namespace NS = Namespace.getNamespace("http://search.yahoo.com/mrss");
 
-    /** Creates a new instance of AlternateMediaModuleParser */
+    /**
+     * Creates a new instance of AlternateMediaModuleParser.
+     */
     public AlternateMediaModuleParser() {
         super();
     }
 
+    @Override
     public String getNamespaceUri() {
         return "http://search.yahoo.com/mrss";
     }
 
+    /**
+     * Gets the name space.
+     *
+     * @return the name space
+     */
     public Namespace getNS() {
         return AlternateMediaModuleParser.NS;
     }

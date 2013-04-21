@@ -281,10 +281,10 @@ import com.sun.syndication.feed.impl.EqualsBean;
  * @version $Id: ConditionCode.java,v 1.2 2008/01/22 14:50:05 kebernet Exp $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ConditionCode implements Serializable {
+public final class ConditionCode implements Serializable {
     private static final long serialVersionUID = -5139410895816391242L;
 
-    private transient static Map<Integer, ConditionCode> LOOKUP = new HashMap<Integer, ConditionCode>();
+    private static transient Map<Integer, ConditionCode> lookup = new HashMap<Integer, ConditionCode>();
     public static final ConditionCode TORNADO = new ConditionCode(0, "tornado");
     public static final ConditionCode TROPICAL_STORM = new ConditionCode(1, "tropical storm");
     public static final ConditionCode HURRICANE = new ConditionCode(2, "hurricane");
@@ -338,11 +338,17 @@ public class ConditionCode implements Serializable {
     private String description;
     private transient EqualsBean equals = new EqualsBean(ConditionCode.class, this);
 
-    private ConditionCode(int code, String description) {
+    /**
+     * Constructor.
+     *
+     * @param code the code
+     * @param description the description
+     */
+    private ConditionCode(final int code, final String description) {
         this.code = code;
         this.description = description;
 
-        Object old = ConditionCode.LOOKUP.put(Integer.valueOf(code), this);
+        Object old = ConditionCode.lookup.put(Integer.valueOf(code), this);
 
         if (old != null) {
             throw new RuntimeException("Duplicate condition code!");
@@ -358,8 +364,9 @@ public class ConditionCode implements Serializable {
     }
 
     /**
-     * Text description of condition (from the table at top of class)
-     * @return
+     * Text description of condition (from the table at top of class).
+     *
+     * @return the description
      */
     public String getDescription() {
         return description;
@@ -370,12 +377,12 @@ public class ConditionCode implements Serializable {
      * @param code integer code to search for
      * @return a ConditionCode instance or null
      */
-    public static ConditionCode fromCode(int code) {
-        return ConditionCode.LOOKUP.get(Integer.valueOf(code));
+    public static ConditionCode fromCode(final int code) {
+        return ConditionCode.lookup.get(Integer.valueOf(code));
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return equals.equals(o);
     }
 

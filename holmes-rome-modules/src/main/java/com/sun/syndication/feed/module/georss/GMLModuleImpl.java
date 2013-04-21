@@ -27,6 +27,9 @@ package com.sun.syndication.feed.module.georss;
 public class GMLModuleImpl extends GeoRSSModule {
     private static final long serialVersionUID = -5121012655274558600L;
 
+    /**
+     * Constructor.
+     */
     public GMLModuleImpl() {
         super(GeoRSSModule.class, GeoRSSModule.GEORSS_GML_URI);
     }

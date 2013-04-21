@@ -44,18 +44,40 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.cc.types.License;
 
 /**
+ * The Interface CreativeCommons.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface CreativeCommons extends Module {
 
+    /** The uri. */
     String URI = "rome:CreativeCommons";
 
+    /**
+     * Gets the all licenses.
+     *
+     * @return the all licenses
+     */
     License[] getAllLicenses();
 
+    /**
+     * Sets the all licenses.
+     *
+     * @param licenses the new all licenses
+     */
     void setAllLicenses(License[] licenses);
 
+    /**
+     * Gets the licenses.
+     *
+     * @return the licenses
+     */
     License[] getLicenses();
 
+    /**
+     * Sets the licenses.
+     *
+     * @param license the new licenses
+     */
     void setLicenses(License[] license);
 }

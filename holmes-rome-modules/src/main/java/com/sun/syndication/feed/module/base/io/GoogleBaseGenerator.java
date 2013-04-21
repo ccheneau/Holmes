@@ -74,7 +74,7 @@ import com.sun.syndication.io.ModuleGenerator;
  * @version $Revision: 1.1 $
  */
 public class GoogleBaseGenerator implements ModuleGenerator {
-    private static final Logger logger = Logger.getLogger(GoogleBaseGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GoogleBaseGenerator.class.getName());
 
     private static final Namespace NS = Namespace.getNamespace("g-core", GoogleBase.URI);
 
@@ -97,13 +97,13 @@ public class GoogleBaseGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (module instanceof GoogleBaseImpl) {
             GoogleBaseImpl mod = (GoogleBaseImpl) module;
             PropertyDescriptor[] pds = GoogleBaseParser.pds;
 
             for (int i = 0; i < pds.length; i++) {
-                String tagName = GoogleBaseParser.PROPS2TAGS.getProperty(pds[i].getName());
+                String tagName = GoogleBaseParser.getProperties().getProperty(pds[i].getName());
 
                 if (tagName == null) {
                     continue;
@@ -124,17 +124,24 @@ public class GoogleBaseGenerator implements ModuleGenerator {
                         }
                     }
                 } catch (InvocationTargetException e) {
-                    logger.log(Level.WARNING, e.getMessage());
+                    LOGGER.log(Level.WARNING, e.getMessage());
                 } catch (IllegalAccessException e) {
-                    logger.log(Level.WARNING, e.getMessage());
+                    LOGGER.log(Level.WARNING, e.getMessage());
                 } catch (IllegalArgumentException e) {
-                    logger.log(Level.WARNING, e.getMessage());
+                    LOGGER.log(Level.WARNING, e.getMessage());
                 }
             }
         }
     }
 
-    public Element generateTag(Object o, String tagName) {
+    /**
+     * Generate tag.
+     *
+     * @param o the o
+     * @param tagName the tag name
+     * @return element
+     */
+    public Element generateTag(final Object o, final String tagName) {
         if (o instanceof URL || o instanceof Float || o instanceof Boolean || o instanceof Integer || o instanceof String || o instanceof FloatUnit
                 || o instanceof IntUnit || o instanceof GenderEnumeration || o instanceof PaymentTypeEnumeration || o instanceof PriceTypeEnumeration
                 || o instanceof CurrencyEnumeration || o instanceof Size || o instanceof YearType) {
@@ -166,7 +173,14 @@ public class GoogleBaseGenerator implements ModuleGenerator {
         throw new RuntimeException("Unknown class type to handle: " + o.getClass().getName());
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, GoogleBaseGenerator.NS);
         element.addContent(value);
 

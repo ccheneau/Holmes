@@ -64,7 +64,7 @@ public class DateTimeRange implements CloneableType<DateTimeRange>, Serializable
      * @param start Beginning of the timeframe.
      * @param end End of the Timeframe.
      */
-    public DateTimeRange(Date start, Date end) {
+    public DateTimeRange(final Date start, final Date end) {
         this.start = start;
         this.end = end;
     }
@@ -116,7 +116,7 @@ public class DateTimeRange implements CloneableType<DateTimeRange>, Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || !(o instanceof DateTimeRange)) return false;
         DateTimeRange d = (DateTimeRange) o;
         if (this.start == d.getStart() && this.end == d.getEnd()) {
@@ -135,5 +135,4 @@ public class DateTimeRange implements CloneableType<DateTimeRange>, Serializable
         result = prime * result + ((start == null) ? 0 : start.hashCode());
         return result;
     }
-
 }

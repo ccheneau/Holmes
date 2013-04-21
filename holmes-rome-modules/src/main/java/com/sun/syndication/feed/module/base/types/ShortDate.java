@@ -62,7 +62,7 @@ public class ShortDate extends Date implements CloneableType<ShortDate> {
      * Creates a new Short Date based on a Date value.
      * @param date Date value to read from.
      */
-    public ShortDate(Date date) {
+    public ShortDate(final Date date) {
         super(date.getTime());
     }
 
@@ -70,7 +70,7 @@ public class ShortDate extends Date implements CloneableType<ShortDate> {
      * Creates a new ShortDate based on a millisecond time.
      * @param time Millisecond time to start with.
      */
-    public ShortDate(long time) {
+    public ShortDate(final long time) {
         super(time);
     }
 

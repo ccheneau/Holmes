@@ -40,7 +40,7 @@ public class Related extends SSEModule {
     public static final String UNTIL_ATTRIBUTE = "until";
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         Related related = (Related) obj;
         related.link = link;
         related.since = since == null ? null : (Date) since.clone();
@@ -63,7 +63,7 @@ public class Related extends SSEModule {
      *
      * @param link the URL for related feeds.
      */
-    public void setLink(String link) {
+    public void setLink(final String link) {
         this.link = link;
     }
 
@@ -81,7 +81,7 @@ public class Related extends SSEModule {
      *
      * @param title the name or description of the related feed.
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -104,7 +104,7 @@ public class Related extends SSEModule {
      *
      * @param type the type of relationship, complete or aggregated.
      */
-    public void setType(Integer type) {
+    public void setType(final Integer type) {
         this.type = type;
     }
 
@@ -123,7 +123,7 @@ public class Related extends SSEModule {
      *
      * @param since the starting point of the related feed.
      */
-    public void setSince(Date since) {
+    public void setSince(final Date since) {
         this.since = since;
     }
 
@@ -141,7 +141,7 @@ public class Related extends SSEModule {
      *
      * @param until the ending point of the feed.
      */
-    public void setUntil(Date until) {
+    public void setUntil(final Date until) {
         this.until = until;
     }
 }

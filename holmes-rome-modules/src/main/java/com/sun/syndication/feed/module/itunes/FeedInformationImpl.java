@@ -74,7 +74,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      */
     @Override
     public List<Category> getCategories() {
-        return (categories == null) ? (categories = new ArrayList<Category>()) : categories;
+        return categories == null ? new ArrayList<Category>() : categories;
     }
 
     /**
@@ -82,7 +82,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * @param categories The parent categories for this feed
      */
     @Override
-    public void setCategories(List<Category> categories) {
+    public void setCategories(final List<Category> categories) {
         this.categories = categories;
     }
 
@@ -100,7 +100,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * @param ownerName Sets the owner name for the feed
      */
     @Override
-    public void setOwnerName(String ownerName) {
+    public void setOwnerName(final String ownerName) {
         this.ownerName = ownerName;
     }
 
@@ -118,7 +118,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * @param ownerEmailAddress Sets the owner email address for the feed.
      */
     @Override
-    public void setOwnerEmailAddress(String ownerEmailAddress) {
+    public void setOwnerEmailAddress(final String ownerEmailAddress) {
         this.ownerEmailAddress = ownerEmailAddress;
     }
 
@@ -140,7 +140,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * @param image Sets the URL for the image.
      */
     @Override
-    public void setImage(URL image) {
+    public void setImage(final URL image) {
         this.image = image;
     }
 
@@ -149,7 +149,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
      * @param obj object to copy property values from
      */
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         FeedInformationImpl info = (FeedInformationImpl) obj;
         this.setAuthor(info.getAuthor());
         this.setBlock(info.getBlock());

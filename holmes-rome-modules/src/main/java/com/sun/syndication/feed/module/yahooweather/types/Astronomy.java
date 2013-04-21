@@ -74,7 +74,7 @@ public class Astronomy implements Serializable, Cloneable {
      * @param sunrise time of sunrise (from 0ms)
      * @param sunset time of sunset (from 0ms)
      */
-    public Astronomy(Date sunrise, Date sunset) {
+    public Astronomy(final Date sunrise, final Date sunset) {
         this.sunrise = sunrise;
         this.sunset = sunset;
     }
@@ -87,7 +87,7 @@ public class Astronomy implements Serializable, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 
@@ -113,7 +113,7 @@ public class Astronomy implements Serializable, Cloneable {
      * Time of sunrise
      * @param sunrise ime of sunrise (from 0ms)
      */
-    public void setSunrise(Date sunrise) {
+    public void setSunrise(final Date sunrise) {
         this.sunrise = sunrise;
     }
 
@@ -129,7 +129,7 @@ public class Astronomy implements Serializable, Cloneable {
      * Time of sunset
      * @param sunset time of sunset (from 0ms)
      */
-    public void setSunset(Date sunset) {
+    public void setSunset(final Date sunset) {
         this.sunset = sunset;
     }
 }

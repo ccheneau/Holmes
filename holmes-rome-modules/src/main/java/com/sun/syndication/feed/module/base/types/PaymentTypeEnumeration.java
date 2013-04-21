@@ -47,10 +47,10 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class PaymentTypeEnumeration implements Cloneable, Serializable {
+public final class PaymentTypeEnumeration implements Cloneable, Serializable {
     private static final long serialVersionUID = 6444069283656132873L;
 
-    private static final HashMap<String, PaymentTypeEnumeration> lookup = new HashMap<String, PaymentTypeEnumeration>();
+    private static final HashMap<String, PaymentTypeEnumeration> LOOKUP = new HashMap<String, PaymentTypeEnumeration>();
     public static final PaymentTypeEnumeration CASH = new PaymentTypeEnumeration("Cash");
     public static final PaymentTypeEnumeration CHECK = new PaymentTypeEnumeration("Check");
     public static final PaymentTypeEnumeration TRAVELERS_CHECK = new PaymentTypeEnumeration("Traveler�s Check");
@@ -62,18 +62,28 @@ public class PaymentTypeEnumeration implements Cloneable, Serializable {
     public static final PaymentTypeEnumeration PAYPAL = new PaymentTypeEnumeration("Paypal");
     private String value;
 
-    /** Creates a new instance of PaymentTypeEnumeration */
-    private PaymentTypeEnumeration(String value) {
+    /**
+     * Creates a new instance of PaymentTypeEnumeration.
+     *
+     * @param value the value
+     */
+    private PaymentTypeEnumeration(final String value) {
         this.value = value;
-        lookup.put(this.value.toUpperCase(), this);
+        LOOKUP.put(this.value.toUpperCase(), this);
+    }
+
+    /**
+     * Find by value.
+     *
+     * @param value the value
+     * @return payment type enumeration
+     */
+    public static PaymentTypeEnumeration findByValue(final String value) {
+        return LOOKUP.get(value.toUpperCase());
     }
 
     public String getValue() {
         return value;
-    }
-
-    public static PaymentTypeEnumeration findByValue(String value) {
-        return lookup.get(value.toUpperCase());
     }
 
     @Override

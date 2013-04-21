@@ -38,7 +38,7 @@ public class StringValue implements EntryValue {
     public StringValue() {
     }
 
-    public void setElement(String element) {
+    public void setElement(final String element) {
         this.element = element;
     }
 
@@ -47,7 +47,7 @@ public class StringValue implements EntryValue {
         return element;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
@@ -56,7 +56,7 @@ public class StringValue implements EntryValue {
         return label;
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
     }
 
@@ -78,7 +78,7 @@ public class StringValue implements EntryValue {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof StringValue) return obj.equals(((StringValue) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         else return false;
@@ -99,7 +99,7 @@ public class StringValue implements EntryValue {
         return namespace;
     }
 
-    public void setNamespace(Namespace namespace) {
+    public void setNamespace(final Namespace namespace) {
         this.namespace = namespace == null ? Namespace.XML_NAMESPACE : namespace;
     }
 }

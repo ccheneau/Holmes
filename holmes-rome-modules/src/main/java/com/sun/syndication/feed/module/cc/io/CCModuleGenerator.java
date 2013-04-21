@@ -77,7 +77,7 @@ public class CCModuleGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         Element root = element;
         while (root.getParentElement() != null) {
             root = root.getParentElement();
@@ -101,7 +101,13 @@ public class CCModuleGenerator implements ModuleGenerator {
         return CreativeCommons.URI;
     }
 
-    private void generateRSS1(CreativeCommons module, Element element) {
+    /**
+     * Generate RSS1.
+     *
+     * @param module the module
+     * @param element the element
+     */
+    private void generateRSS1(final CreativeCommons module, final Element element) {
         //throw new RuntimeException( "Generating RSS1 Feeds not currently Supported.");
 
         if (element.getName().equals("channel")) {
@@ -136,7 +142,13 @@ public class CCModuleGenerator implements ModuleGenerator {
 
     }
 
-    private void generateRSS2(CreativeCommons module, Element element) {
+    /**
+     * Generate RSS2
+     *
+     * @param module the module
+     * @param element the element
+     */
+    private void generateRSS2(final CreativeCommons module, final Element element) {
         License[] licenses = module.getLicenses();
         for (int i = 0; i < licenses.length; i++) {
             Element license = new Element("license", RSS2);

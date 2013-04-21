@@ -54,13 +54,13 @@ public class YearType implements CloneableType<YearType>, Serializable {
     /**
      * year value
      */
-    int year;
+    private final int year;
 
     /**
      * Creates a new year from a string value.
      * @param year String to parse.
      */
-    public YearType(int year) {
+    public YearType(final int year) {
         this.year = year;
     }
 
@@ -68,7 +68,7 @@ public class YearType implements CloneableType<YearType>, Serializable {
      * Creates a new year from a string value.
      * @param year String to parse.
      */
-    public YearType(String year) {
+    public YearType(final String year) {
         this.year = Integer.parseInt(year.trim());
     }
 
@@ -76,7 +76,7 @@ public class YearType implements CloneableType<YearType>, Serializable {
      * Creates a new instance of YearType
      * @param date Date to get the year from.
      */
-    public YearType(Date date) {
+    public YearType(final Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         this.year = cal.get(Calendar.YEAR);
@@ -93,6 +93,10 @@ public class YearType implements CloneableType<YearType>, Serializable {
         return new YearType(this.year);
     }
 
+    public int getYear() {
+        return year;
+    }
+
     /**
      * Returns a String representation of this object.
      * @return Returns a String representation of this object.
@@ -103,7 +107,7 @@ public class YearType implements CloneableType<YearType>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof YearType)) return false;
         if (this.toString().equals(o.toString())) return true;
         return false;

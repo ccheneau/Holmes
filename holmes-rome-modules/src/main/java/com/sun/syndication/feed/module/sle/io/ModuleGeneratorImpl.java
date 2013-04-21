@@ -31,7 +31,9 @@ public class ModuleGeneratorImpl implements ModuleGenerator {
         NAMESPACES.add(ModuleParserImpl.NS);
     }
 
-    /** Creates a new instance of ModuleGenerator */
+    /**
+     * Creates a new instance of ModuleGenerator.
+     */
     public ModuleGeneratorImpl() {
         super();
     }
@@ -69,7 +71,7 @@ public class ModuleGeneratorImpl implements ModuleGenerator {
      * @param element the XML node to inject the module metadata to.
      */
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof SimpleListExtension)) {
             return;
         }
@@ -117,7 +119,14 @@ public class ModuleGeneratorImpl implements ModuleGenerator {
         }
     }
 
-    protected void addNotNullAttribute(Element target, String name, Object value) {
+    /**
+     * Adds the not null attribute.
+     *
+     * @param target the target
+     * @param name the name
+     * @param value the value
+     */
+    protected void addNotNullAttribute(final Element target, final String name, final Object value) {
         if (target == null || value == null) {
             return;
         } else {
@@ -125,21 +134,34 @@ public class ModuleGeneratorImpl implements ModuleGenerator {
         }
     }
 
-    protected Element addNotNullElement(Element target, String name, Object value) {
+    /**
+     * Adds the not null element.
+     *
+     * @param target the target
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element addNotNullElement(final Element target, final String name, final Object value) {
         if (value == null) {
             return null;
         } else {
             Element e = generateSimpleElement(name, value.toString());
             target.addContent(e);
-
             return e;
         }
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, ModuleParserImpl.NS);
         element.addContent(value);
-
         return element;
     }
 }

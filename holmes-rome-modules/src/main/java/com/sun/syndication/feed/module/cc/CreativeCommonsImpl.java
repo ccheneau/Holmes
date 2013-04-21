@@ -61,7 +61,13 @@ public class CreativeCommonsImpl implements CreativeCommons {
     private License[] allLicenses;
     private License[] licenses;
 
-    protected Object arrayCopy(Object[] source) {
+    /**
+     * Array copy.
+     *
+     * @param source the source
+     * @return object
+     */
+    protected Object arrayCopy(final Object[] source) {
         if (source == null) {
             return null;
         }
@@ -81,7 +87,7 @@ public class CreativeCommonsImpl implements CreativeCommons {
     }
 
     @Override
-    public void setAllLicenses(License[] allLicenses) {
+    public void setAllLicenses(final License[] allLicenses) {
         this.allLicenses = allLicenses;
     }
 
@@ -104,14 +110,14 @@ public class CreativeCommonsImpl implements CreativeCommons {
     }
 
     @Override
-    public void copyFrom(Object object) {
+    public void copyFrom(final Object object) {
         CreativeCommons source = (CreativeCommons) object;
         this.setAllLicenses((License[]) arrayCopy(source.getAllLicenses()));
         this.setLicenses(source.getLicenses());
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
@@ -132,13 +138,12 @@ public class CreativeCommonsImpl implements CreativeCommons {
     }
 
     @Override
-    public void setLicenses(License[] licenses) {
+    public void setLicenses(final License[] licenses) {
         this.licenses = licenses;
     }
 
     @Override
     public String toString() {
-
         ToStringBean tsb = new ToStringBean(CreativeCommonsImpl.class, this);
         return tsb.toString();
     }

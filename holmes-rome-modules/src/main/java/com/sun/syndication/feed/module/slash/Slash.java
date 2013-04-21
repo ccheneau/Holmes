@@ -50,21 +50,62 @@ import com.sun.syndication.feed.module.Module;
  */
 public interface Slash extends Module, Serializable {
 
+    /** The uri. */
     String URI = "http://purl.org/rss/1.0/modules/slash/";
 
+    /**
+     * Gets the section.
+     *
+     * @return the section
+     */
     String getSection();
 
+    /**
+     * Sets the section.
+     *
+     * @param section the new section
+     */
     void setSection(String section);
 
+    /**
+     * Gets the department.
+     *
+     * @return the department
+     */
     String getDepartment();
 
+    /**
+     * Sets the department.
+     *
+     * @param department the new department
+     */
     void setDepartment(String department);
 
+    /**
+     * Gets the comments.
+     *
+     * @return the comments
+     */
     Integer getComments();
 
+    /**
+     * Sets the comments.
+     *
+     * @param comments the new comments
+     */
     void setComments(Integer comments);
 
+    /**
+     * Gets the hit parade.
+     *
+     * @return the hit parade
+     */
     Integer[] getHitParade();
 
+    /**
+     * Sets the hit parade.
+     *
+     * @param hitParade the new hit parade
+     */
     void setHitParade(Integer[] hitParade);
 }

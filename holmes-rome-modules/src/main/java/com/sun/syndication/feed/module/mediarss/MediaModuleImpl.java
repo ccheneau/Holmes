@@ -44,10 +44,11 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
 
     /**
      * constructor that passes values up to ModuleImpl.
-     * @param clazz
-     * @param uri
+     *
+     * @param clazz the clazz
+     * @param uri the uri
      */
-    public MediaModuleImpl(Class<?> clazz, String uri) {
+    public MediaModuleImpl(final Class<?> clazz, final String uri) {
         super(clazz, uri);
     }
 
@@ -60,7 +61,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * Metadata for a feed.
      * @param metadata Metadata for a feed.
      */
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
     }
 
@@ -77,7 +78,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * Player for a feed.
      * @param player Player for a feed.
      */
-    public void setPlayer(PlayerReference player) {
+    public void setPlayer(final PlayerReference player) {
         this.player = player;
     }
 
@@ -106,7 +107,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     }
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         MediaModule m = (MediaModule) obj;
         try {
             this.metadata = (Metadata) m.getMetadata().clone();

@@ -52,7 +52,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * MediaContent items for the entry
      * @param mediaContents MediaContent items for the entry
      */
-    public void setMediaContents(MediaContent[] mediaContents) {
+    public void setMediaContents(final MediaContent[] mediaContents) {
         this.mediaContents = (mediaContents == null) ? new MediaContent[0] : mediaContents;
     }
 
@@ -69,7 +69,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * MediaGroups for the entry
      * @param mediaGroups MediaGroups for the entry
      */
-    public void setMediaGroups(MediaGroup[] mediaGroups) {
+    public void setMediaGroups(final MediaGroup[] mediaGroups) {
         this.mediaGroups = (mediaGroups == null) ? new MediaGroup[0] : mediaGroups;
     }
 
@@ -95,23 +95,20 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(MediaEntryModuleImpl.class, this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(MediaEntryModuleImpl.class, this);
-
         return equals.beanHashCode();
     }
 
     @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(MediaEntryModuleImpl.class, this);
-
         return tsBean.toString();
     }
 }

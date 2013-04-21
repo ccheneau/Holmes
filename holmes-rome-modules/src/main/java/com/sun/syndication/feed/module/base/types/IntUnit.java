@@ -44,24 +44,28 @@ import java.io.Serializable;
 import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
 
 /**
+ * The Class IntUnit.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
 public class IntUnit implements CloneableType<IntUnit>, Serializable {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5856378395819544767L;
 
+    /** The units. */
     private String units;
+
+    /** The value. */
     private int value;
 
-    private boolean inCharArray(char find, char[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (find == array[i]) return true;
-        }
-        return false;
-    }
-
-    public IntUnit(String source) {
+    /**
+     * Constructor.
+     *
+     * @param source the source
+     */
+    public IntUnit(final String source) {
         String parse = source.trim();
         int space = -1;
         for (int i = 0; i < parse.length(); i++) {
@@ -81,8 +85,27 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
         }
     }
 
-    /** Creates a new instance of IntUnit */
-    public IntUnit(int value, String units) {
+    /**
+     * In char array.
+     *
+     * @param find the find
+     * @param array the array
+     * @return true, if successful
+     */
+    private boolean inCharArray(final char find, final char[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (find == array[i]) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Creates a new instance of IntUnit.
+     *
+     * @param value the value
+     * @param units the units
+     */
+    public IntUnit(final int value, final String units) {
         this.value = value;
         this.units = units;
     }
@@ -95,12 +118,18 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
         return value;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
     @Override
     public IntUnit clone() throws CloneNotSupportedException {
         super.clone();
         return new IntUnit(this.value, this.units);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         if (this.units != null && this.units.trim().length() > 0) {
@@ -110,8 +139,11 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
         }
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof IntUnit)) return false;
         IntUnit f = (IntUnit) o;
         if (f.getValue() != this.value) return false;
@@ -122,6 +154,9 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
         return false;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -52,11 +52,20 @@ import com.sun.syndication.io.impl.NumberParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Duration implements Serializable {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1960363504597514365L;
 
-    static final long SECOND = 1000;
-    static final long MINUTE = SECOND * 60;
-    static final long HOUR = MINUTE * 60;
+    /** The Constant SECOND. */
+    private static final long SECOND = 1000L;
+
+    /** The Constant MINUTE. */
+    private static final long MINUTE = SECOND * 60L;
+
+    /** The Constant HOUR. */
+    private static final long HOUR = MINUTE * 60L;
+
+    /** The Constant NUM_FORMAT. */
     static final NumberFormat NUM_FORMAT = NumberFormat.getNumberInstance();
     static {
         NUM_FORMAT.setMinimumFractionDigits(0);
@@ -64,6 +73,8 @@ public class Duration implements Serializable {
         NUM_FORMAT.setMinimumIntegerDigits(2);
         NUM_FORMAT.setGroupingUsed(false);
     }
+
+    /** The milliseconds. */
     private long milliseconds;
 
     /**
@@ -102,10 +113,10 @@ public class Duration implements Serializable {
             this.setMilliseconds((long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
             break;
         case 2:
-            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0l) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
             break;
         case 3:
-            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0l) * HOUR + NumberParser.parseLong(tok.nextToken(), 0l) * MINUTE
+            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
                     + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
             break;
         default:
@@ -114,7 +125,8 @@ public class Duration implements Serializable {
     }
 
     /**
-     * Returns a String representation in the formation HH:MM:SS
+     * Returns a String representation in the formation HH:MM:SS.
+     *
      * @return Returns a String representation in the formation HH:MM:SS
      */
     @Override
@@ -136,16 +148,30 @@ public class Duration implements Serializable {
      * Sets the millisecond length
      * @param milliseconds the millisecond length
      */
-    public void setMilliseconds(long milliseconds) {
+    public void setMilliseconds(final long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
+    /**
+     * The Class Time.
+     */
     private static class Time {
-        int hours;
-        int minutes;
-        float seconds;
 
-        public Time(Duration duration) {
+        /** The hours. */
+        private final int hours;
+
+        /** The minutes. */
+        private final int minutes;
+
+        /** The seconds. */
+        private final float seconds;
+
+        /**
+         * Constructor.
+         *
+         * @param duration the duration
+         */
+        public Time(final Duration duration) {
             long time = duration.getMilliseconds();
             hours = (int) (time / HOUR);
             time = time - hours * HOUR;

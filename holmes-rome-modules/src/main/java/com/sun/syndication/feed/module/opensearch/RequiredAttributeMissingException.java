@@ -16,21 +16,38 @@
 package com.sun.syndication.feed.module.opensearch;
 
 /**
+ * The Class RequiredAttributeMissingException.
+ *
  * @author Michael W. Nassif (enrouteinc@gmail.com)
  */
 public class RequiredAttributeMissingException extends RuntimeException {
     private static final long serialVersionUID = 4513552369632251956L;
 
-    public RequiredAttributeMissingException(String arg0, Throwable arg1) {
+    /**
+     * Constructor.
+     *
+     * @param arg0 the arg0
+     * @param arg1 the arg1
+     */
+    public RequiredAttributeMissingException(final String arg0, final Throwable arg1) {
         super(arg0, arg1);
     }
 
-    public RequiredAttributeMissingException(String arg0) {
+    /**
+     * Constructor.
+     *
+     * @param arg0 the arg0
+     */
+    public RequiredAttributeMissingException(final String arg0) {
         super(arg0);
     }
 
-    public RequiredAttributeMissingException(Throwable arg0) {
+    /**
+     * Constructor.
+     *
+     * @param arg0 the arg0
+     */
+    public RequiredAttributeMissingException(final Throwable arg0) {
         super(arg0);
     }
-
 }

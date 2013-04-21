@@ -43,25 +43,37 @@ package com.sun.syndication.feed.module.content;
 import java.util.List;
 
 /**
+ * The Interface ContentModule.
+ *
  * @version $Revision: 1.1 $
  * @author  <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface ContentModule extends com.sun.syndication.feed.module.Module {
+
+    /** The uri. */
     String URI = "http://purl.org/rss/1.0/modules/content/";
+
+    /** The rdf uri. */
     String RDF_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
-    /** Returns a List of Strings containing the New Syntax Encoded values
+    /** 
+     * Returns a List of Strings containing the New Syntax Encoded values
      * are in the element.
      * @return List of content Strings
      */
     List<String> getEncodeds();
 
-    /** Sets a List of Strings containing the New Syntax Encoded values
+    /**
+     * Sets a List of Strings containing the New Syntax Encoded values
      * are in the element.
-     * @return List of content Strings
+     *
+     * @param encodeds the new encodeds
      */
     void setEncodeds(List<String> encodeds);
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.CopyFrom#copyFrom(java.lang.Object)
+     */
     @Override
     void copyFrom(Object obj);
 
@@ -71,29 +83,34 @@ public interface ContentModule extends com.sun.syndication.feed.module.Module {
     @Override
     String getUri();
 
-    String toString(String str);
-
-    /** Contains a list of ContentItems that represent the "Original Syntax" set.
-     * @see com.totsp.xml.syndication.content.ContentItem
+    /**
+     * Contains a list of ContentItems that represent the "Original Syntax" set.
+     *
      * @return List of ContentItems.
+     * @see com.totsp.xml.syndication.content.ContentItem
      */
     List<ContentItem> getContentItems();
 
-    /** Contains a list of ContentItems that represent the "Original Syntax" set.
+    /**
+     * Contains a list of ContentItems that represent the "Original Syntax" set.
+     *
+     * @param list the new content items
      * @see com.totsp.xml.syndication.content.ContentItem
-     * @param List of ContentItems.
      */
     void setContentItems(List<ContentItem> list);
 
-    /** Returns a List of Strings containing whatever new or original syntax items
+    /** 
+     * Returns a List of Strings containing whatever new or original syntax items
      * are in the element.
      * @return List of content Strings
      */
     List<String> getContents();
 
-    /** Sets a List of Strings containing whatever new or original syntax items
+    /**
+     * Sets a List of Strings containing whatever new or original syntax items
      * are in the element.
-     * @return List of content Strings
+     *
+     * @param contents the new contents
      */
     void setContents(List<String> contents);
 }

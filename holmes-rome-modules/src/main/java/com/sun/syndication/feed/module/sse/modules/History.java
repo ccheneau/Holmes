@@ -23,11 +23,14 @@ public class History extends SSEModule {
 
     private List<Update> updates;
 
+    /**
+     * Constructor.
+     */
     public History() {
     }
 
     @Override
-    public void copyFrom(Object other) {
+    public void copyFrom(final Object other) {
         History otherHistory = (History) other;
         when = otherHistory.when == null ? null : (Date) otherHistory.when.clone();
         // dont copy immutable
@@ -58,7 +61,7 @@ public class History extends SSEModule {
      *
      * @param when the date-time when the most recent modification took place.
      */
-    public void setWhen(Date when) {
+    public void setWhen(final Date when) {
         this.when = when;
     }
 
@@ -86,7 +89,7 @@ public class History extends SSEModule {
      *
      * @param by the endpoint that made the most recent modification.
      */
-    public void setBy(String by) {
+    public void setBy(final String by) {
         this.by = by;
     }
 
@@ -95,7 +98,7 @@ public class History extends SSEModule {
      *
      * @param update an update to add to the list of updates for this history.
      */
-    public void addUpdate(Update update) {
+    public void addUpdate(final Update update) {
         if (updates == null) {
             updates = new ArrayList<Update>();
         }

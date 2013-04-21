@@ -73,7 +73,7 @@ public class Location implements Serializable, Cloneable {
      * @param region state, territory, or region, if given
      * @param country two-character country code.
      */
-    public Location(String city, String region, String country) {
+    public Location(final String city, final String region, final String country) {
         super();
         this.city = city;
         this.region = region;
@@ -92,7 +92,7 @@ public class Location implements Serializable, Cloneable {
      * City name
      * @param city city name
      */
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
@@ -108,7 +108,7 @@ public class Location implements Serializable, Cloneable {
      * state, territory, or region, if given
      * @param region state, territory, or region, if given
      */
-    public void setRegion(String region) {
+    public void setRegion(final String region) {
         this.region = region;
     }
 
@@ -124,12 +124,12 @@ public class Location implements Serializable, Cloneable {
      * country two-character country code.
      * @param country country two-character country code.
      */
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 

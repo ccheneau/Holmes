@@ -44,15 +44,16 @@ public class Hash extends AbstractSchemeValue {
      * @param algorithm algoright used
      * @param value value of the hash
      */
-    public Hash(String algorithm, String value) {
+    public Hash(final String algorithm, final String value) {
         super(algorithm == null ? "MD5" : algorithm, value);
     }
 
     /**
-     * Creates a new instance of Hash assuming the default algorithm of MD5
-     * @param algorithm algoright used
+     * Creates a new instance of Hash assuming the default algorithm of MD5.
+     *
+     * @param value the value
      */
-    public Hash(String value) {
+    public Hash(final String value) {
         this(null, value);
     }
 
@@ -65,23 +66,20 @@ public class Hash extends AbstractSchemeValue {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
     @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

@@ -27,6 +27,9 @@ package com.sun.syndication.feed.module.georss;
 public class W3CGeoModuleImpl extends GeoRSSModule {
     private static final long serialVersionUID = -2379864315882090268L;
 
+    /**
+     * Constructor.
+     */
     public W3CGeoModuleImpl() {
         super(GeoRSSModule.class, GeoRSSModule.GEORSS_W3CGEO_URI);
     }
@@ -40,5 +43,4 @@ public class W3CGeoModuleImpl extends GeoRSSModule {
     public Class<?> getInterface() {
         return GeoRSSModule.class;
     }
-
 }

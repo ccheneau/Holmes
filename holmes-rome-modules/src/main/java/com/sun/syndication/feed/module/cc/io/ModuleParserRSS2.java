@@ -66,35 +66,35 @@ public class ModuleParserRSS2 implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         CreativeCommonsImpl module = new CreativeCommonsImpl();
-        //Do channel global
-        {
-            Element root = element;
-            while (!root.getName().equals("channel") && !root.getName().equals("feed"))
-                root = root.getParentElement();
-            ArrayList<License> licenses = new ArrayList<License>();
-            List<?> items = null;
-            if (root.getName().equals("channel")) items = root.getChildren("item");
-            else items = root.getChildren("entry");
 
-            Iterator<?> iit = items.iterator();
-            while (iit.hasNext()) {
-                Element item = (Element) iit.next();
-                List<?> licenseTags = item.getChildren("license", NS);
-                Iterator<?> lit = licenseTags.iterator();
-                while (lit.hasNext()) {
-                    Element licenseTag = (Element) lit.next();
-                    License license = License.findByValue(licenseTag.getTextTrim());
-                    if (!licenses.contains(license)) licenses.add(license);
-                }
-            }
-            if (licenses.size() > 0) {
-                module.setAllLicenses(new License[0]);
+        //Do channel global
+        Element root = element;
+        while (!root.getName().equals("channel") && !root.getName().equals("feed"))
+            root = root.getParentElement();
+        List<License> licenses = new ArrayList<License>();
+        List<?> items = null;
+        if (root.getName().equals("channel")) items = root.getChildren("item");
+        else items = root.getChildren("entry");
+
+        Iterator<?> iit = items.iterator();
+        while (iit.hasNext()) {
+            Element item = (Element) iit.next();
+            List<?> licenseTags = item.getChildren("license", NS);
+            Iterator<?> lit = licenseTags.iterator();
+            while (lit.hasNext()) {
+                Element licenseTag = (Element) lit.next();
+                License license = License.findByValue(licenseTag.getTextTrim());
+                if (!licenses.contains(license)) licenses.add(license);
             }
         }
-        // do element local
-        List<License> licenses = new ArrayList<License>();
+        if (licenses.size() > 0) {
+            module.setAllLicenses(new License[0]);
+        }
+
+        //Do element local
+        licenses = new ArrayList<License>();
         List<?> licenseTags = element.getChildren("license", NS);
         Iterator<?> it = licenseTags.iterator();
         while (it.hasNext()) {

@@ -88,7 +88,7 @@ public class Condition implements Serializable, Cloneable {
      * @param temperature the current temperature
      * @param date the current date and time
      */
-    public Condition(String text, ConditionCode code, int temperature, Date date) {
+    public Condition(final String text, final ConditionCode code, final int temperature, final Date date) {
         super();
         this.text = text;
         this.code = code;
@@ -110,7 +110,7 @@ public class Condition implements Serializable, Cloneable {
      * @param text a textual description of conditions, for example, "Partly
      *             Cloudy"
      */
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
@@ -126,7 +126,7 @@ public class Condition implements Serializable, Cloneable {
      * Condition code
      * @param code Condition code
      */
-    public void setCode(ConditionCode code) {
+    public void setCode(final ConditionCode code) {
         this.code = code;
     }
 
@@ -144,7 +144,7 @@ public class Condition implements Serializable, Cloneable {
      * @param temperature the current temperature
      * @see Units
      */
-    public void setTemperature(int temperature) {
+    public void setTemperature(final int temperature) {
         this.temperature = temperature;
     }
 
@@ -160,12 +160,12 @@ public class Condition implements Serializable, Cloneable {
      * Date recorded
      * @param date the current date and time
      */
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 

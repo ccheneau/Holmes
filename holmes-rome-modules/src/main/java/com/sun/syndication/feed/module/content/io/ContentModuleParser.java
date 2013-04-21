@@ -76,7 +76,7 @@ public class ContentModuleParser implements ModuleParser {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         boolean foundSomething = false;
         ContentModule cm = new ContentModuleImpl();
         List<?> encodeds = element.getChildren("encoded", CONTENT_NS);
@@ -151,10 +151,16 @@ public class ContentModuleParser implements ModuleParser {
         return foundSomething ? cm : null;
     }
 
-    protected String getXmlInnerText(Element e) {
+    /**
+     * Gets the xml inner text.
+     *
+     * @param element the element
+     * @return the xml inner text
+     */
+    protected String getXmlInnerText(final Element element) {
         StringBuffer sb = new StringBuffer();
         XMLOutputter xo = new XMLOutputter();
-        List<?> children = e.getContent();
+        List<?> children = element.getContent();
         sb.append(xo.outputString(children));
 
         return sb.toString();

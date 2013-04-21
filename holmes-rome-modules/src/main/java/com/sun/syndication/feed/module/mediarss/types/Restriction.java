@@ -30,8 +30,11 @@ import com.sun.syndication.feed.impl.ToStringBean;
 /**
  * <strong>&lt;media:restriction&gt; </strong></p>
  *
- * <p>Allows restrictions to be placed on the aggregator rendering the media in the feed. Currently, restrictions are based on distributor (uri) and country codes.  This element is purely informational and no obligation can be assumed or implied.
- * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'. These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
+ * <p>Allows restrictions to be placed on the aggregator rendering the media in the feed. 
+ * Currently, restrictions are based on distributor (uri) and country codes.  
+ * This element is purely informational and no obligation can be assumed or implied.
+ * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. 
+ * To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'. These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
  *
  * <pre>        &lt;media:restriction relationship="allow" type="country"&gt;au us&lt;/media:restriction&gt;</pre>
  *
@@ -49,19 +52,27 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * @author cooper
  */
 public class Restriction implements Serializable {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 7944281267467298628L;
 
+    /** The relationship. */
     private Relationship relationship;
+
+    /** The value. */
     private String value;
+
+    /** The type. */
     private Type type;
 
     /**
-     * Creates a new instance of Restriction
+     * Creates a new instance of Restriction.
+     *
      * @param relationship a Restriction.Relationship object
      * @param type A Restriction.Type object
      * @param value a value for the restriction.
      */
-    public Restriction(Relationship relationship, Type type, String value) {
+    public Restriction(final Relationship relationship, final Type type, final String value) {
         if (value == null || relationship == null) {
             throw new NullPointerException("Value and Relationship cannot be null.");
         }
@@ -88,7 +99,7 @@ public class Restriction implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
 
         return eBean.beanEquals(obj);
@@ -109,26 +120,36 @@ public class Restriction implements Serializable {
     }
 
     /**
-     * Indicates the action of the relationship
+     * Indicates the action of the relationship.
      */
-    public static class Relationship implements Serializable {
+    public static final class Relationship implements Serializable {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-        /**
-         * An Allow relationship
-         */
+        /** An Allow relationship. */
         public static final Relationship ALLOW = new Relationship("allow");
 
         /**
          * A deny relationship.
          */
         public static final Relationship DENY = new Relationship("deny");
+
+        /** The value. */
         private String value;
 
-        private Relationship(String value) {
+        /**
+         * Constructor.
+         *
+         * @param value the value
+         */
+        private Relationship(final String value) {
             this.value = value;
         }
 
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
         @Override
         public String toString() {
             return this.value;
@@ -136,9 +157,11 @@ public class Restriction implements Serializable {
     }
 
     /**
-     * Indicated the type of the relationship
+     * Indicated the type of the relationship.
      */
-    public static class Type implements Serializable {
+    public static final class Type implements Serializable {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /**
@@ -150,12 +173,22 @@ public class Restriction implements Serializable {
          * Indicates a URI for a special restriction type.
          */
         public static final Type URI = new Type("uri");
+
+        /** The value. */
         private String value;
 
-        private Type(String value) {
+        /**
+         * Constructor.
+         *
+         * @param value the value
+         */
+        private Type(final String value) {
             this.value = value;
         }
 
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
         @Override
         public String toString() {
             return this.value;

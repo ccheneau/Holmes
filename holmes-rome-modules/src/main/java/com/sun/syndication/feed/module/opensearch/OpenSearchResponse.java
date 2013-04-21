@@ -109,10 +109,9 @@ public interface OpenSearchResponse {
      */
     Link getLink();
 
-    // list of OSResponseQuery interfaces
     /**
      * <code>Query</code> – in an OpenSearch Response, can be used both to echo back the original query and to suggest new searches.
-     * 	Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
+     * Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
      *     <ul>
      *        <li>Note: <em>New in version 1.1.</em></li>
      *        <li>Requirements: May appear zero or more times. Note that the “Q” is capitalized.</li>
@@ -122,7 +121,7 @@ public interface OpenSearchResponse {
 
     /**
      * <code>Query</code> – in an OpenSearch Response, can be used both to echo back the original query and to suggest new searches.
-     * 	Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
+     * Please see the <a href="../query/">OpenSearch Query specification</a> for more information.
      *     <ul>
      *        <li>Note: <em>New in version 1.1.</em></li>
      *        <li>Requirements: May appear zero or more times. Note that the “Q” is capitalized.</li>

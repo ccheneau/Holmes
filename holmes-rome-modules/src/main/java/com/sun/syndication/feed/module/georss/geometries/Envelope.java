@@ -23,18 +23,21 @@ public class Envelope extends AbstractGeometry {
 
     /** Creates a new instance of Envelope */
     public Envelope() {
-        minLatitude = minLongitude = maxLatitude = maxLongitude = Double.NaN;
+        minLatitude = Double.NaN;
+        minLongitude = Double.NaN;
+        maxLatitude = Double.NaN;
+        maxLongitude = Double.NaN;
     }
 
     /**
-     * Construct object from coordinate values
+     * Construct object from coordinate values.
      *
-     * @param minLatitude
-     * @param minLongitude
-     * @param maxLatitude
-     * @param maxLongitude
+     * @param minLatitude the min latitude
+     * @param minLongitude the min longitude
+     * @param maxLatitude the max latitude
+     * @param maxLongitude the max longitude
      */
-    public Envelope(double minLatitude, double minLongitude, double maxLatitude, double maxLongitude) {
+    public Envelope(final double minLatitude, final double minLongitude, final double maxLatitude, final double maxLongitude) {
         this.minLatitude = minLatitude;
         this.minLongitude = minLongitude;
         this.maxLatitude = maxLatitude;
@@ -72,28 +75,28 @@ public class Envelope extends AbstractGeometry {
     /**
      * @param v  minimum longitude
      */
-    public void setMinLongitude(double v) {
+    public void setMinLongitude(final double v) {
         minLongitude = v;
     }
 
     /**
      * @param v minimum latitude
      */
-    public void setMinLatitude(double v) {
+    public void setMinLatitude(final double v) {
         minLatitude = v;
     }
 
     /**
      * @param v maximum longitude
      */
-    public void setMaxLongitude(double v) {
+    public void setMaxLongitude(final double v) {
         maxLongitude = v;
     }
 
     /**
      * @param v maximum latitude
      */
-    public void setMaxLatitude(double v) {
+    public void setMaxLatitude(final double v) {
         maxLatitude = v;
     }
 
@@ -114,7 +117,7 @@ public class Envelope extends AbstractGeometry {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
@@ -125,5 +128,4 @@ public class Envelope extends AbstractGeometry {
         if (Double.doubleToLongBits(minLongitude) != Double.doubleToLongBits(other.minLongitude)) return false;
         return true;
     }
-
 }

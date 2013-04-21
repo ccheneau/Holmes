@@ -38,7 +38,7 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
     }
 
     @Override
-    public void setGroupFields(Group[] groupFields) {
+    public void setGroupFields(final Group[] groupFields) {
         this.groupFields = groupFields;
     }
 
@@ -62,7 +62,7 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
     }
 
     @Override
-    public void setSortFields(Sort[] sortFields) {
+    public void setSortFields(final Sort[] sortFields) {
         this.sortFields = sortFields;
     }
 
@@ -72,7 +72,7 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
     }
 
     @Override
-    public void setTreatAs(String treatAs) {
+    public void setTreatAs(final String treatAs) {
         this.treatAs = treatAs;
     }
 
@@ -104,7 +104,7 @@ public class SimpleListExtensionImpl extends ModuleImpl implements SimpleListExt
      * @param obj the instance to copy properties from.
      */
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         SimpleListExtension sle = (SimpleListExtension) obj;
         this.setGroupFields(sle.getGroupFields().clone());
         this.setSortFields(sle.getSortFields().clone());

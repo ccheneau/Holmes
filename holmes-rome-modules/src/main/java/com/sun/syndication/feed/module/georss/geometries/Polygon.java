@@ -44,7 +44,7 @@ public final class Polygon extends AbstractSurface {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         Polygon pol = (Polygon) obj;
@@ -95,7 +95,7 @@ public final class Polygon extends AbstractSurface {
      *
      * @param exterior the outer ring
      */
-    public void setExterior(AbstractRing exterior) {
+    public void setExterior(final AbstractRing exterior) {
         this.exterior = exterior;
     }
 
@@ -104,7 +104,7 @@ public final class Polygon extends AbstractSurface {
      *
      * @param interior the list of inner rings
      */
-    public void setInterior(List<AbstractRing> interior) {
+    public void setInterior(final List<AbstractRing> interior) {
         this.interior = interior;
     }
 }

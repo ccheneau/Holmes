@@ -43,7 +43,9 @@ import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
 import com.sun.syndication.feed.module.mediarss.types.UrlReference;
 import com.sun.syndication.io.ModuleGenerator;
 
-//this class TBI
+/**
+ * The Class MediaModuleGenerator.
+ */
 public class MediaModuleGenerator implements ModuleGenerator {
     private static final Namespace NS = Namespace.getNamespace("media", MediaModule.URI);
     private static final Set<Namespace> NAMESPACES = new HashSet<Namespace>();
@@ -63,7 +65,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (module instanceof MediaModule) {
             MediaModule m = (MediaModule) module;
             this.generateMetadata(m.getMetadata(), element);
@@ -86,82 +88,100 @@ public class MediaModuleGenerator implements ModuleGenerator {
         }
     }
 
-    public void generateContent(MediaContent c, Element e) {
+    /**
+     * Generate content.
+     *
+     * @param content the content
+     * @param element the element
+     */
+    public void generateContent(final MediaContent content, final Element element) {
         Element mc = new Element("content", NS);
-        this.addNotNullAttribute(mc, "channels", c.getAudioChannels());
-        this.addNotNullAttribute(mc, "bitrate", c.getBitrate());
-        this.addNotNullAttribute(mc, "duration", c.getDuration());
-        this.addNotNullAttribute(mc, "expression", c.getExpression());
-        this.addNotNullAttribute(mc, "fileSize", c.getFileSize());
-        this.addNotNullAttribute(mc, "framerate", c.getFramerate());
-        this.addNotNullAttribute(mc, "height", c.getHeight());
-        this.addNotNullAttribute(mc, "lang", c.getLanguage());
-        this.addNotNullAttribute(mc, "samplingrate", c.getSamplingrate());
-        this.addNotNullAttribute(mc, "type", c.getType());
-        this.addNotNullAttribute(mc, "width", c.getWidth());
+        this.addNotNullAttribute(mc, "channels", content.getAudioChannels());
+        this.addNotNullAttribute(mc, "bitrate", content.getBitrate());
+        this.addNotNullAttribute(mc, "duration", content.getDuration());
+        this.addNotNullAttribute(mc, "expression", content.getExpression());
+        this.addNotNullAttribute(mc, "fileSize", content.getFileSize());
+        this.addNotNullAttribute(mc, "framerate", content.getFramerate());
+        this.addNotNullAttribute(mc, "height", content.getHeight());
+        this.addNotNullAttribute(mc, "lang", content.getLanguage());
+        this.addNotNullAttribute(mc, "samplingrate", content.getSamplingrate());
+        this.addNotNullAttribute(mc, "type", content.getType());
+        this.addNotNullAttribute(mc, "width", content.getWidth());
 
-        if (c.isDefaultContent()) {
+        if (content.isDefaultContent()) {
             this.addNotNullAttribute(mc, "isDefault", "true");
         }
 
-        if (c.getReference() instanceof UrlReference) {
-            this.addNotNullAttribute(mc, "url", c.getReference());
-            this.generatePlayer(c.getPlayer(), mc);
+        if (content.getReference() instanceof UrlReference) {
+            this.addNotNullAttribute(mc, "url", content.getReference());
+            this.generatePlayer(content.getPlayer(), mc);
         } else {
-            this.generatePlayer(c.getPlayer(), mc);
+            this.generatePlayer(content.getPlayer(), mc);
         }
 
-        this.generateMetadata(c.getMetadata(), mc);
-        e.addContent(mc);
+        this.generateMetadata(content.getMetadata(), mc);
+        element.addContent(mc);
     }
 
-    public void generateGroup(MediaGroup g, Element e) {
+    /**
+     * Generate group.
+     *
+     * @param group the group
+     * @param element the element
+     */
+    public void generateGroup(final MediaGroup group, final Element element) {
         Element t = new Element("group", NS);
-        MediaContent[] c = g.getContents();
+        MediaContent[] c = group.getContents();
 
         for (int i = 0; i < c.length; i++) {
             this.generateContent(c[i], t);
         }
 
-        this.generateMetadata(g.getMetadata(), t);
-        e.addContent(t);
+        this.generateMetadata(group.getMetadata(), t);
+        element.addContent(t);
     }
 
-    public void generateMetadata(Metadata m, Element e) {
-        if (m == null) {
+    /**
+     * Generate metadata.
+     *
+     * @param metadate the metadate
+     * @param element the element
+     */
+    public void generateMetadata(final Metadata metadate, final Element element) {
+        if (metadate == null) {
             return;
         }
 
-        Category[] cats = m.getCategories();
+        Category[] cats = metadate.getCategories();
 
         for (int i = 0; i < cats.length; i++) {
             Element c = generateSimpleElement("category", cats[i].getValue());
             this.addNotNullAttribute(c, "scheme", cats[i].getScheme());
             this.addNotNullAttribute(c, "label", cats[i].getLabel());
-            e.addContent(c);
+            element.addContent(c);
         }
 
-        Element copyright = addNotNullElement(e, "copyright", m.getCopyright());
-        this.addNotNullAttribute(copyright, "url", m.getCopyrightUrl());
+        Element copyright = addNotNullElement(element, "copyright", metadate.getCopyright());
+        this.addNotNullAttribute(copyright, "url", metadate.getCopyrightUrl());
 
-        Credit[] creds = m.getCredits();
+        Credit[] creds = metadate.getCredits();
 
         for (int i = 0; i < creds.length; i++) {
             Element c = generateSimpleElement("credit", creds[i].getName());
             this.addNotNullAttribute(c, "role", creds[i].getRole());
             this.addNotNullAttribute(c, "scheme", creds[i].getScheme());
-            e.addContent(c);
+            element.addContent(c);
         }
 
-        Element desc = addNotNullElement(e, "description", m.getDescription());
-        this.addNotNullAttribute(desc, "type", m.getDescriptionType());
+        Element desc = addNotNullElement(element, "description", metadate.getDescription());
+        this.addNotNullAttribute(desc, "type", metadate.getDescriptionType());
 
-        if (m.getHash() != null) {
-            Element hash = this.addNotNullElement(e, "hash", m.getHash().getValue());
-            this.addNotNullAttribute(hash, "algo", m.getHash().getAlgorithm());
+        if (metadate.getHash() != null) {
+            Element hash = this.addNotNullElement(element, "hash", metadate.getHash().getValue());
+            this.addNotNullAttribute(hash, "algo", metadate.getHash().getAlgorithm());
         }
 
-        String[] keywords = m.getKeywords();
+        String[] keywords = metadate.getKeywords();
 
         if (keywords.length > 0) {
             StringBuilder keyword = new StringBuilder();
@@ -170,32 +190,32 @@ public class MediaModuleGenerator implements ModuleGenerator {
             for (int i = 1; i < keywords.length; i++) {
                 keyword.append(", ").append(keywords[i]);
             }
-            this.addNotNullElement(e, "keywords", keyword.toString());
+            this.addNotNullElement(element, "keywords", keyword.toString());
         }
 
-        Rating[] rats = m.getRatings();
+        Rating[] rats = metadate.getRatings();
 
         for (int i = 0; i < rats.length; i++) {
-            Element rat = this.addNotNullElement(e, "rating", rats[i].getValue());
+            Element rat = this.addNotNullElement(element, "rating", rats[i].getValue());
             this.addNotNullAttribute(rat, "scheme", rats[i].getScheme());
 
             if (rats[i].equals(Rating.ADULT)) {
-                this.addNotNullElement(e, "adult", "true");
+                this.addNotNullElement(element, "adult", "true");
             } else if (rats[i].equals(Rating.NONADULT)) {
-                this.addNotNullElement(e, "adult", "false");
+                this.addNotNullElement(element, "adult", "false");
             }
         }
 
-        Text[] text = m.getText();
+        Text[] text = metadate.getText();
 
         for (int i = 0; i < text.length; i++) {
-            Element t = this.addNotNullElement(e, "text", text[i].getValue());
+            Element t = this.addNotNullElement(element, "text", text[i].getValue());
             this.addNotNullAttribute(t, "type", text[i].getType());
             this.addNotNullAttribute(t, "start", text[i].getStart());
             this.addNotNullAttribute(t, "end", text[i].getEnd());
         }
 
-        Thumbnail[] thumbs = m.getThumbnail();
+        Thumbnail[] thumbs = metadate.getThumbnail();
 
         for (int i = 0; i < thumbs.length; i++) {
             Element t = new Element("thumbnail", NS);
@@ -203,34 +223,47 @@ public class MediaModuleGenerator implements ModuleGenerator {
             this.addNotNullAttribute(t, "width", thumbs[i].getWidth());
             this.addNotNullAttribute(t, "height", thumbs[i].getHeight());
             this.addNotNullAttribute(t, "time", thumbs[i].getTime());
-            e.addContent(t);
+            element.addContent(t);
         }
 
-        Element title = this.addNotNullElement(e, "title", m.getTitle());
-        this.addNotNullAttribute(title, "type", m.getTitleType());
+        Element title = this.addNotNullElement(element, "title", metadate.getTitle());
+        this.addNotNullAttribute(title, "type", metadate.getTitleType());
 
-        Restriction[] r = m.getRestrictions();
+        Restriction[] r = metadate.getRestrictions();
 
         for (int i = 0; i < r.length; i++) {
-            Element res = this.addNotNullElement(e, "restriction", r[i].getValue());
+            Element res = this.addNotNullElement(element, "restriction", r[i].getValue());
             this.addNotNullAttribute(res, "type", r[i].getType());
             this.addNotNullAttribute(res, "relationship", r[i].getRelationship());
         }
     }
 
-    public void generatePlayer(PlayerReference p, Element e) {
-        if (p == null) {
+    /**
+     * Generate player.
+     *
+     * @param playerReference the player reference
+     * @param element the element
+     */
+    public void generatePlayer(final PlayerReference playerReference, final Element element) {
+        if (playerReference == null) {
             return;
         }
 
         Element t = new Element("player", NS);
-        this.addNotNullAttribute(t, "url", p.getUrl());
-        this.addNotNullAttribute(t, "width", p.getWidth());
-        this.addNotNullAttribute(t, "height", p.getHeight());
-        e.addContent(t);
+        this.addNotNullAttribute(t, "url", playerReference.getUrl());
+        this.addNotNullAttribute(t, "width", playerReference.getWidth());
+        this.addNotNullAttribute(t, "height", playerReference.getHeight());
+        element.addContent(t);
     }
 
-    protected void addNotNullAttribute(Element target, String name, Object value) {
+    /**
+     * Adds the not null attribute.
+     *
+     * @param target the target
+     * @param name the name
+     * @param value the value
+     */
+    protected void addNotNullAttribute(final Element target, final String name, final Object value) {
         if (target == null || value == null) {
             return;
         } else {
@@ -238,7 +271,15 @@ public class MediaModuleGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element addNotNullElement(Element target, String name, Object value) {
+    /**
+     * Adds the not null element.
+     *
+     * @param target the target
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element addNotNullElement(final Element target, final String name, final Object value) {
         if (value == null) {
             return null;
         } else {
@@ -249,7 +290,14 @@ public class MediaModuleGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
 

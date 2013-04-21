@@ -68,7 +68,7 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (module instanceof OpenSearchModule) {
             OpenSearchModule osm = (OpenSearchModule) module;
 
@@ -94,7 +94,13 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element generateQueryElement(OSQuery query) {
+    /**
+     * Generate query element.
+     *
+     * @param query the query
+     * @return element
+     */
+    protected Element generateQueryElement(final OSQuery query) {
         Element qElement = new Element("Query", OS_NS);
         if (query.getRole() != null) {
             Attribute roleAttribute = new Attribute("role", query.getRole());
@@ -130,7 +136,13 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
         return qElement;
     }
 
-    protected Element generateLinkElement(Link link) {
+    /**
+     * Generate link element.
+     *
+     * @param link the link
+     * @return element
+     */
+    protected Element generateLinkElement(final Link link) {
         Element linkElement = new Element("link", OS_NS);
 
         if (link.getRel() != null) {
@@ -155,12 +167,16 @@ public class OpenSearchModuleGenerator implements ModuleGenerator {
         return linkElement;
     }
 
-    protected Element generateSimpleElement(String name, String value) {
-
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, OS_NS);
         element.addContent(value);
-
         return element;
     }
-
 }

@@ -38,8 +38,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
     private Object value;
     private String name;
 
-    /** Creates a new instance of CustomTagImpl */
-    public CustomTagImpl(String name, String value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final String value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -47,7 +52,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, Integer value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final Integer value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -55,7 +66,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, Float value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final Float value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -63,7 +80,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, IntUnit value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final IntUnit value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -71,7 +94,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, FloatUnit value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final FloatUnit value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -79,7 +108,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, ShortDate value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final ShortDate value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -87,7 +122,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, Date value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final Date value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -95,7 +136,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, DateTimeRange value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final DateTimeRange value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -103,7 +150,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, URL value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final URL value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -111,7 +164,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, Boolean value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final Boolean value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -119,7 +178,13 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         this.value = value;
     }
 
-    public CustomTagImpl(String name, Location value) {
+    /** Creates a new instance of CustomTagImpl.
+     * @param name
+     *      name
+     * @param value
+     *      value
+     */
+    public CustomTagImpl(final String name, final Location value) {
         if (name == null || value == null) {
             throw new NullPointerException("Name and Value cannont be null.");
         }
@@ -138,11 +203,8 @@ public class CustomTagImpl implements CustomTag, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof CustomTag) {
-            CustomTag tag = (CustomTag) o;
-            if (this.name.equals(tag.getName()) && this.value.equals(tag.getValue())) return true;
-        }
+    public boolean equals(final Object o) {
+        if (o instanceof Location && ((Location) o).value.equals(this.value)) return true;
         return false;
     }
 
@@ -226,12 +288,21 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         return "[custom name=\"" + this.name + "\" value=\"" + this.value.toString() + "\"]";
     }
 
+    /**
+     * Location.
+     */
     public static class Location implements Cloneable, Serializable {
         private static final long serialVersionUID = 5534836674772027424L;
 
         private String value;
 
-        public Location(String value) {
+        /**
+         * Creates new instance of Location.
+         * 
+         * @param value
+         *      value
+         */
+        public Location(final String value) {
             this.value = value;
         }
 
@@ -251,9 +322,8 @@ public class CustomTagImpl implements CustomTag, Cloneable {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (o instanceof Location && ((Location) o).value.equals(this.value)) return true;
-            else return false;
+        public boolean equals(final Object o) {
+            return o instanceof Location && ((Location) o).value.equals(this.value);
         }
 
         @Override

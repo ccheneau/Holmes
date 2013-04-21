@@ -50,7 +50,9 @@ public class CustomTagGenerator implements ModuleGenerator {
         NAMESPACES.add(CustomTagParser.NS);
     }
 
-    /** Creates a new instance of CustomTagGenerator */
+    /**
+     * Creates a new instance of CustomTagGenerator.
+     */
     public CustomTagGenerator() {
     }
 
@@ -65,7 +67,7 @@ public class CustomTagGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof CustomTags)) {
             return;
         }
@@ -129,7 +131,14 @@ public class CustomTagGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, CustomTagParser.NS);
         element.addContent(value);
 

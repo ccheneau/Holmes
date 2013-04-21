@@ -37,10 +37,10 @@ public class Time implements Serializable {
     private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE * SECOND;
-    private static final NumberFormat nf = NumberFormat.getInstance();
+    private static final NumberFormat NF = NumberFormat.getInstance();
 
     static {
-        nf.setMinimumIntegerDigits(2);
+        NF.setMinimumIntegerDigits(2);
     }
 
     private long milliseconds = 0;
@@ -49,7 +49,7 @@ public class Time implements Serializable {
      * Creates a new instance of Time
      * @param milliseconds milliseconds in length or offset.
      */
-    public Time(long milliseconds) {
+    public Time(final long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
@@ -57,7 +57,7 @@ public class Time implements Serializable {
      * Creates a new instance of Time
      * @param value <a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a> value
      */
-    public Time(String value) {
+    public Time(final String value) {
         String[] values = value.split(":");
         int count = values.length - 1;
         this.milliseconds = (long) (Double.parseDouble(values[count]) * SECOND);
@@ -78,16 +78,14 @@ public class Time implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
@@ -102,6 +100,6 @@ public class Time implements Serializable {
 
         double seconds = (double) value / (double) SECOND;
 
-        return nf.format(hours) + ":" + nf.format(minutes) + ":" + seconds;
+        return NF.format(hours) + ":" + NF.format(minutes) + ":" + seconds;
     }
 }

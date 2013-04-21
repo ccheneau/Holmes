@@ -86,7 +86,7 @@ public class Units implements Serializable, Cloneable {
      * @param pressure units of pressure ("in" or "mb")
      * @param speed units of speed ("mph" or "kph")
      */
-    public Units(String temperature, String distance, String pressure, String speed) {
+    public Units(final String temperature, final String distance, final String pressure, final String speed) {
         super();
         this.temperature = temperature;
         this.distance = distance;
@@ -106,7 +106,7 @@ public class Units implements Serializable, Cloneable {
      * Units of Temperature.
      * @param temperature units of temp ("f" or "c");
      */
-    public void setTemperature(String temperature) {
+    public void setTemperature(final String temperature) {
         this.temperature = temperature;
     }
 
@@ -122,7 +122,7 @@ public class Units implements Serializable, Cloneable {
      * Units of distance
      * @param distance units of distance ("mi" or "km")
      */
-    public void setDistance(String distance) {
+    public void setDistance(final String distance) {
         this.distance = distance;
     }
 
@@ -138,7 +138,7 @@ public class Units implements Serializable, Cloneable {
      * Units of pressure
      * @param pressure units of pressure ("in" or "mb")
      */
-    public void setPressure(String pressure) {
+    public void setPressure(final String pressure) {
         this.pressure = pressure;
     }
 
@@ -154,12 +154,12 @@ public class Units implements Serializable, Cloneable {
      * Units of speed
      * @param speed units of speed ("mph" or "kph")
      */
-    public void setSpeed(String speed) {
+    public void setSpeed(final String speed) {
         this.speed = speed;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 

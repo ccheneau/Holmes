@@ -73,7 +73,7 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
      * @param duration Sets the Duration object for this Item
      */
     @Override
-    public void setDuration(Duration duration) {
+    public void setDuration(final Duration duration) {
         this.duration = duration;
     }
 
@@ -82,7 +82,7 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
      * @param obj Object to copy from
      */
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         EntryInformationImpl info = (EntryInformationImpl) obj;
         this.setAuthor(info.getAuthor());
         this.setBlock(info.getBlock());

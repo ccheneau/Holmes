@@ -46,7 +46,7 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class PriceTypeEnumeration implements CloneableType<PriceTypeEnumeration>, Serializable {
+public final class PriceTypeEnumeration implements CloneableType<PriceTypeEnumeration>, Serializable {
     private static final long serialVersionUID = -6442993402333024099L;
 
     /**
@@ -66,7 +66,7 @@ public class PriceTypeEnumeration implements CloneableType<PriceTypeEnumeration>
      * Creates a new instance of PriceTypeEnumeration
      * @param value Value to encapsulate
      */
-    private PriceTypeEnumeration(String value) {
+    private PriceTypeEnumeration(final String value) {
         this.value = value;
     }
 
@@ -83,7 +83,7 @@ public class PriceTypeEnumeration implements CloneableType<PriceTypeEnumeration>
      * @param value Value to search for.
      * @return PriceTypeEnumeration or null.
      */
-    public static PriceTypeEnumeration findByValue(String value) {
+    public static PriceTypeEnumeration findByValue(final String value) {
         if (value.equalsIgnoreCase("negotiable")) {
             return PriceTypeEnumeration.NEGOTIABLE;
         } else {

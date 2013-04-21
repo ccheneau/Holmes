@@ -48,67 +48,109 @@ import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
 /**
+ * The Class License.
+ *
  * @version $Revision: 1.3 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class License implements Serializable {
-    /**
-     * 
-     */
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1890706896523356764L;
 
+    /** The Constant CC_START. */
     private static final String CC_START = "http://creativecommons.org/licenses/";
-    private static final HashMap<String, License> lookupLicense = new HashMap<String, License>();
+
+    /** The Constant LOOKUP_LICENSE. */
+    private static final HashMap<String, License> LOOKUP_LICENSE = new HashMap<String, License>();
+
+    /** The Constant NO_DERIVS. */
     public static final License NO_DERIVS = new License("http://creativecommons.org/licenses/nd/1.0/", new Behaviour[0], new Behaviour[] {
             Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant NO_DERIVS_NONCOMMERCIAL. */
     public static final License NO_DERIVS_NONCOMMERCIAL = new License("http://creativecommons.org/licenses/nd-nc/1.0/",
             new Behaviour[] { Behaviour.NONCOMMERCIAL }, new Behaviour[] { Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant NONCOMMERCIAL. */
     public static final License NONCOMMERCIAL = new License("http://creativecommons.org/licenses/nc/1.0/", new Behaviour[] { Behaviour.NONCOMMERCIAL },
             new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant SHARE_ALIKE. */
     public static final License SHARE_ALIKE = new License("http://creativecommons.org/licenses/sa/1.0/", new Behaviour[] { Behaviour.COPYLEFT },
             new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant SHARE_ALIKE_NONCOMMERCIAL. */
     public static final License SHARE_ALIKE_NONCOMMERCIAL = new License("http://creativecommons.org/licenses/nc-sa/1.0/", new Behaviour[] { Behaviour.COPYLEFT,
             Behaviour.NONCOMMERCIAL }, new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant SHARE_ALIKE_ATTRIBUTION. */
     public static final License SHARE_ALIKE_ATTRIBUTION = new License("http://creativecommons.org/licenses/by-sa/2.5/", new Behaviour[] { Behaviour.COPYLEFT,
             Behaviour.ATTRIBUTION }, new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant SHARE_ALIKE_NONCOMMERCIAL_ATTRIBUTION. */
     public static final License SHARE_ALIKE_NONCOMMERCIAL_ATTRIBUTION = new License("http://creativecommons.org/licenses/by-nc-sa/2.5/", new Behaviour[] {
             Behaviour.COPYLEFT, Behaviour.ATTRIBUTION, Behaviour.NONCOMMERCIAL }, new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION,
             Behaviour.REPRODUCTION });
+
+    /** The Constant NONCOMMERCIAL_ATTRIBUTION. */
     public static final License NONCOMMERCIAL_ATTRIBUTION = new License("http://creativecommons.org/licenses/by-nc/2.5/", new Behaviour[] {
             Behaviour.ATTRIBUTION, Behaviour.NONCOMMERCIAL }, new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant NONCOMMERCIAL_ATTRIBUTION_NO_DERIVS. */
     public static final License NONCOMMERCIAL_ATTRIBUTION_NO_DERIVS = new License("http://creativecommons.org/licenses/by-nc-nd/2.5/", new Behaviour[] {
             Behaviour.ATTRIBUTION, Behaviour.NONCOMMERCIAL }, new Behaviour[] { Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant ATTRIBUTION_NO_DERIVS. */
     public static final License ATTRIBUTION_NO_DERIVS = new License("http://creativecommons.org/licenses/by-nd/2.5/",
             new Behaviour[] { Behaviour.ATTRIBUTION }, new Behaviour[] { Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The Constant ATTRIBUTION. */
     public static final License ATTRIBUTION = new License("http://creativecommons.org/licenses/by/2.5/", new Behaviour[] { Behaviour.ATTRIBUTION },
             new Behaviour[] { Behaviour.DERIVATIVE, Behaviour.DISTRIBUTION, Behaviour.REPRODUCTION });
+
+    /** The uri. */
     private String uri;
+
+    /** The permits. */
     private Behaviour[] permits;
+
+    /** The requires. */
     private Behaviour[] requires;
 
     /**
-     * Creates a new instance of License
+     * Creates a new instance of License.
+     *
+     * @param uri the uri
+     * @param requires the requires
+     * @param permits the permits
      */
-    public License(String uri, Behaviour[] requires, Behaviour[] permits) {
+    public License(final String uri, final Behaviour[] requires, final Behaviour[] permits) {
         this.requires = requires;
         this.permits = permits;
         this.uri = uri;
-        License.lookupLicense.put(uri, this);
+        License.LOOKUP_LICENSE.put(uri, this);
 
         if (this.uri.endsWith("/")) {
             //System.out.println(uri.substring(0,this.uri.lastIndexOf("/")));
-            License.lookupLicense.put(uri.substring(0, this.uri.lastIndexOf("/")), this);
+            License.LOOKUP_LICENSE.put(uri.substring(0, this.uri.lastIndexOf("/")), this);
         }
     }
 
-    public static License findByValue(String uri) {
-        License found = License.lookupLicense.get(uri);
+    /**
+     * Find by value.
+     *
+     * @param uri the uri
+     * @return license
+     */
+    public static License findByValue(final String uri) {
+        License found = License.LOOKUP_LICENSE.get(uri);
 
         //No I am going to try an guess about unknown licenses
         // This is try and match known CC licenses of other versions or various URLs to
         // current licenses, then make a new one with the same permissions.
         if (found == null && uri.startsWith("http://") && uri.toLowerCase().indexOf("creativecommons.org") != -1) {
-            Iterator<String> it = License.lookupLicense.keySet().iterator();
+            Iterator<String> it = License.LOOKUP_LICENSE.keySet().iterator();
             while (it.hasNext() && found == null) {
                 String key = it.next();
                 if (key.startsWith(CC_START)) {
@@ -117,7 +159,7 @@ public class License implements Serializable {
                     String license = tok.nextToken();
                     /*String version = */tok.nextToken();
                     if (uri.toLowerCase().indexOf("creativecommons.org/licenses/" + license) != -1) {
-                        License current = lookupLicense.get(key);
+                        License current = LOOKUP_LICENSE.get(key);
                         found = new License(uri, current.getRequires(), current.getPermits());
                     }
                 }
@@ -138,6 +180,9 @@ public class License implements Serializable {
         return this.requires;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
 
@@ -149,43 +194,82 @@ public class License implements Serializable {
         return this.uri;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(License.class, this);
         return eBean.beanEquals(obj);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(License.class, this);
         return equals.beanHashCode();
     }
 
-    public static class Behaviour implements Serializable {
-        /**
-         * 
-         */
+    /**
+     * The Class Behaviour.
+     */
+    public static final class Behaviour implements Serializable {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 4484932480954592749L;
 
-        private static final HashMap<String, Behaviour> lookup = new HashMap<String, Behaviour>();
+        /** The Constant LOOKUP. */
+        private static final HashMap<String, Behaviour> LOOKUP = new HashMap<String, Behaviour>();
+
+        /** The Constant REPRODUCTION. */
         public static final Behaviour REPRODUCTION = new Behaviour("http://web.resource.org/cc/Reproduction");
+
+        /** The Constant DISTRIBUTION. */
         public static final Behaviour DISTRIBUTION = new Behaviour("http://web.resource.org/cc/Distribution");
+
+        /** The Constant DERIVATIVE. */
         public static final Behaviour DERIVATIVE = new Behaviour("http://web.resource.org/cc/DerivativeWorks");
+
+        /** The Constant NOTICE. */
         public static final Behaviour NOTICE = new Behaviour("http://web.resource.org/cc/Notice");
+
+        /** The Constant ATTRIBUTION. */
         public static final Behaviour ATTRIBUTION = new Behaviour("http://web.resource.org/cc/Attribution");
+
+        /** The Constant COPYLEFT. */
         public static final Behaviour COPYLEFT = new Behaviour("http://web.resource.org/cc/Copyleft");
+
+        /** The Constant NONCOMMERCIAL. */
         public static final Behaviour NONCOMMERCIAL = new Behaviour("http://web.resource.org/cc/Noncommercial");
+
+        /** The uri. */
         private String uri;
 
-        private Behaviour(String uri) {
+        /**
+         * Constructor.
+         *
+         * @param uri the uri
+         */
+        private Behaviour(final String uri) {
             this.uri = uri;
-            Behaviour.lookup.put(uri, this);
+            Behaviour.LOOKUP.put(uri, this);
         }
 
-        public static Behaviour findByValue(String uri) {
-            return Behaviour.lookup.get(uri);
+        /**
+         * Find by value.
+         *
+         * @param uri the uri
+         * @return behaviour
+         */
+        public static Behaviour findByValue(final String uri) {
+            return Behaviour.LOOKUP.get(uri);
         }
 
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
         @Override
         public String toString() {
             return this.uri;

@@ -24,9 +24,11 @@ public final class LineString extends AbstractCurve {
     }
 
     /**
-     * Construct object from a position list
+     * Construct object from a position list.
+     *
+     * @param posList the pos list
      */
-    public LineString(PositionList posList) {
+    public LineString(final PositionList posList) {
         this.posList = posList;
     }
 
@@ -38,7 +40,7 @@ public final class LineString extends AbstractCurve {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         return getPositionList().equals(((LineString) obj).getPositionList());
@@ -63,11 +65,11 @@ public final class LineString extends AbstractCurve {
     }
 
     /**
-     * Set the position list
+     * Set the position list.
      *
-     * @param posList the new position list
+     * @param newPosList the new position list
      */
-    public void setPositionList(PositionList posList) {
-        this.posList = posList;
+    public void setPositionList(final PositionList newPosList) {
+        this.posList = newPosList;
     }
 }

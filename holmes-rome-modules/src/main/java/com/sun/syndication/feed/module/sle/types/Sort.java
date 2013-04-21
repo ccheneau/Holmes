@@ -97,7 +97,7 @@ public class Sort implements Serializable, Cloneable {
      * @param label Label for the sort
      * @param defaultOrder indicates if this is the defaul order of the feed.
      */
-    public Sort(Namespace namespace, String element, String dataType, String label, boolean defaultOrder) {
+    public Sort(final Namespace namespace, final String element, final String dataType, final String label, final boolean defaultOrder) {
         super();
         this.namespace = namespace == null ? Namespace.XML_NAMESPACE : namespace;
         this.element = element;
@@ -153,7 +153,7 @@ public class Sort implements Serializable, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof Sort) return obj.equals(((Sort) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         else return false;

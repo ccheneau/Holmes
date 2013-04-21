@@ -39,8 +39,7 @@ import com.sun.syndication.io.ModuleParser;
  * OpenSearch implementation of the ModuleParser class
  */
 public class OpenSearchModuleParser implements ModuleParser {
-    private static final Logger logger = Logger.getLogger(OpenSearchModuleParser.class.getName());
-
+    private static final Logger LOGGER = Logger.getLogger(OpenSearchModuleParser.class.getName());
     private static final Namespace OS_NS = Namespace.getNamespace("opensearch", OpenSearchModule.URI);
 
     @Override
@@ -49,7 +48,7 @@ public class OpenSearchModuleParser implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element dcRoot) {
+    public Module parse(final Element dcRoot) {
 
         URL baseURI = findBaseURI(dcRoot);
 
@@ -59,14 +58,12 @@ public class OpenSearchModuleParser implements ModuleParser {
         Element e = dcRoot.getChild("totalResults", OS_NS);
 
         if (e != null) {
-
             foundSomething = true;
-
             try {
                 osm.setTotalResults(Integer.parseInt(e.getText()));
             } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                logger.log(Level.WARNING, "The element totalResults must be an integer value: " + ex.getMessage());
+                LOGGER.log(Level.WARNING, "The element totalResults must be an integer value: " + ex.getMessage());
             }
         }
 
@@ -76,7 +73,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                 osm.setItemsPerPage(Integer.parseInt(e.getText()));
             } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                logger.log(Level.WARNING, "The element itemsPerPage must be an integer value: " + ex.getMessage());
+                LOGGER.log(Level.WARNING, "The element itemsPerPage must be an integer value: " + ex.getMessage());
             }
         }
 
@@ -86,7 +83,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                 osm.setStartIndex(Integer.parseInt(e.getText()));
             } catch (NumberFormatException ex) {
                 // Ignore setting the field and post a warning
-                logger.log(Level.WARNING, "The element startIndex must be an integer value: " + ex.getMessage());
+                LOGGER.log(Level.WARNING, "The element startIndex must be an integer value: " + ex.getMessage());
             }
         }
 
@@ -112,45 +109,54 @@ public class OpenSearchModuleParser implements ModuleParser {
         return foundSomething ? osm : null;
     }
 
-    private static OSQuery parseQuery(Element e) {
-
+    /**
+     * Parses the query.
+     *
+     * @param element the element
+     * @return oS query
+     */
+    private static OSQuery parseQuery(final Element element) {
         OSQuery query = new OSQuery();
 
-        String att = e.getAttributeValue("role");
+        String att = element.getAttributeValue("role");
         query.setRole(att);
 
-        att = e.getAttributeValue("osd");
+        att = element.getAttributeValue("osd");
         query.setOsd(att);
 
-        att = e.getAttributeValue("searchTerms");
+        att = element.getAttributeValue("searchTerms");
         query.setSearchTerms(att);
 
-        att = e.getAttributeValue("title");
+        att = element.getAttributeValue("title");
         query.setTitle(att);
 
         try {
-
             // someones mistake should not cause the parser to fail, since these are only optional attributes
-
-            att = e.getAttributeValue("totalResults");
+            att = element.getAttributeValue("totalResults");
             if (att != null) {
                 query.setTotalResults(Integer.parseInt(att));
             }
 
-            att = e.getAttributeValue("startPage");
+            att = element.getAttributeValue("startPage");
             if (att != null) {
                 query.setStartPage(Integer.parseInt(att));
             }
 
         } catch (NumberFormatException ex) {
-            logger.log(Level.WARNING, "Exception caught while trying to parse a non-numeric Query attribute: " + ex.getMessage());
+            LOGGER.log(Level.WARNING, "Exception caught while trying to parse a non-numeric Query attribute: " + ex.getMessage());
         }
 
         return query;
     }
 
-    private static Link parseLink(Element e, URL baseURI) {
-
+    /**
+     * Parses the link.
+     *
+     * @param e the e
+     * @param baseURI the base uri
+     * @return link
+     */
+    private static Link parseLink(final Element e, final URL baseURI) {
         Link link = new Link();
 
         String att = e.getAttributeValue("rel");
@@ -177,37 +183,55 @@ public class OpenSearchModuleParser implements ModuleParser {
         return link;
     }
 
-    private static boolean isRelativeURI(String uri) {
+    /**
+     * Checks if is relative uri.
+     *
+     * @param uri the uri
+     * @return true, if is relative uri
+     */
+    private static boolean isRelativeURI(final String uri) {
         if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("/")) {
             return false;
         }
         return true;
     }
 
-    /** Use xml:base attributes at feed and entry level to resolve relative links */
-    private static String resolveURI(URL baseURI, Parent parent, String url) {
-        url = url.equals(".") || url.equals("./") ? "" : url;
-        if (isRelativeURI(url) && parent != null && parent instanceof Element) {
+    /**
+     * Use xml:base attributes at feed and entry level to resolve relative links.
+     *
+     * @param baseURI the base uri
+     * @param parent the parent
+     * @param url the url
+     * @return string
+     */
+    private static String resolveURI(final URL baseURI, final Parent parent, final String url) {
+        String sUrl = url.equals(".") || url.equals("./") ? "" : url;
+        if (isRelativeURI(sUrl) && parent != null && parent instanceof Element) {
             Attribute baseAtt = ((Element) parent).getAttribute("base", Namespace.XML_NAMESPACE);
             String xmlBase = (baseAtt == null) ? "" : baseAtt.getValue();
             if (!isRelativeURI(xmlBase) && !xmlBase.endsWith("/")) {
                 xmlBase = xmlBase.substring(0, xmlBase.lastIndexOf("/") + 1);
             }
-            return resolveURI(baseURI, parent.getParent(), xmlBase + url);
-        } else if (isRelativeURI(url) && parent == null) {
-            return baseURI + url;
-        } else if (baseURI != null && url.startsWith("/")) {
+            return resolveURI(baseURI, parent.getParent(), xmlBase + sUrl);
+        } else if (isRelativeURI(sUrl) && parent == null) {
+            return baseURI + sUrl;
+        } else if (baseURI != null && sUrl.startsWith("/")) {
             String hostURI = baseURI.getProtocol() + "://" + baseURI.getHost();
             if (baseURI.getPort() != baseURI.getDefaultPort()) {
                 hostURI = hostURI + ":" + baseURI.getPort();
             }
-            return hostURI + url;
+            return hostURI + sUrl;
         }
-        return url;
+        return sUrl;
     }
 
-    /** Use feed links and/or xml:base attribute to determine baseURI of feed */
-    private static URL findBaseURI(Element root) {
+    /**
+     * Use feed links and/or xml:base attribute to determine baseURI of feed.
+     *
+     * @param root the root
+     * @return url
+     */
+    private static URL findBaseURI(final Element root) {
         URL baseURI = null;
         List<?> linksList = root.getChildren("link", OS_NS);
         if (linksList != null) {
@@ -221,7 +245,7 @@ public class OpenSearchModuleParser implements ModuleParser {
                         baseURI = new URL(href);
                         break;
                     } catch (MalformedURLException e) {
-                        logger.log(Level.WARNING, "Base URI is malformed: " + href);
+                        LOGGER.log(Level.WARNING, "Base URI is malformed: " + href);
                     }
                 }
             }

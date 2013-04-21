@@ -42,6 +42,7 @@ package com.sun.syndication.feed.module.itunes.io;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -58,7 +59,7 @@ import com.sun.syndication.io.ModuleGenerator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ITunesGenerator implements ModuleGenerator {
-    private static final HashSet<Namespace> SET = new HashSet<Namespace>();
+    private static final Set<Namespace> SET = new HashSet<Namespace>();
     private static final Namespace NS = Namespace.getNamespace(AbstractITunesObject.PREFIX, AbstractITunesObject.URI);
 
     static {
@@ -70,7 +71,7 @@ public class ITunesGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         Element root = element;
 
         while (root.getParent() != null && root.getParent() instanceof Element) {
@@ -158,7 +159,7 @@ public class ITunesGenerator implements ModuleGenerator {
      * @return set of Namespace objects.
      */
     @Override
-    public java.util.Set<Namespace> getNamespaces() {
+    public Set<Namespace> getNamespaces() {
         return SET;
     }
 
@@ -170,10 +171,16 @@ public class ITunesGenerator implements ModuleGenerator {
         return AbstractITunesObject.URI;
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
-
         return element;
     }
 }

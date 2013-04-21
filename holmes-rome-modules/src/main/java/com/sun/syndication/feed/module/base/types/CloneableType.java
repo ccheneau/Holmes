@@ -41,9 +41,18 @@ package com.sun.syndication.feed.module.base.types;
 
 /**
  * This is just a holder interface for cloneable elements.
+ *
+ * @param <T> generic type
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
 public interface CloneableType<T> extends Cloneable {
+
+    /**
+     * Clone.
+     *
+     * @return t
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
     T clone() throws CloneNotSupportedException;
 }

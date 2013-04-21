@@ -23,11 +23,11 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import com.sun.syndication.feed.impl.EqualsBean;
 
 /**
  * Used to indicate a URL primary reference for a MediaContent object.
@@ -42,7 +42,8 @@ public class UrlReference implements Reference, Serializable {
      * Creates a new UrlReference.
      * @param url URL to the media source
      */
-    public UrlReference(URI url) {
+    public UrlReference(final URI url) {
+        super();
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
@@ -51,13 +52,13 @@ public class UrlReference implements Reference, Serializable {
     }
 
     /**
-     * Creates a new instance of UrlReference
+     * Creates a new instance of UrlReference.
+     *
      * @param url String value of a URL
-     * @throws java.net.MalformedURLException thrown on bad URLs
+     * @throws URISyntaxException the uRI syntax exception
      */
-    public UrlReference(String url) throws URISyntaxException {
+    public UrlReference(final String url) throws URISyntaxException {
         super();
-
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
@@ -73,18 +74,19 @@ public class UrlReference implements Reference, Serializable {
         return this.url;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         return url.toString();
     }

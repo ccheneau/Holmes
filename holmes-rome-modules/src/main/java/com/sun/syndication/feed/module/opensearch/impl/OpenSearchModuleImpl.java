@@ -35,6 +35,9 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
     private Link link;
     private List<OSQuery> queries;
 
+    /**
+     * Constructor.
+     */
     public OpenSearchModuleImpl() {
         super(OpenSearchModuleImpl.class, OpenSearchModuleImpl.URI);
     }
@@ -51,7 +54,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param itemsPerPage The itemsPerPage to set.
      */
     @Override
-    public void setItemsPerPage(int itemsPerPage) {
+    public void setItemsPerPage(final int itemsPerPage) {
         this.itemsPerPage = itemsPerPage;
     }
 
@@ -67,7 +70,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param link The link to set.
      */
     @Override
-    public void setLink(Link link) {
+    public void setLink(final Link link) {
         this.link = link;
     }
 
@@ -85,12 +88,12 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param queries The queries to set.
      */
     @Override
-    public void setQueries(List<OSQuery> queries) {
+    public void setQueries(final List<OSQuery> queries) {
         this.queries = queries;
     }
 
     @Override
-    public void addQuery(OSQuery query) {
+    public void addQuery(final OSQuery query) {
         if (queries != null) {
             queries.add(query);
         } else {
@@ -111,7 +114,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param startIndex The startIndex to set.
      */
     @Override
-    public void setStartIndex(int startIndex) {
+    public void setStartIndex(final int startIndex) {
         this.startIndex = startIndex;
     }
 
@@ -127,7 +130,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @param totalResults The totalResults to set.
      */
     @Override
-    public void setTotalResults(int totalResults) {
+    public void setTotalResults(final int totalResults) {
         this.totalResults = totalResults;
     }
 
@@ -135,7 +138,7 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
      * @see com.sun.syndication.feed.CopyFrom#copyFrom(java.lang.Object)
      */
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         OpenSearchModule osm = (OpenSearchModuleImpl) obj;
 
         setTotalResults(osm.getTotalResults());

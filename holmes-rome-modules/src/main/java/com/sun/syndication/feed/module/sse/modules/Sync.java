@@ -29,7 +29,7 @@ public class Sync extends SSEModule {
     private List<Conflict> conflicts;
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         Sync sync = (Sync) obj;
         deleted = sync.deleted;
         version = sync.version;
@@ -48,6 +48,8 @@ public class Sync extends SSEModule {
      * The ID is assigned by the creator of the item, and MUST NOT be changed by subsequent publishers. Applications
      * will collate and compare these identifiers, therefore they MUST conform to the syntax for Namespace Specific
      * Strings (the NSS portion of a URN) in RFC 2141.
+     *
+     * @return the id
      */
     public String getId() {
         return id;
@@ -59,13 +61,15 @@ public class Sync extends SSEModule {
      *
      * @param id the identifier for the item.
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
     /**
      * Provides access to a required, integer attribute. This is the modification sequence number of the item, starting
      * at 1 and incrementing by 1 indefinitely for each subsequent modification.
+     *
+     * @return the version
      */
     public Integer getVersion() {
         return version;
@@ -76,7 +80,7 @@ public class Sync extends SSEModule {
      *
      * @param version the modification sequence number of the item.
      */
-    public void setVersion(Integer version) {
+    public void setVersion(final Integer version) {
         this.version = version;
     }
 
@@ -84,6 +88,8 @@ public class Sync extends SSEModule {
      * Provide access to an optional, Boolean attribute. If present and its value is "true" (lower-case), it indicates
      * that the item has been deleted and this is a tombstone. If not present, or if present with value of "false" or
      * "", then the item is not deleted. All other values are invalid.
+     *
+     * @return boolean
      */
     public Boolean isDeleted() {
         return deleted;
@@ -94,7 +100,7 @@ public class Sync extends SSEModule {
      *
      * @param deleted an indication of whether this item has been deleted and is a tombstone.
      */
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(final Boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -116,7 +122,7 @@ public class Sync extends SSEModule {
      * @param conflict an indication of whether there was an update conflict detected when processing an update of this
      *                 item.
      */
-    public void setConflict(Boolean conflict) {
+    public void setConflict(final Boolean conflict) {
         this.conflict = conflict;
     }
 
@@ -125,7 +131,7 @@ public class Sync extends SSEModule {
      *
      * @param history the history for this sync object.
      */
-    public void setHistory(History history) {
+    public void setHistory(final History history) {
         this.history = history;
     }
 
@@ -138,18 +144,23 @@ public class Sync extends SSEModule {
         return history;
     }
 
-    public void addConflict(Conflict conflict) {
+    /**
+     * Adds the conflict.
+     *
+     * @param newConflict the new conflict
+     */
+    public void addConflict(final Conflict newConflict) {
         if (conflicts == null) {
             conflicts = new ArrayList<Conflict>();
         }
-        conflicts.add(conflict);
+        conflicts.add(newConflict);
     }
 
     public List<Conflict> getConflicts() {
         return conflicts;
     }
 
-    public void setConflicts(List<Conflict> conflicts) {
+    public void setConflicts(final List<Conflict> conflicts) {
         this.conflicts = conflicts;
     }
 }

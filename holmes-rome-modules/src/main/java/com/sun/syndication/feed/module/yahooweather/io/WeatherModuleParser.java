@@ -81,7 +81,7 @@ public class WeatherModuleParser implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         YWeatherModuleImpl module = new YWeatherModuleImpl();
         Element location = element.getChild("location", WeatherModuleParser.NS);
 

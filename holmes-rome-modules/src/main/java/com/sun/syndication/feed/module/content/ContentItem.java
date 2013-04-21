@@ -80,7 +80,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentFormat;
     }
 
-    public void setContentFormat(String contentFormat) {
+    public void setContentFormat(final String contentFormat) {
         this.contentFormat = contentFormat;
     }
 
@@ -88,7 +88,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentEncoding;
     }
 
-    public void setContentEncoding(String contentEncoding) {
+    public void setContentEncoding(final String contentEncoding) {
         this.contentEncoding = contentEncoding;
     }
 
@@ -96,7 +96,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentValue;
     }
 
-    public void setContentValue(String contentValue) {
+    public void setContentValue(final String contentValue) {
         this.contentValue = contentValue;
     }
 
@@ -104,7 +104,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentValueDOM;
     }
 
-    public void setContentValueDOM(List<Content> contentValueDOM) {
+    public void setContentValueDOM(final List<Content> contentValueDOM) {
         this.contentValueDOM = contentValueDOM;
     }
 
@@ -112,7 +112,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentAbout;
     }
 
-    public void setContentAbout(String contentAbout) {
+    public void setContentAbout(final String contentAbout) {
         this.contentAbout = contentAbout;
     }
 
@@ -120,7 +120,7 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentValueParseType;
     }
 
-    public void setContentValueParseType(String contentValueParseType) {
+    public void setContentValueParseType(final String contentValueParseType) {
         this.contentValueParseType = contentValueParseType;
     }
 
@@ -128,30 +128,25 @@ public class ContentItem implements Cloneable, Serializable {
         return this.contentValueNamespace;
     }
 
-    public void setContentValueNamespaces(List<Namespace> contentValueNamespace) {
-        this.contentValueNamespace = contentValueNamespace;
+    public void setContentValueNamespaces(final List<Namespace> newCcontentValueNamespace) {
+        this.contentValueNamespace = newCcontentValueNamespace;
     }
 
     public String getContentResource() {
         return this.contentResource;
     }
 
-    public void setContentResource(String contentResource) {
+    public void setContentResource(final String contentResource) {
         this.contentResource = contentResource;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof ContentItem) {
             ContentItem test = (ContentItem) o;
-
-            if (test.contentFormat.equals(contentFormat) && test.contentEncoding.equals(contentEncoding) && test.contentValue.equals(contentValue)
+            return test.contentFormat.equals(contentFormat) && test.contentEncoding.equals(contentEncoding) && test.contentValue.equals(contentValue)
                     && test.contentAbout.equals(contentAbout) && test.contentValueParseType.equals(contentValueParseType)
-                    && test.contentValueNamespace.equals(contentValueNamespace) && test.contentResource.equals(contentResource)) {
-                return true;
-            } else {
-                return false;
-            }
+                    && test.contentValueNamespace.equals(contentValueNamespace) && test.contentResource.equals(contentResource);
         } else {
             return false;
         }

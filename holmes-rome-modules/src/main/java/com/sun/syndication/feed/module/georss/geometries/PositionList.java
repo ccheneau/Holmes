@@ -38,7 +38,7 @@ public class PositionList implements Cloneable, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
 
@@ -59,14 +59,20 @@ public class PositionList implements Cloneable, Serializable {
         return result;
     }
 
-    private void ensureCapacity(int new_size) {
-        if (longitude != null && longitude.length >= new_size) return;
-        if (new_size < 4) new_size = 4;
-        else new_size = (int) Math.ceil(Math.pow(2, Math.ceil(Math.log(new_size) / Math.log(2))));
-        double[] tmp = new double[new_size];
+    /**
+     * Ensure capacity.
+     *
+     * @param newSize the new size
+     */
+    private void ensureCapacity(final int newSize) {
+        int arraySize = newSize;
+        if (longitude != null && longitude.length >= arraySize) return;
+        if (arraySize < 4) arraySize = 4;
+        else arraySize = (int) Math.ceil(Math.pow(2, Math.ceil(Math.log(arraySize) / Math.log(2))));
+        double[] tmp = new double[arraySize];
         if (longitude != null) System.arraycopy(longitude, 0, tmp, 0, size);
         longitude = tmp;
-        tmp = new double[new_size];
+        tmp = new double[arraySize];
         if (latitude != null) System.arraycopy(latitude, 0, tmp, 0, size);
         latitude = tmp;
     }
@@ -82,7 +88,7 @@ public class PositionList implements Cloneable, Serializable {
      * @param pos position index
      * @return longitude for position
      */
-    public double getLongitude(int pos) {
+    public double getLongitude(final int pos) {
         return longitude[pos];
     }
 
@@ -90,19 +96,20 @@ public class PositionList implements Cloneable, Serializable {
      * @param pos position index
      * @return latitude for position
      */
-    public double getLatitude(int pos) {
+    public double getLatitude(final int pos) {
         return latitude[pos];
     }
 
     /**
-     * Add a position at the end of the list
-     * @param latitude
-     * @param longitude
+     * Add a position at the end of the list.
+     *
+     * @param newLatitude the latitude
+     * @param newLongitude the longitude
      */
-    public void add(double latitude, double longitude) {
+    public void add(final double newLatitude, final double newLongitude) {
         ensureCapacity(size + 1);
-        this.longitude[size] = longitude;
-        this.latitude[size] = latitude;
+        this.longitude[size] = newLongitude;
+        this.latitude[size] = newLatitude;
         ++size;
     }
 
@@ -111,28 +118,28 @@ public class PositionList implements Cloneable, Serializable {
      * shifted one place to the "right"
      *
      * @param pos position index
-     * @param latitude
-     * @param longitude
+     * @param newLatitude the latitude
+     * @param newLongitude the longitude
      */
-    public void insert(int pos, double latitude, double longitude) {
+    public void insert(final int pos, final double newLatitude, final double newLongitude) {
         ensureCapacity(size + 1);
         System.arraycopy(this.longitude, pos, this.longitude, pos + 1, size - pos);
         System.arraycopy(this.latitude, pos, this.latitude, pos + 1, size - pos);
-        this.longitude[pos] = longitude;
-        this.latitude[pos] = latitude;
+        this.longitude[pos] = newLongitude;
+        this.latitude[pos] = newLatitude;
         ++size;
     }
 
     /**
-     * Replace the position at the index with new values
-     * 
+     * Replace the position at the index with new values.
+     *
      * @param pos position index
-     * @param latitude
-     * @param longitude
+     * @param newLatitude the latitude
+     * @param newLongitude the longitude
      */
-    public void replace(int pos, double latitude, double longitude) {
-        this.longitude[pos] = longitude;
-        this.latitude[pos] = latitude;
+    public void replace(final int pos, final double newLatitude, final double newLongitude) {
+        this.longitude[pos] = newLongitude;
+        this.latitude[pos] = newLatitude;
     }
 
     /**
@@ -140,7 +147,7 @@ public class PositionList implements Cloneable, Serializable {
      * 
      * @param pos position index
      */
-    public void remove(int pos) {
+    public void remove(final int pos) {
         System.arraycopy(longitude, pos + 1, longitude, pos, size - pos - 1);
         System.arraycopy(latitude, pos + 1, latitude, pos, size - pos - 1);
         --size;

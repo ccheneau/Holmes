@@ -28,8 +28,12 @@ package com.sun.syndication.feed.module.base;
 public class ValidationException extends RuntimeException {
     private static final long serialVersionUID = 276615733985687171L;
 
-    /** Creates a new instance of ValidationException */
-    public ValidationException(String message) {
+    /**
+     * Creates a new instance of ValidationException.
+     *
+     * @param message the message
+     */
+    public ValidationException(final String message) {
         super(message);
     }
 

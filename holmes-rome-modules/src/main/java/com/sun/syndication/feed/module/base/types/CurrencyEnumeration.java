@@ -48,10 +48,10 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class CurrencyEnumeration implements Cloneable, Serializable {
+public final class CurrencyEnumeration implements Cloneable, Serializable {
     private static final long serialVersionUID = -5330436610589233391L;
 
-    private static final HashMap<String, CurrencyEnumeration> lookup = new HashMap<String, CurrencyEnumeration>();
+    private static final HashMap<String, CurrencyEnumeration> LOOKUP = new HashMap<String, CurrencyEnumeration>();
 
     //<xs:restriction base="xs:string">
     //   <xs:enumeration value="AED"/>
@@ -578,9 +578,9 @@ public class CurrencyEnumeration implements Cloneable, Serializable {
      *
      * @param value DOCUMENT ME!
      */
-    private CurrencyEnumeration(String value) {
+    private CurrencyEnumeration(final String value) {
         this.value = value;
-        lookup.put(value, this);
+        LOOKUP.put(value, this);
     }
 
     public String getValue() {
@@ -593,8 +593,14 @@ public class CurrencyEnumeration implements Cloneable, Serializable {
         return this;
     }
 
-    public static CurrencyEnumeration findByValue(String value) {
-        return lookup.get(value.trim().toUpperCase());
+    /**
+     * Find by value.
+     *
+     * @param value the value
+     * @return currency enumeration
+     */
+    public static CurrencyEnumeration findByValue(final String value) {
+        return LOOKUP.get(value.trim().toUpperCase());
     }
 
     @Override

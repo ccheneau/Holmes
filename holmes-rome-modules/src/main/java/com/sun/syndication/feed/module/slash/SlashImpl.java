@@ -60,7 +60,9 @@ public class SlashImpl implements Slash {
 
     private Integer[] hitParade;
 
-    /** Creates a new instance of SlashImpl */
+    /**
+     * Creates a new instance of SlashImpl.
+     */
     public SlashImpl() {
     }
 
@@ -70,7 +72,7 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public void setSection(String section) {
+    public void setSection(final String section) {
         this.section = section;
     }
 
@@ -80,7 +82,7 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public void setDepartment(String department) {
+    public void setDepartment(final String department) {
         this.department = department;
     }
 
@@ -90,7 +92,7 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public void setComments(Integer comments) {
+    public void setComments(final Integer comments) {
         this.comments = comments;
     }
 
@@ -100,12 +102,12 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public void setHitParade(Integer[] hitParade) {
+    public void setHitParade(final Integer[] hitParade) {
         this.hitParade = hitParade;
     }
 
     @Override
-    public void copyFrom(Object object) {
+    public void copyFrom(final Object object) {
         Slash source = (Slash) object;
         this.setHitParade(arrayCopy(source.getHitParade()));
         this.setComments(source.getComments());
@@ -126,7 +128,13 @@ public class SlashImpl implements Slash {
         return Slash.URI;
     }
 
-    private Integer[] arrayCopy(Integer[] source) {
+    /**
+     * Array copy.
+     *
+     * @param source the source
+     * @return integer[]
+     */
+    private Integer[] arrayCopy(final Integer[] source) {
         if (source == null) {
             return new Integer[0];
         }
@@ -145,9 +153,8 @@ public class SlashImpl implements Slash {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
@@ -161,5 +168,4 @@ public class SlashImpl implements Slash {
         result = prime * result + ((section == null) ? 0 : section.hashCode());
         return result;
     }
-
 }

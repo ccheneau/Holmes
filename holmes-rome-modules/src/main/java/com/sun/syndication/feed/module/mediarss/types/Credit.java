@@ -83,7 +83,7 @@ public class Credit implements Serializable {
      * @param role role name
      * @param name persons name
      */
-    public Credit(String scheme, String role, String name) {
+    public Credit(final String scheme, final String role, final String name) {
         if (name == null) {
             throw new NullPointerException("A credit name cannot be null.");
         }
@@ -117,21 +117,21 @@ public class Credit implements Serializable {
         return scheme;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

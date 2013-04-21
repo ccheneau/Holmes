@@ -18,13 +18,20 @@ public final class Point extends AbstractGeometricPrimitive {
 
     private Position pos;
 
-    /** Creates a new instance of Point */
+    /**
+     * Creates a new instance of Point.
+     */
     public Point() {
 
     }
 
-    public Point(Position pos) {
-        this.pos = pos;
+    /**
+     * Constructor.
+     *
+     * @param newPos the new pos
+     */
+    public Point(final Position newPos) {
+        this.pos = newPos;
     }
 
     @Override
@@ -35,7 +42,7 @@ public final class Point extends AbstractGeometricPrimitive {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         return getPosition().equals(((Point) obj).getPosition());
@@ -60,11 +67,11 @@ public final class Point extends AbstractGeometricPrimitive {
     }
 
     /**
-     * Set the position
-     * 
-     * @param pos the new position
+     * Set the position.
+     *
+     * @param newPos the new position
      */
-    public void setPosition(Position pos) {
-        this.pos = pos;
+    public void setPosition(final Position newPos) {
+        this.pos = newPos;
     }
 }

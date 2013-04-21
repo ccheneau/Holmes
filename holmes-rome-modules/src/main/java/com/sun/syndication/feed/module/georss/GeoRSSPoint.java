@@ -17,12 +17,16 @@
 package com.sun.syndication.feed.module.georss;
 
 /**
+ * The Class GeoRSSPoint.
+ *
  * @author marc
- * 
  */
 public class GeoRSSPoint implements Cloneable {
+
+    /** The latitude. */
     private double latitude;
 
+    /** The longitude. */
     private double longitude;
 
     /**
@@ -33,14 +37,17 @@ public class GeoRSSPoint implements Cloneable {
     }
 
     /**
-     * @param latitude
-     *            the latitude to set
+     * Sets the latitude.
+     *
+     * @param latitude the latitude to set
      */
-    public void setLatitude(double latitude) {
+    public void setLatitude(final double latitude) {
         this.latitude = latitude;
     }
 
     /**
+     * Gets the longitude.
+     *
      * @return the longitude
      */
     public double getLongitude() {
@@ -48,15 +55,19 @@ public class GeoRSSPoint implements Cloneable {
     }
 
     /**
-     * @param longitude
-     *            the longitude to set
+     * Sets the longitude.
+     *
+     * @param longitude the longitude to set
      */
-    public void setLongitude(double longitude) {
+    public void setLongitude(final double longitude) {
         this.longitude = longitude;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
 }

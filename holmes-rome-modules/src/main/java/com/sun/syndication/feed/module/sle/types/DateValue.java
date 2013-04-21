@@ -42,16 +42,16 @@ public class DateValue implements EntryValue {
     }
 
     /**
-     * 
-     * @param element 
+     * Sets the element.
+     *
+     * @param element the new element
      */
-    public void setElement(String element) {
+    public void setElement(final String element) {
         this.element = element;
     }
 
-    /**
-     * 
-     * @return 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.module.sle.types.EntryValue#getElement()
      */
     @Override
     public String getElement() {
@@ -59,16 +59,16 @@ public class DateValue implements EntryValue {
     }
 
     /**
-     * 
-     * @param label 
+     * Sets the label.
+     *
+     * @param label the new label
      */
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
-    /**
-     * 
-     * @return 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.module.sle.types.EntryValue#getLabel()
      */
     @Override
     public String getLabel() {
@@ -76,22 +76,25 @@ public class DateValue implements EntryValue {
     }
 
     /**
-     * 
-     * @param value 
+     * Sets the value.
+     *
+     * @param value the new value
      */
-    public void setValue(Date value) {
+    public void setValue(final Date value) {
         this.value = value;
     }
 
-    /**
-     * 
-     * @return 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.module.sle.types.EntryValue#getValue()
      */
     @Override
     public Comparable<?> getValue() {
         return value;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
@@ -103,29 +106,46 @@ public class DateValue implements EntryValue {
         return clone;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof DateValue) return obj.equals(((DateValue) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         return false;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         return obj.hashCode();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return "[Namespace: " + namespace + " Element:" + element + " Label:" + label + " Value:" + value + "]";
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.feed.module.sle.types.EntryValue#getNamespace()
+     */
     @Override
     public Namespace getNamespace() {
         return namespace;
     }
 
-    public void setNamespace(Namespace namespace) {
+    /**
+     * Sets the namespace.
+     *
+     * @param namespace the new namespace
+     */
+    public void setNamespace(final Namespace namespace) {
         this.namespace = namespace == null ? Namespace.XML_NAMESPACE : namespace;
     }
 }

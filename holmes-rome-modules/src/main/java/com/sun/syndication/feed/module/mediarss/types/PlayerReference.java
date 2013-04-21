@@ -22,11 +22,11 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
-
 import java.io.Serializable;
 import java.net.URI;
+
+import com.sun.syndication.feed.impl.EqualsBean;
+import com.sun.syndication.feed.impl.ToStringBean;
 
 /**
  *
@@ -53,7 +53,7 @@ public class PlayerReference implements Reference, Serializable {
      * @param width width of the player
      * @param height height of the player
      */
-    public PlayerReference(URI url, Integer width, Integer height) {
+    public PlayerReference(final URI url, final Integer width, final Integer height) {
         super();
 
         if (url == null) {
@@ -69,7 +69,7 @@ public class PlayerReference implements Reference, Serializable {
      * Constructs a new PlayerReference
      * @param url URL of the player
      */
-    public PlayerReference(URI url) {
+    public PlayerReference(final URI url) {
         this(url, null, null);
     }
 
@@ -97,21 +97,21 @@ public class PlayerReference implements Reference, Serializable {
         return width;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

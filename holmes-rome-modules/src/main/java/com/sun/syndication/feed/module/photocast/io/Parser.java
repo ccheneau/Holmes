@@ -62,7 +62,7 @@ import com.sun.syndication.io.ModuleParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Parser implements ModuleParser {
-    private static final Logger logger = Logger.getLogger(Parser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Parser.class.getName());
 
     private static final Namespace NS = Namespace.getNamespace(PhotocastModule.URI);
     //2005-11-29T04:36:06
@@ -75,7 +75,7 @@ public class Parser implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         if (element.getName().equals("channel") || element.getName().equals("feed")) {
             return new PhotocastModuleImpl();
         } else if (element.getChild("metadata", Parser.NS) == null && element.getChild("image", Parser.NS) == null) return null;
@@ -89,25 +89,25 @@ public class Parser implements ModuleParser {
                 try {
                     pm.setPhotoDate(new SimpleDateFormat(Parser.PHOTO_DATE_FORMAT).parse(e.getText()));
                 } catch (Exception ex) {
-                    logger.warning("Unable to parse photoDate: " + e.getText() + " " + ex.toString());
+                    LOGGER.warning("Unable to parse photoDate: " + e.getText() + " " + ex.toString());
                 }
             } else if (e.getName().equals("cropDate")) {
                 try {
                     pm.setCropDate(new SimpleDateFormat(Parser.CROP_DATE_FORMAT).parse(e.getText()));
                 } catch (Exception ex) {
-                    logger.warning("Unable to parse cropDate: " + e.getText() + " " + ex.toString());
+                    LOGGER.warning("Unable to parse cropDate: " + e.getText() + " " + ex.toString());
                 }
             } else if (e.getName().equals("thumbnail")) {
                 try {
                     pm.setThumbnailUrl(new URL(e.getText()));
                 } catch (Exception ex) {
-                    logger.warning("Unable to parse thumnail: " + e.getText() + " " + ex.toString());
+                    LOGGER.warning("Unable to parse thumnail: " + e.getText() + " " + ex.toString());
                 }
             } else if (e.getName().equals("image")) {
                 try {
                     pm.setImageUrl(new URL(e.getText()));
                 } catch (Exception ex) {
-                    logger.warning("Unable to parse image: " + e.getText() + " " + ex.toString());
+                    LOGGER.warning("Unable to parse image: " + e.getText() + " " + ex.toString());
                 }
             } else if (e.getName().equals("metadata")) {
                 String comments = "";
@@ -116,7 +116,7 @@ public class Parser implements ModuleParser {
                     try {
                         photoDate = new PhotoDate(Double.parseDouble(e.getChildText("PhotoDate")));
                     } catch (Exception ex) {
-                        logger.warning("Unable to parse PhotoDate: " + e.getText() + " " + ex.toString());
+                        LOGGER.warning("Unable to parse PhotoDate: " + e.getText() + " " + ex.toString());
                     }
                 }
                 if (e.getChildText("Comments") != null) {
@@ -132,5 +132,4 @@ public class Parser implements ModuleParser {
     public String getNamespaceUri() {
         return PhotocastModule.URI;
     }
-
 }

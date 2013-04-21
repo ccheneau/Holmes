@@ -78,7 +78,7 @@ public class ContentModuleGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         // this is not necessary, it is done to avoid the namespace definition in every item.
         Element root = element;
 
@@ -171,14 +171,28 @@ public class ContentModuleGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, CONTENT_NS);
         element.addContent(value);
 
         return element;
     }
 
-    protected Element generateCDATAElement(String name, String value) {
+    /**
+     * Generate cdata element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateCDATAElement(final String name, final String value) {
         Element element = new Element(name, CONTENT_NS);
         CDATA cdata = new CDATA(value);
         element.addContent(cdata);

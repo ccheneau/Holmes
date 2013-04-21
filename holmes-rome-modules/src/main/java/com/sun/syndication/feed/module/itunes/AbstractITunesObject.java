@@ -71,6 +71,9 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
     private String subtitle;
     private String summary;
 
+    /**
+     * Constructor.
+     */
     public AbstractITunesObject() {
         keywords = null;
     }
@@ -124,7 +127,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param author Sets the author string for this feed or entry
      */
     @Override
-    public void setAuthor(String author) {
+    public void setAuthor(final String author) {
         this.author = author;
     }
 
@@ -142,7 +145,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param block Boolean as to whether to block this feed or entry
      */
     @Override
-    public void setBlock(boolean block) {
+    public void setBlock(final boolean block) {
         this.block = block;
     }
 
@@ -160,7 +163,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param explicit Boolean as to whether this feed or entry contains adult content
      */
     @Override
-    public void setExplicit(boolean explicit) {
+    public void setExplicit(final boolean explicit) {
         this.explicit = explicit;
     }
 
@@ -182,7 +185,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param keywords A list of keywords for this feed or enty
      */
     @Override
-    public void setKeywords(String[] keywords) {
+    public void setKeywords(final String[] keywords) {
         this.keywords = keywords;
     }
 
@@ -200,7 +203,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param subtitle A subtitle for this feed or entry
      */
     @Override
-    public void setSubtitle(String subtitle) {
+    public void setSubtitle(final String subtitle) {
         this.subtitle = subtitle;
     }
 
@@ -218,7 +221,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @param summary A subtitle for this feed or entry
      */
     @Override
-    public void setSummary(String summary) {
+    public void setSummary(final String summary) {
         this.summary = summary;
     }
 

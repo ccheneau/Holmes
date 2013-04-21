@@ -81,13 +81,13 @@ import com.sun.syndication.io.ModuleParser;
  * @version $Revision: 1.3 $
  */
 public class GoogleBaseParser implements ModuleParser {
-    private static final Logger logger = Logger.getLogger(GoogleBaseParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GoogleBaseParser.class.getName());
     public static final char[] INTEGER_CHARS = "-1234567890".toCharArray();
     public static final char[] FLOAT_CHARS = "-1234567890.".toCharArray();
     public static final String SHORT_DT_FMT = "yyyy-MM-dd";
     public static final String LONG_DT_FMT = "yyyy-MM-dd'T'HH:mm:ss";
-    static final Namespace NS = Namespace.getNamespace(GoogleBase.URI);
-    static final Properties PROPS2TAGS = new Properties();
+    private static final Namespace NS = Namespace.getNamespace(GoogleBase.URI);
+    private static final Properties PROPS2TAGS = new Properties();
     static PropertyDescriptor[] pds = null;
 
     static {
@@ -97,16 +97,25 @@ public class GoogleBaseParser implements ModuleParser {
             is = GoogleBaseParser.class.getResourceAsStream("/com/sun/syndication/feed/module/base/io/tags.properties");
             PROPS2TAGS.load(is);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Unable to read properties file for Google Base tags!", e);
+            LOGGER.log(Level.SEVERE, "Unable to read properties file for Google Base tags!", e);
         } catch (IntrospectionException e) {
-            logger.log(Level.SEVERE, "Unable to get property descriptors for GoogleBaseImpl!", e);
+            LOGGER.log(Level.SEVERE, "Unable to get property descriptors for GoogleBaseImpl!", e);
         } finally {
             if (is != null) try {
                 is.close();
             } catch (IOException e) {
-                logger.log(Level.SEVERE, "Unable to close properties file for Google Base tags!", e);
+                LOGGER.log(Level.SEVERE, "Unable to close properties file for Google Base tags!", e);
             }
         }
+    }
+
+    /**
+     * Gets the properties.
+     *
+     * @return the properties
+     */
+    public static Properties getProperties() {
+        return PROPS2TAGS;
     }
 
     /**
@@ -117,7 +126,7 @@ public class GoogleBaseParser implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         HashMap<String, PropertyDescriptor> tag2pd = new HashMap<String, PropertyDescriptor>();
         GoogleBaseImpl module = new GoogleBaseImpl();
 
@@ -127,7 +136,7 @@ public class GoogleBaseParser implements ModuleParser {
                 String tagName = GoogleBaseParser.PROPS2TAGS.getProperty(pd.getName());
 
                 if (tagName == null) {
-                    logger.log(Level.FINE, "Property: " + pd.getName() + " doesn't have a tag mapping. ");
+                    LOGGER.log(Level.FINE, "Property: " + pd.getName() + " doesn't have a tag mapping. ");
                 } else {
                     tag2pd.put(tagName, pd);
                 }
@@ -149,7 +158,7 @@ public class GoogleBaseParser implements ModuleParser {
                     try {
                         this.handleTag(child, pd, module);
                     } catch (Exception e) {
-                        logger.log(Level.WARNING, "Unable to handle tag: " + child.getName(), e);
+                        LOGGER.log(Level.WARNING, "Unable to handle tag: " + child.getName(), e);
                     }
                 }
             }
@@ -158,7 +167,14 @@ public class GoogleBaseParser implements ModuleParser {
         return module;
     }
 
-    public static String stripNonValidCharacters(char[] validCharacters, String input) {
+    /**
+     * Strip non valid characters.
+     *
+     * @param validCharacters the valid characters
+     * @param input the input
+     * @return string
+     */
+    public static String stripNonValidCharacters(final char[] validCharacters, final String input) {
         StringBuffer newString = new StringBuffer();
 
         for (int i = 0; i < input.length(); i++) {
@@ -177,7 +193,15 @@ public class GoogleBaseParser implements ModuleParser {
         return GoogleBase.URI;
     }
 
-    private void handleTag(Element tag, PropertyDescriptor pd, GoogleBase module) throws Exception {
+    /**
+     * Handle tag.
+     *
+     * @param tag the tag
+     * @param pd the pd
+     * @param module the module
+     * @throws Exception the exception
+     */
+    private void handleTag(final Element tag, final PropertyDescriptor pd, final GoogleBase module) throws Exception {
         Object tagValue = null;
 
         if (pd.getPropertyType() == Integer.class || pd.getPropertyType().getComponentType() == Integer.class) {

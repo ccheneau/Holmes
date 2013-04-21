@@ -62,7 +62,7 @@ public class ModuleParserImpl implements ModuleParser {
      * @return a module instance, <b>null</b> if the element did not have module information.
      */
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         if (element.getChild("treatAs", NS) == null) {
             return null;
         }
@@ -104,7 +104,14 @@ public class ModuleParserImpl implements ModuleParser {
         return sle;
     }
 
-    protected void addNotNullAttribute(Element target, String name, Object value) {
+    /**
+     * Adds the not null attribute.
+     *
+     * @param target the target
+     * @param name the name
+     * @param value the value
+     */
+    protected void addNotNullAttribute(final Element target, final String name, final Object value) {
         if (target == null || value == null) {
             return;
         } else {
@@ -112,7 +119,13 @@ public class ModuleParserImpl implements ModuleParser {
         }
     }
 
-    public void insertValues(SimpleListExtension sle, List<?> elements) {
+    /**
+     * Insert values.
+     *
+     * @param sle the sle
+     * @param elements the elements
+     */
+    public void insertValues(final SimpleListExtension sle, final List<?> elements) {
         for (int i = 0; elements != null && i < elements.size(); i++) {
             Element e = (Element) elements.get(i);
             Group[] groups = sle.getGroupFields();

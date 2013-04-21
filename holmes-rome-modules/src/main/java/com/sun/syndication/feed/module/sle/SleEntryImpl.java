@@ -44,7 +44,7 @@ public class SleEntryImpl implements SleEntry {
     }
 
     @Override
-    public EntryValue getGroupByElement(Group element) {
+    public EntryValue getGroupByElement(final Group element) {
         EntryValue[] values = this.getGroupValues();
         LabelNamespaceElement compare = new LabelNamespaceElement(element.getLabel(), element.getNamespace(), element.getElement());
         for (int i = 0; i < values.length; i++) {
@@ -54,7 +54,7 @@ public class SleEntryImpl implements SleEntry {
         return null;
     }
 
-    public void setGroupValues(EntryValue[] groupValues) {
+    public void setGroupValues(final EntryValue[] groupValues) {
         this.groupValues = (groupValues == null) ? EMPTY_VALUES : groupValues;
     }
 
@@ -78,7 +78,7 @@ public class SleEntryImpl implements SleEntry {
     }
 
     @Override
-    public EntryValue getSortByElement(Sort element) {
+    public EntryValue getSortByElement(final Sort element) {
         EntryValue[] values = this.getSortValues();
         LabelNamespaceElement compare = new LabelNamespaceElement(element.getLabel(), element.getNamespace(), element.getElement());
         for (int i = 0; i < values.length; i++) {
@@ -88,7 +88,7 @@ public class SleEntryImpl implements SleEntry {
         return null;
     }
 
-    public void setSortValues(EntryValue[] sortValues) {
+    public void setSortValues(final EntryValue[] sortValues) {
         this.sortValues = sortValues;
     }
 
@@ -123,17 +123,17 @@ public class SleEntryImpl implements SleEntry {
      * For example from the default SyndFeed bean implementation to a Hibernate ready implementation.
      * <p>
      *
-     * @param obj the instance to copy properties from.
+     * @param newObj the instance to copy properties from.
      */
     @Override
-    public void copyFrom(Object obj) {
-        SleEntry entry = (SleEntry) obj;
+    public void copyFrom(final Object newObj) {
+        SleEntry entry = (SleEntry) newObj;
         this.setGroupValues(entry.getGroupValues().clone());
         this.setSortValues(entry.getSortValues().clone());
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof SleEntryImpl) return obj.equals(((SleEntryImpl) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         else return false;
@@ -148,5 +148,4 @@ public class SleEntryImpl implements SleEntry {
     public String toString() {
         return obj.toString();
     }
-
 }

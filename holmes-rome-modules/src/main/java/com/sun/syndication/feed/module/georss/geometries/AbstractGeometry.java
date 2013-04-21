@@ -24,8 +24,10 @@ public abstract class AbstractGeometry implements Cloneable, Serializable {
     }
 
     /**
-     * Make a deep copy of the geometric object
+     * Make a deep copy of the geometric object.
+     *
      * @return A copy of the object
+     * @throws CloneNotSupportedException the clone not supported exception
      */
     @Override
     public Object clone() throws CloneNotSupportedException {

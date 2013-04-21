@@ -35,7 +35,7 @@ public abstract class GeoRSSModule extends ModuleImpl {
 
     protected AbstractGeometry geometry;
 
-    public static final String version = "0.9.8";
+    public static final String VERSION = "0.9.8";
 
     /**
      * namespace URI for georss simple: <i>"http://www.georss.org/georss"</i>
@@ -72,7 +72,13 @@ public abstract class GeoRSSModule extends ModuleImpl {
      */
     public static final Namespace GML_NS = Namespace.getNamespace("gml", GeoRSSModule.GEORSS_GML_URI);
 
-    protected GeoRSSModule(java.lang.Class<?> beanClass, java.lang.String uri) {
+    /**
+     * Constructor.
+     *
+     * @param beanClass the bean class
+     * @param uri the uri
+     */
+    protected GeoRSSModule(final Class<?> beanClass, final String uri) {
         super(beanClass, uri);
     }
 
@@ -82,7 +88,7 @@ public abstract class GeoRSSModule extends ModuleImpl {
      * @param geometry
      *            geometry
      */
-    public void setGeometry(AbstractGeometry geometry) {
+    public void setGeometry(final AbstractGeometry geometry) {
         this.geometry = geometry;
     }
 
@@ -109,9 +115,9 @@ public abstract class GeoRSSModule extends ModuleImpl {
     /**
      * Convenience method to set point geometry.
      *
-     * @return geometry
+     * @param pos the new position
      */
-    public void setPosition(Position pos) {
+    public void setPosition(final Position pos) {
         if (pos != null) geometry = new Point(pos);
     }
 
@@ -121,12 +127,12 @@ public abstract class GeoRSSModule extends ModuleImpl {
      * @see com.sun.syndication.feed.CopyFrom#copyFrom(java.lang.Object)
      */
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         GeoRSSModule geoRSSModule = (GeoRSSModule) obj;
-        geometry = geoRSSModule.getGeometry();
         try {
-            geometry = (AbstractGeometry) geometry.clone();
+            geometry = (AbstractGeometry) geoRSSModule.getGeometry().clone();
         } catch (CloneNotSupportedException ex) {
+            geometry = null;
         }
     }
 

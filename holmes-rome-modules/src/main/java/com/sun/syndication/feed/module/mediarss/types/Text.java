@@ -29,18 +29,16 @@ import com.sun.syndication.feed.impl.ToStringBean;
 
 /**
  * <strong>&lt;media:text&gt;</strong></p>
- * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
+ * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. 
+ * Many of these elements are permitted to provide a time series of text. 
+ * In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. 
+ * Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
  *        end="00:00:10.000"&gt; Oh, say, can you see&lt;/media:text&gt;
  *
  *        &lt;media:text type="plain" lang="en" start="00:00:10.000"
  *        end="00:00:17.000"&gt;By the dawn's early light&lt;/media:text&gt;
  * </pre>
  * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
- *
- *
- *
- *
- *
  *
  * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
  *
@@ -62,28 +60,30 @@ public class Text implements Serializable {
      * Creates a text object.
      * @param value value of the text
      */
-    public Text(String value) {
+    public Text(final String value) {
         this.value = value;
     }
 
     /**
-     * Creates a new instance of Text
+     * Creates a new instance of Text.
+     *
      * @param type type of text
      * @param value value of text
      */
-    public Text(String type, String value) {
+    public Text(final String type, final String value) {
         this.type = type;
         this.value = value;
     }
 
     /**
-     * Creates a text object with start and end times
+     * Creates a text object with start and end times.
+     *
      * @param type type of text
      * @param value value of text
      * @param start start time
      * @param end end time
      */
-    public Text(String type, String value, Time start, Time end) {
+    public Text(final String type, final String value, final Time start, final Time end) {
         this(type, value);
         this.start = start;
         this.end = end;
@@ -106,7 +106,8 @@ public class Text implements Serializable {
     }
 
     /**
-     * type of the text
+     * type of the text.
+     *
      * @return type of the text
      */
     public String getType() {
@@ -114,28 +115,29 @@ public class Text implements Serializable {
     }
 
     /**
-     * Value of the text
+     * Value of the text.
+     *
      * @return type of the text
      */
     public String getValue() {
         return this.value;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

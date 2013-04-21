@@ -88,7 +88,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>label</em> is the human readable label that can be displayed in end user applications. It is an optional attribute.</p>
      * @param categories categories for the item
      */
-    public void setCategories(Category[] categories) {
+    public void setCategories(final Category[] categories) {
         this.categories = (categories == null) ? new Category[0] : categories;
     }
 
@@ -123,7 +123,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>url</em> is the url for a terms of use page or additional copyright information. If the media is operating under a Creative Commons license, the Creative Commons module should be used instead. It is an optional attribute.</p>
      * @param copyright copyright text
      */
-    public void setCopyright(String copyright) {
+    public void setCopyright(final String copyright) {
         this.copyright = copyright;
     }
 
@@ -147,7 +147,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>url</em> is the url for a terms of use page or additional copyright information. If the media is operating under a Creative Commons license, the Creative Commons module should be used instead. It is an optional attribute.</p>
      * @param copyrightUrl link to more copyright information.
      */
-    public void setCopyrightUrl(URI copyrightUrl) {
+    public void setCopyrightUrl(final URI copyrightUrl) {
         this.copyrightUrl = copyrightUrl;
     }
 
@@ -202,7 +202,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p>Additional roles: <a href="http://www.ebu.ch/en/technical/metadata/specifications/role_codes.php">European Broadcasting Union Role Codes</a>
      * @param credits credits for the item.
      */
-    public void setCredits(Credit[] credits) {
+    public void setCredits(final Credit[] credits) {
         this.credits = (credits == null) ? new Credit[0] : credits;
     }
 
@@ -256,7 +256,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
      * @param description value of the description
      */
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -278,7 +278,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
      * @param descriptionType type of the description.
      */
-    public void setDescriptionType(String descriptionType) {
+    public void setDescriptionType(final String descriptionType) {
         this.descriptionType = descriptionType;
     }
 
@@ -303,7 +303,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>algo</em> indicates the algorithm used to create the hash. Possible values are 'md5' and 'sha-1'. Default value is 'md5'. It is an optional attribute.
      * @param hash sets the hash for the item.
      */
-    public void setHash(Hash hash) {
+    public void setHash(final Hash hash) {
         this.hash = hash;
     }
 
@@ -328,7 +328,7 @@ public class Metadata implements Cloneable, Serializable {
      * <pre>        &lt;media:keywords&gt;kitty, cat, big dog, yarn, fluffy&lt;/media:keywords&gt;</pre>
      * @param keywords Array of keywords
      */
-    public void setKeywords(String[] keywords) {
+    public void setKeywords(final String[] keywords) {
         this.keywords = (keywords == null) ? new String[0] : keywords;
     }
 
@@ -361,7 +361,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p>
      * @param ratings Ratings objects
      */
-    public void setRatings(Rating[] ratings) {
+    public void setRatings(final Rating[] ratings) {
         this.ratings = (ratings == null) ? new Rating[0] : ratings;
     }
 
@@ -390,15 +390,19 @@ public class Metadata implements Cloneable, Serializable {
     /**
      * <strong>&lt;media:restriction&gt; </strong></p>
      *
-     * <p>Allows restrictions to be placed on the aggregator rendering the media in the feed. Currently, restrictions are based on distributor (uri) and country codes.  This element is purely informational and no obligation can be assumed or implied.
-     * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'. These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
+     * <p>Allows restrictions to be placed on the aggregator rendering the media in the feed. Currently, restrictions are based on distributor (uri) and country codes. 
+     *  This element is purely informational and no obligation can be assumed or implied.
+     * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. 
+     * To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'. 
+     * These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
      *
      * <pre>        &lt;media:restriction relationship="allow" type="country"&gt;au us&lt;/media:restriction&gt;</pre>
      *
-     * <p><em>relationship</em> indicates the type of relationship that the restriction represents (allow | deny). In the example above, the media object should only be syndicated in Australia and the United States. It is a required attribute.</p>
+     * <p><em>relationship</em> indicates the type of relationship that the restriction represents (allow | deny). In the example above, the media object should only be syndicated in Australia and the United States. 
+     * It is a required attribute.</p>
      * @param restrictions restrictions for the item.
      */
-    public void setRestrictions(Restriction[] restrictions) {
+    public void setRestrictions(final Restriction[] restrictions) {
         this.restrictions = (restrictions == null) ? new Restriction[0] : restrictions;
     }
 
@@ -406,7 +410,9 @@ public class Metadata implements Cloneable, Serializable {
      * <strong>&lt;media:restriction&gt; </strong></p>
      *
      * <p>Allows restrictions to be placed on the aggregator rendering the media in the feed. Currently, restrictions are based on distributor (uri) and country codes.  This element is purely informational and no obligation can be assumed or implied.
-     * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'. These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
+     * Only one &lt;media:restriction&gt; element of the same <em>type</em> can be applied to a media object - all others will be ignored.&nbsp;Entities in this element should be space separated. 
+     * To allow the producer to explicitly declare his/her intentions, two literals are reserved: 'all', 'none'.
+     * These literals can only be used once. This element has 1 required attribute, and 1 optional attribute (with strict requirements for its exclusion).</p>
      *
      * <pre>        &lt;media:restriction relationship="allow" type="country"&gt;au us&lt;/media:restriction&gt;</pre>
      *
@@ -419,20 +425,18 @@ public class Metadata implements Cloneable, Serializable {
 
     /**
      * <strong>&lt;media:text&gt;</strong></p>
-     * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
+     * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. 
+     * Many of these elements are permitted to provide a time series of text. 
+     * In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. 
+     * Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
      *        end="00:00:10.000"&gt; Oh, say, can you see&lt;/media:text&gt;
      *
      *        &lt;media:text type="plain" lang="en" start="00:00:10.000"
      *        end="00:00:17.000"&gt;By the dawn's early light&lt;/media:text&gt;
      * </pre>
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
-     *
-     *
-     *
-     *
-     *
-     *
-     * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
+     * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. 
+     * This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
      *
      * <p><em>start</em> specifies the start time offset that the text starts being relevant to the media object. An example of this would be for closed captioning.
      * It uses the NTP time code format (see: the time attribute used in &lt;media:thumbnail&gt;).&nbsp;It is an optional attribute.</p>
@@ -441,25 +445,22 @@ public class Metadata implements Cloneable, Serializable {
      * If this attribute is not provided, and a <em>start</em> time is used, it is expected that the end time is either the end of the clip or the start of the next &lt;media:text&gt; element.
      * @param text text objects for the item.
      */
-    public void setText(Text[] text) {
+    public void setText(final Text[] text) {
         this.text = (text == null) ? new Text[0] : text;
     }
 
     /**
      * <strong>&lt;media:text&gt;</strong></p>
-     * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. Many of these elements are permitted to provide a time series of text. In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
+     * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. 
+     * Many of these elements are permitted to provide a time series of text. 
+     * In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. 
+     * Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
      *        end="00:00:10.000"&gt; Oh, say, can you see&lt;/media:text&gt;
      *
      *        &lt;media:text type="plain" lang="en" start="00:00:10.000"
      *        end="00:00:17.000"&gt;By the dawn's early light&lt;/media:text&gt;
      * </pre>
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
-     *
-     *
-     *
-     *
-     *
-     *
      * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
      *
      * <p><em>start</em> specifies the start time offset that the text starts being relevant to the media object. An example of this would be for closed captioning.
@@ -478,21 +479,18 @@ public class Metadata implements Cloneable, Serializable {
      *
      *
      * <p>Allows particular images to be used as representative images for the media object. If multiple thumbnails are included, and time coding is not at play, it is assumed that the images are in order of importance. It has 1 required attribute and 3 optional attributes.</p>
-     *
-     *
-     *
-     *
-     *
      *         <pre>        &lt;media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" /&gt;</pre>
      * <p><em>url</em> specifies the url of the thumbnail. It is a required attribute.</p>        <p> <em>height</em> specifies the height of the thumbnail. It is an optional attribute.</p>
      *        <p> <em>width</em> specifies the width of the thumbnail. It is an optional attribute.</p>
      *
      *
      * <p><em>time</em>
-     * specifies the time offset in relation to the media object. Typically this is used when creating multiple keyframes within a single video. The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. It is an optional attribute.</p>
+     * specifies the time offset in relation to the media object. 
+     * Typically this is used when creating multiple keyframes within a single video. 
+     * The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. It is an optional attribute.</p>
      * @param thumbnail thumbnails for the image
      */
-    public void setThumbnail(Thumbnail[] thumbnail) {
+    public void setThumbnail(final Thumbnail[] thumbnail) {
         this.thumbnail = (thumbnail == null) ? new Thumbnail[0] : thumbnail;
     }
 
@@ -501,18 +499,15 @@ public class Metadata implements Cloneable, Serializable {
      *
      *
      * <p>Allows particular images to be used as representative images for the media object. If multiple thumbnails are included, and time coding is not at play, it is assumed that the images are in order of importance. It has 1 required attribute and 3 optional attributes.</p>
-     *
-     *
-     *
-     *
-     *
      *         <pre>        &lt;media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" /&gt;</pre>
      * <p><em>url</em> specifies the url of the thumbnail. It is a required attribute.</p>        <p> <em>height</em> specifies the height of the thumbnail. It is an optional attribute.</p>
      *        <p> <em>width</em> specifies the width of the thumbnail. It is an optional attribute.</p>
      *
      *
      * <p><em>time</em>
-     * specifies the time offset in relation to the media object. Typically this is used when creating multiple keyframes within a single video. The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. It is an optional attribute.</p>
+     * specifies the time offset in relation to the media object. 
+     * Typically this is used when creating multiple keyframes within a single video. 
+     * The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. It is an optional attribute.</p>
      * @return Thumbnails for the image
      */
     public Thumbnail[] getThumbnail() {
@@ -527,7 +522,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
      * @param title Value of the title
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -551,7 +546,7 @@ public class Metadata implements Cloneable, Serializable {
      * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
      * @param titleType type of the title.
      */
-    public void setTitleType(String titleType) {
+    public void setTitleType(final String titleType) {
         this.titleType = titleType;
     }
 
@@ -599,23 +594,20 @@ public class Metadata implements Cloneable, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(Metadata.class, this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(Metadata.class, this);
-
         return equals.beanHashCode();
     }
 
     @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(Metadata.class, this);
-
         return tsBean.toString();
     }
 }

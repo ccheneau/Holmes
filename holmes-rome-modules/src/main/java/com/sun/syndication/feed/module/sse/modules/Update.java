@@ -16,7 +16,7 @@ public class Update extends SSEModule {
     private String by;
 
     @Override
-    public void copyFrom(Object other) {
+    public void copyFrom(final Object other) {
         Update otherUpdate = (Update) other;
         otherUpdate.when = when == null ? null : (Date) when.clone();
         // dont copy immutable
@@ -27,6 +27,8 @@ public class Update extends SSEModule {
      * Provides access to the date-time when the modification took place. If this attribute is omitted
      * the value defaults to the earliest time representable in RFC 822. Either or both of the when or by attributes
      * MUST be present; it is invalid to have neither.
+     *
+     * @return the when
      */
     public Date getWhen() {
         return when;
@@ -37,7 +39,7 @@ public class Update extends SSEModule {
      *
      * @param when the date-time when the modification took place.
      */
-    public void setWhen(Date when) {
+    public void setWhen(final Date when) {
         this.when = when;
     }
 
@@ -58,7 +60,7 @@ public class Update extends SSEModule {
      *
      * @param by a text attribute identifying the unique endpoint that made a modification. 
      */
-    public void setBy(String by) {
+    public void setBy(final String by) {
         this.by = by;
     }
 }

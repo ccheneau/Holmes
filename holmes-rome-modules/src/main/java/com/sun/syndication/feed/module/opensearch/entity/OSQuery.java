@@ -26,7 +26,7 @@ import com.sun.syndication.feed.impl.ObjectBean;
 public class OSQuery implements Cloneable, Serializable {
     private static final long serialVersionUID = -5707178327384837650L;
 
-    ObjectBean _objBean = null;
+    private final ObjectBean objBean;
 
     // role is required
     private String role;
@@ -41,7 +41,7 @@ public class OSQuery implements Cloneable, Serializable {
      * <p>
      */
     public OSQuery() {
-        _objBean = new ObjectBean(this.getClass(), this);
+        objBean = new ObjectBean(this.getClass(), this);
     }
 
     /**
@@ -54,7 +54,7 @@ public class OSQuery implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return _objBean.clone();
+        return objBean.clone();
     }
 
     /**
@@ -65,8 +65,8 @@ public class OSQuery implements Cloneable, Serializable {
      *
      */
     @Override
-    public boolean equals(Object other) {
-        if (other instanceof OSQuery) return _objBean.equals(((OSQuery) other)._objBean);
+    public boolean equals(final Object other) {
+        if (other instanceof OSQuery) return objBean.equals(((OSQuery) other).objBean);
         return false;
     }
 
@@ -80,7 +80,7 @@ public class OSQuery implements Cloneable, Serializable {
      */
     @Override
     public int hashCode() {
-        return _objBean.hashCode();
+        return objBean.hashCode();
     }
 
     /**
@@ -91,7 +91,7 @@ public class OSQuery implements Cloneable, Serializable {
      */
     @Override
     public String toString() {
-        return _objBean.toString();
+        return objBean.toString();
     }
 
     /**
@@ -105,7 +105,7 @@ public class OSQuery implements Cloneable, Serializable {
      * Typically represents a url link to the os description file
      * @param osd The osd to set.
      */
-    public void setOsd(String osd) {
+    public void setOsd(final String osd) {
         this.osd = osd;
     }
 
@@ -119,7 +119,7 @@ public class OSQuery implements Cloneable, Serializable {
     /**
      * @param role The role to set.
      */
-    public void setRole(String role) {
+    public void setRole(final String role) {
         this.role = role;
     }
 
@@ -133,7 +133,7 @@ public class OSQuery implements Cloneable, Serializable {
     /**
      * @param searchTerms The searchTerms to set.
      */
-    public void setSearchTerms(String searchTerms) {
+    public void setSearchTerms(final String searchTerms) {
         this.searchTerms = searchTerms;
     }
 
@@ -147,7 +147,7 @@ public class OSQuery implements Cloneable, Serializable {
     /**
      * @param startPage The startPage to set.
      */
-    public void setStartPage(int startPage) {
+    public void setStartPage(final int startPage) {
         this.startPage = startPage;
     }
 
@@ -161,7 +161,7 @@ public class OSQuery implements Cloneable, Serializable {
     /**
      * @param title The title to set.
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -175,8 +175,7 @@ public class OSQuery implements Cloneable, Serializable {
     /**
      * @param totalResults The totalResults to set.
      */
-    public void setTotalResults(int totalResults) {
+    public void setTotalResults(final int totalResults) {
         this.totalResults = totalResults;
     }
-
 }

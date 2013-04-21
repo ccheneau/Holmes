@@ -56,12 +56,18 @@ public class GMLParser implements ModuleParser {
      * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
      */
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         Module geoRssModule = parseGML(element);
         return geoRssModule;
     }
 
-    private static PositionList parsePosList(Element element) {
+    /**
+     * Parses the pos list.
+     *
+     * @param element the element
+     * @return position list
+     */
+    private static PositionList parsePosList(final Element element) {
         String coordinates = element.getText();
         String[] coord = GeoRSSUtils.trimWhitespace(coordinates).split(" ");
         PositionList posList = new PositionList();
@@ -71,7 +77,13 @@ public class GMLParser implements ModuleParser {
         return posList;
     }
 
-    static Module parseGML(Element element) {
+    /**
+     * Parses the gml.
+     *
+     * @param element the element
+     * @return module
+     */
+    static Module parseGML(final Element element) {
         GeoRSSModule geoRSSModule = null;
 
         Element pointElement = element.getChild("Point", GeoRSSModule.GML_NS);
@@ -148,5 +160,4 @@ public class GMLParser implements ModuleParser {
 
         return geoRSSModule;
     }
-
 }

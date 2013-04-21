@@ -55,14 +55,20 @@ import com.sun.syndication.io.ModuleGenerator;
  */
 public class SlashModuleGenerator implements ModuleGenerator {
 
+    /** The Constant NS. */
     private static final Namespace NS = Namespace.getNamespace("slash", Slash.URI);
 
-    /** Creates a new instance of SlashModuleGenerator */
+    /**
+     * Creates a new instance of SlashModuleGenerator.
+     */
     public SlashModuleGenerator() {
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.io.ModuleGenerator#generate(com.sun.syndication.feed.module.Module, org.jdom.Element)
+     */
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof Slash)) return;
         Slash slash = (Slash) module;
         if (slash.getComments() != null) {
@@ -86,7 +92,14 @@ public class SlashModuleGenerator implements ModuleGenerator {
 
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, SlashModuleGenerator.NS);
         element.addContent(value);
         return element;
@@ -103,5 +116,4 @@ public class SlashModuleGenerator implements ModuleGenerator {
     public String getNamespaceUri() {
         return Slash.URI;
     }
-
 }

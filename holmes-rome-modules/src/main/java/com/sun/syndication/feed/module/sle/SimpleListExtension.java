@@ -33,13 +33,15 @@ public interface SimpleListExtension extends Module {
     String URI = "http://www.microsoft.com/schemas/rss/core/2005";
 
     /**
-     * The cf:group element is intended to inform the client that the property to which it refers is one that is “groupable” – that is, that the client should provide a user interface that allows the user to group or filter on the values of that property. Groupable properties should contain a small set of discrete values (e.g. book genres are perfect for groups).
+     * The cf:group element is intended to inform the client that the property to which it refers is one that is “groupable” – that is, that the client should provide a user interface that allows the user to group or filter on the values of that property. 
+     * Groupable properties should contain a small set of discrete values (e.g. book genres are perfect for groups).
      * @param groupFields Array of types.Group objects.
      */
     void setGroupFields(Group[] groupFields);
 
     /**
-     * The cf:group element is intended to inform the client that the property to which it refers is one that is “groupable” – that is, that the client should provide a user interface that allows the user to group or filter on the values of that property. Groupable properties should contain a small set of discrete values (e.g. book genres are perfect for groups).
+     * The cf:group element is intended to inform the client that the property to which it refers is one that is “groupable” – that is, that the client should provide a user interface that allows the user to group or filter on the values of that property. 
+     * Groupable properties should contain a small set of discrete values (e.g. book genres are perfect for groups).
      * @return Array of types.Group objects.
      */
     Group[] getGroupFields();

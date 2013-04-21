@@ -32,13 +32,14 @@ import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.NumberValue;
 import com.sun.syndication.feed.module.sle.types.Sort;
 import com.sun.syndication.feed.module.sle.types.StringValue;
+import com.sun.syndication.io.ModuleParser;
 import com.sun.syndication.io.impl.DateParser;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ItemParser implements com.sun.syndication.io.ModuleParser {
+public class ItemParser implements ModuleParser {
     /** Creates a new instance of ItemParser */
     public ItemParser() {
         super();
@@ -63,7 +64,7 @@ public class ItemParser implements com.sun.syndication.io.ModuleParser {
      * @return a module instance, <b>null</b> if the element did not have module information.
      */
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         SleEntryImpl sle = new SleEntryImpl();
         ArrayList<EntryValue> values = new ArrayList<EntryValue>();
         List<?> groups = element.getChildren("group", ModuleParserImpl.TEMP);

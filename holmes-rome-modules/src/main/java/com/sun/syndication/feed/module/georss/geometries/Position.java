@@ -28,12 +28,12 @@ public class Position implements Cloneable, Serializable {
     }
 
     /**
-     * Create Position from a pair of coordinate values
+     * Create Position from a pair of coordinate values.
      *
-     * @param latitude
-     * @param longitude
+     * @param latitude the latitude
+     * @param longitude the longitude
      */
-    public Position(double latitude, double longitude) {
+    public Position(final double latitude, final double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -44,7 +44,7 @@ public class Position implements Cloneable, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
 
@@ -76,7 +76,7 @@ public class Position implements Cloneable, Serializable {
      *
      * @param latitude the new latitude
      */
-    public void setLatitude(double latitude) {
+    public void setLatitude(final double latitude) {
         this.latitude = latitude;
     }
 
@@ -92,7 +92,7 @@ public class Position implements Cloneable, Serializable {
      *
      * @param longitude the new longitude
      */
-    public void setLongitude(double longitude) {
+    public void setLongitude(final double longitude) {
         this.longitude = longitude;
     }
 }

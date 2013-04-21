@@ -66,7 +66,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
      * @param array array to search
      * @return boolean indicating presence.
      */
-    private boolean inCharArray(char find, char[] array) {
+    private boolean inCharArray(final char find, final char[] array) {
         for (int i = 0; i < array.length; i++) {
             if (find == array[i]) return true;
         }
@@ -77,7 +77,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
      * Creates a new float unit by parsing a String value
      * @param source String value to parse
      */
-    public FloatUnit(String source) {
+    public FloatUnit(final String source) {
         String parse = source.trim();
         int space = -1;
         for (int i = 0; i < parse.length(); i++) {
@@ -103,7 +103,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
      * @param value float value
      * @param units Units represented, or null.
      */
-    public FloatUnit(float value, String units) {
+    public FloatUnit(final float value, final String units) {
         this.value = value;
         this.units = units;
     }
@@ -149,7 +149,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof FloatUnit)) return false;
         FloatUnit f = (FloatUnit) o;
         if (f.getValue() != this.value) return false;

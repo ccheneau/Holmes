@@ -61,38 +61,25 @@ public class Rating extends AbstractSchemeValue {
      * @param scheme scheme used for the rating
      * @param value value of the rating.
      */
-    public Rating(String scheme, String value) {
+    public Rating(final String scheme, final String value) {
         super(scheme, value);
     }
 
-    /**
-     *
-     * @param obj
-     * @return
-     */
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

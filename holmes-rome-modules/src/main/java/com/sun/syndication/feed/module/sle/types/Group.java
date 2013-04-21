@@ -68,7 +68,7 @@ public class Group implements Serializable, Cloneable {
      * @param element Name of the element
      * @param label Label for the grouping.
      */
-    public Group(Namespace namespace, String element, String label) {
+    public Group(final Namespace namespace, final String element, final String label) {
         this.namespace = namespace == null ? Namespace.XML_NAMESPACE : namespace;
         this.element = element;
         this.label = label;
@@ -105,7 +105,7 @@ public class Group implements Serializable, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof Group) return obj.equals(((Group) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         else return false;

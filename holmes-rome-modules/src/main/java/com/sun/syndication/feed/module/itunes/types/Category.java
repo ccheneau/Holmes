@@ -64,7 +64,7 @@ public class Category implements Serializable, Cloneable {
      * Creates a new instance of Category with a given name.
      * @param name Name of the category.
      */
-    public Category(String name) {
+    public Category(final String name) {
         this.setName(name);
     }
 
@@ -80,7 +80,7 @@ public class Category implements Serializable, Cloneable {
      * Sets the name of the category
      * @param name Sets the name of the category
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -96,7 +96,7 @@ public class Category implements Serializable, Cloneable {
      * Sets the Subcategory object for this category
      * @param subcategory Sets the Subcategory object for this category
      */
-    public void setSubcategory(Subcategory subcategory) {
+    public void setSubcategory(final Subcategory subcategory) {
         this.subcategory = subcategory;
     }
 

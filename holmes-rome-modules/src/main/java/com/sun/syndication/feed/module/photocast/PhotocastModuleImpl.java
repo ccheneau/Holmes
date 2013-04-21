@@ -71,7 +71,7 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public void setPhotoDate(Date photoDate) {
+    public void setPhotoDate(final Date photoDate) {
         this.photoDate = photoDate;
     }
 
@@ -81,7 +81,7 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public void setCropDate(Date cropDate) {
+    public void setCropDate(final Date cropDate) {
         this.cropDate = cropDate;
     }
 
@@ -91,7 +91,7 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public void setImageUrl(URL imageUrl) {
+    public void setImageUrl(final URL imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -101,7 +101,7 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public void setThumbnailUrl(URL thumbnailUrl) {
+    public void setThumbnailUrl(final URL thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
     }
 
@@ -111,12 +111,12 @@ public class PhotocastModuleImpl implements PhotocastModule {
     }
 
     @Override
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
     }
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         PhotocastModule pm = (PhotocastModule) obj;
         this.setPhotoDate((pm.getPhotoDate() == null) ? null : (Date) pm.getPhotoDate().clone());
         this.setCropDate((pm.getCropDate() == null) ? null : (Date) pm.getCropDate().clone());
@@ -151,21 +151,18 @@ public class PhotocastModuleImpl implements PhotocastModule {
     @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(PhotocastModuleImpl.class, this);
-
         return tsBean.toString();
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(PhotocastModuleImpl.class, this);
-
         return eBean.beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(PhotocastModuleImpl.class, this);
-
         return equals.beanHashCode();
     }
 }

@@ -45,12 +45,15 @@ public class Conflict extends SSEModule {
     private String by;
     private Item conflictItem;
 
+    /**
+     * Constructor.
+     */
     public Conflict() {
         conflictItem = null;
     }
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         Conflict conflict = (Conflict) obj;
         conflict.when = when == null ? null : (Date) when.clone();
         conflict.by = by;
@@ -66,7 +69,7 @@ public class Conflict extends SSEModule {
         return by;
     }
 
-    public void setBy(String by) {
+    public void setBy(final String by) {
         this.by = by;
     }
 
@@ -74,7 +77,7 @@ public class Conflict extends SSEModule {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(final Integer version) {
         this.version = version;
     }
 
@@ -82,12 +85,12 @@ public class Conflict extends SSEModule {
         return when;
     }
 
-    public void setWhen(Date when) {
+    public void setWhen(final Date when) {
         this.when = when;
     }
 
-    public void setItem(Item conflictItem) {
-        this.conflictItem = conflictItem;
+    public void setItem(final Item newConflictItem) {
+        this.conflictItem = newConflictItem;
     }
 
     public Item getItem() {

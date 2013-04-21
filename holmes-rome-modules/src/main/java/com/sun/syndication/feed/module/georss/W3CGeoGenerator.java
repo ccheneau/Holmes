@@ -39,7 +39,7 @@ import com.sun.syndication.io.ModuleGenerator;
  * 
  */
 public class W3CGeoGenerator implements ModuleGenerator {
-    private static final Logger logger = Logger.getLogger(W3CGeoGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(W3CGeoGenerator.class.getName());
 
     private static boolean isShort = true;
 
@@ -51,6 +51,9 @@ public class W3CGeoGenerator implements ModuleGenerator {
         NAMESPACES = Collections.unmodifiableSet(nss);
     }
 
+    /**
+     * Enable default point element.
+     */
     public static void enableDefaultPointElement() {
         isShort = false;
     }
@@ -82,7 +85,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
      *      org.jdom.Element)
      */
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         // this is not necessary, it is done to avoid the namespace definition
         // in every item.
         Element root = element;
@@ -111,7 +114,7 @@ public class W3CGeoGenerator implements ModuleGenerator {
                 lngElement.addContent(String.valueOf(pos.getLongitude()));
                 pointElement.addContent(lngElement);
             } else {
-                logger.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
+                LOGGER.log(Level.WARNING, "W3C Geo format can't handle geometries of type: " + geometry.getClass().getName());
             }
         }
     }

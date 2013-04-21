@@ -11,7 +11,7 @@ public class Conflicts extends SSEModule {
     public static final String NAME = "conflicts";
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         // nothing to copy, just a place-holder
     }
 }

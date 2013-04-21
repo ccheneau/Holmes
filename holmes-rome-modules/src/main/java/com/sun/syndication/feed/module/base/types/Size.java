@@ -67,7 +67,7 @@ public class Size implements CloneableType<Size>, Serializable {
      * Creates a new Size object parsing a string value.
      * @param source String value to parse
      */
-    public Size(String source) {
+    public Size(final String source) {
         StringTokenizer tok = new StringTokenizer(source, "Xx");
         this.length = new FloatUnit(tok.nextToken());
         this.width = new FloatUnit(tok.nextToken());
@@ -82,7 +82,7 @@ public class Size implements CloneableType<Size>, Serializable {
      * @param length lenght value
      * @param width width value
      */
-    public Size(FloatUnit length, FloatUnit width) {
+    public Size(final FloatUnit length, final FloatUnit width) {
         this.length = length;
         this.width = width;
     }
@@ -93,7 +93,7 @@ public class Size implements CloneableType<Size>, Serializable {
      * @param width Width value.
      * @param height Height value.
      */
-    public Size(FloatUnit length, FloatUnit width, FloatUnit height) {
+    public Size(final FloatUnit length, final FloatUnit width, final FloatUnit height) {
         this.length = length;
         this.width = width;
         this.height = height;
@@ -152,7 +152,7 @@ public class Size implements CloneableType<Size>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof Size)) return false;
         if (this.toString().equals(o.toString())) return true;
         return false;

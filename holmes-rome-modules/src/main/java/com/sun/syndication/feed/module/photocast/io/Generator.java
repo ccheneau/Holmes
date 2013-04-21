@@ -71,7 +71,7 @@ public class Generator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof PhotocastModule)) return;
         PhotocastModule pm = (PhotocastModule) module;
         if (element.getName().equals("channel") || element.getName().equals("feed")) {
@@ -102,11 +102,17 @@ public class Generator implements ModuleGenerator {
         return PhotocastModule.URI;
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
 
         return element;
     }
-
 }

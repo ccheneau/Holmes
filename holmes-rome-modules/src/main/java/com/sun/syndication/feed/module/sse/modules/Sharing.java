@@ -33,7 +33,7 @@ public class Sharing extends SSEModule {
     private Related related;
 
     @Override
-    public void copyFrom(Object obj) {
+    public void copyFrom(final Object obj) {
         Sharing sharing = (Sharing) obj;
         ordered = sharing.ordered;
         since = sharing.since == null ? null : (Date) sharing.since.clone();
@@ -58,7 +58,7 @@ public class Sharing extends SSEModule {
      *
      * @param ordered whether subscribers MUST tread the item list as an ordered set.
      */
-    public void setOrdered(Boolean ordered) {
+    public void setOrdered(final Boolean ordered) {
         this.ordered = ordered;
     }
 
@@ -77,7 +77,7 @@ public class Sharing extends SSEModule {
      *
      * @param window an Integer that expresses the size of the window of change history kept by the publisher.
      */
-    public void setWindow(Integer window) {
+    public void setWindow(final Integer window) {
         this.window = window;
     }
 
@@ -98,7 +98,7 @@ public class Sharing extends SSEModule {
      *
      * @param since An optional date-time attribute.
      */
-    public void setSince(Date since) {
+    public void setSince(final Date since) {
         this.since = since;
     }
 
@@ -118,11 +118,11 @@ public class Sharing extends SSEModule {
      *
      * @param until the date where items updated after this date are not included in the feed.
      */
-    public void setUntil(Date until) {
+    public void setUntil(final Date until) {
         this.until = until;
     }
 
-    public void setRelated(Related related) {
+    public void setRelated(final Related related) {
         this.related = related;
     }
 
@@ -130,7 +130,7 @@ public class Sharing extends SSEModule {
         return related;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(final String version) {
         this.version = version;
     }
 

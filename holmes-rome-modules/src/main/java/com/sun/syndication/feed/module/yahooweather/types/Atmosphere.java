@@ -84,7 +84,7 @@ public class Atmosphere implements Serializable, Cloneable {
      * @param pressure barometric pressure
      * @param change state of the barometric pressure
      */
-    public Atmosphere(int humidity, double visibility, double pressure, PressureChange change) {
+    public Atmosphere(final int humidity, final double visibility, final double pressure, final PressureChange change) {
         super();
         this.humidity = humidity;
         this.visibility = visibility;
@@ -93,7 +93,7 @@ public class Atmosphere implements Serializable, Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return this.equals.equals(o);
     }
 
@@ -119,7 +119,7 @@ public class Atmosphere implements Serializable, Cloneable {
      * Relative humidity
      * @param humidity humidity, in percent
      */
-    public void setHumidity(int humidity) {
+    public void setHumidity(final int humidity) {
         this.humidity = humidity;
     }
 
@@ -135,7 +135,7 @@ public class Atmosphere implements Serializable, Cloneable {
      * Visibility distance
      * @param visibility distance (value beyond 1/100ths of a unit will be truncated)
      */
-    public void setVisibility(double visibility) {
+    public void setVisibility(final double visibility) {
         this.visibility = visibility;
     }
 
@@ -152,7 +152,7 @@ public class Atmosphere implements Serializable, Cloneable {
      *
      * @param pressure pressure
      */
-    public void setPressure(double pressure) {
+    public void setPressure(final double pressure) {
         this.pressure = pressure;
     }
 
@@ -168,7 +168,7 @@ public class Atmosphere implements Serializable, Cloneable {
      * Change in pressure
      * @param change PressureChange object
      */
-    public void setChange(PressureChange change) {
+    public void setChange(final PressureChange change) {
         this.change = change;
     }
 
@@ -178,7 +178,10 @@ public class Atmosphere implements Serializable, Cloneable {
         return new Atmosphere(this.humidity, this.visibility, this.pressure, this.change);
     }
 
-    public static class PressureChange implements Serializable {
+    /**
+     * PressureChange class.
+     */
+    public static final class PressureChange implements Serializable {
         private static final long serialVersionUID = -6145736605940597604L;
 
         public static final PressureChange RISING = new PressureChange(1, "rising");
@@ -187,7 +190,13 @@ public class Atmosphere implements Serializable, Cloneable {
         private int code;
         private String text;
 
-        private PressureChange(int code, String text) {
+        /**
+         * Constructor.
+         *
+         * @param code the code
+         * @param text the text
+         */
+        private PressureChange(final int code, final String text) {
             this.code = code;
             this.text = text;
         }
@@ -211,7 +220,7 @@ public class Atmosphere implements Serializable, Cloneable {
          * @return PressureChange instance
          * @throws RuntimeException if no 0, 1, or 2.
          */
-        public static PressureChange fromCode(int code) {
+        public static PressureChange fromCode(final int code) {
             switch (code) {
             case 0:
                 return STEADY;

@@ -42,7 +42,7 @@ public class NumberValue implements EntryValue {
     public NumberValue() {
     }
 
-    public void setElement(String element) {
+    public void setElement(final String element) {
         this.element = element;
     }
 
@@ -51,7 +51,7 @@ public class NumberValue implements EntryValue {
         return element;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
@@ -60,7 +60,7 @@ public class NumberValue implements EntryValue {
         return label;
     }
 
-    public void setValue(BigDecimal value) {
+    public void setValue(final BigDecimal value) {
         this.value = value;
     }
 
@@ -82,7 +82,7 @@ public class NumberValue implements EntryValue {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o instanceof NumberValue) return obj.equals(((NumberValue) o).obj);
         else if (o instanceof ObjectBean) return obj.equals(o);
         else return false;
@@ -103,7 +103,7 @@ public class NumberValue implements EntryValue {
         return namespace;
     }
 
-    public void setNamespace(Namespace namespace) {
+    public void setNamespace(final Namespace namespace) {
         this.namespace = namespace == null ? Namespace.XML_NAMESPACE : namespace;
     }
 }

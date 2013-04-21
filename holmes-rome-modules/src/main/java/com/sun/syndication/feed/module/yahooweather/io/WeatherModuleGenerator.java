@@ -64,7 +64,7 @@ public class WeatherModuleGenerator implements ModuleGenerator {
     }
 
     @Override
-    public void generate(Module module, Element element) {
+    public void generate(final Module module, final Element element) {
         if (!(module instanceof YWeatherModuleImpl)) {
             return;
         }
@@ -88,7 +88,7 @@ public class WeatherModuleGenerator implements ModuleGenerator {
         if (weather.getAtmosphere() != null) {
             Element atmos = new Element("atmosphere", WeatherModuleGenerator.NS);
             atmos.setAttribute("humidity", Integer.toString(weather.getAtmosphere().getHumidity()));
-            atmos.setAttribute("visibility", Integer.toString((int) (weather.getAtmosphere().getVisibility() * 100d)));
+            atmos.setAttribute("visibility", Integer.toString((int) (weather.getAtmosphere().getVisibility() * 100)));
             atmos.setAttribute("pressure", Double.toString(weather.getAtmosphere().getPressure()));
 
             if (weather.getAtmosphere().getChange() != null) {
@@ -194,7 +194,14 @@ public class WeatherModuleGenerator implements ModuleGenerator {
         }
     }
 
-    protected Element generateSimpleElement(String name, String value) {
+    /**
+     * Generate simple element.
+     *
+     * @param name the name
+     * @param value the value
+     * @return element
+     */
+    protected Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, WeatherModuleGenerator.NS);
         element.addContent(value);
 

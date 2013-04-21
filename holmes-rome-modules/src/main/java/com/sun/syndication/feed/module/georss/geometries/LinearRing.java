@@ -19,11 +19,18 @@ public final class LinearRing extends AbstractRing {
 
     private PositionList posList;
 
-    /** Creates a new instance of LinearLing */
+    /**
+     * Creates a new instance of LinearLing.
+     */
     public LinearRing() {
     }
 
-    public LinearRing(PositionList posList) {
+    /**
+     * Constructor.
+     *
+     * @param posList the pos list
+     */
+    public LinearRing(final PositionList posList) {
         this.posList = posList;
     }
 
@@ -35,7 +42,7 @@ public final class LinearRing extends AbstractRing {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         return getPositionList().equals(((LinearRing) obj).getPositionList());
@@ -60,11 +67,11 @@ public final class LinearRing extends AbstractRing {
     }
 
     /**
-     * Set the position list
+     * Set the position list.
      *
-     * @param posList the new position list
+     * @param newPosList the new position list
      */
-    public void setPositionList(PositionList posList) {
-        this.posList = posList;
+    public void setPositionList(final PositionList newPosList) {
+        this.posList = newPosList;
     }
 }

@@ -69,43 +69,42 @@ public class ModuleParserRSS1 implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         CreativeCommonsImpl module = new CreativeCommonsImpl();
-        {
-            // Parsing Channel level.
-            Element root = element.getParentElement();
-            while (root.getParentElement() != null)
-                root = root.getParentElement();
-            List<?> licenseList = root.getChildren("License", NS);
-            ArrayList<License> licenses = new ArrayList<License>();
-            Iterator<?> it = licenseList.iterator();
-            while (it.hasNext()) {
-                Element licenseTag = (Element) it.next();
-                String licenseURI = licenseTag.getAttributeValue("about", RDF);
-                if (licenseURI == null) continue;
-
-                ArrayList<Behaviour> permitsValues = new ArrayList<Behaviour>();
-                ArrayList<Behaviour> requiresValues = new ArrayList<Behaviour>();
-                List<?> permitsTags = licenseTag.getChildren("permits", NS);
-                Iterator<?> sit = permitsTags.iterator();
-                while (sit.hasNext()) {
-                    Element permitTag = (Element) sit.next();
-                    permitsValues.add(License.Behaviour.findByValue(permitTag.getAttributeValue("resource", RDF)));
-                }
-                List<?> requiresTags = licenseTag.getChildren("requires", NS);
-                sit = requiresTags.iterator();
-                while (sit.hasNext()) {
-                    Element requireTag = (Element) sit.next();
-                    requiresValues.add(License.Behaviour.findByValue(requireTag.getAttributeValue("resource", RDF)));
-                }
-                License license = new License(licenseURI, requiresValues.toArray(new License.Behaviour[requiresValues.size()]),
-                        permitsValues.toArray(new License.Behaviour[permitsValues.size()]));
-
-                licenses.add(license);
-            }
-            module.setAllLicenses(new License[0]);
-        }
+        // Parsing Channel level.
+        Element root = element.getParentElement();
+        while (root.getParentElement() != null)
+            root = root.getParentElement();
+        List<?> licenseList = root.getChildren("License", NS);
         List<License> licenses = new ArrayList<License>();
+        Iterator<?> it = licenseList.iterator();
+        while (it.hasNext()) {
+            Element licenseTag = (Element) it.next();
+            String licenseURI = licenseTag.getAttributeValue("about", RDF);
+            if (licenseURI == null) continue;
+
+            ArrayList<Behaviour> permitsValues = new ArrayList<Behaviour>();
+            ArrayList<Behaviour> requiresValues = new ArrayList<Behaviour>();
+            List<?> permitsTags = licenseTag.getChildren("permits", NS);
+            Iterator<?> sit = permitsTags.iterator();
+            while (sit.hasNext()) {
+                Element permitTag = (Element) sit.next();
+                permitsValues.add(License.Behaviour.findByValue(permitTag.getAttributeValue("resource", RDF)));
+            }
+            List<?> requiresTags = licenseTag.getChildren("requires", NS);
+            sit = requiresTags.iterator();
+            while (sit.hasNext()) {
+                Element requireTag = (Element) sit.next();
+                requiresValues.add(License.Behaviour.findByValue(requireTag.getAttributeValue("resource", RDF)));
+            }
+            License license = new License(licenseURI, requiresValues.toArray(new License.Behaviour[requiresValues.size()]),
+                    permitsValues.toArray(new License.Behaviour[permitsValues.size()]));
+
+            licenses.add(license);
+        }
+        module.setAllLicenses(new License[0]);
+
+        licenses = new ArrayList<License>();
         List<?> licenseTags = element.getChildren("license", NS);
         Iterator<?> lit = licenseTags.iterator();
         while (lit.hasNext()) {
@@ -128,5 +127,4 @@ public class ModuleParserRSS1 implements ModuleParser {
     public String getNamespaceUri() {
         return CreativeCommonsImpl.RSS1_URI;
     }
-
 }

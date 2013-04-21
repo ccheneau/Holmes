@@ -69,7 +69,7 @@ public class SlashModuleParser implements ModuleParser {
     }
 
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         Slash si = new SlashImpl();
         Element tag = element.getChild("hit_parade", SlashModuleParser.NS);
         if (tag != null) {

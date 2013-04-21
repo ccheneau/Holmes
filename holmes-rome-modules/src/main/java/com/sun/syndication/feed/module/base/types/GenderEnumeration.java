@@ -46,7 +46,7 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class GenderEnumeration implements CloneableType<GenderEnumeration>, Serializable {
+public final class GenderEnumeration implements CloneableType<GenderEnumeration>, Serializable {
     private static final long serialVersionUID = 6096020371247096159L;
 
     /** Men */
@@ -55,12 +55,22 @@ public class GenderEnumeration implements CloneableType<GenderEnumeration>, Seri
     public static final GenderEnumeration FEMALE = new GenderEnumeration("Female");
     private String value;
 
-    private GenderEnumeration(String value) {
+    /**
+     * Constructor.
+     *
+     * @param value the value
+     */
+    private GenderEnumeration(final String value) {
         this.value = value;
     }
 
-    /** Returns the proper instance based on the string value */
-    public static GenderEnumeration findByValue(String value) {
+    /**
+     * Returns the proper instance based on the string value.
+     *
+     * @param value the value
+     * @return gender enumeration
+     */
+    public static GenderEnumeration findByValue(final String value) {
         if (value == null) {
             return null;
         }
@@ -76,13 +86,21 @@ public class GenderEnumeration implements CloneableType<GenderEnumeration>, Seri
         }
     }
 
-    /** Returns the value of the instance */
+    /**
+     * Returns the value of the instance.
+     *
+     * @return the value
+     */
     public String getValue() {
         return this.value;
     }
 
-    /** Returns a reference to the same object. :P 
-     * @throws CloneNotSupportedException */
+    /**
+     * Returns a reference to the same object. :P
+     *
+     * @return gender enumeration
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
     @Override
     public GenderEnumeration clone() throws CloneNotSupportedException {
         super.clone();

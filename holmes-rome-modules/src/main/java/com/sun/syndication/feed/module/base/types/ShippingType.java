@@ -47,7 +47,7 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.1 $
  */
-public class ShippingType implements CloneableType<ShippingType>, Serializable {
+public final class ShippingType implements CloneableType<ShippingType>, Serializable {
     private static final long serialVersionUID = -5076766886242328762L;
 
     /**
@@ -69,7 +69,7 @@ public class ShippingType implements CloneableType<ShippingType>, Serializable {
      * @param service Shipping service used.
      * @param country Country shipped to.
      */
-    public ShippingType(FloatUnit price, ServiceEnumeration service, String country) {
+    public ShippingType(final FloatUnit price, final ServiceEnumeration service, final String country) {
         this.price = price;
         this.service = service;
         this.country = country;
@@ -120,7 +120,7 @@ public class ShippingType implements CloneableType<ShippingType>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof ShippingType)) return false;
         if (this.toString().equals(o.toString())) return true;
         return false;
@@ -139,13 +139,13 @@ public class ShippingType implements CloneableType<ShippingType>, Serializable {
     /**
      * Enumeration class of valid options for ServiceType.
      */
-    public static class ServiceEnumeration implements Serializable {
+    public static final class ServiceEnumeration implements Serializable {
         private static final long serialVersionUID = 8712370303535197427L;
 
         /**
         * Looks up a ServiceEnumeration based on the string value.
         */
-        private static final HashMap<String, ServiceEnumeration> lookup = new HashMap<String, ServiceEnumeration>();
+        private static final HashMap<String, ServiceEnumeration> LOOKUP = new HashMap<String, ServiceEnumeration>();
         /**
          * Standard
          */
@@ -168,9 +168,9 @@ public class ShippingType implements CloneableType<ShippingType>, Serializable {
          * Creates a new instance of ServiceEnumeration.
          * @param value String value to encapsulate.
          */
-        private ServiceEnumeration(String value) {
+        private ServiceEnumeration(final String value) {
             this.value = value;
-            lookup.put(this.value.toUpperCase(), this);
+            LOOKUP.put(this.value.toUpperCase(), this);
         }
 
         /**
@@ -186,8 +186,8 @@ public class ShippingType implements CloneableType<ShippingType>, Serializable {
          * @param value String value to search for.
          * @return ServiceEnumeration or null.
          */
-        public static ServiceEnumeration findByValue(String value) {
-            return lookup.get(value.toUpperCase());
+        public static ServiceEnumeration findByValue(final String value) {
+            return LOOKUP.get(value.toUpperCase());
         }
 
         /**

@@ -19,8 +19,9 @@ package com.sun.syndication.feed.module.georss;
 import org.jdom.Element;
 
 import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.georss.geometries.Point;
+import com.sun.syndication.feed.module.georss.geometries.Position;
 import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.feed.module.georss.geometries.*;
 
 /**
  * W3CGeoParser is a parser for the W3C geo format.
@@ -36,11 +37,18 @@ public class W3CGeoParser implements ModuleParser {
      *
      * @see com.sun.syndication.io.ModuleParser#getNamespaceUri()
      */
+    @Override
     public String getNamespaceUri() {
         return GeoRSSModule.GEORSS_W3CGEO_URI;
     }
 
-    static Module parseW3C(Element element) {
+    /**
+     * Parses the w3 c.
+     *
+     * @param element the element
+     * @return module
+     */
+    static Module parseW3C(final Element element) {
         GeoRSSModule geoRSSModule = null;
 
         // do we have an optional "Point" element ?
@@ -63,14 +71,12 @@ public class W3CGeoParser implements ModuleParser {
         return geoRSSModule;
     }
 
-    /*
-     * (non-Javadoc)
-     *
+    /* (non-Javadoc)
      * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
      */
-    public Module parse(Element element) {
+    @Override
+    public Module parse(final Element element) {
         Module geoRssModule = parseW3C(element);
         return geoRssModule;
     }
-
 }

@@ -51,6 +51,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 
+import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.itunes.AbstractITunesObject;
 import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
 import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
@@ -65,14 +66,19 @@ import com.sun.syndication.io.WireFeedParser;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ITunesParser implements ModuleParser {
-    static Logger logger = Logger.getLogger(ITunesParser.class.getName());
-    Namespace ns = Namespace.getNamespace(AbstractITunesObject.URI);
+    private static final Logger LOGGER = Logger.getLogger(ITunesParser.class.getName());
+    private static final Namespace NS = Namespace.getNamespace(AbstractITunesObject.URI);
 
     /** Creates a new instance of ITunesParser */
     public ITunesParser() {
     }
 
-    public void setParser(WireFeedParser feedParser) {
+    /**
+     * Sets the parser.
+     *
+     * @param feedParser the new parser
+     */
+    public void setParser(final WireFeedParser feedParser) {
     }
 
     @Override
@@ -81,7 +87,7 @@ public class ITunesParser implements ModuleParser {
     }
 
     @Override
-    public com.sun.syndication.feed.module.Module parse(Element element) {
+    public Module parse(final Element element) {
         AbstractITunesObject module = null;
 
         if (element.getName().equals("channel")) {
@@ -89,41 +95,41 @@ public class ITunesParser implements ModuleParser {
             module = feedInfo;
 
             //Now I am going to get the channel specific tags
-            Element owner = element.getChild("owner", ns);
+            Element owner = element.getChild("owner", NS);
 
             if (owner != null) {
-                Element name = owner.getChild("name", ns);
+                Element name = owner.getChild("name", NS);
 
                 if (name != null) {
                     feedInfo.setOwnerName(name.getValue().trim());
                 }
 
-                Element email = owner.getChild("email", ns);
+                Element email = owner.getChild("email", NS);
 
                 if (email != null) {
                     feedInfo.setOwnerEmailAddress(email.getValue().trim());
                 }
             }
 
-            Element image = element.getChild("image", ns);
+            Element image = element.getChild("image", NS);
 
             if (image != null && image.getAttributeValue("href") != null) {
                 try {
                     URL imageURL = new URL(image.getAttributeValue("href").trim());
                     feedInfo.setImage(imageURL);
                 } catch (MalformedURLException e) {
-                    logger.finer("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
+                    LOGGER.finer("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
                 }
             }
 
-            List<?> categories = element.getChildren("category", ns);
+            List<?> categories = element.getChildren("category", NS);
             for (Iterator<?> it = categories.iterator(); it.hasNext();) {
                 Element category = (Element) it.next();
                 if (category != null && category.getAttribute("text") != null) {
                     Category cat = new Category();
                     cat.setName(category.getAttribute("text").getValue().trim());
 
-                    Element subcategory = category.getChild("category", ns);
+                    Element subcategory = category.getChild("category", NS);
 
                     if (subcategory != null && subcategory.getAttribute("text") != null) {
                         Subcategory subcat = new Subcategory();
@@ -141,7 +147,7 @@ public class ITunesParser implements ModuleParser {
 
             //Now I am going to get the item specific tags
 
-            Element duration = element.getChild("duration", ns);
+            Element duration = element.getChild("duration", NS);
 
             if (duration != null && duration.getValue() != null) {
                 Duration dur = new Duration(duration.getValue().trim());
@@ -150,25 +156,25 @@ public class ITunesParser implements ModuleParser {
         }
         if (module != null) {
             //All these are common to both Channel and Item
-            Element author = element.getChild("author", ns);
+            Element author = element.getChild("author", NS);
 
             if (author != null && author.getText() != null) {
                 module.setAuthor(author.getText());
             }
 
-            Element block = element.getChild("block", ns);
+            Element block = element.getChild("block", NS);
 
             if (block != null) {
                 module.setBlock(true);
             }
 
-            Element explicit = element.getChild("explicit", ns);
+            Element explicit = element.getChild("explicit", NS);
 
             if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes")) {
                 module.setExplicit(true);
             }
 
-            Element keywords = element.getChild("keywords", ns);
+            Element keywords = element.getChild("keywords", NS);
 
             if (keywords != null) {
                 StringTokenizer tok = new StringTokenizer(getXmlInnerText(keywords).trim(), ",");
@@ -181,13 +187,13 @@ public class ITunesParser implements ModuleParser {
                 module.setKeywords(keywordsArray);
             }
 
-            Element subtitle = element.getChild("subtitle", ns);
+            Element subtitle = element.getChild("subtitle", NS);
 
             if (subtitle != null) {
                 module.setSubtitle(subtitle.getTextTrim());
             }
 
-            Element summary = element.getChild("summary", ns);
+            Element summary = element.getChild("summary", NS);
 
             if (summary != null) {
                 module.setSummary(summary.getTextTrim());
@@ -197,10 +203,16 @@ public class ITunesParser implements ModuleParser {
         return module;
     }
 
-    protected String getXmlInnerText(Element e) {
+    /**
+     * Gets the xml inner text.
+     *
+     * @param element the element
+     * @return the xml inner text
+     */
+    protected String getXmlInnerText(final Element element) {
         StringBuffer sb = new StringBuffer();
         XMLOutputter xo = new XMLOutputter();
-        List<?> children = e.getContent();
+        List<?> children = element.getContent();
         sb.append(xo.outputString(children));
 
         return sb.toString();

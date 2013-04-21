@@ -27,7 +27,9 @@
 	<!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
 	<module name="Translation" />
 
-	<module name="FileLength" />
+	<module name="FileLength">
+		<property name="max" value="3000" />
+	</module>
 
 	<!-- Following interprets the header file as regular expressions. -->
 	<!-- <module name="RegexpHeader"/> -->
@@ -53,8 +55,8 @@
 		<!-- <module name="JavadocVariable" /> -->
 		<module name="JavadocStyle">
 			<property name="scope" value="public" />
-			<property name="checkFirstSentence" value="false"/>
-			<property name="checkHtml" value="false"/>
+			<property name="checkFirstSentence" value="false" />
+			<property name="checkHtml" value="false" />
 		</module>
 
 
@@ -108,7 +110,9 @@
 		<!-- See http://checkstyle.sf.net/config_whitespace.html -->
 		<module name="EmptyForIteratorPad" />
 		<module name="MethodParamPad" />
-		<module name="NoWhitespaceAfter" />
+		<module name="NoWhitespaceAfter">
+			<property name="tokens" value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/>
+		</module>
 		<module name="NoWhitespaceBefore" />
 		<module name="OperatorWrap" />
 		<module name="ParenPad" />
@@ -146,7 +150,7 @@
 		<module name="InnerAssignment" />
 		<module name="MagicNumber">
 			<property name="ignoreHashCodeMethod" value="true" />
-			<property name="ignoreNumbers" value="-1,0,1,2,99" />
+			<property name="ignoreNumbers" value="-1,0,1,2,3,4,5,6,7,9,10,99,100,1000,1000000" />
 		</module>
 		<module name="MissingSwitchDefault" />
 		<module name="RedundantThrows" />
@@ -158,9 +162,10 @@
 		<!-- <module name="DesignForExtension" /> -->
 		<module name="FinalClass" />
 		<module name="HideUtilityClassConstructor" />
-		<module name="InterfaceIsType" />
+		<!-- <module name="InterfaceIsType" /> -->
 		<module name="VisibilityModifier">
 			<property name="protectedAllowed" value="true" />
+			<property name="packageAllowed" value="true" />
 		</module>
 
 

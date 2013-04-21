@@ -50,28 +50,90 @@ import com.sun.syndication.feed.module.base.types.IntUnit;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
  *         Cooper</a>
  */
+
 public interface Unknown extends GlobalInterface {
+
+    /**
+     * Sets the licenses.
+     *
+     * @param licenses the new licenses
+     */
     void setLicenses(String[] licenses);
 
+    /**
+     * Gets the licenses.
+     *
+     * @return the licenses
+     */
     String[] getLicenses();
 
+    /**
+     * Sets the operating systems.
+     *
+     * @param systems the new operating systems
+     */
     void setOperatingSystems(String systems);
 
+    /**
+     * Gets the operating systems.
+     *
+     * @return the operating systems
+     */
     String getOperatingSystems();
 
+    /**
+     * Sets the programming languages.
+     *
+     * @param languages the new programming languages
+     */
     void setProgrammingLanguages(String[] languages);
 
+    /**
+     * Gets the programming languages.
+     *
+     * @return the programming languages
+     */
     String[] getProgrammingLanguages();
 
+    /**
+     * Sets the related links.
+     *
+     * @param links the new related links
+     */
     void setRelatedLinks(URL[] links);
 
+    /**
+     * Gets the related links.
+     *
+     * @return the related links
+     */
     URL[] getRelatedLinks();
 
+    /**
+     * Sets the square footages.
+     *
+     * @param squareFootages the new square footages
+     */
     void setSquareFootages(IntUnit[] squareFootages);
 
+    /**
+     * Gets the square footages.
+     *
+     * @return the square footages
+     */
     IntUnit[] getSquareFootages();
 
+    /**
+     * Sets the subject areas.
+     *
+     * @param subjectAreas the new subject areas
+     */
     void setSubjectAreas(String[] subjectAreas);
 
+    /**
+     * Gets the subject areas.
+     *
+     * @return the subject areas
+     */
     String[] getSubjectAreas();
 }

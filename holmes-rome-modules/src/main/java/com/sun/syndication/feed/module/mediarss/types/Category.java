@@ -63,7 +63,7 @@ public class Category implements Serializable {
      * @param label label for the category
      * @param value value of the category item
      */
-    public Category(String scheme, String label, String value) {
+    public Category(final String scheme, final String label, final String value) {
         this.scheme = scheme;
         this.value = value;
         this.label = label;
@@ -73,7 +73,7 @@ public class Category implements Serializable {
      * Creates a new Category.
      * @param value value of the category.
      */
-    public Category(String value) {
+    public Category(final String value) {
         this.value = value;
     }
 
@@ -101,21 +101,21 @@ public class Category implements Serializable {
         return value;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
         return eBean.beanEquals(obj);
     }
 
+    @Override
     public int hashCode() {
         EqualsBean equals = new EqualsBean(this.getClass(), this);
-
         return equals.beanHashCode();
     }
 
+    @Override
     public String toString() {
         ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
         return tsBean.toString();
     }
 }

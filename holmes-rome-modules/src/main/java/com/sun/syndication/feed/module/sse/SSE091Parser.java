@@ -32,15 +32,18 @@ import com.sun.syndication.io.impl.RSS20Parser;
  */
 public class SSE091Parser implements DelegatingModuleParser {
     // root of the sharing element
+    /** The rss parser. */
     private RSS20Parser rssParser;
 
-    /** Creates a new instance of SSE091Parser */
+    /**
+     * Creates a new instance of SSE091Parser.
+     */
     public SSE091Parser() {
         rssParser = null;
     }
 
     @Override
-    public void setFeedParser(WireFeedParser feedParser) {
+    public void setFeedParser(final WireFeedParser feedParser) {
         if (feedParser instanceof RSS20Parser) this.rssParser = (RSS20Parser) feedParser;
     }
 
@@ -49,8 +52,11 @@ public class SSE091Parser implements DelegatingModuleParser {
         return SSEModule.SSE_SCHEMA_URI;
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
+     */
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         SSEModule sseModule = null;
         String name = element.getName();
 
@@ -62,7 +68,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         return sseModule;
     }
 
-    private Sharing parseSharing(Element element) {
+    /**
+     * Parses the sharing.
+     *
+     * @param element the element
+     * @return sharing
+     */
+    private Sharing parseSharing(final Element element) {
         Element root = getRoot(element);
 
         Sharing sharing = null;
@@ -80,7 +92,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         return sharing;
     }
 
-    private void parseRelated(Element root, Sharing sharing) {
+    /**
+     * Parses the related.
+     *
+     * @param root the root
+     * @param sharing the sharing
+     */
+    private void parseRelated(final Element root, final Sharing sharing) {
         Related related;
         Element relatedChild = root.getChild(Related.NAME, SSEModule.SSE_NS);
         if (relatedChild != null) {
@@ -94,7 +112,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         }
     }
 
-    private Sync parseSync(Element element) {
+    /**
+     * Parses the sync.
+     *
+     * @param element the element
+     * @return sync
+     */
+    private Sync parseSync(final Element element) {
         // Now I am going to get the item specific tags
         Element syncChild = element.getChild(Sync.NAME, SSEModule.SSE_NS);
         Sync sync = null;
@@ -111,7 +135,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         return sync;
     }
 
-    private List<Conflict> parseConflicts(Element syncElement) {
+    /**
+     * Parses the conflicts.
+     *
+     * @param syncElement the sync element
+     * @return list
+     */
+    private List<Conflict> parseConflicts(final Element syncElement) {
         List<Conflict> conflicts = null;
 
         List<?> conflictsContent = syncElement.getContent(new ContentFilter(Conflicts.NAME));
@@ -141,11 +171,16 @@ public class SSE091Parser implements DelegatingModuleParser {
                 }
             }
         }
-
         return conflicts;
     }
 
-    private Element getRoot(Element start) {
+    /**
+     * Gets the root.
+     *
+     * @param start the start
+     * @return the root
+     */
+    private Element getRoot(final Element start) {
         // reach up to grab the sharing element out of the root
         Element root = start;
 
@@ -155,7 +190,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         return root;
     }
 
-    private History parseHistory(Element historyElement) {
+    /**
+     * Parses the history.
+     *
+     * @param historyElement the history element
+     * @return history
+     */
+    private History parseHistory(final Element historyElement) {
         Element historyContent = getFirstContent(historyElement, History.NAME);
 
         History history = null;
@@ -168,7 +209,14 @@ public class SSE091Parser implements DelegatingModuleParser {
         return history;
     }
 
-    private Element getFirstContent(Element element, String name) {
+    /**
+     * Gets the first content.
+     *
+     * @param element the element
+     * @param name the name
+     * @return the first content
+     */
+    private Element getFirstContent(final Element element, final String name) {
         List<?> filterList = element.getContent(new ContentFilter(name));
         Element firstContent = null;
         if (filterList != null && filterList.size() > 0) {
@@ -177,7 +225,13 @@ public class SSE091Parser implements DelegatingModuleParser {
         return firstContent;
     }
 
-    private void parseUpdates(Element historyChild, History history) {
+    /**
+     * Parses the updates.
+     *
+     * @param historyChild the history child
+     * @param history the history
+     */
+    private void parseUpdates(final Element historyChild, final History history) {
         List<?> updatedChildren = historyChild.getContent(new ContentFilter(Update.NAME));
         for (Iterator<?> childIter = updatedChildren.iterator(); childIter.hasNext();) {
             Element updateChild = (Element) childIter.next();
@@ -188,12 +242,26 @@ public class SSE091Parser implements DelegatingModuleParser {
         }
     }
 
-    private String parseStringAttribute(Element syncChild, String attrName) {
+    /**
+     * Parses the string attribute.
+     *
+     * @param syncChild the sync child
+     * @param attrName the attr name
+     * @return string
+     */
+    private String parseStringAttribute(final Element syncChild, final String attrName) {
         Attribute idAttribute = syncChild.getAttribute(attrName);
         return idAttribute != null ? idAttribute.getValue().trim() : null;
     }
 
-    private Integer parseIntegerAttribute(Element sharingChild, String attrName) {
+    /**
+     * Parses the integer attribute.
+     *
+     * @param sharingChild the sharing child
+     * @param attrName the attr name
+     * @return integer
+     */
+    private Integer parseIntegerAttribute(final Element sharingChild, final String attrName) {
         Attribute integerAttribute = sharingChild.getAttribute(attrName);
         Integer integerAttr = null;
         if (integerAttribute != null) {
@@ -207,7 +275,14 @@ public class SSE091Parser implements DelegatingModuleParser {
         return integerAttr;
     }
 
-    private Boolean parseBooleanAttr(Element sharingChild, String attrName) {
+    /**
+     * Parses the boolean attr.
+     *
+     * @param sharingChild the sharing child
+     * @param attrName the attr name
+     * @return boolean
+     */
+    private Boolean parseBooleanAttr(final Element sharingChild, final String attrName) {
         Attribute attribute = sharingChild.getAttribute(attrName);
         Boolean attrValue = null;
         if (attribute != null) {
@@ -221,7 +296,14 @@ public class SSE091Parser implements DelegatingModuleParser {
         return attrValue;
     }
 
-    private Date parseDateAttribute(Element childElement, String attrName) {
+    /**
+     * Parses the date attribute.
+     *
+     * @param childElement the child element
+     * @param attrName the attr name
+     * @return date
+     */
+    private Date parseDateAttribute(final Element childElement, final String attrName) {
         Attribute dateAttribute = childElement.getAttribute(attrName);
         Date date = null;
         if (dateAttribute != null) {
@@ -233,16 +315,28 @@ public class SSE091Parser implements DelegatingModuleParser {
         return date;
     }
 
-    private static class ContentFilter implements Filter {
+    /**
+     * The Class ContentFilter.
+     */
+    private static final class ContentFilter implements Filter {
         private static final long serialVersionUID = -6834384294039340975L;
+
         private String name;
 
-        private ContentFilter(String name) {
+        /**
+         * Constructor.
+         *
+         * @param name the name
+         */
+        private ContentFilter(final String name) {
             this.name = name;
         }
 
+        /* (non-Javadoc)
+         * @see org.jdom.filter.Filter#matches(java.lang.Object)
+         */
         @Override
-        public boolean matches(Object object) {
+        public boolean matches(final Object object) {
             return object instanceof Element && name.equals(((Element) object).getName());
         }
     }

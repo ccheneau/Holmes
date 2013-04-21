@@ -25,15 +25,28 @@ import java.util.List;
 import com.sun.syndication.feed.module.Module;
 
 /**
+ * The Interface CustomTags.
+ *
  * @version $Revision: 1.1 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface CustomTags extends Module {
 
+    /** The uri. */
     String URI = "http://base.google.com/cns/1.0";
 
+    /**
+     * Get values.
+     *
+     * @return the values
+     */
     List<CustomTag> getValues();
 
+    /**
+     * Sets the values.
+     *
+     * @param values the new values
+     */
     void setValues(List<CustomTag> values);
 
 }

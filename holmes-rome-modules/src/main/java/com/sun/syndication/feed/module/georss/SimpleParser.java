@@ -47,7 +47,13 @@ public class SimpleParser implements ModuleParser {
         return GeoRSSModule.GEORSS_GEORSS_URI;
     }
 
-    private static PositionList parsePosList(Element element) {
+    /**
+     * Parses the pos list.
+     *
+     * @param element the element
+     * @return position list
+     */
+    private static PositionList parsePosList(final Element element) {
         String coordinates = element.getText();
         String[] coord = GeoRSSUtils.trimWhitespace(coordinates).split(" ");
         PositionList posList = new PositionList();
@@ -63,12 +69,18 @@ public class SimpleParser implements ModuleParser {
      * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
      */
     @Override
-    public Module parse(Element element) {
+    public Module parse(final Element element) {
         Module geoRssModule = parseSimple(element);
         return geoRssModule;
     }
 
-    static Module parseSimple(Element element) {
+    /**
+     * Simple parsing.
+     *
+     * @param element the element
+     * @return module
+     */
+    static Module parseSimple(final Element element) {
         GeoRSSModule geoRSSModule = null;
 
         Element pointElement = element.getChild("point", GeoRSSModule.SIMPLE_NS);
