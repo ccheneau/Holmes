@@ -61,6 +61,7 @@ import org.jdom.Namespace;
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.base.GoogleBase;
 import com.sun.syndication.feed.module.base.GoogleBaseImpl;
+import com.sun.syndication.feed.module.base.GoogleUnit;
 import com.sun.syndication.feed.module.base.types.CurrencyEnumeration;
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 import com.sun.syndication.feed.module.base.types.FloatUnit;
@@ -82,10 +83,6 @@ import com.sun.syndication.io.ModuleParser;
  */
 public class GoogleBaseParser implements ModuleParser {
     private static final Logger LOGGER = Logger.getLogger(GoogleBaseParser.class.getName());
-    public static final char[] INTEGER_CHARS = "-1234567890".toCharArray();
-    public static final char[] FLOAT_CHARS = "-1234567890.".toCharArray();
-    public static final String SHORT_DT_FMT = "yyyy-MM-dd";
-    public static final String LONG_DT_FMT = "yyyy-MM-dd'T'HH:mm:ss";
     private static final Namespace NS = Namespace.getNamespace(GoogleBase.URI);
     private static final Properties PROPS2TAGS = new Properties();
     static PropertyDescriptor[] pds = null;
@@ -167,27 +164,6 @@ public class GoogleBaseParser implements ModuleParser {
         return module;
     }
 
-    /**
-     * Strip non valid characters.
-     *
-     * @param validCharacters the valid characters
-     * @param input the input
-     * @return string
-     */
-    public static String stripNonValidCharacters(final char[] validCharacters, final String input) {
-        StringBuffer newString = new StringBuffer();
-
-        for (int i = 0; i < input.length(); i++) {
-            for (int j = 0; j < validCharacters.length; j++) {
-                if (input.charAt(i) == validCharacters[j]) {
-                    newString.append(validCharacters[j]);
-                }
-            }
-        }
-
-        return newString.toString();
-    }
-
     @Override
     public String getNamespaceUri() {
         return GoogleBase.URI;
@@ -205,9 +181,9 @@ public class GoogleBaseParser implements ModuleParser {
         Object tagValue = null;
 
         if (pd.getPropertyType() == Integer.class || pd.getPropertyType().getComponentType() == Integer.class) {
-            tagValue = new Integer(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS, tag.getText()));
+            tagValue = new Integer(GoogleUnit.stripNonValidCharacters(GoogleUnit.INTEGER_CHARS, tag.getText()));
         } else if (pd.getPropertyType() == Float.class || pd.getPropertyType().getComponentType() == Float.class) {
-            tagValue = new Float(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS, tag.getText()));
+            tagValue = new Float(GoogleUnit.stripNonValidCharacters(GoogleUnit.FLOAT_CHARS, tag.getText()));
         } else if (pd.getPropertyType() == String.class || pd.getPropertyType().getComponentType() == String.class) {
             tagValue = tag.getText();
         } else if (pd.getPropertyType() == URL.class || pd.getPropertyType().getComponentType() == URL.class) {
@@ -218,17 +194,17 @@ public class GoogleBaseParser implements ModuleParser {
             String text = tag.getText().trim();
 
             if (text.length() > 10) {
-                tagValue = new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).parse(text);
+                tagValue = new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).parse(text);
             } else {
-                tagValue = new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).parse(text);
+                tagValue = new SimpleDateFormat(GoogleUnit.SHORT_DT_FMT).parse(text);
             }
         } else if (pd.getPropertyType() == IntUnit.class || pd.getPropertyType().getComponentType() == IntUnit.class) {
             tagValue = new IntUnit(tag.getText());
         } else if (pd.getPropertyType() == FloatUnit.class || pd.getPropertyType().getComponentType() == FloatUnit.class) {
             tagValue = new FloatUnit(tag.getText());
         } else if (pd.getPropertyType() == DateTimeRange.class || pd.getPropertyType().getComponentType() == DateTimeRange.class) {
-            tagValue = new DateTimeRange(new SimpleDateFormat(LONG_DT_FMT).parse(tag.getChild("start", GoogleBaseParser.NS).getText().trim()),
-                    new SimpleDateFormat(LONG_DT_FMT).parse(tag.getChild("end", GoogleBaseParser.NS).getText().trim()));
+            tagValue = new DateTimeRange(new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).parse(tag.getChild("start", GoogleBaseParser.NS).getText().trim()),
+                    new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).parse(tag.getChild("end", GoogleBaseParser.NS).getText().trim()));
         } else if (pd.getPropertyType() == ShippingType.class || pd.getPropertyType().getComponentType() == ShippingType.class) {
             FloatUnit price = new FloatUnit(tag.getChild("price", GoogleBaseParser.NS).getText().trim());
             ShippingType.ServiceEnumeration service = ShippingType.ServiceEnumeration

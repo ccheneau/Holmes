@@ -41,7 +41,7 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 
-import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
+import com.sun.syndication.feed.module.base.GoogleUnit;
 
 /**
  * The Class IntUnit.
@@ -69,7 +69,7 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
         String parse = source.trim();
         int space = -1;
         for (int i = 0; i < parse.length(); i++) {
-            if (!inCharArray(parse.charAt(i), GoogleBaseParser.INTEGER_CHARS)) {
+            if (!inCharArray(parse.charAt(i), GoogleUnit.INTEGER_CHARS)) {
                 space = i;
                 break;
             }
@@ -78,7 +78,7 @@ public class IntUnit implements CloneableType<IntUnit>, Serializable {
             space = parse.length();
         }
 
-        this.value = Integer.parseInt(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.INTEGER_CHARS, parse.substring(0, space)));
+        this.value = Integer.parseInt(GoogleUnit.stripNonValidCharacters(GoogleUnit.INTEGER_CHARS, parse.substring(0, space)));
 
         if (space != parse.length()) {
             this.units = parse.substring(space, parse.length()).trim();

@@ -55,6 +55,7 @@ import org.jdom.Namespace;
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.base.GoogleBase;
 import com.sun.syndication.feed.module.base.GoogleBaseImpl;
+import com.sun.syndication.feed.module.base.GoogleUnit;
 import com.sun.syndication.feed.module.base.types.CurrencyEnumeration;
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 import com.sun.syndication.feed.module.base.types.FloatUnit;
@@ -147,9 +148,9 @@ public class GoogleBaseGenerator implements ModuleGenerator {
                 || o instanceof CurrencyEnumeration || o instanceof Size || o instanceof YearType) {
             return this.generateSimpleElement(tagName, o.toString());
         } else if (o instanceof ShortDate) {
-            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(o));
+            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleUnit.SHORT_DT_FMT).format(o));
         } else if (o instanceof Date) {
-            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(o));
+            return this.generateSimpleElement(tagName, new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).format(o));
         } else if (o instanceof ShippingType) {
             ShippingType st = (ShippingType) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
@@ -164,8 +165,8 @@ public class GoogleBaseGenerator implements ModuleGenerator {
         } else if (o instanceof DateTimeRange) {
             DateTimeRange dtr = (DateTimeRange) o;
             Element element = new Element(tagName, GoogleBaseGenerator.NS);
-            element.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getStart())));
-            element.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getEnd())));
+            element.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).format(dtr.getStart())));
+            element.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).format(dtr.getEnd())));
 
             return element;
         }

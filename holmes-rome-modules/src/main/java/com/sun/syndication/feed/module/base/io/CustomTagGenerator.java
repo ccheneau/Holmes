@@ -33,6 +33,7 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.base.CustomTag;
 import com.sun.syndication.feed.module.base.CustomTagImpl;
 import com.sun.syndication.feed.module.base.CustomTags;
+import com.sun.syndication.feed.module.base.GoogleUnit;
 import com.sun.syndication.feed.module.base.types.DateTimeRange;
 import com.sun.syndication.feed.module.base.types.FloatUnit;
 import com.sun.syndication.feed.module.base.types.IntUnit;
@@ -82,17 +83,17 @@ public class CustomTagGenerator implements ModuleGenerator {
                 DateTimeRange dtr = (DateTimeRange) tag.getValue();
                 Element newTag = new Element(tag.getName(), CustomTagParser.NS);
                 newTag.setAttribute("type", "dateTimeRange");
-                newTag.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getStart())));
-                newTag.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleBaseParser.LONG_DT_FMT).format(dtr.getEnd())));
+                newTag.addContent(this.generateSimpleElement("start", new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).format(dtr.getStart())));
+                newTag.addContent(this.generateSimpleElement("end", new SimpleDateFormat(GoogleUnit.LONG_DT_FMT).format(dtr.getEnd())));
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof ShortDate) {
                 ShortDate sd = (ShortDate) tag.getValue();
-                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(sd));
+                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleUnit.SHORT_DT_FMT).format(sd));
                 newTag.setAttribute("type", "date");
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof Date) {
                 Date d = (Date) tag.getValue();
-                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleBaseParser.SHORT_DT_FMT).format(d));
+                Element newTag = this.generateSimpleElement(tag.getName(), new SimpleDateFormat(GoogleUnit.SHORT_DT_FMT).format(d));
                 newTag.setAttribute("type", "dateTime");
                 element.addContent(newTag);
             } else if (tag.getValue() instanceof Integer) {

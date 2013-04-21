@@ -41,7 +41,7 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 
-import com.sun.syndication.feed.module.base.io.GoogleBaseParser;
+import com.sun.syndication.feed.module.base.GoogleUnit;
 
 /** This class represents a quantity consisting of a float value and an optional
  * units specification.
@@ -81,7 +81,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
         String parse = source.trim();
         int space = -1;
         for (int i = 0; i < parse.length(); i++) {
-            if (!inCharArray(parse.charAt(i), GoogleBaseParser.FLOAT_CHARS)) {
+            if (!inCharArray(parse.charAt(i), GoogleUnit.FLOAT_CHARS)) {
                 space = i;
                 break;
             }
@@ -91,7 +91,7 @@ public class FloatUnit implements CloneableType<FloatUnit>, Serializable {
             space = parse.length();
         }
 
-        this.value = Float.parseFloat(GoogleBaseParser.stripNonValidCharacters(GoogleBaseParser.FLOAT_CHARS, parse.substring(0, space)));
+        this.value = Float.parseFloat(GoogleUnit.stripNonValidCharacters(GoogleUnit.FLOAT_CHARS, parse.substring(0, space)));
 
         if (space != parse.length()) {
             this.units = parse.substring(space, parse.length()).trim();
