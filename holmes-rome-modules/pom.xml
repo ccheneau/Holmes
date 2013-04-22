@@ -8,6 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>holmes-rome-modules</artifactId>
+	<name>Holmes Romes modules fork</name>
 	<description>Fork for rome:modules project</description>
 
 	<dependencies>

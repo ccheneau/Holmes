@@ -9,6 +9,8 @@
 	</parent>
 	<artifactId>holmes-package</artifactId>
 	<packaging>pom</packaging>
+	<name>Holmes Package</name>
+	<description>Holmes Package</description>
 
 	<dependencies>
 		<dependency>
