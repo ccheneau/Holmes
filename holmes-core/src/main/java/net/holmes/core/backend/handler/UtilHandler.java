@@ -81,13 +81,7 @@ public final class UtilHandler {
             // Get child folders
             File fPath = new File(parentPath);
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
-                File[] childDirs = fPath.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(final File file) {
-                        return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".")
-                                && file.listFiles() != null;
-                    }
-                });
+                File[] childDirs = fPath.listFiles(new FolderFileFilter());
                 if (childDirs != null) {
                     for (File childDir : childDirs) {
                         folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
@@ -131,5 +125,17 @@ public final class UtilHandler {
         public Map<String, String> getMetadata() {
             return metadata;
         }
+    }
+
+    /**
+     * Folder file filter.
+     */
+    private static class FolderFileFilter implements FileFilter {
+
+        @Override
+        public boolean accept(final File file) {
+            return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".") && file.listFiles() != null;
+        }
+
     }
 }

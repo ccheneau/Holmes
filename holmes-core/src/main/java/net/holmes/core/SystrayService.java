@@ -143,7 +143,11 @@ public final class SystrayService implements Service {
         quitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-                System.exit(0);
+                try {
+                    System.exit(0);
+                } catch (SecurityException e) {
+                    logger.error(e.getMessage(), e);
+                }
             }
         });
 
