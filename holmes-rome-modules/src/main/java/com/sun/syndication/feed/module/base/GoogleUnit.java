@@ -26,6 +26,9 @@ public final class GoogleUnit {
     public static final String SHORT_DT_FMT = "yyyy-MM-dd";
     public static final String LONG_DT_FMT = "yyyy-MM-dd'T'HH:mm:ss";
 
+    /**
+     * Constructor.
+     */
     private GoogleUnit() {
     }
 
