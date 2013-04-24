@@ -67,10 +67,20 @@ import com.sun.syndication.io.WireFeedParser;
  */
 public class ITunesParser implements ModuleParser {
     private static final Logger LOGGER = Logger.getLogger(ITunesParser.class.getName());
-    private static final Namespace NS = Namespace.getNamespace(AbstractITunesObject.URI);
+    private final Namespace ns;
 
     /** Creates a new instance of ITunesParser */
     public ITunesParser() {
+        ns = Namespace.getNamespace(AbstractITunesObject.URI);
+    }
+
+    /**
+     * Creates a new instance of ITunesParser.
+     *
+     * @param ns the namespace
+     */
+    public ITunesParser(final Namespace ns) {
+        this.ns = ns;
     }
 
     /**
@@ -95,23 +105,23 @@ public class ITunesParser implements ModuleParser {
             module = feedInfo;
 
             //Now I am going to get the channel specific tags
-            Element owner = element.getChild("owner", NS);
+            Element owner = element.getChild("owner", ns);
 
             if (owner != null) {
-                Element name = owner.getChild("name", NS);
+                Element name = owner.getChild("name", ns);
 
                 if (name != null) {
                     feedInfo.setOwnerName(name.getValue().trim());
                 }
 
-                Element email = owner.getChild("email", NS);
+                Element email = owner.getChild("email", ns);
 
                 if (email != null) {
                     feedInfo.setOwnerEmailAddress(email.getValue().trim());
                 }
             }
 
-            Element image = element.getChild("image", NS);
+            Element image = element.getChild("image", ns);
 
             if (image != null && image.getAttributeValue("href") != null) {
                 try {
@@ -122,14 +132,14 @@ public class ITunesParser implements ModuleParser {
                 }
             }
 
-            List<?> categories = element.getChildren("category", NS);
+            List<?> categories = element.getChildren("category", ns);
             for (Iterator<?> it = categories.iterator(); it.hasNext();) {
                 Element category = (Element) it.next();
                 if (category != null && category.getAttribute("text") != null) {
                     Category cat = new Category();
                     cat.setName(category.getAttribute("text").getValue().trim());
 
-                    Element subcategory = category.getChild("category", NS);
+                    Element subcategory = category.getChild("category", ns);
 
                     if (subcategory != null && subcategory.getAttribute("text") != null) {
                         Subcategory subcat = new Subcategory();
@@ -147,7 +157,7 @@ public class ITunesParser implements ModuleParser {
 
             //Now I am going to get the item specific tags
 
-            Element duration = element.getChild("duration", NS);
+            Element duration = element.getChild("duration", ns);
 
             if (duration != null && duration.getValue() != null) {
                 Duration dur = new Duration(duration.getValue().trim());
@@ -156,25 +166,25 @@ public class ITunesParser implements ModuleParser {
         }
         if (module != null) {
             //All these are common to both Channel and Item
-            Element author = element.getChild("author", NS);
+            Element author = element.getChild("author", ns);
 
             if (author != null && author.getText() != null) {
                 module.setAuthor(author.getText());
             }
 
-            Element block = element.getChild("block", NS);
+            Element block = element.getChild("block", ns);
 
             if (block != null) {
                 module.setBlock(true);
             }
 
-            Element explicit = element.getChild("explicit", NS);
+            Element explicit = element.getChild("explicit", ns);
 
             if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes")) {
                 module.setExplicit(true);
             }
 
-            Element keywords = element.getChild("keywords", NS);
+            Element keywords = element.getChild("keywords", ns);
 
             if (keywords != null) {
                 StringTokenizer tok = new StringTokenizer(getXmlInnerText(keywords).trim(), ",");
@@ -187,13 +197,13 @@ public class ITunesParser implements ModuleParser {
                 module.setKeywords(keywordsArray);
             }
 
-            Element subtitle = element.getChild("subtitle", NS);
+            Element subtitle = element.getChild("subtitle", ns);
 
             if (subtitle != null) {
                 module.setSubtitle(subtitle.getTextTrim());
             }
 
-            Element summary = element.getChild("summary", NS);
+            Element summary = element.getChild("summary", ns);
 
             if (summary != null) {
                 module.setSummary(summary.getTextTrim());
