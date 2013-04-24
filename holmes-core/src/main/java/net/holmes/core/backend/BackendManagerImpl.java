@@ -228,7 +228,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     /**
-     * Check folder does not already existalidate folder.
+     * Check folder does not already exist.
      * 
      * @param folder
      *      folder to validate
