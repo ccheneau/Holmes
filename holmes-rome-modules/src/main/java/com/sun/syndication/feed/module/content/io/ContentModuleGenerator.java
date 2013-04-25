@@ -121,7 +121,6 @@ public class ContentModuleGenerator implements ModuleGenerator {
                 }
 
                 if (contentItem.getContentFormat() != null) {
-                    //System.out.println( "Format");
                     Element format = new Element("format", CONTENT_NS);
                     Attribute formatResource = new Attribute("resource", contentItem.getContentFormat(), RDF_NS);
                     format.setAttribute(formatResource);
@@ -130,7 +129,6 @@ public class ContentModuleGenerator implements ModuleGenerator {
                 }
 
                 if (contentItem.getContentEncoding() != null) {
-                    //System.out.println( "Encoding");
                     Element encoding = new Element("encoding", CONTENT_NS);
                     Attribute encodingResource = new Attribute("resource", contentItem.getContentEncoding(), RDF_NS);
                     encoding.setAttribute(encodingResource);

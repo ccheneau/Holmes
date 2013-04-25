@@ -44,8 +44,9 @@ public class PositionList implements Cloneable, Serializable {
 
         PositionList p = (PositionList) obj;
         if (p.size != size) return false;
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < size; ++i) {
             if (p.latitude[i] != latitude[i] || p.longitude[i] != longitude[i]) return false;
+        }
         return true;
     }
 

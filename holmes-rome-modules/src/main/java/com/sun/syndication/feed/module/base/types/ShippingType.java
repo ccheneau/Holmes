@@ -41,6 +41,7 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a specific shipping option for an item.
@@ -145,7 +146,7 @@ public final class ShippingType implements CloneableType<ShippingType>, Serializ
         /**
         * Looks up a ServiceEnumeration based on the string value.
         */
-        private static final HashMap<String, ServiceEnumeration> LOOKUP = new HashMap<String, ServiceEnumeration>();
+        private static final Map<String, ServiceEnumeration> LOOKUP = new HashMap<String, ServiceEnumeration>();
         /**
          * Standard
          */

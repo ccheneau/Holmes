@@ -34,7 +34,7 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * It's an optional element that must only be used for this purpose.</p>
  * @author cooper
  */
-public class MediaGroup implements Cloneable, Serializable {
+public final class MediaGroup implements Cloneable, Serializable {
     private static final long serialVersionUID = 768465435081309082L;
 
     private Integer defaultContentIndex;

@@ -76,7 +76,7 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     }
 
     @Override
-    public void messageReceived(final ChannelHandlerContext ctx, final FullHttpRequest request) throws Exception {
+    public void messageReceived(final ChannelHandlerContext ctx, final FullHttpRequest request) {
 
         if (logger.isDebugEnabled()) {
             logger.debug("[START] messageReceived url:{}", request.getUri());
@@ -111,7 +111,7 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     }
 
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
         if (cause instanceof TooLongFrameException) {
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;

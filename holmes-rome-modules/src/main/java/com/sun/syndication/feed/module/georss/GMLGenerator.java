@@ -66,8 +66,9 @@ public class GMLGenerator implements ModuleGenerator {
     private Element createPosListElement(final PositionList posList) {
         Element posElement = new Element("posList", GeoRSSModule.GML_NS);
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < posList.size(); ++i)
+        for (int i = 0; i < posList.size(); ++i) {
             sb.append(posList.getLatitude(i)).append(" ").append(posList.getLongitude(i)).append(" ");
+        }
 
         posElement.addContent(sb.toString());
         return posElement;
@@ -124,7 +125,7 @@ public class GMLGenerator implements ModuleGenerator {
                 whereElement.addContent(pointElement);
 
                 Element posElement = new Element("pos", GeoRSSModule.GML_NS);
-                posElement.addContent(String.valueOf(pos.getLatitude()) + " " + String.valueOf(pos.getLongitude()));
+                posElement.addContent(pos.getLatitude() + " " + pos.getLongitude());
                 pointElement.addContent(posElement);
             } else if (geometry instanceof LineString) {
                 PositionList posList = ((LineString) geometry).getPositionList();
@@ -169,11 +170,11 @@ public class GMLGenerator implements ModuleGenerator {
                 whereElement.addContent(envelopeElement);
 
                 Element lowerElement = new Element("lowerCorner", GeoRSSModule.GML_NS);
-                lowerElement.addContent(String.valueOf(envelope.getMinLatitude()) + " " + String.valueOf(envelope.getMinLongitude()));
+                lowerElement.addContent(envelope.getMinLatitude() + " " + envelope.getMinLongitude());
                 envelopeElement.addContent(lowerElement);
 
                 Element upperElement = new Element("upperCorner", GeoRSSModule.GML_NS);
-                upperElement.addContent(String.valueOf(envelope.getMaxLatitude()) + " " + String.valueOf(envelope.getMaxLongitude()));
+                upperElement.addContent(envelope.getMaxLatitude() + " " + envelope.getMaxLongitude());
                 envelopeElement.addContent(upperElement);
 
             } else {

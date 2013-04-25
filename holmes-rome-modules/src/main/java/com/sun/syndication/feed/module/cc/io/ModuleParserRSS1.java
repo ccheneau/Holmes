@@ -73,8 +73,9 @@ public class ModuleParserRSS1 implements ModuleParser {
         CreativeCommonsImpl module = new CreativeCommonsImpl();
         // Parsing Channel level.
         Element root = element.getParentElement();
-        while (root.getParentElement() != null)
+        while (root.getParentElement() != null) {
             root = root.getParentElement();
+        }
         List<?> licenseList = root.getChildren("License", NS);
         List<License> licenses = new ArrayList<License>();
         Iterator<?> it = licenseList.iterator();

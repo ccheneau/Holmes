@@ -85,7 +85,7 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * There may be one or more <media:content> instances within each instance of an <item> within an
  * RSS 2.0 document.
  */
-public class MediaContent implements Serializable, Cloneable {
+public final class MediaContent implements Serializable, Cloneable {
     private static final long serialVersionUID = -4990262574794352616L;
 
     private Expression expression;

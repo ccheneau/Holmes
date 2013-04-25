@@ -143,7 +143,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             throw ex;
         } catch (Exception ex) {
             if (logger.isDebugEnabled()) logger.debug(ex.getMessage(), ex);
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS, ex.getMessage());
+            throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), ex.getMessage(), ex);
         }
     }
 

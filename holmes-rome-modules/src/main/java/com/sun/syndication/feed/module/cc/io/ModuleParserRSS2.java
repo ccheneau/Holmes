@@ -71,8 +71,9 @@ public class ModuleParserRSS2 implements ModuleParser {
 
         //Do channel global
         Element root = element;
-        while (!root.getName().equals("channel") && !root.getName().equals("feed"))
+        while (!root.getName().equals("channel") && !root.getName().equals("feed")) {
             root = root.getParentElement();
+        }
         List<License> licenses = new ArrayList<License>();
         List<?> items = null;
         if (root.getName().equals("channel")) items = root.getChildren("item");

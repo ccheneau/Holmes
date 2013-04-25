@@ -109,7 +109,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
                 randomFile = new RandomAccessFile(file, "r");
                 fileLength = randomFile.length();
             } catch (IOException e) {
-                throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
+                throw new HttpRequestException(e, HttpResponseStatus.NOT_FOUND);
             }
 
             // Build response header
@@ -143,7 +143,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
                     writeFuture.addListener(ChannelFutureListener.CLOSE);
                 }
             } catch (IOException e) {
-                throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
+                throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
             }
 
         } finally {
@@ -168,7 +168,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         if (contentId != null) {
             AbstractNode node = mediaManager.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :{}", node);
-            if (node != null && node instanceof ContentNode) {
+            if (node instanceof ContentNode) {
                 contentNode = (ContentNode) node;
             }
         }

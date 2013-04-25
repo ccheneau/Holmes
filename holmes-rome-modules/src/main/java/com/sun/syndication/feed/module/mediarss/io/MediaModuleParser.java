@@ -125,17 +125,17 @@ public class MediaModuleParser implements ModuleParser {
             if (mc != null) {
                 values.add(mc);
                 try {
-                    mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : new Integer(content.getAttributeValue("channels")));
+                    mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : Integer.valueOf(content.getAttributeValue("channels")));
                 } catch (Exception ex) {
                     LOGGER.log(Level.WARNING, "Exception parsing content tag.", ex);
                 }
                 try {
-                    mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : new Float(content.getAttributeValue("bitrate")));
+                    mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : Float.valueOf(content.getAttributeValue("bitrate")));
                 } catch (Exception ex) {
                     LOGGER.log(Level.WARNING, "Exception parsing content tag.", ex);
                 }
                 try {
-                    mc.setDuration((content.getAttributeValue("duration") == null) ? null : new Long(content.getAttributeValue("duration")));
+                    mc.setDuration((content.getAttributeValue("duration") == null) ? null : Long.valueOf(content.getAttributeValue("duration")));
                 } catch (Exception ex) {
                     LOGGER.log(Level.WARNING, "Exception parsing content tag.", ex);
                 }
@@ -184,7 +184,7 @@ public class MediaModuleParser implements ModuleParser {
                     LOGGER.log(Level.WARNING, "Exception parsing content tag.", ex);
                 }
 
-                mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.getBoolean(content.getAttributeValue("isDefault")));
+                mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.valueOf(content.getAttributeValue("isDefault")));
             } else {
                 LOGGER.log(Level.WARNING, "Could not find MediaContent.");
             }
@@ -317,8 +317,8 @@ public class MediaModuleParser implements ModuleParser {
                     tbnValues.add(new Thumbnail(new URI(thumb.getValue()), null, null, null));
                 } else {
                     Time t = (thumb.getAttributeValue("time") == null) ? null : new Time(thumb.getAttributeValue("time"));
-                    Integer width = (thumb.getAttributeValue("width") == null) ? null : new Integer(thumb.getAttributeValue("width"));
-                    Integer height = (thumb.getAttributeValue("height") == null) ? null : new Integer(thumb.getAttributeValue("height"));
+                    Integer width = (thumb.getAttributeValue("width") == null) ? null : Integer.valueOf(thumb.getAttributeValue("width"));
+                    Integer height = (thumb.getAttributeValue("height") == null) ? null : Integer.valueOf(thumb.getAttributeValue("height"));
                     tbnValues.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
                 }
             } catch (URISyntaxException ex) {
@@ -387,8 +387,8 @@ public class MediaModuleParser implements ModuleParser {
         PlayerReference p = null;
 
         if (player != null) {
-            Integer width = (player.getAttributeValue("width") == null) ? null : new Integer(player.getAttributeValue("width"));
-            Integer height = (player.getAttributeValue("height") == null) ? null : new Integer(player.getAttributeValue("height"));
+            Integer width = (player.getAttributeValue("width") == null) ? null : Integer.valueOf(player.getAttributeValue("width"));
+            Integer height = (player.getAttributeValue("height") == null) ? null : Integer.valueOf(player.getAttributeValue("height"));
 
             try {
                 p = new PlayerReference(new URI(player.getAttributeValue("url")), width, height);

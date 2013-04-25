@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -190,10 +189,10 @@ public final class XmlConfigurationImpl implements Configuration {
 
         private String upnpServerName;
         private Integer httpServerPort;
-        private LinkedList<ConfigurationNode> videoFolders;
-        private LinkedList<ConfigurationNode> pictureFolders;
-        private LinkedList<ConfigurationNode> audioFolders;
-        private LinkedList<ConfigurationNode> podcasts;
+        private List<ConfigurationNode> videoFolders;
+        private List<ConfigurationNode> pictureFolders;
+        private List<ConfigurationNode> audioFolders;
+        private List<ConfigurationNode> podcasts;
         private Properties parameters;
 
         @SuppressWarnings("unused")

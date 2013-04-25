@@ -141,10 +141,10 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             }
         } catch (FileNotFoundException e) {
             if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
-            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException(e, HttpResponseStatus.NOT_FOUND);
         } catch (IOException e) {
             if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
-            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }

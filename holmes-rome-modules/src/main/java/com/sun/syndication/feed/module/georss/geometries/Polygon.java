@@ -54,11 +54,13 @@ public final class Polygon extends AbstractSurface {
 
         // Not efficient.... (but the number of internal ringr is usually small).
         Iterator<AbstractRing> it = interior.iterator();
-        while (it.hasNext())
+        while (it.hasNext()) {
             if (!pol.interior.contains(it.next())) return false;
+        }
         it = pol.interior.iterator();
-        while (it.hasNext())
+        while (it.hasNext()) {
             if (!interior.contains(it.next())) return false;
+        }
         return true;
     }
 

@@ -45,7 +45,10 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -175,15 +178,19 @@ public class GoogleBaseParser implements ModuleParser {
      * @param tag the tag
      * @param pd the pd
      * @param module the module
-     * @throws Exception the exception
+     * @throws MalformedURLException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    private void handleTag(final Element tag, final PropertyDescriptor pd, final GoogleBase module) throws Exception {
+    private void handleTag(final Element tag, final PropertyDescriptor pd, final GoogleBase module) throws MalformedURLException, ParseException,
+            IllegalAccessException, InvocationTargetException {
         Object tagValue = null;
 
         if (pd.getPropertyType() == Integer.class || pd.getPropertyType().getComponentType() == Integer.class) {
-            tagValue = new Integer(GoogleUnit.stripNonValidCharacters(GoogleUnit.INTEGER_CHARS, tag.getText()));
+            tagValue = Integer.valueOf(GoogleUnit.stripNonValidCharacters(GoogleUnit.INTEGER_CHARS, tag.getText()));
         } else if (pd.getPropertyType() == Float.class || pd.getPropertyType().getComponentType() == Float.class) {
-            tagValue = new Float(GoogleUnit.stripNonValidCharacters(GoogleUnit.FLOAT_CHARS, tag.getText()));
+            tagValue = Float.valueOf(GoogleUnit.stripNonValidCharacters(GoogleUnit.FLOAT_CHARS, tag.getText()));
         } else if (pd.getPropertyType() == String.class || pd.getPropertyType().getComponentType() == String.class) {
             tagValue = tag.getText();
         } else if (pd.getPropertyType() == URL.class || pd.getPropertyType().getComponentType() == URL.class) {
@@ -238,7 +245,6 @@ public class GoogleBaseParser implements ModuleParser {
             Object setValue = Array.newInstance(pd.getPropertyType().getComponentType(), newSize);
 
             int i = 0;
-
             for (; current != null && i < current.length; i++) {
                 Array.set(setValue, i, current[i]);
             }

@@ -1284,15 +1284,11 @@ public class GoogleBaseImpl implements GoogleBase {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        try {
-            super.clone();
-            GoogleBaseImpl gbi = new GoogleBaseImpl();
-            gbi.copyFrom(this);
+        super.clone();
+        GoogleBaseImpl gbi = new GoogleBaseImpl();
+        gbi.copyFrom(this);
 
-            return gbi;
-        } catch (Exception e) {
-            throw new CloneNotSupportedException();
-        }
+        return gbi;
     }
 
     @Override

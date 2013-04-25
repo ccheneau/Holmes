@@ -51,7 +51,7 @@ import com.sun.syndication.io.impl.NumberParser;
  * @version $Revision: 1.7 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Duration implements Serializable {
+public final class Duration implements Serializable {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1960363504597514365L;

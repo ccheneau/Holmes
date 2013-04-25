@@ -58,7 +58,7 @@ public class PodcastCacheCleanerService extends AbstractScheduledService {
     }
 
     @Override
-    protected void runOneIteration() throws Exception {
+    protected void runOneIteration() {
         if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
         podcastCache.cleanUp();
     }

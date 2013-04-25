@@ -76,13 +76,13 @@ public class SlashModuleParser implements ModuleParser {
             StringTokenizer tok = new StringTokenizer(tag.getText(), ",");
             Integer[] hp = new Integer[tok.countTokens()];
             for (int i = 0; tok.hasMoreTokens(); i++) {
-                hp[i] = new Integer(tok.nextToken());
+                hp[i] = Integer.valueOf(tok.nextToken());
             }
             si.setHitParade(hp);
         }
         tag = element.getChild("comments", SlashModuleParser.NS);
         if (tag != null) {
-            si.setComments(new Integer(tag.getText()));
+            si.setComments(Integer.valueOf(tag.getText()));
         }
         tag = element.getChild("department", SlashModuleParser.NS);
         if (tag != null) {

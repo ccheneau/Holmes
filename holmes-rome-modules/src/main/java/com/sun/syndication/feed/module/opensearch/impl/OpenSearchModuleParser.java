@@ -206,11 +206,11 @@ public class OpenSearchModuleParser implements ModuleParser {
      */
     private static String resolveURI(final URL baseURI, final Parent parent, final String url) {
         String sUrl = url.equals(".") || url.equals("./") ? "" : url;
-        if (isRelativeURI(sUrl) && parent != null && parent instanceof Element) {
+        if (isRelativeURI(sUrl) && parent instanceof Element) {
             Attribute baseAtt = ((Element) parent).getAttribute("base", Namespace.XML_NAMESPACE);
             String xmlBase = (baseAtt == null) ? "" : baseAtt.getValue();
             if (!isRelativeURI(xmlBase) && !xmlBase.endsWith("/")) {
-                xmlBase = xmlBase.substring(0, xmlBase.lastIndexOf("/") + 1);
+                xmlBase = xmlBase.substring(0, xmlBase.lastIndexOf('/') + 1);
             }
             return resolveURI(baseURI, parent.getParent(), xmlBase + sUrl);
         } else if (isRelativeURI(sUrl) && parent == null) {

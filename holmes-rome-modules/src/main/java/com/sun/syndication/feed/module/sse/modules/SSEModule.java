@@ -40,7 +40,8 @@ public abstract class SSEModule implements Module {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
         try {
             SSEModule clone = this.getClass().newInstance();
             clone.copyFrom(this);

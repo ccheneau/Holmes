@@ -46,7 +46,7 @@ public class M3uParser implements PlaylistParser {
     @Override
     public List<PlaylistItem> parse() throws PlaylistParserException {
         List<PlaylistItem> items = null;
-        Charset charset = Files.getFileExtension(playlist.getName()).toLowerCase().equals("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");
+        Charset charset = Files.getFileExtension(playlist.getName()).equalsIgnoreCase("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");
         try {
             List<String> lines = Files.readLines(playlist, charset);
             if (lines != null && !lines.isEmpty()) {

@@ -47,7 +47,7 @@ import java.io.Serializable;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $
  */
-public class Subcategory implements Cloneable, Serializable {
+public final class Subcategory implements Cloneable, Serializable {
     private static final long serialVersionUID = -8563595355552684061L;
 
     private String name;

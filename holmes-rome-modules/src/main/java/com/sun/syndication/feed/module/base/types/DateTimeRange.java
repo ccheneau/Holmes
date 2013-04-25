@@ -117,7 +117,7 @@ public class DateTimeRange implements CloneableType<DateTimeRange>, Serializable
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || !(o instanceof DateTimeRange)) return false;
+        if (!(o instanceof DateTimeRange)) return false;
         DateTimeRange d = (DateTimeRange) o;
         if (this.start == d.getStart() && this.end == d.getEnd()) {
             return true;

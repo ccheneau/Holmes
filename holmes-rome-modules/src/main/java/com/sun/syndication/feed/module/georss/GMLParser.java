@@ -57,8 +57,7 @@ public class GMLParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element element) {
-        Module geoRssModule = parseGML(element);
-        return geoRssModule;
+        return parseGML(element);
     }
 
     /**

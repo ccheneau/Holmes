@@ -44,8 +44,9 @@ public final class GeoRSSUtils {
     public static String trimWhitespace(final String in) {
         StringBuffer strbuf = new StringBuffer();
         int i = 0;
-        while (i < in.length() && Character.isWhitespace(in.charAt(i)))
+        while (i < in.length() && Character.isWhitespace(in.charAt(i))) {
             i++;
+        }
 
         boolean wasWhite = false;
         for (; i < in.length(); ++i) {

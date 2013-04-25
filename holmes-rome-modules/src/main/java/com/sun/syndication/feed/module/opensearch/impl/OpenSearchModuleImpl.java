@@ -145,8 +145,6 @@ public class OpenSearchModuleImpl extends ModuleImpl implements OpenSearchModule
         setItemsPerPage(osm.getItemsPerPage());
         setStartIndex(osm.getStartIndex());
         setLink(osm.getLink());
-
-        // setQueries(osm.getQueries());
     }
 
     /* (non-Javadoc)

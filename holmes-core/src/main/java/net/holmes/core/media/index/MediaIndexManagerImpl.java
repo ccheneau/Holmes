@@ -46,7 +46,6 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
      */
     public MediaIndexManagerImpl() {
         this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());
-        //this.elements = HashBiMap.create();
     }
 
     @Override

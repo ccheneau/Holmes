@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -45,7 +46,7 @@ import com.sun.syndication.io.ModuleGenerator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class CustomTagGenerator implements ModuleGenerator {
-    static final HashSet<Namespace> NAMESPACES = new HashSet<Namespace>();
+    static final Set<Namespace> NAMESPACES = new HashSet<Namespace>();
 
     static {
         NAMESPACES.add(CustomTagParser.NS);

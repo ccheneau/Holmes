@@ -67,7 +67,6 @@ import com.sun.jersey.spi.container.WebApplication;
  */
 public final class HolmesServerModule extends AbstractModule {
 
-    //    private EventBus eventBus = new EventBus("Holmes EventBus");
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
 

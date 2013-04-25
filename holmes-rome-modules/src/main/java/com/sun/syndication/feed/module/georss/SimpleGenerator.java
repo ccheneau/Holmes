@@ -62,8 +62,9 @@ public class SimpleGenerator implements ModuleGenerator {
      */
     private String posListToString(final PositionList posList) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < posList.size(); ++i)
+        for (int i = 0; i < posList.size(); ++i) {
             sb.append(posList.getLatitude(i)).append(" ").append(posList.getLongitude(i)).append(" ");
+        }
         return sb.toString();
     }
 

@@ -42,6 +42,7 @@ package com.sun.syndication.feed.module.cc.types;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.sun.syndication.feed.impl.EqualsBean;
@@ -62,7 +63,7 @@ public class License implements Serializable {
     private static final String CC_START = "http://creativecommons.org/licenses/";
 
     /** The Constant LOOKUP_LICENSE. */
-    private static final HashMap<String, License> LOOKUP_LICENSE = new HashMap<String, License>();
+    private static final Map<String, License> LOOKUP_LICENSE = new HashMap<String, License>();
 
     /** The Constant NO_DERIVS. */
     public static final License NO_DERIVS = new License("http://creativecommons.org/licenses/nd/1.0/", new Behaviour[0], new Behaviour[] {
@@ -132,7 +133,6 @@ public class License implements Serializable {
         License.LOOKUP_LICENSE.put(uri, this);
 
         if (this.uri.endsWith("/")) {
-            //System.out.println(uri.substring(0,this.uri.lastIndexOf("/")));
             License.LOOKUP_LICENSE.put(uri.substring(0, this.uri.lastIndexOf("/")), this);
         }
     }
@@ -221,7 +221,7 @@ public class License implements Serializable {
         private static final long serialVersionUID = 4484932480954592749L;
 
         /** The Constant LOOKUP. */
-        private static final HashMap<String, Behaviour> LOOKUP = new HashMap<String, Behaviour>();
+        private static final Map<String, Behaviour> LOOKUP = new HashMap<String, Behaviour>();
 
         /** The Constant REPRODUCTION. */
         public static final Behaviour REPRODUCTION = new Behaviour("http://web.resource.org/cc/Reproduction");

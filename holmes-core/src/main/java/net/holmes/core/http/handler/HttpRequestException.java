@@ -39,6 +39,17 @@ public final class HttpRequestException extends Exception {
         this.status = status;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param e the exception
+     * @param status status
+     */
+    public HttpRequestException(final Exception e, final HttpResponseStatus status) {
+        super(e);
+        this.status = status;
+    }
+
     public HttpResponseStatus getStatus() {
         return status;
     }

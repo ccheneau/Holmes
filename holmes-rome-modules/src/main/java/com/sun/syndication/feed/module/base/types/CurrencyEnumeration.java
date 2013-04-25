@@ -41,6 +41,7 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An Enumeration of valid currency types.
@@ -51,7 +52,7 @@ import java.util.HashMap;
 public final class CurrencyEnumeration implements Cloneable, Serializable {
     private static final long serialVersionUID = -5330436610589233391L;
 
-    private static final HashMap<String, CurrencyEnumeration> LOOKUP = new HashMap<String, CurrencyEnumeration>();
+    private static final Map<String, CurrencyEnumeration> LOOKUP = new HashMap<String, CurrencyEnumeration>();
 
     //<xs:restriction base="xs:string">
     //   <xs:enumeration value="AED"/>

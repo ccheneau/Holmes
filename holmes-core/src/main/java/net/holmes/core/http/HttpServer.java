@@ -90,7 +90,7 @@ public final class HttpServer implements Service {
                 .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(final SocketChannel channel) throws Exception {
+                    protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
                         pipeline.addLast("decoder", new HttpRequestDecoder()) //
                                 .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))//

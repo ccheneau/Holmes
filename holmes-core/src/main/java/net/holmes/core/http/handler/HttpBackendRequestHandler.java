@@ -92,9 +92,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             // Process backend request
             webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
         } catch (URISyntaxException e) {
-            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
-            throw new HttpRequestException(e.getMessage(), HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
@@ -140,8 +140,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = Lists.newArrayList();
-                for (Object v : headerEntry.getValue())
+                for (Object v : headerEntry.getValue()) {
                     values.add(ContainerResponse.getHeaderValue(v));
+                }
                 response.headers().add(headerEntry.getKey(), values);
             }
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);

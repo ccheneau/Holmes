@@ -67,6 +67,7 @@ import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
@@ -207,8 +208,9 @@ public final class MediaManagerImpl implements MediaManager {
         if (parentNode instanceof FolderNode) {
             List<AbstractNode> childNodes = getChildNodes(parentNode);
             if (recursive && childNodes != null) {
-                for (AbstractNode childNode : childNodes)
+                for (AbstractNode childNode : childNodes) {
                     scanNode(childNode, recursive);
+                }
             }
         }
     }
@@ -297,7 +299,7 @@ public final class MediaManagerImpl implements MediaManager {
         try {
             return podcastCache.get(url, new Callable<List<AbstractNode>>() {
                 @Override
-                public List<AbstractNode> call() throws Exception {
+                public List<AbstractNode> call() throws IOException, FeedException {
                     // No entries in cache, read them from RSS feed
                     List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                     XmlReader reader = null;

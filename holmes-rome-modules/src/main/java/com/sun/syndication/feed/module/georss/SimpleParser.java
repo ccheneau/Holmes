@@ -70,8 +70,7 @@ public class SimpleParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element element) {
-        Module geoRssModule = parseSimple(element);
-        return geoRssModule;
+        return parseSimple(element);
     }
 
     /**

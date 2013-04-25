@@ -62,7 +62,7 @@ public class CCModuleGenerator implements ModuleGenerator {
     private static final Namespace RSS2 = Namespace.getNamespace("creativeCommons", CreativeCommonsImpl.RSS2_URI);
     private static final Namespace RSS = Namespace.getNamespace("http://purl.org/rss/1.0/");
     private static final Namespace RDF = Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-    private static final HashSet<Namespace> NAMESPACES = new HashSet<Namespace>();
+    private static final Set<Namespace> NAMESPACES = new HashSet<Namespace>();
     static {
         NAMESPACES.add(RSS1);
         NAMESPACES.add(RSS2);
@@ -108,8 +108,6 @@ public class CCModuleGenerator implements ModuleGenerator {
      * @param element the element
      */
     private void generateRSS1(final CreativeCommons module, final Element element) {
-        //throw new RuntimeException( "Generating RSS1 Feeds not currently Supported.");
-
         if (element.getName().equals("channel")) {
             // Do all licenses list.
             License[] all = module.getAllLicenses();

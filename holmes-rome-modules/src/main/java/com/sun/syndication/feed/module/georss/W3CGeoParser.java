@@ -76,7 +76,6 @@ public class W3CGeoParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element element) {
-        Module geoRssModule = parseW3C(element);
-        return geoRssModule;
+        return parseW3C(element);
     }
 }

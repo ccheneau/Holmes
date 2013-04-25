@@ -55,7 +55,7 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
     }
 
     @Override
-    protected void runOneIteration() throws Exception {
+    protected void runOneIteration() {
         if (logger.isDebugEnabled()) logger.debug("Launch media index cleaner");
         mediaIndexManager.clean();
     }

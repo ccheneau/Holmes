@@ -48,7 +48,7 @@ import java.io.Serializable;
  * @version $Revision: 1.2 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Category implements Serializable, Cloneable {
+public final class Category implements Serializable, Cloneable {
     private static final long serialVersionUID = 5580598178604767283L;
 
     private String name;
@@ -123,7 +123,7 @@ public class Category implements Serializable, Cloneable {
         StringBuffer sb = new StringBuffer(this.getName());
 
         if (this.getSubcategory() != null) {
-            sb.append(" -> " + this.getSubcategory().toString());
+            sb.append(" -> ").append(this.getSubcategory().toString());
         }
 
         return sb.toString();

@@ -41,6 +41,7 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -50,7 +51,7 @@ import java.util.HashMap;
 public final class PaymentTypeEnumeration implements Cloneable, Serializable {
     private static final long serialVersionUID = 6444069283656132873L;
 
-    private static final HashMap<String, PaymentTypeEnumeration> LOOKUP = new HashMap<String, PaymentTypeEnumeration>();
+    private static final Map<String, PaymentTypeEnumeration> LOOKUP = new HashMap<String, PaymentTypeEnumeration>();
     public static final PaymentTypeEnumeration CASH = new PaymentTypeEnumeration("Cash");
     public static final PaymentTypeEnumeration CHECK = new PaymentTypeEnumeration("Check");
     public static final PaymentTypeEnumeration TRAVELERS_CHECK = new PaymentTypeEnumeration("Traveler�s Check");
