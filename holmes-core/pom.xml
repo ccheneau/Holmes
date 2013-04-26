@@ -98,6 +98,12 @@
 			<artifactId>netty-handler</artifactId>
 		</dependency>
 
+		<!-- seamless -->
+		<dependency>
+			<groupId>org.seamless</groupId>
+			<artifactId>seamless-util</artifactId>
+		</dependency>
+
 		<!-- cling -->
 		<dependency>
 			<groupId>org.fourthline.cling</groupId>
@@ -106,6 +112,12 @@
 		<dependency>
 			<groupId>org.fourthline.cling</groupId>
 			<artifactId>cling-support</artifactId>
+		</dependency>
+
+		<!-- inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 		</dependency>
 
 		<!-- guice -->

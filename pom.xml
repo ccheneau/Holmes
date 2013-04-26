@@ -39,16 +39,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dependency.locations.enabled>false</dependency.locations.enabled>
 		<cling.version>2.0-alpha2</cling.version>
 		<guava.version>14.0.1</guava.version>
 		<guice.version>3.0</guice.version>
+		<javax.inject.version>1</javax.inject.version>
 		<jersey.version>1.17.1</jersey.version>
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.17</log4j.version>
 		<netty.version>4.0.0.CR1</netty.version>
 		<rome.version>1.0</rome.version>
+		<seamless.version>1.0-alpha2</seamless.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<xstream.version>1.4.4</xstream.version>
 	</properties>
@@ -213,11 +213,25 @@
 				<version>${xstream.version}</version>
 			</dependency>
 
+			<!-- inject -->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>${javax.inject.version}</version>
+			</dependency>
+
 			<!-- guice -->
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
 				<version>${guice.version}</version>
+			</dependency>
+
+			<!-- seamless -->
+			<dependency>
+				<groupId>org.seamless</groupId>
+				<artifactId>seamless-util</artifactId>
+				<version>${seamless.version}</version>
 			</dependency>
 
 			<!-- cling -->
