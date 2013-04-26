@@ -1,5 +1,0 @@
-<FindBugsFilter>
-	<Match>
-		<Bug pattern="DM_CONVERT_CASE" />
-	</Match>
-</FindBugsFilter>
