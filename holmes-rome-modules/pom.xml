@@ -18,18 +18,4 @@
 			<artifactId>rome</artifactId>
 		</dependency>
 	</dependencies>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<inherited>true</inherited>
-				<configuration>
-					<excludeFilterFile>conf/findbugs-exclude.xml</excludeFilterFile>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-
 </project>

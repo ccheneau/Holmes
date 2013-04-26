@@ -300,40 +300,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
-				<configuration>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.0.1</version>
-			</plugin>
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.10</version>
-				<configuration>
-					<configLocation>conf/checkstyle-config.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-				<version>2.0-beta-2</version>
-			</plugin>
-		</plugins>
-	</reporting>
-
 	<repositories>
 		<repository>
 			<id>4thline.org-repo</id>
