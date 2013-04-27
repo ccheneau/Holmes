@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sun.syndication.feed.module.base;
+package com.sun.syndication.feed.module.base.types;
 
 /**
  * The Interface Unit.

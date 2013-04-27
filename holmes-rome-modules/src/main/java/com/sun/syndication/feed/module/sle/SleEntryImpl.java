@@ -18,10 +18,9 @@
 package com.sun.syndication.feed.module.sle;
 
 import com.sun.syndication.feed.impl.ObjectBean;
-import com.sun.syndication.feed.module.sle.io.LabelNamespaceElement;
-import com.sun.syndication.feed.module.sle.io.ModuleParserImpl;
 import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.Group;
+import com.sun.syndication.feed.module.sle.types.LabelNamespaceElement;
 import com.sun.syndication.feed.module.sle.types.Sort;
 
 /**This is a <b>parse only</b> module that holds the values of enternal fields declared in the SLE module.
@@ -105,7 +104,7 @@ public class SleEntryImpl implements SleEntry {
      */
     @Override
     public String getUri() {
-        return ModuleParserImpl.TEMP.getURI();
+        return URI.getURI();
     }
 
     @Override

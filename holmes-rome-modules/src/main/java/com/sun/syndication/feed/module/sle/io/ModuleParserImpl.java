@@ -26,6 +26,7 @@ import org.jdom.Namespace;
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.sle.SimpleListExtension;
 import com.sun.syndication.feed.module.sle.SimpleListExtensionImpl;
+import com.sun.syndication.feed.module.sle.SleModule;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
 import com.sun.syndication.io.ModuleParser;
@@ -36,7 +37,6 @@ import com.sun.syndication.io.ModuleParser;
  */
 public class ModuleParserImpl implements ModuleParser {
     static final Namespace NS = Namespace.getNamespace("cf", SimpleListExtension.URI);
-    public static final Namespace TEMP = Namespace.getNamespace("rome-sle", "urn:rome:sle");
 
     /** Creates a new instance of ModuleParser */
     public ModuleParserImpl() {
@@ -137,7 +137,7 @@ public class ModuleParserImpl implements ModuleParser {
                     continue;
                 }
 
-                Element group = new Element("group", TEMP);
+                Element group = new Element("group", SleModule.URI);
                 addNotNullAttribute(group, "element", groups[g].getElement());
                 addNotNullAttribute(group, "label", groups[g].getLabel());
                 addNotNullAttribute(group, "value", value.getText());
@@ -149,7 +149,7 @@ public class ModuleParserImpl implements ModuleParser {
             Sort[] sorts = sle.getSortFields();
 
             for (int s = 0; s < sorts.length; s++) {
-                Element sort = new Element("sort", TEMP);
+                Element sort = new Element("sort", SleModule.URI);
                 // this is the default sort order, so I am just going to ignore 
                 // the actual values and add a number type. It really shouldn't 
                 // work this way. I should be checking to see if any of the elements

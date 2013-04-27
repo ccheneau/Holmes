@@ -41,7 +41,6 @@ package com.sun.syndication.feed.module.base.types;
 
 import java.io.Serializable;
 
-import com.sun.syndication.feed.module.base.GoogleUnit;
 
 /** This class represents a quantity consisting of a float value and an optional
  * units specification.

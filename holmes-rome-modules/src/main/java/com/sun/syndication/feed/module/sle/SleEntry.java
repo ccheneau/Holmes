@@ -17,8 +17,6 @@
  */
 package com.sun.syndication.feed.module.sle;
 
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.sle.io.ModuleParserImpl;
 import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.Group;
 import com.sun.syndication.feed.module.sle.types.Sort;
@@ -29,11 +27,7 @@ import com.sun.syndication.feed.module.sle.types.Sort;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface SleEntry extends Module {
-    /**
-     * A bogus namespace used for temporarily storing values during parsing.
-     */
-    String URI = ModuleParserImpl.TEMP.getURI();
+public interface SleEntry extends SleModule {
 
     /**
      * Returns an EntryValue for the given element name.

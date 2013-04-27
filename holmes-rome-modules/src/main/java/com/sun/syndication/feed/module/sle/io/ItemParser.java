@@ -27,6 +27,7 @@ import org.jdom.Namespace;
 
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.sle.SleEntryImpl;
+import com.sun.syndication.feed.module.sle.SleModule;
 import com.sun.syndication.feed.module.sle.types.DateValue;
 import com.sun.syndication.feed.module.sle.types.EntryValue;
 import com.sun.syndication.feed.module.sle.types.NumberValue;
@@ -53,7 +54,7 @@ public class ItemParser implements ModuleParser {
      */
     @Override
     public String getNamespaceUri() {
-        return ModuleParserImpl.TEMP.getURI();
+        return SleModule.URI.getURI();
     }
 
     /**
@@ -67,7 +68,7 @@ public class ItemParser implements ModuleParser {
     public Module parse(final Element element) {
         SleEntryImpl sle = new SleEntryImpl();
         ArrayList<EntryValue> values = new ArrayList<EntryValue>();
-        List<?> groups = element.getChildren("group", ModuleParserImpl.TEMP);
+        List<?> groups = element.getChildren("group", SleModule.URI);
 
         for (int i = 0; groups != null && i < groups.size(); i++) {
             Element group = (Element) groups.get(i);
@@ -83,7 +84,7 @@ public class ItemParser implements ModuleParser {
         sle.setGroupValues(values.toArray(new EntryValue[values.size()]));
         values = values.size() == 0 ? values : new ArrayList<EntryValue>();
 
-        List<?> sorts = element.getChildren("sort", ModuleParserImpl.TEMP);
+        List<?> sorts = element.getChildren("sort", SleModule.URI);
 
         for (int i = 0; sorts != null && i < sorts.size(); i++) {
             Element sort = (Element) sorts.get(i);

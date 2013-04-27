@@ -1,4 +1,4 @@
-package com.sun.syndication.feed.module.sle.io;
+package com.sun.syndication.feed.module.sle.types;
 
 import org.jdom.Namespace;
 
