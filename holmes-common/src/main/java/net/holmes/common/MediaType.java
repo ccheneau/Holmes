@@ -39,6 +39,11 @@ public enum MediaType {
         this.value = value;
     }
 
+    /**
+     * Gets the media type value.
+     *
+     * @return the media type value
+     */
     public String getValue() {
         return this.value;
     }
@@ -61,6 +66,11 @@ public enum MediaType {
             this.value = value;
         }
 
+        /**
+         * Gets the media sub type value.
+         *
+         * @return the media sub type value
+         */
         public String getValue() {
             return this.value;
         }

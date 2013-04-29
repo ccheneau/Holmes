@@ -50,14 +50,29 @@ public final class ContentNode extends AbstractNode {
         this.modifedDate = file.lastModified();
     }
 
+    /**
+     * Gets the content node mime type.
+     *
+     * @return the content node mime type
+     */
     public MimeType getMimeType() {
         return this.mimeType;
     }
 
+    /**
+     * Gets the content node size.
+     *
+     * @return the content node size
+     */
     public Long getSize() {
         return size;
     }
 
+    /**
+     * Gets the content node path.
+     *
+     * @return the content node path
+     */
     public String getPath() {
         return path;
     }

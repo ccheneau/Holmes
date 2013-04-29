@@ -215,34 +215,74 @@ public final class XmlConfigurationImpl implements Configuration {
             }
         }
 
+        /**
+         * Gets the upnp server name.
+         *
+         * @return the upnp server name
+         */
         public String getUpnpServerName() {
             return this.upnpServerName;
         }
 
+        /**
+         * Sets the upnp server name.
+         *
+         * @param upnpServerName the new upnp server name
+         */
         public void setUpnpServerName(final String upnpServerName) {
             this.upnpServerName = upnpServerName;
         }
 
+        /**
+         * Gets the http server port.
+         *
+         * @return the http server port
+         */
         public Integer getHttpServerPort() {
             return this.httpServerPort;
         }
 
+        /**
+         * Sets the http server port.
+         *
+         * @param httpServerPort the new http server port
+         */
         public void setHttpServerPort(final Integer httpServerPort) {
             this.httpServerPort = httpServerPort;
         }
 
+        /**
+         * Gets the video folders.
+         *
+         * @return the video folders
+         */
         public List<ConfigurationNode> getVideoFolders() {
             return this.videoFolders;
         }
 
+        /**
+         * Gets the podcasts.
+         *
+         * @return the podcasts
+         */
         public List<ConfigurationNode> getPodcasts() {
             return this.podcasts;
         }
 
+        /**
+         * Gets the audio folders.
+         *
+         * @return the audio folders
+         */
         public List<ConfigurationNode> getAudioFolders() {
             return this.audioFolders;
         }
 
+        /**
+         * Gets the picture folders.
+         *
+         * @return the picture folders
+         */
         public List<ConfigurationNode> getPictureFolders() {
             return this.pictureFolders;
         }

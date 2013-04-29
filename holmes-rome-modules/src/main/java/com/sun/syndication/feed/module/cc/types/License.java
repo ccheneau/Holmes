@@ -56,7 +56,6 @@ import com.sun.syndication.feed.impl.ToStringBean;
  */
 public class License implements Serializable {
 
-    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1890706896523356764L;
 
     /** The Constant CC_START. */
@@ -172,10 +171,20 @@ public class License implements Serializable {
         return found;
     }
 
+    /**
+     * Gets the permits.
+     *
+     * @return the permits
+     */
     public Behaviour[] getPermits() {
         return this.permits;
     }
 
+    /**
+     * Gets the requires.
+     *
+     * @return the requires
+     */
     public Behaviour[] getRequires() {
         return this.requires;
     }
@@ -190,6 +199,11 @@ public class License implements Serializable {
         return tsb.toString();
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public String getValue() {
         return this.uri;
     }

@@ -49,14 +49,29 @@ public enum RootNode {
         this.mediaType = mediaType;
     }
 
+    /**
+     * Gets the root node id.
+     *
+     * @return the root node id
+     */
     public String getId() {
         return this.id;
     }
 
+    /**
+     * Gets the root node parent id.
+     *
+     * @return the root node parent id
+     */
     public String getParentId() {
         return this.parentId;
     }
 
+    /**
+     * Gets the root node media type.
+     *
+     * @return the root node media type
+     */
     public MediaType getMediaType() {
         return this.mediaType;
     }

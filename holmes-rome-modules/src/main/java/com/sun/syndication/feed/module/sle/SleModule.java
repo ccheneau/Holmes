@@ -21,6 +21,9 @@ import org.jdom.Namespace;
 
 import com.sun.syndication.feed.module.Module;
 
+/**
+ * The Interface SleModule.
+ */
 public interface SleModule extends Module {
     Namespace URI = Namespace.getNamespace("rome-sle", "urn:rome:sle");
 }

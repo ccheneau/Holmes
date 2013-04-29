@@ -16,15 +16,28 @@
 */
 package net.holmes.common.media;
 
+// TODO: Auto-generated Javadoc
 /**
  * Abstract node.
  */
 public abstract class AbstractNode implements Comparable<AbstractNode> {
+
+    /** The id. */
     protected final String id;
+
+    /** The parent id. */
     protected final String parentId;
+
+    /** The name. */
     protected final String name;
+
+    /** The type. */
     protected final NodeType type;
+
+    /** The modifed date. */
     protected Long modifedDate;
+
+    /** The icon url. */
     protected String iconUrl;
 
     /**
@@ -46,38 +59,81 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         this.name = name;
     }
 
+    /**
+     * Gets the node id.
+     *
+     * @return the node id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Gets the parent node id.
+     *
+     * @return the parent node id
+     */
     public String getParentId() {
         return parentId;
     }
 
+    /**
+     * Gets the node name.
+     *
+     * @return the node name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the node type.
+     *
+     * @return the node type
+     */
     public NodeType getType() {
         return type;
     }
 
+    /**
+     * Gets the node modifed date.
+     *
+     * @return the node modifed date
+     */
     public Long getModifedDate() {
         return modifedDate;
     }
 
+    /**
+     * Sets the node modifed date.
+     *
+     * @param modifedDate the new node modifed date
+     */
     public void setModifedDate(final Long modifedDate) {
         this.modifedDate = modifedDate;
     }
 
+    /**
+     * Gets the node icon url.
+     *
+     * @return the node icon url
+     */
     public String getIconUrl() {
         return iconUrl;
     }
 
+    /**
+     * Sets the node icon url.
+     *
+     * @param iconUrl the new node icon url
+     */
     public void setIconUrl(final String iconUrl) {
         this.iconUrl = iconUrl;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
     public int compareTo(final AbstractNode o) {
         if (this.getType() == o.getType()) return this.name.compareTo(o.name);
@@ -85,6 +141,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -98,6 +157,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) return true;

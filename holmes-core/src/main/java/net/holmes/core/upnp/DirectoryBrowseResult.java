@@ -111,7 +111,7 @@ public final class DirectoryBrowseResult {
         } else if (mimeType.isImage()) {
             // Add image item
             item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
-        } else if (mimeType.isSubTitle()) {
+        } else if (mimeType.isSubtitle()) {
             // Add subtitle item
             item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
         }

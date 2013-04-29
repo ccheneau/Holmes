@@ -409,7 +409,7 @@ public final class MediaManagerImpl implements MediaManager {
                 node = new PlaylistNode(nodeId, parentId, file.getName(), file.getAbsolutePath());
             } else if (mimeType.getType().equals(mediaType)) {
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
-            } else if (mimeType.isSubTitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+            } else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
 
         }

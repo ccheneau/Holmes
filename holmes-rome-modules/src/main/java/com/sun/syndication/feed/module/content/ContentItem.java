@@ -64,7 +64,9 @@ public class ContentItem implements Cloneable, Serializable {
     private transient List<Namespace> contentValueNamespace;
     private String contentResource;
 
-    /** Creates a new instance of ContentItem */
+    /**
+     * Creates a new instance of ContentItem.
+     */
     public ContentItem() {
         contentFormat = null;
         contentEncoding = null;
@@ -76,66 +78,146 @@ public class ContentItem implements Cloneable, Serializable {
         contentValueDOM = null;
     }
 
+    /**
+     * Gets the content format.
+     *
+     * @return the content format
+     */
     public String getContentFormat() {
         return this.contentFormat;
     }
 
+    /**
+     * Sets the content format.
+     *
+     * @param contentFormat the new content format
+     */
     public void setContentFormat(final String contentFormat) {
         this.contentFormat = contentFormat;
     }
 
+    /**
+     * Gets the content encoding.
+     *
+     * @return the content encoding
+     */
     public String getContentEncoding() {
         return this.contentEncoding;
     }
 
+    /**
+     * Sets the content encoding.
+     *
+     * @param contentEncoding the new content encoding
+     */
     public void setContentEncoding(final String contentEncoding) {
         this.contentEncoding = contentEncoding;
     }
 
+    /**
+     * Gets the content value.
+     *
+     * @return the content value
+     */
     public String getContentValue() {
         return this.contentValue;
     }
 
+    /**
+     * Sets the content value.
+     *
+     * @param contentValue the new content value
+     */
     public void setContentValue(final String contentValue) {
         this.contentValue = contentValue;
     }
 
+    /**
+     * Gets the content value dom.
+     *
+     * @return the content value dom
+     */
     public List<Content> getContentValueDOM() {
         return this.contentValueDOM;
     }
 
+    /**
+     * Sets the content value dom.
+     *
+     * @param contentValueDOM the new content value dom
+     */
     public void setContentValueDOM(final List<Content> contentValueDOM) {
         this.contentValueDOM = contentValueDOM;
     }
 
+    /**
+     * Gets the content about.
+     *
+     * @return the content about
+     */
     public String getContentAbout() {
         return this.contentAbout;
     }
 
+    /**
+     * Sets the content about.
+     *
+     * @param contentAbout the new content about
+     */
     public void setContentAbout(final String contentAbout) {
         this.contentAbout = contentAbout;
     }
 
+    /**
+     * Gets the content value parse type.
+     *
+     * @return the content value parse type
+     */
     public String getContentValueParseType() {
         return this.contentValueParseType;
     }
 
+    /**
+     * Sets the content value parse type.
+     *
+     * @param contentValueParseType the new content value parse type
+     */
     public void setContentValueParseType(final String contentValueParseType) {
         this.contentValueParseType = contentValueParseType;
     }
 
+    /**
+     * Gets the content value namespaces.
+     *
+     * @return the content value namespaces
+     */
     public List<Namespace> getContentValueNamespaces() {
         return this.contentValueNamespace;
     }
 
+    /**
+     * Sets the content value namespaces.
+     *
+     * @param newCcontentValueNamespace the new content value namespaces
+     */
     public void setContentValueNamespaces(final List<Namespace> newCcontentValueNamespace) {
         this.contentValueNamespace = newCcontentValueNamespace;
     }
 
+    /**
+     * Gets the content resource.
+     *
+     * @return the content resource
+     */
     public String getContentResource() {
         return this.contentResource;
     }
 
+    /**
+     * Sets the content resource.
+     *
+     * @param contentResource the new content resource
+     */
     public void setContentResource(final String contentResource) {
         this.contentResource = contentResource;
     }

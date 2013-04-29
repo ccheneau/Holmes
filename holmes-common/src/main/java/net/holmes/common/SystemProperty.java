@@ -35,10 +35,20 @@ public enum SystemProperty {
         this.name = name;
     }
 
+    /**
+     * Gets the system property name.
+     *
+     * @return the system property name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the system property value.
+     *
+     * @return the system property value
+     */
     public String getValue() {
         return System.getProperty(name);
     }

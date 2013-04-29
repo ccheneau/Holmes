@@ -584,6 +584,11 @@ public final class CurrencyEnumeration implements Cloneable, Serializable {
         LOOKUP.put(value, this);
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public String getValue() {
         return this.value;
     }

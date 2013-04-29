@@ -54,18 +54,38 @@ public final class PodcastEntryNode extends AbstractNode {
         this.mimeType = mimeType;
     }
 
+    /**
+     * Gets the podcast entry mime type.
+     *
+     * @return the podcast entry mime type
+     */
     public MimeType getMimeType() {
         return this.mimeType;
     }
 
+    /**
+     * Gets the podcast entry size.
+     *
+     * @return the podcast entry size
+     */
     public Long getSize() {
         return size;
     }
 
+    /**
+     * Gets the podcast entry url.
+     *
+     * @return the podcast entry url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Gets the podcast entry duration.
+     *
+     * @return the podcast entry duration
+     */
     public String getDuration() {
         return duration;
     }

@@ -44,35 +44,75 @@ public final class MimeType {
         this.subType = Iterables.getLast(iter, "");
     }
 
+    /**
+     * Gets the mime type.
+     *
+     * @return the mime type
+     */
     public String getMimeType() {
         return this.mimeType;
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
     public String getType() {
         return this.type;
     }
 
+    /**
+     * Gets the sub type.
+     *
+     * @return the sub type
+     */
     public String getSubType() {
         return this.subType;
     }
 
+    /**
+     * Checks if mymetype is media.
+     *
+     * @return true, if mymetype is media
+     */
     public boolean isMedia() {
         return isAudio() || isVideo() || isImage();
     }
 
+    /**
+     * Checks if mymetype is audio.
+     *
+     * @return true, if mymetype is audio
+     */
     public boolean isAudio() {
         return MediaType.TYPE_AUDIO.getValue().equals(type);
     }
 
+    /**
+     * Checks if mymetype is video.
+     *
+     * @return true, if mymetype is video
+     */
     public boolean isVideo() {
         return MediaType.TYPE_VIDEO.getValue().equals(type);
     }
 
+    /**
+     * Checks if mymetype is image.
+     *
+     * @return true, if mymetype is image
+     */
     public boolean isImage() {
         return MediaType.TYPE_IMAGE.getValue().equals(type);
     }
 
-    public boolean isSubTitle() {
+    /**
+     * Checks if mymetype is subtitle.
+     *
+     * @return true, if mymetype is subtitle
+     */
+    public boolean isSubtitle() {
         return MediaType.TYPE_APPLICATION.getValue().equals(type) && Subtype.SUBTYPE_SUBTITLE.getValue().equals(subType);
     }
 
