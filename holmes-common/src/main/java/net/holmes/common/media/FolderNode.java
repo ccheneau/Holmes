@@ -39,7 +39,7 @@ public final class FolderNode extends AbstractNode {
     public FolderNode(final String id, final String parentId, final String name, final File folder) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
         this.path = folder.getAbsolutePath();
-        this.modifedDate = folder.lastModified();
+        this.modifiedDate = folder.lastModified();
     }
 
     /**
@@ -93,8 +93,8 @@ public final class FolderNode extends AbstractNode {
         builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
+        builder.append(", modifiedDate=");
+        builder.append(modifiedDate);
         builder.append(", type=");
         builder.append(type);
         builder.append(", iconUrl=");

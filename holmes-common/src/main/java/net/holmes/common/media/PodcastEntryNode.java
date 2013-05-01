@@ -139,8 +139,8 @@ public final class PodcastEntryNode extends AbstractNode {
         builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
+        builder.append(", modifiedDate=");
+        builder.append(modifiedDate);
         builder.append(", type=");
         builder.append(type);
         builder.append(", iconUrl=");

@@ -16,7 +16,6 @@
 */
 package net.holmes.common.media;
 
-// TODO: Auto-generated Javadoc
 /**
  * Abstract node.
  */
@@ -34,8 +33,8 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     /** The type. */
     protected final NodeType type;
 
-    /** The modifed date. */
-    protected Long modifedDate;
+    /** The modified date. */
+    protected Long modifiedDate;
 
     /** The icon url. */
     protected String iconUrl;
@@ -96,21 +95,21 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     /**
-     * Gets the node modifed date.
+     * Gets the node modified date.
      *
-     * @return the node modifed date
+     * @return the node modified date
      */
-    public Long getModifedDate() {
-        return modifedDate;
+    public Long getModifiedDate() {
+        return modifiedDate;
     }
 
     /**
-     * Sets the node modifed date.
+     * Sets the node modified date.
      *
-     * @param modifedDate the new node modifed date
+     * @param modifiedDate the new node modified date
      */
-    public void setModifedDate(final Long modifedDate) {
-        this.modifedDate = modifedDate;
+    public void setModifiedDate(final Long modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     /**
@@ -150,7 +149,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         int result = 1;
         result = prime * result + ((iconUrl == null) ? 0 : iconUrl.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((modifedDate == null) ? 0 : modifedDate.hashCode());
+        result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -172,9 +171,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         if (id == null) {
             if (other.id != null) return false;
         } else if (!id.equals(other.id)) return false;
-        if (modifedDate == null) {
-            if (other.modifedDate != null) return false;
-        } else if (!modifedDate.equals(other.modifedDate)) return false;
+        if (modifiedDate == null) {
+            if (other.modifiedDate != null) return false;
+        } else if (!modifiedDate.equals(other.modifiedDate)) return false;
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;

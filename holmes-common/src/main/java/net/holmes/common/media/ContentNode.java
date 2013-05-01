@@ -47,7 +47,7 @@ public final class ContentNode extends AbstractNode {
         this.path = file.getAbsolutePath();
         this.mimeType = mimeType;
         this.size = file.length();
-        this.modifedDate = file.lastModified();
+        this.modifiedDate = file.lastModified();
     }
 
     /**
@@ -120,8 +120,8 @@ public final class ContentNode extends AbstractNode {
         builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
+        builder.append(", modifiedDate=");
+        builder.append(modifiedDate);
         builder.append(", type=");
         builder.append(type);
         builder.append(", iconUrl=");

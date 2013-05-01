@@ -331,7 +331,7 @@ public final class MediaManagerImpl implements MediaManager {
                                                     parentId, rssEntry.getTitle().trim(), mimeType, //
                                                     enclosure.getLength(), enclosure.getUrl(), duration);
                                             podcastEntryNode.setIconUrl(iconUrl);
-                                            if (rssEntry.getPublishedDate() != null) podcastEntryNode.setModifedDate(rssEntry.getPublishedDate().getTime());
+                                            if (rssEntry.getPublishedDate() != null) podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
 
                                             podcastEntryNodes.add(podcastEntryNode);
                                         }

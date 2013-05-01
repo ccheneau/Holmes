@@ -235,7 +235,7 @@ public final class DirectoryBrowseResult {
      * @throws URISyntaxException !URI syntax exception
      */
     private void setDidlMetadata(final DIDLObject didlObjet, final AbstractNode node) throws URISyntaxException {
-        if (node.getModifedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifedDate())));
+        if (node.getModifiedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
         if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
     }
 }

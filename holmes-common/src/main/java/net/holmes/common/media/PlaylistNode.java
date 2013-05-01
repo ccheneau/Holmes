@@ -76,8 +76,8 @@ public class PlaylistNode extends AbstractNode {
         builder.append(name);
         builder.append(", type=");
         builder.append(type);
-        builder.append(", modifedDate=");
-        builder.append(modifedDate);
+        builder.append(", modifiedDate=");
+        builder.append(modifiedDate);
         builder.append(", iconUrl=");
         builder.append(iconUrl);
         builder.append("]");
