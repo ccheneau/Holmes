@@ -20,23 +20,11 @@ package net.holmes.common.media;
  * Abstract node.
  */
 public abstract class AbstractNode implements Comparable<AbstractNode> {
-
-    /** The id. */
     protected final String id;
-
-    /** The parent id. */
     protected final String parentId;
-
-    /** The name. */
     protected final String name;
-
-    /** The type. */
     protected final NodeType type;
-
-    /** The modified date. */
     protected Long modifiedDate;
-
-    /** The icon url. */
     protected String iconUrl;
 
     /**
@@ -47,7 +35,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      * @param id 
      *      node id
      * @param parentId 
-     *      node  parent id
+     *      parent node id
      * @param name 
      *      node name
      */
