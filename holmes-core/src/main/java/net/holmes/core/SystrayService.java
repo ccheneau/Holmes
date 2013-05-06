@@ -65,6 +65,8 @@ public final class SystrayService implements Service {
 
     private static final String HOLMES_SITE_URL = "http://ccheneau.github.io/Holmes/";
     private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
+    private static final String MENU_ITEM_FONT = "MenuItem.font";
+    private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
 
     private final Configuration configuration;
     private final ResourceBundle resourceBundle;
@@ -85,7 +87,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUI()) initSystemTrayIcon();
+        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUIManager()) initHolmesTrayMenu();
     }
 
     @Override
@@ -94,20 +96,18 @@ public final class SystrayService implements Service {
     }
 
     /**
-     * UI initialization.
+     * Initializes UI manager.
      * @return true on success
      */
-    private boolean initUI() {
+    private boolean initUIManager() {
         boolean result = true;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
             // Add bold font for systray menu item
-            Font menuItemFont = UIManager.getFont("MenuItem.font");
-            if (menuItemFont != null) {
-                FontUIResource menuItemBoldFont = new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize());
-                UIManager.put("MenuItem.bold.font", menuItemBoldFont);
-            }
+            Font menuItemFont = UIManager.getFont(MENU_ITEM_FONT);
+            if (menuItemFont != null) UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize()));
+
         } catch (ClassNotFoundException e) {
             result = false;
         } catch (InstantiationException e) {
@@ -121,9 +121,9 @@ public final class SystrayService implements Service {
     }
 
     /**
-     * Initialize system tray icon.
+     * Initialize system tray menu.
      */
-    private void initSystemTrayIcon() {
+    private void initHolmesTrayMenu() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
             return;
@@ -131,7 +131,7 @@ public final class SystrayService implements Service {
 
         // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
-        final SystemTrayIcon systemTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
+        final HolmesTrayIcon holmesTrayIcon = new HolmesTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
@@ -158,7 +158,7 @@ public final class SystrayService implements Service {
             public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        StringBuilder logFile = new StringBuilder().append(SystemUtils.getLocalUserDataDir().getAbsolutePath()).append(File.separator)
+                        StringBuilder logFile = new StringBuilder().append(SystemUtils.getLocalHolmesDataDir().getAbsolutePath()).append(File.separator)
                                 .append("log").append(File.separator).append("holmes.log");
                         Desktop.getDesktop().open(new File(logFile.toString()));
                     } catch (IOException e) {
@@ -171,7 +171,7 @@ public final class SystrayService implements Service {
         // Holmes ui menu item
         Icon holmesUiIcon = new ImageIcon(getClass().getResource("/icon-logo.png"));
         JMenuItem holmesUiItem = new JMenuItem(resourceBundle.getString("systray.holmes.ui"), holmesUiIcon);
-        Font boldFont = UIManager.getFont("MenuItem.bold.font");
+        Font boldFont = UIManager.getFont(MENU_ITEM_BOLD_FONT);
         if (boldFont != null) holmesUiItem.setFont(boldFont);
 
         holmesUiItem.addActionListener(new ActionListener() {
@@ -235,10 +235,10 @@ public final class SystrayService implements Service {
         popupMenu.add(quitItem);
 
         // Add tray icon
-        systemTrayIcon.setImageAutoSize(true);
-        systemTrayIcon.setPopupMenu(popupMenu);
+        holmesTrayIcon.setImageAutoSize(true);
+        holmesTrayIcon.setPopupMenu(popupMenu);
         try {
-            systemTray.add(systemTrayIcon);
+            systemTray.add(holmesTrayIcon);
         } catch (AWTException e) {
             logger.error(e.getMessage(), e);
         }
@@ -248,7 +248,7 @@ public final class SystrayService implements Service {
      * System tray icon.
      * Freely inspired from <a href="http://grepcode.com/file/repo1.maven.org/maven2/org.jvnet.hudson.plugins.hudsontrayapp/client-jdk16/0.7.3/org/jdesktop/swinghelper/tray/JXTrayIcon.java">org.jdesktop.swinghelper.tray.JXTrayIcon</a> class (under LGPL v2.1 license)
      */
-    public static class SystemTrayIcon extends TrayIcon {
+    public static class HolmesTrayIcon extends TrayIcon {
 
         private JPopupMenu popupMenu;
         private static final JDialog DIALOG;
@@ -276,13 +276,13 @@ public final class SystrayService implements Service {
         };
 
         /**
-         * SystemTrayIcon Constructor.
+         * Holmes tray icon Constructor.
          * @param image
          *      icon image
          * @param tooltip
          *      icon tooltip
          */
-        public SystemTrayIcon(final Image image, final String tooltip) {
+        public HolmesTrayIcon(final Image image, final String tooltip) {
             super(image, tooltip);
             addMouseListener(new MouseAdapter() {
                 @Override

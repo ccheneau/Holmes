@@ -57,7 +57,7 @@ public final class XmlConfigurationImpl implements Configuration {
      * @return configuration file
      */
     private File getConfigFile() {
-        File fConfPath = new File(SystemUtils.getLocalUserDataDir(), CONF_PATH);
+        File fConfPath = new File(SystemUtils.getLocalHolmesDataDir(), CONF_PATH);
         if ((!fConfPath.exists() || !fConfPath.isDirectory()) && !fConfPath.mkdirs())
             throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 

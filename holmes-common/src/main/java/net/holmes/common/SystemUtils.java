@@ -41,7 +41,7 @@ public final class SystemUtils {
     public static boolean lockInstance() {
         try {
             // Create lock file
-            final File lockFile = new File(getLocalUserDataDir(), LOCK_FILE);
+            final File lockFile = new File(getLocalHolmesDataDir(), LOCK_FILE);
             final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
             final FileLock fileLock = randomAccessFile.getChannel().tryLock();
             if (fileLock != null) {
@@ -72,7 +72,7 @@ public final class SystemUtils {
      *
      * @return local user data dir
      */
-    public static File getLocalUserDataDir() {
+    public static File getLocalHolmesDataDir() {
         StringBuilder holmesDataDir = new StringBuilder().append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
 
         // Check directory and create it if it does not exist
