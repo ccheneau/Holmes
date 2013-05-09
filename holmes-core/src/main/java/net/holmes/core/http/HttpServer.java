@@ -116,7 +116,7 @@ public final class HttpServer implements Service {
         logger.info("Stopping HTTP server");
 
         // Stop the server
-        eventLoopGroup.shutdown();
+        eventLoopGroup.shutdownGracefully();
         webApplication.destroy();
 
         logger.info("HTTP server stopped");

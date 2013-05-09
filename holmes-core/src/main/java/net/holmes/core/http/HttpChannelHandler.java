@@ -84,8 +84,8 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
                 logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
             }
 
-            if (request.getMethod().equals(HttpMethod.POST) && request.data().isReadable()) {
-                QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.data().toString(Charset.forName("utf-8")));
+            if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
+                QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(Charset.forName("utf-8")));
                 Map<String, List<String>> params = queryStringDecoder.parameters();
                 if (params != null) {
                     for (Entry<String, List<String>> entry : params.entrySet()) {

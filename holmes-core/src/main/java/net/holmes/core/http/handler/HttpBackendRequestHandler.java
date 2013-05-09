@@ -87,7 +87,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             final URI baseUri = new URI(base.toString());
             final URI requestUri = new URI(base.substring(0, base.length() - 1) + request.getUri());
             final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().name(), baseUri, requestUri, getHeaders(request),
-                    new ByteBufInputStream(request.data()));
+                    new ByteBufInputStream(request.content()));
 
             // Process backend request
             webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
@@ -147,7 +147,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             }
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
 
-            return new ByteBufOutputStream(response.data());
+            return new ByteBufOutputStream(response.content());
         }
 
         @Override
