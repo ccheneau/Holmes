@@ -43,9 +43,9 @@ public final class PodcastsHandler {
     private final BackendManager backendManager;
 
     /**
-     * Constructor.
-     * @param backendManager
-     *      backend manager
+     * Instantiates a new podcasts handler.
+     *
+     * @param backendManager backend manager
      */
     @Inject
     public PodcastsHandler(final BackendManager backendManager) {

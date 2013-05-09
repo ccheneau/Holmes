@@ -29,24 +29,19 @@ public final class IndexElement {
     private String path;
 
     /**
-     * Constructor.
+     * Instantiates a new index element.
      */
     public IndexElement() {
     }
 
     /**
-     * Constructor.
-     * 
-     * @param id
-     *      index element id
-     * @param parentId
-     *      index element parent id
-     * @param mediaType
-     *      index element media type
-     * @param name
-     *      index element name
-     * @param path
-     *      index element path
+     * Instantiates a new index element.
+     *
+     * @param id index element id
+     * @param parentId index element parent id
+     * @param mediaType index element media type
+     * @param name index element name
+     * @param path index element path
      */
     public IndexElement(final String id, final String parentId, final String mediaType, final String name, final String path) {
         this.id = id;

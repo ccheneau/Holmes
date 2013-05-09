@@ -23,16 +23,12 @@ public final class PodcastNode extends AbstractNode {
     private final String url;
 
     /**
-     * Constructor.
+     * Instantiates a new podcast node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
-     * @param url 
-     *      node url
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
+     * @param url node url
      */
     public PodcastNode(final String id, final String parentId, final String name, final String url) {
         super(NodeType.TYPE_PODCAST, id, parentId, name);

@@ -60,15 +60,12 @@ public final class BackendManagerImpl implements BackendManager {
     private final MediaIndexManager mediaIndexManager;
 
     /**
-     * Constructor.
-     * @param mediaIndexManager
-     *      media index manager
-     * @param configuration
-     *      configuration
-     * @param eventBus
-     *      event bus
-     * @param resourceBundle
-     *      resource bundle
+     * Instantiates a new backend manager implementation.
+     *
+     * @param mediaIndexManager media index manager
+     * @param configuration configuration
+     * @param eventBus event bus
+     * @param resourceBundle resource bundle
      */
     @Inject
     public BackendManagerImpl(final MediaIndexManager mediaIndexManager, final Configuration configuration, final EventBus eventBus,

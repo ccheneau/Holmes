@@ -41,12 +41,10 @@ public final class UpnpServer implements Service {
     private final Configuration configuration;
 
     /**
-     * Constructor.
+     * Instantiates a new upnp server.
      *
-     * @param injector 
-     *      Guice injector
-     * @param configuration 
-     *      configuration
+     * @param injector Guice injector
+     * @param configuration configuration
      */
     @Inject
     public UpnpServer(final Injector injector, final Configuration configuration) {

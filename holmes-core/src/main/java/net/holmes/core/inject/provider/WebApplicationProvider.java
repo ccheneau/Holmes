@@ -38,9 +38,9 @@ public final class WebApplicationProvider implements Provider<WebApplication> {
     private final Injector injector;
 
     /**
-     * Constructor.
-     * @param injector
-     *      Guice injector
+     * Instantiates a new web application provider.
+     *
+     * @param injector Guice injector
      */
     @Inject
     public WebApplicationProvider(final Injector injector) {

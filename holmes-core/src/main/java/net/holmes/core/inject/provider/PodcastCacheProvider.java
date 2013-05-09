@@ -38,10 +38,9 @@ public class PodcastCacheProvider implements Provider<Cache<String, List<Abstrac
     private final Configuration configuration;
 
     /**
-     * Constructor.
-     * 
-     * @param configuration
-     *      configuration
+     * Instantiates a new podcast cache provider.
+     *
+     * @param configuration configuration
      */
     @Inject
     public PodcastCacheProvider(final Configuration configuration) {

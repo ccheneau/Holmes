@@ -34,12 +34,10 @@ public enum Parameter {
     private final String defaultValue;
 
     /**
-     * Constructor.
+     * Instantiates a new parameter.
      *
-     * @param name 
-     *      parameter name
-     * @param defaultValue 
-     *      parameter default value
+     * @param name parameter name
+     * @param defaultValue parameter default value
      */
     Parameter(final String name, final String defaultValue) {
         this.name = name;

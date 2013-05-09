@@ -42,7 +42,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     private final BiMap<String, MediaIndexElement> elements;
 
     /**
-     * Constructor.
+     * Instantiates a new media index manager implementation.
      */
     public MediaIndexManagerImpl() {
         this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement> create());

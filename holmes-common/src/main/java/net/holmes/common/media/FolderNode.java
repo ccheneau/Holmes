@@ -25,16 +25,12 @@ public final class FolderNode extends AbstractNode {
     private final String path;
 
     /**
-     * Constructor.
+     * Instantiates a new folder node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
-     * @param folder 
-     *      node folder
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
+     * @param folder node folder
      */
     public FolderNode(final String id, final String parentId, final String name, final File folder) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
@@ -43,14 +39,11 @@ public final class FolderNode extends AbstractNode {
     }
 
     /**
-     * Constructor.
+     * Instantiates a new folder node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
      */
     public FolderNode(final String id, final String parentId, final String name) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);

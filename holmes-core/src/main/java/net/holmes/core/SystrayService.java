@@ -72,11 +72,10 @@ public final class SystrayService implements Service {
     private final ResourceBundle resourceBundle;
 
     /**
-     * Constructor.
-     * @param configuration
-     *      configuration
-     * @param resourceBundle
-     *      resource bundle
+     * Instantiates a new systray service.
+     *
+     * @param configuration configuration
+     * @param resourceBundle resource bundle
      */
     @Inject
     public SystrayService(final Configuration configuration, final ResourceBundle resourceBundle) {
@@ -276,11 +275,10 @@ public final class SystrayService implements Service {
         };
 
         /**
-         * Holmes tray icon Constructor.
-         * @param image
-         *      icon image
-         * @param tooltip
-         *      icon tooltip
+         * Instantiates a new holmes tray icon.
+         *
+         * @param image icon image
+         * @param tooltip icon tooltip
          */
         public HolmesTrayIcon(final Image image, final String tooltip) {
             super(image, tooltip);

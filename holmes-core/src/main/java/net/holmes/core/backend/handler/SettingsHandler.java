@@ -37,9 +37,9 @@ public final class SettingsHandler {
     private final BackendManager backendManager;
 
     /**
-     * Constructor.
-     * @param backendManager
-     *      backend manager
+     * Instantiates a new settings handler.
+     *
+     * @param backendManager backend manager
      */
     @Inject
     public SettingsHandler(final BackendManager backendManager) {

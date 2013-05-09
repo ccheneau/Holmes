@@ -41,12 +41,10 @@ public class MediaScannerService extends AbstractScheduledService {
     private final int scanAllDelayMinutes;
 
     /**
-     * Constructor.
+     * Instantiates a new media scanner service.
      *
-     * @param mediaManager 
-     *      media manager
-     * @param configuration 
-     *      configuration
+     * @param mediaManager media manager
+     * @param configuration configuration
      */
     @Inject
     public MediaScannerService(final MediaManager mediaManager, final Configuration configuration) {

@@ -39,7 +39,7 @@ public final class Bootstrap {
     private static final long LOG4J_WATCH_DELAY = 10000L;
 
     /**
-     * Private constructor.
+     * Instantiates a new bootstrap.
      */
     private Bootstrap() {
     }

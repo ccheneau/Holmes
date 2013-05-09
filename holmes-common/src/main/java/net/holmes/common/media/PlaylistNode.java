@@ -23,16 +23,12 @@ public class PlaylistNode extends AbstractNode {
     private final String path;
 
     /**
-     * Constructor.
+     * Instantiates a new playlist node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
-     * @param path 
-     *      node path
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
+     * @param path node path
      */
     public PlaylistNode(final String id, final String parentId, final String name, final String path) {
         super(NodeType.TYPE_PLAYLIST, id, parentId, name);

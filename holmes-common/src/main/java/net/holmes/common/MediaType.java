@@ -30,10 +30,9 @@ public enum MediaType {
     private final String value;
 
     /**
-     * Constructor.
+     * Instantiates a new media type.
      *
-     * @param value 
-     *      value
+     * @param value value
      */
     MediaType(final String value) {
         this.value = value;
@@ -57,10 +56,9 @@ public enum MediaType {
         private final String value;
 
         /**
-         * Constructor.
+         * Instantiates a new subtype.
          *
-         * @param value 
-         *      value
+         * @param value value
          */
         Subtype(final String value) {
             this.value = value;

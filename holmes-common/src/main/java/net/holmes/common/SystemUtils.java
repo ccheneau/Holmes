@@ -29,7 +29,7 @@ public final class SystemUtils {
     private static final String LOCK_FILE = "holmes.lock";
 
     /**
-     * Constructor.
+     * Instantiates a new system utils.
      */
     private SystemUtils() {
     }

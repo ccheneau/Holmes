@@ -34,13 +34,11 @@ public class HolmesSchedulerService implements Service {
     private final AbstractScheduledService mediaScannerService;
 
     /**
-     * Constructor.
-     * @param mediaIndexCleanerService
-     *      media index cleaner
-     * @param podcastCacheCleanerService
-     *      pdcast cache cleaner
-     * @param mediaScannerService
-     *      media scanner
+     * Instantiates a new holmes scheduler service.
+     *
+     * @param mediaIndexCleanerService media index cleaner
+     * @param podcastCacheCleanerService pdcast cache cleaner
+     * @param mediaScannerService media scanner
      */
     @Inject
     public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService, //

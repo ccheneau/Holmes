@@ -58,14 +58,11 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     private final HttpRequestHandler uiRequestHandler;
 
     /**
-     * Constructor.
-     * 
-     * @param contentRequestHandler
-     *      content request handler
-     * @param backendRequestHandler
-     *      backend request handler
-     * @param uiRequestHandler
-     *      UI request handler
+     * Instantiates a new http channel handler.
+     *
+     * @param contentRequestHandler content request handler
+     * @param backendRequestHandler backend request handler
+     * @param uiRequestHandler UI request handler
      */
     @Inject
     public HttpChannelHandler(@Named("content") final HttpRequestHandler contentRequestHandler,

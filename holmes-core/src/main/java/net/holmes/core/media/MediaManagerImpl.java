@@ -85,18 +85,13 @@ public final class MediaManagerImpl implements MediaManager {
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     /**
-     * Constructor.
+     * Instantiates a new media manager implementation.
      *
-     * @param configuration 
-     *      configuration
-     * @param mimeTypeManager 
-     *      mime type manager
-     * @param resourceBundle 
-     *      resource bundle
-     * @param mediaIndexManager 
-     *      media index manager
-     * @param podcastCache 
-     *      podcast cache
+     * @param configuration configuration
+     * @param mimeTypeManager mime type manager
+     * @param resourceBundle resource bundle
+     * @param mediaIndexManager media index manager
+     * @param podcastCache podcast cache
      */
     @Inject
     public MediaManagerImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final ResourceBundle resourceBundle,

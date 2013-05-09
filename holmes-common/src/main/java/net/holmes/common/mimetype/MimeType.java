@@ -32,10 +32,9 @@ public final class MimeType {
     private final String mimeType;
 
     /**
-     * Constructor.
+     * Instantiates a new mime type.
      *
-     * @param mimeType 
-     *      mime type
+     * @param mimeType mime type
      */
     public MimeType(final String mimeType) {
         this.mimeType = mimeType;

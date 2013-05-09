@@ -26,7 +26,7 @@ import net.holmes.common.media.RootNode;
 public final class MediaIndexElementFactory {
 
     /**
-     * Constructor.
+     * Instantiates a new media index element factory.
      */
     private MediaIndexElementFactory() {
     }

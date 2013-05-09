@@ -101,11 +101,10 @@ public final class UtilHandler {
         private final Map<String, String> metadata;
 
         /**
-         * Constructor.
-         * @param data
-         *      folder data
-         * @param path
-         *      folder path
+         * Instantiates a new folder.
+         *
+         * @param data folder data
+         * @param path folder path
          */
         public Folder(final String data, final String path) {
             this.data = data;

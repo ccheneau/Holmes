@@ -40,15 +40,12 @@ public final class HolmesServer implements Service {
     private final Service scheduler;
 
     /**
-     * Constructor.
-     * @param httpServer
-     *      Http server
-     * @param upnpServer
-     *      UPnP server
-     * @param systray
-     *      Systray
-     * @param scheduler
-     *      Scheduler
+     * Instantiates a new holmes server.
+     *
+     * @param httpServer Http server
+     * @param upnpServer UPnP server
+     * @param systray Systray
+     * @param scheduler Scheduler
      */
     @Inject
     public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("systray") final Service systray,

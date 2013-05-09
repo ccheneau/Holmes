@@ -29,18 +29,13 @@ public final class ContentNode extends AbstractNode {
     private final String path;
 
     /**
-     * Constructor.
+     * Instantiates a new content node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
-     * @param file 
-     *      node file
-     * @param mimeType 
-     *      mime type
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
+     * @param file node file
+     * @param mimeType mime type
      */
     public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType) {
         super(NodeType.TYPE_CONTENT, id, parentId, name);

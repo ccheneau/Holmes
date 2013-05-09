@@ -26,14 +26,11 @@ public final class ConfigurationNode {
     private String path;
 
     /**
-     * Constructor.
+     * Instantiates a new configuration node.
      *
-     * @param id 
-     *      node id
-     * @param label 
-     *      node label
-     * @param path 
-     *      node path
+     * @param id node id
+     * @param label node label
+     * @param path node path
      */
     public ConfigurationNode(final String id, final String label, final String path) {
         this.id = id;

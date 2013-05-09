@@ -51,12 +51,10 @@ public final class DirectoryBrowseResult {
     private final long maxResults;
 
     /**
-     * Constructor.
+     * Instantiates a new directory browse result.
      *
-     * @param firstResult 
-     *      first result
-     * @param maxResults 
-     *      max results
+     * @param firstResult first result
+     * @param maxResults max results
      */
     public DirectoryBrowseResult(final long firstResult, final long maxResults) {
         this.firstResult = firstResult;

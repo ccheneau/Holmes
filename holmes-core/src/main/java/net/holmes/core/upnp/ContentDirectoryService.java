@@ -64,7 +64,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private static final String LOCAL_ADDRESS = getLocalIPV4();
 
     /**
-     * Constructor.
+     * Instantiates a new content directory service.
      */
     public ContentDirectoryService() {
         super(Arrays.asList("dc:title"), // search caps

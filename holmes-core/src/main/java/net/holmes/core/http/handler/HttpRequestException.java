@@ -27,12 +27,10 @@ public final class HttpRequestException extends Exception {
     private final transient HttpResponseStatus status;
 
     /**
-     * Constructor.
-     * 
-     * @param message
-     *      message
-     * @param status
-     *      status
+     * Instantiates a new http request exception.
+     *
+     * @param message message
+     * @param status status
      */
     public HttpRequestException(final String message, final HttpResponseStatus status) {
         super(message);
@@ -40,7 +38,7 @@ public final class HttpRequestException extends Exception {
     }
 
     /**
-     * Constructor.
+     * Instantiates a new http request exception.
      *
      * @param e the exception
      * @param status status

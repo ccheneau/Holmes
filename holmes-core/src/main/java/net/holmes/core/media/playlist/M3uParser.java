@@ -34,10 +34,9 @@ public class M3uParser implements PlaylistParser {
     private final File playlist;
 
     /**
-     * Constructor.
+     * Instantiates a new m3u parser.
      *
-     * @param playlist 
-     *      playlist
+     * @param playlist playlist
      */
     public M3uParser(final File playlist) {
         this.playlist = playlist;

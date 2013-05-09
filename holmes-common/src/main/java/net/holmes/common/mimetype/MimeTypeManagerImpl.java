@@ -30,7 +30,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     private final Properties properties;
 
     /**
-     * Constructor.
+     * Instantiates a new mime type manager implementation.
      */
     public MimeTypeManagerImpl() {
         // Load mime types from property file

@@ -43,7 +43,7 @@ public final class XmlConfigurationImpl implements Configuration {
     private XmlRootNode rootNode = null;
 
     /**
-     * Constructor.
+     * Instantiates a new xml configuration impl.
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */

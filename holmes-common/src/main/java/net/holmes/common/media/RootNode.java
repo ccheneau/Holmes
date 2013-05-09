@@ -34,14 +34,11 @@ public enum RootNode {
     private MediaType mediaType;
 
     /**
-     * Constructor.
+     * Instantiates a new root node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node  parent id
-     * @param mediaType 
-     *      media type
+     * @param id node id
+     * @param parentId parent node id
+     * @param mediaType media type
      */
     private RootNode(final String id, final String parentId, final MediaType mediaType) {
         this.id = id;

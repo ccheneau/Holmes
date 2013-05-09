@@ -58,10 +58,9 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     private final MimeTypeManager mimeTypeManager;
 
     /**
-     * Constructor.
-     * 
-     * @param mimeTypeManager
-     *      mime type manager
+     * Instantiates a new http ui request handler.
+     *
+     * @param mimeTypeManager mime type manager
      */
     @Inject
     public HttpUIRequestHandler(final MimeTypeManager mimeTypeManager) {

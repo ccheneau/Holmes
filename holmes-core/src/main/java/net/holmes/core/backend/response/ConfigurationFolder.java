@@ -26,19 +26,17 @@ public final class ConfigurationFolder {
     private String path;
 
     /**
-     * Constructor.
+     * Instantiates a new configuration folder.
      */
     public ConfigurationFolder() {
     }
 
     /**
-     * Constructor.
-     * @param id
-     *      folder id
-     * @param name
-     *      folder name
-     * @param path
-     *      folder path
+     * Instantiates a new configuration folder.
+     *
+     * @param id folder id
+     * @param name folder name
+     * @param path folder path
      */
     public ConfigurationFolder(final String id, final String name, final String path) {
         this.id = id;

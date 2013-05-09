@@ -25,12 +25,10 @@ public class MediaEvent {
     private final String parameter;
 
     /**
-     * Constructor.
+     * Instantiates a new media event.
      *
-     * @param type 
-     *      media type
-     * @param parameter 
-     *      parameter
+     * @param type media type
+     * @param parameter parameter
      */
     public MediaEvent(final MediaEventType type, final String parameter) {
         this.type = type;

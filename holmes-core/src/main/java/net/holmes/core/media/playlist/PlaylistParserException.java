@@ -24,39 +24,35 @@ public class PlaylistParserException extends Exception {
     private static final long serialVersionUID = -5068408691447981899L;
 
     /**
-     * Constructor.
+     * Instantiates a new playlist parser exception.
      */
     public PlaylistParserException() {
         super();
     }
 
     /**
-     * Constructor.
+     * Instantiates a new playlist parser exception.
      *
-     * @param message 
-     *      message
-     * @param exception 
-     *      exception
+     * @param message message
+     * @param exception exception
      */
     public PlaylistParserException(final String message, final Throwable exception) {
         super(message, exception);
     }
 
     /**
-     * Constructor.
+     * Instantiates a new playlist parser exception.
      *
-     * @param message 
-     *      message
+     * @param message message
      */
     public PlaylistParserException(final String message) {
         super(message);
     }
 
     /**
-     * Constructor.
+     * Instantiates a new playlist parser exception.
      *
-     * @param exception 
-     *      exception
+     * @param exception exception
      */
     public PlaylistParserException(final Throwable exception) {
         super(exception);

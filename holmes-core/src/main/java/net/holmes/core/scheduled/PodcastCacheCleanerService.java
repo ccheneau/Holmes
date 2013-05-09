@@ -44,12 +44,10 @@ public class PodcastCacheCleanerService extends AbstractScheduledService {
     private final int cleanDelayMinutes;
 
     /**
-     * Constructor.
+     * Instantiates a new podcast cache cleaner service.
      *
-     * @param podcastCache 
-     *      podcast cache
-     * @param configuration 
-     *      configuration
+     * @param podcastCache podcast cache
+     * @param configuration configuration
      */
     @Inject
     public PodcastCacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache, final Configuration configuration) {

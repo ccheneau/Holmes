@@ -62,10 +62,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private final WebApplication webApplication;
 
     /**
-     * Constructor.
-     * 
-     * @param webApplication
-     *      web application
+     * Instantiates a new http backend request handler.
+     *
+     * @param webApplication web application
      */
     @Inject
     public HttpBackendRequestHandler(final WebApplication webApplication) {
@@ -125,10 +124,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         private FullHttpResponse response;
 
         /**
-         * Constructor.
-         * 
-         * @param channel
-         *      channel
+         * Instantiates a new backend response writer.
+         *
+         * @param channel channel
          */
         private BackendResponseWriter(final Channel channel) {
             this.channel = channel;

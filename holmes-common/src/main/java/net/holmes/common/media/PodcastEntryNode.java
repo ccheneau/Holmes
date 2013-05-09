@@ -28,22 +28,15 @@ public final class PodcastEntryNode extends AbstractNode {
     private final String duration;
 
     /**
-     * Constructor.
+     * Instantiates a new podcast entry node.
      *
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      node parent id
-     * @param name 
-     *      node name
-     * @param mimeType 
-     *      mime type
-     * @param size 
-     *      size
-     * @param url 
-     *      url
-     * @param duration 
-     *      duration
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
+     * @param mimeType mime type
+     * @param size size
+     * @param url url
+     * @param duration duration
      */
     public PodcastEntryNode(final String id, final String parentId, final String name, final MimeType mimeType, final Long size, final String url,
             final String duration) {

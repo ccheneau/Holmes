@@ -29,14 +29,11 @@ public class ConfigurationEvent {
     private final RootNode rootNode;
 
     /**
-     * Constructor.
+     * Instantiates a new configuration event.
      *
-     * @param type 
-     *      event type
-     * @param node 
-     *      configuration node
-     * @param rootNode 
-     *      root node
+     * @param type event type
+     * @param node configuration node
+     * @param rootNode root node
      */
     public ConfigurationEvent(final EventType type, final ConfigurationNode node, final RootNode rootNode) {
         this.type = type;

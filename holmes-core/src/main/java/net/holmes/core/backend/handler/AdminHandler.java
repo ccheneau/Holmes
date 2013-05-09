@@ -38,9 +38,9 @@ public final class AdminHandler {
     private final BackendManager backendManager;
 
     /**
-     * Constructor.
+     * Instantiates a new admin handler.
      *
-     * @param backendManager 
+     * @param backendManager the backend manager
      */
     @Inject
     public AdminHandler(final BackendManager backendManager) {

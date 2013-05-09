@@ -59,10 +59,9 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     private final MediaManager mediaManager;
 
     /**
-     * Default constructot.
-     * 
-     * @param mediaManager
-     *      media manager
+     * Instantiates a new http content request handler.
+     *
+     * @param mediaManager media manager
      */
     @Inject
     public HttpContentRequestHandler(final MediaManager mediaManager) {

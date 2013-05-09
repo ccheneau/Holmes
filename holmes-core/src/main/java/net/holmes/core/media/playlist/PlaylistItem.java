@@ -24,12 +24,10 @@ public class PlaylistItem {
     private final String path;
 
     /**
-     * Constructor.
+     * Instantiates a new playlist item.
      *
-     * @param label 
-     *      label
-     * @param path 
-     *      path
+     * @param label label
+     * @param path path
      */
     public PlaylistItem(final String label, final String path) {
         this.label = label;

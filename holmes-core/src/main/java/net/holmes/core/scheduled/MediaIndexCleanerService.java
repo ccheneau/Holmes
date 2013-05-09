@@ -41,12 +41,10 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
     private final int cleanDelayMinutes;
 
     /**
-     * Constructor.
+     * Instantiates a new media index cleaner service.
      *
-     * @param mediaIndexManager 
-     *      media index manager
-     * @param configuration 
-     *      configuration
+     * @param mediaIndexManager media index manager
+     * @param configuration configuration
      */
     @Inject
     public MediaIndexCleanerService(final MediaIndexManager mediaIndexManager, final Configuration configuration) {

@@ -48,11 +48,10 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     private final Configuration configuration;
 
     /**
-     * Constructor.
-     * @param injector
-     *      Guice injector
-     * @param configuration
-     *      configuration
+     * Instantiates a new upnp service provider.
+     *
+     * @param injector Guice injector
+     * @param configuration configuration
      */
     @Inject
     public UpnpServiceProvider(final Injector injector, final Configuration configuration) {

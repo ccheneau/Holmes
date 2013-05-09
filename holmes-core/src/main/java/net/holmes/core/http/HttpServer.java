@@ -60,14 +60,11 @@ public final class HttpServer implements Service {
     private final EventLoopGroup eventLoopGroup;
 
     /**
-     * Constructor.
-     * 
-     * @param injector
-     *      injector
-     * @param webApplication
-     *      web application
-     * @param configuration
-     *      configuration
+     * Instantiates a new http server.
+     *
+     * @param injector injector
+     * @param webApplication web application
+     * @param configuration configuration
      */
     @Inject
     public HttpServer(final Injector injector, final WebApplication webApplication, final Configuration configuration) {

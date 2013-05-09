@@ -26,10 +26,9 @@ public enum SystemProperty {
     private final String name;
 
     /**
-     * Constructor.
+     * Instantiates a new system property.
      *
-     * @param name 
-     *      name
+     * @param name name
      */
     SystemProperty(final String name) {
         this.name = name;

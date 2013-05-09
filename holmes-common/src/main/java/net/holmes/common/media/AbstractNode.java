@@ -28,16 +28,12 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     protected String iconUrl;
 
     /**
-     * Constructor.
+     * Instantiates a new abstract node.
      *
-     * @param type 
-     *      node type
-     * @param id 
-     *      node id
-     * @param parentId 
-     *      parent node id
-     * @param name 
-     *      node name
+     * @param type node type
+     * @param id node id
+     * @param parentId parent node id
+     * @param name node name
      */
     public AbstractNode(final NodeType type, final String id, final String parentId, final String name) {
         this.type = type;

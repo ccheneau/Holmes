@@ -33,18 +33,13 @@ public class MediaIndexElement implements Serializable {
     private final boolean localPath;
 
     /**
-     * Constructor.
+     * Instantiates a new media index element.
      *
-     * @param parentId 
-     *      parent id
-     * @param mediaType 
-     *      media type
-     * @param path 
-     *      path
-     * @param name 
-     *      name
-     * @param localPath 
-     *      local path
+     * @param parentId parent id
+     * @param mediaType media type
+     * @param path path
+     * @param name name
+     * @param localPath local path
      */
     public MediaIndexElement(final String parentId, final String mediaType, final String path, final String name, final boolean localPath) {
         this.parentId = parentId;

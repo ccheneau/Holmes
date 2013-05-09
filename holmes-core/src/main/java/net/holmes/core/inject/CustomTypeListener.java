@@ -38,10 +38,9 @@ public final class CustomTypeListener implements TypeListener {
     private final EventBus eventBus;
 
     /**
-     * Constructor.
-     * 
-     * @param eventBus
-     *      event bus
+     * Instantiates a new custom type listener.
+     *
+     * @param eventBus event bus
      */
     public CustomTypeListener(final EventBus eventBus) {
         this.eventBus = eventBus;
@@ -76,10 +75,9 @@ public final class CustomTypeListener implements TypeListener {
         private final Logger logger;
 
         /**
-         * Constructor.
-         * 
-         * @param field
-         *      field
+         * Instantiates a new slf4j members injector.
+         *
+         * @param field field
          */
         public Slf4jMembersInjector(final Field field) {
             this.field = field;
@@ -104,10 +102,9 @@ public final class CustomTypeListener implements TypeListener {
         private final EventBus eventBus;
 
         /**
-         * Constructor.
-         * 
-         * @param eventBus
-         *      event bus
+         * Instantiates a new event bus register listener.
+         *
+         * @param eventBus event bus
          */
         public EventBusRegisterListener(final EventBus eventBus) {
             this.eventBus = eventBus;

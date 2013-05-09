@@ -24,9 +24,9 @@ public class ConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 4365631762884392538L;
 
     /**
-     * Constructor.
-     * * @param exception
-     *      base exception
+     * Instantiates a new configuration exception.
+     *
+     * @param exception the exception
      */
     public ConfigurationException(final Throwable exception) {
         super(exception);
