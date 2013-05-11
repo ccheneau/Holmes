@@ -34,7 +34,7 @@ holmes_start () {
   HOLMES_HOME=`cd "$HOLMES_HOME" && pwd`
   cd "$current_dir"
 
-  # locate java
+  # locate java runtime
   if [ -n "$JAVA_HOME"  ] ; then
     JAVA="$JAVA_HOME/bin/java"
   else
