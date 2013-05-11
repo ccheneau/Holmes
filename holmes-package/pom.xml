@@ -38,14 +38,26 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>aggregate</id>
+						<id>windows</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
 						<configuration>
 							<finalName>holmes-${project.version}</finalName>
-							<descriptor>src/main/assembly/default.xml</descriptor>
+							<descriptor>src/main/assembly/windows.xml</descriptor>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
+					<execution>
+						<id>linux</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>holmes-${project.version}</finalName>
+							<descriptor>src/main/assembly/linux.xml</descriptor>
 							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>

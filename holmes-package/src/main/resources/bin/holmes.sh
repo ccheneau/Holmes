@@ -101,6 +101,11 @@ case "$1" in
     holmes_stop
     ;;
     
+  restart)
+    holmes_stop
+    holmes_start
+    ;;
+    
   force-stop)
     holmes_force_stop
     ;;
@@ -110,7 +115,7 @@ case "$1" in
     ;;
 
   *)
-    echo "Usage: holmes.sh (start|stop|force-stop|status)"
+    echo "Usage: holmes.sh (start|stop|restart|force-stop|status)"
     exit 1
     ;;
 esac
