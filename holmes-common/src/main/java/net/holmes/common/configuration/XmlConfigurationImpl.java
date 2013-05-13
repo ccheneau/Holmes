@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import net.holmes.common.SystemUtils;
@@ -88,10 +89,10 @@ public final class XmlConfigurationImpl implements Configuration {
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
-        rootNode.checkDefaultValues();
+        boolean configChanged = rootNode.checkDefaultValues();
 
         // Save default config if nothing is loaded
-        if (!configLoaded) saveConfig();
+        if (!configLoaded || configChanged) saveConfig();
     }
 
     @Override
@@ -201,8 +202,11 @@ public final class XmlConfigurationImpl implements Configuration {
 
         /**
          * Check config default values.
+         *
+         * @return true, if config has changed
          */
-        public void checkDefaultValues() {
+        public boolean checkDefaultValues() {
+            boolean configChanged = false;
             if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null || this.httpServerPort <= Configuration.MIN_HTTP_SERVER_PORT) this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
             if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
@@ -210,9 +214,28 @@ public final class XmlConfigurationImpl implements Configuration {
             if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
             if (this.podcasts == null) this.podcasts = Lists.newLinkedList();
             if (this.parameters == null) this.parameters = new Properties();
+
+            // Check new parameters
+            List<String> availableParams = Lists.newArrayList();
             for (Parameter param : Parameter.values()) {
-                if (this.parameters.getProperty(param.getName()) == null) this.parameters.put(param.getName(), param.getDefaultValue());
+                availableParams.add(param.getName());
+                if (this.parameters.getProperty(param.getName()) == null) {
+                    this.parameters.put(param.getName(), param.getDefaultValue());
+                    configChanged = true;
+                }
             }
+            // Check obsolete parameters
+            List<String> obsoleteParams = Lists.newArrayList();
+            for (Entry<Object, Object> paramValue : this.parameters.entrySet()) {
+                if (!availableParams.contains(paramValue.getKey())) {
+                    obsoleteParams.add(paramValue.getKey().toString());
+                    configChanged = true;
+                }
+            }
+            for (String obsoleteParam : obsoleteParams) {
+                this.parameters.remove(obsoleteParam);
+            }
+            return configChanged;
         }
 
         /**
