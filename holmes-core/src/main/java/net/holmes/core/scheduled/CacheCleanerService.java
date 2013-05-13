@@ -17,6 +17,7 @@
 
 package net.holmes.core.scheduled;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,13 +35,14 @@ import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 /**
- * Scheduled service used to clean podcast cache.
+ * Scheduled service used to clean local caches.
  */
 @Loggable
-public class PodcastCacheCleanerService extends AbstractScheduledService {
+public class CacheCleanerService extends AbstractScheduledService {
     private Logger logger;
 
     private final Cache<String, List<AbstractNode>> podcastCache;
+    private final Cache<File, String> imageCache;
     private final int cleanDelayMinutes;
 
     /**
@@ -50,15 +52,18 @@ public class PodcastCacheCleanerService extends AbstractScheduledService {
      * @param configuration configuration
      */
     @Inject
-    public PodcastCacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache, final Configuration configuration) {
+    public CacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
+            @Named("imageCache") final Cache<File, String> imageCache, final Configuration configuration) {
         this.podcastCache = podcastCache;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.PODCAST_CACHE_CLEAN_DELAY_MINUTES);
+        this.imageCache = imageCache;
+        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.LOCAL_CACHE_CLEAN_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() {
         if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
         podcastCache.cleanUp();
+        imageCache.cleanUp();
     }
 
     @Override

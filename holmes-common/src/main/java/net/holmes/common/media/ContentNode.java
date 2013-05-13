@@ -27,6 +27,7 @@ public final class ContentNode extends AbstractNode {
     private final MimeType mimeType;
     private final Long size;
     private final String path;
+    private final String resolution;
 
     /**
      * Instantiates a new content node.
@@ -37,12 +38,13 @@ public final class ContentNode extends AbstractNode {
      * @param file node file
      * @param mimeType mime type
      */
-    public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType) {
+    public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType, final String resolution) {
         super(NodeType.TYPE_CONTENT, id, parentId, name);
         this.path = file.getAbsolutePath();
         this.mimeType = mimeType;
         this.size = file.length();
         this.modifiedDate = file.lastModified();
+        this.resolution = resolution;
     }
 
     /**
@@ -72,18 +74,28 @@ public final class ContentNode extends AbstractNode {
         return path;
     }
 
+    /**
+     * Gets the resolution.
+     *
+     * @return the resolution
+     */
+    public String getResolution() {
+        return resolution;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
         result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + ((resolution == null) ? 0 : resolution.hashCode());
         result = prime * result + ((size == null) ? 0 : size.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;
@@ -94,6 +106,9 @@ public final class ContentNode extends AbstractNode {
         if (path == null) {
             if (other.path != null) return false;
         } else if (!path.equals(other.path)) return false;
+        if (resolution == null) {
+            if (other.resolution != null) return false;
+        } else if (!resolution.equals(other.resolution)) return false;
         if (size == null) {
             if (other.size != null) return false;
         } else if (!size.equals(other.size)) return false;
@@ -109,16 +124,18 @@ public final class ContentNode extends AbstractNode {
         builder.append(size);
         builder.append(", path=");
         builder.append(path);
+        builder.append(", resolution=");
+        builder.append(resolution);
         builder.append(", id=");
         builder.append(id);
         builder.append(", parentId=");
         builder.append(parentId);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", modifiedDate=");
-        builder.append(modifiedDate);
         builder.append(", type=");
         builder.append(type);
+        builder.append(", modifiedDate=");
+        builder.append(modifiedDate);
         builder.append(", iconUrl=");
         builder.append(iconUrl);
         builder.append("]");

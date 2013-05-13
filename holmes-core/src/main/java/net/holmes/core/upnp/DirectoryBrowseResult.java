@@ -98,6 +98,7 @@ public final class DirectoryBrowseResult {
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws URISyntaxException {
         MimeType mimeType = contentNode.getMimeType();
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
+        if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
 
         Item item = null;
         if (mimeType.isVideo()) {

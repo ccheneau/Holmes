@@ -21,6 +21,7 @@ import static net.holmes.common.media.RootNode.PICTURE;
 import static net.holmes.common.media.RootNode.PODCAST;
 import static net.holmes.common.media.RootNode.VIDEO;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +31,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -83,6 +85,7 @@ public final class MediaManagerImpl implements MediaManager {
     private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
+    private final Cache<File, String> imageCache;
 
     /**
      * Instantiates a new media manager implementation.
@@ -95,12 +98,14 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Inject
     public MediaManagerImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final ResourceBundle resourceBundle,
-            final MediaIndexManager mediaIndexManager, @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache) {
+            final MediaIndexManager mediaIndexManager, @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
+            @Named("imageCache") final Cache<File, String> imageCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.resourceBundle = resourceBundle;
         this.mediaIndexManager = mediaIndexManager;
         this.podcastCache = podcastCache;
+        this.imageCache = imageCache;
     }
 
     @Override
@@ -213,8 +218,7 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Get childs of a configuration node (child nodes are stored in configuration).
      *
-     * @param rootNode 
-     *      root node
+     * @param rootNode root node from configuration
      * @return configuration child nodes
      */
     private List<AbstractNode> getConfigurationChildNodes(final RootNode rootNode) {
@@ -248,13 +252,10 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Get childs of a folder node.
      *
-     * @param parentId 
-     *      parent id
-     * @param folder 
-     *      folder
-     * @param mediaType 
-     *      media type
-     * @return folder child nodes
+     * @param parentId parent node id
+     * @param folder folder
+     * @param mediaType media type
+     * @return folder child nodes matching media type
      */
     private List<AbstractNode> getFolderChildNodes(final String parentId, final File folder, final String mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
@@ -282,10 +283,8 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * A pod-cast is a RSS feed URL.
      *
-     * @param parentId 
-     *      parent id
-     * @param url 
-     *      podcast url
+     * @param parentId parent id
+     * @param url podcast url
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
@@ -354,10 +353,8 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Get childs of playlist node.
      *
-     * @param parentId 
-     *      parent id
-     * @param path 
-     *      path
+     * @param parentId parent id
+     * @param path path
      * @return playlist child nodes
      */
     private List<AbstractNode> getPlaylistChildNodes(final String parentId, final String path) {
@@ -370,7 +367,7 @@ public final class MediaManagerImpl implements MediaManager {
                     MimeType mimeType = mimeTypeManager.getMimeType(item.getPath());
                     if (mimeType.isMedia()) {
                         String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true));
-                        nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType));
+                        nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType, null));
                     }
                 }
             }
@@ -384,14 +381,10 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Build file node.
      *
-     * @param nodeId 
-     *      node id
-     * @param parentId 
-     *      parent id
-     * @param file 
-     *      file
-     * @param mediaType 
-     *      media type
+     * @param nodeId node id
+     * @param parentId parent id
+     * @param file file
+     * @param mediaType media type
      * @return built node
      */
     private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final String mediaType) {
@@ -403,12 +396,44 @@ public final class MediaManagerImpl implements MediaManager {
             if (mimeType.getType().equals(MediaType.TYPE_PLAYLIST.getValue())) {
                 node = new PlaylistNode(nodeId, parentId, file.getName(), file.getAbsolutePath());
             } else if (mimeType.getType().equals(mediaType)) {
-                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
+                String resolution = getContentResolution(file, mimeType);
+                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, resolution);
             } else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
-                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
+                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
 
         }
         return node;
+    }
+
+    /**
+     * Gets the content resolution. Only available for image.
+     *
+     * @param file the file
+     * @param mimeType the mime type
+     * @return the content resolution
+     */
+    private String getContentResolution(final File file, final MimeType mimeType) {
+        if (mimeType.isImage()) {
+            try {
+                return imageCache.get(file, new Callable<String>() {
+                    @Override
+                    public String call() throws Exception {
+                        String resolution = null;
+                        try {
+                            BufferedImage bimg = ImageIO.read(file);
+                            resolution = String.format("%dx%d", bimg.getWidth(), bimg.getHeight());
+                            logger.debug("CCH image {} resolution {}", file.getAbsoluteFile(), resolution);
+                        } catch (IOException e) {
+                            logger.error(e.getMessage(), e);
+                        }
+                        return resolution;
+                    }
+                });
+            } catch (ExecutionException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return null;
     }
 
     /**
