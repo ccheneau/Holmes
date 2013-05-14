@@ -16,6 +16,7 @@
 */
 package net.holmes.core;
 
+import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,7 @@ import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.configuration.TestConfiguration;
 import net.holmes.core.inject.CustomTypeListener;
+import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
@@ -57,5 +59,7 @@ public class TestModule extends AbstractModule {
 
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
+        bind(new TypeLiteral<Cache<File, String>>() {
+        }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class).in(Singleton.class);
     }
 }

@@ -417,16 +417,11 @@ public final class MediaManagerImpl implements MediaManager {
             try {
                 return imageCache.get(file, new Callable<String>() {
                     @Override
-                    public String call() throws Exception {
+                    public String call() throws IOException {
                         String resolution = null;
-                        try {
-                            BufferedImage bimg = ImageIO.read(file);
-                            resolution = String.format("%dx%d", bimg.getWidth(), bimg.getHeight());
-                            logger.debug("CCH image {} resolution {}", file.getAbsoluteFile(), resolution);
-                        } catch (IOException e) {
-                            logger.error(e.getMessage(), e);
-                        }
-                        return resolution;
+                        BufferedImage bimg = ImageIO.read(file);
+                        if (bimg != null) resolution = String.format("%dx%d", bimg.getWidth(), bimg.getHeight());
+                        return resolution != null ? resolution : "0x0";
                     }
                 });
             } catch (ExecutionException e) {
