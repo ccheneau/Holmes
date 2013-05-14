@@ -24,6 +24,7 @@ import net.holmes.common.mimetype.MimeType;
  * Content node.
  */
 public final class ContentNode extends AbstractNode {
+
     private final MimeType mimeType;
     private final Long size;
     private final String path;

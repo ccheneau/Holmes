@@ -24,6 +24,7 @@ import net.holmes.common.media.RootNode;
  * Configuration event.
  */
 public class ConfigurationEvent {
+
     private final EventType type;
     private final ConfigurationNode node;
     private final RootNode rootNode;

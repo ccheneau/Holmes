@@ -84,8 +84,8 @@ public final class HolmesServer implements Service {
 
     /**
      * Receive dead event from event bus.
-     * @param deadEvent
-     *      Dead event
+     * 
+     * @param deadEvent dead event
      */
     @Subscribe
     public void handleDeadEvent(final DeadEvent deadEvent) {

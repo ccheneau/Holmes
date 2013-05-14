@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * Media index element.
- * @author Cedric
  *
  */
 public class MediaIndexElement implements Serializable {

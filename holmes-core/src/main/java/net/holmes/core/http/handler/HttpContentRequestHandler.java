@@ -153,8 +153,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     /**
      * Get content node from {@link net.holmes.core.media.MediaManager}.
      * 
-     * @param uri
-     *      Uri
+     * @param uri content Uri
      * @return content node
      */
     private ContentNode getContentNode(final String uri) {

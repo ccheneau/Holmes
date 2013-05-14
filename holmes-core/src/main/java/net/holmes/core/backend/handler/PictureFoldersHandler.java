@@ -66,8 +66,7 @@ public final class PictureFoldersHandler {
     /**
      * Get picture folder.
      * 
-     * @param id
-     *      picture folder id
+     * @param id picture folder id
      * @return picture folder
      */
     @GET
@@ -80,8 +79,7 @@ public final class PictureFoldersHandler {
     /**
      * Add picture folder.
      * 
-     * @param folder
-     *      picture folder to add
+     * @param folder picture folder to add
      * @return added picture folder
      */
     @POST
@@ -95,10 +93,8 @@ public final class PictureFoldersHandler {
     /**
      * Edit picture folder.
      * 
-     * @param id
-     *      picture folder id
-     * @param folder
-     *      picture value
+     * @param id picture folder id
+     * @param folder picture value
      * @return edited picture folder
      */
     @PUT
@@ -113,8 +109,7 @@ public final class PictureFoldersHandler {
     /**
      * Remove picture folder.
      * 
-     * @param id
-     *      picture folder id to remove
+     * @param id picture folder id to remove
      * @return removed picture folder
      */
     @DELETE

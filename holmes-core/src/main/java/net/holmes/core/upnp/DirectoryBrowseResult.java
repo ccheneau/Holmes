@@ -87,12 +87,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds item to result.
      *
-     * @param parentNodeId 
-     *      parent node id
-     * @param contentNode 
-     *      content node
-     * @param url 
-     *      content url
+     * @param parentNodeId  parent node id
+     * @param contentNode content node
+     * @param url content url
      * @throws URISyntaxException URI syntax exception
      */
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws URISyntaxException {
@@ -123,12 +120,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds podcast item to result.
      *
-     * @param parentNodeId 
-     *      parent node id
-     * @param podcastEntryNode 
-     *      podcast entry node
-     * @param entryName 
-     *      podcast entry name
+     * @param parentNodeId parent node id
+     * @param podcastEntryNode podcast entry node
+     * @param entryName podcast entry name
      * @throws URISyntaxException URI syntax exception
      */
     public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws URISyntaxException {
@@ -156,8 +150,7 @@ public final class DirectoryBrowseResult {
     /**
      * Adds item to result.
      *
-     * @param item 
-     *      item
+     * @param item item
      */
     private void addItem(final Item item) {
         // Add item to didl
@@ -168,12 +161,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds container to result.
      *
-     * @param parentNodeId 
-     *      parent node id
-     * @param node 
-     *      container node
-     * @param childCount 
-     *      child count
+     * @param parentNodeId parent node id
+     * @param node container node
+     * @param childCount child count
      * @throws URISyntaxException URI syntax exception
      */
     public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
@@ -187,12 +177,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds the playlist to result.
      *
-     * @param parentNodeId 
-     *      parent node id
-     * @param node 
-     *      playlist node
-     * @param childCount 
-     *      child count
+     * @param parentNodeId parent node id
+     * @param node playlist node
+     * @param childCount child count
      * @throws URISyntaxException URI syntax exception
      */
     public void addPlaylist(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
@@ -216,8 +203,7 @@ public final class DirectoryBrowseResult {
     /**
      * Gets UPnP mime type.
      *
-     * @param mimeType 
-     *      mime type
+     * @param mimeType mime type
      * @return UPnP mime type
      */
     private org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
@@ -227,10 +213,8 @@ public final class DirectoryBrowseResult {
     /**
      * Sets the didl metadata.
      *
-     * @param didlObjet 
-     *      didl objet
-     * @param node 
-     *      node
+     * @param didlObjet didl objet
+     * @param node node
      * @throws URISyntaxException !URI syntax exception
      */
     private void setDidlMetadata(final DIDLObject didlObjet, final AbstractNode node) throws URISyntaxException {

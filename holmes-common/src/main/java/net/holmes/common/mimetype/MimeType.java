@@ -71,45 +71,45 @@ public final class MimeType {
     }
 
     /**
-     * Checks if mymetype is media.
+     * Checks if mime type is media.
      *
-     * @return true, if mymetype is media
+     * @return true, if mime type is media
      */
     public boolean isMedia() {
         return isAudio() || isVideo() || isImage();
     }
 
     /**
-     * Checks if mymetype is audio.
+     * Checks if mime type is audio.
      *
-     * @return true, if mymetype is audio
+     * @return true, if mime type is audio
      */
     public boolean isAudio() {
         return MediaType.TYPE_AUDIO.getValue().equals(type);
     }
 
     /**
-     * Checks if mymetype is video.
+     * Checks if mime type is video.
      *
-     * @return true, if mymetype is video
+     * @return true, if mime type is video
      */
     public boolean isVideo() {
         return MediaType.TYPE_VIDEO.getValue().equals(type);
     }
 
     /**
-     * Checks if mymetype is image.
+     * Checks if mime type is image.
      *
-     * @return true, if mymetype is image
+     * @return true, if mime type is image
      */
     public boolean isImage() {
         return MediaType.TYPE_IMAGE.getValue().equals(type);
     }
 
     /**
-     * Checks if mymetype is subtitle.
+     * Checks if mime type is subtitle.
      *
-     * @return true, if mymetype is subtitle
+     * @return true, if mime type is subtitle
      */
     public boolean isSubtitle() {
         return MediaType.TYPE_APPLICATION.getValue().equals(type) && Subtype.SUBTYPE_SUBTITLE.getValue().equals(subType);

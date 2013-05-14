@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -35,15 +34,10 @@ import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
 import net.holmes.common.event.ConfigurationEvent;
-import net.holmes.common.event.MediaEvent;
-import net.holmes.common.event.MediaEvent.MediaEventType;
 import net.holmes.common.media.RootNode;
 import net.holmes.core.backend.exception.ConfigurationException;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.backend.response.IndexElement;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.media.index.MediaIndexElement;
-import net.holmes.core.media.index.MediaIndexManager;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -57,20 +51,16 @@ public final class BackendManagerImpl implements BackendManager {
     private final Configuration configuration;
     private final EventBus eventBus;
     private final ResourceBundle resourceBundle;
-    private final MediaIndexManager mediaIndexManager;
 
     /**
      * Instantiates a new backend manager implementation.
      *
-     * @param mediaIndexManager media index manager
      * @param configuration configuration
      * @param eventBus event bus
      * @param resourceBundle resource bundle
      */
     @Inject
-    public BackendManagerImpl(final MediaIndexManager mediaIndexManager, final Configuration configuration, final EventBus eventBus,
-            final ResourceBundle resourceBundle) {
-        this.mediaIndexManager = mediaIndexManager;
+    public BackendManagerImpl(final Configuration configuration, final EventBus eventBus, final ResourceBundle resourceBundle) {
         this.configuration = configuration;
         this.eventBus = eventBus;
         this.resourceBundle = resourceBundle;
@@ -209,28 +199,11 @@ public final class BackendManagerImpl implements BackendManager {
         }
     }
 
-    @Override
-    public Collection<IndexElement> getMediaIndexElements() {
-        Collection<IndexElement> indexElements = Lists.newArrayList();
-        for (Entry<String, MediaIndexElement> elementEntry : mediaIndexManager.getElements()) {
-            MediaIndexElement el = elementEntry.getValue();
-            indexElements.add(new IndexElement(elementEntry.getKey(), el.getParentId(), el.getMediaType(), el.getName(), el.getPath()));
-        }
-        return indexElements;
-    }
-
-    @Override
-    public void scanAllMedias() {
-        eventBus.post(new MediaEvent(MediaEventType.SCAN_ALL, null));
-    }
-
     /**
      * Check folder does not already exist.
      * 
-     * @param folder
-     *      folder to validate
-     * @param podcast
-     *      true if folder is a podcast
+     * @param folder folder to validate
+     * @param podcast true if folder is a podcast
      */
     private void validateFolder(final ConfigurationFolder folder, final boolean podcast) {
         // Check folder's name and path are not empty
@@ -254,14 +227,10 @@ public final class BackendManagerImpl implements BackendManager {
     /**
      * Check folder does not already exist.
      * 
-     * @param excludedId
-     *      node id to exclude
-     * @param folder
-     *      folder to check
-     * @param configNodes
-     *      configuration nodes
-     * @param podcast
-     *      true if folder is a podcast
+     * @param excludedId node id to exclude
+     * @param folder folder to check
+     * @param configNodes configuration nodes
+     * @param podcast true if folder is a podcast
      */
     private void validateDuplicatedFolder(final String excludedId, final ConfigurationFolder folder, final List<ConfigurationNode> configNodes,
             final boolean podcast) {

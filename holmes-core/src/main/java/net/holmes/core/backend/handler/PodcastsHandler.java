@@ -66,8 +66,7 @@ public final class PodcastsHandler {
     /**
      * Get podcasts.
      * 
-     * @param id
-     *      podcasts id
+     * @param id podcasts id
      * @return podcasts
      */
     @GET
@@ -80,8 +79,7 @@ public final class PodcastsHandler {
     /**
      * Add podcast.
      * 
-     * @param folder
-     *      podcast to add
+     * @param folder podcast to add
      * @return added podcast
      */
     @POST
@@ -95,10 +93,8 @@ public final class PodcastsHandler {
     /**
      * Edit podcast.
      * 
-     * @param id
-     *      podcast id
-     * @param folder
-     *      podcast value
+     * @param id podcast id
+     * @param folder podcast value
      * @return edited podcast
      */
     @PUT
@@ -113,8 +109,7 @@ public final class PodcastsHandler {
     /**
      * Remove podcast.
      * 
-     * @param id
-     *      podcast id to remove
+     * @param id podcast id to remove
      * @return removed podcast
      */
     @DELETE

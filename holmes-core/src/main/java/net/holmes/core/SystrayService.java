@@ -96,6 +96,7 @@ public final class SystrayService implements Service {
 
     /**
      * Initializes UI manager.
+     * 
      * @return true on success
      */
     private boolean initUIManager() {
@@ -292,8 +293,8 @@ public final class SystrayService implements Service {
 
         /**
          * Show popup menu.
-         * @param event
-         *      mose event
+         * 
+         * @param event mouse event
          */
         private void showPopupMenu(final MouseEvent event) {
             if (popupMenu != null) {
@@ -307,8 +308,8 @@ public final class SystrayService implements Service {
 
         /**
          * Set popup menu.
-         * @param popupMenu
-         *      popup menu
+         * 
+         * @param popupMenu popup menu
          */
         public void setPopupMenu(final JPopupMenu popupMenu) {
             if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(POPUP_LISTENER);

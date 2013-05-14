@@ -36,7 +36,6 @@ public final class UpnpServer implements Service {
     private Logger logger;
 
     private UpnpService upnpService = null;
-
     private final Injector injector;
     private final Configuration configuration;
 

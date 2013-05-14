@@ -60,8 +60,7 @@ public final class SettingsHandler {
     /**
      * Save settings.
      * 
-     * @param settings
-     *      Settings to save
+     * @param settings settings to save
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

@@ -24,10 +24,10 @@ import net.holmes.common.MediaType;
  */
 public enum RootNode {
     ROOT("0", "-1", null), //
-    VIDEO("1_VIDEOS", "0", MediaType.TYPE_VIDEO), //
-    PICTURE("2_PICTURES", "0", MediaType.TYPE_IMAGE), //
-    AUDIO("3_AUDIOS", "0", MediaType.TYPE_AUDIO), //
-    PODCAST("4_PODCASTS", "0", MediaType.TYPE_PODCAST);
+    VIDEO("1_VIDEOS", ROOT.getId(), MediaType.TYPE_VIDEO), //
+    PICTURE("2_PICTURES", ROOT.getId(), MediaType.TYPE_IMAGE), //
+    AUDIO("3_AUDIOS", ROOT.getId(), MediaType.TYPE_AUDIO), //
+    PODCAST("4_PODCASTS", ROOT.getId(), MediaType.TYPE_PODCAST);
 
     private String id;
     private String parentId;
@@ -76,8 +76,7 @@ public enum RootNode {
     /**
      * Gets root node by id.
      *
-     * @param id 
-     *      node id
+     * @param id node id
      * @return the root node
      */
     public static RootNode getById(final String id) {

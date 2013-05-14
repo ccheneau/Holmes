@@ -34,10 +34,8 @@ public final class MediaIndexElementFactory {
     /**
      * Gets the media index element.
      *
-     * @param rootNode 
-     *      root node
-     * @param configNode 
-     *      config node
+     * @param rootNode root node
+     * @param configNode  config node
      * @return media index element
      */
     public static MediaIndexElement get(final RootNode rootNode, final ConfigurationNode configNode) {

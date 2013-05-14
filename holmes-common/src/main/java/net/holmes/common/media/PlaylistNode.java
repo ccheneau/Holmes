@@ -20,6 +20,7 @@ package net.holmes.common.media;
  * Playlist node.
  */
 public class PlaylistNode extends AbstractNode {
+
     private final String path;
 
     /**

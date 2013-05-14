@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import net.holmes.common.media.RootNode;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.backend.response.IndexElement;
 import net.holmes.core.backend.response.Settings;
 
 /**
@@ -31,73 +30,57 @@ public interface BackendManager {
 
     /**
      * Get configuration folders.
-     * @param rootNode
-     *      root node
+     * 
+     * @param rootNode root node
      * @return configuration folders
      */
     Collection<ConfigurationFolder> getFolders(RootNode rootNode);
 
     /**
      * Get configuration folder.
-     * @param id
-     *      folder id
-     * @param rootNode
-     *      root node
-     * @return
-     *      configuration folder
+     * 
+     * @param id folder id
+     * @param rootNode root node
+     * @return configuration folder
      */
     ConfigurationFolder getFolder(String id, RootNode rootNode);
 
     /**
      * Add configuration folder.
-     * @param folder
-     *      folder to add
-     * @param rootNode
-     *      root node
+     * 
+     * @param folder folder to add
+     * @param rootNode root node
      */
     void addFolder(ConfigurationFolder folder, RootNode rootNode);
 
     /**
      * Edit configuration folder.
-     * @param id
-     *      folder id
-     * @param folder
-     *      folder value
-     * @param rootNode
-     *      root node
+     * 
+     * @param id folder id
+     * @param folder folder value
+     * @param rootNode root node
      */
     void editFolder(String id, ConfigurationFolder folder, RootNode rootNode);
 
     /**
      * Remove folder.
-     * @param id
-     *      folder id
-     * @param rootNode
-     *      root node
+     * 
+     * @param id folder id
+     * @param rootNode root node
      */
     void removeFolder(String id, RootNode rootNode);
 
     /**
      * Get settings.
+     * 
      * @return settings
      */
     Settings getSettings();
 
     /**
      * Save settings.
-     * @param settings
-     *      settings to save
+     * 
+     * @param settings settings to save
      */
     void saveSettings(Settings settings);
-
-    /**
-     * Get media index elements.
-     * @return media index elements
-     */
-    Collection<IndexElement> getMediaIndexElements();
-
-    /**
-     * Scan all medias.
-     */
-    void scanAllMedias();
 }

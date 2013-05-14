@@ -27,8 +27,7 @@ public interface MediaIndexManager {
     /**
      * Gets the media index element.
      *
-     * @param uuid
-     *       element uuid
+     * @param uuid element uuid
      * @return media index element
      */
     MediaIndexElement get(String uuid);
@@ -36,35 +35,30 @@ public interface MediaIndexManager {
     /**
      * Adds media index element.
      *
-     * @param element 
-     *      index element
-     * @return added element uuid
+     * @param element index element
+     * @return new element's uuid
      */
     String add(MediaIndexElement element);
 
     /**
      * Put media index element.
      *
-     * @param uuid 
-     *      element uuid
-     * @param element 
-     *      element to put
+     * @param uuid element uuid
+     * @param element element to put
      */
     void put(String uuid, MediaIndexElement element);
 
     /**
      * Removes media index element.
      *
-     * @param uuid 
-     *      element uuid
+     * @param uuid element uuid
      */
     void remove(String uuid);
 
     /**
      * Removes child media index elements.
      *
-     * @param uuid 
-     *      parent element uuid
+     * @param uuid parent element uuid
      */
     void removeChilds(String uuid);
 
@@ -75,6 +69,7 @@ public interface MediaIndexManager {
 
     /**
      * Get all index elements.
+     * 
      * @return index elements
      */
     Set<Entry<String, MediaIndexElement>> getElements();

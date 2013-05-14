@@ -22,6 +22,7 @@ import java.io.File;
  * Folder node.
  */
 public final class FolderNode extends AbstractNode {
+
     private final String path;
 
     /**

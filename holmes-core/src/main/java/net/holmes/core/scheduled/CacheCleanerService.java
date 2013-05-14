@@ -46,9 +46,10 @@ public class CacheCleanerService extends AbstractScheduledService {
     private final int cleanDelayMinutes;
 
     /**
-     * Instantiates a new podcast cache cleaner service.
+     * Instantiates a new cache cleaner service.
      *
      * @param podcastCache podcast cache
+     * @param imageCache image cache
      * @param configuration configuration
      */
     @Inject
@@ -61,7 +62,7 @@ public class CacheCleanerService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
+        if (logger.isDebugEnabled()) logger.debug("Launch cache cleaner");
         podcastCache.cleanUp();
         imageCache.cleanUp();
     }

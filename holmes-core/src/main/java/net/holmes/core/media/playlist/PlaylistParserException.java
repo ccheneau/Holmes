@@ -25,32 +25,6 @@ public class PlaylistParserException extends Exception {
 
     /**
      * Instantiates a new playlist parser exception.
-     */
-    public PlaylistParserException() {
-        super();
-    }
-
-    /**
-     * Instantiates a new playlist parser exception.
-     *
-     * @param message message
-     * @param exception exception
-     */
-    public PlaylistParserException(final String message, final Throwable exception) {
-        super(message, exception);
-    }
-
-    /**
-     * Instantiates a new playlist parser exception.
-     *
-     * @param message message
-     */
-    public PlaylistParserException(final String message) {
-        super(message);
-    }
-
-    /**
-     * Instantiates a new playlist parser exception.
      *
      * @param exception exception
      */

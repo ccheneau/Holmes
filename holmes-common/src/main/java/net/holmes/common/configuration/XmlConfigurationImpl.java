@@ -41,6 +41,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public final class XmlConfigurationImpl implements Configuration {
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
+
     private XmlRootNode rootNode = null;
 
     /**
@@ -164,23 +165,18 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public Boolean getParameter(final Parameter param) {
-        return this.rootNode.getParameter(param);
+    public Boolean getParameter(final Parameter parameter) {
+        return this.rootNode.getParameter(parameter);
     }
 
     @Override
-    public Integer getIntParameter(final Parameter param) {
-        return this.rootNode.getIntParameter(param);
+    public Integer getIntParameter(final Parameter parameter) {
+        return this.rootNode.getIntParameter(parameter);
     }
 
     @Override
-    public void setParameter(final Parameter param, final Boolean value) {
-        this.rootNode.setParameter(param, value);
-    }
-
-    @Override
-    public String toString() {
-        return this.rootNode.toString();
+    public void setParameter(final Parameter parameter, final Boolean value) {
+        this.rootNode.setParameter(parameter, value);
     }
 
     /**
@@ -232,6 +228,7 @@ public final class XmlConfigurationImpl implements Configuration {
                     configChanged = true;
                 }
             }
+            // Remove obsolete parameters
             for (String obsoleteParam : obsoleteParams) {
                 this.parameters.remove(obsoleteParam);
             }
@@ -313,39 +310,35 @@ public final class XmlConfigurationImpl implements Configuration {
         /**
          * Gets parameter.
          *
-         * @param param 
-         *      parameter
+         * @param parameter parameter
          * @return parameter boolean value
          */
-        public Boolean getParameter(final Parameter param) {
-            String value = (String) this.parameters.get(param.getName());
-            if (value == null) value = param.getDefaultValue();
+        public Boolean getParameter(final Parameter parameter) {
+            String value = (String) this.parameters.get(parameter.getName());
+            if (value == null) value = parameter.getDefaultValue();
             return Boolean.valueOf(value);
         }
 
         /**
          * Gets int parameter value.
          *
-         * @param param 
-         *      parameter
+         * @param parameter parameter
          * @return int parameter value
          */
-        public Integer getIntParameter(final Parameter param) {
-            String value = (String) this.parameters.get(param.getName());
-            if (value == null) value = param.getDefaultValue();
+        public Integer getIntParameter(final Parameter parameter) {
+            String value = (String) this.parameters.get(parameter.getName());
+            if (value == null) value = parameter.getDefaultValue();
             return Integer.valueOf(value);
         }
 
         /**
          * Sets the parameter.
          *
-         * @param param 
-         *      parameter
-         * @param value 
-         *      parameter value
+         * @param parameter parameter
+         * @param value parameter value
          */
-        public void setParameter(final Parameter param, final Boolean value) {
-            this.parameters.setProperty(param.getName(), value.toString());
+        public void setParameter(final Parameter parameter, final Boolean value) {
+            this.parameters.setProperty(parameter.getName(), value.toString());
         }
     }
 }

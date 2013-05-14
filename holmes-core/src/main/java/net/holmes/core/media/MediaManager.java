@@ -27,8 +27,7 @@ public interface MediaManager {
     /**
      * Get node.
      * 
-     * @param nodeId
-     *      node id
+     * @param nodeId node id
      * @return node
      */
     AbstractNode getNode(String nodeId);
@@ -36,8 +35,7 @@ public interface MediaManager {
     /**
      * Get child nodes.
      * 
-     * @param parentNode
-     *      parent node
+     * @param parentNode parent node
      * @return child nodes
      */
     List<AbstractNode> getChildNodes(AbstractNode parentNode);
@@ -50,10 +48,8 @@ public interface MediaManager {
     /**
      * Scan a specific node.
      * 
-     * @param parentNode
-     *      parent node to scan
-     * @param recursive
-     *      whether to scan child nodes
+     * @param parentNode parent node to scan
+     * @param recursive whether to scan child nodes
      */
     void scanNode(AbstractNode parentNode, boolean recursive);
 }

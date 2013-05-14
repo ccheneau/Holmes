@@ -16,6 +16,7 @@
 */
 package net.holmes.core.http.handler;
 
+import static net.holmes.common.SystemProperty.HOLMES_HOME;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -36,7 +37,6 @@ import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
 
-import net.holmes.common.SystemProperty;
 import net.holmes.common.mimetype.MimeType;
 import net.holmes.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
@@ -70,15 +70,14 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     /**
      * Get UI base directory.
      * 
-     * @param uiSubDir
-     *      UI sub directory
+     * @param uiSubDir UI sub directory
      * @return UI directory
      */
     private static String getUiDirectory(final String uiSubDir) {
-        File uiDir = new File(SystemProperty.HOLMES_HOME.getValue(), uiSubDir);
+        File uiDir = new File(HOLMES_HOME.getValue(), uiSubDir);
         if (!uiDir.exists()) {
-            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
-                    + SystemProperty.HOLMES_HOME.getValue() + "] system property");
+            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
+                    + "] system property");
         }
         return uiDir.getAbsolutePath();
     }

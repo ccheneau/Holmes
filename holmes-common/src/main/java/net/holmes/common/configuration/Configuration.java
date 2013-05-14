@@ -47,8 +47,7 @@ public interface Configuration {
     /**
      * Sets UPnP server name.
      *
-     * @param upnpServerName 
-     *      new UPnP server name
+     * @param upnpServerName new UPnP server name
      */
     void setUpnpServerName(String upnpServerName);
 
@@ -62,16 +61,14 @@ public interface Configuration {
     /**
      * Sets the http server port.
      *
-     * @param httpServerPort 
-     *      new http server port
+     * @param httpServerPort new http server port
      */
     void setHttpServerPort(Integer httpServerPort);
 
     /**
      * Gets the folders.
      *
-     * @param folderRootNode 
-     *      folder root node
+     * @param folderRootNode folder root node
      * @return folders
      */
     List<ConfigurationNode> getFolders(RootNode folderRootNode);
@@ -79,28 +76,24 @@ public interface Configuration {
     /**
      * Gets the parameter.
      *
-     * @param param 
-     *      parameter
+     * @param param parameter
      * @return parameter
      */
-    Boolean getParameter(Parameter param);
+    Boolean getParameter(Parameter parameter);
 
     /**
      * Gets the int parameter.
      *
-     * @param param 
-     *      parameter
+     * @param parameter parameter
      * @return parameter as int
      */
-    Integer getIntParameter(Parameter param);
+    Integer getIntParameter(Parameter parameter);
 
     /**
-     * Sets parameter.
+     * Sets parameter value.
      *
-     * @param param 
-     *      parameter
-     * @param value 
-     *      parameter value
+     * @param param parameter
+     * @param value parameter value
      */
-    void setParameter(Parameter param, Boolean value);
+    void setParameter(Parameter parameter, Boolean value);
 }

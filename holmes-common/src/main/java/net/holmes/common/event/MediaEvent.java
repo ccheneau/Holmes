@@ -21,6 +21,7 @@ package net.holmes.common.event;
  * Media event.
  */
 public class MediaEvent {
+
     private final MediaEventType type;
     private final String parameter;
 

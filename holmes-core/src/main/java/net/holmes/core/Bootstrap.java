@@ -16,10 +16,11 @@
 */
 package net.holmes.core;
 
+import static net.holmes.common.SystemProperty.HOLMES_HOME;
+
 import java.io.File;
 
 import net.holmes.common.Service;
-import net.holmes.common.SystemProperty;
 import net.holmes.common.SystemUtils;
 
 import org.apache.log4j.Level;
@@ -46,8 +47,8 @@ public final class Bootstrap {
 
     /**
      * Holmes launcher.
-     * @param args 
-     *      command line arguments
+     * 
+     * @param args command line arguments
      */
     public static void main(final String... args) {
         // Check lock file
@@ -82,12 +83,12 @@ public final class Bootstrap {
 
     /**
      * Configure Log4j.
-     * @param debug
-     *      activate debug mode
+     * 
+     * @param debug activates debug mode
      */
     private static void loadLog4j(final boolean debug) {
         // Load log4j configuration
-        File confDir = new File(SystemProperty.HOLMES_HOME.getValue(), "conf");
+        File confDir = new File(HOLMES_HOME.getValue(), "conf");
         String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
 
         if (new File(logConfig).exists()) {
@@ -95,8 +96,7 @@ public final class Bootstrap {
                 DOMConfigurator.configure(logConfig);
                 LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
             } else DOMConfigurator.configureAndWatch(logConfig, LOG4J_WATCH_DELAY);
-        } else throw new RuntimeException(logConfig + " does not exist. Check " + SystemProperty.HOLMES_HOME.getName() + " ["
-                + SystemProperty.HOLMES_HOME.getValue() + "] system property");
+        } else throw new RuntimeException(logConfig + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
 
         // Remove existing handlers attached to j.u.l root logger
         SLF4JBridgeHandler.removeHandlersForRootLogger();

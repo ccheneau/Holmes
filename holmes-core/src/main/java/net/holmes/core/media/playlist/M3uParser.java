@@ -49,8 +49,8 @@ public class M3uParser implements PlaylistParser {
         try {
             List<String> lines = Files.readLines(playlist, charset);
             if (lines != null && !lines.isEmpty()) {
-                if (lines.get(0).trim().equals("#EXTM3U")) items = parseM3uExt(lines);
-                else items = parseM3u(lines);
+                if (lines.get(0).trim().equals("#EXTM3U")) items = parseM3uExtPlaylist(lines);
+                else items = parseM3uPlaylist(lines);
             }
         } catch (IOException e) {
             throw new PlaylistParserException(e);
@@ -59,13 +59,12 @@ public class M3uParser implements PlaylistParser {
     }
 
     /**
-     * Parse extended m3u.
+     * Parse extended m3u playlist.
      *
-     * @param lines 
-     *      playlist file lines
+     * @param lines playlist file lines
      * @return playlist items
      */
-    private List<PlaylistItem> parseM3uExt(final List<String> lines) {
+    private List<PlaylistItem> parseM3uExtPlaylist(final List<String> lines) {
         List<PlaylistItem> items = Lists.newArrayList();
         File playlistDir = playlist.getParentFile();
         String currentLabel = null;
@@ -91,11 +90,10 @@ public class M3uParser implements PlaylistParser {
     /**
      * Parse simple m3u playlist.
      *
-     * @param lines
-     *      playlist file lines
+     * @param lines playlist file lines
      * @return playlist items
      */
-    private List<PlaylistItem> parseM3u(final List<String> lines) {
+    private List<PlaylistItem> parseM3uPlaylist(final List<String> lines) {
         List<PlaylistItem> items = Lists.newArrayList();
         File playlistDir = playlist.getParentFile();
         for (String line : lines) {

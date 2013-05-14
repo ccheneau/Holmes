@@ -66,8 +66,7 @@ public final class AudioFoldersHandler {
     /**
      * Get audio folder.
      * 
-     * @param id
-     *      audio folder id
+     * @param id audio folder id
      * @return audio folder
      */
     @GET
@@ -80,8 +79,7 @@ public final class AudioFoldersHandler {
     /**
      * Add audio folder.
      * 
-     * @param folder
-     *      audio folder to add
+     * @param folder audio folder to add
      * @return added audio folder
      */
     @POST
@@ -95,10 +93,8 @@ public final class AudioFoldersHandler {
     /**
      * Edit audio folder.
      * 
-     * @param id
-     *      audio folder id
-     * @param folder
-     *      folder value
+     * @param id audio folder id
+     * @param folder folder value
      * @return edited audio folder
      */
     @PUT
@@ -113,8 +109,7 @@ public final class AudioFoldersHandler {
     /**
      * Remove audio folder.
      * 
-     * @param id
-     *      audio folder id to remove
+     * @param id audio folder id to remove
      * @return removed audio folder
      */
     @DELETE

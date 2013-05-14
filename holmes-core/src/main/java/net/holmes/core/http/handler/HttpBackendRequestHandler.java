@@ -101,8 +101,8 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
     /**
      * Get headers.
-     * @param request
-     *      Http request
+     * 
+     * @param request Http request
      * @return inbound headers
      */
     private InBoundHeaders getHeaders(final HttpRequest request) {
@@ -116,7 +116,6 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
     /**
      * Response writer for backend requests.
-     *
      */
     public static final class BackendResponseWriter implements ContainerResponseWriter {
 
@@ -126,7 +125,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         /**
          * Instantiates a new backend response writer.
          *
-         * @param channel channel
+         * @param channel channel to write to
          */
         private BackendResponseWriter(final Channel channel) {
             this.channel = channel;

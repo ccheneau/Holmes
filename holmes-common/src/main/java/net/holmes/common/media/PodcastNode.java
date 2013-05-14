@@ -20,6 +20,7 @@ package net.holmes.common.media;
  * Podcast node.
  */
 public final class PodcastNode extends AbstractNode {
+
     private final String url;
 
     /**

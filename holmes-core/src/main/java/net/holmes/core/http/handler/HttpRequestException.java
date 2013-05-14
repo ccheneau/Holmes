@@ -40,11 +40,11 @@ public final class HttpRequestException extends Exception {
     /**
      * Instantiates a new http request exception.
      *
-     * @param e the exception
+     * @param exception the root exception
      * @param status status
      */
-    public HttpRequestException(final Exception e, final HttpResponseStatus status) {
-        super(e);
+    public HttpRequestException(final Exception exception, final HttpResponseStatus status) {
+        super(exception);
         this.status = status;
     }
 

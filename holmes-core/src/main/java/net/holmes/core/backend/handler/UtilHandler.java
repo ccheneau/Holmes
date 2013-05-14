@@ -16,6 +16,8 @@
 */
 package net.holmes.core.backend.handler;
 
+import static net.holmes.common.SystemProperty.USER_HOME;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
@@ -27,8 +29,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import net.holmes.common.SystemProperty;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -55,8 +55,7 @@ public final class UtilHandler {
     /**
      * Get child folders.
      * 
-     * @param parentPath
-     *      parent path
+     * @param parentPath parent path
      * @return child folders
      */
     @POST
@@ -67,7 +66,7 @@ public final class UtilHandler {
 
         if (parentPath == null || parentPath.equals("none")) {
             // Add user home folder
-            File userHomeDir = new File(SystemProperty.USER_HOME.getValue());
+            File userHomeDir = new File(USER_HOME.getValue());
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add root folders

@@ -49,7 +49,7 @@ import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
 
 /**
- * Content directory service.
+ * UPnP Content directory service.
  */
 @Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
@@ -150,14 +150,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Adds node.
      *
-     * @param nodeId
-     *      node id
-     * @param node 
-     *      node
-     * @param result 
-     *      result
-     * @param childNodeSize 
-     *      child node size
+     * @param nodeId node id
+     * @param node node
+     * @param result result
+     * @param childNodeSize child node size
      * @throws URISyntaxException URI syntax exception
      */
     private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long childNodeSize) throws URISyntaxException {
@@ -195,12 +191,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * If prepend_podcast_entry_name configuration parameter is set to true,
      * item number is added to title.
      *
-     * @param count 
-     *      post-cast entry count
-     * @param totalCount 
-     *      post-cast entry total count
-     * @param title 
-     *       title
+     * @param count post-cast entry count
+     * @param totalCount post-cast entry total count
+     * @param title title
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {

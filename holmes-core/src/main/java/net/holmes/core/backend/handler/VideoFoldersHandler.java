@@ -66,8 +66,7 @@ public final class VideoFoldersHandler {
     /**
      * Get video folder.
      * 
-     * @param id
-     *      video folder id
+     * @param id video folder id
      * @return video folder
      */
     @GET
@@ -80,8 +79,7 @@ public final class VideoFoldersHandler {
     /**
      * Add video folder.
      * 
-     * @param folder
-     *      video folder to add
+     * @param folder video folder to add
      * @return added video folder
      */
     @POST
@@ -95,10 +93,8 @@ public final class VideoFoldersHandler {
     /**
      * Edit video folder.
      * 
-     * @param id
-     *      video folder id
-     * @param folder
-     *      video value
+     * @param id video folder id
+     * @param folder video value
      * @return edited video folder
      */
     @PUT
@@ -113,8 +109,7 @@ public final class VideoFoldersHandler {
     /**
      * Remove video folder.
      * 
-     * @param id
-     *      video folder id to remove
+     * @param id video folder id to remove
      * @return removed video folder
      */
     @DELETE

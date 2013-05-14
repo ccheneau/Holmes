@@ -36,6 +36,7 @@ public final class SystemUtils {
 
     /**
      * Create Holmes lock file.
+     * 
      * @return true on lock success, false if lock file already exists
      */
     public static boolean lockInstance() {

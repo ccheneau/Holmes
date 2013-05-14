@@ -28,22 +28,18 @@ public final class Settings {
     private Boolean enableExternalSubtitles;
 
     /**
-     * Default constructeur.
+     * Instantiates a new settings.
      */
     public Settings() {
     }
 
     /**
-     * Constructeur.
-     * 
-     * @param serverName
-     *      server name
-     * @param httpServerPort
-     *      Http server port
-     * @param prependPodcastItem
-     *      prepend podcast item
-     * @param enableExternalSubtitles
-     *      enable external subtitles
+     * Instantiates a new settings.
+     *
+     * @param serverName server name
+     * @param httpServerPort Http server port
+     * @param prependPodcastItem prepend podcast item
+     * @param enableExternalSubtitles enable external subtitles
      */
     public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem, final Boolean enableExternalSubtitles) {
         this.serverName = serverName;

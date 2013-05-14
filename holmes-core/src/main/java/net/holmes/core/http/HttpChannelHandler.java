@@ -120,10 +120,8 @@ public final class HttpChannelHandler extends ChannelInboundMessageHandlerAdapte
     /**
      * Send error.
      * 
-     * @param context
-     *      channel context
-     * @param status
-     *      response status
+     * @param context channel context
+     * @param status response status
      */
     private void sendError(final ChannelHandlerContext context, final HttpResponseStatus status) {
         // Build error response

@@ -24,8 +24,7 @@ public interface MimeTypeManager {
     /**
      * Gets mime type.
      *
-     * @param fileName 
-     *      file name
+     * @param fileName file name
      * @return mime type
      */
     MimeType getMimeType(String fileName);

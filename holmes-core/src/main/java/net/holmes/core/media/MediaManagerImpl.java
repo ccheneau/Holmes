@@ -177,11 +177,11 @@ public final class MediaManagerImpl implements MediaManager {
             MediaIndexElement indexElement = mediaIndexManager.get(parentNode.getId());
             if (indexElement != null) {
                 if (MediaType.TYPE_PODCAST.getValue().equals(indexElement.getMediaType())) {
-                    // Get podcast child nodes
-                    childNodes = getPodcastChildNodes(parentNode.getId(), indexElement.getPath());
+                    // Get podcast entries
+                    childNodes = getPodcastEntries(parentNode.getId(), indexElement.getPath());
                 } else if (MediaType.TYPE_PLAYLIST.getValue().equals(indexElement.getMediaType())) {
-                    // Get playlist child nodes
-                    childNodes = getPlaylistChildNodes(parentNode.getId(), indexElement.getPath());
+                    // Get playlist entries
+                    childNodes = getPlaylistEntries(parentNode.getId(), indexElement.getPath());
                 } else {
                     // Get folder child nodes
                     File node = new File(indexElement.getPath());
@@ -190,7 +190,7 @@ public final class MediaManagerImpl implements MediaManager {
                     }
                 }
             } else {
-                logger.error(parentNode.getId() + " node not found in index");
+                logger.error("{} node not found in index", parentNode.getId());
             }
         }
         if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :{}", childNodes);
@@ -281,14 +281,14 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * A pod-cast is a RSS feed URL.
+     * Gets pod-cast entries. A pod-cast is a RSS.
      *
-     * @param parentId parent id
+     * @param podcastId pod-cast id
      * @param url podcast url
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastChildNodes(final String parentId, final String url) {
+    private List<AbstractNode> getPodcastEntries(final String podcastId, final String url) {
 
         try {
             return podcastCache.get(url, new Callable<List<AbstractNode>>() {
@@ -322,7 +322,7 @@ public final class MediaManagerImpl implements MediaManager {
                                         mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
                                         if (mimeType != null && mimeType.isMedia()) {
                                             PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), //
-                                                    parentId, rssEntry.getTitle().trim(), mimeType, //
+                                                    podcastId, rssEntry.getTitle().trim(), mimeType, //
                                                     enclosure.getLength(), enclosure.getUrl(), duration);
                                             podcastEntryNode.setIconUrl(iconUrl);
                                             if (rssEntry.getPublishedDate() != null) podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
@@ -351,13 +351,13 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Get childs of playlist node.
+     * Get playlist entries.
      *
-     * @param parentId parent id
+     * @param playlistId parent id
      * @param path path
      * @return playlist child nodes
      */
-    private List<AbstractNode> getPlaylistChildNodes(final String parentId, final String path) {
+    private List<AbstractNode> getPlaylistEntries(final String playlistId, final String path) {
         List<AbstractNode> nodes = Lists.newArrayList();
 
         try {
@@ -366,8 +366,8 @@ public final class MediaManagerImpl implements MediaManager {
                 for (PlaylistItem item : items) {
                     MimeType mimeType = mimeTypeManager.getMimeType(item.getPath());
                     if (mimeType.isMedia()) {
-                        String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mimeType.getType(), item.getPath(), item.getLabel(), true));
-                        nodes.add(new ContentNode(nodeId, parentId, item.getLabel(), new File(item.getPath()), mimeType, null));
+                        String nodeId = mediaIndexManager.add(new MediaIndexElement(playlistId, mimeType.getType(), item.getPath(), item.getLabel(), true));
+                        nodes.add(new ContentNode(nodeId, playlistId, item.getLabel(), new File(item.getPath()), mimeType, null));
                     }
                 }
             }
@@ -434,8 +434,7 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Configuration has changed, update media index.
      * 
-     * @param configurationEvent
-     *      configuration event
+     * @param configurationEvent configuration event
      */
     @Subscribe
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
@@ -469,8 +468,7 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Handle media event.
      *
-     * @param mediaEvent 
-     *      media event
+     * @param mediaEvent media event
      */
     @Subscribe
     public void handleMediaEvent(final MediaEvent mediaEvent) {

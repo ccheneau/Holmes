@@ -22,6 +22,7 @@ import net.holmes.common.mimetype.MimeType;
  * Podcast entry node.
  */
 public final class PodcastEntryNode extends AbstractNode {
+
     private final MimeType mimeType;
     private final Long size;
     private final String url;

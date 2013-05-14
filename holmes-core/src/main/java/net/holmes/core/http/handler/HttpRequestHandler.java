@@ -29,10 +29,8 @@ public interface HttpRequestHandler {
     /**
      * Check if handler can process request.
      *
-     * @param requestPath
-     *      request path
-     * @param method
-     *      Http method
+     * @param requestPath request path
+     * @param method Http method (GET, POST...)
      * @return true if handler can process request
      */
     boolean canProcess(String requestPath, HttpMethod method);
@@ -40,12 +38,9 @@ public interface HttpRequestHandler {
     /**
      * Process request.
      * 
-     * @param request
-     *      Http request
-     * @param channel
-     *      Channel
-     * @throws HttpRequestException
-     *      Http request exception
+     * @param request Http request
+     * @param channel Channel
+     * @throws HttpRequestException Http request exception
      */
     void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
 }
