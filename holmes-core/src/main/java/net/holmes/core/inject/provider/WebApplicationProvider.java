@@ -21,6 +21,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import net.holmes.core.backend.BackendPackage;
+
 import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import com.sun.jersey.api.core.PackagesResourceConfig;
@@ -54,7 +56,7 @@ public final class WebApplicationProvider implements Provider<WebApplication> {
 
         // Set web application properties
         Map<String, Object> props = Maps.newHashMap();
-        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, "net.holmes.core.backend");
+        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, BackendPackage.getName());
         props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
         // Initialize web application
