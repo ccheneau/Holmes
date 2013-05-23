@@ -11,20 +11,6 @@ body {
 	width: 10px;
 }
 
-.sidebar-nav {
-	width: 230px;
-}
-
-.sidebar-tabs > li > a {
-	background-color: white;
-}
-
-.sidebar-tabs > .active > a, .sidebar-tabs > .active > a:hover, .sidebar-tabs > .active > a:visited {
-    background-color: #0088CC;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-
 .white-bg {
 	background-color: white;
 }
