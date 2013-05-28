@@ -1,23 +1,23 @@
 /**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.holmes.common.configuration;
 
 /**
- * Configuration parameter.
+ * Configuration parameters.
  */
 public enum Parameter {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
@@ -30,7 +30,8 @@ public enum Parameter {
     IMAGE_CACHE_EXPIRE_HOURS("image_cache_expire_hours", "2"), //
     LOCAL_CACHE_CLEAN_DELAY_MINUTES("local_cache_clean_delay_minutes", "60"), //
     MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15"), //
-    MEDIA_SCAN_ALL_DELAY_MINUTES("media_scan_all_delay_minutes", "0");
+    MEDIA_SCAN_ALL_DELAY_MINUTES("media_scan_all_delay_minutes", "0"), //
+    HIDE_EMPTY_ROOT_NODES("hide_empty_root_nodes", "false");
 
     private final String name;
     private final String defaultValue;
@@ -38,7 +39,7 @@ public enum Parameter {
     /**
      * Instantiates a new parameter.
      *
-     * @param name parameter name
+     * @param name         parameter name
      * @param defaultValue parameter default value
      */
     Parameter(final String name, final String defaultValue) {
