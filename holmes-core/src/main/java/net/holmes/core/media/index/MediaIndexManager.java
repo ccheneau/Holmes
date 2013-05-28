@@ -16,9 +16,6 @@
  */
 package net.holmes.core.media.index;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
 /**
  * Media index manager.
  */
@@ -66,11 +63,4 @@ public interface MediaIndexManager {
      * Clean media index.
      */
     void clean();
-
-    /**
-     * Get all index elements.
-     *
-     * @return index elements
-     */
-    Set<Entry<String, MediaIndexElement>> getElements();
 }

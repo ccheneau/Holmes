@@ -1,30 +1,25 @@
 /**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.holmes.core.upnp;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.media.ContentNode;
 import net.holmes.common.media.PodcastEntryNode;
 import net.holmes.common.mimetype.MimeType;
-
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.DIDLObject.Property.DC;
@@ -32,11 +27,11 @@ import org.fourthline.cling.support.model.DIDLObject.Property.UPNP;
 import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.container.PlaylistContainer;
 import org.fourthline.cling.support.model.container.StorageFolder;
-import org.fourthline.cling.support.model.item.Item;
-import org.fourthline.cling.support.model.item.Movie;
-import org.fourthline.cling.support.model.item.MusicTrack;
-import org.fourthline.cling.support.model.item.Photo;
-import org.fourthline.cling.support.model.item.TextItem;
+import org.fourthline.cling.support.model.item.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 
 /**
  * UPnP directory browse result.
@@ -54,7 +49,7 @@ public final class DirectoryBrowseResult {
      * Instantiates a new directory browse result.
      *
      * @param firstResult first result
-     * @param maxResults max results
+     * @param maxResults  max results
      */
     public DirectoryBrowseResult(final long firstResult, final long maxResults) {
         this.firstResult = firstResult;
@@ -76,10 +71,6 @@ public final class DirectoryBrowseResult {
         return firstResult;
     }
 
-    public long getMaxResults() {
-        return maxResults;
-    }
-
     public DIDLContent getDidl() {
         return didl;
     }
@@ -87,9 +78,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds item to result.
      *
-     * @param parentNodeId  parent node id
-     * @param contentNode content node
-     * @param url content url
+     * @param parentNodeId parent node id
+     * @param contentNode  content node
+     * @param url          content url
      * @throws URISyntaxException URI syntax exception
      */
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws URISyntaxException {
@@ -120,9 +111,9 @@ public final class DirectoryBrowseResult {
     /**
      * Adds podcast item to result.
      *
-     * @param parentNodeId parent node id
+     * @param parentNodeId     parent node id
      * @param podcastEntryNode podcast entry node
-     * @param entryName podcast entry name
+     * @param entryName        podcast entry name
      * @throws URISyntaxException URI syntax exception
      */
     public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws URISyntaxException {
@@ -162,8 +153,8 @@ public final class DirectoryBrowseResult {
      * Adds container to result.
      *
      * @param parentNodeId parent node id
-     * @param node container node
-     * @param childCount child count
+     * @param node         container node
+     * @param childCount   child count
      * @throws URISyntaxException URI syntax exception
      */
     public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
@@ -178,8 +169,8 @@ public final class DirectoryBrowseResult {
      * Adds the playlist to result.
      *
      * @param parentNodeId parent node id
-     * @param node playlist node
-     * @param childCount child count
+     * @param node         playlist node
+     * @param childCount   child count
      * @throws URISyntaxException URI syntax exception
      */
     public void addPlaylist(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
@@ -214,11 +205,12 @@ public final class DirectoryBrowseResult {
      * Sets the didl metadata.
      *
      * @param didlObjet didl objet
-     * @param node node
+     * @param node      node
      * @throws URISyntaxException !URI syntax exception
      */
     private void setDidlMetadata(final DIDLObject didlObjet, final AbstractNode node) throws URISyntaxException {
-        if (node.getModifiedDate() != null) didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
+        if (node.getModifiedDate() != null)
+            didlObjet.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
         if (node.getIconUrl() != null) didlObjet.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
     }
 }

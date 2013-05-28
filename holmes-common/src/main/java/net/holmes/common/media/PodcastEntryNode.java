@@ -1,19 +1,19 @@
 /**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.holmes.common.media;
 
 import net.holmes.common.mimetype.MimeType;
@@ -24,25 +24,22 @@ import net.holmes.common.mimetype.MimeType;
 public final class PodcastEntryNode extends AbstractNode {
 
     private final MimeType mimeType;
-    private final Long size;
     private final String url;
     private final String duration;
 
     /**
      * Instantiates a new podcast entry node.
      *
-     * @param id node id
+     * @param id       node id
      * @param parentId parent node id
-     * @param name node name
+     * @param name     node name
      * @param mimeType mime type
-     * @param size size
-     * @param url url
+     * @param url      url
      * @param duration duration
      */
-    public PodcastEntryNode(final String id, final String parentId, final String name, final MimeType mimeType, final Long size, final String url,
-            final String duration) {
+    public PodcastEntryNode(final String id, final String parentId, final String name, final MimeType mimeType, final String url,
+                            final String duration) {
         super(NodeType.TYPE_PODCAST_ENTRY, id, parentId, name);
-        this.size = size;
         this.url = url;
         this.duration = duration;
         this.mimeType = mimeType;
@@ -55,15 +52,6 @@ public final class PodcastEntryNode extends AbstractNode {
      */
     public MimeType getMimeType() {
         return this.mimeType;
-    }
-
-    /**
-     * Gets the podcast entry size.
-     *
-     * @return the podcast entry size
-     */
-    public Long getSize() {
-        return size;
     }
 
     /**
@@ -90,7 +78,6 @@ public final class PodcastEntryNode extends AbstractNode {
         int result = super.hashCode();
         result = prime * result + ((duration == null) ? 0 : duration.hashCode());
         result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
-        result = prime * result + ((size == null) ? 0 : size.hashCode());
         result = prime * result + ((url == null) ? 0 : url.hashCode());
         return result;
     }
@@ -107,9 +94,6 @@ public final class PodcastEntryNode extends AbstractNode {
         if (mimeType == null) {
             if (other.mimeType != null) return false;
         } else if (!mimeType.equals(other.mimeType)) return false;
-        if (size == null) {
-            if (other.size != null) return false;
-        } else if (!size.equals(other.size)) return false;
         if (url == null) {
             if (other.url != null) return false;
         } else if (!url.equals(other.url)) return false;
@@ -121,8 +105,6 @@ public final class PodcastEntryNode extends AbstractNode {
         StringBuilder builder = new StringBuilder();
         builder.append("PodcastEntryNode [mimeType=");
         builder.append(mimeType);
-        builder.append(", size=");
-        builder.append(size);
         builder.append(", url=");
         builder.append(url);
         builder.append(", duration=");

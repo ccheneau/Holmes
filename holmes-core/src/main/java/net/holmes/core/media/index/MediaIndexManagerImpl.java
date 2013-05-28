@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -121,10 +120,5 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         for (String id : toRemove) {
             elements.remove(id);
         }
-    }
-
-    @Override
-    public Set<Entry<String, MediaIndexElement>> getElements() {
-        return elements.entrySet();
     }
 }

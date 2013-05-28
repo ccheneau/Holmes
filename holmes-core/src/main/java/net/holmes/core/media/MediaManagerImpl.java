@@ -334,8 +334,7 @@ public final class MediaManagerImpl implements MediaManager {
                                         mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
                                         if (mimeType != null && mimeType.isMedia()) {
                                             PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), //
-                                                    podCastId, rssEntry.getTitle().trim(), mimeType, //
-                                                    enclosure.getLength(), enclosure.getUrl(), duration);
+                                                    podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), duration);
                                             podcastEntryNode.setIconUrl(iconUrl);
                                             if (rssEntry.getPublishedDate() != null)
                                                 podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
@@ -409,7 +408,7 @@ public final class MediaManagerImpl implements MediaManager {
             MediaType mimeMediaType = MediaType.getByValue(mimeType.getType());
             if (mimeMediaType == MediaType.TYPE_PLAYLIST) {
                 node = new PlaylistNode(nodeId, parentId, file.getName(), file.getAbsolutePath());
-            } else if (mimeMediaType == mediaType) {
+            } else if (mimeMediaType.equals(mediaType)) {
                 String resolution = getContentResolution(file, mimeType);
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, resolution);
             } else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))

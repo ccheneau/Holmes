@@ -1,19 +1,19 @@
 /**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.holmes.common;
 
 import java.io.File;
@@ -27,6 +27,7 @@ import java.nio.channels.FileLock;
 public final class SystemUtils {
 
     private static final String LOCK_FILE = "holmes.lock";
+    private static final String HOLMES_DATE_DIR = SystemProperty.USER_HOME.getValue() + File.separator + ".holmes";
 
     /**
      * Instantiates a new system utils.
@@ -36,7 +37,7 @@ public final class SystemUtils {
 
     /**
      * Create Holmes lock file.
-     * 
+     *
      * @return true on lock success, false if lock file already exists
      */
     public static boolean lockInstance() {
@@ -53,7 +54,8 @@ public final class SystemUtils {
                         try {
                             fileLock.release();
                             randomAccessFile.close();
-                            if (!lockFile.delete()) System.err.println("Unable to remove lock file: " + lockFile.getPath());
+                            if (!lockFile.delete())
+                                System.err.println("Unable to remove lock file: " + lockFile.getPath());
                         } catch (IOException e) {
                             System.err.println("Unable to remove lock file: " + lockFile.getPath() + "  " + e.getMessage());
                         }
@@ -74,11 +76,10 @@ public final class SystemUtils {
      * @return local user data dir
      */
     public static File getLocalHolmesDataDir() {
-        StringBuilder holmesDataDir = new StringBuilder().append(SystemProperty.USER_HOME.getValue()).append(File.separator).append(".holmes");
-
         // Check directory and create it if it does not exist
-        File fDataDir = new File(holmesDataDir.toString());
-        if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs()) throw new RuntimeException("Failed to create " + holmesDataDir.toString());
+        File fDataDir = new File(HOLMES_DATE_DIR);
+        if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs())
+            throw new RuntimeException("Failed to create " + HOLMES_DATE_DIR);
 
         return fDataDir;
     }

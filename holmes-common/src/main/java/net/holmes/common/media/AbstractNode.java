@@ -1,19 +1,19 @@
 /**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.holmes.common.media;
 
 /**
@@ -31,10 +31,10 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     /**
      * Instantiates a new abstract node.
      *
-     * @param type node type
-     * @param id node id
+     * @param type     node type
+     * @param id       node id
      * @param parentId parent node id
-     * @param name node name
+     * @param name     node name
      */
     public AbstractNode(final NodeType type, final String id, final String parentId, final String name) {
         this.type = type;
@@ -165,8 +165,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         if (parentId == null) {
             if (other.parentId != null) return false;
         } else if (!parentId.equals(other.parentId)) return false;
-        if (type != other.type) return false;
-        return true;
+        return type == other.type;
     }
 
     /**
@@ -177,6 +176,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         TYPE_CONTENT, //
         TYPE_PODCAST, //
         TYPE_PODCAST_ENTRY, //
-        TYPE_PLAYLIST;
+        TYPE_PLAYLIST
     }
 }
