@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2012-2013  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.holmes.common.configuration;
 
 /**
  * Configuration parameters.
  */
 public enum Parameter {
+
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
     ENABLE_SYSTRAY("enable_systray", "true"), //
     ENABLE_UPNP("enable_upnp", "true"), //

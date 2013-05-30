@@ -1,28 +1,33 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.holmes.core;
 
+import com.google.common.cache.Cache;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.AbstractScheduledService;
+import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.name.Names;
+import com.sun.jersey.spi.container.WebApplication;
 import io.netty.channel.ChannelInboundMessageHandler;
-
-import java.io.File;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-
 import net.holmes.common.Service;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.XmlConfigurationImpl;
@@ -50,22 +55,15 @@ import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.MediaIndexCleanerService;
 import net.holmes.core.scheduled.MediaScannerService;
 import net.holmes.core.upnp.UpnpServer;
-
 import org.fourthline.cling.UpnpService;
 
-import com.google.common.cache.Cache;
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AbstractScheduledService;
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
-import com.google.inject.matcher.Matchers;
-import com.google.inject.name.Names;
-import com.sun.jersey.spi.container.WebApplication;
+import java.io.File;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
 
 /**
- * Guice module. 
+ * Guice module.
  */
 public final class HolmesServerModule extends AbstractModule {
 

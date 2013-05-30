@@ -1,31 +1,31 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.holmes.core.configuration;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.configuration.Parameter;
 import net.holmes.common.media.RootNode;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 public class TestConfiguration implements Configuration {
 
@@ -85,21 +85,21 @@ public class TestConfiguration implements Configuration {
     public List<ConfigurationNode> getFolders(RootNode rootNode) {
         List<ConfigurationNode> folders = null;
         switch (rootNode) {
-        case AUDIO:
-            folders = this.audioFolders;
-            break;
-        case PICTURE:
-            folders = this.pictureFolders;
-            break;
-        case PODCAST:
-            folders = this.podcasts;
-            break;
-        case VIDEO:
-            folders = this.videoFolders;
-            break;
+            case AUDIO:
+                folders = this.audioFolders;
+                break;
+            case PICTURE:
+                folders = this.pictureFolders;
+                break;
+            case PODCAST:
+                folders = this.podcasts;
+                break;
+            case VIDEO:
+                folders = this.videoFolders;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
         return folders;
     }

@@ -1,24 +1,25 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.holmes.common.media;
 
-import java.io.File;
-
 import net.holmes.common.mimetype.MimeType;
+
+import java.io.File;
 
 /**
  * Content node.
@@ -33,10 +34,10 @@ public final class ContentNode extends AbstractNode {
     /**
      * Instantiates a new content node.
      *
-     * @param id node id
+     * @param id       node id
      * @param parentId parent node id
-     * @param name node name
-     * @param file node file
+     * @param name     node name
+     * @param file     node file
      * @param mimeType mime type
      */
     public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType, final String resolution) {

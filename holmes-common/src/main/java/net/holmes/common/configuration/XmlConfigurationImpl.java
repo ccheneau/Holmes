@@ -32,6 +32,7 @@ import java.util.Properties;
  * XML configuration implementation.
  */
 public final class XmlConfigurationImpl implements Configuration {
+
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
     private XmlRootNode rootNode = null;

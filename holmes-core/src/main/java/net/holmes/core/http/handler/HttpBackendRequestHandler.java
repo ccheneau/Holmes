@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2012-2013  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.holmes.core.http.handler;
 
 import com.google.common.collect.Lists;
@@ -28,7 +29,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.Loggable;
+import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -42,13 +43,11 @@ import java.util.Map.Entry;
 /**
  * Handler for backend requests from Holmes UI.
  */
-@Loggable
 public final class HttpBackendRequestHandler implements HttpRequestHandler {
-    private Logger logger;
-
     private static final String REQUEST_PATH = "/backend/";
-
     private final WebApplication webApplication;
+    @InjectLogger
+    private Logger logger;
 
     /**
      * Instantiates a new http backend request handler.
@@ -71,7 +70,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
         try {
             // Build backend request
-            String baseUrl = new StringBuilder().append("http://").append(request.headers().get(HttpHeaders.Names.HOST)).append(REQUEST_PATH).toString();
+            String baseUrl = "http://" + request.headers().get(HttpHeaders.Names.HOST) + REQUEST_PATH;
             final URI baseUri = new URI(baseUrl);
             final URI requestUri = new URI(baseUrl.substring(0, baseUrl.length() - 1) + request.getUri());
             final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().name(), baseUri, requestUri, getHeaders(request),
@@ -79,9 +78,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
             // Process backend request
             webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
-        } catch (URISyntaxException e) {
-            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        } catch (IOException e) {
+        } catch (URISyntaxException | IOException e) {
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } finally {
             if (logger.isDebugEnabled()) logger.debug("[END] processRequest");

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2012-2013  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.holmes.core.media;
 
 import com.google.common.cache.Cache;
@@ -37,7 +38,7 @@ import net.holmes.common.event.MediaEvent;
 import net.holmes.common.media.*;
 import net.holmes.common.mimetype.MimeType;
 import net.holmes.common.mimetype.MimeTypeManager;
-import net.holmes.core.inject.Loggable;
+import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
@@ -64,16 +65,15 @@ import static net.holmes.common.media.RootNode.*;
 /**
  * Media manager implementation.
  */
-@Loggable
 public final class MediaManagerImpl implements MediaManager {
-    private Logger logger;
-
     private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
     private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
     private final Cache<File, String> imageCache;
+    @InjectLogger
+    private Logger logger;
 
     /**
      * Instantiates a new media manager implementation.

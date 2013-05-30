@@ -1,44 +1,27 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.holmes.core.upnp;
-
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.Parameter;
-import net.holmes.common.media.AbstractNode;
-import net.holmes.common.media.ContentNode;
-import net.holmes.common.media.FolderNode;
-import net.holmes.common.media.PlaylistNode;
-import net.holmes.common.media.PodcastEntryNode;
-import net.holmes.common.media.PodcastNode;
-import net.holmes.core.inject.Loggable;
+import net.holmes.common.media.*;
+import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.MediaManager;
-
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -48,20 +31,23 @@ import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
 
+import javax.inject.Inject;
+import java.net.*;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
+
 /**
  * UPnP Content directory service.
  */
-@Loggable
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
+    private static final String LOCAL_ADDRESS = getLocalIPV4();
+    @InjectLogger
     private Logger logger;
-
     @Inject
     private MediaManager mediaManager;
-
     @Inject
     private Configuration configuration;
-
-    private static final String LOCAL_ADDRESS = getLocalIPV4();
 
     /**
      * Instantiates a new content directory service.
@@ -73,14 +59,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     /**
      * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux).
-     * 
+     *
      * @return local IPv4 address
      */
     private static String getLocalIPV4() {
         try {
-            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements(); ) {
                 NetworkInterface intf = intfaces.nextElement();
-                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements();) {
+                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
                     InetAddress inetAddr = inetAddresses.nextElement();
                     if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
                         return inetAddr.getHostAddress();
@@ -88,16 +74,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 }
             }
             return InetAddress.getLocalHost().getHostAddress();
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        } catch (UnknownHostException e) {
+        } catch (SocketException | UnknownHostException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
-            final SortCriterion[] orderby) throws ContentDirectoryException {
+                               final SortCriterion[] orderby) throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
@@ -116,7 +100,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             // Get browse node                
             AbstractNode browseNode = mediaManager.getNode(objectID);
             if (logger.isDebugEnabled()) logger.debug("browse node:{}", browseNode);
-            if (browseNode == null) throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
+            if (browseNode == null)
+                throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 // Add child nodes
@@ -150,9 +135,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Adds node.
      *
-     * @param nodeId node id
-     * @param node node
-     * @param result result
+     * @param nodeId        node id
+     * @param node          node
+     * @param result        result
      * @param childNodeSize child node size
      * @throws URISyntaxException URI syntax exception
      */
@@ -160,11 +145,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (result.filterResult()) {
             if (node instanceof ContentNode) {
                 // Build content url
-                StringBuilder url = new StringBuilder().append("http://").append(LOCAL_ADDRESS).append(":").append(configuration.getHttpServerPort())//
-                        .append("/content?id=").append(node.getId());
+                String url = "http://" + LOCAL_ADDRESS + ":" + configuration.getHttpServerPort() + "/content?id=" + node.getId();
 
                 // Add item to result
-                result.addItem(nodeId, (ContentNode) node, url.toString());
+                result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
                 List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
@@ -191,9 +175,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * If prepend_podcast_entry_name configuration parameter is set to true,
      * item number is added to title.
      *
-     * @param count post-cast entry count
+     * @param count      post-cast entry count
      * @param totalCount post-cast entry total count
-     * @param title title
+     * @param title      title
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {

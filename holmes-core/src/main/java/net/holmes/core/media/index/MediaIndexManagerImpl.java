@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2012-2013  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.holmes.core.media.index;
 
 import com.google.common.collect.BiMap;
@@ -21,7 +22,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.common.media.RootNode;
-import net.holmes.core.inject.Loggable;
+import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -32,11 +33,10 @@ import java.util.UUID;
 /**
  * Media index manager implementation.
  */
-@Loggable
 public class MediaIndexManagerImpl implements MediaIndexManager {
-    private Logger logger;
-
     private final BiMap<String, MediaIndexElement> elements;
+    @InjectLogger
+    private Logger logger;
 
     /**
      * Instantiates a new media index manager implementation.

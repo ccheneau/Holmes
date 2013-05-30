@@ -1,31 +1,35 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package net.holmes.core;
 
-import java.awt.AWTException;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
+import net.holmes.common.Service;
+import net.holmes.common.SystemUtils;
+import net.holmes.common.configuration.Configuration;
+import net.holmes.common.configuration.Parameter;
+import net.holmes.core.inject.InjectLogger;
+import org.slf4j.Logger;
+
+import javax.inject.Inject;
+import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,45 +40,23 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ResourceBundle;
 
-import javax.inject.Inject;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.FontUIResource;
-
-import net.holmes.common.Service;
-import net.holmes.common.SystemUtils;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
-import net.holmes.core.inject.Loggable;
-
-import org.slf4j.Logger;
-
 /**
  * Manages system tray icon.
  */
-@Loggable
 public final class SystrayService implements Service {
-    private Logger logger;
-
     private static final String HOLMES_SITE_URL = "http://ccheneau.github.io/Holmes/";
     private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
     private static final String MENU_ITEM_FONT = "MenuItem.font";
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
-
     private final Configuration configuration;
     private final ResourceBundle resourceBundle;
+    @InjectLogger
+    private Logger logger;
 
     /**
      * Instantiates a new systray service.
      *
-     * @param configuration configuration
+     * @param configuration  configuration
      * @param resourceBundle resource bundle
      */
     @Inject
@@ -96,7 +78,7 @@ public final class SystrayService implements Service {
 
     /**
      * Initializes UI manager.
-     * 
+     *
      * @return true on success
      */
     private boolean initUIManager() {
@@ -106,7 +88,8 @@ public final class SystrayService implements Service {
 
             // Add bold font for systray menu item
             Font menuItemFont = UIManager.getFont(MENU_ITEM_FONT);
-            if (menuItemFont != null) UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize()));
+            if (menuItemFont != null)
+                UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize()));
 
         } catch (ClassNotFoundException e) {
             result = false;
@@ -158,9 +141,8 @@ public final class SystrayService implements Service {
             public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        StringBuilder logFile = new StringBuilder().append(SystemUtils.getLocalHolmesDataDir().getAbsolutePath()).append(File.separator)
-                                .append("log").append(File.separator).append("holmes.log");
-                        Desktop.getDesktop().open(new File(logFile.toString()));
+                        String logFile = SystemUtils.getLocalHolmesDataDir().getAbsolutePath() + File.separator + "log" + File.separator + "holmes.log";
+                        Desktop.getDesktop().open(new File(logFile));
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     }
@@ -179,11 +161,9 @@ public final class SystrayService implements Service {
             public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        StringBuilder holmesUrl = new StringBuilder().append("http://localhost:").append(configuration.getHttpServerPort()).append("/");
-                        Desktop.getDesktop().browse(new URI(holmesUrl.toString()));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    } catch (URISyntaxException e) {
+                        String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
+                        Desktop.getDesktop().browse(new URI(holmesUrl));
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -199,9 +179,7 @@ public final class SystrayService implements Service {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    } catch (URISyntaxException e) {
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -216,9 +194,7 @@ public final class SystrayService implements Service {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL));
-                    } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
-                    } catch (URISyntaxException e) {
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -250,7 +226,6 @@ public final class SystrayService implements Service {
      */
     public static class HolmesTrayIcon extends TrayIcon {
 
-        private JPopupMenu popupMenu;
         private static final JDialog DIALOG;
 
         static {
@@ -274,11 +249,12 @@ public final class SystrayService implements Service {
                 DIALOG.setVisible(false);
             }
         };
+        private JPopupMenu popupMenu;
 
         /**
          * Instantiates a new holmes tray icon.
          *
-         * @param image icon image
+         * @param image   icon image
          * @param tooltip icon tooltip
          */
         public HolmesTrayIcon(final Image image, final String tooltip) {
@@ -293,7 +269,7 @@ public final class SystrayService implements Service {
 
         /**
          * Show popup menu.
-         * 
+         *
          * @param event mouse event
          */
         private void showPopupMenu(final MouseEvent event) {
@@ -308,7 +284,7 @@ public final class SystrayService implements Service {
 
         /**
          * Set popup menu.
-         * 
+         *
          * @param popupMenu popup menu
          */
         public void setPopupMenu(final JPopupMenu popupMenu) {

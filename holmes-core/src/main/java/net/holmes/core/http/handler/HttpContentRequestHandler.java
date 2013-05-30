@@ -1,62 +1,50 @@
-/**
-* Copyright (C) 2012-2013  Cedric Cheneau
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.holmes.core.http.handler;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.DefaultHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
+import net.holmes.common.media.AbstractNode;
+import net.holmes.common.media.ContentNode;
+import net.holmes.core.http.HttpServer;
+import net.holmes.core.inject.InjectLogger;
+import net.holmes.core.media.MediaManager;
+import org.slf4j.Logger;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-
-import net.holmes.common.media.AbstractNode;
-import net.holmes.common.media.ContentNode;
-import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.Loggable;
-import net.holmes.core.media.MediaManager;
-
-import org.slf4j.Logger;
-
 /**
  * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer.
  */
-@Loggable
 public final class HttpContentRequestHandler implements HttpRequestHandler {
-    private Logger logger;
-
     private static final String REQUEST_PATH = "/content";
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
-
     private final MediaManager mediaManager;
+    @InjectLogger
+    private Logger logger;
 
     /**
      * Instantiates a new http content request handler.
@@ -103,7 +91,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
             // Get file descriptor
             RandomAccessFile randomFile;
-            long fileLength = 0;
+            long fileLength;
             try {
                 randomFile = new RandomAccessFile(file, "r");
                 fileLength = randomFile.length();
@@ -112,7 +100,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
             }
 
             // Build response header
-            HttpResponse response = null;
+            HttpResponse response;
             if (startOffset == 0) {
                 response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
                 HttpHeaders.setContentLength(response, fileLength);
@@ -152,7 +140,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
     /**
      * Get content node from {@link net.holmes.core.media.MediaManager}.
-     * 
+     *
      * @param uri content Uri
      * @return content node
      */
