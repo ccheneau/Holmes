@@ -3,12 +3,41 @@ body {
 	padding-top: 60px;
 }
 
+a:focus {
+   outline: 0;
+}
+
 #easter {
     position: absolute;
     left: 35px;
     top: 16px;
 	height: 11px;
 	width: 10px;
+}
+
+.sidebar-nav {
+    padding: 0;
+    max-width:200px;
+}
+
+.sidebar-nav .divider {
+    margin: 0 -15px;
+}
+
+.sidebar-nav li a {
+    padding: 10px 5px 10px 15px;
+}
+
+.sidebar-nav  a i {
+    opacity: 0.25;
+}
+
+.sidebar-nav a:hover  i {
+    opacity: 0.5;
+}
+
+.sidebar-nav  .active a i {
+    opacity: 1;
 }
 
 .white-bg {
