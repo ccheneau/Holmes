@@ -36,7 +36,7 @@ public class HolmesSchedulerService implements Service {
      * Instantiates a new holmes scheduler service.
      *
      * @param mediaIndexCleanerService   media index cleaner
-     * @param podcastCacheCleanerService pdcast cache cleaner
+     * @param podcastCacheCleanerService podcast cache cleaner
      * @param mediaScannerService        media scanner
      */
     @Inject
