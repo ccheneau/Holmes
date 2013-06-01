@@ -17,6 +17,8 @@
 
 package net.holmes.core.backend.response;
 
+import com.google.common.base.Objects;
+
 /**
  * Settings.
  */
@@ -26,6 +28,7 @@ public final class Settings {
     private Integer httpServerPort;
     private Boolean prependPodcastItem;
     private Boolean enableExternalSubtitles;
+    private Boolean hideEmptyRootNodes;
 
     /**
      * Instantiates a new settings.
@@ -40,12 +43,15 @@ public final class Settings {
      * @param httpServerPort          Http server port
      * @param prependPodcastItem      prepend pod-cast item
      * @param enableExternalSubtitles enable external subtitles
+     * @param hideEmptyRootNodes      hide empty root nodes
      */
-    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem, final Boolean enableExternalSubtitles) {
+    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem,
+                    final Boolean enableExternalSubtitles, final boolean hideEmptyRootNodes) {
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
         this.enableExternalSubtitles = enableExternalSubtitles;
+        this.hideEmptyRootNodes = hideEmptyRootNodes;
     }
 
     public String getServerName() {
@@ -80,35 +86,28 @@ public final class Settings {
         this.enableExternalSubtitles = enableExternalSubtitles;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((enableExternalSubtitles == null) ? 0 : enableExternalSubtitles.hashCode());
-        result = prime * result + ((httpServerPort == null) ? 0 : httpServerPort.hashCode());
-        result = prime * result + ((prependPodcastItem == null) ? 0 : prependPodcastItem.hashCode());
-        result = prime * result + ((serverName == null) ? 0 : serverName.hashCode());
-        return result;
+    public Boolean getHideEmptyRootNodes() {
+        return hideEmptyRootNodes;
+    }
+
+    public void setHideEmptyRootNodes(Boolean hideEmptyRootNodes) {
+        this.hideEmptyRootNodes = hideEmptyRootNodes;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        Settings other = (Settings) obj;
-        if (enableExternalSubtitles == null) {
-            if (other.enableExternalSubtitles != null) return false;
-        } else if (!enableExternalSubtitles.equals(other.enableExternalSubtitles)) return false;
-        if (httpServerPort == null) {
-            if (other.httpServerPort != null) return false;
-        } else if (!httpServerPort.equals(other.httpServerPort)) return false;
-        if (prependPodcastItem == null) {
-            if (other.prependPodcastItem != null) return false;
-        } else if (!prependPodcastItem.equals(other.prependPodcastItem)) return false;
-        if (serverName == null) {
-            if (other.serverName != null) return false;
-        } else if (!serverName.equals(other.serverName)) return false;
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(serverName, httpServerPort, prependPodcastItem, enableExternalSubtitles, hideEmptyRootNodes);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Settings other = (Settings) obj;
+        return Objects.equal(this.serverName, other.serverName) && Objects.equal(this.httpServerPort, other.httpServerPort) && Objects.equal(this.prependPodcastItem, other.prependPodcastItem) && Objects.equal(this.enableExternalSubtitles, other.enableExternalSubtitles) && Objects.equal(this.hideEmptyRootNodes, other.hideEmptyRootNodes);
     }
 }

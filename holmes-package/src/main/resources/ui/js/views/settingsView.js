@@ -15,6 +15,7 @@ var Application = (function(application) {
 					settingsServerPort : $.i18n.prop("msg.settings.httpServerPort"),
 					settingsPrependPodcastItem : $.i18n.prop("msg.settings.prependPodcastItem"),
 					settingsEnableExternalSubtitles : $.i18n.prop("msg.settings.enableExternalSubtitles"),
+					settingsHideEmptyRootNodes : $.i18n.prop("msg.settings.hideEmptyRootNodes"),
 					cancel : $.i18n.prop("msg.cancel"),
 					save : $.i18n.prop("msg.save")
 				});
@@ -30,7 +31,8 @@ var Application = (function(application) {
 				"serverName" : $("#settingsServerName").val().trim(),
 				"httpServerPort" : $("#settingsHttpServerPort").val().trim(),
 				"prependPodcastItem" : $("#chkPrependPodcastItem").is(':checked') ? "true" : "false",
-				"enableExternalSubtitles" : $("#chkEnableExternalSubtitles").is(':checked') ? "true" : "false"
+				"enableExternalSubtitles" : $("#chkEnableExternalSubtitles").is(':checked') ? "true" : "false",
+                "hideEmptyRootNodes" : $("#chkHideEmptyRootNodes").is(':checked') ? "true" : "false"
 			}, {
 				success : function() {
 					$("#messagebox").message({
