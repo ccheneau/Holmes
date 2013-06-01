@@ -15,6 +15,7 @@ yepnope({
 		folderSelectBox : '/js/plugins/folder-select-box.js',
 		message : '/js/plugins/jq-message.js',
 		template : '/js/plugins/jq-template.js',
+		logger : '/js/plugins/jq-logger.js',
 		
 		// application
 		application : '/js/application.js',
@@ -66,7 +67,7 @@ yepnope({
 		}
 	},
 	complete : function() {
-		console.log('Launching Holmes UI ...');
+		$.logger('Launching Holmes UI ...');
 
 		window.defaultView = new Application.Views.DefaultView();
 		window.settingsView = new Application.Views.SettingsView();
@@ -101,6 +102,7 @@ yepnope({
 		});
 
 		Backbone.history.start();
-		console.log('Holmes UI launched');
+
+		$.logger('Holmes UI launched');
 	}
 });
