@@ -114,13 +114,8 @@ public final class BackendManagerImpl implements BackendManager {
         // Validate
         validateFolder(folder, podcast);
         validateDuplicatedFolder(id, folder, configNodes, podcast);
-        ConfigurationNode currentNode = null;
-        for (ConfigurationNode node : configNodes) {
-            if (node.getId().equals(id)) {
-                currentNode = node;
-                break;
-            }
-        }
+
+        ConfigurationNode currentNode = getCurrentConfigurationNode(id, configNodes);
         if (currentNode == null) {
             if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
             else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
@@ -146,14 +141,7 @@ public final class BackendManagerImpl implements BackendManager {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         boolean podcast = rootNode == RootNode.PODCAST;
 
-        // Validate
-        ConfigurationNode currentNode = null;
-        for (ConfigurationNode node : configNodes) {
-            if (node.getId().equals(id)) {
-                currentNode = node;
-                break;
-            }
-        }
+        ConfigurationNode currentNode = getCurrentConfigurationNode(id, configNodes);
         if (currentNode == null) {
             if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
             else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
@@ -169,6 +157,17 @@ public final class BackendManagerImpl implements BackendManager {
 
         // Post Event
         eventBus.post(new ConfigurationEvent(DELETE, currentNode, rootNode));
+    }
+
+    private ConfigurationNode getCurrentConfigurationNode(String id, List<ConfigurationNode> configNodes) {
+        ConfigurationNode currentNode = null;
+        for (ConfigurationNode node : configNodes) {
+            if (node.getId().equals(id)) {
+                currentNode = node;
+                break;
+            }
+        }
+        return currentNode;
     }
 
     @Override
