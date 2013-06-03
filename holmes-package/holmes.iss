@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Holmes UPnP Media Server"
-#define MyAppVersion "0.4.0"
+#define MyAppVersion "0.4.1"
 #define MyAppPublisher "Cedric Cheneau"
 #define MyAppURL "http://ccheneau.github.com/Holmes/"
 #define MyAppExeName "startup.bat"
