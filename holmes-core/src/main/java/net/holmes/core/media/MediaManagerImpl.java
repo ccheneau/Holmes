@@ -66,6 +66,7 @@ import static net.holmes.common.media.RootNode.*;
  * Media manager implementation.
  */
 public final class MediaManagerImpl implements MediaManager {
+
     private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
     private final ResourceBundle resourceBundle;
@@ -274,19 +275,17 @@ public final class MediaManagerImpl implements MediaManager {
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
-                AbstractNode node = null;
                 if (file.canRead() && !file.isHidden()) {
                     // Add node to mediaIndex
                     String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
                     if (file.isDirectory()) {
                         // Add folder node
-                        node = new FolderNode(nodeId, parentId, file.getName(), file);
+                        nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
                     } else {
                         // Add file node
-                        node = buildFileNode(nodeId, parentId, file, mediaType);
+                        nodes.add(buildFileNode(nodeId, parentId, file, mediaType));
                     }
                 }
-                if (node != null) nodes.add(node);
             }
         }
         return nodes;
