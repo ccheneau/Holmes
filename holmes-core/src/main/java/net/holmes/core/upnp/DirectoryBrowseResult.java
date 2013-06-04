@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat;
 /**
  * UPnP directory browse result.
  */
-public final class DirectoryBrowseResult {
+final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     private long itemCount;
@@ -171,11 +171,10 @@ public final class DirectoryBrowseResult {
      *
      * @param parentNodeId parent node id
      * @param node         playlist node
-     * @param childCount   child count
      * @throws URISyntaxException URI syntax exception
      */
-    public void addPlaylist(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
-        PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, childCount);
+    public void addPlaylist(final String parentNodeId, final AbstractNode node) throws URISyntaxException {
+        PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, 1);
         setDidlMetadata(playlist, node);
 
         didl.addContainer(playlist);

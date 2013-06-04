@@ -37,10 +37,6 @@ public class PlaylistNode extends AbstractNode {
         this.path = path;
     }
 
-    public String getPath() {
-        return path;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;

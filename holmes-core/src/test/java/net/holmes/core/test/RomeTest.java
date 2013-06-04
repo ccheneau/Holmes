@@ -28,11 +28,9 @@ import com.sun.syndication.io.XmlReader;
 import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.List;
 
 public class RomeTest extends TestCase {
@@ -48,7 +46,6 @@ public class RomeTest extends TestCase {
      * Test rome with cast coders rss.
      */
     @SuppressWarnings("unchecked")
-    @Test
     public void testRomeCastCoders() {
         XmlReader reader = null;
         try {
@@ -67,13 +64,7 @@ public class RomeTest extends TestCase {
                     }
                 }
             }
-        } catch (MalformedURLException e) {
-            fail(e.getMessage());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            fail(e.getMessage());
-        } catch (FeedException e) {
+        } catch (IOException | FeedException | IllegalArgumentException e) {
             fail(e.getMessage());
         } finally {
             try {
@@ -85,10 +76,9 @@ public class RomeTest extends TestCase {
     }
 
     /**
-     * Test rome with allocine faux raccord rss.
+     * Test rome with allocine faux raccords rss.
      */
     @SuppressWarnings("unchecked")
-    @Test
     public void testRomeAllocineFauxRaccord() {
         XmlReader reader = null;
         try {
@@ -108,13 +98,7 @@ public class RomeTest extends TestCase {
                     }
                 }
             }
-        } catch (MalformedURLException e) {
-            fail(e.getMessage());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            fail(e.getMessage());
-        } catch (FeedException e) {
+        } catch (IOException | IllegalArgumentException | FeedException e) {
             fail(e.getMessage());
         } finally {
             try {

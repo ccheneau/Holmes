@@ -24,7 +24,6 @@ import net.holmes.core.TestModule;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
 import org.junit.Before;
-import org.junit.Test;
 
 import javax.inject.Inject;
 
@@ -42,7 +41,6 @@ public class MediaIndexTest extends TestCase {
     /**
      * Check that adding same data returns the same uuid
      */
-    @Test
     public void testAddMediaIndex() {
         String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
         String uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));

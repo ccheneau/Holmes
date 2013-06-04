@@ -53,10 +53,6 @@ public final class FolderNode extends AbstractNode {
 
     }
 
-    public String getPath() {
-        return path;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;

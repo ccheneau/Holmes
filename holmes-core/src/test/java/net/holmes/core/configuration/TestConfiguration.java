@@ -29,10 +29,10 @@ import java.util.List;
 
 public class TestConfiguration implements Configuration {
 
-    private List<ConfigurationNode> videoFolders;
-    private List<ConfigurationNode> pictureFolders;
-    private List<ConfigurationNode> audioFolders;
-    private List<ConfigurationNode> podcasts;
+    private final List<ConfigurationNode> videoFolders;
+    private final List<ConfigurationNode> pictureFolders;
+    private final List<ConfigurationNode> audioFolders;
+    private final List<ConfigurationNode> podcasts;
 
     public TestConfiguration() {
         videoFolders = Lists.newArrayList();
@@ -97,7 +97,6 @@ public class TestConfiguration implements Configuration {
             case VIDEO:
                 folders = this.videoFolders;
                 break;
-
             default:
                 break;
         }

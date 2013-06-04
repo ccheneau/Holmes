@@ -45,12 +45,4 @@ public interface MediaManager {
      * Perform a full scan.
      */
     void scanAll();
-
-    /**
-     * Scan a specific node.
-     *
-     * @param parentNode parent node to scan
-     * @param recursive  whether to scan child nodes
-     */
-    void scanNode(AbstractNode parentNode, boolean recursive);
 }

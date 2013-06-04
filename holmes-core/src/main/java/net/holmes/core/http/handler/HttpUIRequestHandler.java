@@ -41,7 +41,7 @@ import static net.holmes.common.SystemProperty.HOLMES_HOME;
  * Handler for Holmes UI pages.
  */
 public final class HttpUIRequestHandler implements HttpRequestHandler {
-    private static final String UI_DIRECTORY = getUiDirectory("ui");
+    private static final String UI_DIRECTORY = getUiDirectory();
     private final MimeTypeManager mimeTypeManager;
     @InjectLogger
     private Logger logger;
@@ -59,11 +59,10 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     /**
      * Get UI base directory.
      *
-     * @param uiSubDir UI sub directory
      * @return UI directory
      */
-    private static String getUiDirectory(final String uiSubDir) {
-        File uiDir = new File(HOLMES_HOME.getValue(), uiSubDir);
+    private static String getUiDirectory() {
+        File uiDir = new File(HOLMES_HOME.getValue(), "ui");
         if (!uiDir.exists()) {
             throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
                     + "] system property");

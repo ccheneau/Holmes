@@ -158,7 +158,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addContainer(nodeId, node, childCount);
             } else if (node instanceof PlaylistNode) {
                 // Add playlist to result
-                result.addPlaylist(nodeId, node, 1);
+                result.addPlaylist(nodeId, node);
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);

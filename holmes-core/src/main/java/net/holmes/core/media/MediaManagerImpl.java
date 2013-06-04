@@ -203,8 +203,7 @@ public final class MediaManagerImpl implements MediaManager {
         scanNode(rootNode, true);
     }
 
-    @Override
-    public void scanNode(final AbstractNode parentNode, final boolean recursive) {
+    private void scanNode(final AbstractNode parentNode, final boolean recursive) {
         if (parentNode instanceof FolderNode) {
             List<AbstractNode> childNodes = getChildNodes(parentNode);
             if (recursive && childNodes != null) {

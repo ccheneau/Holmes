@@ -29,9 +29,9 @@ public enum RootNode {
     AUDIO("3_AUDIOS", ROOT.getId(), MediaType.TYPE_AUDIO), //
     PODCAST("4_PODCASTS", ROOT.getId(), MediaType.TYPE_PODCAST);
 
-    private String id;
-    private String parentId;
-    private MediaType mediaType;
+    private final String id;
+    private final String parentId;
+    private final MediaType mediaType;
 
     /**
      * Instantiates a new root node.

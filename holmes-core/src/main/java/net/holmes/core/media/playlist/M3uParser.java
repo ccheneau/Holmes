@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * M3U playlist parser.
  */
-public class M3uParser implements PlaylistParser {
+public class M3uParser {
 
     private final File playlist;
 
@@ -43,7 +43,6 @@ public class M3uParser implements PlaylistParser {
         this.playlist = playlist;
     }
 
-    @Override
     public List<PlaylistItem> parse() throws PlaylistParserException {
         List<PlaylistItem> items = null;
         Charset charset = Files.getFileExtension(playlist.getName()).equalsIgnoreCase("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");

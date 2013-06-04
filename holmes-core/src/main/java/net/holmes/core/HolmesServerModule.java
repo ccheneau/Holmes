@@ -65,7 +65,7 @@ import java.util.concurrent.Executors;
 /**
  * Guice module.
  */
-public final class HolmesServerModule extends AbstractModule {
+final class HolmesServerModule extends AbstractModule {
 
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");

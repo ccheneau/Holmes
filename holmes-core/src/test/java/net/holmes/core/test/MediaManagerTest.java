@@ -25,7 +25,6 @@ import net.holmes.common.media.RootNode;
 import net.holmes.core.TestModule;
 import net.holmes.core.media.MediaManager;
 import org.junit.Before;
-import org.junit.Test;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -42,7 +41,6 @@ public class MediaManagerTest extends TestCase {
         injector.injectMembers(this);
     }
 
-    @Test
     public void testGetRootNode() {
         AbstractNode node = mediaManager.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
@@ -53,7 +51,6 @@ public class MediaManagerTest extends TestCase {
         assertEquals(childNodes.size(), 4);
     }
 
-    @Test
     public void testGetRootVideoNode() {
         AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
@@ -71,7 +68,6 @@ public class MediaManagerTest extends TestCase {
 
     }
 
-    @Test
     public void testGetRootAudioNode() {
         AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
@@ -88,7 +84,6 @@ public class MediaManagerTest extends TestCase {
         assertEquals(nodes.iterator().next().getName(), "audio.mp3");
     }
 
-    @Test
     public void testGetRootPictureNode() {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
@@ -105,7 +100,6 @@ public class MediaManagerTest extends TestCase {
         assertEquals(nodes.iterator().next().getName(), "image.jpg");
     }
 
-    @Test
     public void testGetRootPodcastNode() {
         AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);

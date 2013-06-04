@@ -18,11 +18,9 @@
 package net.holmes.core.backend;
 
 import junit.framework.TestCase;
-import org.junit.Test;
 
 public class BackendPackageTest extends TestCase {
 
-    @Test
     public void testGetName() {
         assertNotNull(BackendPackage.getName());
     }
