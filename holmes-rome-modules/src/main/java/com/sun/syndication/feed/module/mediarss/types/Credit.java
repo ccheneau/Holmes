@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2012-2013  Cedric Cheneau
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * Credit.java
  *
  * Created on April 18, 2006, 7:34 PM
@@ -22,25 +39,24 @@
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
-
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
+import java.io.Serializable;
+
 /**
- *
  * <strong>&lt;media:credit&gt;</strong></p>
- *
+ * <p/>
  * <p>Notable entity and the contribution to the creation of the media object. Current entities can include people, companies, locations, etc. Specific entities can have multiple roles, and several entities can have the same role.
  * These should appear as distinct &lt;media:credit&gt; elements.
  * It has 2 optional attributes.</p>
  * <pre>        &lt;media:credit role="producer" scheme="urn:ebu"&gt;entity name&lt;/media:credit&gt;
  * </pre>
  * <p>role specifies the role the entity played. Must be lowercase. It is an optional attribute.</p>
- *
+ * <p/>
  * <p><em>scheme</em> is the URI that identifies the role scheme. It is an optional attribute. If this attribute is not included, the default scheme is 'urn:ebu'. See: European Broadcasting Union Role Codes.</p>
- *
- *
+ * <p/>
+ * <p/>
  * <p>Example roles:</p>
  * <pre>        actor
  *        anchor person
@@ -65,6 +81,7 @@ import com.sun.syndication.feed.impl.ToStringBean;
  *        vocalist
  * </pre>
  * <p>Additional roles: <a href="http://www.ebu.ch/en/technical/metadata/specifications/role_codes.php">European Broadcasting Union Role Codes</a>
+ *
  * @author cooper
  */
 public class Credit implements Serializable {
@@ -79,9 +96,10 @@ public class Credit implements Serializable {
 
     /**
      * Creates a new instance of Credit
-     * @param scheme schem used
-     * @param role role name
-     * @param name persons name
+     *
+     * @param scheme scheme used
+     * @param role   role name
+     * @param name   persons name
      */
     public Credit(final String scheme, final String role, final String name) {
         if (name == null) {
@@ -95,6 +113,7 @@ public class Credit implements Serializable {
 
     /**
      * Person/organizations name
+     *
      * @return Person/organizations name
      */
     public String getName() {
@@ -103,6 +122,7 @@ public class Credit implements Serializable {
 
     /**
      * Role name
+     *
      * @return Role name
      */
     public String getRole() {
@@ -111,6 +131,7 @@ public class Credit implements Serializable {
 
     /**
      * Scheme used.
+     *
      * @return Scheme used.
      */
     public String getScheme() {

@@ -1,37 +1,32 @@
 /*
- * Copyright 2006 Nathanial X. Freitas, openvision.tv
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Alternately you may apply the terms of the Apache Software License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
-
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
+
+import java.io.Serializable;
 
 /**
  * <strong>&lt;media:content&gt;</strong></p>
  * <p>&lt;media:content&gt; is a sub-element of either &lt;item&gt; or &lt;media:group&gt;.&nbsp;Media objects that are not the same content should not be included in the same &lt;media:group&gt; element.&nbsp;The sequence of these items implies the order of presentation.
  * While many of the attributes appear to be audio/video specific, this element can be used to publish any type of media.
  * It contains 14 attributes, most of which are optional.</p>
- *
+ * <p/>
  * <pre>
  *        &lt;media:content
  *               url="http://www.foo.com/movie.mov"
@@ -52,7 +47,7 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * <p><em>url</em> should specify the direct url to the media object. If not included, a &lt;media:player&gt; element must be specified.</p><p><em>fileSize</em> is the number of bytes of the media object. It is an optional attribute.</p>
  * <p><em>type</em> is the standard MIME type of the object. It is an optional attribute.</p>
  *
- * <p><em>medium</em> is the type of object (image | audio | video | document | executable). While this attribute can at times seem redundant if <em>type</em> is supplied, it is included because it simplifies decision making on the reader side, 
+ * <p><em>medium</em> is the type of object (image | audio | video | document | executable). While this attribute can at times seem redundant if <em>type</em> is supplied, it is included because it simplifies decision making on the reader side,
  * as well as flushes out any ambiguities between MIME type and object type. It is an optional attribute.</p>
  *
  * <p><em>isDefault</em> determines if this is the default object that should be used for the &lt;media:group&gt;.  There should only be one default object per &lt;media:group&gt;. It is an optional attribute.</p>
@@ -61,9 +56,9 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * Default value is 'full'.
  * It is an optional attribute. </p>
  *
- * <p><em>bitrate</em> is the kilobits per second rate of media. It is an optional attribute.</p>
- * <p><em>framerate</em> is the number of frames per second for the media object. It is an optional attribute.</p>
- * <p><em>samplingrate</em> is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.</p>
+ * <p><em>bit rate</em> is the kilobits per second rate of media. It is an optional attribute.</p>
+ * <p><em>frame rate</em> is the number of frames per second for the media object. It is an optional attribute.</p>
+ * <p><em>sampling rate</em> is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.</p>
  * <p><em>channels</em> is number of audio channels in the media object. It is an optional attribute.
  * </p><p><em>duration</em> is the number of seconds the media object plays. It is an optional attribute.</p>
  *
@@ -77,52 +72,41 @@ import com.sun.syndication.feed.impl.ToStringBean;
  * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the <em>xml:lang</em> attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
  *
  *
- *        <p> These optional attributes, along with the optional elements below, contain the primary metadata entries needed to index and organize media content.
- *            Additional supported attributes for describing images, audio, and video may be added in future revisions of this document.</p>
- * @author Nathanial X. Freitas
+ * <p> These optional attributes, along with the optional elements below, contain the primary metadata entries needed to index and organize media content.
+ * Additional supported attributes for describing images, audio, and video may be added in future revisions of this document.</p>
  *
- * MediaContent corresponds to the <madia:content> element defined within the MediaRSS specification.
- * There may be one or more <media:content> instances within each instance of an <item> within an
- * RSS 2.0 document.
+ * @author Nathanial X. Freitas
+ *         <p/>
+ *         MediaContent corresponds to the <madia:content> element defined within the MediaRSS specification.
+ *         There may be one or more <media:content> instances within each instance of an <item> within an
+ *         RSS 2.0 document.
  */
 public final class MediaContent implements Serializable, Cloneable {
     private static final long serialVersionUID = -4990262574794352616L;
-
     private Expression expression;
     private Float bitrate = null;
     private Float framerate = null;
     private Float samplingrate = null;
-
-    /*private variable for storing instances of Thumbnail class
-      each MediaContent can have zero to many thumbnails*/
     private Integer audioChannels = null;
-
     /*the height in pixels of the resource*/
     private Integer height = null;
-
     /*the width in pixels of the resource*/
     private Integer width = null;
-
     /*the duration in seconds of the resource*/
     private Long duration = null;
-
-    /*the file size in bytes of the resouce*/
+    /*the file size in bytes of the resource*/
     private Long fileSize = null;
     private Metadata metadata;
     private PlayerReference player;
     private Reference reference;
     private String language;
-
     /*the MIME type of the resource*/
     private String type = null;
     private boolean defaultContent;
 
-    /*
-     * MediaContent constructor
-     */
-
     /**
      * Creates a new MediaContent
+     *
      * @param reference UrlReference or Player reference for the item.
      */
     public MediaContent(final Reference reference) {
@@ -137,14 +121,7 @@ public final class MediaContent implements Serializable, Cloneable {
 
     /**
      * channels is number of audio channels in the media object. It is an optional attribute.
-     * @param audioChannels channels is number of audio channels in the media object. It is an optional attribute.
-     */
-    public void setAudioChannels(final Integer audioChannels) {
-        this.audioChannels = audioChannels;
-    }
-
-    /**
-     * channels is number of audio channels in the media object. It is an optional attribute.
+     *
      * @return channels is number of audio channels in the media object. It is an optional attribute.
      */
     public Integer getAudioChannels() {
@@ -152,15 +129,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * bitrate is the kilobits per second rate of media. It is an optional attribute.
-     * @param bitrate bitrate is the kilobits per second rate of media. It is an optional attribute.
+     * channels is number of audio channels in the media object. It is an optional attribute.
+     *
+     * @param audioChannels channels is number of audio channels in the media object. It is an optional attribute.
      */
-    public void setBitrate(final Float bitrate) {
-        this.bitrate = bitrate;
+    public void setAudioChannels(final Integer audioChannels) {
+        this.audioChannels = audioChannels;
     }
 
     /**
      * bitrate is the kilobits per second rate of media. It is an optional attribute.
+     *
      * @return bitrate is the kilobits per second rate of media. It is an optional attribute.
      */
     public Float getBitrate() {
@@ -168,15 +147,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
-     * @param defaultContent isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
+     * bitrate is the kilobits per second rate of media. It is an optional attribute.
+     *
+     * @param bitrate bitrate is the kilobits per second rate of media. It is an optional attribute.
      */
-    public void setDefaultContent(final boolean defaultContent) {
-        this.defaultContent = defaultContent;
+    public void setBitrate(final Float bitrate) {
+        this.bitrate = bitrate;
     }
 
     /**
      * isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
+     *
      * @return isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
      */
     public boolean isDefaultContent() {
@@ -184,15 +165,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * duration is the number of seconds the media object plays. It is an optional attribute.
-     * @param duration duration is the number of seconds the media object plays. It is an optional attribute.
+     * isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
+     *
+     * @param defaultContent isDefault determines if this is the default object that should be used for the <media:group>. There should only be one default object per <media:group>. It is an optional attribute.
      */
-    public void setDuration(final Long duration) {
-        this.duration = duration;
+    public void setDefaultContent(final boolean defaultContent) {
+        this.defaultContent = defaultContent;
     }
 
     /**
      * duration is the number of seconds the media object plays. It is an optional attribute.
+     *
      * @return duration is the number of seconds the media object plays. It is an optional attribute.
      */
     public Long getDuration() {
@@ -200,15 +183,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
-     * @param expression expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
+     * duration is the number of seconds the media object plays. It is an optional attribute.
+     *
+     * @param duration duration is the number of seconds the media object plays. It is an optional attribute.
      */
-    public void setExpression(final Expression expression) {
-        this.expression = expression;
+    public void setDuration(final Long duration) {
+        this.duration = duration;
     }
 
     /**
      * expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
+     *
      * @return expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
      */
     public Expression getExpression() {
@@ -216,16 +201,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
+     * expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
      *
-     * fileSize is the number of bytes of the media object. It is an optional attribute.
-     * @param fileSize The fileSize to set.
+     * @param expression expression determines if the object is a sample or the full version of the object, or even if it is a continuous stream (sample | full | nonstop). Default value is 'full'. It is an optional attribute.
      */
-    public void setFileSize(final Long fileSize) {
-        this.fileSize = fileSize;
+    public void setExpression(final Expression expression) {
+        this.expression = expression;
     }
 
     /**
      * fileSize is the number of bytes of the media object. It is an optional attribute.
+     *
      * @return Returns the fileSize.
      */
     public Long getFileSize() {
@@ -233,31 +219,35 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * framerate is the number of frames per second for the media object. It is an optional attribute.
-     * @param framerate framerate is the number of frames per second for the media object. It is an optional attribute.
+     * fileSize is the number of bytes of the media object. It is an optional attribute.
+     *
+     * @param fileSize The fileSize to set.
      */
-    public void setFramerate(final Float framerate) {
-        this.framerate = framerate;
+    public void setFileSize(final Long fileSize) {
+        this.fileSize = fileSize;
     }
 
     /**
-     * framerate is the number of frames per second for the media object. It is an optional attribute.
-     * @return framerate is the number of frames per second for the media object. It is an optional attribute.
+     * frame rate is the number of frames per second for the media object. It is an optional attribute.
+     *
+     * @return frame rate is the number of frames per second for the media object. It is an optional attribute.
      */
     public Float getFramerate() {
         return framerate;
     }
 
     /**
-     * height is the height of the media object. It is an optional attribute.
-     * @param height height is the height of the media object. It is an optional attribute.
+     * frame rate is the number of frames per second for the media object. It is an optional attribute.
+     *
+     * @param framerate frame rate is the number of frames per second for the media object. It is an optional attribute.
      */
-    public void setHeight(final Integer height) {
-        this.height = height;
+    public void setFramerate(final Float framerate) {
+        this.framerate = framerate;
     }
 
     /**
      * height is the height of the media object. It is an optional attribute.
+     *
      * @return height is the height of the media object. It is an optional attribute.
      */
     public Integer getHeight() {
@@ -265,15 +255,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
-     * @param language lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
+     * height is the height of the media object. It is an optional attribute.
+     *
+     * @param height height is the height of the media object. It is an optional attribute.
      */
-    public void setLanguage(final String language) {
-        this.language = language;
+    public void setHeight(final Integer height) {
+        this.height = height;
     }
 
     /**
      * lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
+     *
      * @return lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
      */
     public String getLanguage() {
@@ -281,15 +273,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * The metadata for the item
-     * @param metadata The metadata for the item
+     * lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
+     *
+     * @param language lang is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.
      */
-    public void setMetadata(final Metadata metadata) {
-        this.metadata = metadata;
+    public void setLanguage(final String language) {
+        this.language = language;
     }
 
     /**
      * The metadata for the item.
+     *
      * @return The metadata for the item
      */
     public Metadata getMetadata() {
@@ -297,20 +291,12 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * <strong>&lt;media:player&gt;</strong></p>
-     * <p>Allows the media object to be accessed through a web browser media player console.
-     * This element is required only if a direct media <em>url</em> attribute is not specified in the &lt;media:content&gt; element. It has 1 required attribute, and 2 optional attributes.</p>
-     * <pre>        &lt;media:player url="http://www.foo.com/player?id=1111" height="200" width="400" /&gt;</pre>
-     * <p><em>url</em> is the url of the player console that plays the media. It is a required attribute.</p>
+     * The metadata for the item
      *
-     * <p><em>height</em> is the height of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
-     * <p><em>width</em> is the width of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
-     *
-     * <p>
-     * @param player PlayerReference for the item.
+     * @param metadata The metadata for the item
      */
-    public void setPlayer(final PlayerReference player) {
-        this.player = player;
+    public void setMetadata(final Metadata metadata) {
+        this.metadata = metadata;
     }
 
     /**
@@ -319,9 +305,10 @@ public final class MediaContent implements Serializable, Cloneable {
      * This element is required only if a direct media <em>url</em> attribute is not specified in the &lt;media:content&gt; element. It has 1 required attribute, and 2 optional attributes.</p>
      * <pre>        &lt;media:player url="http://www.foo.com/player?id=1111" height="200" width="400" /&gt;</pre>
      * <p><em>url</em> is the url of the player console that plays the media. It is a required attribute.</p>
-     *
+     * <p/>
      * <p><em>height</em> is the height of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
      * <p><em>width</em> is the width of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
+     *
      * @return PlayerReference for the item.
      */
     public PlayerReference getPlayer() {
@@ -329,7 +316,35 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
+     * <strong>&lt;media:player&gt;</strong></p>
+     * <p>Allows the media object to be accessed through a web browser media player console.
+     * This element is required only if a direct media <em>url</em> attribute is not specified in the &lt;media:content&gt; element. It has 1 required attribute, and 2 optional attributes.</p>
+     * <pre>        &lt;media:player url="http://www.foo.com/player?id=1111" height="200" width="400" /&gt;</pre>
+     * <p><em>url</em> is the url of the player console that plays the media. It is a required attribute.</p>
+     * <p/>
+     * <p><em>height</em> is the height of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
+     * <p><em>width</em> is the width of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
+     * <p/>
+     * <p/>
+     *
+     * @param player PlayerReference for the item.
+     */
+    public void setPlayer(final PlayerReference player) {
+        this.player = player;
+    }
+
+    /**
      * The player or URL reference for the item
+     *
+     * @return The player or URL reference for the item
+     */
+    public Reference getReference() {
+        return reference;
+    }
+
+    /**
+     * The player or URL reference for the item
+     *
      * @param reference The player or URL reference for the item
      */
     public void setReference(final Reference reference) {
@@ -341,23 +356,8 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * The player or URL reference for the item
-     * @return The player or URL reference for the item
-     */
-    public Reference getReference() {
-        return reference;
-    }
-
-    /**
      * samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
-     * @param samplingrate samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
-     */
-    public void setSamplingrate(final Float samplingrate) {
-        this.samplingrate = samplingrate;
-    }
-
-    /**
-     * samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
+     *
      * @return samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
      */
     public Float getSamplingrate() {
@@ -365,17 +365,17 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
+     * samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
      *
-     * type is the standard MIME type of the object. It is an optional attribute.
-     * @param type The type to set.
+     * @param samplingrate samplingrate is the number of samples per second taken to create the media object. It is expressed in thousands of samples per second (kHz). It is an optional attribute.
      */
-    public void setType(final String type) {
-        this.type = type;
+    public void setSamplingrate(final Float samplingrate) {
+        this.samplingrate = samplingrate;
     }
 
     /**
-     *
      * type is the standard MIME type of the object. It is an optional attribute.
+     *
      * @return Returns the type.
      */
     public String getType() {
@@ -383,19 +383,30 @@ public final class MediaContent implements Serializable, Cloneable {
     }
 
     /**
-     * width is the width of the media object. It is an optional attribute.
-     * @param width width is the width of the media object. It is an optional attribute.
+     * type is the standard MIME type of the object. It is an optional attribute.
+     *
+     * @param type The type to set.
      */
-    public void setWidth(final Integer width) {
-        this.width = width;
+    public void setType(final String type) {
+        this.type = type;
     }
 
     /**
      * width is the width of the media object. It is an optional attribute.
+     *
      * @return width is the width of the media object. It is an optional attribute.
      */
     public Integer getWidth() {
         return width;
+    }
+
+    /**
+     * width is the width of the media object. It is an optional attribute.
+     *
+     * @param width width is the width of the media object. It is an optional attribute.
+     */
+    public void setWidth(final Integer width) {
+        this.width = width;
     }
 
     @Override

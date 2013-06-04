@@ -1,51 +1,20 @@
 /*
- * ITunesGenerator.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on August 1, 2005, 10:44 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This library is provided under dual licenses.
- * You may choose the terms of the Lesser General Public License or the Apache
- * License at your discretion.
- *
- *  Copyright (C) 2005  Robert Cooper, Temple of the Screaming Penguin
- *
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.sun.syndication.feed.module.itunes.io;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.jdom.Element;
-import org.jdom.Namespace;
 
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.itunes.AbstractITunesObject;
@@ -53,20 +22,27 @@ import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
 import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
 import com.sun.syndication.feed.module.itunes.types.Category;
 import com.sun.syndication.io.ModuleGenerator;
+import org.jdom.Element;
+import org.jdom.Namespace;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @version $Revision: 1.3 $
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * @version $Revision: 1.3 $
  */
 public class ITunesGenerator implements ModuleGenerator {
-    private static final Set<Namespace> SET = new HashSet<Namespace>();
+    private static final Set<Namespace> SET = new HashSet<>();
     private static final Namespace NS = Namespace.getNamespace(AbstractITunesObject.PREFIX, AbstractITunesObject.URI);
 
     static {
         SET.add(NS);
     }
 
-    /** Creates a new instance of ITunesGenerator */
+    /**
+     * Creates a new instance of ITunesGenerator
+     */
     public ITunesGenerator() {
     }
 
@@ -103,8 +79,7 @@ public class ITunesGenerator implements ModuleGenerator {
                 element.addContent(image);
             }
 
-            for (Iterator<Category> it = info.getCategories().iterator(); it.hasNext();) {
-                Category cat = it.next();
+            for (Category cat : info.getCategories()) {
                 Element category = this.generateSimpleElement("category", "");
                 category.setAttribute("text", cat.getName());
 
@@ -138,7 +113,7 @@ public class ITunesGenerator implements ModuleGenerator {
             element.addContent(this.generateSimpleElement("explicit", "no"));
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < itunes.getKeywords().length; i++) {
             if (i != 0) sb.append(", ");
             sb.append(itunes.getKeywords()[i]);
@@ -155,7 +130,9 @@ public class ITunesGenerator implements ModuleGenerator {
         }
     }
 
-    /** Returns the list of namespaces this module uses.
+    /**
+     * Returns the list of namespaces this module uses.
+     *
      * @return set of Namespace objects.
      */
     @Override
@@ -163,7 +140,9 @@ public class ITunesGenerator implements ModuleGenerator {
         return SET;
     }
 
-    /** Returns the namespace URI this module handles.
+    /**
+     * Returns the namespace URI this module handles.
+     *
      * @return Returns the namespace URI this module handles.
      */
     @Override
@@ -174,7 +153,7 @@ public class ITunesGenerator implements ModuleGenerator {
     /**
      * Generate simple element.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return element
      */

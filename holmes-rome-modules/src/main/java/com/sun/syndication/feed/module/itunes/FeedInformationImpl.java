@@ -1,45 +1,22 @@
 /*
- * FeedInformation.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on August 1, 2005, 7:11 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *
- * This library is provided under dual licenses.
- * You may choose the terms of the Lesser General Public License or the Apache
- * License at your discretion.
- *
- *  Copyright (C) 2005  Robert Cooper, Temple of the Screaming Penguin
- *
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.sun.syndication.feed.module.itunes;
+
+import com.sun.syndication.feed.module.itunes.types.Category;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -47,12 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.sun.syndication.feed.module.itunes.types.Category;
-
 /**
  * This class contains information for iTunes podcast feeds that exist at the Channel level.
- * @version $Revision: 1.2 $
+ *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * @version $Revision: 1.2 $
  */
 public class FeedInformationImpl extends AbstractITunesObject implements FeedInformation {
     private static final long serialVersionUID = -3672967750764259458L;
@@ -70,6 +46,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * The parent categories for this feed
+     *
      * @return The parent categories for this feed
      */
     @Override
@@ -79,6 +56,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * The parent categories for this feed
+     *
      * @param categories The parent categories for this feed
      */
     @Override
@@ -88,7 +66,8 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Returns the owner name for the feed
-     * @return  Returns the owner name for the feed
+     *
+     * @return Returns the owner name for the feed
      */
     @Override
     public String getOwnerName() {
@@ -97,6 +76,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Sets the owner name for the feed
+     *
      * @param ownerName Sets the owner name for the feed
      */
     @Override
@@ -106,6 +86,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Returns the owner email address for the feed.
+     *
      * @return Returns the owner email address for the feed.
      */
     @Override
@@ -115,6 +96,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Sets the owner email address for the feed.
+     *
      * @param ownerEmailAddress Sets the owner email address for the feed.
      */
     @Override
@@ -124,8 +106,9 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Returns the URL for the image.
-     *
+     * <p/>
      * NOTE: To specification images should be in PNG or JPEG format.
+     *
      * @return Returns the URL for the image.
      */
     @Override
@@ -135,8 +118,9 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Sets the URL for the image.
-     *
+     * <p/>
      * NOTE: To specification images should be in PNG or JPEG format.
+     *
      * @param image Sets the URL for the image.
      */
     @Override
@@ -146,6 +130,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Required by the ROME API
+     *
      * @param obj object to copy property values from
      */
     @Override
@@ -177,9 +162,9 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     /**
      * Returns a copy of this FeedInformationImpl object
-     * 
+     *
      * @return Returns a copy of this FeedInformationImpl object
-     * @throws CloneNotSupportedException 
+     * @throws CloneNotSupportedException
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -192,7 +177,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("[");
+        StringBuilder sb = new StringBuilder("[");
         sb.append(" email: ");
         sb.append(this.getOwnerEmailAddress());
         sb.append(" name: ");

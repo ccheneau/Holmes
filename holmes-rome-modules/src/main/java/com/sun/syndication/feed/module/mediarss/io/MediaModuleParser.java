@@ -1,25 +1,30 @@
 /*
- * Copyright 2006 Nathanial X. Freitas, openvision.tv
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Alternately you may apply the terms of the Apache Software License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.sun.syndication.feed.module.mediarss.io;
+
+import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
+import com.sun.syndication.feed.module.mediarss.MediaModule;
+import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
+import com.sun.syndication.feed.module.mediarss.types.*;
+import com.sun.syndication.io.ModuleParser;
+import com.sun.syndication.io.impl.NumberParser;
+import org.jdom.Element;
+import org.jdom.Namespace;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,33 +34,8 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
-import com.sun.syndication.feed.module.mediarss.MediaModule;
-import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
-import com.sun.syndication.feed.module.mediarss.types.Category;
-import com.sun.syndication.feed.module.mediarss.types.Credit;
-import com.sun.syndication.feed.module.mediarss.types.Expression;
-import com.sun.syndication.feed.module.mediarss.types.Hash;
-import com.sun.syndication.feed.module.mediarss.types.MediaContent;
-import com.sun.syndication.feed.module.mediarss.types.MediaGroup;
-import com.sun.syndication.feed.module.mediarss.types.Metadata;
-import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
-import com.sun.syndication.feed.module.mediarss.types.Rating;
-import com.sun.syndication.feed.module.mediarss.types.Restriction;
-import com.sun.syndication.feed.module.mediarss.types.Text;
-import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
-import com.sun.syndication.feed.module.mediarss.types.Time;
-import com.sun.syndication.feed.module.mediarss.types.UrlReference;
-import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.io.impl.NumberParser;
-
 /**
  * @author Nathanial X. Freitas
- *
  */
 public class MediaModuleParser implements ModuleParser {
     private static final Logger LOGGER = Logger.getLogger(MediaModuleParser.class.getName());
@@ -78,7 +58,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element mmRoot) {
-        MediaModuleImpl mod = null;
+        MediaModuleImpl mod;
 
         if (mmRoot.getName().equals("channel") || mmRoot.getName().equals("feed")) {
             mod = new MediaModuleImpl();
@@ -106,7 +86,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     private MediaContent[] parseContent(final Element element) {
         List<?> contents = element.getChildren("content", NS);
-        ArrayList<MediaContent> values = new ArrayList<MediaContent>();
+        ArrayList<MediaContent> values = new ArrayList<>();
 
         for (int i = 0; contents != null && i < contents.size(); i++) {
             Element content = (Element) contents.get(i);
@@ -201,7 +181,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     private MediaGroup[] parseGroup(final Element element) {
         List<?> groups = element.getChildren("group", NS);
-        ArrayList<MediaGroup> values = new ArrayList<MediaGroup>();
+        ArrayList<MediaGroup> values = new ArrayList<>();
 
         for (int i = 0; groups != null && i < groups.size(); i++) {
             Element group = (Element) groups.get(i);
@@ -209,8 +189,7 @@ public class MediaModuleParser implements ModuleParser {
 
             for (int j = 0; j < g.getContents().length; j++) {
                 if (g.getContents()[j].isDefaultContent()) {
-                    g.setDefaultContentIndex(Integer.valueOf(j));
-
+                    g.setDefaultContentIndex(j);
                     break;
                 }
             }
@@ -232,7 +211,7 @@ public class MediaModuleParser implements ModuleParser {
         Metadata md = new Metadata();
         // categories
         List<?> categories = e.getChildren("category", NS);
-        List<Category> catValues = new ArrayList<Category>();
+        List<Category> catValues = new ArrayList<>();
 
         for (int i = 0; categories != null && i < categories.size(); i++) {
             try {
@@ -257,7 +236,7 @@ public class MediaModuleParser implements ModuleParser {
 
         // credits
         List<?> credits = e.getChildren("credit", NS);
-        ArrayList<Credit> crValues = new ArrayList<Credit>();
+        ArrayList<Credit> crValues = new ArrayList<>();
         for (int i = 0; credits != null && i < credits.size(); i++) {
             Element cred = (Element) credits.get(i);
             crValues.add(new Credit(cred.getAttributeValue("scheme"), cred.getAttributeValue("role"), cred.getText()));
@@ -288,16 +267,17 @@ public class MediaModuleParser implements ModuleParser {
 
         // ratings
         List<?> ratings = e.getChildren("rating", NS);
-        List<Rating> ratValues = new ArrayList<Rating>();
+        List<Rating> ratValues = new ArrayList<>();
         for (int i = 0; ratings != null && i < ratings.size(); i++) {
             Element rat = (Element) ratings.get(i);
-            if (rat.getText() != null && rat.getAttributeValue("scheme") != null) ratValues.add(new Rating(rat.getAttributeValue("scheme"), rat.getText()));
+            if (rat.getText() != null && rat.getAttributeValue("scheme") != null)
+                ratValues.add(new Rating(rat.getAttributeValue("scheme"), rat.getText()));
         }
         md.setRatings(ratValues.toArray(new Rating[ratValues.size()]));
 
         // text
         List<?> texts = e.getChildren("text", NS);
-        List<Text> txtValues = new ArrayList<Text>();
+        List<Text> txtValues = new ArrayList<>();
 
         for (int i = 0; texts != null && i < texts.size(); i++) {
             Element text = (Element) texts.get(i);
@@ -309,7 +289,7 @@ public class MediaModuleParser implements ModuleParser {
 
         // thumbnails
         List<?> thumbnails = e.getChildren("thumbnail", NS);
-        List<Thumbnail> tbnValues = new ArrayList<Thumbnail>();
+        List<Thumbnail> tbnValues = new ArrayList<>();
         for (int i = 0; thumbnails != null && i < thumbnails.size(); i++) {
             try {
                 Element thumb = (Element) thumbnails.get(i);
@@ -337,9 +317,9 @@ public class MediaModuleParser implements ModuleParser {
 
         // restrictions
         List<?> restrictions = e.getChildren("restriction", NS);
-        List<Restriction> rstValues = new ArrayList<Restriction>();
-        for (int i = 0; i < restrictions.size(); i++) {
-            Element r = (Element) restrictions.get(i);
+        List<Restriction> rstValues = new ArrayList<>();
+        for (Object restriction : restrictions) {
+            Element r = (Element) restriction;
             Restriction.Type type = null;
 
             if (r.getAttributeValue("type").equalsIgnoreCase("uri")) {

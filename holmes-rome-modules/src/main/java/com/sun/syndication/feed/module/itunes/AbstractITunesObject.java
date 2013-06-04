@@ -1,50 +1,27 @@
 /*
- * AbstractITunesObject.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on August 1, 2005, 7:37 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This library is provided under dual licenses.
- * You may choose the terms of the Lesser General Public License or the Apache
- * License at your discretion.
- *
- *  Copyright (C) 2005  Robert Cooper, Temple of the Screaming Penguin
- *
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.sun.syndication.feed.module.itunes;
 
 /**
  * This is an abstract object that implements the attributes common across Feeds
  * or Items in an iTunes compatible RSS feed.
- * @version $Revision: 1.4 $
+ *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractITunesObject implements ITunes, Cloneable {
     private static final long serialVersionUID = -1507584666860485534L;
@@ -80,6 +57,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Defined by the ROME module API
+     *
      * @param obj Object to copy from
      */
     @Override
@@ -87,6 +65,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Defined by the ROME API
+     *
      * @return Class of the Interface for this module.
      */
     @Override
@@ -96,6 +75,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * The URI this module implements
+     *
      * @return "http://www.itunes.com/dtds/podcast-1.0.dtd"
      */
     @Override
@@ -105,8 +85,9 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Required by the ROME API
+     *
      * @return A clone of this module object
-     * @throws CloneNotSupportedException 
+     * @throws CloneNotSupportedException
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -115,6 +96,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Returns the author string for this feed or entry
+     *
      * @return Returns the author string for this feed or entry
      */
     @Override
@@ -124,6 +106,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Sets the author string for this feed or entry
+     *
      * @param author Sets the author string for this feed or entry
      */
     @Override
@@ -133,6 +116,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Boolean as to whether to block this feed or entry
+     *
      * @return Boolean as to whether to block this feed or entry
      */
     @Override
@@ -142,6 +126,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Boolean as to whether to block this feed or entry
+     *
      * @param block Boolean as to whether to block this feed or entry
      */
     @Override
@@ -151,6 +136,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Boolean as to whether this feed or entry contains adult content
+     *
      * @return Boolean as to whether this feed or entry contains adult content
      */
     @Override
@@ -160,6 +146,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * Boolean as to whether this feed or entry contains adult content
+     *
      * @param explicit Boolean as to whether this feed or entry contains adult content
      */
     @Override
@@ -169,8 +156,9 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A list of keywords for this feed or entry
-     *
+     * <p/>
      * Must not contain spaces
+     *
      * @return A list of keywords for this feed or entry
      */
     @Override
@@ -180,8 +168,9 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A list of keywords for this feed or entry
-     *
+     * <p/>
      * Must not contain spaces
+     *
      * @param keywords A list of keywords for this feed or enty
      */
     @Override
@@ -191,6 +180,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A subtitle for this feed or entry
+     *
      * @return A subtitle for this feed or entry
      */
     @Override
@@ -200,6 +190,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A subtitle for this feed or entry
+     *
      * @param subtitle A subtitle for this feed or entry
      */
     @Override
@@ -209,6 +200,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A subtitle for this feed or entry
+     *
      * @return A subtitle for this feed or entry
      */
     @Override
@@ -218,6 +210,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     /**
      * A subtitle for this feed or entry
+     *
      * @param summary A subtitle for this feed or entry
      */
     @Override
@@ -227,7 +220,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("[");
+        StringBuilder sb = new StringBuilder("[");
         sb.append(" Author: ");
         sb.append(this.getAuthor());
         sb.append(" Block: ");
@@ -238,7 +231,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
 
         if (keywords != null) {
             for (int i = 0; i < keywords.length; i++) {
-                sb.append("'" + this.getKeywords()[i] + "'");
+                sb.append("'").append(this.getKeywords()[i]).append("'");
             }
         }
 
