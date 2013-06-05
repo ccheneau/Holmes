@@ -43,6 +43,12 @@ public class M3uParser {
         this.playlist = playlist;
     }
 
+    /**
+     * Parse playlist
+     *
+     * @return parsed items
+     * @throws PlaylistParserException
+     */
     public List<PlaylistItem> parse() throws PlaylistParserException {
         List<PlaylistItem> items = null;
         Charset charset = Files.getFileExtension(playlist.getName()).equalsIgnoreCase("m3u") ? Charset.defaultCharset() : Charset.forName("UTF-8");
