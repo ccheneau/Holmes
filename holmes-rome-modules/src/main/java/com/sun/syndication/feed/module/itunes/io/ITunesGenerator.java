@@ -158,7 +158,7 @@ public class ITunesGenerator implements ModuleGenerator {
      * @param value the value
      * @return element
      */
-    protected Element generateSimpleElement(final String name, final String value) {
+    private Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
         return element;

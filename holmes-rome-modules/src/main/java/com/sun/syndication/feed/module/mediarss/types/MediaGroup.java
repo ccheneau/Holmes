@@ -74,7 +74,7 @@ public final class MediaGroup implements Cloneable, Serializable {
      *
      * @param contents MediaContents for the group
      */
-    public void setContents(final MediaContent[] contents) {
+    private void setContents(final MediaContent[] contents) {
         this.contents = (contents == null) ? new MediaContent[0] : contents;
     }
 
@@ -105,15 +105,6 @@ public final class MediaGroup implements Cloneable, Serializable {
     }
 
     /**
-     * Default content index MediaContent.
-     *
-     * @return Default content index MediaContent.
-     */
-    public Integer getDefaultContentIndex() {
-        return defaultContentIndex;
-    }
-
-    /**
      * Metadata for the group
      *
      * @param metadata Metadata for the group
@@ -134,7 +125,7 @@ public final class MediaGroup implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return new MediaGroup(getContents(), getDefaultContentIndex(), getMetadata());
+        return new MediaGroup(contents, defaultContentIndex, metadata);
     }
 
     @Override

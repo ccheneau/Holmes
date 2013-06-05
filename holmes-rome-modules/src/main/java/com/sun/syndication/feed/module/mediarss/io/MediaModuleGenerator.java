@@ -79,7 +79,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param content the content
      * @param element the element
      */
-    public void generateContent(final MediaContent content, final Element element) {
+    private void generateContent(final MediaContent content, final Element element) {
         Element mc = new Element("content", NS);
         this.addNotNullAttribute(mc, "channels", content.getAudioChannels());
         this.addNotNullAttribute(mc, "bitrate", content.getBitrate());
@@ -114,7 +114,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param group   the group
      * @param element the element
      */
-    public void generateGroup(final MediaGroup group, final Element element) {
+    private void generateGroup(final MediaGroup group, final Element element) {
         Element t = new Element("group", NS);
         MediaContent[] c = group.getContents();
 
@@ -132,7 +132,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param metadata the metadata
      * @param element  the element
      */
-    public void generateMetadata(final Metadata metadata, final Element element) {
+    private void generateMetadata(final Metadata metadata, final Element element) {
         if (metadata == null) {
             return;
         }
@@ -229,7 +229,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param playerReference the player reference
      * @param element         the element
      */
-    public void generatePlayer(final PlayerReference playerReference, final Element element) {
+    private void generatePlayer(final PlayerReference playerReference, final Element element) {
         if (playerReference == null) {
             return;
         }
@@ -248,7 +248,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param name   the name
      * @param value  the value
      */
-    protected void addNotNullAttribute(final Element target, final String name, final Object value) {
+    private void addNotNullAttribute(final Element target, final String name, final Object value) {
         if (target != null && value != null) target.setAttribute(name, value.toString());
     }
 
@@ -260,7 +260,7 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param value  the value
      * @return element
      */
-    protected Element addNotNullElement(final Element target, final String name, final Object value) {
+    private Element addNotNullElement(final Element target, final String name, final Object value) {
         if (value == null) {
             return null;
         } else {
@@ -278,10 +278,9 @@ public class MediaModuleGenerator implements ModuleGenerator {
      * @param value the value
      * @return element
      */
-    protected Element generateSimpleElement(final String name, final String value) {
+    private Element generateSimpleElement(final String name, final String value) {
         Element element = new Element(name, NS);
         element.addContent(value);
-
         return element;
     }
 }

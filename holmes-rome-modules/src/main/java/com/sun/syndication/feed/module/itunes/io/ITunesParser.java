@@ -187,7 +187,7 @@ public class ITunesParser implements ModuleParser {
      * @param element the element
      * @return the xml inner text
      */
-    protected String getXmlInnerText(final Element element) {
+    private String getXmlInnerText(final Element element) {
         StringBuilder sb = new StringBuilder();
         XMLOutputter xo = new XMLOutputter();
         List<?> children = element.getContent();

@@ -36,22 +36,18 @@ public final class Duration implements Serializable {
      * The Constant serialVersionUID.
      */
     private static final long serialVersionUID = -1960363504597514365L;
-
     /**
      * The Constant SECOND.
      */
     private static final long SECOND = 1000L;
-
     /**
      * The Constant MINUTE.
      */
     private static final long MINUTE = SECOND * 60L;
-
     /**
      * The Constant HOUR.
      */
     private static final long HOUR = MINUTE * 60L;
-
     /**
      * The Constant NUM_FORMAT.
      */
@@ -82,7 +78,7 @@ public final class Duration implements Serializable {
      * @param milliseconds Creates a new instance of Duration specifying a length in milliseconds
      */
     public Duration(final long milliseconds) {
-        this.setMilliseconds(milliseconds);
+        this.milliseconds = milliseconds;
     }
 
     /**
@@ -93,7 +89,7 @@ public final class Duration implements Serializable {
      * @param seconds number of seconds
      */
     public Duration(final int hours, final int minutes, final float seconds) {
-        this.setMilliseconds(hours * HOUR + minutes * MINUTE + (long) (seconds * SECOND));
+        this.milliseconds = hours * HOUR + minutes * MINUTE + (long) (seconds * SECOND);
     }
 
     /**
@@ -105,14 +101,14 @@ public final class Duration implements Serializable {
         StringTokenizer tok = new StringTokenizer(duration, ":");
         switch (tok.countTokens()) {
             case 1:
-                this.setMilliseconds((long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                this.milliseconds = (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             case 2:
-                this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                this.milliseconds = NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             case 3:
-                this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
-                        + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                this.milliseconds = NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
+                        + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             default:
                 throw new RuntimeException("Illegal time value: " + duration);
@@ -141,15 +137,6 @@ public final class Duration implements Serializable {
     }
 
     /**
-     * Sets the millisecond length
-     *
-     * @param milliseconds the millisecond length
-     */
-    public void setMilliseconds(final long milliseconds) {
-        this.milliseconds = milliseconds;
-    }
-
-    /**
      * The Class Time.
      */
     private static class Time {
@@ -158,12 +145,10 @@ public final class Duration implements Serializable {
          * The hours.
          */
         private final int hours;
-
         /**
          * The minutes.
          */
         private final int minutes;
-
         /**
          * The seconds.
          */
