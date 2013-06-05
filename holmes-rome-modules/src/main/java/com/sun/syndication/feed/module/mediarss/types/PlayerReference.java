@@ -1,43 +1,38 @@
 /*
- * PlayerReference.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on April 18, 2006, 7:18 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Alternately you may apply the terms of the Apache Software License
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
-import java.net.URI;
+package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
+import java.io.Serializable;
+import java.net.URI;
+
 /**
- *
  * <strong>&lt;media:player&gt;</strong></p>
  * <p>Allows the media object to be accessed through a web browser media player console.
  * This element is required only if a direct media <em>url</em> attribute is not specified in the &lt;media:content&gt; element. It has 1 required attribute, and 2 optional attributes.</p>
  * <pre>        &lt;media:player url="http://www.foo.com/player?id=1111" height="200" width="400" /&gt;</pre>
  * <p><em>url</em> is the url of the player console that plays the media. It is a required attribute.</p>
- *
+ * <p/>
  * <p><em>height</em> is the height of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
  * <p><em>width</em> is the width of the browser window that the <em>url</em> should be opened in. It is an optional attribute.</p>
+ *
  * @author cooper
  */
 public class PlayerReference implements Reference, Serializable {
@@ -49,8 +44,9 @@ public class PlayerReference implements Reference, Serializable {
 
     /**
      * Creates a new instance of PlayerReference
-     * @param url url of the player
-     * @param width width of the player
+     *
+     * @param url    url of the player
+     * @param width  width of the player
      * @param height height of the player
      */
     public PlayerReference(final URI url, final Integer width, final Integer height) {
@@ -67,6 +63,7 @@ public class PlayerReference implements Reference, Serializable {
 
     /**
      * Constructs a new PlayerReference
+     *
      * @param url URL of the player
      */
     public PlayerReference(final URI url) {
@@ -75,6 +72,7 @@ public class PlayerReference implements Reference, Serializable {
 
     /**
      * Height of the player
+     *
      * @return Height of the player
      */
     public Integer getHeight() {
@@ -83,6 +81,7 @@ public class PlayerReference implements Reference, Serializable {
 
     /**
      * URL of the player
+     *
      * @return URL of the player
      */
     public URI getUrl() {
@@ -91,6 +90,7 @@ public class PlayerReference implements Reference, Serializable {
 
     /**
      * Width of the player
+     *
      * @return Width of the player
      */
     public Integer getWidth() {

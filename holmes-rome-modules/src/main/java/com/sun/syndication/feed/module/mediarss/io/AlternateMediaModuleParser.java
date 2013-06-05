@@ -1,10 +1,18 @@
 /*
- * AlternateMediaModuleParser.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on August 20, 2006, 5:52 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.sun.syndication.feed.module.mediarss.io;
@@ -12,7 +20,6 @@ package com.sun.syndication.feed.module.mediarss.io;
 import org.jdom.Namespace;
 
 /**
- *
  * @author cooper
  */
 public class AlternateMediaModuleParser extends MediaModuleParser {

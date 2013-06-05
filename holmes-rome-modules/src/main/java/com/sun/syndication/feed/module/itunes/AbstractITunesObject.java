@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.sun.syndication.feed.module.itunes;
 
 /**
@@ -38,7 +39,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
     public static final String RDF_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
     /**
-     * A default prefix to use for itunes tags.
+     * A default prefix to use for iTunes tags.
      */
     public static final String PREFIX = "itunes";
     private String author;
@@ -51,7 +52,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
     /**
      * Constructor.
      */
-    public AbstractITunesObject() {
+    AbstractITunesObject() {
         keywords = null;
     }
 
@@ -171,7 +172,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * <p/>
      * Must not contain spaces
      *
-     * @param keywords A list of keywords for this feed or enty
+     * @param keywords A list of keywords for this feed or entry
      */
     @Override
     public void setKeywords(final String[] keywords) {

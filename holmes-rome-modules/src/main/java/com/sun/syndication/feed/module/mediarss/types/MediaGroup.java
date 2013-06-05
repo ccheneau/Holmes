@@ -15,29 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * MediaGroup.java
- *
- * Created on April 19, 2006, 12:34 AM
- *
- *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
- *
- * Alternately you may apply the terms of the Apache Software License
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
@@ -86,7 +63,7 @@ public final class MediaGroup implements Cloneable, Serializable {
      * @param defaultContentIndex index of the default content item.
      * @param metadata            metadata for the group.
      */
-    public MediaGroup(final MediaContent[] contents, final Integer defaultContentIndex, final Metadata metadata) {
+    private MediaGroup(final MediaContent[] contents, final Integer defaultContentIndex, final Metadata metadata) {
         this.setContents(contents);
         this.setDefaultContentIndex(defaultContentIndex);
         this.setMetadata(metadata);

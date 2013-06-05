@@ -1,96 +1,94 @@
 /*
- * Text.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on April 18, 2006, 10:25 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Alternately you may apply the terms of the Apache Software License
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
+package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
+import java.io.Serializable;
+
 /**
  * <strong>&lt;media:text&gt;</strong></p>
- * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content. 
- * Many of these elements are permitted to provide a time series of text. 
- * In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time. 
+ * <p>Allows the inclusion of a text transcript, closed captioning, or lyrics of the media content.
+ * Many of these elements are permitted to provide a time series of text.
+ * In such cases, it is encouraged, but not required, that the elements be grouped by language and appear in time sequence order based on the <em>start</em> time.
  * Elements can have overlapping <em>start</em> and <em>end</em> times. It has 4 optional attributes.</p><pre>        &lt;media:text type="plain" lang="en" start="00:00:03.000"
  *        end="00:00:10.000"&gt; Oh, say, can you see&lt;/media:text&gt;
- *
+ * <p/>
  *        &lt;media:text type="plain" lang="en" start="00:00:10.000"
  *        end="00:00:17.000"&gt;By the dawn's early light&lt;/media:text&gt;
  * </pre>
  * <p><em>type</em> specifies the type of text embedded. Possible values are either 'plain' or 'html'. Default value is 'plain'. All html must be entity-encoded. It is an optional attribute.</p>
- *
+ * <p/>
  * <p><em>lang</em> is the primary language encapsulated in the media object. Language codes possible are detailed in RFC 3066. This attribute is used similar to the xml:lang attribute detailed in the XML 1.0 Specification (Third Edition). It is an optional attribute.</p>
- *
+ * <p/>
  * <p><em>start</em> specifies the start time offset that the text starts being relevant to the media object. An example of this would be for closed captioning.
  * It uses the NTP time code format (see: the time attribute used in &lt;media:thumbnail&gt;).&nbsp;It is an optional attribute.</p>
- *
+ * <p/>
  * <p><em>end</em> specifies the end time that the text is relevant.
  * If this attribute is not provided, and a <em>start</em> time is used, it is expected that the end time is either the end of the clip or the start of the next &lt;media:text&gt; element. </p>
+ *
  * @author cooper
  */
 public class Text implements Serializable {
     private static final long serialVersionUID = 9043514380583850045L;
-    private String type;
-    private String value;
-    private Time end;
-    private Time start;
+    private final String type;
+    private final String value;
+    private final Time end;
+    private final Time start;
 
     /**
      * Creates a text object.
+     *
      * @param value value of the text
      */
     public Text(final String value) {
-        this.value = value;
+        this(null, value, null, null);
     }
 
     /**
      * Creates a new instance of Text.
      *
-     * @param type type of text
+     * @param type  type of text
      * @param value value of text
      */
     public Text(final String type, final String value) {
-        this.type = type;
-        this.value = value;
+        this(type, value, null, null);
     }
 
     /**
      * Creates a text object with start and end times.
      *
-     * @param type type of text
+     * @param type  type of text
      * @param value value of text
      * @param start start time
-     * @param end end time
+     * @param end   end time
      */
     public Text(final String type, final String value, final Time start, final Time end) {
-        this(type, value);
+        this.type = type;
+        this.value = value;
         this.start = start;
         this.end = end;
     }
 
     /**
      * End time of the text
+     *
      * @return End time of the text
      */
     public Time getEnd() {
@@ -99,6 +97,7 @@ public class Text implements Serializable {
 
     /**
      * Start time of the text
+     *
      * @return Start time of the text
      */
     public Time getStart() {

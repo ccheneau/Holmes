@@ -1,60 +1,57 @@
 /*
- * Copyright 2006 Nathanial X. Freitas, openvision.tv
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Alternately you may apply the terms of the Apache Software License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.sun.syndication.feed.module.mediarss.types;
 
-import java.io.Serializable;
-import java.net.URI;
+package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ToStringBean;
 
+import java.io.Serializable;
+import java.net.URI;
+
 /**
  * <strong>&lt;media:thumbnail&gt;</strong></p>
- *
- *
+ * <p/>
+ * <p/>
  * <p>Allows particular images to be used as representative images for the media object. If multiple thumbnails are included, and time coding is not at play, it is assumed that the images are in order of importance. It has 1 required attribute and 3 optional attributes.</p>
- *         <pre>        &lt;media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" /&gt;</pre>
+ * <pre>        &lt;media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" /&gt;</pre>
  * <p><em>url</em> specifies the url of the thumbnail. It is a required attribute.</p>        <p> <em>height</em> specifies the height of the thumbnail. It is an optional attribute.</p>
- *        <p> <em>width</em> specifies the width of the thumbnail. It is an optional attribute.</p>
+ * <p> <em>width</em> specifies the width of the thumbnail. It is an optional attribute.</p>
  * <p><em>time</em>
- * specifies the time offset in relation to the media object. 
- * Typically this is used when creating multiple keyframes within a single video. 
- * The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>]. 
+ * specifies the time offset in relation to the media object.
+ * Typically this is used when creating multiple key frames within a single video.
+ * The format for this attribute should be in the DSM-CC's Normal Play Time (NTP) as used in RTSP [<a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a>].
  * It is an optional attribute.</p>
  */
 public class Thumbnail implements Cloneable, Serializable {
     private static final long serialVersionUID = 2035345549055202026L;
 
-    private Integer thumbHeight = null;
-    private Integer thumbWidth = null;
-    private Time time;
-    private URI thumbUrl = null;
+    private final Integer thumbHeight;
+    private final Integer thumbWidth;
+    private final Time time;
+    private final URI thumbUrl;
 
     /**
      * Creates a new thumbnail
-     * @param url URL to thumbnail
-     * @param width width in pixels
+     *
+     * @param url    URL to thumbnail
+     * @param width  width in pixels
      * @param height height in pixels
-     * @param time Timecode representing the thumbnails position in a source.
+     * @param time   Time code representing the thumbnails position in a source.
      */
     public Thumbnail(final URI url, final Integer width, final Integer height, final Time time) {
         this.thumbUrl = url;
@@ -65,16 +62,7 @@ public class Thumbnail implements Cloneable, Serializable {
 
     /**
      * Creates a new thumbnail
-     * @param url URL
-     * @param width width
-     * @param height height
-     */
-    public Thumbnail(final URI url, final Integer width, final Integer height) {
-        this(url, width, height, null);
-    }
-
-    /**
-     * Creates a new thumbnail
+     *
      * @param url URL
      */
     public Thumbnail(final URI url) {
@@ -82,8 +70,8 @@ public class Thumbnail implements Cloneable, Serializable {
     }
 
     /**
-     *
      * Returns the thumbHeight.
+     *
      * @return Returns the thumbHeight.
      */
     public Integer getHeight() {
@@ -92,6 +80,7 @@ public class Thumbnail implements Cloneable, Serializable {
 
     /**
      * returns the time that the thumbnail was captured from its source
+     *
      * @return returns the time that the thumbnail was captured from its source
      */
     public Time getTime() {
@@ -99,8 +88,8 @@ public class Thumbnail implements Cloneable, Serializable {
     }
 
     /**
+     * Returns the URL
      *
-     * Retursn the URL
      * @return Returns the thumbUrl.
      */
     public URI getUrl() {
@@ -108,8 +97,8 @@ public class Thumbnail implements Cloneable, Serializable {
     }
 
     /**
-     *
      * Returns width.
+     *
      * @return Returns the thumbWidth.
      */
     public Integer getWidth() {
@@ -119,7 +108,7 @@ public class Thumbnail implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return new Thumbnail(this.thumbUrl, this.thumbWidth, this.thumbHeight);
+        return new Thumbnail(this.thumbUrl, this.thumbWidth, this.thumbHeight, this.time);
     }
 
     @Override

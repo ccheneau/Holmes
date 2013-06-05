@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.sun.syndication.feed.module.itunes.io;
 
 import com.sun.syndication.feed.module.Module;
@@ -24,7 +25,6 @@ import com.sun.syndication.feed.module.itunes.types.Category;
 import com.sun.syndication.feed.module.itunes.types.Duration;
 import com.sun.syndication.feed.module.itunes.types.Subcategory;
 import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.io.WireFeedParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
@@ -57,14 +57,6 @@ public class ITunesParser implements ModuleParser {
      */
     public ITunesParser(final Namespace ns) {
         this.ns = ns;
-    }
-
-    /**
-     * Sets the parser.
-     *
-     * @param feedParser the new parser
-     */
-    public void setParser(final WireFeedParser feedParser) {
     }
 
     @Override
@@ -196,7 +188,7 @@ public class ITunesParser implements ModuleParser {
      * @return the xml inner text
      */
     protected String getXmlInnerText(final Element element) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         XMLOutputter xo = new XMLOutputter();
         List<?> children = element.getContent();
         sb.append(xo.outputString(children));

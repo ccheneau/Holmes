@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.sun.syndication.feed.module.itunes.types;
 
 import java.io.Serializable;
 
 /**
- * This class represents a Subcategor of a Category.
+ * This class represents a Subcategory of a Category.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.2 $

@@ -15,28 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Category.java
- *
- * Created on April 18, 2006, 8:04 PM
- *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
- *
- * Alternately you may apply the terms of the Apache Software License
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
@@ -65,14 +43,14 @@ import java.io.Serializable;
  * @author cooper
  */
 public class Category implements Serializable {
-    private static final long serialVersionUID = 5182373808661745402L;
     /**
      * Schema for FLICKR tags
      */
     public static final String SCHEME_FLICKR_TAGS = "urn:flickr:tags";
-    private String label;
-    private String scheme;
-    private String value;
+    private static final long serialVersionUID = 5182373808661745402L;
+    private final String label;
+    private final String scheme;
+    private final String value;
 
     /**
      * Creates a new instance of Category
@@ -93,7 +71,7 @@ public class Category implements Serializable {
      * @param value value of the category.
      */
     public Category(final String value) {
-        this.value = value;
+        this(null, null, value);
     }
 
     /**

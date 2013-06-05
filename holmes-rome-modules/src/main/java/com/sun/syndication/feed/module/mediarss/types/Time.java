@@ -1,34 +1,30 @@
 /*
- * Time.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on April 18, 2006, 9:48 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This code is currently released under the Mozilla Public License.
- * http://www.mozilla.org/MPL/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Alternately you may apply the terms of the Apache Software License
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.sun.syndication.feed.module.mediarss.types;
+
+import com.sun.syndication.feed.impl.EqualsBean;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-
 /**
  * Represents a <a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a> timestamp.
+ *
  * @author cooper
  */
 public class Time implements Serializable {
@@ -47,6 +43,7 @@ public class Time implements Serializable {
 
     /**
      * Creates a new instance of Time
+     *
      * @param milliseconds milliseconds in length or offset.
      */
     public Time(final long milliseconds) {
@@ -55,6 +52,7 @@ public class Time implements Serializable {
 
     /**
      * Creates a new instance of Time
+     *
      * @param value <a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a> value
      */
     public Time(final String value) {

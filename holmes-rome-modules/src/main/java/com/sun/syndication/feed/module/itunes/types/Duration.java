@@ -1,72 +1,62 @@
 /*
- * Duration.java
+ * Copyright (C) 2012-2013  Cedric Cheneau
  *
- * Created on August 1, 2005, 7:45 PM
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This library is provided under dual licenses.
- * You may choose the terms of the Lesser General Public License or the Apache
- * License at your discretion.
- *
- *  Copyright (C) 2005  Robert Cooper, Temple of the Screaming Penguin
- *
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.sun.syndication.feed.module.itunes.types;
+
+import com.sun.syndication.io.impl.NumberParser;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
-import com.sun.syndication.io.impl.NumberParser;
-
 /**
- * An encapsulation of the duration of a podcast. This will serialize (via .toString()) 
+ * An encapsulation of the duration of a podcast. This will serialize (via .toString())
  * to HH:MM:SS format, and can parse [H]*H:[M]*M:[S]*S or [M]*M:[S]*S.
- * @version $Revision: 1.7 $
+ *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * @version $Revision: 1.7 $
  */
 public final class Duration implements Serializable {
 
-    /** The Constant serialVersionUID. */
+    /**
+     * The Constant serialVersionUID.
+     */
     private static final long serialVersionUID = -1960363504597514365L;
 
-    /** The Constant SECOND. */
+    /**
+     * The Constant SECOND.
+     */
     private static final long SECOND = 1000L;
 
-    /** The Constant MINUTE. */
+    /**
+     * The Constant MINUTE.
+     */
     private static final long MINUTE = SECOND * 60L;
 
-    /** The Constant HOUR. */
+    /**
+     * The Constant HOUR.
+     */
     private static final long HOUR = MINUTE * 60L;
 
-    /** The Constant NUM_FORMAT. */
-    static final NumberFormat NUM_FORMAT = NumberFormat.getNumberInstance();
+    /**
+     * The Constant NUM_FORMAT.
+     */
+    private static final NumberFormat NUM_FORMAT = NumberFormat.getNumberInstance();
+
     static {
         NUM_FORMAT.setMinimumFractionDigits(0);
         NUM_FORMAT.setMaximumFractionDigits(0);
@@ -74,7 +64,9 @@ public final class Duration implements Serializable {
         NUM_FORMAT.setGroupingUsed(false);
     }
 
-    /** The milliseconds. */
+    /**
+     * The milliseconds.
+     */
     private long milliseconds;
 
     /**
@@ -86,7 +78,8 @@ public final class Duration implements Serializable {
 
     /**
      * Creates a new instance of Duration specifying a length in milliseconds.
-     * @param milliseconds Creates a new instance of Duration specifying a length in milliseconds 
+     *
+     * @param milliseconds Creates a new instance of Duration specifying a length in milliseconds
      */
     public Duration(final long milliseconds) {
         this.setMilliseconds(milliseconds);
@@ -94,7 +87,8 @@ public final class Duration implements Serializable {
 
     /**
      * Creates a new duration object with the given hours, minutes and seconds.
-     * @param hours number of hours
+     *
+     * @param hours   number of hours
      * @param minutes number of minutes
      * @param seconds number of seconds
      */
@@ -104,23 +98,24 @@ public final class Duration implements Serializable {
 
     /**
      * Creates a new Duration parsing the String value.
+     *
      * @param duration A String to parse
      */
     public Duration(final String duration) {
         StringTokenizer tok = new StringTokenizer(duration, ":");
         switch (tok.countTokens()) {
-        case 1:
-            this.setMilliseconds((long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
-            break;
-        case 2:
-            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
-            break;
-        case 3:
-            this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
-                    + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
-            break;
-        default:
-            throw new RuntimeException("Illegal time value: " + duration);
+            case 1:
+                this.setMilliseconds((long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                break;
+            case 2:
+                this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                break;
+            case 3:
+                this.setMilliseconds(NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
+                        + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND));
+                break;
+            default:
+                throw new RuntimeException("Illegal time value: " + duration);
         }
     }
 
@@ -138,6 +133,7 @@ public final class Duration implements Serializable {
 
     /**
      * Returns the millisecond length
+     *
      * @return the millisecond length
      */
     public long getMilliseconds() {
@@ -146,6 +142,7 @@ public final class Duration implements Serializable {
 
     /**
      * Sets the millisecond length
+     *
      * @param milliseconds the millisecond length
      */
     public void setMilliseconds(final long milliseconds) {
@@ -157,13 +154,19 @@ public final class Duration implements Serializable {
      */
     private static class Time {
 
-        /** The hours. */
+        /**
+         * The hours.
+         */
         private final int hours;
 
-        /** The minutes. */
+        /**
+         * The minutes.
+         */
         private final int minutes;
 
-        /** The seconds. */
+        /**
+         * The seconds.
+         */
         private final float seconds;
 
         /**
