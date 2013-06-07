@@ -19,28 +19,30 @@ package net.holmes.core.test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import junit.framework.TestCase;
 import net.holmes.common.media.AbstractNode;
 import net.holmes.common.media.RootNode;
 import net.holmes.core.TestModule;
 import net.holmes.core.media.MediaManager;
 import org.junit.Before;
+import org.junit.Test;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class MediaManagerTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class MediaManagerTest {
 
     @Inject
     private MediaManager mediaManager;
 
-    @Override
     @Before
     public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
     }
 
+    @Test
     public void testGetRootNode() {
         AbstractNode node = mediaManager.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
@@ -51,6 +53,7 @@ public class MediaManagerTest extends TestCase {
         assertEquals(childNodes.size(), 4);
     }
 
+    @Test
     public void testGetRootVideoNode() {
         AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
@@ -65,9 +68,9 @@ public class MediaManagerTest extends TestCase {
         assertFalse(nodes.isEmpty());
         assertEquals(nodes.size(), 1);
         assertEquals(nodes.iterator().next().getName(), "video.avi");
-
     }
 
+    @Test
     public void testGetRootAudioNode() {
         AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
@@ -84,6 +87,7 @@ public class MediaManagerTest extends TestCase {
         assertEquals(nodes.iterator().next().getName(), "audio.mp3");
     }
 
+    @Test
     public void testGetRootPictureNode() {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
@@ -100,6 +104,7 @@ public class MediaManagerTest extends TestCase {
         assertEquals(nodes.iterator().next().getName(), "image.jpg");
     }
 
+    @Test
     public void testGetRootPodcastNode() {
         AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);

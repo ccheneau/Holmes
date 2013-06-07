@@ -16,14 +16,15 @@
  */
 package net.holmes.common.mimetype;
 
-import junit.framework.TestCase;
 import org.junit.Before;
+import org.junit.Test;
 
-public class MimeTypeTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class MimeTypeTest {
 
     private MimeTypeManager mimeTypeManager;
 
-    @Override
     @Before
     public void setUp() {
         mimeTypeManager = new MimeTypeManagerImpl();
@@ -32,6 +33,7 @@ public class MimeTypeTest extends TestCase {
     /**
      * Test mime type.
      */
+    @Test
     public void testMimeType() {
         try {
             String fileName = "movie.avi";
@@ -50,6 +52,7 @@ public class MimeTypeTest extends TestCase {
     /**
      * Test bad mime type.
      */
+    @Test
     public void testBadMimeType() {
         try {
             String fileName = "movie.blabla";

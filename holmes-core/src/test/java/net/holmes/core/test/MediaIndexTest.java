@@ -19,19 +19,21 @@ package net.holmes.core.test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
 import org.junit.Before;
+import org.junit.Test;
 
 import javax.inject.Inject;
 
-public class MediaIndexTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+public class MediaIndexTest {
     @Inject
     private MediaIndexManager mediaIndex;
 
-    @Override
     @Before
     public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
@@ -41,6 +43,7 @@ public class MediaIndexTest extends TestCase {
     /**
      * Check that adding same data returns the same uuid
      */
+    @Test
     public void testAddMediaIndex() {
         String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
         String uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));

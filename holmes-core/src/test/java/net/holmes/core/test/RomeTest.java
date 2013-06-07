@@ -25,17 +25,19 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-import junit.framework.TestCase;
 import net.holmes.core.TestModule;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class RomeTest extends TestCase {
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-    @Override
+public class RomeTest {
+
     @Before
     public void setUp() {
         Injector injector = Guice.createInjector(new TestModule());
@@ -45,6 +47,7 @@ public class RomeTest extends TestCase {
     /**
      * Test rome with cast coders rss.
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testRomeCastCoders() {
         XmlReader reader = null;
@@ -78,6 +81,7 @@ public class RomeTest extends TestCase {
     /**
      * Test rome with allocine faux raccords rss.
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testRomeAllocineFauxRaccord() {
         XmlReader reader = null;
