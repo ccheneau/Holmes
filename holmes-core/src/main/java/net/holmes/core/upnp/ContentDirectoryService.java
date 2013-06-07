@@ -64,12 +64,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private static String getLocalIPV4() {
         try {
-            for (Enumeration<NetworkInterface> intfaces = NetworkInterface.getNetworkInterfaces(); intfaces.hasMoreElements(); ) {
-                NetworkInterface intf = intfaces.nextElement();
-                for (Enumeration<InetAddress> inetAddresses = intf.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
-                    InetAddress inetAddr = inetAddresses.nextElement();
-                    if (inetAddr instanceof Inet4Address && !inetAddr.isLoopbackAddress() && inetAddr.isSiteLocalAddress()) {
-                        return inetAddr.getHostAddress();
+            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
@@ -81,15 +81,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
-                               final SortCriterion[] orderby) throws ContentDirectoryException {
+                               final SortCriterion[] orderBy) throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
-                logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectid=" + objectID + " indice=" + firstResult
-                        + " nbresults=" + maxResults);
+                logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectId=" + objectID + " firstResult=" + firstResult
+                        + " nbResults=" + maxResults);
                 logger.debug("filter: {}", filter);
-                if (orderby != null) {
-                    for (SortCriterion sort : orderby) {
-                        logger.debug("orderby: {}", sort.toString());
+                if (orderBy != null) {
+                    for (SortCriterion sort : orderBy) {
+                        logger.debug("orderBy: {}", sort.toString());
                     }
                 }
             }

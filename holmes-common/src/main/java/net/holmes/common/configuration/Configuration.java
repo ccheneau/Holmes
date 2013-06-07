@@ -78,7 +78,7 @@ public interface Configuration {
     /**
      * Gets the parameter.
      *
-     * @param param parameter
+     * @param parameter parameter
      * @return parameter
      */
     Boolean getParameter(Parameter parameter);
@@ -94,8 +94,8 @@ public interface Configuration {
     /**
      * Sets parameter value.
      *
-     * @param param parameter
-     * @param value parameter value
+     * @param parameter parameter
+     * @param value     parameter value
      */
     void setParameter(Parameter parameter, Boolean value);
 }

@@ -35,6 +35,9 @@ import static net.holmes.common.SystemProperty.USER_HOME;
 @Path("/backend/util")
 public final class UtilHandler {
 
+    public UtilHandler() {
+    }
+
     /**
      * Get Holmes version.
      *

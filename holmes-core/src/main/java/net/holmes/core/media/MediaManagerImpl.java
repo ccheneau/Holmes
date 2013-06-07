@@ -430,8 +430,9 @@ public final class MediaManagerImpl implements MediaManager {
                     @Override
                     public String call() throws IOException {
                         String resolution = null;
-                        BufferedImage bimg = ImageIO.read(file);
-                        if (bimg != null) resolution = String.format("%dx%d", bimg.getWidth(), bimg.getHeight());
+                        BufferedImage bufferedImage = ImageIO.read(file);
+                        if (bufferedImage != null)
+                            resolution = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
                         return resolution != null ? resolution : "0x0";
                     }
                 });

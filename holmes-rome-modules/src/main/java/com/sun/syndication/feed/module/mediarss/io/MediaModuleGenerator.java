@@ -149,12 +149,12 @@ public class MediaModuleGenerator implements ModuleGenerator {
         Element copyright = addNotNullElement(element, "copyright", metadata.getCopyright());
         this.addNotNullAttribute(copyright, "url", metadata.getCopyrightUrl());
 
-        Credit[] creds = metadata.getCredits();
+        Credit[] credits = metadata.getCredits();
 
-        for (Credit cred : creds) {
-            Element c = generateSimpleElement("credit", cred.getName());
-            this.addNotNullAttribute(c, "role", cred.getRole());
-            this.addNotNullAttribute(c, "scheme", cred.getScheme());
+        for (Credit credit : credits) {
+            Element c = generateSimpleElement("credit", credit.getName());
+            this.addNotNullAttribute(c, "role", credit.getRole());
+            this.addNotNullAttribute(c, "scheme", credit.getScheme());
             element.addContent(c);
         }
 

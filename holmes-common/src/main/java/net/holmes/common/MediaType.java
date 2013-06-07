@@ -52,7 +52,7 @@ public enum MediaType {
     /**
      * Get media type by value.
      *
-     * @param mediaTypeValue
+     * @param mediaTypeValue media type value
      * @return MediaType corresponding to mediaTypeValue or MediaType.TYPE_NONE
      */
     public static MediaType getByValue(String mediaTypeValue) {
