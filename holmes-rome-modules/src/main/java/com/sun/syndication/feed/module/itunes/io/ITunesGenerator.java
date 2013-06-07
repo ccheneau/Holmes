@@ -85,9 +85,9 @@ public class ITunesGenerator implements ModuleGenerator {
                 category.setAttribute("text", cat.getName());
 
                 if (cat.getSubcategory() != null) {
-                    Element subcat = this.generateSimpleElement("category", "");
-                    subcat.setAttribute("text", cat.getSubcategory().getName());
-                    category.addContent(subcat);
+                    Element subcategory = this.generateSimpleElement("category", "");
+                    subcategory.setAttribute("text", cat.getSubcategory().getName());
+                    category.addContent(subcategory);
                 }
 
                 element.addContent(category);

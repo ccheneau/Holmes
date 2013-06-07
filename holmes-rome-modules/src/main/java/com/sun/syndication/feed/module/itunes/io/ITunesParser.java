@@ -110,9 +110,9 @@ public class ITunesParser implements ModuleParser {
                     Element subcategory = category.getChild("category", ns);
 
                     if (subcategory != null && subcategory.getAttribute("text") != null) {
-                        Subcategory subcat = new Subcategory();
-                        subcat.setName(subcategory.getAttribute("text").getValue().trim());
-                        cat.setSubcategory(subcat);
+                        Subcategory subcategory1 = new Subcategory();
+                        subcategory1.setName(subcategory.getAttribute("text").getValue().trim());
+                        cat.setSubcategory(subcategory1);
                     }
 
                     feedInfo.getCategories().add(cat);

@@ -54,8 +54,8 @@ public class TestConfiguration implements Configuration {
 
         URL rs = this.getClass().getResource(path);
         if (rs != null) {
-            String fpath = new File(rs.getFile()).getAbsolutePath();
-            contentFolder = new ConfigurationNode(label, label, fpath);
+            String filePath = new File(rs.getFile()).getAbsolutePath();
+            contentFolder = new ConfigurationNode(label, label, filePath);
         }
 
         return contentFolder;
