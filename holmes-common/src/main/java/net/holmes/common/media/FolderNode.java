@@ -36,8 +36,12 @@ public final class FolderNode extends AbstractNode {
      */
     public FolderNode(final String id, final String parentId, final String name, final File folder) {
         super(NodeType.TYPE_FOLDER, id, parentId, name);
-        this.path = folder.getAbsolutePath();
-        this.modifiedDate = folder.lastModified();
+        if (folder != null) {
+            this.path = folder.getAbsolutePath();
+            this.modifiedDate = folder.lastModified();
+        } else {
+            this.path = null;
+        }
     }
 
     /**
@@ -48,9 +52,7 @@ public final class FolderNode extends AbstractNode {
      * @param name     node name
      */
     public FolderNode(final String id, final String parentId, final String name) {
-        super(NodeType.TYPE_FOLDER, id, parentId, name);
-        this.path = null;
-
+        this(id, parentId, name, null);
     }
 
     @Override
