@@ -17,6 +17,8 @@
 
 package net.holmes.common.media;
 
+import com.google.common.base.Objects;
+
 /**
  * Podcast node.
  */
@@ -39,42 +41,34 @@ public final class PodcastNode extends AbstractNode {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
-        return result;
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, url);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj)) return false;
-        if (getClass() != obj.getClass()) return false;
-        PodcastNode other = (PodcastNode) obj;
-        if (url == null) {
-            if (other.url != null) return false;
-        } else if (!url.equals(other.url)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final PodcastNode other = (PodcastNode) obj;
+        return Objects.equal(this.url, other.url);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PodcastNode [url=");
-        builder.append(url);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", parentId=");
-        builder.append(parentId);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifiedDate=");
-        builder.append(modifiedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append(", iconUrl=");
-        builder.append(iconUrl);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(url)
+                .addValue(id)
+                .addValue(type)
+                .addValue(parentId)
+                .addValue(name)
+                .addValue(modifiedDate)
+                .addValue(iconUrl)
+                .toString();
     }
 }

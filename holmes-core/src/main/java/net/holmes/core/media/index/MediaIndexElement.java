@@ -17,6 +17,8 @@
 
 package net.holmes.core.media.index;
 
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
 
 /**
@@ -70,52 +72,29 @@ public class MediaIndexElement implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (localPath ? 1231 : 1237);
-        result = prime * result + ((mediaType == null) ? 0 : mediaType.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
-        result = prime * result + ((path == null) ? 0 : path.hashCode());
-        return result;
+        return Objects.hashCode(parentId, mediaType, name, path, localPath);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        MediaIndexElement other = (MediaIndexElement) obj;
-        if (localPath != other.localPath) return false;
-        if (mediaType == null) {
-            if (other.mediaType != null) return false;
-        } else if (!mediaType.equals(other.mediaType)) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        if (parentId == null) {
-            if (other.parentId != null) return false;
-        } else if (!parentId.equals(other.parentId)) return false;
-        if (path == null) {
-            if (other.path != null) return false;
-        } else if (!path.equals(other.path)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final MediaIndexElement other = (MediaIndexElement) obj;
+        return Objects.equal(this.parentId, other.parentId) && Objects.equal(this.mediaType, other.mediaType) && Objects.equal(this.name, other.name) && Objects.equal(this.path, other.path) && Objects.equal(this.localPath, other.localPath);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("MediaIndexElement [parentId=");
-        builder.append(parentId);
-        builder.append(", mediaType=");
-        builder.append(mediaType);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", path=");
-        builder.append(path);
-        builder.append(", localPath=");
-        builder.append(localPath);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(parentId)
+                .addValue(mediaType)
+                .addValue(name)
+                .addValue(path)
+                .addValue(localPath)
+                .toString();
     }
 }

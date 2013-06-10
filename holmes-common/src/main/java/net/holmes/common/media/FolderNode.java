@@ -17,6 +17,8 @@
 
 package net.holmes.common.media;
 
+import com.google.common.base.Objects;
+
 import java.io.File;
 
 /**
@@ -57,42 +59,34 @@ public final class FolderNode extends AbstractNode {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((path == null) ? 0 : path.hashCode());
-        return result;
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, path);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj)) return false;
-        if (getClass() != obj.getClass()) return false;
-        FolderNode other = (FolderNode) obj;
-        if (path == null) {
-            if (other.path != null) return false;
-        } else if (!path.equals(other.path)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final FolderNode other = (FolderNode) obj;
+        return Objects.equal(this.path, other.path);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("FolderNode [path=");
-        builder.append(path);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", parentId=");
-        builder.append(parentId);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifiedDate=");
-        builder.append(modifiedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append(", iconUrl=");
-        builder.append(iconUrl);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(path)
+                .addValue(id)
+                .addValue(type)
+                .addValue(parentId)
+                .addValue(name)
+                .addValue(modifiedDate)
+                .addValue(iconUrl)
+                .toString();
     }
 }

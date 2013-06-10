@@ -17,6 +17,7 @@
 
 package net.holmes.common.media;
 
+import com.google.common.base.Objects;
 import net.holmes.common.mimetype.MimeType;
 
 /**
@@ -75,54 +76,36 @@ public final class PodcastEntryNode extends AbstractNode {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((duration == null) ? 0 : duration.hashCode());
-        result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
-        return result;
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url, duration);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj)) return false;
-        if (getClass() != obj.getClass()) return false;
-        PodcastEntryNode other = (PodcastEntryNode) obj;
-        if (duration == null) {
-            if (other.duration != null) return false;
-        } else if (!duration.equals(other.duration)) return false;
-        if (mimeType == null) {
-            if (other.mimeType != null) return false;
-        } else if (!mimeType.equals(other.mimeType)) return false;
-        if (url == null) {
-            if (other.url != null) return false;
-        } else if (!url.equals(other.url)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final PodcastEntryNode other = (PodcastEntryNode) obj;
+        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PodcastEntryNode [mimeType=");
-        builder.append(mimeType);
-        builder.append(", url=");
-        builder.append(url);
-        builder.append(", duration=");
-        builder.append(duration);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", parentId=");
-        builder.append(parentId);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", modifiedDate=");
-        builder.append(modifiedDate);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append(", iconUrl=");
-        builder.append(iconUrl);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(mimeType)
+                .addValue(url)
+                .addValue(duration)
+                .addValue(id)
+                .addValue(type)
+                .addValue(parentId)
+                .addValue(name)
+                .addValue(modifiedDate)
+                .addValue(iconUrl)
+                .toString();
     }
 }

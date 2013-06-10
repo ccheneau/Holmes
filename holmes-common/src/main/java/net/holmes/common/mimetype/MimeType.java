@@ -17,6 +17,7 @@
 
 package net.holmes.common.mimetype;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import net.holmes.common.MediaType;
@@ -118,42 +119,28 @@ public final class MimeType {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
-        result = prime * result + ((subType == null) ? 0 : subType.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
+        return Objects.hashCode(type, subType, mimeType);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        MimeType other = (MimeType) obj;
-        if (mimeType == null) {
-            if (other.mimeType != null) return false;
-        } else if (!mimeType.equals(other.mimeType)) return false;
-        if (subType == null) {
-            if (other.subType != null) return false;
-        } else if (!subType.equals(other.subType)) return false;
-        if (type == null) {
-            if (other.type != null) return false;
-        } else if (!type.equals(other.type)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final MimeType other = (MimeType) obj;
+        return Objects.equal(this.type, other.type) && Objects.equal(this.subType, other.subType) && Objects.equal(this.mimeType, other.mimeType);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("MimeType [type=");
-        builder.append(type);
-        builder.append(", subType=");
-        builder.append(subType);
-        builder.append(", mimeType=");
-        builder.append(mimeType);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(type)
+                .addValue(subType)
+                .addValue(type)
+                .addValue(mimeType)
+                .toString();
     }
 }

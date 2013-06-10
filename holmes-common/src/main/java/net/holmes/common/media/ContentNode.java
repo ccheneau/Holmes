@@ -17,6 +17,7 @@
 
 package net.holmes.common.media;
 
+import com.google.common.base.Objects;
 import net.holmes.common.mimetype.MimeType;
 
 import java.io.File;
@@ -87,60 +88,37 @@ public final class ContentNode extends AbstractNode {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
-        result = prime * result + ((path == null) ? 0 : path.hashCode());
-        result = prime * result + ((resolution == null) ? 0 : resolution.hashCode());
-        result = prime * result + ((size == null) ? 0 : size.hashCode());
-        return result;
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path, resolution);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj)) return false;
-        if (getClass() != obj.getClass()) return false;
-        ContentNode other = (ContentNode) obj;
-        if (mimeType == null) {
-            if (other.mimeType != null) return false;
-        } else if (!mimeType.equals(other.mimeType)) return false;
-        if (path == null) {
-            if (other.path != null) return false;
-        } else if (!path.equals(other.path)) return false;
-        if (resolution == null) {
-            if (other.resolution != null) return false;
-        } else if (!resolution.equals(other.resolution)) return false;
-        if (size == null) {
-            if (other.size != null) return false;
-        } else if (!size.equals(other.size)) return false;
-        return true;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final ContentNode other = (ContentNode) obj;
+        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.size, other.size) && Objects.equal(this.path, other.path) && Objects.equal(this.resolution, other.resolution);
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ContentNode [mimeType=");
-        builder.append(mimeType);
-        builder.append(", size=");
-        builder.append(size);
-        builder.append(", path=");
-        builder.append(path);
-        builder.append(", resolution=");
-        builder.append(resolution);
-        builder.append(", id=");
-        builder.append(id);
-        builder.append(", parentId=");
-        builder.append(parentId);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", type=");
-        builder.append(type);
-        builder.append(", modifiedDate=");
-        builder.append(modifiedDate);
-        builder.append(", iconUrl=");
-        builder.append(iconUrl);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(mimeType)
+                .addValue(size)
+                .addValue(path)
+                .addValue(resolution)
+                .addValue(id)
+                .addValue(type)
+                .addValue(parentId)
+                .addValue(name)
+                .addValue(modifiedDate)
+                .addValue(iconUrl)
+                .toString();
     }
 }

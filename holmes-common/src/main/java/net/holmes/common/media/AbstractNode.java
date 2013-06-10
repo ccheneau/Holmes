@@ -17,6 +17,8 @@
 
 package net.holmes.common.media;
 
+import com.google.common.base.Objects;
+
 /**
  * Abstract node.
  */
@@ -126,47 +128,21 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((iconUrl == null) ? 0 : iconUrl.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        AbstractNode other = (AbstractNode) obj;
-        if (iconUrl == null) {
-            if (other.iconUrl != null) return false;
-        } else if (!iconUrl.equals(other.iconUrl)) return false;
-        if (id == null) {
-            if (other.id != null) return false;
-        } else if (!id.equals(other.id)) return false;
-        if (modifiedDate == null) {
-            if (other.modifiedDate != null) return false;
-        } else if (!modifiedDate.equals(other.modifiedDate)) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        if (parentId == null) {
-            if (other.parentId != null) return false;
-        } else if (!parentId.equals(other.parentId)) return false;
-        return type == other.type;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractNode other = (AbstractNode) obj;
+        return Objects.equal(this.id, other.id) && Objects.equal(this.parentId, other.parentId) && Objects.equal(this.name, other.name) && Objects.equal(this.type, other.type) && Objects.equal(this.modifiedDate, other.modifiedDate) && Objects.equal(this.iconUrl, other.iconUrl);
     }
 
     /**

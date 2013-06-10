@@ -17,6 +17,8 @@
 
 package net.holmes.common.configuration;
 
+import com.google.common.base.Objects;
+
 /**
  * Configuration node.
  */
@@ -61,30 +63,19 @@ public final class ConfigurationNode {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((label == null) ? 0 : label.hashCode());
-        result = prime * result + ((path == null) ? 0 : path.hashCode());
-        return result;
+        return Objects.hashCode(id, label, path);
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        ConfigurationNode other = (ConfigurationNode) obj;
-        if (id == null) {
-            if (other.id != null) return false;
-        } else if (!id.equals(other.id)) return false;
-        if (label == null) {
-            if (other.label != null) return false;
-        } else if (!label.equals(other.label)) return false;
-        if (path == null) {
-            if (other.path != null) return false;
-        } else if (!path.equals(other.path)) return false;
-        return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ConfigurationNode other = (ConfigurationNode) obj;
+        return Objects.equal(this.id, other.id) && Objects.equal(this.label, other.label) && Objects.equal(this.path, other.path);
     }
 
     @Override
