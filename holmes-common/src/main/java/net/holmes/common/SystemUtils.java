@@ -28,7 +28,7 @@ import java.nio.channels.FileLock;
 public final class SystemUtils {
 
     private static final String LOCK_FILE = "holmes.lock";
-    private static final String HOLMES_DATE_DIR = SystemProperty.USER_HOME.getValue() + File.separator + ".holmes";
+    private static final String HOLMES_DATA_DIR = SystemProperty.USER_HOME.getValue() + File.separator + ".holmes";
 
     /**
      * Instantiates a new system utils.
@@ -78,9 +78,9 @@ public final class SystemUtils {
      */
     public static File getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
-        File fDataDir = new File(HOLMES_DATE_DIR);
+        File fDataDir = new File(HOLMES_DATA_DIR);
         if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs())
-            throw new RuntimeException("Failed to create " + HOLMES_DATE_DIR);
+            throw new RuntimeException("Failed to create " + HOLMES_DATA_DIR);
 
         return fDataDir;
     }
