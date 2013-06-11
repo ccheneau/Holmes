@@ -52,8 +52,8 @@ public final class Bootstrap {
     public static void main(final String... args) {
         // Check lock file
         if (SystemUtils.lockInstance()) {
-            // Load log4j
-            loadLog4j(args.length > 0 && "debug".equals(args[0]));
+            // Load logging
+            loadLogging(args.length > 0 && "debug".equals(args[0]));
 
             // Create Guice injector
             Injector injector = Guice.createInjector(new HolmesServerModule());
@@ -81,11 +81,11 @@ public final class Bootstrap {
     }
 
     /**
-     * Configure Log4j.
+     * Configure logging.
      *
      * @param debug activates debug mode
      */
-    private static void loadLog4j(final boolean debug) {
+    private static void loadLogging(final boolean debug) {
         // Load log4j configuration
         File confDir = new File(HOLMES_HOME.getValue(), "conf");
         String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
@@ -99,7 +99,7 @@ public final class Bootstrap {
             throw new RuntimeException(logConfig + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
 
         // Remove existing handlers attached to j.u.l root logger
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        if (!debug) SLF4JBridgeHandler.removeHandlersForRootLogger();
 
         // Add SLF4JBridgeHandler to j.u.l's root logger
         SLF4JBridgeHandler.install();
