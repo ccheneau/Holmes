@@ -44,6 +44,12 @@ public class MimeTypeTest {
             assertEquals("video", mimeType.getType());
             assertEquals("x-msvideo", mimeType.getSubType());
             assertEquals("video/x-msvideo", mimeType.getMimeType());
+            assertTrue(mimeType.isVideo());
+            assertTrue(mimeType.isMedia());
+            assertFalse(mimeType.isSubtitle());
+            assertFalse(mimeType.isAudio());
+            assertFalse(mimeType.isImage());
+            assertFalse(mimeType.equals(null));
         } catch (Exception e) {
             fail(e.getMessage());
         }
