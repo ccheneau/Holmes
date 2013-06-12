@@ -183,9 +183,6 @@ public final class XmlConfigurationImpl implements Configuration {
         private List<ConfigurationNode> audioFolders;
         private List<ConfigurationNode> podcasts;
         private Properties parameters;
-        @SuppressWarnings("unused")
-        @Deprecated
-        private transient String theme;
 
         /**
          * Check config default values.
