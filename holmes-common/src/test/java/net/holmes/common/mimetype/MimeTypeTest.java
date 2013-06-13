@@ -49,7 +49,7 @@ public class MimeTypeTest {
             assertFalse(mimeType.isSubtitle());
             assertFalse(mimeType.isAudio());
             assertFalse(mimeType.isImage());
-            assertFalse(mimeType.equals(null));
+            assertNull(mimeType);
         } catch (Exception e) {
             fail(e.getMessage());
         }

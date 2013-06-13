@@ -17,8 +17,9 @@
 
 package net.holmes.common.media;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * AbstractNode Tester.
@@ -28,51 +29,51 @@ public class AbstractNodeTest {
     @Test
     public void testGetId() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertEquals(node.getId(), "id");
+        assertEquals(node.getId(), "id");
     }
 
     @Test
     public void testGetParentId() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertEquals(node.getParentId(), "parentId");
+        assertEquals(node.getParentId(), "parentId");
     }
 
     @Test
     public void testGetName() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertEquals(node.getName(), "name");
+        assertEquals(node.getName(), "name");
     }
 
     @Test
     public void testGetType() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertEquals(node.getType(), AbstractNode.NodeType.TYPE_CONTENT);
+        assertEquals(node.getType(), AbstractNode.NodeType.TYPE_CONTENT);
     }
 
     @Test
     public void testGetModifiedDate() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertNull(node.getModifiedDate());
+        assertNull(node.getModifiedDate());
     }
 
     @Test
     public void testSetModifiedDate() {
         AbstractNodeTester node = buildAbstractNodeTester("");
         node.setModifiedDate(1L);
-        Assert.assertEquals(node.getModifiedDate(), Long.valueOf(1));
+        assertEquals(node.getModifiedDate(), Long.valueOf(1));
     }
 
     @Test
     public void testGetIconUrl() {
         AbstractNodeTester node = buildAbstractNodeTester("");
-        Assert.assertNull(node.getIconUrl());
+        assertNull(node.getIconUrl());
     }
 
     @Test
     public void testSetIconUrl() {
         AbstractNodeTester node = buildAbstractNodeTester("");
         node.setIconUrl("iconUrl");
-        Assert.assertEquals(node.getIconUrl(), "iconUrl");
+        assertEquals(node.getIconUrl(), "iconUrl");
     }
 
     @Test
@@ -80,8 +81,8 @@ public class AbstractNodeTest {
         AbstractNodeTester node = buildAbstractNodeTester("");
         AbstractNodeTester node1 = buildAbstractNodeTester("");
         AbstractNodeTester node2 = buildAbstractNodeTester("2");
-        Assert.assertEquals(node.compareTo(node1), 0);
-        Assert.assertNotEquals(node.compareTo(node2), 0);
+        assertEquals(node.compareTo(node1), 0);
+        assertNotEquals(node.compareTo(node2), 0);
     }
 
     @Test
@@ -89,8 +90,8 @@ public class AbstractNodeTest {
         AbstractNodeTester node = buildAbstractNodeTester("");
         AbstractNodeTester node1 = buildAbstractNodeTester("");
         AbstractNodeTester node2 = buildAbstractNodeTester("2");
-        Assert.assertEquals(node.hashCode(), node1.hashCode());
-        Assert.assertNotEquals(node.hashCode(), node2.hashCode());
+        assertEquals(node.hashCode(), node1.hashCode());
+        assertNotEquals(node.hashCode(), node2.hashCode());
     }
 
     @Test
@@ -98,8 +99,8 @@ public class AbstractNodeTest {
         AbstractNodeTester node = buildAbstractNodeTester("");
         AbstractNodeTester node1 = buildAbstractNodeTester("");
         AbstractNodeTester node2 = buildAbstractNodeTester("2");
-        Assert.assertEquals(node, node1);
-        Assert.assertNotEquals(node, node2);
+        assertEquals(node, node1);
+        assertNotEquals(node, node2);
     }
 
     private AbstractNodeTester buildAbstractNodeTester(String suffix) {

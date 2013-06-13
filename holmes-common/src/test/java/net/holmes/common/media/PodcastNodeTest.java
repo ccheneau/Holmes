@@ -18,9 +18,11 @@
 package net.holmes.common.media;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * PodcastNode Tester.
@@ -42,8 +44,8 @@ public class PodcastNodeTest {
     public void testHashCode() throws Exception {
         PodcastNode node1 = buildPodcastNode();
         PodcastNode node2 = buildPodcastNode();
-        Assert.assertNotNull(node1.hashCode());
-        Assert.assertEquals(node1.hashCode(), node2.hashCode());
+        assertNotNull(node1.hashCode());
+        assertEquals(node1.hashCode(), node2.hashCode());
     }
 
     /**
@@ -53,7 +55,7 @@ public class PodcastNodeTest {
     public void testEquals() throws Exception {
         PodcastNode node1 = buildPodcastNode();
         PodcastNode node2 = buildPodcastNode();
-        Assert.assertEquals(node1, node2);
+        assertEquals(node1, node2);
     }
 
     /**
@@ -63,8 +65,8 @@ public class PodcastNodeTest {
     public void testToString() throws Exception {
         PodcastNode node1 = buildPodcastNode();
         PodcastNode node2 = buildPodcastNode();
-        Assert.assertNotNull(node1.toString());
-        Assert.assertEquals(node1.toString(), node2.toString());
+        assertNotNull(node1.toString());
+        assertEquals(node1.toString(), node2.toString());
     }
 
     private PodcastNode buildPodcastNode() {

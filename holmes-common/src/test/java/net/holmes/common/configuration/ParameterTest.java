@@ -18,9 +18,10 @@
 package net.holmes.common.configuration;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Parameter Tester.
@@ -40,7 +41,7 @@ public class ParameterTest {
      */
     @Test
     public void testGetName() throws Exception {
-        Assert.assertEquals(Parameter.PREPEND_PODCAST_ENTRY_NAME.getName(), "prepend_podcast_entry_name");
+        assertEquals(Parameter.PREPEND_PODCAST_ENTRY_NAME.getName(), "prepend_podcast_entry_name");
     }
 
     /**
@@ -48,6 +49,6 @@ public class ParameterTest {
      */
     @Test
     public void testGetDefaultValue() throws Exception {
-        Assert.assertEquals(Parameter.PREPEND_PODCAST_ENTRY_NAME.getDefaultValue(), "false");
+        assertEquals(Parameter.PREPEND_PODCAST_ENTRY_NAME.getDefaultValue(), "false");
     }
 }

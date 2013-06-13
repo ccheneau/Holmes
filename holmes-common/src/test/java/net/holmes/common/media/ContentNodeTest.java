@@ -19,10 +19,16 @@ package net.holmes.common.media;
 
 
 import net.holmes.common.mimetype.MimeType;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * ContentNode Tester.
@@ -48,7 +54,7 @@ public class ContentNodeTest {
         MimeType mimeType = new MimeType("video/x-msvideo");
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node = buildContentNode("", file);
-        Assert.assertEquals(node.getMimeType(), mimeType);
+        assertEquals(node.getMimeType(), mimeType);
     }
 
     /**
@@ -58,7 +64,7 @@ public class ContentNodeTest {
     public void testGetSize() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node = buildContentNode("", file);
-        Assert.assertEquals(node.getSize().longValue(), file.length());
+        assertEquals(node.getSize().longValue(), file.length());
     }
 
     /**
@@ -68,7 +74,7 @@ public class ContentNodeTest {
     public void testGetPath() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node = buildContentNode("", file);
-        Assert.assertEquals(node.getPath(), file.getAbsolutePath());
+        assertEquals(node.getPath(), file.getAbsolutePath());
     }
 
     /**
@@ -78,7 +84,7 @@ public class ContentNodeTest {
     public void testGetResolution() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node = buildContentNode("", file);
-        Assert.assertEquals(node.getResolution(), "resolution");
+        assertEquals(node.getResolution(), "resolution");
     }
 
     /**
@@ -89,8 +95,8 @@ public class ContentNodeTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
-        Assert.assertNotNull(node1.hashCode());
-        Assert.assertEquals(node1.hashCode(), node2.hashCode());
+        assertNotNull(node1.hashCode());
+        assertEquals(node1.hashCode(), node2.hashCode());
     }
 
     /**
@@ -101,7 +107,7 @@ public class ContentNodeTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
-        Assert.assertEquals(node1, node2);
+        assertEquals(node1, node2);
     }
 
     /**
@@ -112,8 +118,8 @@ public class ContentNodeTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
-        Assert.assertNotNull(node1.toString());
-        Assert.assertEquals(node1.toString(), node2.toString());
+        assertNotNull(node1.toString());
+        assertEquals(node1.toString(), node2.toString());
     }
 
     private ContentNode buildContentNode(String suffix, File file) {

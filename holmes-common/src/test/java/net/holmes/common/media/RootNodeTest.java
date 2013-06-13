@@ -19,9 +19,10 @@ package net.holmes.common.media;
 
 import net.holmes.common.MediaType;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * RootNode Tester.
@@ -41,8 +42,7 @@ public class RootNodeTest {
      */
     @Test
     public void testGetId() throws Exception {
-        //VIDEO("1_VIDEOS", ROOT.getId(), MediaType.TYPE_VIDEO), //
-        Assert.assertEquals(RootNode.VIDEO.getId(), "1_VIDEOS");
+        assertEquals(RootNode.VIDEO.getId(), "1_VIDEOS");
     }
 
     /**
@@ -50,7 +50,7 @@ public class RootNodeTest {
      */
     @Test
     public void testGetParentId() throws Exception {
-        Assert.assertEquals(RootNode.VIDEO.getParentId(), "0");
+        assertEquals(RootNode.VIDEO.getParentId(), "0");
     }
 
     /**
@@ -58,7 +58,7 @@ public class RootNodeTest {
      */
     @Test
     public void testGetMediaType() throws Exception {
-        Assert.assertEquals(RootNode.VIDEO.getMediaType(), MediaType.TYPE_VIDEO);
+        assertEquals(RootNode.VIDEO.getMediaType(), MediaType.TYPE_VIDEO);
     }
 
     /**
@@ -66,7 +66,7 @@ public class RootNodeTest {
      */
     @Test
     public void testGetBundleKey() throws Exception {
-        Assert.assertNotNull(RootNode.VIDEO.getBundleKey());
+        assertNotNull(RootNode.VIDEO.getBundleKey());
     }
 
     /**
@@ -74,8 +74,8 @@ public class RootNodeTest {
      */
     @Test
     public void testGetById() throws Exception {
-        Assert.assertEquals(RootNode.getById("1_VIDEOS"), RootNode.VIDEO);
-        Assert.assertNull(RootNode.getById("non existing root node"));
+        assertEquals(RootNode.getById("1_VIDEOS"), RootNode.VIDEO);
+        assertNull(RootNode.getById("non existing root node"));
     }
 
 

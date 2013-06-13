@@ -20,9 +20,11 @@ package net.holmes.common.event;
 import net.holmes.common.configuration.ConfigurationNode;
 import net.holmes.common.media.RootNode;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * ConfigurationEvent Tester.
@@ -43,7 +45,7 @@ public class ConfigurationEventTest {
     @Test
     public void testGetType() throws Exception {
         ConfigurationEvent event = buildConfigurationEvent(null);
-        Assert.assertEquals(event.getType(), ConfigurationEvent.EventType.ADD);
+        assertEquals(event.getType(), ConfigurationEvent.EventType.ADD);
     }
 
     /**
@@ -53,7 +55,7 @@ public class ConfigurationEventTest {
     public void testGetNode() throws Exception {
         ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         ConfigurationEvent event = buildConfigurationEvent(node);
-        Assert.assertEquals(event.getNode(), node);
+        assertEquals(event.getNode(), node);
     }
 
     /**
@@ -62,7 +64,7 @@ public class ConfigurationEventTest {
     @Test
     public void testGetRootNode() throws Exception {
         ConfigurationEvent event = buildConfigurationEvent(null);
-        Assert.assertEquals(event.getRootNode(), RootNode.ROOT);
+        assertEquals(event.getRootNode(), RootNode.ROOT);
     }
 
     /**
@@ -71,7 +73,7 @@ public class ConfigurationEventTest {
     @Test
     public void testToString() throws Exception {
         ConfigurationEvent event = buildConfigurationEvent(null);
-        Assert.assertNotNull(event.toString());
+        assertNotNull(event.toString());
     }
 
     private ConfigurationEvent buildConfigurationEvent(ConfigurationNode node) {

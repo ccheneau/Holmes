@@ -18,9 +18,11 @@
 package net.holmes.common.event;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * MediaEvent Tester.
@@ -41,7 +43,7 @@ public class MediaEventTest {
     @Test
     public void testGetType() throws Exception {
         MediaEvent event = buildMediaEvent("");
-        Assert.assertEquals(event.getType(), MediaEvent.MediaEventType.SCAN_ALL);
+        assertEquals(event.getType(), MediaEvent.MediaEventType.SCAN_ALL);
     }
 
     /**
@@ -50,7 +52,7 @@ public class MediaEventTest {
     @Test
     public void testGetParameter() throws Exception {
         MediaEvent event = buildMediaEvent("");
-        Assert.assertEquals(event.getParameter(), "parameter");
+        assertEquals(event.getParameter(), "parameter");
     }
 
     /**
@@ -60,8 +62,8 @@ public class MediaEventTest {
     public void testToString() throws Exception {
         MediaEvent event1 = buildMediaEvent("");
         MediaEvent event2 = buildMediaEvent("");
-        Assert.assertNotNull(event1.toString());
-        Assert.assertEquals(event1.toString(), event2.toString());
+        assertNotNull(event1.toString());
+        assertEquals(event1.toString(), event2.toString());
     }
 
     private MediaEvent buildMediaEvent(String suffix) {

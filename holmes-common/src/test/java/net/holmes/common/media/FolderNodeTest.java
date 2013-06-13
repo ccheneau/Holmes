@@ -18,9 +18,11 @@
 package net.holmes.common.media;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * FolderNode Tester.
@@ -42,8 +44,8 @@ public class FolderNodeTest {
     public void testHashCode() throws Exception {
         FolderNode node1 = buildFolderNode();
         FolderNode node2 = buildFolderNode();
-        Assert.assertNotNull(node1.hashCode());
-        Assert.assertEquals(node1.hashCode(), node2.hashCode());
+        assertNotNull(node1.hashCode());
+        assertEquals(node1.hashCode(), node2.hashCode());
     }
 
     /**
@@ -53,7 +55,7 @@ public class FolderNodeTest {
     public void testEquals() throws Exception {
         FolderNode node1 = buildFolderNode();
         FolderNode node2 = buildFolderNode();
-        Assert.assertEquals(node1, node2);
+        assertEquals(node1, node2);
     }
 
     /**
@@ -63,8 +65,8 @@ public class FolderNodeTest {
     public void testToString() throws Exception {
         FolderNode node1 = buildFolderNode();
         FolderNode node2 = buildFolderNode();
-        Assert.assertNotNull(node1.toString());
-        Assert.assertEquals(node1.toString(), node2.toString());
+        assertNotNull(node1.toString());
+        assertEquals(node1.toString(), node2.toString());
     }
 
     private FolderNode buildFolderNode() {

@@ -18,9 +18,10 @@
 package net.holmes.common;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * MediaType Tester.
@@ -40,7 +41,7 @@ public class MediaTypeTest {
      */
     @Test
     public void testGetValue() throws Exception {
-        Assert.assertEquals(MediaType.TYPE_VIDEO.getValue(), "video");
+        assertEquals(MediaType.TYPE_VIDEO.getValue(), "video");
     }
 
     /**
@@ -48,7 +49,7 @@ public class MediaTypeTest {
      */
     @Test
     public void testGetByValue() throws Exception {
-        Assert.assertEquals(MediaType.getByValue("video"), MediaType.TYPE_VIDEO);
-        Assert.assertEquals(MediaType.getByValue("non existing value"), MediaType.TYPE_NONE);
+        assertEquals(MediaType.getByValue("video"), MediaType.TYPE_VIDEO);
+        assertEquals(MediaType.getByValue("non existing value"), MediaType.TYPE_NONE);
     }
 }

@@ -19,9 +19,11 @@ package net.holmes.common.media;
 
 import net.holmes.common.mimetype.MimeType;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * PodcastEntryNode Tester.
@@ -43,7 +45,7 @@ public class PodcastEntryNodeTest {
     public void testGetMimeType() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node = buildPodcastEntryNode(mimeType);
-        Assert.assertEquals(node.getMimeType(), mimeType);
+        assertEquals(node.getMimeType(), mimeType);
     }
 
     /**
@@ -53,7 +55,7 @@ public class PodcastEntryNodeTest {
     public void testGetUrl() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node = buildPodcastEntryNode(mimeType);
-        Assert.assertEquals(node.getUrl(), "url");
+        assertEquals(node.getUrl(), "url");
     }
 
     /**
@@ -63,7 +65,7 @@ public class PodcastEntryNodeTest {
     public void testGetDuration() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node = buildPodcastEntryNode(mimeType);
-        Assert.assertEquals(node.getDuration(), "duration");
+        assertEquals(node.getDuration(), "duration");
     }
 
     /**
@@ -74,8 +76,8 @@ public class PodcastEntryNodeTest {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
         PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
-        Assert.assertNotNull(node1.hashCode());
-        Assert.assertEquals(node1.hashCode(), node2.hashCode());
+        assertNotNull(node1.hashCode());
+        assertEquals(node1.hashCode(), node2.hashCode());
     }
 
     /**
@@ -86,7 +88,7 @@ public class PodcastEntryNodeTest {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
         PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
-        Assert.assertEquals(node1, node2);
+        assertEquals(node1, node2);
     }
 
     /**
@@ -97,8 +99,8 @@ public class PodcastEntryNodeTest {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
         PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
-        Assert.assertNotNull(node1.toString());
-        Assert.assertEquals(node1.toString(), node2.toString());
+        assertNotNull(node1.toString());
+        assertEquals(node1.toString(), node2.toString());
     }
 
     private PodcastEntryNode buildPodcastEntryNode(MimeType mimeType) {
