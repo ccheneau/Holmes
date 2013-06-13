@@ -18,9 +18,9 @@
 package net.holmes.core.upnp;
 
 import com.google.inject.Injector;
-import net.holmes.common.Service;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
+import net.holmes.core.common.Service;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.inject.InjectLogger;
 import org.fourthline.cling.UpnpService;
 import org.slf4j.Logger;

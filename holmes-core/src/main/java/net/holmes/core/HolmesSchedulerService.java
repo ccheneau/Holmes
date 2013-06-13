@@ -18,7 +18,7 @@
 package net.holmes.core;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.common.Service;
+import net.holmes.core.common.Service;
 
 import javax.inject.Inject;
 import javax.inject.Named;

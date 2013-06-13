@@ -22,11 +22,11 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
-import net.holmes.common.media.AbstractNode;
-import net.holmes.common.media.ContentNode;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;

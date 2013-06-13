@@ -19,8 +19,8 @@ package net.holmes.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.common.Service;
-import net.holmes.common.SystemUtils;
+import net.holmes.core.common.Service;
+import net.holmes.core.common.SystemUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -29,7 +29,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.io.File;
 
-import static net.holmes.common.SystemProperty.HOLMES_HOME;
+import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 
 /**
  * Bootstrap for Holmes - main class.

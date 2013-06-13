@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://rss.allocine.fr/~d/styles/itemcontent.css"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+    <channel>
+        <title>AlloCiné : Faux Raccord</title>
+        <link>http://www.allocine.fr</link>
+
+        <description>Gaffes de tournage, erreurs de montage, râtés en tous genres : on reeeefait le film !!!
+        </description>
+        <language>fr-FR</language>
+        <copyright>Copyright 2012 AlloCiné</copyright>
+        <lastBuildDate>Fri, 07 Sep 2012 12:02:25 GMT</lastBuildDate>
+        <pubDate>Fri, 07 Sep 2012 12:02:25 GMT</pubDate>
+        <opensearch:totalResults>68</opensearch:totalResults>
+        <ttl>60</ttl>
+        <generator>AC-API</generator>
+        <image>
+            <title>AlloCiné : Faux Raccord</title>
+            <link>http://www.allocine.fr</link>
+            <url>http://images.allocine.fr/commons/logos/rss/allocine.png</url>
+        </image>
+        <itunes:image href="http://images.allocine.fr/commons/logos/podcast/podcast_fauxraccord_600x600.jpg"/>
+        <itunes:category text="TV &amp;amp; Film"/>
+        <itunes:subtitle>Gaffes de tournage, erreurs de montage, râtés en tous genres : on reeeefait le film !!!
+        </itunes:subtitle>
+        <itunes:summary>L'intégralité des émissions Faux Raccord sur votre iPod !</itunes:summary>
+        <itunes:author>AlloCiné</itunes:author>
+        <itunes:explicit>no</itunes:explicit>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml"
+                     href="http://rss.allocine.fr/fauxraccord/ipod"/>
+        <feedburner:info uri="fauxraccord/ipod"/>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/"/>
+        <item>
+            <title>Faux Raccord N°68 - "Mad Max"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/Z4OtzOdYVho/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19389092</guid>
+            <description>Un technicien dans une cabine de camion, une flèche qui change de couleur, une cascade ratée :
+                Michel &amp;amp; Michel s'attaquent au guerrier de la route.&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/Z4OtzOdYVho" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Wed, 22 Aug 2012 14:02:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19389092_faux_raccord_madmax.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19389092_faux_raccord_madmax_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19389092</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°67 - Spéciale "Expendables"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/HLhFuCnO-IY/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19370188</guid>
+            <description>Une caméra dans le plan, une erreur de montage, une scène d'action mal pensée : Michel &amp;amp;
+                Michel s'attaquent à une sélection spéciale "Gros bras"... en compagnie d'invités-surprises !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/HLhFuCnO-IY" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Thu, 16 Aug 2012 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19370188_faux_raccord_expendables.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19370188_faux_raccord_expendables_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19370188</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°66 - "Batman Begins" / "The Dark Knight"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/AppaZQfGWI4/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19367747</guid>
+            <description>Une caméra dans le plan, une erreur de montage, un Joker mal maquillé : Michel &amp;amp; Michel
+                débarquent à Gotham City et s'attaquent aux Batman de Christopher Nolan.&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/AppaZQfGWI4" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 13 Jul 2012 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19367747_faux_raccord_batman_begins_darkknight.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19367747_faux_raccord_batman_begins_darkknight_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19367747</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°65 - "Spider-Man"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/aCOH7hOujFI/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19361032</guid>
+            <description>Une perche dans le plan, une erreur de montage : Michel &amp;amp; Michel ont scruté la première
+                aventure de l'homme-araignée... et les gaffes prises dans sa toile.&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/aCOH7hOujFI" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 30 Jun 2012 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19361032_faux_raccord_spiderman.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19361032_faux_raccord_spiderman_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19361032</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°64 - "Mission:Impossible I &amp; II"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/n7kI6NrUNHg/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19353761</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Michel &amp;amp; Michel ont scruté pour vous les deux premières missions
+                de "Ethan Hunt !&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/n7kI6NrUNHg" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 16 Jun 2012 03:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19353761_faux_raccord_mission_impossible1-2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19353761_faux_raccord_mission_impossible1-2_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19353761</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°63 - Spéciale "Men in Black"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/SMvSnRIJelo/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19349765</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Michel &amp;amp; Michel ont scruté pour vous les hommes en noir Will
+                Smith &amp;amp; Tommy Lee Jones !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/SMvSnRIJelo" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 02 Jun 2012 03:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19349765_faux_raccord_meninblack.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19349765_faux_raccord_meninblack_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19349765</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°62 - Spéciale Tim Burton... sans Johnny Depp</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/ntnLWyK7sHA/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19341242</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur cinq films de Tim Burton sans Johnny Depp :
+                "Beetlejuice", "Mars Attacks", "La Planète des Singes", "Big Fish" et "Pee Wee's Big Adventure".&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/ntnLWyK7sHA" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 18 May 2012 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19341242_faux_raccord_burton_part2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19341242_faux_raccord_burton_part2_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19341242</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°61 - "American Pie"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/yhC8YgTr0xE/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19337422</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur la trilogie "American Pie" : gare aux puceaux... et gare
+                aux gaffes !&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/yhC8YgTr0xE" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 05 May 2012 01:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19337422_faux_raccord_american_pie123.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19337422_faux_raccord_american_pie123_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19337422</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°60 - "58 minutes pour vivre" / "Une journée en enfer"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/La8RHSaAEUA/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19331258</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur la suite des aventures de John McClane : "58 minutes pour
+                vivre" et "Une journée en enfer" !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/La8RHSaAEUA" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 20 Apr 2012 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19331258_faux_raccord_diehard23.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19331258_faux_raccord_diehard23_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19331258</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°59 - Spéciale Tim Burton &amp; Johnny Depp</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/fUwKjfagW7M/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19327025</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur cinq films du tandem Depp / Burton : "Edward aux mains
+                d'argent", "Ed Wood", "Sleepy Hollow", "Charlie et la chocolaterie" et "Sweeney Todd".&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/fUwKjfagW7M" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 06 Apr 2012 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19327025_faux_raccord_burton_part1.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19327025_faux_raccord_burton_part1_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19327025</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°58 - Spéciale Luc Besson</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/L09yldTOs6s/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19321038</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur cinq films de Luc Besson : "Le Grand Bleu", "Nikita",
+                "Léon", "Le Cinquième Element" et "Jeanne d'Arc".&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/L09yldTOs6s" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 23 Mar 2012 22:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19321038_faux_raccord_lucbesson.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19321038_faux_raccord_lucbesson_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19321038</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°57 - "E.T." / "Soldat Ryan" / "La Guerre des Mondes"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/6zLzuX4JmLc/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19316541</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur trois films de Steven Spielberg car quand on y pense,
+                "E.T." + "Soldat Ryan" =... "La Guerre des Mondes" !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/6zLzuX4JmLc" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 10 Mar 2012 04:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19316541_faux_raccord_et_ryan_warworlds.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19316541_faux_raccord_et_ryan_warworlds_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19316541</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°56 - "Grease" / "La Fièvre du samedi soir"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/ipUinjHEQo4/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19311554</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur deux films du grand John Travolta : "Grease" et "La
+                Fièvre du samedi soir".&lt;li&gt;Des micros partout&lt;/li&gt;&lt;li&gt;Une pub floutée&lt;/li&gt;&lt;li&gt;Des
+                passants pas discrets&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/ipUinjHEQo4" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 25 Feb 2012 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19311554_faux_raccord_saturdaynight_fever.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19311554_faux_raccord_saturdaynight_fever_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19311554</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°55 - "The Mask" / "Bruce tout-puissant"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/Rp7CtGrd8Ys/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19307585</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur deux films Carrey... ment magiques : "The Mask" et "Bruce
+                tout-puissant".&lt;li&gt;Deux dresseurs de chiens pas très discrets&lt;/li&gt;&lt;li&gt;Des poches qui
+                se remplissent toute seules&lt;/li&gt;&lt;li&gt;Des fils pour faire bouger les objets&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/Rp7CtGrd8Ys" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 11 Feb 2012 04:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19307585_faux_raccord_mask_brucetoutpuissant.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19307585_faux_raccord_mask_brucetoutpuissant_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19307585</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°54 - "Superman"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/2ydQEpHp0jw/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19303304</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur la saga "Superman"...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/2ydQEpHp0jw" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 28 Jan 2012 02:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19303304_faux_raccord_superman.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19303304_faux_raccord_superman_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19303304</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°53 - Best-of 2011 - partie 2/2</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/9se5XFMAOHM/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19270299</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur les films 2011 avec la deuxième de notre best-of annuel.&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/9se5XFMAOHM" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 13 Jan 2012 22:58:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19270299_faux_raccord_bestof2011_part2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19270299_faux_raccord_bestof2011_part2_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19270299</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°52 - Best-of 2011 - partie 1/2</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/fefl6AEd3xA/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19270298</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur les blockbusters 2011 avec la première de notre best-of
+                annuel.&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/fefl6AEd3xA" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 17 Dec 2011 11:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19270298_faux_raccord_bestof2011_part1.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19270298_faux_raccord_bestof2011_part1_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19270298</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°51 - "Dirty Dancing / Flashdance / Footloose"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/tZ7nxNxZ-1s/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19264970</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. On crame le dance-floor avec une émission groovy où les gaffes rivalisent
+                avec les chorégraphies !&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/tZ7nxNxZ-1s"
+                height="1" width="1"/&gt;</description>
+            <pubDate>Sat, 26 Nov 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19264970_faux_raccord_dirty_dancing.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19264970_faux_raccord_dirty_dancing_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19264970</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°50 - "Transformers 1 &amp; 2"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/WbTCQTcSGCY/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19261975</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur la saga "Transformers" :&lt;li&gt;des techniciens à
+                l'écran&lt;/li&gt;&lt;li&gt;une explosion mal incrustée&lt;/li&gt;&lt;li&gt;un conducteur de robots&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/WbTCQTcSGCY" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 12 Nov 2011 04:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19261975_faux_raccord_transformers_1-2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19261975_faux_raccord_transformers_1-2_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19261975</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°49 - "Indiana Jones 3 &amp; 4"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/hhLKg6J-PAw/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19257838</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur les deux derniers "Indiana Jones" :&lt;li&gt;un
+                projecteur visible&lt;/li&gt;&lt;li&gt;Indy magicien&lt;/li&gt;&lt;li&gt;des rats en plastoc&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/hhLKg6J-PAw" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 28 Oct 2011 22:01:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19257838_faux_raccord_indianajones_34.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19257838_faux_raccord_indianajones_34_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19257838</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°48 - "Scarface"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/5Dji76n_cFU/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19255137</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Say hello to my little gaffe avec "Scarface" :&lt;li&gt;un cigare magique&lt;/li&gt;&lt;li&gt;un
+                reflet de Brian de Palma&lt;/li&gt;&lt;li&gt;des figurants pas au point&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/5Dji76n_cFU" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 14 Oct 2011 11:30:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19255137_faux_raccord_scarface.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19255137_faux_raccord_scarface_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19255137</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°47 - "L'Arme Fatale 3 &amp; 4"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/VAlLoE6ss88/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19252295</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Pleins feux sur les deux derniers volets de "L'Arme Fatale" avec :&lt;li&gt;des
+                cadreurs dans le champ&lt;/li&gt;&lt;li&gt;Des caméras visibles&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/VAlLoE6ss88" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 30 Sep 2011 18:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19252295_faux_raccord_armefatale34.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19252295_faux_raccord_armefatale34_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19252295</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°46 - "Hommage à Patrick Swayze"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/-pfW054ttCQ/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19248821</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, hommage à Patrick Swayze avec : &lt;li&gt;"Ghost"&lt;/li&gt;&lt;li&gt;"Point
+                Break"&lt;/li&gt;&lt;li&gt;"Road House"&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/-pfW054ttCQ" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 16 Sep 2011 10:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19248821_faux_raccord_patrick_swayze.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19248821_faux_raccord_patrick_swayze_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19248821</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°45 - "Star Wars - Episode I, II, III &amp; VI"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/7Eyxe9V-MuI/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19246096</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur les quatre derniers volets de "Star Wars".&lt;li&gt;Des
+                plans qui se répètent&lt;/li&gt;&lt;li&gt;Des padawans ingérables&lt;/li&gt;&lt;li&gt;Des Ewoks en
+                carton&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/7Eyxe9V-MuI" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 02 Sep 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19246096_faux_raccord_starwars_1236.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19246096_faux_raccord_starwars_1236_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19246096</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°44 - "Les Deux Tours" / "Le Retour du Roi"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/vkJls0c-a0w/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19234544</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur les deux derniers volets du "Seigneur des
+                Anneaux".&lt;li&gt;Des orques et des techniciens&lt;/li&gt;&lt;li&gt;Un hobbit à basket&lt;/li&gt;&lt;li&gt;Une
+                doublure d'Arwen&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/vkJls0c-a0w" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 16 Jul 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19234544_faux_raccord_seigneur_anneaux_trilogie.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19234544_faux_raccord_seigneur_anneaux_trilogie_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19234544</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°43 - Stanley Kubrick (2/2)</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/98zOh-eVdKg/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19228825</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur quatre chefs d'oeuvres de Stanley Kubrick.&lt;li&gt;"Orange
+                Mécanique"&lt;/li&gt;&lt;li&gt;"2001, l'odyssée de l'espace"&lt;/li&gt;&lt;li&gt;"Eyes Wide Shut"&lt;/li&gt;&lt;li&gt;"Spartacus"&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/98zOh-eVdKg" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 01 Jul 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19228825_faux_raccord_kubrick2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19228825_faux_raccord_kubrick2_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19228825</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°42 - Stanley Kubrick (1/2)</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/QbKoTQCheT4/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19228210</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur quatre chefs d'oeuvres de Stanley Kubrick.&lt;li&gt;"Shining"&lt;/li&gt;&lt;li&gt;"Lolita"&lt;/li&gt;&lt;li&gt;"Full
+                Metal Jacket"&lt;/li&gt;&lt;li&gt;"Barry Lyndon"&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/QbKoTQCheT4" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 17 Jun 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19228210_faux_raccord_kubrick1.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19228210_faux_raccord_kubrick1_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19228210</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°41 - "X-Men"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/sIDgogGz-Kw/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19224858</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la saga "X-Men", où les super-gaffes défient
+                les super-pouvoirs.&lt;li&gt;Un mutant qui ne se téléporte pas vraiment&lt;/li&gt;&lt;li&gt;Un t-shirt
+                qui se répare tout seul&lt;/li&gt;&lt;li&gt;Une super bouteille de soda&lt;/li&gt;&lt;li&gt;Des câbles
+                visibles à l'écran&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/sIDgogGz-Kw" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 04 Jun 2011 01:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19224858_faux_raccord_xmen.jpg"/>
+            <enclosure url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19224858_faux_raccord_xmen_m_004.mp4"
+                       type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19224858</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°40 - "Apocalypse Now"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/R4nDoSHKpFU/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19221055</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur une Palme d'Or, "Apocalypse Now", où les
+                gaffes fusent comme les balles.&lt;li&gt;Une cigarette qui disparaît&lt;/li&gt;&lt;li&gt;Un câble très
+                voyant&lt;/li&gt;&lt;li&gt;Des piles absentes&lt;/li&gt;&lt;li&gt;Un 8 de pique qui devient un 6&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/R4nDoSHKpFU" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 20 May 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19221055_faux_raccord_apocalypse_now.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19221055_faux_raccord_apocalypse_now_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19221055</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°39 - "Mon beau-père et moi"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/l22F2VIz0oQ/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19216823</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la trilogie "Mon beau-père et moi", où les
+                gaffes se mêlent aux réunions de famille.&lt;li&gt;Des bougies qui se rallument&lt;/li&gt;&lt;li&gt;Un
+                bébé qui disparaît deux fois&lt;/li&gt;&lt;li&gt;Une doublure de De Niro&lt;/li&gt;&lt;li&gt;Des sièges
+                qui changent de couleur&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/l22F2VIz0oQ" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 06 May 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19216823_faux_raccord_mon_beau_pere.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19216823_faux_raccord_mon_beau_pere_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19216823</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°38 - "Fast &amp; Furious"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/JghuwpYNYCk/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19213522</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la tétralogie "Fast &amp;amp; Furious",
+                véritable défilé de bolides... et de gaffes.Un cascadeur casquéDes tremplins cachésDes câbles de
+                sécuritéUne chemise qui se nettoie toute seule...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/JghuwpYNYCk" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 22 Apr 2011 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19213522_faux_raccord_fast_furious.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19213522_faux_raccord_fast_furious_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19213522</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°37 - "Robocop"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/lSDwYZ7jwxQ/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19210358</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la trilogie "Robocop". 50% homme, 50%
+                machine, 100% gaffes !De la VO au milieu de la VFDes segments sans sonUne moto à roulettesPlein de
+                reflets de techniciens...&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/lSDwYZ7jwxQ"
+                height="1" width="1"/&gt;</description>
+            <pubDate>Sat, 09 Apr 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19210358_faux_raccord_robocop.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19210358_faux_raccord_robocop_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19210358</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°36 - "Pearl Harbor"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/NL3yImvZHG0/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19206882</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien à l'image : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Pearl Harbor". Les bombes pleuvent sur Ben
+                Affleck... les gaffes aussi !Un calendrier japonais en anglaisDeux cadreurs et un micro dans le champUne
+                écharpe magiqueJohn McClane en guest-star...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/NL3yImvZHG0" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 26 Mar 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19206882_faux_raccord_pearl_harbor.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19206882_faux_raccord_pearl_harbor_m_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19206882</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°35 - "Titanic"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/JFhtlCWsNuE/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19203263</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Titanic". Les icebergs rôdent... les gaffes
+                aussi !&lt;li&gt;Des anachronismes à la pelle&lt;/li&gt;&lt;li&gt;Un joli reflet de caméra&lt;/li&gt;&lt;li&gt;Des
+                cascadeurs sur skateboards&lt;/li&gt;&lt;li&gt;...&lt;/li&gt;&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/JFhtlCWsNuE" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 12 Mar 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19203263_faux_raccord_titanic.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19203263_faux_raccord_titanic_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19203263</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°34 - "Qui veut la peau de Roger Rabbit"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/zJYd4B1YSzY/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19199427</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Qui veut la peau de Roger Rabbit". Les
+                toons sont en feu... les gaffes aussi !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/zJYd4B1YSzY" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 26 Feb 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19199427_faux_raccord_roger_rabbit.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19199427_faux_raccord_roger_rabbit_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19199427</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°33 - "Robin des bois - Waterworld"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/d9A7_jvrdAo/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19196551</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur deux films marquants de la carrière de Kevin
+                Costner : "Robin des Bois" et "Waterworld". A Sherwood ou sur l'eau, la gaffe est au rendez-vous !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/d9A7_jvrdAo" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 11 Feb 2011 18:40:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19196551_faux_raccord_robin_waterworld.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19196551_faux_raccord_robin_waterworld_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19196551</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°32 - "Austin Powers"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/FZwaZYxhuK8/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19193173</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la trilogie "Austin Powers", où on fait le
+                plein de mojo et de gaffes. Groovy baby...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/FZwaZYxhuK8" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 29 Jan 2011 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19193173_faux_raccord_austin_powers.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19193173_faux_raccord_austin_powers_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19193173</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°31 - "Braveheart"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/UzDAvv_zRLg/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19188655</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Braveheart". Ils prendront peut-être nos
+                gaffes, mais ils ne prendront pas notre libertéééééé !!!&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/UzDAvv_zRLg" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 14 Jan 2011 18:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19188655_faux_raccord_braveheart.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19188655_faux_raccord_braveheart_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19188655</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°30 - Best-of 2010</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/OJ3vOgeoIRM/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19183285</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur les meilleures gaffes de 2010. De "Avatar" à
+                "Kick-Ass" en passant par "Inception" ou "Camping 2", c'était un bon cru...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/OJ3vOgeoIRM" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 18 Dec 2010 02:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19183285_faux_raccord_best_of_2010.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19183285_faux_raccord_best_of_2010_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19183285</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°29 - "Les Affranchis" / "Casino"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/W1w2SwGI1bc/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19180879</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur Scorsese dans la mafia avec "Les Affranchis"
+                et "Casino". Hors-la-loi, oui... Hors des gaffes, non !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/W1w2SwGI1bc" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 04 Dec 2010 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19180879_faux_raccord_affranchis_casino.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19180879_faux_raccord_affranchis_casino_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19180879</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°28 - "Zombie"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/BVKEnZWPBmA/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19175608</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Zombie", "L'Armée des morts" et "Shaun of
+                the dead". Entre ces trois films de morts-vivants, qui a le plus de gaffes ?&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/BVKEnZWPBmA" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 20 Nov 2010 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19175608_faux_raccord_zombie.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19175608_faux_raccord_zombie_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19175608</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°27 - "Les Visiteurs"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/STwsEXtxu8k/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19173315</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Les Visiteurs". Mais qu'est-ce que c'est
+                que ce binz ??? Il y a des gaffes partout !!!&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/STwsEXtxu8k" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 06 Nov 2010 00:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19173315_faux_raccord_visiteurs.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19173315_faux_raccord_visiteurs_h_004.mp4"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19173315</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°26 - "Retour vers le futur"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/kGu2pCpBFBg/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19152147</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur la saga "Retour vers le futur". Nom de Zeus,
+                Marty : il y a des gaffes partout !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/kGu2pCpBFBg" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 22 Oct 2010 17:30:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19152147_faux_raccord_retour_vers_le_futur.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19152147_faux_raccord_retour_vers_le_futur_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19152147</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°25 - "L'Arme Fatale 1 &amp; 2"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/UQEeGocH6_I/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19148851</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur les deux premiers de "L'Arme fatale". Trop
+                vieux pour ces conneries ? Pas pour ces gaffes !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/UQEeGocH6_I" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 08 Oct 2010 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19148851_faux_raccord_arme_fatale_1_2.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19148851_faux_raccord_arme_fatale_1_2_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19148851</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°24 - "Y a-t-il un pilote dans l'avion ?"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/IHa6i7xl4ME/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19145757</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Y a t-il un pilote dans l'avion ?", à
+                l'occasion des 30 ans du film. Gare aux gags... et gare aux gaffes !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/IHa6i7xl4ME" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 24 Sep 2010 08:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19145757_faux_raccord_pilote_avion.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19145757_faux_raccord_pilote_avion_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19145757</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°23 - "James Bond - Sean Connery"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/siooJjqaVjM/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19143940</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "James Bond contre Dr. No" et "Jamais plus
+                jamais", première et dernière missions de Sean Connery en 007. Permis de tuer ? De gaffer surtout...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/siooJjqaVjM" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 18 Sep 2010 01:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19143940_faux_raccord_james_bond_drno.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19143940_faux_raccord_james_bond_drno_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19143940</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°22 - "Piège de Cristal"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/HCxKhYQlOCk/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19141136</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "Piège de Cristal". Les terroristes
+                rôdent... les gaffes aussi !&lt;img src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/HCxKhYQlOCk"
+                height="1" width="1"/&gt;</description>
+            <pubDate>Tue, 07 Sep 2010 10:18:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19141136_piege_cristal.jpg"/>
+            <enclosure url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19141136_piege_cristal_h_004.m4v"
+                       type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19141136</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°21 - "Indiana Jones 1 &amp; 2"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/cPti9JGIJvw/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19140165</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur les deux premiers chapitres de la saga
+                "Indiana Jones". Si l'arche a été perdue, les gaffes ont été retrouvées...&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/cPti9JGIJvw" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 03 Sep 2010 23:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19140165_indiana_jones_1_2.jpg"/>
+            <enclosure url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19140165_indiana_jones_1_2_h_004.m4v"
+                       type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19140165</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°20 - "L'Empire contre-attaque"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/xOXMXp1aEeM/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19137081</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, pleins feux sur "L'Empire contre-attaque", à l'occasion des
+                30 ans du film. Que les gaffes soient avec vous !&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/xOXMXp1aEeM" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Sat, 21 Aug 2010 04:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19137081_faux_raccord_empire_contre_attaque.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19137081_faux_raccord_empire_contre_attaque_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19137081</feedburner:origLink>
+        </item>
+        <item>
+            <title>Faux Raccord N°19 - "Alien vs Predator"</title>
+            <link>http://rss.allocine.fr/~r/fauxraccord/ipod/~3/uacRtDneXYo/videos_allocineshow_player</link>
+            <guid isPermaLink="false">http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19125743</guid>
+            <description>Une perche à l'écran, une erreur de montage, un technicien dans le champ : on vous dévoile les
+                dessous des plus grands films. Aujourd'hui, duel au somment entre deux sagas majeures de la
+                science-fiction : "Alien" et "Predator".&lt;img
+                src="http://feeds.feedburner.com/~r/fauxraccord/ipod/~4/uacRtDneXYo" height="1"
+                width="1"/&gt;</description>
+            <pubDate>Fri, 09 Jul 2010 19:00:00 GMT</pubDate>
+            <category>Emission AlloCinéTV</category>
+            <media:thumbnail
+                    url="http://images.allocine.fr/medias/nmedia/18/73/95/29/19125743_faux_raccord_alien_predator.jpg"/>
+            <enclosure
+                    url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19125743_faux_raccord_alien_predator_h_004.m4v"
+                    type="video/x-m4v" length="12000"/>
+            <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19125743</feedburner:origLink>
+        </item>
+    </channel>
+</rss>

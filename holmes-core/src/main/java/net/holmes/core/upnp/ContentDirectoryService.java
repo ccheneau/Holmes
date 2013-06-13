@@ -17,11 +17,11 @@
 
 package net.holmes.core.upnp;
 
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
-import net.holmes.common.media.*;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.model.*;
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;

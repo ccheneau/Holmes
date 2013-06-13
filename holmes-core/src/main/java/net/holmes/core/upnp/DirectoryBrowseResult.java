@@ -17,10 +17,10 @@
 
 package net.holmes.core.upnp;
 
-import net.holmes.common.media.AbstractNode;
-import net.holmes.common.media.ContentNode;
-import net.holmes.common.media.PodcastEntryNode;
-import net.holmes.common.mimetype.MimeType;
+import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
+import net.holmes.core.media.model.PodcastEntryNode;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.DIDLObject.Property.DC;

@@ -1,21 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>net.holmes</groupId>
-		<artifactId>holmes-parent</artifactId>
-		<version>0.4.1</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<artifactId>holmes-rome-modules</artifactId>
-	<name>Holmes Romes modules fork</name>
-	<description>Fork for rome:modules project</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.holmes</groupId>
+        <artifactId>holmes-parent</artifactId>
+        <version>0.4.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>holmes-rome-modules</artifactId>
+    <name>Holmes Romes modules fork</name>
+    <description>Fork for rome:modules project</description>
 
-	<dependencies>
-		<!-- rome -->
-		<dependency>
-			<groupId>rome</groupId>
-			<artifactId>rome</artifactId>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <!-- rome -->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+        </dependency>
+
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+    </dependencies>
 </project>

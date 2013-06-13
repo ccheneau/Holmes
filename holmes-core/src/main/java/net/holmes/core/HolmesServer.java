@@ -19,7 +19,7 @@ package net.holmes.core;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
-import net.holmes.common.Service;
+import net.holmes.core.common.Service;
 import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 

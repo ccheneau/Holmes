@@ -29,19 +29,19 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-import net.holmes.common.MediaType;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.ConfigurationNode;
-import net.holmes.common.configuration.Parameter;
-import net.holmes.common.event.ConfigurationEvent;
-import net.holmes.common.event.MediaEvent;
-import net.holmes.common.media.*;
-import net.holmes.common.mimetype.MimeType;
-import net.holmes.common.mimetype.MimeTypeManager;
+import net.holmes.core.common.MediaType;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.configuration.Parameter;
+import net.holmes.core.common.event.ConfigurationEvent;
+import net.holmes.core.common.event.MediaEvent;
+import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
+import net.holmes.core.media.model.*;
 import net.holmes.core.media.playlist.M3uParser;
 import net.holmes.core.media.playlist.PlaylistItem;
 import net.holmes.core.media.playlist.PlaylistParserException;
@@ -60,7 +60,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import static net.holmes.common.media.RootNode.*;
+import static net.holmes.core.media.model.RootNode.*;
 
 /**
  * Media manager implementation.

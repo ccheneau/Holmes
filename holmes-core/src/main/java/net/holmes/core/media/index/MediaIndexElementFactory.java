@@ -17,8 +17,8 @@
 
 package net.holmes.core.media.index;
 
-import net.holmes.common.configuration.ConfigurationNode;
-import net.holmes.common.media.RootNode;
+import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.media.model.RootNode;
 
 /**
  * Factory for media index elements.

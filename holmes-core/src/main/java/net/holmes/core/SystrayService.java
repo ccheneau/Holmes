@@ -17,10 +17,10 @@
 
 package net.holmes.core;
 
-import net.holmes.common.Service;
-import net.holmes.common.SystemUtils;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
+import net.holmes.core.common.Service;
+import net.holmes.core.common.SystemUtils;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 

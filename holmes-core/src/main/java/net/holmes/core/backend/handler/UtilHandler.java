@@ -27,7 +27,7 @@ import java.io.FileFilter;
 import java.util.Collection;
 import java.util.Map;
 
-import static net.holmes.common.SystemProperty.USER_HOME;
+import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
  * Handler for util REST requests.

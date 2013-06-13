@@ -17,7 +17,7 @@
 
 package net.holmes.core.media;
 
-import net.holmes.common.media.AbstractNode;
+import net.holmes.core.media.model.AbstractNode;
 
 import java.util.List;
 

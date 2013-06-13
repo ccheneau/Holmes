@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
-import static net.holmes.common.media.RootNode.AUDIO;
+import static net.holmes.core.media.model.RootNode.AUDIO;
 
 /**
  * Handler for audio folders REST requests.

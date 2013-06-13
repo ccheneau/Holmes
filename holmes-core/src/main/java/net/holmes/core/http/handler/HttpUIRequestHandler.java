@@ -23,8 +23,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
-import net.holmes.common.mimetype.MimeType;
-import net.holmes.common.mimetype.MimeTypeManager;
+import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import static net.holmes.common.SystemProperty.HOLMES_HOME;
+import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 
 /**
  * Handler for Holmes UI pages.

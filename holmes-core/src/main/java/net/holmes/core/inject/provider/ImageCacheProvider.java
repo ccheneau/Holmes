@@ -19,8 +19,8 @@ package net.holmes.core.inject.provider;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Parameter;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

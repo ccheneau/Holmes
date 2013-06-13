@@ -20,14 +20,14 @@ package net.holmes.core.backend;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.ConfigurationNode;
-import net.holmes.common.configuration.Parameter;
-import net.holmes.common.event.ConfigurationEvent;
-import net.holmes.common.media.RootNode;
 import net.holmes.core.backend.exception.ConfigurationException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.configuration.Parameter;
+import net.holmes.core.common.event.ConfigurationEvent;
+import net.holmes.core.media.model.RootNode;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import static net.holmes.common.event.ConfigurationEvent.EventType.*;
+import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
  * Backend manager implementation.

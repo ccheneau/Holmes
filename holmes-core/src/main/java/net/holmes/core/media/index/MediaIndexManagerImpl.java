@@ -21,8 +21,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.holmes.common.media.RootNode;
 import net.holmes.core.inject.InjectLogger;
+import net.holmes.core.media.model.RootNode;
 import org.slf4j.Logger;
 
 import java.io.File;

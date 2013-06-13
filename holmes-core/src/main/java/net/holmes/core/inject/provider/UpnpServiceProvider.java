@@ -18,7 +18,7 @@
 package net.holmes.core.inject.provider;
 
 import com.google.inject.Injector;
-import net.holmes.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.upnp.ContentDirectoryService;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;

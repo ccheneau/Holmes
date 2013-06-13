@@ -29,8 +29,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import net.holmes.common.Service;
-import net.holmes.common.configuration.Configuration;
+import net.holmes.core.common.Service;
+import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 

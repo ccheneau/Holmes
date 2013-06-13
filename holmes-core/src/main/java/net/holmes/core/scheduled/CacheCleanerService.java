@@ -19,10 +19,10 @@ package net.holmes.core.scheduled;
 
 import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.common.configuration.Configuration;
-import net.holmes.common.configuration.Parameter;
-import net.holmes.common.media.AbstractNode;
+import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.inject.InjectLogger;
+import net.holmes.core.media.model.AbstractNode;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
