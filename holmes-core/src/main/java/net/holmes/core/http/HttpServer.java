@@ -85,7 +85,7 @@ public final class HttpServer implements Service {
                                 .addLast("encoder", new HttpResponseEncoder())//
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())//
                                         // Add HTTP request handler
-                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundMessageHandler.class));
+                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundHandler.class));
                     }
                 });
 

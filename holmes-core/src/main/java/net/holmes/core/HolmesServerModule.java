@@ -27,7 +27,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
-import io.netty.channel.ChannelInboundMessageHandler;
+import io.netty.channel.ChannelInboundHandler;
 import net.holmes.common.Service;
 import net.holmes.common.configuration.Configuration;
 import net.holmes.common.configuration.XmlConfigurationImpl;
@@ -109,7 +109,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
-        bind(ChannelInboundMessageHandler.class).to(HttpChannelHandler.class);
+        bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
