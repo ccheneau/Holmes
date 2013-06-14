@@ -25,37 +25,47 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
 
 /**
  * Holmes server main class.
  */
 public final class HolmesServer implements Service {
+    private static final String LOCK_FILE = "holmes.lock";
     private final Service httpServer;
     private final Service upnpServer;
     private final Service systray;
     private final Service scheduler;
+    private final String localHolmesDataDir;
     @InjectLogger
     private Logger logger;
 
     /**
      * Instantiates a new holmes server.
      *
-     * @param httpServer Http server
-     * @param upnpServer UPnP server
-     * @param systray    Systray
-     * @param scheduler  Scheduler
+     * @param httpServer         Http server
+     * @param upnpServer         UPnP server
+     * @param systray            Systray
+     * @param scheduler          Scheduler
+     * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
     public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("systray") final Service systray,
-                        @Named("scheduler") final Service scheduler) {
+                        @Named("scheduler") final Service scheduler, @Named("localHolmesDataDir") String localHolmesDataDir) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
         this.systray = systray;
         this.scheduler = scheduler;
+        this.localHolmesDataDir = localHolmesDataDir;
     }
 
     @Override
     public void start() {
+        if (!lockInstance()) throw new RuntimeException("Holmes server is already running");
+
         logger.info("Starting Holmes server");
 
         // Start Holmes server
@@ -89,4 +99,38 @@ public final class HolmesServer implements Service {
     public void handleDeadEvent(final DeadEvent deadEvent) {
         logger.warn("Event not handled: {}", deadEvent.getEvent().toString());
     }
+
+    /**
+     * Create Holmes lock file.
+     *
+     * @return true on lock success, false if lock file already exists
+     */
+    private boolean lockInstance() {
+        try {
+            // Create lock file
+            final File lockFile = new File(localHolmesDataDir, LOCK_FILE);
+            final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
+            final FileLock fileLock = randomAccessFile.getChannel().tryLock();
+            if (fileLock != null) {
+                Runtime.getRuntime().addShutdownHook(new Thread() {
+                    @Override
+                    public void run() {
+                        // Release lock file on system exit
+                        try {
+                            fileLock.release();
+                            randomAccessFile.close();
+                            if (!lockFile.delete()) logger.error("Unable to remove lock file: {}", lockFile.getPath());
+                        } catch (IOException e) {
+                            logger.error("Unable to remove lock file: {} {}", lockFile.getPath(), e.getMessage());
+                        }
+                    }
+                });
+                return true;
+            }
+        } catch (IOException e) {
+            logger.error("Unable to create and/or lock file: {}", e.getMessage());
+        }
+        return false;
+    }
+
 }

@@ -18,13 +18,13 @@
 package net.holmes.core;
 
 import net.holmes.core.common.Service;
-import net.holmes.core.common.SystemUtils;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -50,19 +50,22 @@ public final class SystrayService implements Service {
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
     private final Configuration configuration;
     private final ResourceBundle resourceBundle;
+    private final String localHolmesDataDir;
     @InjectLogger
     private Logger logger;
 
     /**
      * Instantiates a new systray service.
      *
-     * @param configuration  configuration
-     * @param resourceBundle resource bundle
+     * @param configuration      configuration
+     * @param resourceBundle     resource bundle
+     * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public SystrayService(final Configuration configuration, final ResourceBundle resourceBundle) {
+    public SystrayService(final Configuration configuration, final ResourceBundle resourceBundle, @Named("localHolmesDataDir") String localHolmesDataDir) {
         this.configuration = configuration;
         this.resourceBundle = resourceBundle;
+        this.localHolmesDataDir = localHolmesDataDir;
     }
 
     @Override
@@ -141,8 +144,7 @@ public final class SystrayService implements Service {
             public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        String logFile = SystemUtils.getLocalHolmesDataDir().getAbsolutePath() + File.separator + "log" + File.separator + "holmes.log";
-                        Desktop.getDesktop().open(new File(logFile));
+                        Desktop.getDesktop().open(new File(localHolmesDataDir + File.separator + "log" + File.separator + "holmes.log"));
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     }

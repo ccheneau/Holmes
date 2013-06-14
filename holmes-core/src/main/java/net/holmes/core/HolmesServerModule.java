@@ -31,6 +31,7 @@ import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.common.Service;
+import net.holmes.core.common.SystemProperty;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.XmlConfigurationImpl;
 import net.holmes.core.common.mimetype.MimeTypeManager;
@@ -69,6 +70,7 @@ final class HolmesServerModule extends AbstractModule {
 
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
+    private final String localHolmesDataDir = getLocalHolmesDataDir();
 
     @Override
     protected void configure() {
@@ -89,6 +91,9 @@ final class HolmesServerModule extends AbstractModule {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
         bind(new TypeLiteral<Cache<File, String>>() {
         }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class).in(Singleton.class);
+
+        // Bind constants
+        bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
@@ -113,5 +118,21 @@ final class HolmesServerModule extends AbstractModule {
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
+    }
+
+    /**
+     * Get local data directory where Holmes configuration and logs are saved.
+     * This directory is stored in user home directory.
+     *
+     * @return local user data dir
+     */
+    private static String getLocalHolmesDataDir() {
+        // Check directory and create it if it does not exist
+        String holmesDataDir = SystemProperty.USER_HOME.getValue() + File.separator + ".holmes";
+        File fDataDir = new File(holmesDataDir);
+        if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs())
+            throw new RuntimeException("Failed to create " + holmesDataDir);
+
+        return holmesDataDir;
     }
 }

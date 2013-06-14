@@ -20,7 +20,6 @@ package net.holmes.core;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.Service;
-import net.holmes.core.common.SystemUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -50,22 +49,16 @@ public final class Bootstrap {
      * @param args command line arguments
      */
     public static void main(final String... args) {
-        // Check lock file
-        if (SystemUtils.lockInstance()) {
-            // Load logging
-            loadLogging(args.length > 0 && "debug".equals(args[0]));
+        // Load logging
+        loadLogging(args.length > 0 && "debug".equals(args[0]));
 
-            // Create Guice injector
-            Injector injector = Guice.createInjector(new HolmesServerModule());
+        // Create Guice injector
+        Injector injector = Guice.createInjector(new HolmesServerModule());
 
-            // Start Holmes server
+        // Start Holmes server
+        try {
             final Service holmesServer = injector.getInstance(HolmesServer.class);
-            try {
-                holmesServer.start();
-            } catch (RuntimeException e) {
-                LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
-                System.exit(1);
-            }
+            holmesServer.start();
 
             // Add shutdown hook
             Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -74,10 +67,11 @@ public final class Bootstrap {
                     holmesServer.stop();
                 }
             });
-        } else {
-            System.err.println("Holmes is already running");
+        } catch (RuntimeException e) {
+            LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
             System.exit(1);
         }
+
     }
 
     /**

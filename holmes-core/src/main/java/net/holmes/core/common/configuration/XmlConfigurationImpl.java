@@ -21,9 +21,10 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import net.holmes.core.common.SystemUtils;
 import net.holmes.core.media.model.RootNode;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.*;
 import java.util.List;
 import java.util.Properties;
@@ -35,14 +36,18 @@ public final class XmlConfigurationImpl implements Configuration {
 
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
+    private final String localHolmesDataDir;
     private XmlRootNode rootNode = null;
 
     /**
      * Instantiates a new xml configuration.
      *
+     * @param localHolmesDataDir local Holmes data directory
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public XmlConfigurationImpl() throws IOException {
+    @Inject
+    public XmlConfigurationImpl(@Named("localHolmesDataDir") String localHolmesDataDir) throws IOException {
+        this.localHolmesDataDir = localHolmesDataDir;
         loadConfig();
     }
 
@@ -52,7 +57,7 @@ public final class XmlConfigurationImpl implements Configuration {
      * @return configuration file
      */
     private File getConfigFile() {
-        File fConfPath = new File(SystemUtils.getLocalHolmesDataDir(), CONF_PATH);
+        File fConfPath = new File(localHolmesDataDir, CONF_PATH);
         if ((!fConfPath.exists() || !fConfPath.isDirectory()) && !fConfPath.mkdirs())
             throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
 

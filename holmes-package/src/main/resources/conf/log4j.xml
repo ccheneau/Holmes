@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN"
+        "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration threshold="info" xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<param name="Encoding" value="UTF-8" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
-		</layout>
-		<filter class="org.apache.log4j.varia.LevelRangeFilter">
-			<param name="LevelMax" value="INFO" />
-		</filter>
-	</appender>
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+    </appender>
 
-	<appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.err" />
-		<param name="Encoding" value="UTF-8" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
-		</layout>
-		<filter class="org.apache.log4j.varia.LevelRangeFilter">
-			<param name="LevelMin" value="WARN" />
-		</filter>
-	</appender>
+    <appender name="STDERR" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.err"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="WARN"/>
+        </filter>
+    </appender>
 
-	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="${user.home}/.holmes/log/holmes.log" />
-		<param name="Encoding" value="UTF-8" />
-		<param name="MaxFileSize" value="5MB" />
-		<param name="append" value="false" />
-		<!-- Keep one backup file -->
-		<param name="MaxBackupIndex" value="1" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n" />
-		</layout>
-	</appender>
+    <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${user.home}/.holmes/log/holmes.log"/>
+        <param name="Encoding" value="UTF-8"/>
+        <param name="MaxFileSize" value="5MB"/>
+        <param name="append" value="true"/>
+        <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p [%10.10t] [%d] (%c:%L) - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="com.sun.jersey">
-		<level value="error" />
-	</logger>
+    <logger name="com.sun.jersey">
+        <level value="error"/>
+    </logger>
 
-	<logger name="org.fourthline.cling">
-		<level value="error" />
-	</logger>
+    <logger name="org.fourthline.cling">
+        <level value="error"/>
+    </logger>
 
-	<root>
-		<level value="debug" />
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="STDERR" />
-		<appender-ref ref="FILE" />
-	</root>
+    <root>
+        <level value="debug"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+        <appender-ref ref="FILE"/>
+    </root>
 
 </log4j:configuration>
