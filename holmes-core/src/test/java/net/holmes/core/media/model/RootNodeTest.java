@@ -22,7 +22,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * RootNode Tester.
@@ -75,7 +76,7 @@ public class RootNodeTest {
     @Test
     public void testGetById() throws Exception {
         assertEquals(RootNode.getById("1_VIDEOS"), RootNode.VIDEO);
-        assertNull(RootNode.getById("non existing root node"));
+        assertEquals(RootNode.getById("non existing root node"), RootNode.NONE);
     }
 
 

@@ -25,7 +25,6 @@ public enum MediaType {
     TYPE_AUDIO("audio"), //
     TYPE_IMAGE("image"), //
     TYPE_PODCAST("podcast"), //
-    TYPE_PLAYLIST("playlist"), //
     TYPE_APPLICATION("application"),//
     TYPE_NONE("none");
 

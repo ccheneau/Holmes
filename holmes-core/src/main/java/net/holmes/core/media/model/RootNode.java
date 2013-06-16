@@ -27,7 +27,8 @@ public enum RootNode {
     VIDEO("1_VIDEOS", ROOT.getId(), MediaType.TYPE_VIDEO), //
     PICTURE("2_PICTURES", ROOT.getId(), MediaType.TYPE_IMAGE), //
     AUDIO("3_AUDIOS", ROOT.getId(), MediaType.TYPE_AUDIO), //
-    PODCAST("4_PODCASTS", ROOT.getId(), MediaType.TYPE_PODCAST);
+    PODCAST("4_PODCASTS", ROOT.getId(), MediaType.TYPE_PODCAST), //
+    NONE("", "", MediaType.TYPE_NONE);
 
     private final String id;
     private final String parentId;
@@ -86,12 +87,12 @@ public enum RootNode {
      * Gets root node by id.
      *
      * @param id node id
-     * @return the root node
+     * @return the root node or RootNode.NONE
      */
     public static RootNode getById(final String id) {
         for (RootNode rootNode : RootNode.values()) {
             if (rootNode.id.equals(id)) return rootNode;
         }
-        return null;
+        return NONE;
     }
 }

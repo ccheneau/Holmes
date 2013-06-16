@@ -26,7 +26,6 @@ import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.DIDLObject.Property.DC;
 import org.fourthline.cling.support.model.DIDLObject.Property.UPNP;
 import org.fourthline.cling.support.model.Res;
-import org.fourthline.cling.support.model.container.PlaylistContainer;
 import org.fourthline.cling.support.model.container.StorageFolder;
 import org.fourthline.cling.support.model.item.*;
 
@@ -163,21 +162,6 @@ final class DirectoryBrowseResult {
         setDidlMetadata(folder, node);
 
         didl.addContainer(folder);
-        itemCount += 1;
-    }
-
-    /**
-     * Adds the playlist to result.
-     *
-     * @param parentNodeId parent node id
-     * @param node         playlist node
-     * @throws URISyntaxException URI syntax exception
-     */
-    public void addPlaylist(final String parentNodeId, final AbstractNode node) throws URISyntaxException {
-        PlaylistContainer playlist = new PlaylistContainer(node.getId(), parentNodeId, node.getName(), null, 1);
-        setDidlMetadata(playlist, node);
-
-        didl.addContainer(playlist);
         itemCount += 1;
     }
 
