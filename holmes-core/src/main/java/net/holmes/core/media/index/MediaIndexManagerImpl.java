@@ -103,7 +103,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             elValue = indexEntry.getValue();
 
             // Check parent id is still in index (only for non root nodes and direct children)
-            if (RootNode.getById(elId) == null && RootNode.getById(elValue.getParentId()) == null
+            if (RootNode.getById(elId) == RootNode.NONE && RootNode.getById(elValue.getParentId()) == null
                     && (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId()))) {
                 toRemove.add(elId);
                 if (logger.isDebugEnabled())

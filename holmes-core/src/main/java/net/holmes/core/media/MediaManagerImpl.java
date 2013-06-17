@@ -100,7 +100,7 @@ public final class MediaManagerImpl implements MediaManager {
         if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:{}", nodeId);
 
         RootNode rootNode = RootNode.getById(nodeId);
-        if (rootNode != null) {
+        if (rootNode != RootNode.NONE) {
             // Root node
             node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
         } else if (nodeId != null) {

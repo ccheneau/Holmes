@@ -28,7 +28,7 @@ public enum RootNode {
     PICTURE("2_PICTURES", ROOT.getId(), MediaType.TYPE_IMAGE), //
     AUDIO("3_AUDIOS", ROOT.getId(), MediaType.TYPE_AUDIO), //
     PODCAST("4_PODCASTS", ROOT.getId(), MediaType.TYPE_PODCAST), //
-    NONE("", "", MediaType.TYPE_NONE);
+    NONE("ROOT_NODE_NONE", "", MediaType.TYPE_NONE);
 
     private final String id;
     private final String parentId;
