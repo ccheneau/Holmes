@@ -26,7 +26,9 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 
@@ -81,16 +83,14 @@ public final class Bootstrap {
      */
     private static void loadLogging(final boolean debug) {
         // Load log4j configuration
-        File confDir = new File(HOLMES_HOME.getValue(), "conf");
-        String logConfig = confDir.getAbsolutePath() + File.separator + "log4j.xml";
-
-        if (new File(logConfig).exists()) {
+        Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", "log4j.xml");
+        if (Files.exists(logFilePath)) {
             if (debug) {
-                DOMConfigurator.configure(logConfig);
+                DOMConfigurator.configure(logFilePath.toString());
                 LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
-            } else DOMConfigurator.configureAndWatch(logConfig, LOG4J_WATCH_DELAY);
+            } else DOMConfigurator.configureAndWatch(logFilePath.toString(), LOG4J_WATCH_DELAY);
         } else
-            throw new RuntimeException(logConfig + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+            throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
 
         // Remove existing handlers attached to j.u.l root logger
         if (!debug) SLF4JBridgeHandler.removeHandlersForRootLogger();

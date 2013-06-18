@@ -26,6 +26,9 @@ import net.holmes.core.media.model.RootNode;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -56,12 +59,13 @@ public final class XmlConfigurationImpl implements Configuration {
      *
      * @return configuration file
      */
-    private File getConfigFile() {
-        File fConfPath = new File(localHolmesDataDir, CONF_PATH);
-        if ((!fConfPath.exists() || !fConfPath.isDirectory()) && !fConfPath.mkdirs())
-            throw new RuntimeException("Failed to create " + fConfPath.getAbsolutePath());
+    private Path getConfigFile() {
+        Path confPath = Paths.get(localHolmesDataDir, CONF_PATH);
+        if ((Files.exists(confPath) && Files.isDirectory(confPath)) || confPath.toFile().mkdirs()) {
+            return Paths.get(confPath.toString(), CONF_FILE_NAME);
+        }
+        throw new RuntimeException("Failed to create " + confPath);
 
-        return new File(fConfPath.getAbsolutePath() + File.separator + CONF_FILE_NAME);
     }
 
     /**
@@ -72,19 +76,14 @@ public final class XmlConfigurationImpl implements Configuration {
     private void loadConfig() throws IOException {
         boolean configLoaded = false;
 
-        File confFile = getConfigFile();
-        if (confFile.exists() && confFile.canRead()) {
-            InputStream in = null;
-            try {
+        Path confFile = getConfigFile();
+        if (Files.exists(confFile) && Files.isReadable(confFile)) {
+            try (InputStream in = new FileInputStream(confFile.toFile())) {
                 // Load configuration from XML
-                in = new FileInputStream(confFile);
                 rootNode = (XmlRootNode) getXStream().fromXML(in);
                 configLoaded = true;
             } catch (FileNotFoundException e) {
                 e.printStackTrace(System.err);
-            } finally {
-                // Close input stream
-                if (in != null) in.close();
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
@@ -96,13 +95,9 @@ public final class XmlConfigurationImpl implements Configuration {
 
     @Override
     public void saveConfig() throws IOException {
-        OutputStream out = null;
-        try {
+        try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
             // Save configuration to XML
-            out = new FileOutputStream(getConfigFile());
             getXStream().toXML(rootNode, out);
-        } finally {
-            if (out != null) out.close();
         }
     }
 

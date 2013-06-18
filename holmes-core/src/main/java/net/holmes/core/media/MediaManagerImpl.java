@@ -291,11 +291,9 @@ public final class MediaManagerImpl implements MediaManager {
                 public List<AbstractNode> call() throws IOException, FeedException {
                     // No entries in cache, read them from RSS feed
                     List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-                    XmlReader reader = null;
-                    try {
+                    try (XmlReader reader = new XmlReader(new URL(url))) {
                         // Get RSS feed entries
-                        URL feedSource = new URL(url);
-                        reader = new XmlReader(feedSource);
+
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                         if (rssEntries != null && !rssEntries.isEmpty()) {
                             MimeType mimeType;
@@ -327,9 +325,6 @@ public final class MediaManagerImpl implements MediaManager {
                                 }
                             }
                         }
-                    } finally {
-                        // Close the reader
-                        if (reader != null) reader.close();
                     }
                     return podcastEntryNodes;
                 }

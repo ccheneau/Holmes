@@ -59,6 +59,9 @@ import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
@@ -71,6 +74,22 @@ final class HolmesServerModule extends AbstractModule {
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
+
+    /**
+     * Get local data directory where Holmes configuration and logs are saved.
+     * This directory is stored in user home directory.
+     *
+     * @return local user data dir
+     */
+    private static String getLocalHolmesDataDir() {
+        // Check directory and create it if it does not exist
+        Path holmesDataPath = Paths.get(SystemProperty.USER_HOME.getValue(), ".holmes");
+        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs()) {
+            return holmesDataPath.toString();
+        }
+        throw new RuntimeException("Failed to create " + holmesDataPath);
+
+    }
 
     @Override
     protected void configure() {
@@ -118,21 +137,5 @@ final class HolmesServerModule extends AbstractModule {
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
-    }
-
-    /**
-     * Get local data directory where Holmes configuration and logs are saved.
-     * This directory is stored in user home directory.
-     *
-     * @return local user data dir
-     */
-    private static String getLocalHolmesDataDir() {
-        // Check directory and create it if it does not exist
-        String holmesDataDir = SystemProperty.USER_HOME.getValue() + File.separator + ".holmes";
-        File fDataDir = new File(holmesDataDir);
-        if ((!fDataDir.exists() || !fDataDir.isDirectory()) && !fDataDir.mkdirs())
-            throw new RuntimeException("Failed to create " + holmesDataDir);
-
-        return holmesDataDir;
     }
 }

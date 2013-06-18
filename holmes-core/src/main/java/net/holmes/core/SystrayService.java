@@ -34,10 +34,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 /**
@@ -144,7 +144,8 @@ public final class SystrayService implements Service {
             public void actionPerformed(final ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        Desktop.getDesktop().open(new File(localHolmesDataDir + File.separator + "log" + File.separator + "holmes.log"));
+
+                        Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     }

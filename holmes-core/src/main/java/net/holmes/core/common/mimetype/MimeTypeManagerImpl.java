@@ -35,18 +35,10 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     public MimeTypeManagerImpl() {
         // Load mime types from property file
         properties = new Properties();
-        InputStream in = null;
-        try {
-            in = this.getClass().getResourceAsStream("/mimetypes.properties");
+        try (InputStream in = this.getClass().getResourceAsStream("/mimetypes.properties")) {
             properties.load(in);
         } catch (IOException e) {
             System.err.println(e.getMessage());
-        } finally {
-            try {
-                if (in != null) in.close();
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
         }
     }
 

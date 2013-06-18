@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -45,11 +44,8 @@ public class RomeTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testRomeCastCoders() {
-        XmlReader reader = null;
-        try {
+        try (XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("/castCodersRss.xml"))) {
             SyndFeedInput input = new SyndFeedInput();
-            InputStream in = this.getClass().getResourceAsStream("/castCodersRss.xml");
-            reader = new XmlReader(in);
             SyndFeed feed = input.build(reader);
             List<SyndEntry> entries = feed.getEntries();
             if (entries != null && !entries.isEmpty()) {
@@ -64,12 +60,6 @@ public class RomeTest {
             }
         } catch (IOException | FeedException | IllegalArgumentException e) {
             fail(e.getMessage());
-        } finally {
-            try {
-                if (reader != null) reader.close();
-            } catch (IOException e) {
-                fail(e.getMessage());
-            }
         }
     }
 
@@ -79,11 +69,8 @@ public class RomeTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testRomeAllocineFauxRaccord() {
-        XmlReader reader = null;
-        try {
+        try (XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("/allocineFauxRaccordRss.xml"))) {
             SyndFeedInput input = new SyndFeedInput();
-            InputStream in = this.getClass().getResourceAsStream("/allocineFauxRaccordRss.xml");
-            reader = new XmlReader(in);
             SyndFeed feed = input.build(reader);
             List<SyndEntry> entries = feed.getEntries();
             if (entries != null && !entries.isEmpty()) {
@@ -99,12 +86,6 @@ public class RomeTest {
             }
         } catch (IOException | IllegalArgumentException | FeedException e) {
             fail(e.getMessage());
-        } finally {
-            try {
-                if (reader != null) reader.close();
-            } catch (IOException e) {
-                fail(e.getMessage());
-            }
         }
     }
 }
