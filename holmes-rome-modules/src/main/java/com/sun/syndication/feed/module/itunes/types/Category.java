@@ -101,15 +101,4 @@ public final class Category implements Serializable, Cloneable {
 
         return c;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(this.getName());
-
-        if (this.getSubcategory() != null) {
-            sb.append(" -> ").append(this.getSubcategory().toString());
-        }
-
-        return sb.toString();
-    }
 }

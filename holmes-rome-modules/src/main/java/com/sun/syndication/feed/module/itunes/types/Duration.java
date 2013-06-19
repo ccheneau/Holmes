@@ -116,56 +116,11 @@ public final class Duration implements Serializable {
     }
 
     /**
-     * Returns a String representation in the formation HH:MM:SS.
-     *
-     * @return Returns a String representation in the formation HH:MM:SS
-     */
-    @Override
-    public String toString() {
-        Time time = new Time(this);
-
-        return NUM_FORMAT.format(time.hours) + ":" + NUM_FORMAT.format(time.minutes) + ":" + NUM_FORMAT.format(Math.round(time.seconds));
-    }
-
-    /**
      * Returns the millisecond length
      *
      * @return the millisecond length
      */
     public long getMilliseconds() {
         return milliseconds;
-    }
-
-    /**
-     * The Class Time.
-     */
-    private static class Time {
-
-        /**
-         * The hours.
-         */
-        private final int hours;
-        /**
-         * The minutes.
-         */
-        private final int minutes;
-        /**
-         * The seconds.
-         */
-        private final float seconds;
-
-        /**
-         * Constructor.
-         *
-         * @param duration the duration
-         */
-        public Time(final Duration duration) {
-            long time = duration.getMilliseconds();
-            hours = (int) (time / HOUR);
-            time = time - hours * HOUR;
-            minutes = (int) (time / MINUTE);
-            time = time - minutes * MINUTE;
-            seconds = (float) time / (float) SECOND;
-        }
     }
 }

@@ -28,19 +28,20 @@ import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 /**
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.10 $
  */
 public class ITunesParser implements ModuleParser {
-    private static final Logger LOGGER = Logger.getLogger(ITunesParser.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ITunesParser.class);
     private final Namespace ns;
 
     /**
@@ -96,7 +97,7 @@ public class ITunesParser implements ModuleParser {
                     URL imageURL = new URL(image.getAttributeValue("href").trim());
                     feedInfo.setImage(imageURL);
                 } catch (MalformedURLException e) {
-                    LOGGER.finer("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
+                    LOGGER.debug("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
                 }
             }
 

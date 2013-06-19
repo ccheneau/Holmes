@@ -77,14 +77,4 @@ public final class Subcategory implements Cloneable, Serializable {
 
         return sc;
     }
-
-    /**
-     * String representation of the object.
-     *
-     * @return String representation of the object.
-     */
-    @Override
-    public String toString() {
-        return this.getName();
-    }
 }

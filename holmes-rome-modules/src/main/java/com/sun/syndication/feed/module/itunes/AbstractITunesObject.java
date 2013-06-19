@@ -218,30 +218,4 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
     public void setSummary(final String summary) {
         this.summary = summary;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        sb.append(" Author: ");
-        sb.append(this.getAuthor());
-        sb.append(" Block: ");
-        sb.append(this.getBlock());
-        sb.append(" Explicit: ");
-        sb.append(this.getExplicit());
-        sb.append(" Keywords: ");
-
-        if (keywords != null) {
-            for (int i = 0; i < keywords.length; i++) {
-                sb.append("'").append(this.getKeywords()[i]).append("'");
-            }
-        }
-
-        sb.append(" Subtitle: ");
-        sb.append(this.getSubtitle());
-        sb.append(" Summary: ");
-        sb.append(this.getSummary());
-        sb.append("]");
-
-        return sb.toString();
-    }
 }

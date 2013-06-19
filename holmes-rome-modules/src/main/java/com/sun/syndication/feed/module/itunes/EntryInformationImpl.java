@@ -94,15 +94,4 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
 
         return info;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        sb.append(" Duration: ");
-        sb.append(this.getDuration());
-        sb.append("]");
-        sb.append(super.toString());
-
-        return sb.toString();
-    }
 }

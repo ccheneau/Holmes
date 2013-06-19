@@ -12,6 +12,12 @@
     <description>Fork for rome:modules project</description>
 
     <dependencies>
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
         <!-- rome -->
         <dependency>
             <groupId>rome</groupId>

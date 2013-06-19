@@ -175,21 +175,4 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
 
         return info;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        sb.append(" email: ");
-        sb.append(this.getOwnerEmailAddress());
-        sb.append(" name: ");
-        sb.append(this.getOwnerName());
-        sb.append(" image: ");
-        sb.append(this.getImage());
-        sb.append(" categories: ");
-        sb.append(this.getCategories());
-        sb.append("]");
-        sb.append(super.toString());
-
-        return sb.toString();
-    }
 }
