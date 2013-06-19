@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+
+    <channel>
+        <title>Math Games</title>
+        <link>http://hoodamath.com/games/</link>
+        <description>Cool Math Games like Bloxorz, Coffee Shops, Super Stackers 2. Fun Games get you an A Plus in
+            Math.
+        </description>
+        <lastBuildDate>Thu, 09 Jul 2009 23:00:00 EST</lastBuildDate>
+
+        <item>
+            <title>Line Bounder</title>
+            <link>http://hoodamath.com/games/linebounder.php</link>
+            <description>Play Line Bounder. Turn based strategy game, your aim is to reach enemy ground and stop him
+                from reaching yours.
+            </description>
+            <guid>http://hoodamath.com/games/linebounder.php</guid>
+            <media:content url="http://hoodamath.com/games/linebounder.swf" fileSize="981080"
+                           type="application/x-shockwave-flash" width="550" height="550" medium="video"/>
+            <media:title>Line Bounder</media:title>
+            <media:description>Play Line Bounder. Turn based strategy game, your aim is to reach enemy ground and stop
+                him from reaching yours.
+            </media:description>
+            <media:thumbnail url="http://www.hoodamath.com/images/g-linebounder.gif" width="160" height="120"/>
+        </item>
+
+        <item>
+            <title>Coffee Shop Game</title>
+            <link>http://hoodamath.com/games/coffeeshopgame.php</link>
+            <description>Play Coffee Shop Game. Run your own Coffee Shop! You have a limited # of days, so make sure to
+                maximize cash, save inventory, and if you reputation gets high enough you might even get a visit from a
+                special guest. :D
+            </description>
+            <guid>http://hoodamath.com/games/coffeeshopgame.php</guid>
+            <media:content url="http://hoodamath.com/games/coffeeshop.swf" fileSize="2080000"
+                           type="application/x-shockwave-flash" width="640" height="480" medium="video"/>
+            <media:title>Coffee Shop Game</media:title>
+            <media:description>Play Coffee Shop Game. Run your own Coffee Shop! You have a limited # of days, so make
+                sure to maximize cash, save inventory, and if you reputation gets high enough you might even get a
+                visit from a special guest.
+            </media:description>
+            <media:thumbnail url="http://www.hoodamath.com/images/g-coffeeshop.gif" width="160" height="120"/>
+        </item>
+
+    </channel>
+
+</rss>
