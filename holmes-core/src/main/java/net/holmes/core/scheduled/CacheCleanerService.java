@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheCleanerService extends AbstractScheduledService {
     private final Cache<String, List<AbstractNode>> podcastCache;
-    private final Cache<File, String> imageCache;
+    private final Cache<String, String> imageCache;
     private final int cleanDelayMinutes;
     @InjectLogger
     private Logger logger;
@@ -50,7 +49,7 @@ public class CacheCleanerService extends AbstractScheduledService {
      */
     @Inject
     public CacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
-                               @Named("imageCache") final Cache<File, String> imageCache, final Configuration configuration) {
+                               @Named("imageCache") final Cache<String, String> imageCache, final Configuration configuration) {
         this.podcastCache = podcastCache;
         this.imageCache = imageCache;
         this.cleanDelayMinutes = configuration.getIntParameter(Parameter.LOCAL_CACHE_CLEAN_DELAY_MINUTES);

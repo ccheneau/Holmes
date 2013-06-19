@@ -36,7 +36,6 @@ import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
 
-import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -58,7 +57,7 @@ public class TestModule extends AbstractModule {
 
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
-        bind(new TypeLiteral<Cache<File, String>>() {
+        bind(new TypeLiteral<Cache<String, String>>() {
         }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class).in(Singleton.class);
     }
 }

@@ -69,7 +69,7 @@ public final class MediaManagerImpl implements MediaManager {
     private final ResourceBundle resourceBundle;
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
-    private final Cache<File, String> imageCache;
+    private final Cache<String, String> imageCache;
     @InjectLogger
     private Logger logger;
 
@@ -85,7 +85,7 @@ public final class MediaManagerImpl implements MediaManager {
     @Inject
     public MediaManagerImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final ResourceBundle resourceBundle,
                             final MediaIndexManager mediaIndexManager, @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
-                            @Named("imageCache") final Cache<File, String> imageCache) {
+                            @Named("imageCache") final Cache<String, String> imageCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.resourceBundle = resourceBundle;
@@ -351,7 +351,7 @@ public final class MediaManagerImpl implements MediaManager {
         if (mimeType != null) {
             MediaType mimeMediaType = MediaType.getByValue(mimeType.getType());
             if (mimeMediaType.equals(mediaType)) {
-                String resolution = getContentResolution(file, mimeType);
+                String resolution = getContentResolution(file.getAbsolutePath(), mimeType);
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, resolution);
             } else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
                 node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
@@ -363,18 +363,23 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Gets the content resolution. Only available for image.
      *
-     * @param file     the file
+     * @param fileName the file name
      * @param mimeType the mime type
      * @return the content resolution
      */
-    private String getContentResolution(final File file, final MimeType mimeType) {
-        if (mimeType.isImage()) {
+    private String getContentResolution(final String fileName, final MimeType mimeType) {
+        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.isImage()) {
             try {
-                return imageCache.get(file, new Callable<String>() {
+                return imageCache.get(fileName, new Callable<String>() {
                     @Override
-                    public String call() throws IOException {
+                    public String call() {
                         String resolution = null;
-                        BufferedImage bufferedImage = ImageIO.read(file);
+                        BufferedImage bufferedImage = null;
+                        try {
+                            bufferedImage = ImageIO.read(new File(fileName).toURI().toURL());
+                        } catch (IOException e) {
+                            logger.error(e.getMessage(), e);
+                        }
                         if (bufferedImage != null)
                             resolution = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
                         return resolution != null ? resolution : "0x0";

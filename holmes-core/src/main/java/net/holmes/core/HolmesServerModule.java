@@ -58,7 +58,6 @@ import net.holmes.core.scheduled.MediaScannerService;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -108,7 +107,7 @@ final class HolmesServerModule extends AbstractModule {
         // Bind caches
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
-        bind(new TypeLiteral<Cache<File, String>>() {
+        bind(new TypeLiteral<Cache<String, String>>() {
         }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class).in(Singleton.class);
 
         // Bind constants

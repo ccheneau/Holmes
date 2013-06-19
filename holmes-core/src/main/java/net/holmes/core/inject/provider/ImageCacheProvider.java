@@ -24,13 +24,12 @@ import net.holmes.core.common.configuration.Parameter;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Guice provider for image cache.
  */
-public class ImageCacheProvider implements Provider<Cache<File, String>> {
+public class ImageCacheProvider implements Provider<Cache<String, String>> {
 
     private final Configuration configuration;
 
@@ -45,7 +44,7 @@ public class ImageCacheProvider implements Provider<Cache<File, String>> {
     }
 
     @Override
-    public Cache<File, String> get() {
+    public Cache<String, String> get() {
         return CacheBuilder.newBuilder() //
                 .maximumSize(configuration.getIntParameter(Parameter.IMAGE_CACHE_MAX_ELEMENTS)) //
                 .expireAfterWrite(configuration.getIntParameter(Parameter.IMAGE_CACHE_EXPIRE_HOURS), TimeUnit.HOURS) //
