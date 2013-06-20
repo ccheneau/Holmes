@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 import com.sun.syndication.feed.module.mediarss.types.MediaContent;
 import com.sun.syndication.feed.module.mediarss.types.MediaGroup;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
@@ -105,11 +104,5 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
     public int hashCode() {
         EqualsBean equals = new EqualsBean(MediaEntryModuleImpl.class, this);
         return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(MediaEntryModuleImpl.class, this);
-        return tsBean.toString();
     }
 }

@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -63,7 +62,6 @@ public class Metadata implements Cloneable, Serializable {
      * Creates a new instance of Metadata
      */
     public Metadata() {
-        super();
     }
 
     /**
@@ -621,19 +619,11 @@ public class Metadata implements Cloneable, Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(Metadata.class, this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(Metadata.class, this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(Metadata.class, this);
-        return tsBean.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

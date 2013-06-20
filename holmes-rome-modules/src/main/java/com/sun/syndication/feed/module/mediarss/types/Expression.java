@@ -17,6 +17,8 @@
 
 package com.sun.syndication.feed.module.mediarss.types;
 
+import com.sun.syndication.feed.impl.EqualsBean;
+
 import java.io.Serializable;
 
 /**
@@ -36,7 +38,7 @@ public final class Expression implements Serializable {
     public static final Expression SAMPLE = new Expression("sample");
 
     /**
-     * represents a streaming media object.
+     * Represents a streaming media object.
      */
     public static final Expression NONSTOP = new Expression("nonstop");
     private final String value;
@@ -50,8 +52,17 @@ public final class Expression implements Serializable {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     @Override
-    public String toString() {
-        return this.value;
+    public boolean equals(final Object obj) {
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

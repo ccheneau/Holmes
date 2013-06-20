@@ -72,9 +72,6 @@ public final class Subcategory implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        Subcategory sc = new Subcategory();
-        sc.setName(this.getName());
-
-        return sc;
+        return new Subcategory(this.getName());
     }
 }

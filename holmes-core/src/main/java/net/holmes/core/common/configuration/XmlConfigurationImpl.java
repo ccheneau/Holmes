@@ -304,8 +304,7 @@ public final class XmlConfigurationImpl implements Configuration {
          */
         public Boolean getParameter(final Parameter parameter) {
             String value = (String) this.parameters.get(parameter.getName());
-            if (value == null) value = parameter.getDefaultValue();
-            return Boolean.valueOf(value);
+            return Boolean.valueOf(value == null ? parameter.getDefaultValue() : value);
         }
 
         /**
@@ -316,8 +315,7 @@ public final class XmlConfigurationImpl implements Configuration {
          */
         public Integer getIntParameter(final Parameter parameter) {
             String value = (String) this.parameters.get(parameter.getName());
-            if (value == null) value = parameter.getDefaultValue();
-            return Integer.valueOf(value);
+            return Integer.valueOf(value == null ? parameter.getDefaultValue() : value);
         }
 
         /**

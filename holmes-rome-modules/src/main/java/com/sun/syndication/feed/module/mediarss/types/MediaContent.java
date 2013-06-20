@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 
 import java.io.Serializable;
 
@@ -111,8 +110,6 @@ public final class MediaContent implements Serializable, Cloneable {
      * @param reference UrlReference or Player reference for the item.
      */
     public MediaContent(final Reference reference) {
-        super();
-
         if (reference == null) {
             throw new NullPointerException("You must provide either a PlayerReference or URL reference.");
         }
@@ -423,19 +420,11 @@ public final class MediaContent implements Serializable, Cloneable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(MediaContent.class, this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(MediaContent.class, this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(MediaContent.class, this);
-        return tsBean.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

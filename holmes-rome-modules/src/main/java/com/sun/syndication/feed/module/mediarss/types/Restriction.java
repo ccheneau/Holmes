@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 
 import java.io.Serializable;
 
@@ -53,17 +52,14 @@ public class Restriction implements Serializable {
      * The Constant serialVersionUID.
      */
     private static final long serialVersionUID = 7944281267467298628L;
-
     /**
      * The relationship.
      */
     private Relationship relationship;
-
     /**
      * The value.
      */
     private String value;
-
     /**
      * The type.
      */
@@ -94,33 +90,22 @@ public class Restriction implements Serializable {
         return relationship;
     }
 
-    public Type getType() {
-        return type;
-    }
-
     public String getValue() {
         return value;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(), this);
-
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(this.getClass(), this);
-
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-
-        return tsBean.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 
     /**
@@ -129,20 +114,17 @@ public class Restriction implements Serializable {
     public static final class Relationship implements Serializable {
 
         /**
-         * The Constant serialVersionUID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
          * An Allow relationship.
          */
         public static final Relationship ALLOW = new Relationship("allow");
-
         /**
          * A deny relationship.
          */
         public static final Relationship DENY = new Relationship("deny");
-
+        /**
+         * The Constant serialVersionUID.
+         */
+        private static final long serialVersionUID = 1L;
         /**
          * The value.
          */
@@ -156,14 +138,6 @@ public class Restriction implements Serializable {
         private Relationship(final String value) {
             this.value = value;
         }
-
-        /* (non-Javadoc)
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return this.value;
-        }
     }
 
     /**
@@ -172,20 +146,17 @@ public class Restriction implements Serializable {
     public static final class Type implements Serializable {
 
         /**
-         * The Constant serialVersionUID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
          * Indicates a Country type.
          */
         public static final Type COUNTRY = new Type("country");
-
         /**
          * Indicates a URI for a special restriction type.
          */
         public static final Type URI = new Type("uri");
-
+        /**
+         * The Constant serialVersionUID.
+         */
+        private static final long serialVersionUID = 1L;
         /**
          * The value.
          */
@@ -198,14 +169,6 @@ public class Restriction implements Serializable {
          */
         private Type(final String value) {
             this.value = value;
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return this.value;
         }
     }
 }

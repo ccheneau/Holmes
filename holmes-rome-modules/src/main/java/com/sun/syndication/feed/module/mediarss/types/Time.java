@@ -20,7 +20,6 @@ package com.sun.syndication.feed.module.mediarss.types;
 import com.sun.syndication.feed.impl.EqualsBean;
 
 import java.io.Serializable;
-import java.text.NumberFormat;
 
 /**
  * Represents a <a href="http://www.ietf.org/rfc/rfc2326.txt">RFC 2326 3.6 Normal Play Time</a> timestamp.
@@ -29,16 +28,9 @@ import java.text.NumberFormat;
  */
 public class Time implements Serializable {
     private static final long serialVersionUID = 4088522049885593073L;
-
     private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE * SECOND;
-    private static final NumberFormat NF = NumberFormat.getInstance();
-
-    static {
-        NF.setMinimumIntegerDigits(2);
-    }
-
     private long milliseconds = 0;
 
     /**
@@ -77,27 +69,11 @@ public class Time implements Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(), this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(this.getClass(), this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        long value = this.milliseconds;
-        long hours = value / HOUR;
-        value -= hours * HOUR;
-
-        long minutes = value / MINUTE;
-        value -= minutes * MINUTE;
-
-        double seconds = (double) value / (double) SECOND;
-
-        return NF.format(hours) + ":" + NF.format(minutes) + ":" + seconds;
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

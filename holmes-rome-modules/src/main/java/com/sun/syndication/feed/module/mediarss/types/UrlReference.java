@@ -31,7 +31,7 @@ import java.net.URISyntaxException;
 public class UrlReference implements Reference, Serializable {
     private static final long serialVersionUID = -178149736468242989L;
 
-    private URI url;
+    private final URI url;
 
     /**
      * Creates a new UrlReference.
@@ -39,11 +39,9 @@ public class UrlReference implements Reference, Serializable {
      * @param url URL to the media source
      */
     public UrlReference(final URI url) {
-        super();
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
-
         this.url = url;
     }
 
@@ -54,11 +52,9 @@ public class UrlReference implements Reference, Serializable {
      * @throws URISyntaxException the uRI syntax exception
      */
     public UrlReference(final String url) throws URISyntaxException {
-        super();
         if (url == null) {
             throw new NullPointerException("url cannot be null.");
         }
-
         this.url = new URI(url);
     }
 
@@ -73,18 +69,11 @@ public class UrlReference implements Reference, Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(), this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(this.getClass(), this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return url.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

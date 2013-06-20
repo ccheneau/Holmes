@@ -18,12 +18,13 @@
 package com.sun.syndication.feed.module.itunes;
 
 import com.sun.syndication.feed.module.itunes.types.Category;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class contains information for iTunes podcast feeds that exist at the Channel level.
@@ -32,8 +33,8 @@ import java.util.logging.Logger;
  * @version $Revision: 1.2 $
  */
 public class FeedInformationImpl extends AbstractITunesObject implements FeedInformation {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeedInformationImpl.class);
     private static final long serialVersionUID = -3672967750764259458L;
-
     private String ownerName;
     private String ownerEmailAddress;
     private URL image;
@@ -150,7 +151,7 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
                 this.setImage(new URL(info.getImage().toExternalForm()));
             }
         } catch (MalformedURLException e) {
-            Logger.getAnonymousLogger().fine("Error copying URL:" + info.getImage());
+            LOGGER.debug("Error copying URL:{]", info.getImage());
         }
 
         this.setKeywords(info.getKeywords().clone());

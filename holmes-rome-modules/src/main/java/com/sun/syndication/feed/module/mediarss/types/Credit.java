@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 
 import java.io.Serializable;
 
@@ -118,19 +117,11 @@ public class Credit implements Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(), this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(this.getClass(), this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-        return tsBean.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

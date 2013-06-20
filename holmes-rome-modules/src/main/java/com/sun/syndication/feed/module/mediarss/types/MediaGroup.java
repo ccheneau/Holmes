@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.types;
 
 import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
 
 import java.io.Serializable;
 
@@ -31,10 +30,9 @@ import java.io.Serializable;
  */
 public final class MediaGroup implements Cloneable, Serializable {
     private static final long serialVersionUID = 768465435081309082L;
-
     private Integer defaultContentIndex;
     private Metadata metadata;
-    private MediaContent[] contents = new MediaContent[0];
+    private MediaContent[] contents;
 
     /**
      * Creates a new instance of MediaGroup
@@ -72,19 +70,19 @@ public final class MediaGroup implements Cloneable, Serializable {
     /**
      * MediaContents for the group
      *
-     * @param contents MediaContents for the group
+     * @return MediaContents for the group
      */
-    private void setContents(final MediaContent[] contents) {
-        this.contents = (contents == null) ? new MediaContent[0] : contents;
+    public MediaContent[] getContents() {
+        return contents;
     }
 
     /**
      * MediaContents for the group
      *
-     * @return MediaContents for the group
+     * @param contents MediaContents for the group
      */
-    public MediaContent[] getContents() {
-        return contents;
+    private void setContents(final MediaContent[] contents) {
+        this.contents = (contents == null) ? new MediaContent[0] : contents;
     }
 
     /**
@@ -94,23 +92,10 @@ public final class MediaGroup implements Cloneable, Serializable {
      */
     public void setDefaultContentIndex(final Integer defaultContentIndex) {
         for (int i = 0; i < getContents().length; i++) {
-            if (i == defaultContentIndex) {
-                getContents()[i].setDefaultContent(true);
-            } else {
-                getContents()[i].setDefaultContent(false);
-            }
+            getContents()[i].setDefaultContent(i == defaultContentIndex);
         }
 
         this.defaultContentIndex = defaultContentIndex;
-    }
-
-    /**
-     * Metadata for the group
-     *
-     * @param metadata Metadata for the group
-     */
-    public void setMetadata(final Metadata metadata) {
-        this.metadata = metadata;
     }
 
     /**
@@ -122,6 +107,15 @@ public final class MediaGroup implements Cloneable, Serializable {
         return metadata;
     }
 
+    /**
+     * Metadata for the group
+     *
+     * @param metadata Metadata for the group
+     */
+    public void setMetadata(final Metadata metadata) {
+        this.metadata = metadata;
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
@@ -130,19 +124,11 @@ public final class MediaGroup implements Cloneable, Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-        EqualsBean eBean = new EqualsBean(this.getClass(), this);
-        return eBean.beanEquals(obj);
+        return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
     @Override
     public int hashCode() {
-        EqualsBean equals = new EqualsBean(this.getClass(), this);
-        return equals.beanHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBean tsBean = new ToStringBean(this.getClass(), this);
-        return tsBean.toString();
+        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }

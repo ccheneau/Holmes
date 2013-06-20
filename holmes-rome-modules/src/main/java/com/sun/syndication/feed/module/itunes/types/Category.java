@@ -92,13 +92,10 @@ public final class Category implements Serializable, Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        Category c = new Category();
-        c.setName(this.getName());
-
+        Category c = new Category(this.getName());
         if (this.getSubcategory() != null) {
             c.setSubcategory((Subcategory) this.getSubcategory().clone());
         }
-
         return c;
     }
 }

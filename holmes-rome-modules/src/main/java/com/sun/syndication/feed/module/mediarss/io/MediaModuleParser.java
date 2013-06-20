@@ -87,7 +87,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     private MediaContent[] parseContent(final Element element) {
         List<?> contents = element.getChildren("content", NS);
-        ArrayList<MediaContent> values = new ArrayList<>();
+        List<MediaContent> values = new ArrayList<>();
 
         for (int i = 0; contents != null && i < contents.size(); i++) {
             Element content = (Element) contents.get(i);
@@ -182,7 +182,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     private MediaGroup[] parseGroup(final Element element) {
         List<?> groups = element.getChildren("group", NS);
-        ArrayList<MediaGroup> values = new ArrayList<>();
+        List<MediaGroup> values = new ArrayList<>();
 
         for (int i = 0; groups != null && i < groups.size(); i++) {
             Element group = (Element) groups.get(i);
@@ -279,7 +279,6 @@ public class MediaModuleParser implements ModuleParser {
         // text
         List<?> texts = e.getChildren("text", NS);
         List<Text> txtValues = new ArrayList<>();
-
         for (int i = 0; texts != null && i < texts.size(); i++) {
             Element text = (Element) texts.get(i);
             Time start = (text.getAttributeValue("start") == null) ? null : new Time(text.getAttributeValue("start"));
@@ -306,7 +305,6 @@ public class MediaModuleParser implements ModuleParser {
                 LOGGER.warn("Exception parsing thumbnail tag.", ex);
             }
         }
-
         md.setThumbnail(tbnValues.toArray(new Thumbnail[tbnValues.size()]));
 
         // title
@@ -330,28 +328,20 @@ public class MediaModuleParser implements ModuleParser {
             }
 
             Restriction.Relationship relationship = null;
-
             if (r.getAttributeValue("relationship").equalsIgnoreCase("allow")) {
                 relationship = Restriction.Relationship.ALLOW;
             } else if (r.getAttributeValue("relationship").equalsIgnoreCase("deny")) {
                 relationship = Restriction.Relationship.DENY;
             }
-
-            Restriction value = new Restriction(relationship, type, r.getTextTrim());
-            rstValues.add(value);
+            rstValues.add(new Restriction(relationship, type, r.getTextTrim()));
         }
-
         md.setRestrictions(rstValues.toArray(new Restriction[rstValues.size()]));
 
         // handle adult
         Element adult = e.getChild("adult", NS);
         if (adult != null && md.getRatings().length == 0) {
             Rating[] r = new Rating[1];
-            if (adult.getTextTrim().equals("true")) {
-                r[0] = new Rating("urn:simple", "adult");
-            } else {
-                r[0] = new Rating("urn:simple", "nonadult");
-            }
+            r[0] = new Rating("urn:simple", adult.getTextTrim().equals("true") ? "adult" : "nonadult");
             md.setRatings(r);
         }
         return md;
