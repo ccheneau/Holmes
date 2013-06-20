@@ -62,7 +62,9 @@
             <guid>http://hoodamath.com/games/coffeeshopgame.php</guid>
             <media:content url="http://hoodamath.com/games/coffeeshop.swf" fileSize="2080000"
                            type="application/x-shockwave-flash" width="640" height="480" medium="video"
-                           expression="nonstop"/>
+                           expression="nonstop">
+                <media:player url="http://www.hoodamath.com/images/g-linebounder.gif" width="160" height="120"/>
+            </media:content>
             <media:title>Coffee Shop Game 2</media:title>
             <media:description>Play Coffee Shop Game. Run your own Coffee Shop! You have a limited # of days, so make
                 sure to maximize cash, save inventory, and if you reputation gets high enough you might even get a
@@ -83,6 +85,7 @@
             <media:keywords>k1,k2</media:keywords>
             <media:rating scheme="urn:simple">nonadult</media:rating>
             <media:text start="01:01:01" end="02:02:02" type="text">some text</media:text>
+
         </item>
     </channel>
 
