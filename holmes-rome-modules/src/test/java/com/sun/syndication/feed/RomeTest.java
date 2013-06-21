@@ -25,6 +25,8 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,6 +35,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class RomeTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RomeTest.class);
 
     @Before
     public void setUp() {
@@ -111,7 +114,36 @@ public class RomeTest {
                 }
             }
         } catch (IOException | IllegalArgumentException | FeedException e) {
+            LOGGER.error(e.getMessage(), e);
             fail(e.getMessage());
         }
     }
+
+    /**
+     * Test rome with allocine faux raccords rss.
+     */
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testBadMediaRss() {
+        try (XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("/badMediaRss.xml"))) {
+            SyndFeedInput input = new SyndFeedInput();
+            SyndFeed feed = input.build(reader);
+            List<SyndEntry> entries = feed.getEntries();
+            if (entries != null && !entries.isEmpty()) {
+                for (SyndEntry entry : entries) {
+                    assertNotNull(entry.getTitle());
+                    if (entry.getEnclosures() != null && !entry.getEnclosures().isEmpty()) {
+                        for (SyndEnclosure enclosure : (List<SyndEnclosure>) entry.getEnclosures()) {
+                            assertNotNull(enclosure.getType());
+                            assertNotNull(enclosure.getUrl());
+                        }
+                    }
+                }
+            }
+        } catch (IOException | IllegalArgumentException | FeedException e) {
+            LOGGER.error(e.getMessage(), e);
+            fail(e.getMessage());
+        }
+    }
+
 }

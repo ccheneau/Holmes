@@ -40,7 +40,6 @@ import java.util.StringTokenizer;
  */
 public class MediaModuleParser implements ModuleParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaModuleParser.class);
-
     /**
      * Namespace instance for this URI.
      */
@@ -133,37 +132,16 @@ public class MediaModuleParser implements ModuleParser {
                     }
                 }
 
-                try {
-                    mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-                try {
-                    mc.setFramerate((content.getAttributeValue("framerate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("framerate")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-                try {
-                    mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-
+                mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
+                mc.setFramerate((content.getAttributeValue("framerate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("framerate")));
+                mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
                 mc.setLanguage(content.getAttributeValue("lang"));
                 mc.setMetadata(parseMetadata(content));
-                try {
-                    mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content
-                            .getAttributeValue("samplingrate")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
+                mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content
+                        .getAttributeValue("samplingrate")));
 
                 mc.setType(content.getAttributeValue("type"));
-                try {
-                    mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
+                mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
 
                 mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.valueOf(content.getAttributeValue("isDefault")));
             } else {
@@ -301,7 +279,7 @@ public class MediaModuleParser implements ModuleParser {
                     Integer height = (thumb.getAttributeValue("height") == null) ? null : Integer.valueOf(thumb.getAttributeValue("height"));
                     tbnValues.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
                 }
-            } catch (URISyntaxException ex) {
+            } catch (URISyntaxException | NumberFormatException ex) {
                 LOGGER.warn("Exception parsing thumbnail tag.", ex);
             }
         }
