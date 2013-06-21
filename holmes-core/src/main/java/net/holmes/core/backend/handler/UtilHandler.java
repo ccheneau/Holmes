@@ -70,21 +70,17 @@ public final class UtilHandler {
 
             // Add root folders
             File[] roots = File.listRoots();
-            if (roots != null) {
-                for (File root : roots) {
+            if (roots != null)
+                for (File root : roots)
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
-                }
-            }
         } else {
             // Get child folders
             File fPath = new File(parentPath);
             if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
                 File[] childDirs = fPath.listFiles(new FolderFileFilter());
-                if (childDirs != null) {
-                    for (File childDir : childDirs) {
+                if (childDirs != null)
+                    for (File childDir : childDirs)
                         folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
-                    }
-                }
             }
         }
         return folders;

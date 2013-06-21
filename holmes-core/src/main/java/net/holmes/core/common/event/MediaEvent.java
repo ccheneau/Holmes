@@ -17,6 +17,8 @@
 
 package net.holmes.core.common.event;
 
+import com.google.common.base.Objects;
+
 /**
  * Media event.
  */
@@ -46,13 +48,10 @@ public class MediaEvent {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("MediaEvent [type=");
-        builder.append(type);
-        builder.append(", parameter=");
-        builder.append(parameter);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(type)
+                .addValue(parameter)
+                .toString();
     }
 
     /**

@@ -84,12 +84,12 @@ public final class Bootstrap {
     private static void loadLogging(final boolean debug) {
         // Load log4j configuration
         Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", "log4j.xml");
-        if (Files.exists(logFilePath)) {
+        if (Files.exists(logFilePath))
             if (debug) {
                 DOMConfigurator.configure(logFilePath.toString());
                 LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
             } else DOMConfigurator.configureAndWatch(logFilePath.toString(), LOG4J_WATCH_DELAY);
-        } else
+        else
             throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
 
         // Remove existing handlers attached to j.u.l root logger

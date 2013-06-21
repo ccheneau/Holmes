@@ -94,13 +94,7 @@ public final class SystrayService implements Service {
             if (menuItemFont != null)
                 UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize()));
 
-        } catch (ClassNotFoundException e) {
-            result = false;
-        } catch (InstantiationException e) {
-            result = false;
-        } catch (IllegalAccessException e) {
-            result = false;
-        } catch (UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             result = false;
         }
         return result;
@@ -277,8 +271,7 @@ public final class SystrayService implements Service {
          */
         private void showPopupMenu(final MouseEvent event) {
             if (popupMenu != null) {
-                Dimension size = popupMenu.getPreferredSize();
-                DIALOG.setLocation(event.getX(), event.getY() - size.height);
+                DIALOG.setLocation(event.getX(), event.getY() - popupMenu.getPreferredSize().height);
                 DIALOG.setVisible(true);
                 popupMenu.show(DIALOG.getContentPane(), 0, 0);
                 DIALOG.toFront();

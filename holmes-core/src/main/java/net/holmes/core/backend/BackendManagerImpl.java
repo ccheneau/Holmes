@@ -238,16 +238,16 @@ public final class BackendManagerImpl implements BackendManager {
     private void validateDuplicatedFolder(final String excludedId, final ConfigurationFolder folder, final List<ConfigurationNode> configNodes,
                                           final boolean podcast) {
         for (ConfigurationNode node : configNodes) {
-            if (excludedId != null && excludedId.equals(node.getId())) continue;
-
-            if (podcast && node.getLabel().equals(folder.getName())) {
-                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
-            } else if (podcast && node.getPath().equals(folder.getPath())) {
-                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
-            } else if (node.getLabel().equals(folder.getName())) {
-                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
-            } else if (node.getPath().equals(folder.getPath())) {
-                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
+            if (excludedId == null || !excludedId.equals(node.getId())) {
+                if (podcast && node.getLabel().equals(folder.getName())) {
+                    throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
+                } else if (podcast && node.getPath().equals(folder.getPath())) {
+                    throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
+                } else if (node.getLabel().equals(folder.getName())) {
+                    throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
+                } else if (node.getPath().equals(folder.getPath())) {
+                    throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
+                }
             }
         }
     }

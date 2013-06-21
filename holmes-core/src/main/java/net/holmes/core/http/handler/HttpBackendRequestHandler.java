@@ -94,9 +94,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private InBoundHeaders getHeaders(final HttpRequest request) {
         InBoundHeaders headers = new InBoundHeaders();
 
-        for (Entry<String, String> header : request.headers()) {
+        for (Entry<String, String> header : request.headers())
             headers.add(header.getKey(), header.getValue());
-        }
+
         return headers;
     }
 
@@ -123,9 +123,9 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = Lists.newArrayList();
-                for (Object v : headerEntry.getValue()) {
+                for (Object v : headerEntry.getValue())
                     values.add(ContainerResponse.getHeaderValue(v));
-                }
+
                 response.headers().add(headerEntry.getKey(), values);
             }
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);

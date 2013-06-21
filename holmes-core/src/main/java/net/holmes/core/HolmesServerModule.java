@@ -83,9 +83,9 @@ final class HolmesServerModule extends AbstractModule {
     private static String getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
         Path holmesDataPath = Paths.get(SystemProperty.USER_HOME.getValue(), ".holmes");
-        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs()) {
+        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
             return holmesDataPath.toString();
-        }
+
         throw new RuntimeException("Failed to create " + holmesDataPath);
 
     }

@@ -48,20 +48,18 @@ public final class CustomTypeListener implements TypeListener {
     @Override
     public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
         // Inject slf4j logger
-        for (Field field : type.getRawType().getDeclaredFields()) {
+        for (Field field : type.getRawType().getDeclaredFields())
             if (field.isAnnotationPresent(InjectLogger.class) && field.getType() == org.slf4j.Logger.class) {
                 encounter.register(new Slf4jMembersInjector<T>(field));
                 break;
             }
-        }
 
         // Register to event bus
-        for (Method method : type.getRawType().getMethods()) {
+        for (Method method : type.getRawType().getMethods())
             if (method.isAnnotationPresent(Subscribe.class)) {
                 encounter.register(new EventBusRegisterListener<T>(eventBus));
                 break;
             }
-        }
     }
 
     /**

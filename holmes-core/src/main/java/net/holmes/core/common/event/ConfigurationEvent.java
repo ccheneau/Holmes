@@ -17,6 +17,7 @@
 
 package net.holmes.core.common.event;
 
+import com.google.common.base.Objects;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.media.model.RootNode;
 
@@ -56,15 +57,11 @@ public class ConfigurationEvent {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ConfigurationEvent [type=");
-        builder.append(type);
-        builder.append(", node=");
-        builder.append(node);
-        builder.append(", rootNode=");
-        builder.append(rootNode);
-        builder.append("]");
-        return builder.toString();
+        return Objects.toStringHelper(this)
+                .addValue(type)
+                .addValue(node)
+                .addValue(rootNode)
+                .toString();
     }
 
     /**

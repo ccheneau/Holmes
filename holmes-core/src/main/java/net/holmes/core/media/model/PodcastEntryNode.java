@@ -81,15 +81,10 @@ public final class PodcastEntryNode extends AbstractNode {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+
         final PodcastEntryNode other = (PodcastEntryNode) obj;
         return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);
     }

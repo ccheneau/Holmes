@@ -77,12 +77,9 @@ public class MediaIndexElement implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
         final MediaIndexElement other = (MediaIndexElement) obj;
         return Objects.equal(this.parentId, other.parentId) && Objects.equal(this.mediaType, other.mediaType) && Objects.equal(this.name, other.name) && Objects.equal(this.path, other.path) && Objects.equal(this.localPath, other.localPath);
     }

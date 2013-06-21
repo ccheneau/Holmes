@@ -68,17 +68,15 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         try {
             // Get content node
             ContentNode node = getContentNode(request.getUri());
-            if (node == null) {
+            if (node == null)
                 throw new HttpRequestException(request.getUri(), HttpResponseStatus.NOT_FOUND);
-            }
 
             // Check node
             File file = new File(node.getPath());
-            if (!file.exists() || !file.isFile()) {
+            if (!file.exists() || !file.isFile())
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
-            } else if (!file.canRead() || file.isHidden()) {
+            else if (!file.canRead() || file.isHidden())
                 throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
-            }
 
             // Get start offset
             long startOffset = 0;
@@ -149,14 +147,13 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
 
         String contentId = decoder.parameters().get("id").get(0);
-        if (logger.isDebugEnabled()) logger.debug("file Id :{}", contentId);
+        if (logger.isDebugEnabled()) logger.debug("content Id :{}", contentId);
 
         if (contentId != null) {
             AbstractNode node = mediaManager.getNode(contentId);
             if (logger.isDebugEnabled()) logger.debug("node :{}", node);
-            if (node instanceof ContentNode) {
+            if (node instanceof ContentNode)
                 contentNode = (ContentNode) node;
-            }
         }
         return contentNode;
     }

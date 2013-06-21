@@ -101,12 +101,9 @@ public final class Settings {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
         final Settings other = (Settings) obj;
         return Objects.equal(this.serverName, other.serverName) && Objects.equal(this.httpServerPort, other.httpServerPort) && Objects.equal(this.prependPodcastItem, other.prependPodcastItem) && Objects.equal(this.enableExternalSubtitles, other.enableExternalSubtitles) && Objects.equal(this.hideEmptyRootNodes, other.hideEmptyRootNodes);
     }

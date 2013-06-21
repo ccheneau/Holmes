@@ -171,9 +171,7 @@ public final class MediaManagerImpl implements MediaManager {
                                 childNodes = getFolderChildNodes(parentNode.getId(), node, mediaType);
                             }
                         }
-                    } else {
-                        logger.error("{} node not found in index", parentNode.getId());
-                    }
+                    } else logger.error("{} node not found in index", parentNode.getId());
                 }
                 break;
         }
@@ -190,11 +188,9 @@ public final class MediaManagerImpl implements MediaManager {
     private void scanNode(final AbstractNode parentNode) {
         if (parentNode instanceof FolderNode) {
             List<AbstractNode> childNodes = getChildNodes(parentNode);
-            if (childNodes != null) {
-                for (AbstractNode childNode : childNodes) {
+            if (childNodes != null)
+                for (AbstractNode childNode : childNodes)
                     scanNode(childNode);
-                }
-            }
         }
     }
 
@@ -206,9 +202,8 @@ public final class MediaManagerImpl implements MediaManager {
      * @param rootNode   the root node
      */
     private void addRootNode(List<AbstractNode> childNodes, final boolean hideEmpty, final RootNode rootNode) {
-        if (!hideEmpty || !configuration.getFolders(rootNode).isEmpty()) {
+        if (!hideEmpty || !configuration.getFolders(rootNode).isEmpty())
             childNodes.add(new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString(rootNode.getBundleKey())));
-        }
     }
 
     /**
@@ -261,10 +256,10 @@ public final class MediaManagerImpl implements MediaManager {
                 if (file.canRead() && !file.isHidden()) {
                     // Add node to mediaIndex
                     String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
-                    if (file.isDirectory()) {
+                    if (file.isDirectory())
                         // Add folder node
                         nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
-                    } else {
+                    else {
                         // Add file node
                         MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
                         nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeType));
@@ -293,11 +288,10 @@ public final class MediaManagerImpl implements MediaManager {
                     List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                     try (XmlReader reader = new XmlReader(new URL(url))) {
                         // Get RSS feed entries
-
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
                         if (rssEntries != null && !rssEntries.isEmpty()) {
                             MimeType mimeType;
-                            for (SyndEntry rssEntry : rssEntries) {
+                            for (SyndEntry rssEntry : rssEntries)
                                 // Add podcast entry node for each feed entry
                                 if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
                                     String duration = null;
@@ -317,13 +311,11 @@ public final class MediaManagerImpl implements MediaManager {
                                             podcastEntryNode.setIconUrl(iconUrl);
                                             if (rssEntry.getPublishedDate() != null)
                                                 podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
-
                                             // Add podcast entry node
                                             podcastEntryNodes.add(podcastEntryNode);
                                         }
                                     }
                                 }
-                            }
                         }
                     }
                     return podcastEntryNodes;
@@ -345,19 +337,14 @@ public final class MediaManagerImpl implements MediaManager {
      * @return built node
      */
     private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
-        AbstractNode node = null;
-
         // Check mime type
-        if (mimeType != null) {
-            MediaType mimeMediaType = MediaType.getByValue(mimeType.getType());
-            if (mimeMediaType.equals(mediaType)) {
-                String resolution = getContentResolution(file.getAbsolutePath(), mimeType);
-                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, resolution);
-            } else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
-                node = new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
+        if (mimeType != null)
+            if (MediaType.getByValue(mimeType.getType()).equals(mediaType))
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
+            else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
 
-        }
-        return node;
+        return null;
     }
 
     /**

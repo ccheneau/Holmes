@@ -71,18 +71,15 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
             FullHttpRequest request = requests.get(i);
             if (logger.isDebugEnabled()) {
                 logger.debug("[START] messageReceived url:{}", request.getUri());
-                for (Entry<String, String> entry : request.headers()) {
+                for (Entry<String, String> entry : request.headers())
                     logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
-                }
 
                 if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
                     QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(Charset.forName("utf-8")));
                     Map<String, List<String>> params = queryStringDecoder.parameters();
-                    if (params != null) {
-                        for (Entry<String, List<String>> entry : params.entrySet()) {
+                    if (params != null)
+                        for (Entry<String, List<String>> entry : params.entrySet())
                             logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
-                        }
-                    }
                 }
             }
 
@@ -113,6 +110,7 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
         }
         if (logger.isDebugEnabled())
             logger.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
+
         if (ctx.channel().isActive()) sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
     }
 

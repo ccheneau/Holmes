@@ -135,12 +135,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
         final AbstractNode other = (AbstractNode) obj;
         return Objects.equal(this.id, other.id) && Objects.equal(this.parentId, other.parentId) && Objects.equal(this.name, other.name) && Objects.equal(this.type, other.type) && Objects.equal(this.modifiedDate, other.modifiedDate) && Objects.equal(this.iconUrl, other.iconUrl);
     }

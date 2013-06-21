@@ -93,15 +93,10 @@ public final class ContentNode extends AbstractNode {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+
         final ContentNode other = (ContentNode) obj;
         return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.size, other.size) && Objects.equal(this.path, other.path) && Objects.equal(this.resolution, other.resolution);
     }

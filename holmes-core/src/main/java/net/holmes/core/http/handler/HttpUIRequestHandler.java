@@ -82,15 +82,13 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();
-        if ("/".equals(fileName)) {
+        if ("/".equals(fileName))
             fileName = "/index.html";
-        }
 
         if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);
 
-        if (Strings.isNullOrEmpty(fileName)) {
+        if (Strings.isNullOrEmpty(fileName))
             throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
-        }
 
         try {
             // Get file
@@ -108,12 +106,12 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             HttpHeaders.setContentLength(response, raf.length());
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
-            if (mimeType != null) {
+            if (mimeType != null)
                 response.headers().add(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
-            }
-            if (HttpHeaders.isKeepAlive(request)) {
+
+            if (HttpHeaders.isKeepAlive(request))
                 response.headers().add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-            }
+
             // Write the response header.
             channel.write(response);
 

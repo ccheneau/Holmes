@@ -218,9 +218,9 @@ public final class XmlConfigurationImpl implements Configuration {
                 }
             }
             // Remove obsolete parameters
-            for (String obsoleteParam : obsoleteParams) {
+            for (String obsoleteParam : obsoleteParams)
                 this.parameters.remove(obsoleteParam);
-            }
+
             return configChanged;
         }
 
