@@ -55,9 +55,7 @@ public final class UpnpServer implements Service {
             logger.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
             logger.info("UPnP server started");
-        } else {
-            logger.info("UPnP server is disabled");
-        }
+        } else logger.info("UPnP server is disabled");
     }
 
     @Override

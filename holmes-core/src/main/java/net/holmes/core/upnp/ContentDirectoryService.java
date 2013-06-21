@@ -68,9 +68,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 NetworkInterface networkInterface = interfaces.nextElement();
                 for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
                     InetAddress inetAddress = inetAddresses.nextElement();
-                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
                         return inetAddress.getHostAddress();
-                    }
                 }
             }
             return InetAddress.getLocalHost().getHostAddress();
@@ -84,14 +83,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                final SortCriterion[] orderBy) throws ContentDirectoryException {
         try {
             if (logger.isDebugEnabled()) {
-                logger.debug("browse  " + ((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? "DC " : "MD ") + "objectId=" + objectID + " firstResult=" + firstResult
+                logger.debug("browse  " + (browseFlag == BrowseFlag.DIRECT_CHILDREN ? "DC " : "MD ") + "objectId=" + objectID + " firstResult=" + firstResult
                         + " nbResults=" + maxResults);
                 logger.debug("filter: {}", filter);
-                if (orderBy != null) {
-                    for (SortCriterion sort : orderBy) {
+                if (orderBy != null)
+                    for (SortCriterion sort : orderBy)
                         logger.debug("orderBy: {}", sort.toString());
-                    }
-                }
             }
 
             DirectoryBrowseResult result = new DirectoryBrowseResult((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? firstResult : 0,
@@ -106,11 +103,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (browseFlag == BrowseFlag.DIRECT_CHILDREN) {
                 // Add child nodes
                 List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
-                if (childNodes != null) {
-                    for (AbstractNode childNode : childNodes) {
+                if (childNodes != null)
+                    for (AbstractNode childNode : childNodes)
                         addNode(objectID, childNode, result, childNodes.size());
-                    }
-                }
             } else if (browseFlag == BrowseFlag.METADATA) {
                 // Get node metadata
                 addNode(browseNode.getParentId(), browseNode, result, 0);
@@ -146,7 +141,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (node instanceof ContentNode) {
                 // Build content url
                 String url = "http://" + LOCAL_ADDRESS + ":" + configuration.getHttpServerPort() + "/content?id=" + node.getId();
-
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
@@ -181,8 +175,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
-        } else {
-            return title;
-        }
+        } else return title;
     }
 }

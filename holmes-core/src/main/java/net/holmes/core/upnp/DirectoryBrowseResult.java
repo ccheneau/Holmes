@@ -195,6 +195,7 @@ final class DirectoryBrowseResult {
     private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws URISyntaxException {
         if (node.getModifiedDate() != null)
             didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
-        if (node.getIconUrl() != null) didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+        if (node.getIconUrl() != null)
+            didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
     }
 }
