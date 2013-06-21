@@ -68,9 +68,8 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
         this.setAuthor(info.getAuthor());
         this.setBlock(info.getBlock());
 
-        if (info.getDuration() != null) {
+        if (info.getDuration() != null)
             this.setDuration(new Duration(info.getDuration().getMilliseconds()));
-        }
 
         this.setExplicit(info.getExplicit());
 

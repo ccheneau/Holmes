@@ -58,9 +58,7 @@ public class Time implements Serializable {
             count--;
         }
 
-        if (count >= 0) {
-            milliseconds += Long.parseLong(values[count]) * HOUR;
-        }
+        if (count >= 0) milliseconds += Long.parseLong(values[count]) * HOUR;
     }
 
     public long getValue() {

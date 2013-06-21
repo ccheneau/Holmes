@@ -39,9 +39,7 @@ public class UrlReference implements Reference, Serializable {
      * @param url URL to the media source
      */
     public UrlReference(final URI url) {
-        if (url == null) {
-            throw new NullPointerException("url cannot be null.");
-        }
+        if (url == null) throw new NullPointerException("url cannot be null.");
         this.url = url;
     }
 

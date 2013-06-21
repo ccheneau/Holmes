@@ -79,9 +79,7 @@ public class Credit implements Serializable {
      * @param name   persons name
      */
     public Credit(final String scheme, final String role, final String name) {
-        if (name == null) {
-            throw new NullPointerException("A credit name cannot be null.");
-        }
+        if (name == null) throw new NullPointerException("A credit name cannot be null.");
 
         this.scheme = (scheme == null) ? SCHEME_EBU : scheme;
         this.role = (role == null) ? null : role.toLowerCase();

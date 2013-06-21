@@ -77,13 +77,10 @@ public class ITunesParser implements ModuleParser {
             Element owner = element.getChild("owner", ns);
             if (owner != null) {
                 Element name = owner.getChild("name", ns);
-                if (name != null) {
-                    feedInfo.setOwnerName(name.getValue().trim());
-                }
+                if (name != null) feedInfo.setOwnerName(name.getValue().trim());
+
                 Element email = owner.getChild("email", ns);
-                if (email != null) {
-                    feedInfo.setOwnerEmailAddress(email.getValue().trim());
-                }
+                if (email != null) feedInfo.setOwnerEmailAddress(email.getValue().trim());
             }
 
             Element image = element.getChild("image", ns);
@@ -108,7 +105,6 @@ public class ITunesParser implements ModuleParser {
                         subcategory1.setName(subcategory.getAttribute("text").getValue().trim());
                         cat.setSubcategory(subcategory1);
                     }
-
                     feedInfo.getCategories().add(cat);
                 }
             }
@@ -117,51 +113,38 @@ public class ITunesParser implements ModuleParser {
             EntryInformationImpl entryInfo = new EntryInformationImpl();
             module = entryInfo;
 
-            //Now I am going to get the item specific tags
-
             Element duration = element.getChild("duration", ns);
-            if (duration != null && duration.getValue() != null) {
+            if (duration != null && duration.getValue() != null)
                 entryInfo.setDuration(new Duration(duration.getValue().trim()));
-            }
         }
         if (module != null) {
             //All these are common to both Channel and Item
             Element author = element.getChild("author", ns);
-            if (author != null && author.getText() != null) {
-                module.setAuthor(author.getText());
-            }
+            if (author != null && author.getText() != null) module.setAuthor(author.getText());
 
             Element block = element.getChild("block", ns);
-            if (block != null) {
-                module.setBlock(true);
-            }
+            if (block != null) module.setBlock(true);
 
             Element explicit = element.getChild("explicit", ns);
-            if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes")) {
+            if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes"))
                 module.setExplicit(true);
-            }
 
             Element keywords = element.getChild("keywords", ns);
             if (keywords != null) {
                 StringTokenizer tok = new StringTokenizer(getXmlInnerText(keywords).trim(), ",");
                 String[] keywordsArray = new String[tok.countTokens()];
 
-                for (int i = 0; tok.hasMoreTokens(); i++) {
+                for (int i = 0; tok.hasMoreTokens(); i++)
                     keywordsArray[i] = tok.nextToken();
-                }
 
                 module.setKeywords(keywordsArray);
             }
 
             Element subtitle = element.getChild("subtitle", ns);
-            if (subtitle != null) {
-                module.setSubtitle(subtitle.getTextTrim());
-            }
+            if (subtitle != null) module.setSubtitle(subtitle.getTextTrim());
 
             Element summary = element.getChild("summary", ns);
-            if (summary != null) {
-                module.setSummary(summary.getTextTrim());
-            }
+            if (summary != null) module.setSummary(summary.getTextTrim());
         }
 
         return module;
@@ -174,11 +157,7 @@ public class ITunesParser implements ModuleParser {
      * @return the xml inner text
      */
     private String getXmlInnerText(final Element element) {
-        StringBuilder sb = new StringBuilder();
-        XMLOutputter xo = new XMLOutputter();
         List<?> children = element.getContent();
-        sb.append(xo.outputString(children));
-
-        return sb.toString();
+        return new XMLOutputter().outputString(children);
     }
 }

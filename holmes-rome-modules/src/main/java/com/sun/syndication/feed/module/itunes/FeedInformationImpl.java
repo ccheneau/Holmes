@@ -147,15 +147,13 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
         this.setExplicit(info.getExplicit());
 
         try {
-            if (info.getImage() != null) {
+            if (info.getImage() != null)
                 this.setImage(new URL(info.getImage().toExternalForm()));
-            }
         } catch (MalformedURLException e) {
             LOGGER.debug("Error copying URL:{]", info.getImage());
         }
 
         this.setKeywords(info.getKeywords().clone());
-
         this.setOwnerEmailAddress(info.getOwnerEmailAddress());
         this.setOwnerName(info.getOwnerName());
         this.setSubtitle(info.getSubtitle());
@@ -173,7 +171,6 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
         super.clone();
         FeedInformationImpl info = new FeedInformationImpl();
         info.copyFrom(this);
-
         return info;
     }
 }

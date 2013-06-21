@@ -63,7 +63,6 @@ public class RSS20YahooParser extends RSS20Parser {
     public boolean isMyType(final Document document) {
         Element rssRoot = document.getRootElement();
         Namespace defaultNS = rssRoot.getNamespace();
-
         return defaultNS != null && defaultNS.equals(getRSSNamespace());
     }
 
@@ -89,7 +88,6 @@ public class RSS20YahooParser extends RSS20Parser {
     protected WireFeed parseChannel(final Element rssRoot) {
         WireFeed wFeed = super.parseChannel(rssRoot);
         wFeed.setFeedType("rss_2.0");
-
         return wFeed;
     }
 }

@@ -50,7 +50,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * @param mediaContents MediaContent items for the entry
      */
     public void setMediaContents(final MediaContent[] mediaContents) {
-        this.mediaContents = (mediaContents == null) ? new MediaContent[0] : mediaContents;
+        this.mediaContents = mediaContents == null ? new MediaContent[0] : mediaContents;
     }
 
     /**
@@ -69,7 +69,7 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
      * @param mediaGroups MediaGroups for the entry
      */
     public void setMediaGroups(final MediaGroup[] mediaGroups) {
-        this.mediaGroups = (mediaGroups == null) ? new MediaGroup[0] : mediaGroups;
+        this.mediaGroups = mediaGroups == null ? new MediaGroup[0] : mediaGroups;
     }
 
     /**

@@ -49,9 +49,7 @@ public class PlayerReference implements Reference, Serializable {
      * @param height height of the player
      */
     public PlayerReference(final URI url, final Integer width, final Integer height) {
-        if (url == null) {
-            throw new NullPointerException("url cannot be null.");
-        }
+        if (url == null) throw new NullPointerException("url cannot be null.");
 
         this.url = url;
         this.height = height;

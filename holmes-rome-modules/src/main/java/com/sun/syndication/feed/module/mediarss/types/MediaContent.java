@@ -110,13 +110,12 @@ public final class MediaContent implements Serializable, Cloneable {
      * @param reference UrlReference or Player reference for the item.
      */
     public MediaContent(final Reference reference) {
-        if (reference == null) {
+        if (reference == null)
             throw new NullPointerException("You must provide either a PlayerReference or URL reference.");
-        }
+
         this.reference = reference;
-        if (reference instanceof PlayerReference) {
+        if (reference instanceof PlayerReference)
             this.setPlayer((PlayerReference) reference);
-        }
     }
 
     /**
@@ -414,7 +413,6 @@ public final class MediaContent implements Serializable, Cloneable {
         c.setSamplingrate(getSamplingrate());
         c.setType(getType());
         c.setWidth(getWidth());
-
         return c;
     }
 

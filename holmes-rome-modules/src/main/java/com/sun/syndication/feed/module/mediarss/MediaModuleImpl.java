@@ -102,7 +102,6 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         MediaModuleImpl m = new MediaModuleImpl();
         m.setMetadata((Metadata) metadata.clone());
         m.setPlayer(player);
-
         return m;
     }
 

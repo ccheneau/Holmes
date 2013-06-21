@@ -91,9 +91,8 @@ public final class MediaGroup implements Cloneable, Serializable {
      * @param defaultContentIndex Default content index MediaContent.
      */
     public void setDefaultContentIndex(final Integer defaultContentIndex) {
-        for (int i = 0; i < getContents().length; i++) {
+        for (int i = 0; i < getContents().length; i++)
             getContents()[i].setDefaultContent(i == defaultContentIndex);
-        }
 
         this.defaultContentIndex = defaultContentIndex;
     }

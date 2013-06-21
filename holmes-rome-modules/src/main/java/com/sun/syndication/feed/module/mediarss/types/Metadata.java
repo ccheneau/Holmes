@@ -205,7 +205,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param credits credits for the item.
      */
     public void setCredits(final Credit[] credits) {
-        this.credits = (credits == null) ? new Credit[0] : credits;
+        this.credits = credits == null ? new Credit[0] : credits;
     }
 
     /**
@@ -339,7 +339,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param keywords Array of keywords
      */
     public void setKeywords(final String[] keywords) {
-        this.keywords = (keywords == null) ? new String[0] : keywords;
+        this.keywords = keywords == null ? new String[0] : keywords;
     }
 
     /**
@@ -374,7 +374,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param ratings Ratings objects
      */
     public void setRatings(final Rating[] ratings) {
-        this.ratings = (ratings == null) ? new Rating[0] : ratings;
+        this.ratings = ratings == null ? new Rating[0] : ratings;
     }
 
     /**
@@ -417,7 +417,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param restrictions restrictions for the item.
      */
     public void setRestrictions(final Restriction[] restrictions) {
-        this.restrictions = (restrictions == null) ? new Restriction[0] : restrictions;
+        this.restrictions = restrictions == null ? new Restriction[0] : restrictions;
     }
 
     /**
@@ -462,7 +462,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param text text objects for the item.
      */
     public void setText(final Text[] text) {
-        this.text = (text == null) ? new Text[0] : text;
+        this.text = text == null ? new Text[0] : text;
     }
 
     /**
@@ -509,7 +509,7 @@ public class Metadata implements Cloneable, Serializable {
      * @param thumbnail thumbnails for the image
      */
     public void setThumbnail(final Thumbnail[] thumbnail) {
-        this.thumbnail = (thumbnail == null) ? new Thumbnail[0] : thumbnail;
+        this.thumbnail = thumbnail == null ? new Thumbnail[0] : thumbnail;
     }
 
     /**

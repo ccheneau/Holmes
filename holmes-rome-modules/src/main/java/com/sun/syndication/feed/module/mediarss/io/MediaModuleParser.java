@@ -60,11 +60,10 @@ public class MediaModuleParser implements ModuleParser {
     public Module parse(final Element mmRoot) {
         MediaModuleImpl mod;
 
-        if (mmRoot.getName().equals("channel") || mmRoot.getName().equals("feed")) {
+        if (mmRoot.getName().equals("channel") || mmRoot.getName().equals("feed"))
             mod = new MediaModuleImpl();
-        } else {
+        else
             mod = new MediaEntryModuleImpl();
-        }
 
         mod.setMetadata(parseMetadata(mmRoot));
         mod.setPlayer(parsePlayer(mmRoot));
@@ -92,16 +91,16 @@ public class MediaModuleParser implements ModuleParser {
             Element content = (Element) contents.get(i);
             MediaContent mc = null;
 
-            if (content.getAttributeValue("url") != null) {
+            if (content.getAttributeValue("url") != null)
                 try {
                     mc = new MediaContent(new UrlReference(new URI(content.getAttributeValue("url"))));
                     mc.setPlayer(parsePlayer(content));
                 } catch (Exception ex) {
                     LOGGER.warn("Exception parsing content tag.", ex);
                 }
-            } else {
+            else
                 mc = new MediaContent(parsePlayer(content));
-            }
+
             if (mc != null) {
                 values.add(mc);
                 try {
@@ -123,13 +122,12 @@ public class MediaModuleParser implements ModuleParser {
                 String expression = content.getAttributeValue("expression");
 
                 if (expression != null) {
-                    if (expression.equalsIgnoreCase("full")) {
+                    if (expression.equalsIgnoreCase("full"))
                         mc.setExpression(Expression.FULL);
-                    } else if (expression.equalsIgnoreCase("sample")) {
+                    else if (expression.equalsIgnoreCase("sample"))
                         mc.setExpression(Expression.SAMPLE);
-                    } else if (expression.equalsIgnoreCase("nonstop")) {
+                    else if (expression.equalsIgnoreCase("nonstop"))
                         mc.setExpression(Expression.NONSTOP);
-                    }
                 }
 
                 mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
@@ -144,9 +142,8 @@ public class MediaModuleParser implements ModuleParser {
                 mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
 
                 mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.valueOf(content.getAttributeValue("isDefault")));
-            } else {
+            } else
                 LOGGER.warn("Could not find MediaContent.");
-            }
 
         }
         return values.toArray(new MediaContent[values.size()]);
@@ -166,12 +163,11 @@ public class MediaModuleParser implements ModuleParser {
             Element group = (Element) groups.get(i);
             MediaGroup g = new MediaGroup(parseContent(group));
 
-            for (int j = 0; j < g.getContents().length; j++) {
+            for (int j = 0; j < g.getContents().length; j++)
                 if (g.getContents()[j].isDefaultContent()) {
                     g.setDefaultContentIndex(j);
                     break;
                 }
-            }
 
             g.setMetadata(parseMetadata(group));
             values.add(g);
@@ -192,14 +188,13 @@ public class MediaModuleParser implements ModuleParser {
         List<?> categories = e.getChildren("category", NS);
         List<Category> catValues = new ArrayList<>();
 
-        for (int i = 0; categories != null && i < categories.size(); i++) {
+        for (int i = 0; categories != null && i < categories.size(); i++)
             try {
                 Element cat = (Element) categories.get(i);
                 catValues.add(new Category(cat.getAttributeValue("scheme"), cat.getAttributeValue("label"), cat.getText()));
             } catch (Exception ex) {
                 LOGGER.warn("Exception parsing category tag.", ex);
             }
-        }
         md.setCategories(catValues.toArray(new Category[catValues.size()]));
 
         // copyright
@@ -238,9 +233,8 @@ public class MediaModuleParser implements ModuleParser {
         if (keywords != null) {
             StringTokenizer tok = new StringTokenizer(keywords.getText(), ",");
             String[] value = new String[tok.countTokens()];
-            for (int i = 0; tok.hasMoreTokens(); i++) {
+            for (int i = 0; tok.hasMoreTokens(); i++)
                 value[i] = tok.nextToken().trim();
-            }
             md.setKeywords(value);
         }
 
@@ -271,9 +265,9 @@ public class MediaModuleParser implements ModuleParser {
         for (int i = 0; thumbnails != null && i < thumbnails.size(); i++) {
             try {
                 Element thumb = (Element) thumbnails.get(i);
-                if (thumb.getValue().startsWith("http")) {
+                if (thumb.getValue().startsWith("http"))
                     tbnValues.add(new Thumbnail(new URI(thumb.getValue()), null, null, null));
-                } else {
+                else {
                     Time t = (thumb.getAttributeValue("time") == null) ? null : new Time(thumb.getAttributeValue("time"));
                     Integer width = (thumb.getAttributeValue("width") == null) ? null : Integer.valueOf(thumb.getAttributeValue("width"));
                     Integer height = (thumb.getAttributeValue("height") == null) ? null : Integer.valueOf(thumb.getAttributeValue("height"));
@@ -299,18 +293,17 @@ public class MediaModuleParser implements ModuleParser {
             Element r = (Element) restriction;
             Restriction.Type type = null;
 
-            if (r.getAttributeValue("type").equalsIgnoreCase("uri")) {
+            if (r.getAttributeValue("type").equalsIgnoreCase("uri"))
                 type = Restriction.Type.URI;
-            } else if (r.getAttributeValue("type").equalsIgnoreCase("country")) {
+            else if (r.getAttributeValue("type").equalsIgnoreCase("country"))
                 type = Restriction.Type.COUNTRY;
-            }
 
             Restriction.Relationship relationship = null;
-            if (r.getAttributeValue("relationship").equalsIgnoreCase("allow")) {
+            if (r.getAttributeValue("relationship").equalsIgnoreCase("allow"))
                 relationship = Restriction.Relationship.ALLOW;
-            } else if (r.getAttributeValue("relationship").equalsIgnoreCase("deny")) {
+            else if (r.getAttributeValue("relationship").equalsIgnoreCase("deny"))
                 relationship = Restriction.Relationship.DENY;
-            }
+
             rstValues.add(new Restriction(relationship, type, r.getTextTrim()));
         }
         md.setRestrictions(rstValues.toArray(new Restriction[rstValues.size()]));

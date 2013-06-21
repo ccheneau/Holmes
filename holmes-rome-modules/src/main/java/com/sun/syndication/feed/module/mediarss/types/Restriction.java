@@ -73,13 +73,11 @@ public class Restriction implements Serializable {
      * @param value        a value for the restriction.
      */
     public Restriction(final Relationship relationship, final Type type, final String value) {
-        if (value == null || relationship == null) {
+        if (value == null || relationship == null)
             throw new NullPointerException("Value and Relationship cannot be null.");
-        }
 
-        if (type == null && !(value.equals("all") || value.equals("none"))) {
+        if (type == null && !(value.equals("all") || value.equals("none")))
             throw new NullPointerException("Type is required if the value is other than 'all' or 'none'.");
-        }
 
         this.relationship = relationship;
         this.type = type;
