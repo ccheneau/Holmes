@@ -24,6 +24,8 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
+import net.holmes.core.backend.BackendManager;
+import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
@@ -54,6 +56,7 @@ public class TestModule extends AbstractModule {
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
 
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
+        bind(BackendManager.class).to(BackendManagerImpl.class);
 
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);

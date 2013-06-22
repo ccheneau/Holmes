@@ -116,19 +116,4 @@ public class TestConfiguration implements Configuration {
     @Override
     public void setParameter(Parameter param, Boolean value) {
     }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("TestConfiguration [videoFolders=");
-        builder.append(videoFolders);
-        builder.append(", pictureFolders=");
-        builder.append(pictureFolders);
-        builder.append(", audioFolders=");
-        builder.append(audioFolders);
-        builder.append(", podcasts=");
-        builder.append(podcasts);
-        builder.append("]");
-        return builder.toString();
-    }
 }
