@@ -16,6 +16,7 @@
  */
 package net.holmes.core.common.mimetype;
 
+import net.holmes.core.common.MediaType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,15 +42,9 @@ public class MimeTypeTest {
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNotNull(mimeType);
-            assertEquals("video", mimeType.getType());
+            assertEquals(MediaType.TYPE_VIDEO, mimeType.getType());
             assertEquals("x-msvideo", mimeType.getSubType());
             assertEquals("video/x-msvideo", mimeType.getMimeType());
-            assertTrue(mimeType.isVideo());
-            assertTrue(mimeType.isMedia());
-            assertFalse(mimeType.isSubtitle());
-            assertFalse(mimeType.isAudio());
-            assertFalse(mimeType.isImage());
-            assertFalse(mimeType.equals(null));
         } catch (Exception e) {
             fail(e.getMessage());
         }

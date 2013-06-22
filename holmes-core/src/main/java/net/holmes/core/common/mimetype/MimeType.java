@@ -27,11 +27,10 @@ import net.holmes.core.common.MediaType;
  */
 public final class MimeType {
 
-    private final String type;
+    public static final String SUBTITLE_SUBTYPE = "x-subrip";
+    private final MediaType type;
     private final String subType;
     private final String mimeType;
-
-    private static final String SUBTITLE_TYPE = "x-subrip";
 
     /**
      * Instantiates a new mime type.
@@ -41,7 +40,7 @@ public final class MimeType {
     public MimeType(final String mimeType) {
         this.mimeType = mimeType;
         Iterable<String> iterable = Splitter.on('/').split(mimeType);
-        this.type = Iterables.getFirst(iterable, "");
+        this.type = MediaType.getByValue(Iterables.getFirst(iterable, ""));
         this.subType = Iterables.getLast(iterable, "");
     }
 
@@ -59,7 +58,7 @@ public final class MimeType {
      *
      * @return the type
      */
-    public String getType() {
+    public MediaType getType() {
         return this.type;
     }
 
@@ -70,51 +69,6 @@ public final class MimeType {
      */
     public String getSubType() {
         return this.subType;
-    }
-
-    /**
-     * Checks if mime type is media.
-     *
-     * @return true, if mime type is media
-     */
-    public boolean isMedia() {
-        return isAudio() || isVideo() || isImage();
-    }
-
-    /**
-     * Checks if mime type is audio.
-     *
-     * @return true, if mime type is audio
-     */
-    public boolean isAudio() {
-        return MediaType.TYPE_AUDIO.getValue().equals(type);
-    }
-
-    /**
-     * Checks if mime type is video.
-     *
-     * @return true, if mime type is video
-     */
-    public boolean isVideo() {
-        return MediaType.TYPE_VIDEO.getValue().equals(type);
-    }
-
-    /**
-     * Checks if mime type is image.
-     *
-     * @return true, if mime type is image
-     */
-    public boolean isImage() {
-        return MediaType.TYPE_IMAGE.getValue().equals(type);
-    }
-
-    /**
-     * Checks if mime type is subtitle.
-     *
-     * @return true, if mime type is subtitle
-     */
-    public boolean isSubtitle() {
-        return MediaType.TYPE_APPLICATION.getValue().equals(type) && SUBTITLE_TYPE.equals(subType);
     }
 
     @Override

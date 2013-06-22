@@ -306,7 +306,8 @@ public final class MediaManagerImpl implements MediaManager {
                                     }
                                     for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                                         mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
-                                        if (mimeType != null && mimeType.isMedia()) {
+                                        if (mimeType != null &&
+                                                (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
                                             PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), duration);
                                             podcastEntryNode.setIconUrl(iconUrl);
                                             if (rssEntry.getPublishedDate() != null)
@@ -339,9 +340,9 @@ public final class MediaManagerImpl implements MediaManager {
     private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         // Check mime type
         if (mimeType != null)
-            if (MediaType.getByValue(mimeType.getType()).equals(mediaType))
+            if (mimeType.getType() == mediaType)
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (mimeType.isSubtitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+            else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
 
         return null;
@@ -355,7 +356,7 @@ public final class MediaManagerImpl implements MediaManager {
      * @return the content resolution
      */
     private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.isImage()) {
+        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE) {
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override

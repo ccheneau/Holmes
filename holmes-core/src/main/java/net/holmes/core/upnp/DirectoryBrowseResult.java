@@ -38,12 +38,11 @@ import java.text.SimpleDateFormat;
  */
 final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-
-    private long itemCount;
-    private long totalCount;
     private final DIDLContent didl;
     private final long firstResult;
     private final long maxResults;
+    private long itemCount;
+    private long totalCount;
 
     /**
      * Instantiates a new directory browse result.
@@ -89,18 +88,26 @@ final class DirectoryBrowseResult {
         if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
 
         Item item = null;
-        if (mimeType.isVideo()) {
-            // Add video item
-            item = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
-        } else if (mimeType.isAudio()) {
-            // Add audio track item
-            item = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, (String) null, res);
-        } else if (mimeType.isImage()) {
-            // Add image item
-            item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
-        } else if (mimeType.isSubtitle()) {
-            // Add subtitle item
-            item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
+        switch (mimeType.getType()) {
+            case TYPE_VIDEO:
+                // Add video item
+                item = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
+                break;
+            case TYPE_AUDIO:
+                // Add audio track item
+                item = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, (String) null, res);
+                break;
+            case TYPE_IMAGE:
+                // Add image item
+                item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
+                break;
+            case TYPE_APPLICATION:
+                // Add subtitle item
+                if (MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()))
+                    item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
+                break;
+            default:
+                break;
         }
         if (item != null) {
             setDidlMetadata(item, contentNode);
@@ -122,15 +129,21 @@ final class DirectoryBrowseResult {
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
 
         Item item = null;
-        if (mimeType.isAudio()) {
-            // Add audio track item
-            item = new MusicTrack(podcastEntryNode.getId(), parentNodeId, entryName, null, null, (String) null, res);
-        } else if (mimeType.isImage()) {
-            // Add image item
-            item = new Photo(podcastEntryNode.getId(), parentNodeId, entryName, null, null, res);
-        } else if (mimeType.isVideo()) {
-            // Add video item
-            item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
+        switch (mimeType.getType()) {
+            case TYPE_AUDIO:
+                // Add audio track item
+                item = new MusicTrack(podcastEntryNode.getId(), parentNodeId, entryName, null, null, (String) null, res);
+                break;
+            case TYPE_IMAGE:
+                // Add image item
+                item = new Photo(podcastEntryNode.getId(), parentNodeId, entryName, null, null, res);
+                break;
+            case TYPE_VIDEO:
+                // Add video item
+                item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
+                break;
+            default:
+                break;
         }
         if (item != null) {
             setDidlMetadata(item, podcastEntryNode);
@@ -182,7 +195,7 @@ final class DirectoryBrowseResult {
      * @return UPnP mime type
      */
     private org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
-        return new org.seamless.util.MimeType(mimeType.getType(), mimeType.getSubType());
+        return new org.seamless.util.MimeType(mimeType.getType().getValue(), mimeType.getSubType());
     }
 
     /**
