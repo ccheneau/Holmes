@@ -87,32 +87,7 @@ final class DirectoryBrowseResult {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
         if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
 
-        Item item = null;
-        switch (mimeType.getType()) {
-            case TYPE_VIDEO:
-                // Add video item
-                item = new Movie(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
-                break;
-            case TYPE_AUDIO:
-                // Add audio track item
-                item = new MusicTrack(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, (String) null, res);
-                break;
-            case TYPE_IMAGE:
-                // Add image item
-                item = new Photo(contentNode.getId(), parentNodeId, contentNode.getName(), null, null, res);
-                break;
-            case TYPE_APPLICATION:
-                // Add subtitle item
-                if (MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()))
-                    item = new TextItem(contentNode.getId(), parentNodeId, contentNode.getName(), null, res);
-                break;
-            default:
-                break;
-        }
-        if (item != null) {
-            setDidlMetadata(item, contentNode);
-            addItem(item);
-        }
+        addDidlItem(parentNodeId, contentNode, contentNode.getName(), mimeType, res);
     }
 
     /**
@@ -128,38 +103,47 @@ final class DirectoryBrowseResult {
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
 
+        addDidlItem(parentNodeId, podcastEntryNode, entryName, mimeType, res);
+    }
+
+    /**
+     * Add item to didl
+     *
+     * @param parentNodeId parent node id
+     * @param node         node to add
+     * @param name         node name
+     * @param mimeType     node mimeType
+     * @param res          didl resource
+     * @throws URISyntaxException
+     */
+    private void addDidlItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) throws URISyntaxException {
         Item item = null;
         switch (mimeType.getType()) {
+            case TYPE_VIDEO:
+                // Add video item
+                item = new Movie(node.getId(), parentNodeId, name, null, res);
+                break;
             case TYPE_AUDIO:
                 // Add audio track item
-                item = new MusicTrack(podcastEntryNode.getId(), parentNodeId, entryName, null, null, (String) null, res);
+                item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
                 break;
             case TYPE_IMAGE:
                 // Add image item
-                item = new Photo(podcastEntryNode.getId(), parentNodeId, entryName, null, null, res);
+                item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
-            case TYPE_VIDEO:
-                // Add video item
-                item = new Movie(podcastEntryNode.getId(), parentNodeId, entryName, null, res);
+            case TYPE_APPLICATION:
+                // Add subtitle item
+                if (MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()))
+                    item = new TextItem(node.getId(), parentNodeId, name, null, res);
                 break;
             default:
                 break;
         }
         if (item != null) {
-            setDidlMetadata(item, podcastEntryNode);
-            addItem(item);
+            setDidlMetadata(item, node);
+            didl.addItem(item);
+            itemCount += 1;
         }
-    }
-
-    /**
-     * Adds item to result.
-     *
-     * @param item item
-     */
-    private void addItem(final Item item) {
-        // Add item to didl
-        didl.addItem(item);
-        itemCount += 1;
     }
 
     /**
