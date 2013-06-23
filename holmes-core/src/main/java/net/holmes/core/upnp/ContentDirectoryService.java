@@ -86,9 +86,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 logger.debug("browse  " + (browseFlag == BrowseFlag.DIRECT_CHILDREN ? "DC " : "MD ") + "objectId=" + objectID + " firstResult=" + firstResult
                         + " nbResults=" + maxResults);
                 logger.debug("filter: {}", filter);
-                if (orderBy != null)
-                    for (SortCriterion sort : orderBy)
-                        logger.debug("orderBy: {}", sort.toString());
             }
 
             DirectoryBrowseResult result = new DirectoryBrowseResult((browseFlag == BrowseFlag.DIRECT_CHILDREN) ? firstResult : 0,
