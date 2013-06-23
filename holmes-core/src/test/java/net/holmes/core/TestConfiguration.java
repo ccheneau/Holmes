@@ -105,7 +105,7 @@ public class TestConfiguration implements Configuration {
 
     @Override
     public Boolean getParameter(Parameter param) {
-        return Boolean.FALSE;
+        return Boolean.TRUE;
     }
 
     @Override
