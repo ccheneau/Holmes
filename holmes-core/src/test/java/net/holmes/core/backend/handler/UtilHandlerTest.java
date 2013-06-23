@@ -47,4 +47,12 @@ public class UtilHandlerTest {
         Collection<UtilHandler.Folder> folders = utilHandler.getChildFolders(null);
         assertNotNull(folders);
     }
+
+    @Test
+    public void testFolder() {
+        UtilHandler.Folder folder = new UtilHandler.Folder("data", "path");
+        assertEquals(folder.getData(), "data");
+        assertEquals(folder.getState(), "closed");
+        assertNotNull(folder.getMetadata());
+    }
 }
