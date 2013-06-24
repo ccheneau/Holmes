@@ -108,13 +108,13 @@ public final class MediaManagerImpl implements MediaManager {
             MediaIndexElement indexElement = mediaIndexManager.get(nodeId);
             if (indexElement != null) {
                 MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
-                if (mediaType == MediaType.TYPE_PODCAST) {
+                if (mediaType == MediaType.TYPE_PODCAST)
                     // Pod-cast node
                     node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
-                } else {
+                else {
                     // File or folder node
                     File nodeFile = new File(indexElement.getPath());
-                    if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden()) {
+                    if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden())
                         if (nodeFile.isFile()) {
                             // Content node
                             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
@@ -124,7 +124,6 @@ public final class MediaManagerImpl implements MediaManager {
                             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
                             node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
                         }
-                    }
                 }
             } else if (logger.isWarnEnabled()) logger.warn("{} not found in media index", nodeId);
         }
@@ -167,9 +166,8 @@ public final class MediaManagerImpl implements MediaManager {
                         } else {
                             // Get folder child nodes
                             File node = new File(indexElement.getPath());
-                            if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden()) {
+                            if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden())
                                 childNodes = getFolderChildNodes(parentNode.getId(), node, mediaType);
-                            }
                         }
                     } else logger.error("{} node not found in index", parentNode.getId());
                 }
@@ -216,7 +214,7 @@ public final class MediaManagerImpl implements MediaManager {
         List<AbstractNode> nodes = Lists.newArrayList();
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         if (configNodes != null && !configNodes.isEmpty()) {
-            if (rootNode == PODCAST) {
+            if (rootNode == PODCAST)
                 // Add podcast nodes
                 for (ConfigurationNode configNode : configNodes) {
                     // Add node to mediaIndex
@@ -224,7 +222,7 @@ public final class MediaManagerImpl implements MediaManager {
                     // Add child node
                     nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
                 }
-            } else {
+            else
                 // Add folder nodes
                 for (ConfigurationNode configNode : configNodes) {
                     File file = new File(configNode.getPath());
@@ -235,7 +233,6 @@ public final class MediaManagerImpl implements MediaManager {
                         nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                     }
                 }
-            }
         }
         return nodes;
     }
@@ -251,8 +248,8 @@ public final class MediaManagerImpl implements MediaManager {
     private List<AbstractNode> getFolderChildNodes(final String parentId, final File folder, final MediaType mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
         File[] files = folder.listFiles();
-        if (files != null) {
-            for (File file : files) {
+        if (files != null)
+            for (File file : files)
                 if (file.canRead() && !file.isHidden()) {
                     // Add node to mediaIndex
                     String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
@@ -263,8 +260,6 @@ public final class MediaManagerImpl implements MediaManager {
                         // Add file node
                         nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName())));
                 }
-            }
-        }
         return nodes;
     }
 
@@ -293,9 +288,8 @@ public final class MediaManagerImpl implements MediaManager {
                                 String duration = null;
                                 String iconUrl = null;
                                 EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-                                if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                                if (itunesInfo != null && itunesInfo.getDuration() != null)
                                     duration = itunesInfo.getDuration().toString();
-                                }
                                 MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
                                 if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
                                     iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
@@ -332,12 +326,13 @@ public final class MediaManagerImpl implements MediaManager {
      * @return built node
      */
     private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
+        if (mimeType == null) return null;
+
         // Check mime type
-        if (mimeType != null)
-            if (mimeType.getType() == mediaType)
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
+        if (mimeType.getType() == mediaType)
+            return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
+        else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+            return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
 
         return null;
     }
