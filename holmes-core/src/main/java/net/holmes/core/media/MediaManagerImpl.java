@@ -259,11 +259,9 @@ public final class MediaManagerImpl implements MediaManager {
                     if (file.isDirectory())
                         // Add folder node
                         nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
-                    else {
+                    else
                         // Add file node
-                        MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
-                        nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeType));
-                    }
+                        nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName())));
                 }
             }
         }
@@ -289,35 +287,31 @@ public final class MediaManagerImpl implements MediaManager {
                     try (XmlReader reader = new XmlReader(new URL(url))) {
                         // Get RSS feed entries
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
-                        if (rssEntries != null && !rssEntries.isEmpty()) {
-                            MimeType mimeType;
-                            for (SyndEntry rssEntry : rssEntries)
-                                // Add podcast entry node for each feed entry
-                                if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
-                                    String duration = null;
-                                    String iconUrl = null;
-                                    EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-                                    if (itunesInfo != null && itunesInfo.getDuration() != null) {
-                                        duration = itunesInfo.getDuration().toString();
-                                    }
-                                    MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
-                                    if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0) {
-                                        iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
-                                    }
-                                    for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                                        mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
-                                        if (mimeType != null &&
-                                                (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
-                                            PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), duration);
-                                            podcastEntryNode.setIconUrl(iconUrl);
-                                            if (rssEntry.getPublishedDate() != null)
-                                                podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
-                                            // Add podcast entry node
-                                            podcastEntryNodes.add(podcastEntryNode);
-                                        }
+                        if (rssEntries != null && !rssEntries.isEmpty()) for (SyndEntry rssEntry : rssEntries)
+                            // Add podcast entry node for each feed entry
+                            if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
+                                String duration = null;
+                                String iconUrl = null;
+                                EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
+                                if (itunesInfo != null && itunesInfo.getDuration() != null) {
+                                    duration = itunesInfo.getDuration().toString();
+                                }
+                                MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
+                                if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
+                                    iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
+                                for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
+                                    MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
+                                    if (mimeType != null &&
+                                            (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
+                                        PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), duration);
+                                        podcastEntryNode.setIconUrl(iconUrl);
+                                        if (rssEntry.getPublishedDate() != null)
+                                            podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
+                                        // Add podcast entry node
+                                        podcastEntryNodes.add(podcastEntryNode);
                                     }
                                 }
-                        }
+                            }
                     }
                     return podcastEntryNodes;
                 }
@@ -356,7 +350,7 @@ public final class MediaManagerImpl implements MediaManager {
      * @return the content resolution
      */
     private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE) {
+        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override
@@ -376,7 +370,6 @@ public final class MediaManagerImpl implements MediaManager {
             } catch (ExecutionException e) {
                 logger.error(e.getMessage(), e);
             }
-        }
         return null;
     }
 
