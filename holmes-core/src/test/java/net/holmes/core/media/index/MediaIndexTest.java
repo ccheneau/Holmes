@@ -25,8 +25,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class MediaIndexTest {
     @Inject
@@ -42,12 +41,42 @@ public class MediaIndexTest {
      * Check that adding same data returns the same uuid
      */
     @Test
-    public void testAddMediaIndex() {
+    public void testAddToMediaIndex() {
         String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
+        MediaIndexElement indexElement = mediaIndex.get(uuid1);
+        assertNotNull(indexElement);
+        assertEquals(indexElement.getName(), "name");
         String uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
         assertEquals(uuid1, uuid2);
 
         uuid2 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name2", true));
         assertFalse(uuid1.equals(uuid2));
+    }
+
+    @Test
+    public void testRemoveFromMediaIndex() {
+        String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
+        assertNotNull(mediaIndex.get(uuid1));
+        mediaIndex.remove(uuid1);
+        assertNull(mediaIndex.get(uuid1));
+    }
+
+    @Test
+    public void testRemoveChildrenMediaIndex() {
+        String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
+        assertNotNull(mediaIndex.get(uuid1));
+        String uuid2 = mediaIndex.add(new MediaIndexElement(uuid1, "mediaType", "path", "name", true));
+        assertNotNull(mediaIndex.get(uuid2));
+        mediaIndex.removeChildren(uuid1);
+        assertNotNull(mediaIndex.get(uuid1));
+        assertNull(mediaIndex.get(uuid2));
+    }
+
+    @Test
+    public void testCleanMediaIndex() {
+        String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
+        assertNotNull(mediaIndex.get(uuid1));
+        mediaIndex.clean();
+        assertNull(mediaIndex.get(uuid1));
     }
 }
