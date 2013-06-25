@@ -71,7 +71,7 @@ public class VideoFoldersHandlerTest {
     }
 
     @Test
-    public void testRemoveAudioFolder() {
+    public void testRemoveVideoFolder() {
         VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         ConfigurationFolder folder = videoFoldersHandler.removeVideoFolder("videosTest");
         assertNotNull(folder);

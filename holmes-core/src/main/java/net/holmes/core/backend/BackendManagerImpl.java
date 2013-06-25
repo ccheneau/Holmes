@@ -217,7 +217,7 @@ public final class BackendManagerImpl implements BackendManager {
 
         if (podcast) {
             // Check podcast URL is correct
-            if (!folder.getPath().toLowerCase().startsWith("http://"))
+            if (!folder.getPath().toLowerCase().startsWith("http://") && !folder.getPath().toLowerCase().startsWith("file://"))
                 throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.malformed.error"));
         } else {
             // Check folder path is correct

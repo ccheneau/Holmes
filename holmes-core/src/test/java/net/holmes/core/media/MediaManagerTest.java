@@ -20,12 +20,15 @@ package net.holmes.core.media;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.TestModule;
+import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.FolderNode;
 import net.holmes.core.media.model.RootNode;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -53,58 +56,86 @@ public class MediaManagerTest {
     }
 
     @Test
-    public void testGetRootVideoNode() {
+    public void testVideoNodes() {
         AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
 
         List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
-        assertEquals(childNodes.size(), 1);
+        assertEquals(1, childNodes.size());
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
 
-        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
-        assertEquals(nodes.size(), 1);
-        assertEquals(nodes.iterator().next().getName(), "video.avi");
+        assertEquals(4, nodes.size());
+        assertConfigNode(nodes, "video.avi", "video.srt");
     }
 
     @Test
-    public void testGetRootAudioNode() {
+    public void testAudioNodes() {
         AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
 
         List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
-        assertEquals(childNodes.size(), 1);
+        assertEquals(1, childNodes.size());
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
 
-        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
-        assertEquals(nodes.size(), 1);
-        assertEquals(nodes.iterator().next().getName(), "audio.mp3");
+        assertEquals(2, nodes.size());
+        assertConfigNode(nodes, "audio.mp3", "");
     }
 
     @Test
-    public void testGetRootPictureNode() {
+    public void testPictureNodes() {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
         List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
-        assertEquals(childNodes.size(), 1);
+        assertEquals(1, childNodes.size());
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
 
-        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next());
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
-        assertEquals(nodes.size(), 1);
-        assertEquals(nodes.iterator().next().getName(), "image.jpg");
+        assertEquals(2, nodes.size());
+        assertConfigNode(nodes, "image.jpg");
+    }
+
+    private void assertConfigNode(List<AbstractNode> nodes, String... fileNodeNames) {
+        List<String> fileNodeNameList = Arrays.asList(fileNodeNames);
+        for (AbstractNode abstractNode : nodes) {
+            if (abstractNode instanceof FolderNode) {
+                assertEquals("subFolder", abstractNode.getName());
+                AbstractNode node1 = mediaManager.getNode(abstractNode.getId());
+                assertNotNull(node1);
+                assertEquals("subFolder", node1.getName());
+                List<AbstractNode> nodes1 = mediaManager.getChildNodes(node1);
+                assertNotNull(nodes1);
+                assertFalse(nodes1.isEmpty());
+                assertEquals(1, nodes1.size());
+                assertTrue(fileNodeNameList.contains(nodes1.get(0).getName()));
+                AbstractNode node2 = mediaManager.getNode(nodes1.get(0).getId());
+                assertNotNull(node2);
+                assertTrue(fileNodeNameList.contains(node2.getName()));
+            } else if (abstractNode != null) {
+                assertTrue(fileNodeNameList.contains(abstractNode.getName()));
+                AbstractNode node1 = mediaManager.getNode(abstractNode.getId());
+                assertNotNull(node1);
+                assertTrue(fileNodeNameList.contains(node1.getName()));
+            }
+        }
     }
 
     @Test
-    public void testGetRootPodcastNode() {
+    public void testPodcastNodes() {
         AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);
 
@@ -112,5 +143,56 @@ public class MediaManagerTest {
         assertNotNull(childNodes);
         assertFalse(childNodes.isEmpty());
         assertEquals(childNodes.size(), 1);
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
+
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
     }
+
+    @Test
+    public void testScanAll() {
+        try {
+            mediaManager.scanAll();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHandleMediaEventScanAll() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            try {
+                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_ALL, null));
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testHandleMediaEventScanNode() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            try {
+                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_NODE, "audiosTest"));
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testHandleMediaEventUnknown() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            try {
+                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
 }

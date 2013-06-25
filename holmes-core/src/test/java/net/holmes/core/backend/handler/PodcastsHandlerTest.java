@@ -49,7 +49,7 @@ public class PodcastsHandlerTest {
     @Test
     public void testGetPodcast() {
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
-        assertNotNull(podcastsHandler.getPodcast("castcodersTest"));
+        assertNotNull(podcastsHandler.getPodcast("fauxRaccordsTest"));
     }
 
     @Test
@@ -64,17 +64,17 @@ public class PodcastsHandlerTest {
     @Test
     public void testEditPodcast() {
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
-        ConfigurationFolder folder = new ConfigurationFolder("castcodersTest", "editedCastcodersTest", "http://google.fr");
-        ConfigurationFolder newFolder = podcastsHandler.editPodcast("castcodersTest", folder);
+        ConfigurationFolder folder = new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr");
+        ConfigurationFolder newFolder = podcastsHandler.editPodcast("fauxRaccordsTest", folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
     }
 
     @Test
-    public void testRemoveAudioFolder() {
+    public void testRemovePodcast() {
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
-        ConfigurationFolder folder = podcastsHandler.removePodcast("castcodersTest");
+        ConfigurationFolder folder = podcastsHandler.removePodcast("fauxRaccordsTest");
         assertNotNull(folder);
-        assertEquals(folder.getId(), "castcodersTest");
+        assertEquals(folder.getId(), "fauxRaccordsTest");
     }
 }

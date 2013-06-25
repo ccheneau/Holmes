@@ -55,7 +55,7 @@ public class BackendManagerTest {
         assertNotNull(backendManager.getFolder("audiosTest", RootNode.AUDIO));
         assertNotNull(backendManager.getFolder("imagesTest", RootNode.PICTURE));
         assertNotNull(backendManager.getFolder("videosTest", RootNode.VIDEO));
-        assertNotNull(backendManager.getFolder("castcodersTest", RootNode.PODCAST));
+        assertNotNull(backendManager.getFolder("fauxRaccordsTest", RootNode.PODCAST));
 
         // Check get bab folder throws exception
         try {
@@ -188,8 +188,8 @@ public class BackendManagerTest {
     @Test
     public void testEditPodcast() {
         // test nominal edit podcast
-        backendManager.editFolder("castcodersTest", new ConfigurationFolder("castcodersTest", "editedPodcast", "http://google.com"), RootNode.PODCAST);
-        ConfigurationFolder folder = backendManager.getFolder("castcodersTest", RootNode.PODCAST);
+        backendManager.editFolder("fauxRaccordsTest", new ConfigurationFolder("fauxRaccordsTest", "editedPodcast", "http://google.com"), RootNode.PODCAST);
+        ConfigurationFolder folder = backendManager.getFolder("fauxRaccordsTest", RootNode.PODCAST);
         assertEquals(folder.getName(), "editedPodcast");
         assertEquals(folder.getPath(), "http://google.com");
     }
@@ -210,7 +210,7 @@ public class BackendManagerTest {
     public void testEditBadPodcast() {
         // test nominal edit bad podcast
         try {
-            backendManager.editFolder("bad_podcast", new ConfigurationFolder("castcodersTest", "editedPodcast", "http://google.com"), RootNode.PODCAST);
+            backendManager.editFolder("bad_podcast", new ConfigurationFolder("fauxRaccordsTest", "editedPodcast", "http://google.com"), RootNode.PODCAST);
             fail();
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
@@ -230,7 +230,7 @@ public class BackendManagerTest {
     public void testRemovePodcast() {
         // test nominal remove podcast
         int originalSize = backendManager.getFolders(RootNode.PODCAST).size();
-        backendManager.removeFolder("castcodersTest", RootNode.PODCAST);
+        backendManager.removeFolder("fauxRaccordsTest", RootNode.PODCAST);
         assertEquals(backendManager.getFolders(RootNode.PODCAST).size(), originalSize - 1);
     }
 

@@ -42,7 +42,7 @@ public class TestConfiguration implements Configuration {
         pictureFolders = Lists.newArrayList();
         pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
         podcasts = Lists.newArrayList();
-        podcasts.add(new ConfigurationNode("castcodersTest", "castcodersTest", "http://lescastcodeurs.libsyn.com/rss"));
+        podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
     }
 
     @Override
