@@ -39,7 +39,6 @@ import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.index.MediaIndexElement;
-import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.model.*;
 import org.slf4j.Logger;
@@ -218,7 +217,7 @@ public final class MediaManagerImpl implements MediaManager {
                 // Add podcast nodes
                 for (ConfigurationNode configNode : configNodes) {
                     // Add node to mediaIndex
-                    mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.get(rootNode, configNode));
+                    mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
                     // Add child node
                     nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
                 }
@@ -228,7 +227,7 @@ public final class MediaManagerImpl implements MediaManager {
                     File file = new File(configNode.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         // Add node to mediaIndex
-                        mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.get(rootNode, configNode));
+                        mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
                         // Add child node
                         nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                     }
@@ -369,6 +368,18 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
+     * Gets the media index element.
+     *
+     * @param rootNode   root node
+     * @param configNode config node
+     * @return media index element
+     */
+    private MediaIndexElement buildMeadiaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
+        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),
+                rootNode != RootNode.PODCAST);
+    }
+
+    /**
      * Configuration has changed, update media index.
      *
      * @param configurationEvent configuration event
@@ -382,14 +393,14 @@ public final class MediaManagerImpl implements MediaManager {
         switch (configurationEvent.getType()) {
             case ADD:
                 // Add node to mediaIndex
-                mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.get(rootNode, configNode));
+                mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
                 break;
             case UPDATE:
                 // Remove node and child nodes from mediaIndex
                 mediaIndexManager.remove(configNode.getId());
                 if (rootNode != PODCAST) mediaIndexManager.removeChildren(configNode.getId());
                 // Add node to mediaIndex
-                mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.get(rootNode, configNode));
+                mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
                 break;
             case DELETE:
                 // Remove node and child nodes from mediaIndex
