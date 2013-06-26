@@ -48,6 +48,7 @@
                     url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19389092_faux_raccord_madmax_m_004.mp4"
                     type="video/x-m4v" length="12000"/>
             <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19389092</feedburner:origLink>
+            <itunes:duration>10</itunes:duration>
         </item>
         <item>
             <title>Faux Raccord N°67 - Spéciale "Expendables"</title>

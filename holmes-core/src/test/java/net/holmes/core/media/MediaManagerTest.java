@@ -20,6 +20,8 @@ package net.holmes.core.media;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.TestModule;
+import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
@@ -70,7 +72,7 @@ public class MediaManagerTest {
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(4, nodes.size());
-        assertConfigNode(nodes, "video.avi", "video.srt");
+        assertConfigNodes(nodes, "video.avi", "video.srt");
     }
 
     @Test
@@ -88,7 +90,7 @@ public class MediaManagerTest {
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(2, nodes.size());
-        assertConfigNode(nodes, "audio.mp3", "");
+        assertConfigNodes(nodes, "audio.mp3", "");
     }
 
     @Test
@@ -106,10 +108,10 @@ public class MediaManagerTest {
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
         assertEquals(2, nodes.size());
-        assertConfigNode(nodes, "image.jpg");
+        assertConfigNodes(nodes, "image.jpg");
     }
 
-    private void assertConfigNode(List<AbstractNode> nodes, String... fileNodeNames) {
+    private void assertConfigNodes(List<AbstractNode> nodes, String... fileNodeNames) {
         List<String> fileNodeNameList = Arrays.asList(fileNodeNames);
         for (AbstractNode abstractNode : nodes) {
             if (abstractNode instanceof FolderNode) {
@@ -195,4 +197,55 @@ public class MediaManagerTest {
         }
     }
 
+    @Test
+    public void testHandleConfigEventAdd() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.ADD, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            try {
+                mediaManagerImpl.handleConfigEvent(configurationEvent);
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testHandleConfigEventUpdate() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UPDATE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            try {
+                mediaManagerImpl.handleConfigEvent(configurationEvent);
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testHandleConfigEventDelete() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.DELETE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            try {
+                mediaManagerImpl.handleConfigEvent(configurationEvent);
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testHandleConfigEventUnknown() {
+        if (mediaManager instanceof MediaManagerImpl) {
+            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UNKNOWN, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            try {
+                mediaManagerImpl.handleConfigEvent(configurationEvent);
+            } catch (Exception e) {
+                fail(e.getMessage());
+            }
+        }
+    }
 }

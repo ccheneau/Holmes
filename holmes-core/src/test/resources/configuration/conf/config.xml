@@ -1,0 +1,126 @@
+<config>
+    <upnpServerName>Holmes UPnP</upnpServerName>
+    <httpServerPort>8085</httpServerPort>
+    <videoFolders>
+        <node>
+            <id>6ed662dd-9d0b-4e92-8de2-a0fdcf0636f4</id>
+            <label>Mes vidéos</label>
+            <path>C:\Users\Cedric\Videos</path>
+        </node>
+        <node>
+            <id>3bdd6c38-00bc-4bda-b8d1-b064b237f5c3</id>
+            <label>Téléchargement</label>
+            <path>C:\Users\Cedric\Downloads</path>
+        </node>
+    </videoFolders>
+    <pictureFolders>
+        <node>
+            <id>9b70c0e0-9ffc-47b2-a37c-c79f10da8b94</id>
+            <label>Mes images</label>
+            <path>C:\Users\Cedric\Pictures</path>
+        </node>
+        <node>
+            <id>a151db88-cee1-44ee-ab14-f55ed9fecfc2</id>
+            <label>Dropbox</label>
+            <path>C:\Users\Cedric\Dropbox\Photos</path>
+        </node>
+    </pictureFolders>
+    <audioFolders/>
+    <podcasts>
+        <node>
+            <id>cba43444-9ca9-4278-a690-d2bfb18b2c0f</id>
+            <label>Cast coders</label>
+            <path>http://lescastcodeurs.libsyn.com/rss</path>
+        </node>
+        <node>
+            <id>6c712fc0-1b44-45f2-9bc8-7bd5d4103196</id>
+            <label>Allociné Bandes annonces</label>
+            <path>http://rss.allocine.fr/bandesannonces/ipod</path>
+        </node>
+        <node>
+            <id>f39f29c5-9e32-45da-8409-8046983b7781</id>
+            <label>Allociné Faux raccords</label>
+            <path>http://rss.allocine.fr/fauxraccord/ipod</path>
+        </node>
+        <node>
+            <id>39e6d371-80fd-4191-a15b-c68bb7b5e717</id>
+            <label>Europe 1 Matin</label>
+            <path>http://www.europe1.fr/podcasts/europe-1-matin-2.xml</path>
+        </node>
+        <node>
+            <id>9271fd0f-1cb7-496f-b2b2-391a6fd55ac6</id>
+            <label>Europe 1 Midi</label>
+            <path>http://www.europe1.fr/podcasts/europe-1-midi.xml</path>
+        </node>
+        <node>
+            <id>2332501f-11df-41f5-a8e3-eabb659060d4</id>
+            <label>Europe 1 Soir</label>
+            <path>http://www.europe1.fr/podcasts/europe-1-soir.xml</path>
+        </node>
+        <node>
+            <id>669b9046-d946-44b1-9070-41004634abf6</id>
+            <label>Europe 1 Canteloup</label>
+            <path>http://www.europe1.fr/podcasts/revue-de-presque.xml</path>
+        </node>
+        <node>
+            <id>bfff560a-c62c-48c5-a2c5-64bd79a276c0</id>
+            <label>Europe 1 Actu</label>
+            <path>http://www.europe1.fr/podcasts/actu.xml</path>
+        </node>
+        <node>
+            <id>7d4a3d41-064e-49a9-9715-c6cff194f588</id>
+            <label>Europe 1 On va s&apos;géner</label>
+            <path>http://www.europe1.fr/podcasts/on-va-s-gener.xml</path>
+        </node>
+        <node>
+            <id>f7f4ac60-b08d-45eb-8a11-607e5b513b0a</id>
+            <label>Europe 1 Au coeur de l&apos;histoire</label>
+            <path>http://www.europe1.fr/podcasts/au-coeur-de-l-histoire.xml</path>
+        </node>
+        <node>
+            <id>ef5323a5-0d71-4943-b0a5-fb095d639bf8</id>
+            <label>RTL Fait politique</label>
+            <path>http://www.rtl.fr/podcast/le-fait-politique.xml</path>
+        </node>
+        <node>
+            <id>f60c7a1b-7545-42a4-92b5-1e7187ea01ac</id>
+            <label>RTL Fait politique (vidéo)</label>
+            <path>http://www.rtl.fr/podcast/le-fait-politique-en-video.xml</path>
+        </node>
+        <node>
+            <id>361f667b-2757-423b-a814-1938e93207b9</id>
+            <label>RTL On refait le monde</label>
+            <path>http://www.rtl.fr/podcast/on-refait-le-monde.xml</path>
+        </node>
+        <node>
+            <id>150deef0-0c86-451f-b8b8-7c1838a10fde</id>
+            <label>RTL Tanguy Pastureau</label>
+            <path>http://www.rtl.fr/podcast/tanguy-pastureau.xml</path>
+        </node>
+        <node>
+            <id>ec124b92-e9c8-4948-b1e3-a025f9c76f4d</id>
+            <label>RTL Tanguy Pastureau (vidéo)</label>
+            <path>http://www.rtl.fr/podcast/tanguy-pastureau-en-video.xml</path>
+        </node>
+        <node>
+            <id>721d3e55-b4b1-4fde-bdb6-61727b0f1f3b</id>
+            <label>RTL Club Liza</label>
+            <path>http://www.rtl.fr/podcast/le-club-liza.xml</path>
+        </node>
+    </podcasts>
+    <parameters>
+        <property name="image_cache_max_elements" value="5000"/>
+        <property name="local_cache_clean_delay_minutes" value="60"/>
+        <property name="enable_upnp" value="true"/>
+        <property name="podcast_cache_expire_hours" value="2"/>
+        <property name="enable_content_resolution" value="true"/>
+        <property name="podcast_cache_max_elements" value="50"/>
+        <property name="hide_empty_root_nodes" value="true"/>
+        <property name="media_scan_all_delay_minutes" value="0"/>
+        <property name="prepend_podcast_entry_name" value="true"/>
+        <property name="enable_external_subtitles" value="true"/>
+        <property name="enable_systray" value="true"/>
+        <property name="media_index_clean_delay_minutes" value="15"/>
+        <property name="image_cache_expire_hours" value="2"/>
+    </parameters>
+</config>

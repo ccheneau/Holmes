@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://rss.allocine.fr/~d/styles/itemcontent.css"?>
+<!--
+  ~ Copyright (C) 2012-2013  Cedric Cheneau
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
      xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
      xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
@@ -48,6 +65,7 @@
                     url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19389092_faux_raccord_madmax_m_004.mp4"
                     type="video/x-m4v" length="12000"/>
             <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19389092</feedburner:origLink>
+            <itunes:duration>10</itunes:duration>
         </item>
         <item>
             <title>Faux Raccord N°67 - Spéciale "Expendables"</title>

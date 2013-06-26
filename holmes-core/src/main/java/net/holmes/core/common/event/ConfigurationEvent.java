@@ -68,6 +68,6 @@ public class ConfigurationEvent {
      * Event type.
      */
     public enum EventType {
-        ADD, UPDATE, DELETE
+        ADD, UPDATE, DELETE, UNKNOWN
     }
 }
