@@ -8,6 +8,13 @@ import static org.junit.Assert.*;
  * Settings Tester.
  */
 public class SettingsTest {
+
+    @Test
+    public void testDefaultConstructor() throws Exception {
+        Settings settings = new Settings();
+        assertNotNull(settings);
+    }
+
     /**
      * Method: getServerName()
      */

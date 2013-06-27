@@ -2,13 +2,18 @@ package net.holmes.core.backend.response;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 /**
  * ConfigurationFolder Tester.
  */
 public class ConfigurationFolderTest {
+
+    @Test
+    public void testDefaultConstructor() throws Exception {
+        ConfigurationFolder folder = new ConfigurationFolder();
+        assertNotNull(folder);
+    }
 
     /**
      * Method: getId()
