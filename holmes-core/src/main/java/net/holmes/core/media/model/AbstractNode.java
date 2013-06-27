@@ -149,7 +149,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         TYPE_FOLDER, //
         TYPE_CONTENT, //
         TYPE_PODCAST, //
-        TYPE_PODCAST_ENTRY, //
-        TYPE_PLAYLIST
+        TYPE_PODCAST_ENTRY
     }
 }

@@ -64,7 +64,7 @@ public final class HolmesServer implements Service {
 
     @Override
     public void start() {
-        if (!lockInstance()) throw new RuntimeException("Holmes server is already running");
+        lockInstance();
 
         logger.info("Starting Holmes server");
 
@@ -103,9 +103,9 @@ public final class HolmesServer implements Service {
     /**
      * Create Holmes lock file.
      *
-     * @return true on lock success, false if lock file already exists
+     * @throws RuntimeException if lock fails
      */
-    private boolean lockInstance() {
+    private void lockInstance() {
         try {
             // Create lock file
             final File lockFile = new File(localHolmesDataDir, LOCK_FILE);
@@ -125,12 +125,12 @@ public final class HolmesServer implements Service {
                         }
                     }
                 });
-                return true;
+                return;
             }
         } catch (IOException e) {
             logger.error("Unable to create and/or lock file: {}", e.getMessage());
         }
-        return false;
+        throw new RuntimeException("Holmes server is already running");
     }
 
 }

@@ -217,7 +217,7 @@ public final class MediaManagerImpl implements MediaManager {
                 // Add podcast nodes
                 for (ConfigurationNode configNode : configNodes) {
                     // Add node to mediaIndex
-                    mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
+                    mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                     // Add child node
                     nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
                 }
@@ -227,7 +227,7 @@ public final class MediaManagerImpl implements MediaManager {
                     File file = new File(configNode.getPath());
                     if (file.exists() && file.isDirectory() && file.canRead()) {
                         // Add node to mediaIndex
-                        mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
+                        mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                         // Add child node
                         nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                     }
@@ -374,7 +374,7 @@ public final class MediaManagerImpl implements MediaManager {
      * @param configNode config node
      * @return media index element
      */
-    private MediaIndexElement buildMeadiaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
+    private MediaIndexElement buildMediaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
         return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),
                 rootNode != RootNode.PODCAST);
     }
@@ -393,14 +393,14 @@ public final class MediaManagerImpl implements MediaManager {
         switch (configurationEvent.getType()) {
             case ADD:
                 // Add node to mediaIndex
-                mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
+                mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                 break;
             case UPDATE:
                 // Remove node and child nodes from mediaIndex
                 mediaIndexManager.remove(configNode.getId());
                 if (rootNode != PODCAST) mediaIndexManager.removeChildren(configNode.getId());
                 // Add node to mediaIndex
-                mediaIndexManager.put(configNode.getId(), buildMeadiaIndexElement(rootNode, configNode));
+                mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                 break;
             case DELETE:
                 // Remove node and child nodes from mediaIndex
