@@ -101,6 +101,7 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+        bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
 
