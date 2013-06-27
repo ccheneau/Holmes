@@ -17,19 +17,11 @@
 package net.holmes.core.common.mimetype;
 
 import net.holmes.core.common.MediaType;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class MimeTypeTest {
-
-    private MimeTypeManager mimeTypeManager;
-
-    @Before
-    public void setUp() {
-        mimeTypeManager = new MimeTypeManagerImpl();
-    }
 
     /**
      * Test mime type.
@@ -37,8 +29,9 @@ public class MimeTypeTest {
     @Test
     public void testMimeType() {
         try {
-            String fileName = "movie.avi";
+            MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
 
+            String fileName = "movie.avi";
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNotNull(mimeType);
@@ -56,13 +49,27 @@ public class MimeTypeTest {
     @Test
     public void testBadMimeType() {
         try {
-            String fileName = "movie.blabla";
+            MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
 
+            String fileName = "movie.blabla";
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
             assertNull(mimeType);
         } catch (Exception e) {
             fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Test bad mime type path.
+     */
+    @Test
+    public void testBadMimePath() {
+        try {
+            new MimeTypeManagerImpl("/badMimeTypePath");
+            fail();
+        } catch (RuntimeException e) {
+            assertNotNull(e);
         }
     }
 }

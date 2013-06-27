@@ -19,6 +19,8 @@ package net.holmes.core.common.mimetype;
 
 import com.google.common.io.Files;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -32,13 +34,14 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     /**
      * Instantiates a new mime type manager implementation.
      */
-    public MimeTypeManagerImpl() {
+    @Inject
+    public MimeTypeManagerImpl(@Named("mimeTypePath") final String mimeTypePath) {
         // Load mime types from property file
         properties = new Properties();
-        try (InputStream in = this.getClass().getResourceAsStream("/mimetypes.properties")) {
+        try (InputStream in = this.getClass().getResourceAsStream(mimeTypePath)) {
             properties.load(in);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
