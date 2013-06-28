@@ -58,12 +58,15 @@ import net.holmes.core.scheduled.MediaScannerService;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
+
+import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 
 /**
  * Guice module.
@@ -73,6 +76,7 @@ final class HolmesServerModule extends AbstractModule {
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
+    private final String uiDirectory = getUiDirectory();
 
     /**
      * Get local data directory where Holmes configuration and logs are saved.
@@ -90,6 +94,20 @@ final class HolmesServerModule extends AbstractModule {
 
     }
 
+    /**
+     * Get UI base directory.
+     *
+     * @return UI directory
+     */
+    private static String getUiDirectory() {
+        File uiDir = new File(HOLMES_HOME.getValue(), "ui");
+        if (!uiDir.exists()) {
+            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
+                    + "] system property");
+        }
+        return uiDir.getAbsolutePath();
+    }
+
     @Override
     protected void configure() {
 
@@ -101,7 +119,6 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
 
@@ -113,6 +130,8 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind constants
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
+        bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
+        bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);

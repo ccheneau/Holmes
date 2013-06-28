@@ -30,18 +30,17 @@ import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
-
 /**
  * Handler for Holmes UI pages.
  */
 public final class HttpUIRequestHandler implements HttpRequestHandler {
-    private static final String UI_DIRECTORY = getUiDirectory();
+    private final String uiDirectory;
     private final MimeTypeManager mimeTypeManager;
     @InjectLogger
     private Logger logger;
@@ -52,22 +51,9 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
      * @param mimeTypeManager mime type manager
      */
     @Inject
-    public HttpUIRequestHandler(final MimeTypeManager mimeTypeManager) {
+    public HttpUIRequestHandler(final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
         this.mimeTypeManager = mimeTypeManager;
-    }
-
-    /**
-     * Get UI base directory.
-     *
-     * @return UI directory
-     */
-    private static String getUiDirectory() {
-        File uiDir = new File(HOLMES_HOME.getValue(), "ui");
-        if (!uiDir.exists()) {
-            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
-                    + "] system property");
-        }
-        return uiDir.getAbsolutePath();
+        this.uiDirectory = uiDirectory;
     }
 
     @Override
@@ -92,7 +78,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
         try {
             // Get file
-            File file = new File(UI_DIRECTORY, fileName);
+            File file = new File(uiDirectory, fileName);
             if (!file.exists()) {
                 if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
                 throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
