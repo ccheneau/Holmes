@@ -19,9 +19,9 @@ package net.holmes.core.backend.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.TestModule;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
+import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 

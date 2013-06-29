@@ -19,7 +19,7 @@ package net.holmes.core.media.index;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.TestModule;
+import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -109,9 +108,6 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
                 // Close the connection when the whole content is written out.
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
-        } catch (FileNotFoundException e) {
-            if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
-            throw new HttpRequestException(e, HttpResponseStatus.NOT_FOUND);
         } catch (IOException e) {
             if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);

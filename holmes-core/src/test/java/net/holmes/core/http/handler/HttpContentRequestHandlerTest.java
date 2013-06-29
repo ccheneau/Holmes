@@ -20,7 +20,7 @@ package net.holmes.core.http.handler;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.netty.handler.codec.http.HttpMethod;
-import net.holmes.core.TestModule;
+import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core;
+package net.holmes.core.test;
 
 import com.google.common.collect.Lists;
 import net.holmes.core.common.configuration.Configuration;

@@ -15,23 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.backend.handler;
+package net.holmes.core.http;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.backend.BackendManager;
-import net.holmes.core.backend.response.Settings;
+import net.holmes.core.common.Service;
 import net.holmes.core.test.TestModule;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import static org.junit.Assert.assertNotNull;
+public class HttpServerTest {
 
-public class SettingsHandlerTest {
     @Inject
-    private BackendManager backendManager;
+    @Named("http")
+    private Service httpServer;
 
     @Before
     public void setUp() {
@@ -40,14 +41,12 @@ public class SettingsHandlerTest {
     }
 
     @Test
-    public void testGetSettings() {
-        SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        assertNotNull(settingsHandler.getSettings());
-    }
-
-    @Test
-    public void testSaveSettings() {
-        SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        settingsHandler.saveSettings(new Settings("serverName", 2000, true, true, true));
+    public void testHttpServer() {
+        try {
+            httpServer.start();
+            httpServer.stop();
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 }

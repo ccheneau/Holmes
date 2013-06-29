@@ -19,36 +19,148 @@ package net.holmes.core.http.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.netty.handler.codec.http.HttpMethod;
-import net.holmes.core.TestModule;
+import io.netty.channel.Channel;
+import io.netty.channel.DefaultChannelPromise;
+import io.netty.handler.codec.http.*;
+import io.netty.handler.stream.ChunkedFile;
+import net.holmes.core.common.mimetype.MimeTypeManager;
+import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+import java.io.File;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class HttpUIRequestHandlerTest {
 
+    private FullHttpRequest request = createMock(FullHttpRequest.class);
+    private Channel channel = createMock(Channel.class);
+
+    private Injector injector;
     @Inject
-    @Named("ui")
-    private HttpRequestHandler uiRequestHandler;
+    private MimeTypeManager mimeTypeManager;
 
     @Before
     public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
+        injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
     }
 
-    @Test
-    public void testHttpUIRequestHandler() {
-        assertNotNull(uiRequestHandler);
+    private HttpUIRequestHandler getHandler() {
+        HttpUIRequestHandler httpUIRequestHandler = new HttpUIRequestHandler(mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        injector.injectMembers(httpUIRequestHandler);
+        return httpUIRequestHandler;
     }
 
     @Test
     public void testCanProcess() {
-        assertTrue(uiRequestHandler.canProcess("", HttpMethod.GET));
-        assertFalse(uiRequestHandler.canProcess("", HttpMethod.POST));
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        assertTrue(httpUIRequestHandler.canProcess("", HttpMethod.GET));
+        assertFalse(httpUIRequestHandler.canProcess("", HttpMethod.POST));
     }
+
+    @Test
+    public void testProcessRequest() throws Exception {
+        File indexHtml = File.createTempFile("index", ".html");
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("/" + indexHtml.getName());
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test
+    public void testProcessRequestKeepAlive() throws Exception {
+        File indexHtml = File.createTempFile("index", ".html");
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("/" + indexHtml.getName());
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test
+    public void testProcessRequestBaMimeTyped() throws Exception {
+        File indexHtml = File.createTempFile("index", ".html1");
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("/" + indexHtml.getName());
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestNonExistingIndex() throws Exception {
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("/");
+
+        replay(request);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestEmptyFile() throws Exception {
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("");
+
+        replay(request);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestNonExistingFile() throws Exception {
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getUri()).andReturn("/badFile");
+
+        replay(request);
+        HttpUIRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.processRequest(request, channel);
+        verify(request);
+    }
+
 }

@@ -15,23 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.backend.handler;
+package net.holmes.core.scheduled;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.backend.BackendManager;
-import net.holmes.core.backend.response.Settings;
+import net.holmes.core.common.Service;
 import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-public class SettingsHandlerTest {
+public class HolmesSchedulerServiceTest {
+
     @Inject
-    private BackendManager backendManager;
+    @Named("scheduler")
+    private Service scheduler;
 
     @Before
     public void setUp() {
@@ -40,14 +42,12 @@ public class SettingsHandlerTest {
     }
 
     @Test
-    public void testGetSettings() {
-        SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        assertNotNull(settingsHandler.getSettings());
-    }
-
-    @Test
-    public void testSaveSettings() {
-        SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        settingsHandler.saveSettings(new Settings("serverName", 2000, true, true, true));
+    public void testHolmesSchedulerService() {
+        try {
+            scheduler.start();
+            scheduler.stop();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 }

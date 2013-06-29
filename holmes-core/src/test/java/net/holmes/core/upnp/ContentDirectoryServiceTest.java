@@ -19,9 +19,9 @@ package net.holmes.core.upnp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.TestModule;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.test.TestModule;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;

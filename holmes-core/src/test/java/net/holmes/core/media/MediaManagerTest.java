@@ -19,13 +19,13 @@ package net.holmes.core.media;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.TestModule;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
 import net.holmes.core.media.model.RootNode;
+import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
