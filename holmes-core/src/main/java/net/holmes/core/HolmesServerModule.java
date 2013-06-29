@@ -53,6 +53,7 @@ import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.scheduled.CacheCleanerService;
+import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.MediaIndexCleanerService;
 import net.holmes.core.scheduled.MediaScannerService;
 import net.holmes.core.upnp.UpnpServer;
