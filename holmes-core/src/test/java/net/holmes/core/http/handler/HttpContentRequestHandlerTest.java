@@ -19,38 +19,196 @@ package net.holmes.core.http.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.netty.handler.codec.http.HttpMethod;
+import io.netty.channel.Channel;
+import io.netty.channel.DefaultChannelPromise;
+import io.netty.handler.codec.http.*;
+import io.netty.handler.stream.ChunkedFile;
+import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
+import net.holmes.core.media.model.RootNode;
 import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+import java.util.List;
 
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 public class HttpContentRequestHandlerTest {
 
+    private FullHttpRequest request = createMock(FullHttpRequest.class);
+    private Channel channel = createMock(Channel.class);
     @Inject
-    @Named("content")
-    private HttpRequestHandler contentRequestHandler;
+    private MediaManager mediaManager;
+    private Injector injector;
 
     @Before
     public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
+        injector = Guice.createInjector(new TestModule());
         injector.injectMembers(this);
     }
 
-    @Test
-    public void testHttpContentRequestHandler() {
-        assertNotNull(contentRequestHandler);
+    private HttpContentRequestHandler getHandler() {
+        HttpContentRequestHandler contentRequestHandler = new HttpContentRequestHandler(mediaManager);
+        injector.injectMembers(contentRequestHandler);
+        return contentRequestHandler;
+    }
+
+    public AbstractNode getContentNodeFromMediaManager() {
+        AbstractNode rootNode = mediaManager.getNode(RootNode.PICTURE.getId());
+        assertNotNull(rootNode);
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(rootNode);
+        assertNotNull(childNodes);
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
+
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
+        assertNotNull(nodes);
+        for (AbstractNode node : nodes) {
+            if (node instanceof ContentNode) return node;
+        }
+        fail();
+        return null;
     }
 
     @Test
     public void testCanProcess() {
+        HttpContentRequestHandler contentRequestHandler = getHandler();
         assertTrue(contentRequestHandler.canProcess("/content/request", HttpMethod.GET));
         assertFalse(contentRequestHandler.canProcess("/content/request", HttpMethod.POST));
         assertFalse(contentRequestHandler.canProcess("bad_request", HttpMethod.GET));
         assertFalse(contentRequestHandler.canProcess("bad_request", HttpMethod.POST));
     }
+
+    @Test(expected = NullPointerException.class)
+    public void testProcessRequestNoContent() throws Exception {
+        expect(request.getUri()).andReturn("/content").anyTimes();
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestNullContent() throws Exception {
+        expect(request.getUri()).andReturn("/content?id=").anyTimes();
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestUnknownContent() throws Exception {
+        expect(request.getUri()).andReturn("/content?id=25").anyTimes();
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test
+    public void testProcessRequestWithoutKeepAlive() throws Exception {
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestEmptyOffset() throws Exception {
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.RANGE, "");
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test
+    public void testProcessRequestWithOffset() throws Exception {
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.RANGE, "bytes=5-");
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestWithBadOffset() throws Exception {
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
+    @Test
+    public void testProcessRequest() throws Exception {
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
+        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+
+        replay(request, channel);
+        HttpContentRequestHandler contentRequestHandler = getHandler();
+        contentRequestHandler.processRequest(request, channel);
+        verify(request, channel);
+    }
+
 }

@@ -83,11 +83,11 @@ public class HttpUIRequestHandlerTest {
     }
 
     @Test
-    public void testProcessRequestKeepAlive() throws Exception {
+    public void testProcessRequestWithoutKeepAlive() throws Exception {
         File indexHtml = File.createTempFile("index", ".html");
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
-        headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+        headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
 
         expect(request.headers()).andReturn(headers).anyTimes();
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
