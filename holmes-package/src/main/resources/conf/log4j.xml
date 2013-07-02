@@ -45,6 +45,10 @@
         <level value="error"/>
     </logger>
 
+    <logger name="io.netty">
+        <level value="error"/>
+    </logger>
+
     <root>
         <level value="debug"/>
         <appender-ref ref="STDOUT"/>
