@@ -19,7 +19,9 @@ package net.holmes.core.http.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.sun.jersey.core.util.StringKeyIgnoreCaseMultivaluedMap;
 import com.sun.jersey.spi.container.ContainerRequest;
+import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 import io.netty.buffer.EmptyByteBuf;
@@ -33,8 +35,10 @@ import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
+import static net.holmes.core.http.handler.HttpBackendRequestHandler.BackendResponseWriter;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,6 +47,8 @@ public class HttpBackendRequestHandlerTest {
 
     private FullHttpRequest request = createMock(FullHttpRequest.class);
     private WebApplication webApplication = createMock(WebApplication.class);
+    private Channel channel = createMock(Channel.class);
+    private ContainerResponse response = createMock(ContainerResponse.class);
     private Injector injector;
 
     @Before
@@ -72,7 +78,7 @@ public class HttpBackendRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/util/getVersion");
         expect(request.getMethod()).andReturn(HttpMethod.GET);
         expect(request.content()).andReturn(new EmptyByteBuf(new UnpooledByteBufAllocator(false)));
@@ -93,16 +99,16 @@ public class HttpBackendRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "\\///bad_uri/");
 
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getUri()).andReturn("/util/getVersion");
-        expect(request.getMethod()).andReturn(HttpMethod.GET);
-        expect(request.content()).andReturn(new EmptyByteBuf(new UnpooledByteBufAllocator(false)));
+        expect(request.headers()).andReturn(headers).atLeastOnce();
 
         Channel channel = createMock(Channel.class);
         replay(request);
-        HttpBackendRequestHandler backendRequestHandler = getHandler();
-        backendRequestHandler.processRequest(request, channel);
-        verify(request);
+        try {
+            HttpBackendRequestHandler backendRequestHandler = getHandler();
+            backendRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request);
+        }
     }
 
     @Test(expected = HttpRequestException.class)
@@ -110,7 +116,7 @@ public class HttpBackendRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        expect(request.headers()).andReturn(headers).anyTimes();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/util/getVersion");
         expect(request.getMethod()).andReturn(HttpMethod.GET);
         expect(request.content()).andReturn(new EmptyByteBuf(new UnpooledByteBufAllocator(false)));
@@ -121,8 +127,25 @@ public class HttpBackendRequestHandlerTest {
 
         Channel channel = createMock(Channel.class);
         replay(request, webApplication);
-        HttpBackendRequestHandler backendRequestHandler = getHandler();
-        backendRequestHandler.processRequest(request, channel);
-        verify(request, webApplication);
+        try {
+            HttpBackendRequestHandler backendRequestHandler = getHandler();
+            backendRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, webApplication);
+        }
+    }
+
+    @Test
+    public void testBackendResponseWriterWriteStatusAndHeaders() throws Exception {
+        MultivaluedMap<String, Object> headers = new StringKeyIgnoreCaseMultivaluedMap<>();
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+
+        expect(response.getStatus()).andReturn(0).atLeastOnce();
+        expect(response.getHttpHeaders()).andReturn(headers).atLeastOnce();
+
+        replay(channel, response);
+        BackendResponseWriter backendResponseWriter = new BackendResponseWriter(channel);
+        backendResponseWriter.writeStatusAndHeaders(1, response);
+        verify(channel, response);
     }
 }

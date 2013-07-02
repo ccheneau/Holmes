@@ -113,7 +113,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
          *
          * @param channel channel to write to
          */
-        private BackendResponseWriter(final Channel channel) {
+        public BackendResponseWriter(final Channel channel) {
             this.channel = channel;
         }
 

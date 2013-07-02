@@ -84,32 +84,42 @@ public class HttpContentRequestHandlerTest {
 
     @Test(expected = NullPointerException.class)
     public void testProcessRequestNoContent() throws Exception {
-        expect(request.getUri()).andReturn("/content").anyTimes();
+        expect(request.getUri()).andReturn("/content").atLeastOnce();
 
         replay(request, channel);
-        HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, channel);
+        }
+
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestNullContent() throws Exception {
-        expect(request.getUri()).andReturn("/content?id=").anyTimes();
+        expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
 
         replay(request, channel);
-        HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, channel);
+        }
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestUnknownContent() throws Exception {
-        expect(request.getUri()).andReturn("/content?id=25").anyTimes();
+        expect(request.getUri()).andReturn("/content?id=25").atLeastOnce();
 
         replay(request, channel);
-        HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, channel);
+        }
     }
 
     @Test
@@ -119,9 +129,8 @@ public class HttpContentRequestHandlerTest {
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
 
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
         expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
@@ -139,17 +148,16 @@ public class HttpContentRequestHandlerTest {
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "");
 
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
-
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
 
         replay(request, channel);
-        HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, channel);
+        }
     }
 
     @Test
@@ -159,9 +167,9 @@ public class HttpContentRequestHandlerTest {
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=5-");
 
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
         expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
@@ -179,17 +187,16 @@ public class HttpContentRequestHandlerTest {
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
 
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
-
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
 
         replay(request, channel);
-        HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, channel);
+        } finally {
+            verify(request, channel);
+        }
     }
 
     @Test
@@ -198,9 +205,9 @@ public class HttpContentRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).anyTimes();
-        expect(request.headers()).andReturn(headers).anyTimes();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).anyTimes();
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
+        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
         expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
@@ -210,5 +217,4 @@ public class HttpContentRequestHandlerTest {
         contentRequestHandler.processRequest(request, channel);
         verify(request, channel);
     }
-
 }

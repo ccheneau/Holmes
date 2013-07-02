@@ -36,12 +36,14 @@ import com.sun.jersey.spi.container.*;
 import com.sun.jersey.spi.monitoring.DispatchingListener;
 import com.sun.jersey.spi.monitoring.RequestListener;
 import com.sun.jersey.spi.monitoring.ResponseListener;
+import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
+import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
@@ -95,6 +97,7 @@ public class TestModule extends AbstractModule {
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
+        bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
 
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class);
