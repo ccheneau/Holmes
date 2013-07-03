@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -75,7 +74,7 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
                     logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
 
                 if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
-                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(Charset.forName("utf-8")));
+                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(HttpConstants.DEFAULT_CHARSET));
                     Map<String, List<String>> params = queryStringDecoder.parameters();
                     if (params != null)
                         for (Entry<String, List<String>> entry : params.entrySet())
