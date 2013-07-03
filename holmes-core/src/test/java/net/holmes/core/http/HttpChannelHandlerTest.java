@@ -19,8 +19,7 @@ package net.holmes.core.http;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.netty.buffer.EmptyByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
@@ -29,6 +28,8 @@ import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.nio.charset.Charset;
 
 import static org.easymock.EasyMock.*;
 
@@ -112,7 +113,7 @@ public class HttpChannelHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.POST).atLeastOnce();
         expect(request.release()).andReturn(true).atLeastOnce();
-        expect(request.content()).andReturn(new EmptyByteBuf(new UnpooledByteBufAllocator(false))).atLeastOnce();
+        expect(request.content()).andReturn(Unpooled.copiedBuffer("Param1", Charset.defaultCharset())).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpBackendRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
