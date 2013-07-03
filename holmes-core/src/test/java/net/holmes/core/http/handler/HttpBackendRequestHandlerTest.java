@@ -35,6 +35,7 @@ import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
@@ -46,7 +47,8 @@ import static org.junit.Assert.assertTrue;
 public class HttpBackendRequestHandlerTest {
 
     private FullHttpRequest request = createMock(FullHttpRequest.class);
-    private WebApplication webApplication = createMock(WebApplication.class);
+    @Inject
+    private WebApplication webApplication;
     private Channel channel = createMock(Channel.class);
     private ContainerResponse response = createMock(ContainerResponse.class);
     private Injector injector;
@@ -54,6 +56,7 @@ public class HttpBackendRequestHandlerTest {
     @Before
     public void setUp() {
         injector = Guice.createInjector(new TestModule());
+        injector.injectMembers(this);
     }
 
     private HttpBackendRequestHandler getHandler() {

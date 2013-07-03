@@ -21,7 +21,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.test.TestModule;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,11 +41,7 @@ public class HttpServerTest {
 
     @Test
     public void testHttpServer() {
-        try {
-            httpServer.start();
-            httpServer.stop();
-        } catch (Exception e) {
-            Assert.fail(e.getMessage());
-        }
+        httpServer.start();
+        httpServer.stop();
     }
 }

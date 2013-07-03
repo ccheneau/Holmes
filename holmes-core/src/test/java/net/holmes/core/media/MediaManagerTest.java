@@ -154,22 +154,14 @@ public class MediaManagerTest {
 
     @Test
     public void testScanAll() {
-        try {
-            mediaManager.scanAll();
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        mediaManager.scanAll();
     }
 
     @Test
     public void testHandleMediaEventScanAll() {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            try {
-                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_ALL, null));
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_ALL, null));
         }
     }
 
@@ -177,11 +169,7 @@ public class MediaManagerTest {
     public void testHandleMediaEventScanNode() {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            try {
-                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_NODE, "audiosTest"));
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_NODE, "audiosTest"));
         }
     }
 
@@ -189,11 +177,7 @@ public class MediaManagerTest {
     public void testHandleMediaEventUnknown() {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            try {
-                mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
         }
     }
 
@@ -202,11 +186,7 @@ public class MediaManagerTest {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
             ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.ADD, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            try {
-                mediaManagerImpl.handleConfigEvent(configurationEvent);
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
 
@@ -215,11 +195,7 @@ public class MediaManagerTest {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
             ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UPDATE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            try {
-                mediaManagerImpl.handleConfigEvent(configurationEvent);
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
 
@@ -228,11 +204,7 @@ public class MediaManagerTest {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
             ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.DELETE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            try {
-                mediaManagerImpl.handleConfigEvent(configurationEvent);
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
 
@@ -241,11 +213,7 @@ public class MediaManagerTest {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
             ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UNKNOWN, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            try {
-                mediaManagerImpl.handleConfigEvent(configurationEvent);
-            } catch (Exception e) {
-                fail(e.getMessage());
-            }
+            mediaManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
 }

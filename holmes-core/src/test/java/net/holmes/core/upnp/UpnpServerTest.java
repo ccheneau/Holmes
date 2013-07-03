@@ -15,23 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.scheduled;
+package net.holmes.core.upnp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.test.TestModule;
+import org.fourthline.cling.UpnpService;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public class HolmesSchedulerServiceTest {
+import static org.easymock.EasyMock.*;
+
+public class UpnpServerTest {
 
     @Inject
-    @Named("scheduler")
-    private Service scheduler;
+    UpnpService upnpService;
+
+    @Inject
+    @Named("upnp")
+    Service upnpServer;
 
     @Before
     public void setUp() {
@@ -40,8 +46,14 @@ public class HolmesSchedulerServiceTest {
     }
 
     @Test
-    public void testHolmesSchedulerService() {
-        scheduler.start();
-        scheduler.stop();
+    public void testUPnPServer() {
+        upnpService.shutdown();
+        expectLastCall();
+
+        replay(upnpService);
+        upnpServer.start();
+        upnpServer.stop();
+        verify(upnpService);
     }
+
 }
