@@ -57,15 +57,6 @@ public class PlayerReference implements Reference, Serializable {
     }
 
     /**
-     * Constructs a new PlayerReference
-     *
-     * @param url URL of the player
-     */
-    public PlayerReference(final URI url) {
-        this(url, null, null);
-    }
-
-    /**
      * Height of the player
      *
      * @return Height of the player

@@ -66,30 +66,12 @@ public final class Duration implements Serializable {
     private long milliseconds;
 
     /**
-     * Creates a new Duration object with 0 length.
-     */
-    public Duration() {
-        super();
-    }
-
-    /**
      * Creates a new instance of Duration specifying a length in milliseconds.
      *
      * @param milliseconds Creates a new instance of Duration specifying a length in milliseconds
      */
     public Duration(final long milliseconds) {
         this.milliseconds = milliseconds;
-    }
-
-    /**
-     * Creates a new duration object with the given hours, minutes and seconds.
-     *
-     * @param hours   number of hours
-     * @param minutes number of minutes
-     * @param seconds number of seconds
-     */
-    public Duration(final int hours, final int minutes, final float seconds) {
-        this.milliseconds = hours * HOUR + minutes * MINUTE + (long) (seconds * SECOND);
     }
 
     /**

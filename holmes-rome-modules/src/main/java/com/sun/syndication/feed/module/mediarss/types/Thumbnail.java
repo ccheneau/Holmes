@@ -60,15 +60,6 @@ public class Thumbnail implements Cloneable, Serializable {
     }
 
     /**
-     * Creates a new thumbnail
-     *
-     * @param url URL
-     */
-    public Thumbnail(final URI url) {
-        this(url, null, null, null);
-    }
-
-    /**
      * Returns the thumbHeight.
      *
      * @return Returns the thumbHeight.

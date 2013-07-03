@@ -52,25 +52,6 @@ public class Text implements Serializable {
     private final Time start;
 
     /**
-     * Creates a text object.
-     *
-     * @param value value of the text
-     */
-    public Text(final String value) {
-        this(null, value, null, null);
-    }
-
-    /**
-     * Creates a new instance of Text.
-     *
-     * @param type  type of text
-     * @param value value of text
-     */
-    public Text(final String type, final String value) {
-        this(type, value, null, null);
-    }
-
-    /**
      * Creates a text object with start and end times.
      *
      * @param type  type of text

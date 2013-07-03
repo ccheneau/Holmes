@@ -37,15 +37,6 @@ public final class Subcategory implements Cloneable, Serializable {
     }
 
     /**
-     * Creates a new instance of Category with a given name.
-     *
-     * @param name Name of the category.
-     */
-    public Subcategory(final String name) {
-        this.setName(name);
-    }
-
-    /**
      * Returns the name of the subcategory.
      *
      * @return Returns the name of the subcategory.
@@ -72,6 +63,8 @@ public final class Subcategory implements Cloneable, Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return new Subcategory(this.getName());
+        Subcategory subcategory = new Subcategory();
+        subcategory.setName(this.name);
+        return subcategory;
     }
 }

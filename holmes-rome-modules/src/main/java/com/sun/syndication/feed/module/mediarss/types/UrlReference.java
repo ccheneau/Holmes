@@ -21,7 +21,6 @@ import com.sun.syndication.feed.impl.EqualsBean;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Used to indicate a URL primary reference for a MediaContent object.
@@ -41,19 +40,6 @@ public class UrlReference implements Reference, Serializable {
     public UrlReference(final URI url) {
         if (url == null) throw new NullPointerException("url cannot be null.");
         this.url = url;
-    }
-
-    /**
-     * Creates a new instance of UrlReference.
-     *
-     * @param url String value of a URL
-     * @throws URISyntaxException the uRI syntax exception
-     */
-    public UrlReference(final String url) throws URISyntaxException {
-        if (url == null) {
-            throw new NullPointerException("url cannot be null.");
-        }
-        this.url = new URI(url);
     }
 
     /**

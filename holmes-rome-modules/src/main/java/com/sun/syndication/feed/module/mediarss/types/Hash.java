@@ -44,15 +44,6 @@ public class Hash extends AbstractSchemeValue {
     }
 
     /**
-     * Creates a new instance of Hash assuming the default algorithm of MD5.
-     *
-     * @param value the value
-     */
-    public Hash(final String value) {
-        this(null, value);
-    }
-
-    /**
      * Algorithm used for the hash
      *
      * @return Algorithm used for the hash

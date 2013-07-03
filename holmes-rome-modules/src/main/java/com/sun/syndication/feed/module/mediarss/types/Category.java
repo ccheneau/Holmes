@@ -42,10 +42,6 @@ import java.io.Serializable;
  * @author cooper
  */
 public class Category implements Serializable {
-    /**
-     * Schema for FLICKR tags
-     */
-    public static final String SCHEME_FLICKR_TAGS = "urn:flickr:tags";
     private static final long serialVersionUID = 5182373808661745402L;
     private final String label;
     private final String scheme;
@@ -62,15 +58,6 @@ public class Category implements Serializable {
         this.scheme = scheme;
         this.value = value;
         this.label = label;
-    }
-
-    /**
-     * Creates a new Category.
-     *
-     * @param value value of the category.
-     */
-    public Category(final String value) {
-        this(null, null, value);
     }
 
     /**

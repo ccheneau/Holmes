@@ -47,17 +47,6 @@ public final class MediaGroup implements Cloneable, Serializable {
      * Creates a new instance of MediaGroup
      *
      * @param contents            contents of the group
-     * @param defaultContentIndex index of the default content value.
-     */
-    public MediaGroup(final MediaContent[] contents, final Integer defaultContentIndex) {
-        this.setContents(contents);
-        this.setDefaultContentIndex(defaultContentIndex);
-    }
-
-    /**
-     * Creates a new instance of MediaGroup
-     *
-     * @param contents            contents of the group
      * @param defaultContentIndex index of the default content item.
      * @param metadata            metadata for the group.
      */

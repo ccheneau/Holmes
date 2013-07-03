@@ -39,15 +39,6 @@ public final class Category implements Serializable, Cloneable {
     }
 
     /**
-     * Creates a new instance of Category with a given name.
-     *
-     * @param name Name of the category.
-     */
-    public Category(final String name) {
-        this.setName(name);
-    }
-
-    /**
      * Returns the name of the category
      *
      * @return Returns the name of the category
@@ -92,7 +83,8 @@ public final class Category implements Serializable, Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        Category c = new Category(this.getName());
+        Category c = new Category();
+        c.setName(this.name);
         if (this.getSubcategory() != null)
             c.setSubcategory((Subcategory) this.getSubcategory().clone());
         return c;
