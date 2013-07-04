@@ -74,6 +74,7 @@ public class TestModule extends AbstractModule {
 
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(System.getProperty("java.io.tmpdir"));
+        bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(System.getProperty("java.io.tmpdir"));
 
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class);
 
@@ -91,8 +92,9 @@ public class TestModule extends AbstractModule {
         bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
 
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
-        bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class);
+        bind(Service.class).annotatedWith(Names.named("systray")).toInstance(createMock(Service.class));
+        bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class);
 
         bind(UpnpService.class).toInstance(createMock(UpnpService.class));
 
