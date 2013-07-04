@@ -34,7 +34,7 @@ import java.nio.channels.FileLock;
  * Holmes server main class.
  */
 public final class HolmesServer implements Service {
-    private static final String LOCK_FILE = "holmes.lock";
+    private static final String LOCK_FILE_NAME = "holmes.lock";
     private final Service httpServer;
     private final Service upnpServer;
     private final Service systray;
@@ -42,6 +42,8 @@ public final class HolmesServer implements Service {
     private final String localHolmesDataDir;
     @InjectLogger
     private Logger logger;
+    private RandomAccessFile randomAccessFile = null;
+    private FileLock fileLock = null;
 
     /**
      * Instantiates a new holmes server.
@@ -64,22 +66,24 @@ public final class HolmesServer implements Service {
 
     @Override
     public void start() {
-        lockInstance();
+        if (lockInstance()) {
+            logger.info("Starting Holmes server");
 
-        logger.info("Starting Holmes server");
+            // Start Holmes server
+            httpServer.start();
+            upnpServer.start();
+            systray.start();
+            scheduler.start();
 
-        // Start Holmes server
-        httpServer.start();
-        upnpServer.start();
-        systray.start();
-        scheduler.start();
-
-        logger.info("Holmes server started");
+            logger.info("Holmes server started");
+        }
     }
 
     @Override
     public void stop() {
         logger.info("Stopping Holmes server");
+        // Remove lock
+        unlockInstance();
 
         // Stop Holmes server
         scheduler.stop();
@@ -105,32 +109,35 @@ public final class HolmesServer implements Service {
      *
      * @throws RuntimeException if lock fails
      */
-    private void lockInstance() {
+    private boolean lockInstance() {
         try {
-            // Create lock file
-            final File lockFile = new File(localHolmesDataDir, LOCK_FILE);
-            final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
-            final FileLock fileLock = randomAccessFile.getChannel().tryLock();
-            if (fileLock != null) {
-                Runtime.getRuntime().addShutdownHook(new Thread() {
-                    @Override
-                    public void run() {
-                        // Release lock file on system exit
-                        try {
-                            fileLock.release();
-                            randomAccessFile.close();
-                            if (!lockFile.delete()) logger.error("Unable to remove lock file: {}", lockFile.getPath());
-                        } catch (IOException e) {
-                            logger.error("Unable to remove lock file: {} {}", lockFile.getPath(), e.getMessage());
-                        }
-                    }
-                });
-                return;
+            if (fileLock == null) {
+                // Create lock file
+                File lockFile = new File(localHolmesDataDir, LOCK_FILE_NAME);
+                randomAccessFile = new RandomAccessFile(lockFile, "rw");
+                fileLock = randomAccessFile.getChannel().tryLock();
+                if (fileLock == null)
+                    throw new RuntimeException("Holmes server is already running");
+                return true;
             }
         } catch (IOException e) {
             logger.error("Unable to create and/or lock file: {}", e.getMessage());
         }
-        throw new RuntimeException("Holmes server is already running");
+        return false;
     }
 
+    private void unlockInstance() {
+        // Release lock file on system exit
+        if (fileLock != null) {
+            File lockFile = new File(localHolmesDataDir, LOCK_FILE_NAME);
+            try {
+                fileLock.release();
+                randomAccessFile.close();
+                if (!lockFile.delete())
+                    logger.error("Unable to remove lock file: {}", lockFile.getPath());
+            } catch (IOException e) {
+                logger.error("Unable to remove lock file: {} {}", lockFile.getPath(), e.getMessage());
+            }
+        }
+    }
 }
