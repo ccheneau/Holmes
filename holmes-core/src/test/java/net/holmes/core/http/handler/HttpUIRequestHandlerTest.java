@@ -65,6 +65,7 @@ public class HttpUIRequestHandlerTest {
     @Test
     public void testProcessRequest() throws Exception {
         File indexHtml = File.createTempFile("index", ".html");
+        indexHtml.deleteOnExit();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
@@ -84,6 +85,7 @@ public class HttpUIRequestHandlerTest {
     @Test
     public void testProcessRequestWithoutKeepAlive() throws Exception {
         File indexHtml = File.createTempFile("index", ".html");
+        indexHtml.deleteOnExit();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
@@ -103,6 +105,7 @@ public class HttpUIRequestHandlerTest {
     @Test
     public void testProcessRequestBaMimeTyped() throws Exception {
         File indexHtml = File.createTempFile("index", ".html1");
+        indexHtml.deleteOnExit();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 

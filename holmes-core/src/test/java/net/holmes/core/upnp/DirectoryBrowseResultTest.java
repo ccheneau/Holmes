@@ -48,6 +48,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddVideoItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("video/x-msvideo");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
 
@@ -60,6 +61,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddAudioItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
         node.setIconUrl("http://google.com");
@@ -73,6 +75,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddImageItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("image/jpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
 
@@ -85,6 +88,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddSubtitleItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("application/x-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
 
@@ -97,6 +101,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddBadSubtitleItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("application/bad-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
 
@@ -109,6 +114,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddBadItem() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("bad-type/bad-subtype");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
 
@@ -140,6 +146,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testFilterResult() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
         node.setIconUrl("http://google.com");
@@ -158,6 +165,7 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testFilterResultNoMaxResult() throws IOException, URISyntaxException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
         node.setIconUrl("http://google.com");

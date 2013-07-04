@@ -53,6 +53,7 @@ public class ContentNodeTest {
     public void testGetMimeType() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node = buildContentNode("", file);
         assertEquals(node.getMimeType(), mimeType);
     }
@@ -63,6 +64,7 @@ public class ContentNodeTest {
     @Test
     public void testGetSize() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node = buildContentNode("", file);
         assertEquals(node.getSize().longValue(), file.length());
     }
@@ -73,6 +75,7 @@ public class ContentNodeTest {
     @Test
     public void testGetPath() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node = buildContentNode("", file);
         assertEquals(node.getPath(), file.getAbsolutePath());
     }
@@ -83,6 +86,7 @@ public class ContentNodeTest {
     @Test
     public void testGetResolution() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node = buildContentNode("", file);
         assertEquals(node.getResolution(), "resolution");
     }
@@ -93,6 +97,7 @@ public class ContentNodeTest {
     @Test
     public void testHashCode() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
         assertNotNull(node1.hashCode());
@@ -105,6 +110,7 @@ public class ContentNodeTest {
     @Test
     public void testEquals() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
         assertEquals(node1, node2);
@@ -116,6 +122,7 @@ public class ContentNodeTest {
     @Test
     public void testToString() throws Exception {
         File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
         assertNotNull(node1.toString());
