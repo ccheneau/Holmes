@@ -21,8 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * FolderNode Tester.
@@ -55,7 +54,10 @@ public class FolderNodeTest {
     public void testEquals() throws Exception {
         FolderNode node1 = buildFolderNode();
         FolderNode node2 = buildFolderNode();
+        assertEquals(node1, node1);
         assertEquals(node1, node2);
+        assertNotEquals(node1, null);
+        assertNotEquals(node1, "node1");
     }
 
     /**

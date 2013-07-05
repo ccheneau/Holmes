@@ -83,6 +83,8 @@ public class AbstractNodeTest {
         AbstractNodeTester node2 = buildAbstractNodeTester("2");
         assertEquals(node.compareTo(node1), 0);
         assertNotEquals(node.compareTo(node2), 0);
+        assertNotEquals(node.compareTo(buildAbstractNodeTesterFolder("")), 0);
+        assertNotEquals(node.compareTo(buildAbstractNodeTesterPodcast("")), 0);
     }
 
     @Test
@@ -99,12 +101,24 @@ public class AbstractNodeTest {
         AbstractNodeTester node = buildAbstractNodeTester("");
         AbstractNodeTester node1 = buildAbstractNodeTester("");
         AbstractNodeTester node2 = buildAbstractNodeTester("2");
+        assertEquals(node, node);
         assertEquals(node, node1);
+        assertNotEquals(node, null);
+        assertNotEquals(node, "node");
         assertNotEquals(node, node2);
+        assertNotEquals(node, buildAbstractNodeTesterFolder(""));
     }
 
     private AbstractNodeTester buildAbstractNodeTester(String suffix) {
         return new AbstractNodeTester(AbstractNode.NodeType.TYPE_CONTENT, "id" + suffix, "parentId" + suffix, "name" + suffix);
+    }
+
+    private AbstractNodeTester buildAbstractNodeTesterFolder(String suffix) {
+        return new AbstractNodeTester(AbstractNode.NodeType.TYPE_FOLDER, "id" + suffix, "parentId" + suffix, "name" + suffix);
+    }
+
+    private AbstractNodeTester buildAbstractNodeTesterPodcast(String suffix) {
+        return new AbstractNodeTester(AbstractNode.NodeType.TYPE_PODCAST, "id" + suffix, "parentId" + suffix, "name" + suffix);
     }
 
     private class AbstractNodeTester extends AbstractNode {

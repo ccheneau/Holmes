@@ -41,7 +41,7 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testGetId() throws Exception {
-        ConfigurationNode node = buildConfigurationNode("");
+        ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         assertEquals(node.getId(), "id");
     }
 
@@ -50,7 +50,7 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testGetLabel() throws Exception {
-        ConfigurationNode node = buildConfigurationNode("");
+        ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         assertEquals(node.getLabel(), "label");
     }
 
@@ -59,7 +59,7 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testSetLabel() throws Exception {
-        ConfigurationNode node = buildConfigurationNode("");
+        ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         node.setLabel("newLabel");
         assertEquals(node.getLabel(), "newLabel");
     }
@@ -69,7 +69,7 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testGetPath() throws Exception {
-        ConfigurationNode node = buildConfigurationNode("");
+        ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         assertEquals(node.getPath(), "path");
     }
 
@@ -78,7 +78,7 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testSetPath() throws Exception {
-        ConfigurationNode node = buildConfigurationNode("");
+        ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         node.setPath("newPath");
         assertEquals(node.getPath(), "newPath");
     }
@@ -88,9 +88,9 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testHashCode() throws Exception {
-        ConfigurationNode node1 = buildConfigurationNode("");
-        ConfigurationNode node2 = buildConfigurationNode("");
-        ConfigurationNode node3 = buildConfigurationNode("3");
+        ConfigurationNode node1 = new ConfigurationNode("id", "label", "path");
+        ConfigurationNode node2 = new ConfigurationNode("id", "label", "path");
+        ConfigurationNode node3 = new ConfigurationNode("id3", "label", "path");
         assertNotNull(node1.hashCode());
         assertNotNull(node2.hashCode());
         assertNotNull(node3.hashCode());
@@ -103,11 +103,18 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testEquals() throws Exception {
-        ConfigurationNode node1 = buildConfigurationNode("");
-        ConfigurationNode node2 = buildConfigurationNode("");
-        ConfigurationNode node3 = buildConfigurationNode("3");
+        ConfigurationNode node1 = new ConfigurationNode("id", "label", "path");
+        ConfigurationNode node2 = new ConfigurationNode("id", "label", "path");
+        ConfigurationNode node3 = new ConfigurationNode("id3", "label", "path");
+        ConfigurationNode node4 = new ConfigurationNode("id", "label4", "path");
+        ConfigurationNode node5 = new ConfigurationNode("id", "label", "path4");
+        assertEquals(node1, node1);
         assertEquals(node1, node2);
+        assertNotEquals(node1, null);
+        assertNotEquals(node1, "node1");
         assertNotEquals(node1, node3);
+        assertNotEquals(node1, node4);
+        assertNotEquals(node1, node5);
     }
 
     /**
@@ -115,13 +122,9 @@ public class ConfigurationNodeTest {
      */
     @Test
     public void testToString() throws Exception {
-        ConfigurationNode node1 = buildConfigurationNode("");
-        ConfigurationNode node2 = buildConfigurationNode("");
+        ConfigurationNode node1 = new ConfigurationNode("id", "label", "path");
+        ConfigurationNode node2 = new ConfigurationNode("id", "label", "path");
         assertNotNull(node1.toString());
         assertEquals(node1.toString(), node2.toString());
-    }
-
-    private ConfigurationNode buildConfigurationNode(String suffix) {
-        return new ConfigurationNode("id" + suffix, "label" + suffix, "path" + suffix);
     }
 }

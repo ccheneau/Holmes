@@ -27,8 +27,7 @@ import org.junit.rules.TestName;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * ContentNode Tester.
@@ -113,7 +112,10 @@ public class ContentNodeTest {
         file.deleteOnExit();
         ContentNode node1 = buildContentNode("", file);
         ContentNode node2 = buildContentNode("", file);
+        assertEquals(node1, node1);
         assertEquals(node1, node2);
+        assertNotEquals(node1, null);
+        assertNotEquals(node1, "node1");
     }
 
     /**

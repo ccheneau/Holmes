@@ -22,8 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * PodcastEntryNode Tester.
@@ -44,7 +43,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetMimeType() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getMimeType(), mimeType);
     }
 
@@ -54,7 +53,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetUrl() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getUrl(), "url");
     }
 
@@ -64,7 +63,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetDuration() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getDuration(), "duration");
     }
 
@@ -74,8 +73,8 @@ public class PodcastEntryNodeTest {
     @Test
     public void testHashCode() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
-        PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         assertNotNull(node1.hashCode());
         assertEquals(node1.hashCode(), node2.hashCode());
     }
@@ -86,9 +85,24 @@ public class PodcastEntryNodeTest {
     @Test
     public void testEquals() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
-        PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        PodcastEntryNode node3 = new PodcastEntryNode("id1", "parentId", "name", mimeType, "url", "duration");
+        PodcastEntryNode node4 = new PodcastEntryNode("id", "parentId1", "name", mimeType, "url", "duration");
+        PodcastEntryNode node5 = new PodcastEntryNode("id", "parentId", "name1", mimeType, "url", "duration");
+        PodcastEntryNode node6 = new PodcastEntryNode("id", "parentId", "name", null, "url", "duration");
+        PodcastEntryNode node7 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url1", "duration");
+        PodcastEntryNode node8 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration1");
+        assertEquals(node1, node1);
         assertEquals(node1, node2);
+        assertNotEquals(node1, null);
+        assertNotEquals(node1, "node1");
+        assertNotEquals(node1, node3);
+        assertNotEquals(node1, node4);
+        assertNotEquals(node1, node5);
+        assertNotEquals(node1, node6);
+        assertNotEquals(node1, node7);
+        assertNotEquals(node1, node8);
     }
 
     /**
@@ -97,13 +111,10 @@ public class PodcastEntryNodeTest {
     @Test
     public void testToString() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = buildPodcastEntryNode(mimeType);
-        PodcastEntryNode node2 = buildPodcastEntryNode(mimeType);
+        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         assertNotNull(node1.toString());
         assertEquals(node1.toString(), node2.toString());
     }
 
-    private PodcastEntryNode buildPodcastEntryNode(MimeType mimeType) {
-        return new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
-    }
 }

@@ -130,7 +130,18 @@ public class SettingsTest {
         Settings settings = new Settings("serverName", 999, true, true, true);
         Settings settings2 = new Settings("serverName", 999, true, true, true);
         Settings settings3 = new Settings("serverName3", 999, true, true, true);
+        Settings settings4 = new Settings("serverName", 1000, true, true, true);
+        Settings settings5 = new Settings("serverName", 999, false, true, true);
+        Settings settings6 = new Settings("serverName", 999, true, false, true);
+        Settings settings7 = new Settings("serverName", 999, true, true, false);
         assertEquals(settings, settings2);
+        assertEquals(settings, settings);
+        assertNotEquals(settings, null);
+        assertNotEquals(settings, "settings");
         assertNotEquals(settings, settings3);
+        assertNotEquals(settings, settings4);
+        assertNotEquals(settings, settings5);
+        assertNotEquals(settings, settings6);
+        assertNotEquals(settings, settings7);
     }
 }

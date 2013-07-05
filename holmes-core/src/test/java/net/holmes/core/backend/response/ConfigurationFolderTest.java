@@ -94,7 +94,14 @@ public class ConfigurationFolderTest {
         ConfigurationFolder folder = new ConfigurationFolder("id", "name", "path");
         ConfigurationFolder folder2 = new ConfigurationFolder("id", "name", "path");
         ConfigurationFolder folder3 = new ConfigurationFolder("id3", "name", "path");
+        ConfigurationFolder folder4 = new ConfigurationFolder("id", "name1", "path");
+        ConfigurationFolder folder5 = new ConfigurationFolder("id", "name", "path1");
+        assertEquals(folder, folder);
         assertEquals(folder, folder2);
+        assertNotEquals(folder, null);
+        assertNotEquals(folder, "folder");
         assertNotEquals(folder, folder3);
+        assertNotEquals(folder, folder4);
+        assertNotEquals(folder, folder5);
     }
 }
