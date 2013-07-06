@@ -48,6 +48,7 @@
                              time="00:00:00"/>
             <media:credit scheme="urn:ebu" role="role">credit</media:credit>
             <media:rating scheme="urn:simple">adult</media:rating>
+            <media:hash>1234</media:hash>
             <media:adult>true</media:adult>
             <media:restriction type="uri" relationship="allow">http://www.hoodamath.com/images/g-coffeeshop.gif
             </media:restriction>
@@ -85,6 +86,7 @@
             <media:credit scheme="urn:ebu2" role="role">credit</media:credit>
             <media:keywords>k1,k2</media:keywords>
             <media:rating scheme="urn:simple">nonadult</media:rating>
+            <media:hash algo="MD5">1234</media:hash>
             <media:text start="01:01:01" end="02:02:02" type="text">some text</media:text>
 
         </item>
