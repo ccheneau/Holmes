@@ -73,10 +73,27 @@ public class MediaIndexTest {
     }
 
     @Test
-    public void testCleanMediaIndex() {
+    public void testCleanMediaIndexNonExistingParent() {
         String uuid1 = mediaIndex.add(new MediaIndexElement("parentId", "mediaType", "path", "name", true));
         assertNotNull(mediaIndex.get(uuid1));
         mediaIndex.clean();
         assertNull(mediaIndex.get(uuid1));
     }
+
+    @Test
+    public void testCleanMediaIndexNonExistingFile() {
+        String uuid1 = mediaIndex.add(new MediaIndexElement("1_VIDEOS", "mediaType", "path", "name", true));
+        assertNotNull(mediaIndex.get(uuid1));
+        mediaIndex.clean();
+        assertNull(mediaIndex.get(uuid1));
+    }
+
+    @Test
+    public void testCleanMediaIndexNonLocalPath() {
+        String uuid1 = mediaIndex.add(new MediaIndexElement("4_PODCASTS", "mediaType", "path", "name", false));
+        assertNotNull(mediaIndex.get(uuid1));
+        mediaIndex.clean();
+        assertNotNull(mediaIndex.get(uuid1));
+    }
+
 }
