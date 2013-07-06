@@ -93,7 +93,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
             // Get browse node                
             AbstractNode browseNode = mediaManager.getNode(objectID);
-            if (logger.isDebugEnabled()) logger.debug("browse node:{}", browseNode);
             if (browseNode == null)
                 throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
 

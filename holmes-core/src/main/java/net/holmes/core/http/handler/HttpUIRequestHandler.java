@@ -26,8 +26,6 @@ import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.InjectLogger;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,8 +39,6 @@ import java.io.RandomAccessFile;
 public final class HttpUIRequestHandler implements HttpRequestHandler {
     private final String uiDirectory;
     private final MimeTypeManager mimeTypeManager;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new http ui request handler.
@@ -62,15 +58,11 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
 
     @Override
     public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
-        if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
-
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();
         if ("/".equals(fileName))
             fileName = "/index.html";
-
-        if (logger.isDebugEnabled()) logger.debug("file name:{}", fileName);
 
         if (Strings.isNullOrEmpty(fileName))
             throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
@@ -78,10 +70,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         try {
             // Get file
             File file = new File(uiDirectory, fileName);
-            if (!file.exists()) {
-                if (logger.isDebugEnabled()) logger.debug("resource not found:{}", fileName);
-                throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
-            }
+            if (!file.exists()) throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
 
             // Read the file
             RandomAccessFile raf = new RandomAccessFile(file, "r");
@@ -109,10 +98,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
                 writeFuture.addListener(ChannelFutureListener.CLOSE);
             }
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) logger.error(e.getMessage(), e);
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        } finally {
-            if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
 }

@@ -29,8 +29,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.inject.InjectLogger;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -46,8 +44,6 @@ import java.util.Map.Entry;
 public final class HttpBackendRequestHandler implements HttpRequestHandler {
     private static final String REQUEST_PATH = "/backend/";
     private final WebApplication webApplication;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new http backend request handler.
@@ -66,8 +62,6 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
     @Override
     public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
-        if (logger.isDebugEnabled()) logger.debug("[START] processRequest");
-
         try {
             // Build backend request
             String baseUrl = "http://" + request.headers().get(HttpHeaders.Names.HOST) + REQUEST_PATH;
@@ -80,8 +74,6 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
             webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
         } catch (URISyntaxException | IOException e) {
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        } finally {
-            if (logger.isDebugEnabled()) logger.debug("[END] processRequest");
         }
     }
 

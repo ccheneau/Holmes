@@ -69,7 +69,7 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
         for (int i = 0; i < requests.size(); i++) {
             FullHttpRequest request = requests.get(i);
             if (logger.isDebugEnabled()) {
-                logger.debug("[START] messageReceived url:{}", request.getUri());
+                logger.debug("messageReceived url:{}", request.getUri());
                 for (Entry<String, String> entry : request.headers())
                     logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
 
@@ -98,7 +98,6 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
             }
         }
         messages.releaseAllAndRecycle();
-        if (logger.isDebugEnabled()) logger.debug("[END] messageReceived");
     }
 
     @Override
@@ -124,8 +123,6 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
         ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buffer);
         response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
-
-        if (logger.isDebugEnabled()) logger.debug("sendError: {}", status.toString());
 
         // Close the connection as soon as the error message is sent.
         context.channel().write(response).addListener(ChannelFutureListener.CLOSE);

@@ -81,7 +81,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             // Check parent id
             if (elValue.getParentId().equals(uuid) || toRemove.contains(elValue.getParentId())) {
                 toRemove.add(indexEntry.getKey());
-                if (logger.isDebugEnabled()) logger.debug("Remove child entry {} from media index", elValue.toString());
+                logger.debug("Remove child entry {} from media index", elValue.toString());
             }
         }
 
@@ -105,14 +105,12 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             if (RootNode.getById(elId) == RootNode.NONE && RootNode.getById(elValue.getParentId()) == RootNode.NONE
                     && (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId()))) {
                 toRemove.add(elId);
-                if (logger.isDebugEnabled())
-                    logger.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
+                logger.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
             }
             // Check element is still on file system
             if (!toRemove.contains(elId) && elValue.isLocalPath() && !new File(elValue.getPath()).exists()) {
                 toRemove.add(elId);
-                if (logger.isDebugEnabled())
-                    logger.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
+                logger.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
             }
         }
         // Remove elements

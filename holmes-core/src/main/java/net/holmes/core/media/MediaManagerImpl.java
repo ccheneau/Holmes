@@ -96,8 +96,6 @@ public final class MediaManagerImpl implements MediaManager {
     @Override
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
-        if (logger.isDebugEnabled()) logger.debug("[START] getNode nodeId:{}", nodeId);
-
         RootNode rootNode = RootNode.getById(nodeId);
         if (rootNode != RootNode.NONE) {
             // Root node
@@ -112,16 +110,13 @@ public final class MediaManagerImpl implements MediaManager {
                     node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
                 else
                     node = getFileNode(nodeId, indexElement, mediaType);
-            } else if (logger.isWarnEnabled()) logger.warn("{} not found in media index", nodeId);
+            } else logger.warn("{} not found in media index", nodeId);
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] getNode node:{}", node);
         return node;
     }
 
     @Override
     public List<AbstractNode> getChildNodes(final AbstractNode parentNode) {
-        if (logger.isDebugEnabled()) logger.debug("[START] getChildNodes nodeId:{}", parentNode.getId());
-
         List<AbstractNode> childNodes = null;
         RootNode rootNode = RootNode.getById(parentNode.getId());
         switch (rootNode) {
@@ -160,7 +155,6 @@ public final class MediaManagerImpl implements MediaManager {
                 }
                 break;
         }
-        if (logger.isDebugEnabled()) logger.debug("[END] getChildNodes :{}", childNodes);
         return childNodes;
     }
 
@@ -400,8 +394,6 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Subscribe
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
-        if (logger.isDebugEnabled()) logger.debug("Configuration event received: {}", configurationEvent.toString());
-
         ConfigurationNode configNode = configurationEvent.getNode();
         RootNode rootNode = configurationEvent.getRootNode();
         switch (configurationEvent.getType()) {
@@ -434,8 +426,6 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Subscribe
     public void handleMediaEvent(final MediaEvent mediaEvent) {
-        if (logger.isDebugEnabled()) logger.debug("Media event received: {}", mediaEvent.toString());
-
         switch (mediaEvent.getType()) {
             case SCAN_ALL:
                 scanAll();
