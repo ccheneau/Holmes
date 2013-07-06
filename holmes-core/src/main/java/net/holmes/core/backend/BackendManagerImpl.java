@@ -78,19 +78,17 @@ public final class BackendManagerImpl implements BackendManager {
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
-        if (rootNode == RootNode.PODCAST)
-            throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
-        else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
+        throw new IllegalArgumentException(resourceBundle.getString(rootNode == RootNode.PODCAST ? "backend.podcast.unknown.error" : "backend.folder.unknown.error"));
     }
 
     @Override
     public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        boolean podcast = rootNode == RootNode.PODCAST;
 
         // Validate
-        validateFolder(folder, podcast);
-        validateDuplicatedFolder(null, folder, configNodes, podcast);
+        checkFolder(folder, configNodes, null, rootNode == RootNode.PODCAST);
+
+        // Set new folder id
         folder.setId(UUID.randomUUID().toString());
 
         // Save config
@@ -112,14 +110,9 @@ public final class BackendManagerImpl implements BackendManager {
         boolean podcast = rootNode == RootNode.PODCAST;
 
         // Validate
-        validateFolder(folder, podcast);
-        validateDuplicatedFolder(id, folder, configNodes, podcast);
+        checkFolder(folder, configNodes, id, podcast);
 
-        ConfigurationNode currentNode = getCurrentConfigurationNode(id, configNodes);
-        if (currentNode == null) {
-            if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
-            else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
-        }
+        ConfigurationNode currentNode = getConfigurationNode(id, configNodes, podcast);
 
         // Save config if name or path has changed
         if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
@@ -139,17 +132,13 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        boolean podcast = rootNode == RootNode.PODCAST;
 
-        ConfigurationNode currentNode = getCurrentConfigurationNode(id, configNodes);
-        if (currentNode == null) {
-            if (podcast) throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.unknown.error"));
-            else throw new IllegalArgumentException(resourceBundle.getString("backend.folder.unknown.error"));
-        }
+        ConfigurationNode currentNode = getConfigurationNode(id, configNodes, rootNode == RootNode.PODCAST);
 
-        // Save config
+        // Remove node
         configNodes.remove(currentNode);
         try {
+            // Save config
             configuration.saveConfig();
         } catch (IOException e) {
             throw new ConfigurationException(e);
@@ -159,7 +148,7 @@ public final class BackendManagerImpl implements BackendManager {
         eventBus.post(new ConfigurationEvent(DELETE, currentNode, rootNode));
     }
 
-    private ConfigurationNode getCurrentConfigurationNode(String id, List<ConfigurationNode> configNodes) {
+    private ConfigurationNode getConfigurationNode(String id, List<ConfigurationNode> configNodes, boolean podcast) {
         ConfigurationNode currentNode = null;
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) {
@@ -167,6 +156,9 @@ public final class BackendManagerImpl implements BackendManager {
                 break;
             }
         }
+        if (currentNode == null)
+            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.unknown.error" : "backend.folder.unknown.error"));
+
         return currentNode;
     }
 
@@ -201,19 +193,17 @@ public final class BackendManagerImpl implements BackendManager {
     /**
      * Check folder does not already exist.
      *
-     * @param folder  folder to validate
-     * @param podcast true if folder is a podcast
+     * @param folder      folder to validate
+     * @param configNodes configuration nodes
+     * @param excludedId  id to exclude from validation
+     * @param podcast     true if folder is a podcast
      */
-    private void validateFolder(final ConfigurationFolder folder, final boolean podcast) {
+    private void checkFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final boolean podcast) {
         // Check folder's name and path are not empty
-        if (podcast && Strings.isNullOrEmpty(folder.getName()))
-            throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.name.error"));
-        else if (podcast && Strings.isNullOrEmpty(folder.getPath()))
-            throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.error"));
-        else if (Strings.isNullOrEmpty(folder.getName()))
-            throw new IllegalArgumentException(resourceBundle.getString("backend.folder.name.error"));
+        if (Strings.isNullOrEmpty(folder.getName()))
+            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.name.error" : "backend.folder.name.error"));
         else if (Strings.isNullOrEmpty(folder.getPath()))
-            throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.error"));
+            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.url.error" : "backend.folder.path.error"));
 
         if (podcast) {
             // Check podcast URL is correct
@@ -225,30 +215,16 @@ public final class BackendManagerImpl implements BackendManager {
             if (!file.exists() || !file.canRead() || file.isHidden() || !file.isDirectory())
                 throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.unknown.error"));
         }
-    }
 
-    /**
-     * Check folder does not already exist.
-     *
-     * @param excludedId  node id to exclude
-     * @param folder      folder to check
-     * @param configNodes configuration nodes
-     * @param podcast     true if folder is a podcast
-     */
-    private void validateDuplicatedFolder(final String excludedId, final ConfigurationFolder folder, final List<ConfigurationNode> configNodes,
-                                          final boolean podcast) {
+        // Check for duplication
         for (ConfigurationNode node : configNodes) {
             if (excludedId == null || !excludedId.equals(node.getId())) {
-                if (podcast && node.getLabel().equals(folder.getName())) {
-                    throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
-                } else if (podcast && node.getPath().equals(folder.getPath())) {
-                    throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.already.exist.error"));
-                } else if (node.getLabel().equals(folder.getName())) {
-                    throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
-                } else if (node.getPath().equals(folder.getPath())) {
-                    throw new IllegalArgumentException(resourceBundle.getString("backend.folder.already.exist.error"));
-                }
+                if (node.getLabel().equals(folder.getName()))
+                    throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error"));
+                else if (node.getPath().equals(folder.getPath()))
+                    throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error"));
             }
         }
+
     }
 }

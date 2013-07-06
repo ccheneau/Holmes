@@ -110,20 +110,8 @@ public final class MediaManagerImpl implements MediaManager {
                 if (mediaType == MediaType.TYPE_PODCAST)
                     // Pod-cast node
                     node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
-                else {
-                    // File or folder node
-                    File nodeFile = new File(indexElement.getPath());
-                    if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden())
-                        if (nodeFile.isFile()) {
-                            // Content node
-                            MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
-                            node = buildFileNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
-                        } else if (nodeFile.isDirectory()) {
-                            // Folder node
-                            String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
-                            node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
-                        }
-                }
+                else
+                    node = getFileNode(nodeId, indexElement, mediaType);
             } else if (logger.isWarnEnabled()) logger.warn("{} not found in media index", nodeId);
         }
         if (logger.isDebugEnabled()) logger.debug("[END] getNode node:{}", node);
@@ -176,19 +164,51 @@ public final class MediaManagerImpl implements MediaManager {
         return childNodes;
     }
 
+    /**
+     * Scan all configuration nodes
+     */
     @Override
     public void scanAll() {
         AbstractNode rootNode = getNode(RootNode.ROOT.getId());
         scanNode(rootNode);
     }
 
-    private void scanNode(final AbstractNode parentNode) {
-        if (parentNode instanceof FolderNode) {
-            List<AbstractNode> childNodes = getChildNodes(parentNode);
+    /**
+     * Scan a specific node and its children
+     *
+     * @param node node to scan
+     */
+    private void scanNode(final AbstractNode node) {
+        if (node instanceof FolderNode) {
+            List<AbstractNode> childNodes = getChildNodes(node);
             if (childNodes != null)
                 for (AbstractNode childNode : childNodes)
                     scanNode(childNode);
         }
+    }
+
+    /**
+     * Get file or folder node
+     *
+     * @param nodeId       node id
+     * @param indexElement index element
+     * @param mediaType    media type
+     * @return file or folder node
+     */
+    private AbstractNode getFileNode(String nodeId, MediaIndexElement indexElement, MediaType mediaType) {
+        AbstractNode node = null;
+        File nodeFile = new File(indexElement.getPath());
+        if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden())
+            if (nodeFile.isFile()) {
+                // Content node
+                MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
+                node = buildFileNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
+            } else if (nodeFile.isDirectory()) {
+                // Folder node
+                String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
+                node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
+            }
+        return node;
     }
 
     /**
@@ -281,30 +301,23 @@ public final class MediaManagerImpl implements MediaManager {
                     try (XmlReader reader = new XmlReader(new URL(url))) {
                         // Get RSS feed entries
                         List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
-                        if (rssEntries != null && !rssEntries.isEmpty()) for (SyndEntry rssEntry : rssEntries)
-                            // Add podcast entry node for each feed entry
-                            if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
-                                String duration = null;
-                                String iconUrl = null;
-                                EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-                                if (itunesInfo != null && itunesInfo.getDuration() != null)
-                                    duration = itunesInfo.getDuration().toString();
-                                MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
-                                if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
-                                    iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
-                                for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                                    MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
-                                    if (mimeType != null &&
-                                            (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
-                                        PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), duration);
-                                        podcastEntryNode.setIconUrl(iconUrl);
-                                        if (rssEntry.getPublishedDate() != null)
-                                            podcastEntryNode.setModifiedDate(rssEntry.getPublishedDate().getTime());
-                                        // Add podcast entry node
-                                        podcastEntryNodes.add(podcastEntryNode);
+                        if (rssEntries != null)
+                            for (SyndEntry rssEntry : rssEntries)
+                                // Add podcast entry node for each RSS entry
+                                if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
+                                    RssEntryHelper helper = new RssEntryHelper(rssEntry);
+                                    for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
+                                        MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
+                                        if (mimeType != null &&
+                                                (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
+                                            PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), helper.getDuration());
+                                            podcastEntryNode.setIconUrl(helper.getIconUrl());
+                                            podcastEntryNode.setModifiedDate(helper.getPublishedDate());
+                                            // Add podcast entry node
+                                            podcastEntryNodes.add(podcastEntryNode);
+                                        }
                                     }
                                 }
-                            }
                     }
                     return podcastEntryNodes;
                 }
@@ -325,14 +338,15 @@ public final class MediaManagerImpl implements MediaManager {
      * @return built node
      */
     private AbstractNode buildFileNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
-        if (mimeType == null) return null;
-
-        // Check mime type
-        if (mimeType.getType() == mediaType)
-            return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-        else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
-            return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
-
+        if (mimeType != null) {
+            // Check mime type
+            if (mimeType.getType() == mediaType)
+                // build content node
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
+            else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+                // build subtitle node
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
+        }
         return null;
     }
 
@@ -433,6 +447,59 @@ public final class MediaManagerImpl implements MediaManager {
             default:
                 logger.error("Unknown event");
                 break;
+        }
+    }
+
+    /**
+     * Helper for RSS entries.
+     */
+    private static final class RssEntryHelper {
+        private final SyndEntry rssEntry;
+
+        /**
+         * Instantiates a new RSS entry helper.
+         *
+         * @param rssEntry RSS entry
+         */
+        public RssEntryHelper(SyndEntry rssEntry) {
+            this.rssEntry = rssEntry;
+        }
+
+        /**
+         * Get RSS entry duration.
+         *
+         * @return duration
+         */
+        public String getDuration() {
+            String duration = null;
+            EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
+            if (itunesInfo != null && itunesInfo.getDuration() != null)
+                duration = itunesInfo.getDuration().toString();
+            return duration;
+        }
+
+        /**
+         * Get RSS entry icon Url.
+         *
+         * @return icon Url
+         */
+        public String getIconUrl() {
+            String iconUrl = null;
+            MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
+            if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
+                iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
+            return iconUrl;
+        }
+
+        /**
+         * Get RSS entry published date
+         *
+         * @return published date
+         */
+        public Long getPublishedDate() {
+            if (rssEntry.getPublishedDate() != null)
+                return rssEntry.getPublishedDate().getTime();
+            return null;
         }
     }
 }

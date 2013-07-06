@@ -105,15 +105,7 @@ public class MediaModuleParser implements ModuleParser {
                 values.add(mc);
                 try {
                     mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : Integer.valueOf(content.getAttributeValue("channels")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-                try {
                     mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : Float.valueOf(content.getAttributeValue("bitrate")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-                try {
                     mc.setDuration((content.getAttributeValue("duration") == null) ? null : Long.valueOf(content.getAttributeValue("duration")));
                 } catch (Exception ex) {
                     LOGGER.warn("Exception parsing content tag.", ex);
@@ -135,8 +127,7 @@ public class MediaModuleParser implements ModuleParser {
                 mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
                 mc.setLanguage(content.getAttributeValue("lang"));
                 mc.setMetadata(parseMetadata(content));
-                mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content
-                        .getAttributeValue("samplingrate")));
+                mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("samplingrate")));
 
                 mc.setType(content.getAttributeValue("type"));
                 mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
@@ -179,13 +170,13 @@ public class MediaModuleParser implements ModuleParser {
     /**
      * Parses the metadata.
      *
-     * @param e the e
+     * @param element the element
      * @return metadata
      */
-    private Metadata parseMetadata(final Element e) {
+    private Metadata parseMetadata(final Element element) {
         Metadata md = new Metadata();
         // categories
-        List<?> categories = e.getChildren("category", NS);
+        List<?> categories = element.getChildren("category", NS);
         List<Category> catValues = new ArrayList<>();
 
         for (int i = 0; categories != null && i < categories.size(); i++)
@@ -199,7 +190,7 @@ public class MediaModuleParser implements ModuleParser {
 
         // copyright
         try {
-            Element copy = e.getChild("copyright", NS);
+            Element copy = element.getChild("copyright", NS);
             if (copy != null) {
                 md.setCopyright(copy.getText());
                 md.setCopyrightUrl((copy.getAttributeValue("url") != null) ? new URI(copy.getAttributeValue("url")) : null);
@@ -209,7 +200,7 @@ public class MediaModuleParser implements ModuleParser {
         }
 
         // credits
-        List<?> credits = e.getChildren("credit", NS);
+        List<?> credits = element.getChildren("credit", NS);
         List<Credit> crValues = new ArrayList<>();
         for (int i = 0; credits != null && i < credits.size(); i++) {
             Element cred = (Element) credits.get(i);
@@ -218,18 +209,18 @@ public class MediaModuleParser implements ModuleParser {
         md.setCredits(crValues.toArray(new Credit[crValues.size()]));
 
         // description
-        Element description = e.getChild("description", NS);
+        Element description = element.getChild("description", NS);
         if (description != null) {
             md.setDescription(description.getText());
             md.setDescriptionType(description.getAttributeValue("type"));
         }
 
         // hash
-        Element hash = e.getChild("hash", NS);
+        Element hash = element.getChild("hash", NS);
         if (hash != null) md.setHash(new Hash(hash.getAttributeValue("algo"), hash.getText()));
 
         // keywords
-        Element keywords = e.getChild("keywords", NS);
+        Element keywords = element.getChild("keywords", NS);
         if (keywords != null) {
             StringTokenizer tok = new StringTokenizer(keywords.getText(), ",");
             String[] value = new String[tok.countTokens()];
@@ -239,7 +230,7 @@ public class MediaModuleParser implements ModuleParser {
         }
 
         // ratings
-        List<?> ratings = e.getChildren("rating", NS);
+        List<?> ratings = element.getChildren("rating", NS);
         List<Rating> ratValues = new ArrayList<>();
         for (int i = 0; ratings != null && i < ratings.size(); i++) {
             Element rat = (Element) ratings.get(i);
@@ -249,7 +240,7 @@ public class MediaModuleParser implements ModuleParser {
         md.setRatings(ratValues.toArray(new Rating[ratValues.size()]));
 
         // text
-        List<?> texts = e.getChildren("text", NS);
+        List<?> texts = element.getChildren("text", NS);
         List<Text> txtValues = new ArrayList<>();
         for (int i = 0; texts != null && i < texts.size(); i++) {
             Element text = (Element) texts.get(i);
@@ -260,7 +251,7 @@ public class MediaModuleParser implements ModuleParser {
         md.setText(txtValues.toArray(new Text[txtValues.size()]));
 
         // thumbnails
-        List<?> thumbnails = e.getChildren("thumbnail", NS);
+        List<?> thumbnails = element.getChildren("thumbnail", NS);
         List<Thumbnail> tbnValues = new ArrayList<>();
         for (int i = 0; thumbnails != null && i < thumbnails.size(); i++) {
             try {
@@ -280,14 +271,14 @@ public class MediaModuleParser implements ModuleParser {
         md.setThumbnail(tbnValues.toArray(new Thumbnail[tbnValues.size()]));
 
         // title
-        Element title = e.getChild("title", NS);
+        Element title = element.getChild("title", NS);
         if (title != null) {
             md.setTitle(title.getText());
             md.setTitleType(title.getAttributeValue("type"));
         }
 
         // restrictions
-        List<?> restrictions = e.getChildren("restriction", NS);
+        List<?> restrictions = element.getChildren("restriction", NS);
         List<Restriction> rstValues = new ArrayList<>();
         for (Object restriction : restrictions) {
             Element r = (Element) restriction;
@@ -309,7 +300,7 @@ public class MediaModuleParser implements ModuleParser {
         md.setRestrictions(rstValues.toArray(new Restriction[rstValues.size()]));
 
         // handle adult
-        Element adult = e.getChild("adult", NS);
+        Element adult = element.getChild("adult", NS);
         if (adult != null && md.getRatings().length == 0) {
             Rating[] r = new Rating[1];
             r[0] = new Rating("urn:simple", adult.getTextTrim().equals("true") ? "adult" : "nonadult");
@@ -326,19 +317,19 @@ public class MediaModuleParser implements ModuleParser {
      */
     private PlayerReference parsePlayer(final Element element) {
         Element player = element.getChild("player", NS);
-        PlayerReference p = null;
+        PlayerReference playerReference = null;
 
         if (player != null) {
             Integer width = (player.getAttributeValue("width") == null) ? null : Integer.valueOf(player.getAttributeValue("width"));
             Integer height = (player.getAttributeValue("height") == null) ? null : Integer.valueOf(player.getAttributeValue("height"));
 
             try {
-                p = new PlayerReference(new URI(player.getAttributeValue("url")), width, height);
+                playerReference = new PlayerReference(new URI(player.getAttributeValue("url")), width, height);
             } catch (Exception ex) {
                 LOGGER.warn("Exception parsing player tag.", ex);
             }
         }
 
-        return p;
+        return playerReference;
     }
 }
