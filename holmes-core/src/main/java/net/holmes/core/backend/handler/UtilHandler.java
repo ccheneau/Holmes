@@ -19,11 +19,11 @@ package net.holmes.core.backend.handler;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.holmes.core.common.NodeFile;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.Collection;
 import java.util.Map;
 
@@ -75,12 +75,10 @@ public final class UtilHandler {
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
         } else {
             // Get child folders
-            File fPath = new File(parentPath);
-            if (fPath.exists() && fPath.isDirectory() && fPath.canRead()) {
-                File[] childDirs = fPath.listFiles(new FolderFileFilter());
-                if (childDirs != null)
-                    for (File childDir : childDirs)
-                        folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
+            NodeFile fPath = new NodeFile(parentPath);
+            if (fPath.isValidDirectory()) {
+                for (File childDir : fPath.listValidFiles(false, true))
+                    folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
             }
         }
         return folders;
@@ -118,17 +116,5 @@ public final class UtilHandler {
         public Map<String, String> getMetadata() {
             return metadata;
         }
-    }
-
-    /**
-     * Folder file filter.
-     */
-    private static class FolderFileFilter implements FileFilter {
-
-        @Override
-        public boolean accept(final File file) {
-            return file.exists() && file.isDirectory() && file.canRead() && !file.isHidden() && !file.getName().startsWith(".") && file.listFiles() != null;
-        }
-
     }
 }

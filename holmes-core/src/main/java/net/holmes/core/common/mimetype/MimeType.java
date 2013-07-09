@@ -54,6 +54,15 @@ public final class MimeType {
     }
 
     /**
+     * Gets the sub type.
+     *
+     * @return the sub type
+     */
+    public String getSubType() {
+        return this.subType;
+    }
+
+    /**
      * Gets the type.
      *
      * @return the type
@@ -63,12 +72,21 @@ public final class MimeType {
     }
 
     /**
-     * Gets the sub type.
+     * Checks mimeType is a media.
      *
-     * @return the sub type
+     * @return
      */
-    public String getSubType() {
-        return this.subType;
+    public boolean isMedia() {
+        return MediaType.TYPE_AUDIO == type || MediaType.TYPE_IMAGE == type || MediaType.TYPE_VIDEO == type;
+    }
+
+    /**
+     * Checks mimeType is a subTitle.
+     *
+     * @return
+     */
+    public boolean isSubTitle() {
+        return MediaType.TYPE_APPLICATION == type && MimeType.SUBTITLE_SUBTYPE.equals(subType);
     }
 
     @Override

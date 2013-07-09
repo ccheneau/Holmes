@@ -22,13 +22,13 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
+import net.holmes.core.common.NodeFile;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
@@ -65,11 +65,9 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
             throw new HttpRequestException(request.getUri(), HttpResponseStatus.NOT_FOUND);
 
         // Check node
-        File file = new File(node.getPath());
-        if (!file.exists() || !file.isFile())
+        NodeFile file = new NodeFile(node.getPath());
+        if (!file.isValidFile())
             throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
-        else if (!file.canRead() || file.isHidden())
-            throw new HttpRequestException(node.getPath(), HttpResponseStatus.FORBIDDEN);
 
         // Get start offset
         long startOffset = 0;

@@ -30,6 +30,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.common.MediaType;
+import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.configuration.Parameter;
@@ -147,8 +148,8 @@ public final class MediaManagerImpl implements MediaManager {
                             childNodes = getPodcastEntries(parentNode.getId(), indexElement.getPath());
                         } else {
                             // Get folder child nodes
-                            File node = new File(indexElement.getPath());
-                            if (node.exists() && node.isDirectory() && node.canRead() && !node.isHidden())
+                            NodeFile node = new NodeFile(indexElement.getPath());
+                            if (node.isValidDirectory())
                                 childNodes = getFolderChildNodes(parentNode.getId(), node, mediaType);
                         }
                     } else logger.error("{} node not found in index", parentNode.getId());
@@ -191,8 +192,8 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private AbstractNode getFileNode(String nodeId, MediaIndexElement indexElement, MediaType mediaType) {
         AbstractNode node = null;
-        File nodeFile = new File(indexElement.getPath());
-        if (nodeFile.exists() && nodeFile.canRead() && !nodeFile.isHidden())
+        NodeFile nodeFile = new NodeFile(indexElement.getPath());
+        if (nodeFile.isValid())
             if (nodeFile.isFile()) {
                 // Content node
                 MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
@@ -238,8 +239,8 @@ public final class MediaManagerImpl implements MediaManager {
             else
                 // Add folder nodes
                 for (ConfigurationNode configNode : configNodes) {
-                    File file = new File(configNode.getPath());
-                    if (file.exists() && file.isDirectory() && file.canRead()) {
+                    NodeFile file = new NodeFile(configNode.getPath());
+                    if (file.isValidDirectory()) {
                         // Add node to mediaIndex
                         mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                         // Add child node
@@ -258,21 +259,18 @@ public final class MediaManagerImpl implements MediaManager {
      * @param mediaType media type
      * @return folder child nodes matching media type
      */
-    private List<AbstractNode> getFolderChildNodes(final String parentId, final File folder, final MediaType mediaType) {
+    private List<AbstractNode> getFolderChildNodes(final String parentId, final NodeFile folder, final MediaType mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        File[] files = folder.listFiles();
-        if (files != null)
-            for (File file : files)
-                if (file.canRead() && !file.isHidden()) {
-                    // Add node to mediaIndex
-                    String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
-                    if (file.isDirectory())
-                        // Add folder node
-                        nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
-                    else
-                        // Add file node
-                        nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName())));
-                }
+        for (File file : folder.listValidFiles(true, true)) {
+            // Add node to mediaIndex
+            String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
+            if (file.isDirectory())
+                // Add folder node
+                nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
+            else
+                // Add file node
+                nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName())));
+        }
         return nodes;
     }
 
@@ -302,8 +300,7 @@ public final class MediaManagerImpl implements MediaManager {
                                     RssEntryHelper helper = new RssEntryHelper(rssEntry);
                                     for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                                         MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
-                                        if (mimeType != null &&
-                                                (mimeType.getType() == MediaType.TYPE_AUDIO || mimeType.getType() == MediaType.TYPE_IMAGE || mimeType.getType() == MediaType.TYPE_VIDEO)) {
+                                        if (mimeType != null && mimeType.isMedia()) {
                                             PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podCastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), helper.getDuration());
                                             podcastEntryNode.setIconUrl(helper.getIconUrl());
                                             podcastEntryNode.setModifiedDate(helper.getPublishedDate());
@@ -337,7 +334,7 @@ public final class MediaManagerImpl implements MediaManager {
             if (mimeType.getType() == mediaType)
                 // build content node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (mimeType.getType() == MediaType.TYPE_APPLICATION && MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()) && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+            else if (configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES) && mimeType.isSubTitle())
                 // build subtitle node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
         }

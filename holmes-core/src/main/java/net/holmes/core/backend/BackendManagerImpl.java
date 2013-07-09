@@ -23,6 +23,7 @@ import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.ConfigurationException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
+import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.configuration.Parameter;
@@ -30,7 +31,6 @@ import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.media.model.RootNode;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -211,8 +211,8 @@ public final class BackendManagerImpl implements BackendManager {
                 throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.malformed.error"));
         } else {
             // Check folder path is correct
-            File file = new File(folder.getPath());
-            if (!file.exists() || !file.canRead() || file.isHidden() || !file.isDirectory())
+            NodeFile file = new NodeFile(folder.getPath());
+            if (!file.isValidDirectory())
                 throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.unknown.error"));
         }
 
