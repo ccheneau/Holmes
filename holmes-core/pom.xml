@@ -98,6 +98,12 @@
             <artifactId>netty-handler</artifactId>
         </dependency>
 
+        <!-- javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+
         <!-- seamless -->
         <dependency>
             <groupId>org.seamless</groupId>

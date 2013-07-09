@@ -51,6 +51,7 @@
         <seamless.version>1.0-alpha2</seamless.version>
         <slf4j.version>1.7.5</slf4j.version>
         <xstream.version>1.4.4</xstream.version>
+        <javassist.version>3.18.0-GA</javassist.version>
     </properties>
 
     <build>
@@ -161,6 +162,13 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-handler</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+
+            <!-- javassist -->
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
             </dependency>
 
             <!-- slf4j -->
