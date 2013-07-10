@@ -267,9 +267,12 @@ public final class MediaManagerImpl implements MediaManager {
             if (file.isDirectory())
                 // Add folder node
                 nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
-            else
+            else {
                 // Add file node
-                nodes.add(buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName())));
+                AbstractNode node = buildFileNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName()));
+                if (node != null)
+                    nodes.add(node);
+            }
         }
         return nodes;
     }
