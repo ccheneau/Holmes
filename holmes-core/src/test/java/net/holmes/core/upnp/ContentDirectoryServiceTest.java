@@ -31,7 +31,8 @@ import org.junit.Test;
 import java.util.List;
 
 import static net.holmes.core.media.model.RootNode.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ContentDirectoryServiceTest {
 
@@ -100,14 +101,8 @@ public class ContentDirectoryServiceTest {
 
     }
 
-    @Test
-    public void testBrowseNull() {
-        try {
-            BrowseResult result = contentDirectoryService.browse(null, BrowseFlag.METADATA, null, 0, 10, null);
-            fail();
-        } catch (ContentDirectoryException e) {
-            assertNotNull(e);
-        }
-
+    @Test(expected = ContentDirectoryException.class)
+    public void testBrowseNull() throws ContentDirectoryException {
+        contentDirectoryService.browse(null, BrowseFlag.METADATA, null, 0, 10, null);
     }
 }

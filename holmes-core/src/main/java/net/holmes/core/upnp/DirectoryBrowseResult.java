@@ -21,6 +21,10 @@ import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.media.model.PodcastEntryNode;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
+import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.DIDLObject.Property.DC;
@@ -75,19 +79,41 @@ final class DirectoryBrowseResult {
     }
 
     /**
+     * Get total result count.
+     *
+     * @return total result count
+     */
+    public long getResultCount() {
+        return itemCount + firstResult;
+    }
+
+    /**
+     * build browse result.
+     *
+     * @return browse result
+     * @throws ContentDirectoryException
+     */
+    public BrowseResult buildBrowseResult() throws ContentDirectoryException {
+        try {
+            return new BrowseResult(new DIDLParser().generate(didl), itemCount, totalCount);
+        } catch (Exception e) {
+            throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
+        }
+    }
+
+    /**
      * Adds item to result.
      *
      * @param parentNodeId parent node id
      * @param contentNode  content node
      * @param url          content url
-     * @throws URISyntaxException URI syntax exception
+     * @throws ContentDirectoryException
      */
-    public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws URISyntaxException {
-        MimeType mimeType = contentNode.getMimeType();
+    public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws ContentDirectoryException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
         if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
 
-        addDidlItem(parentNodeId, contentNode, contentNode.getName(), mimeType, res);
+        addDidlItem(parentNodeId, contentNode, contentNode.getName(), contentNode.getMimeType(), res);
     }
 
     /**
@@ -96,9 +122,9 @@ final class DirectoryBrowseResult {
      * @param parentNodeId     parent node id
      * @param podcastEntryNode podcast entry node
      * @param entryName        podcast entry name
-     * @throws URISyntaxException URI syntax exception
+     * @throws ContentDirectoryException
      */
-    public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws URISyntaxException {
+    public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws ContentDirectoryException {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
         if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
@@ -114,9 +140,9 @@ final class DirectoryBrowseResult {
      * @param name         node name
      * @param mimeType     node mimeType
      * @param res          didl resource
-     * @throws URISyntaxException
+     * @throws ContentDirectoryException
      */
-    private void addDidlItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) throws URISyntaxException {
+    private void addDidlItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) throws ContentDirectoryException {
         Item item = null;
         switch (mimeType.getType()) {
             case TYPE_VIDEO:
@@ -152,9 +178,9 @@ final class DirectoryBrowseResult {
      * @param parentNodeId parent node id
      * @param node         container node
      * @param childCount   child count
-     * @throws URISyntaxException URI syntax exception
+     * @throws ContentDirectoryException
      */
-    public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws URISyntaxException {
+    public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws ContentDirectoryException {
         StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
         setDidlMetadata(folder, node);
 
@@ -163,11 +189,11 @@ final class DirectoryBrowseResult {
     }
 
     /**
-     * Filter result according to pagination parameters.
+     * Checks if node can be added to result according to pagination parameters.
      *
      * @return true, if successful
      */
-    public boolean filterResult() {
+    public boolean acceptNode() {
         totalCount += 1;
         return maxResults == 0 || itemCount < maxResults && totalCount >= firstResult + 1;
     }
@@ -187,12 +213,16 @@ final class DirectoryBrowseResult {
      *
      * @param didlObject didl object
      * @param node       node
-     * @throws URISyntaxException !URI syntax exception
+     * @throws ContentDirectoryException
      */
-    private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws URISyntaxException {
+    private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws ContentDirectoryException {
         if (node.getModifiedDate() != null)
             didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
         if (node.getIconUrl() != null)
-            didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+            try {
+                didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
+            } catch (URISyntaxException e) {
+                throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
+            }
     }
 }

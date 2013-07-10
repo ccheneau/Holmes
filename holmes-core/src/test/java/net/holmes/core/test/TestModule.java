@@ -21,6 +21,7 @@ import com.google.common.cache.Cache;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
@@ -66,7 +67,7 @@ public class TestModule extends AbstractModule {
     protected void configure() {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
 
-        bind(Configuration.class).to(TestConfiguration.class);
+        bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
 
         bind(MediaManager.class).to(MediaManagerImpl.class);
@@ -75,6 +76,7 @@ public class TestModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(System.getProperty("java.io.tmpdir"));
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(System.getProperty("java.io.tmpdir"));
+        bindConstant().annotatedWith(Names.named("localIP")).to("localhost");
 
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class);
 

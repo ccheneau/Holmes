@@ -21,13 +21,13 @@ import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.media.model.FolderNode;
 import net.holmes.core.media.model.PodcastEntryNode;
+import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.junit.Assert.*;
 
@@ -46,7 +46,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddVideoItem() throws IOException, URISyntaxException {
+    public void testAddVideoItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("video/x-msvideo");
@@ -59,7 +59,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddAudioItem() throws IOException, URISyntaxException {
+    public void testAddAudioItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
@@ -73,7 +73,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddImageItem() throws IOException, URISyntaxException {
+    public void testAddImageItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("image/jpeg");
@@ -86,7 +86,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddSubtitleItem() throws IOException, URISyntaxException {
+    public void testAddSubtitleItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/x-subrip");
@@ -99,7 +99,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddBadSubtitleItem() throws IOException, URISyntaxException {
+    public void testAddBadSubtitleItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/bad-subrip");
@@ -112,7 +112,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddBadItem() throws IOException, URISyntaxException {
+    public void testAddBadItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("bad-type/bad-subtype");
@@ -124,8 +124,20 @@ public class DirectoryBrowseResultTest {
         assertEquals(directoryBrowseResult.getDidl().getCount(), 0);
     }
 
+    @Test(expected = ContentDirectoryException.class)
+    public void testBadAddItemIconUrl() throws IOException, ContentDirectoryException {
+        File file = File.createTempFile(testName.getMethodName(), "avi");
+        file.deleteOnExit();
+        MimeType mimeType = new MimeType("audio/mpeg");
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        node.setIconUrl("\\bad_url");
+
+        DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
+        directoryBrowseResult.addItem("1", node, "http://google.com");
+    }
+
     @Test
-    public void testAddContainer() throws URISyntaxException {
+    public void testAddContainer() throws ContentDirectoryException {
         FolderNode node = new FolderNode("id", "parentId", "name");
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addContainer("1", node, 1);
@@ -134,7 +146,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddPodcastItem() throws URISyntaxException {
+    public void testAddPodcastItem() throws ContentDirectoryException {
         MimeType mimeType = new MimeType("video/x-msvideo");
         PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -144,7 +156,7 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testFilterResult() throws IOException, URISyntaxException {
+    public void testFilterResult() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
@@ -152,18 +164,18 @@ public class DirectoryBrowseResultTest {
         node.setIconUrl("http://google.com");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
-        assertTrue(directoryBrowseResult.filterResult());
+        assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
         assertEquals(directoryBrowseResult.getItemCount(), 1);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
 
-        assertFalse(directoryBrowseResult.filterResult());
+        assertFalse(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 2);
     }
 
     @Test
-    public void testFilterResultNoMaxResult() throws IOException, URISyntaxException {
+    public void testFilterResultNoMaxResult() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
@@ -171,13 +183,13 @@ public class DirectoryBrowseResultTest {
         node.setIconUrl("http://google.com");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 0);
-        assertTrue(directoryBrowseResult.filterResult());
+        assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
         assertEquals(directoryBrowseResult.getItemCount(), 1);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
 
-        assertTrue(directoryBrowseResult.filterResult());
+        assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 2);
     }
 

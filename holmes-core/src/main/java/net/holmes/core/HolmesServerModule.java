@@ -60,9 +60,11 @@ import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
 import java.io.File;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
@@ -78,6 +80,7 @@ final class HolmesServerModule extends AbstractModule {
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
     private final String uiDirectory = getUiDirectory();
+    private final String localIP = getLocalIPV4();
 
     /**
      * Get local data directory where Holmes configuration and logs are saved.
@@ -109,6 +112,27 @@ final class HolmesServerModule extends AbstractModule {
         return uiDir.getAbsolutePath();
     }
 
+    /**
+     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux).
+     *
+     * @return local IPv4 address
+     */
+    private static String getLocalIPV4() {
+        try {
+            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
+                        return inetAddress.getHostAddress();
+                }
+            }
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (SocketException | UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     protected void configure() {
 
@@ -133,6 +157,7 @@ final class HolmesServerModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
+        bindConstant().annotatedWith(Names.named("localIP")).to(localIP);
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);

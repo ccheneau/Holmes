@@ -18,6 +18,7 @@
 package net.holmes.core.test;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.configuration.Parameter;
@@ -26,6 +27,7 @@ import net.holmes.core.media.model.RootNode;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class TestConfiguration implements Configuration {
 
@@ -33,6 +35,9 @@ public class TestConfiguration implements Configuration {
     private final List<ConfigurationNode> pictureFolders;
     private final List<ConfigurationNode> audioFolders;
     private final List<ConfigurationNode> podcasts;
+    private String upnpServerName = DEFAULT_UPNP_SERVER_NAME;
+    private Integer httpServerPort = DEFAULT_HTTP_SERVER_PORT;
+    private Map<Parameter, String> parameters;
 
     public TestConfiguration() {
         videoFolders = Lists.newArrayList();
@@ -43,6 +48,10 @@ public class TestConfiguration implements Configuration {
         pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
         podcasts = Lists.newArrayList();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
+        parameters = Maps.newHashMap();
+        for (Parameter parameter : Parameter.values()) {
+            parameters.put(parameter, parameter.getDefaultValue());
+        }
     }
 
     @Override
@@ -63,22 +72,22 @@ public class TestConfiguration implements Configuration {
 
     @Override
     public String getUpnpServerName() {
-        return DEFAULT_UPNP_SERVER_NAME;
+        return upnpServerName;
     }
 
     @Override
     public void setUpnpServerName(String upnpServerName) {
-
+        this.upnpServerName = upnpServerName;
     }
 
     @Override
     public Integer getHttpServerPort() {
-        return DEFAULT_HTTP_SERVER_PORT;
+        return httpServerPort;
     }
 
     @Override
     public void setHttpServerPort(Integer httpServerPort) {
-
+        this.httpServerPort = httpServerPort;
     }
 
     @Override
@@ -105,15 +114,16 @@ public class TestConfiguration implements Configuration {
 
     @Override
     public Boolean getParameter(Parameter param) {
-        return Boolean.TRUE;
+        return Boolean.valueOf(parameters.get(param));
     }
 
     @Override
-    public Integer getIntParameter(Parameter prop) {
-        return 0;
+    public Integer getIntParameter(Parameter param) {
+        return Integer.valueOf(parameters.get(param));
     }
 
     @Override
     public void setParameter(Parameter param, Boolean value) {
+        parameters.put(param, value.toString());
     }
 }
