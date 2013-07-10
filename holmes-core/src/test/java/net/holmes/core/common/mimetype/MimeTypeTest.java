@@ -28,19 +28,15 @@ public class MimeTypeTest {
      */
     @Test
     public void testMimeType() {
-        try {
-            MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
+        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
 
-            String fileName = "movie.avi";
-            MimeType mimeType = mimeTypeManager.getMimeType(fileName);
+        String fileName = "movie.avi";
+        MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
-            assertNotNull(mimeType);
-            assertEquals(MediaType.TYPE_VIDEO, mimeType.getType());
-            assertEquals("x-msvideo", mimeType.getSubType());
-            assertEquals("video/x-msvideo", mimeType.getMimeType());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertNotNull(mimeType);
+        assertEquals(MediaType.TYPE_VIDEO, mimeType.getType());
+        assertEquals("x-msvideo", mimeType.getSubType());
+        assertEquals("video/x-msvideo", mimeType.getMimeType());
     }
 
     /**
@@ -48,28 +44,17 @@ public class MimeTypeTest {
      */
     @Test
     public void testBadMimeType() {
-        try {
-            MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
-
-            String fileName = "movie.blabla";
-            MimeType mimeType = mimeTypeManager.getMimeType(fileName);
-
-            assertNull(mimeType);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
+        String fileName = "movie.blabla";
+        MimeType mimeType = mimeTypeManager.getMimeType(fileName);
+        assertNull(mimeType);
     }
 
     /**
      * Test bad mime type path.
      */
-    @Test
+    @Test(expected = RuntimeException.class)
     public void testBadMimePath() {
-        try {
-            new MimeTypeManagerImpl("/badMimeTypePath");
-            fail();
-        } catch (RuntimeException e) {
-            assertNotNull(e);
-        }
+        new MimeTypeManagerImpl("/badMimeTypePath");
     }
 }
