@@ -43,15 +43,42 @@ public class XmlConfigurationTest {
     }
 
     @Test
+    public void testXmlConfigurationEmpty() {
+        String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
+        try {
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            assertNotNull(configuration.getFolders(RootNode.AUDIO));
+            assertNotNull(configuration.getFolders(RootNode.VIDEO));
+            assertNotNull(configuration.getFolders(RootNode.PICTURE));
+            assertNotNull(configuration.getFolders(RootNode.PODCAST));
+            assertNull(configuration.getFolders(RootNode.ROOT));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testXmlConfigurationNull() {
+        String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
+        try {
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            assertNotNull(configuration.getFolders(RootNode.AUDIO));
+            assertNotNull(configuration.getFolders(RootNode.VIDEO));
+            assertNotNull(configuration.getFolders(RootNode.PICTURE));
+            assertNotNull(configuration.getFolders(RootNode.PODCAST));
+            assertNull(configuration.getFolders(RootNode.ROOT));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test(expected = RuntimeException.class)
     public void testXmlConfigurationWithBadPath() {
         String configDir = "///bbb";
         try {
             new XmlConfigurationImpl(configDir);
-            fail();
         } catch (IOException e) {
             fail(e.getMessage());
-        } catch (RuntimeException e) {
-            assertNotNull(e);
         }
     }
 

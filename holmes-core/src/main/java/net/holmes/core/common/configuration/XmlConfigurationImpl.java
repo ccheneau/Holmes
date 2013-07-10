@@ -83,14 +83,14 @@ public final class XmlConfigurationImpl implements Configuration {
                 rootNode = (XmlRootNode) getXStream().fromXML(in);
                 configLoaded = true;
             } catch (FileNotFoundException e) {
-                e.printStackTrace(System.err);
+                //Ignore
             }
         }
         if (rootNode == null) rootNode = new XmlRootNode();
-        boolean configChanged = rootNode.checkDefaultValues();
+        rootNode.checkDefaultValues();
 
         // Save default config if nothing is loaded
-        if (!configLoaded || configChanged) saveConfig();
+        if (!configLoaded) saveConfig();
     }
 
     @Override
@@ -189,8 +189,7 @@ public final class XmlConfigurationImpl implements Configuration {
          *
          * @return true, if config has changed
          */
-        public boolean checkDefaultValues() {
-            boolean configChanged = false;
+        public void checkDefaultValues() {
             if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
             if (this.httpServerPort == null || this.httpServerPort <= MIN_HTTP_SERVER_PORT)
                 this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
@@ -206,7 +205,6 @@ public final class XmlConfigurationImpl implements Configuration {
                 availableParams.add(param.getName());
                 if (this.parameters.getProperty(param.getName()) == null) {
                     this.parameters.put(param.getName(), param.getDefaultValue());
-                    configChanged = true;
                 }
             }
             // Check obsolete parameters
@@ -214,14 +212,12 @@ public final class XmlConfigurationImpl implements Configuration {
             for (Object paramKey : this.parameters.keySet()) {
                 if (!availableParams.contains(paramKey.toString())) {
                     obsoleteParams.add(paramKey.toString());
-                    configChanged = true;
                 }
             }
             // Remove obsolete parameters
             for (String obsoleteParam : obsoleteParams)
                 this.parameters.remove(obsoleteParam);
 
-            return configChanged;
         }
 
         /**
