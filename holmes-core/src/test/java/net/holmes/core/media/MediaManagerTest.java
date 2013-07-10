@@ -19,7 +19,9 @@ package net.holmes.core.media;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
@@ -39,6 +41,9 @@ public class MediaManagerTest {
 
     @Inject
     private MediaManager mediaManager;
+
+    @Inject
+    private Configuration configuration;
 
     @Before
     public void setUp() {
@@ -71,7 +76,7 @@ public class MediaManagerTest {
         List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
         assertNotNull(nodes);
         assertFalse(nodes.isEmpty());
-        assertEquals(4, nodes.size());
+        assertEquals(3, nodes.size());
         assertConfigNodes(nodes, "video.avi", "video.srt");
     }
 
@@ -111,6 +116,25 @@ public class MediaManagerTest {
         assertConfigNodes(nodes, "image.jpg");
     }
 
+    @Test
+    public void testPictureNodesWithoutContentResolution() {
+        configuration.setParameter(Parameter.ENABLE_CONTENT_RESOLUTION, false);
+        AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
+        assertNotNull(node);
+
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        assertEquals(1, childNodes.size());
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
+
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(2, nodes.size());
+        assertConfigNodes(nodes, "image.jpg");
+    }
+
     private void assertConfigNodes(List<AbstractNode> nodes, String... fileNodeNames) {
         List<String> fileNodeNameList = Arrays.asList(fileNodeNames);
         for (AbstractNode abstractNode : nodes) {
@@ -134,6 +158,25 @@ public class MediaManagerTest {
                 assertTrue(fileNodeNameList.contains(node1.getName()));
             }
         }
+    }
+
+    @Test
+    public void testVideoNodesWithoutSubTitles() {
+        configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, false);
+        AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
+        assertNotNull(node);
+
+        List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
+        assertNotNull(childNodes);
+        assertFalse(childNodes.isEmpty());
+        assertEquals(1, childNodes.size());
+        assertNotNull(mediaManager.getNode(childNodes.get(0).getId()));
+
+        List<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.get(0));
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(2, nodes.size());
+        assertConfigNodes(nodes, "video.avi");
     }
 
     @Test
