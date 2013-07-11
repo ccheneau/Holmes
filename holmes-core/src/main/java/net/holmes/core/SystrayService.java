@@ -132,7 +132,8 @@ public final class SystrayService implements Service {
         });
 
         // Holmes logs menu item
-        JMenuItem logsItem = new JMenuItem(resourceBundle.getString("systray.logs"));
+        Icon holmesLogsIcon = new ImageIcon(getClass().getResource("/icon-logs.png"));
+        JMenuItem logsItem = new JMenuItem(resourceBundle.getString("systray.logs"), holmesLogsIcon);
         logsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -184,7 +185,8 @@ public final class SystrayService implements Service {
         });
 
         // Holmes wiki menu item
-        JMenuItem holmesWikiItem = new JMenuItem(resourceBundle.getString("systray.holmes.wiki"));
+        Icon holmesWikiIcon = new ImageIcon(getClass().getResource("/icon-info.png"));
+        JMenuItem holmesWikiItem = new JMenuItem(resourceBundle.getString("systray.holmes.wiki"), holmesWikiIcon);
         holmesWikiItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
