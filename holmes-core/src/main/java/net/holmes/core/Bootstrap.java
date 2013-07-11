@@ -24,7 +24,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,14 +87,9 @@ public final class Bootstrap {
             if (debug) {
                 DOMConfigurator.configure(logFilePath.toString());
                 LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
-            } else DOMConfigurator.configureAndWatch(logFilePath.toString(), LOG4J_WATCH_DELAY);
+            } else
+                DOMConfigurator.configureAndWatch(logFilePath.toString(), LOG4J_WATCH_DELAY);
         else
             throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
-
-        // Remove existing handlers attached to j.u.l root logger
-        if (!debug) SLF4JBridgeHandler.removeHandlersForRootLogger();
-
-        // Add SLF4JBridgeHandler to j.u.l's root logger
-        SLF4JBridgeHandler.install();
     }
 }
