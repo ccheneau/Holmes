@@ -17,6 +17,7 @@
 
 package net.holmes.core;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
@@ -31,7 +32,6 @@ import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.common.Service;
-import net.holmes.core.common.SystemProperty;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.XmlConfigurationImpl;
 import net.holmes.core.common.mimetype.MimeTypeManager;
@@ -59,7 +59,6 @@ import net.holmes.core.scheduled.MediaScannerService;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
-import java.io.File;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,6 +69,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
+import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
  * Guice module.
@@ -88,9 +88,10 @@ final class HolmesServerModule extends AbstractModule {
      *
      * @return local user data dir
      */
-    private static String getLocalHolmesDataDir() {
+    @VisibleForTesting
+    static String getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
-        Path holmesDataPath = Paths.get(SystemProperty.USER_HOME.getValue(), ".holmes");
+        Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
         if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
             return holmesDataPath.toString();
 
@@ -103,13 +104,14 @@ final class HolmesServerModule extends AbstractModule {
      *
      * @return UI directory
      */
-    private static String getUiDirectory() {
-        File uiDir = new File(HOLMES_HOME.getValue(), "ui");
-        if (!uiDir.exists()) {
-            throw new RuntimeException(uiDir.getAbsolutePath() + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
+    @VisibleForTesting
+    static String getUiDirectory() {
+        Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
+        if (!Files.exists(uiPath)) {
+            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
                     + "] system property");
         }
-        return uiDir.getAbsolutePath();
+        return uiPath.toString();
     }
 
     /**
@@ -117,7 +119,8 @@ final class HolmesServerModule extends AbstractModule {
      *
      * @return local IPv4 address
      */
-    private static String getLocalIPV4() {
+    @VisibleForTesting
+    static String getLocalIPV4() {
         try {
             for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
                 NetworkInterface networkInterface = interfaces.nextElement();
