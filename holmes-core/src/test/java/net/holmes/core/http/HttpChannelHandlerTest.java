@@ -20,7 +20,10 @@ package net.holmes.core.http;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.DefaultChannelPromise;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.handler.HttpRequestException;
@@ -48,8 +51,8 @@ public class HttpChannelHandlerTest {
         injector = Guice.createInjector(new TestModule());
     }
 
-    private ChannelInboundHandler getHandler() {
-        ChannelInboundHandler handler = new HttpChannelHandler(httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
+    private HttpChannelHandler getHandler() {
+        HttpChannelHandler handler = new HttpChannelHandler(httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
         injector.injectMembers(handler);
         return handler;
     }
@@ -59,21 +62,17 @@ public class HttpChannelHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        MessageList<Object> messageList = MessageList.newInstance();
-        messageList.add(request);
-
         expect(request.getUri()).andReturn("/content?id=2").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(request.release()).andReturn(true).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
         httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(Channel.class));
         expectLastCall().atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler);
-        ChannelInboundHandler handler = getHandler();
-        handler.messageReceived(channelHandlerContext, messageList);
+        HttpChannelHandler handler = getHandler();
+        handler.channelRead0(channelHandlerContext, request);
         verify(request, channel, channelHandlerContext, httpContentRequestHandler);
     }
 
@@ -82,13 +81,9 @@ public class HttpChannelHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        MessageList<Object> messageList = MessageList.newInstance();
-        messageList.add(request);
-
         expect(request.getUri()).andReturn("/content?id=2").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(request.release()).andReturn(true).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
@@ -96,8 +91,8 @@ public class HttpChannelHandlerTest {
         expectLastCall().andThrow(new HttpRequestException("message", HttpResponseStatus.NOT_FOUND)).atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler);
-        ChannelInboundHandler handler = getHandler();
-        handler.messageReceived(channelHandlerContext, messageList);
+        HttpChannelHandler handler = getHandler();
+        handler.channelRead0(channelHandlerContext, request);
         verify(request, channel, channelHandlerContext, httpContentRequestHandler);
     }
 
@@ -106,13 +101,9 @@ public class HttpChannelHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        MessageList<Object> messageList = MessageList.newInstance();
-        messageList.add(request);
-
         expect(request.getUri()).andReturn("/backend/getVersion").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.POST).atLeastOnce();
-        expect(request.release()).andReturn(true).atLeastOnce();
         expect(request.content()).andReturn(Unpooled.copiedBuffer("Param1", Charset.defaultCharset())).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
@@ -121,8 +112,8 @@ public class HttpChannelHandlerTest {
         expectLastCall().atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler);
-        ChannelInboundHandler handler = getHandler();
-        handler.messageReceived(channelHandlerContext, messageList);
+        HttpChannelHandler handler = getHandler();
+        handler.channelRead0(channelHandlerContext, request);
         verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler);
     }
 
@@ -131,13 +122,9 @@ public class HttpChannelHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        MessageList<Object> messageList = MessageList.newInstance();
-        messageList.add(request);
-
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(request.release()).andReturn(true).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpBackendRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
@@ -146,8 +133,8 @@ public class HttpChannelHandlerTest {
         expectLastCall().atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
-        ChannelInboundHandler handler = getHandler();
-        handler.messageReceived(channelHandlerContext, messageList);
+        HttpChannelHandler handler = getHandler();
+        handler.channelRead0(channelHandlerContext, request);
         verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
     }
 
@@ -156,13 +143,9 @@ public class HttpChannelHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
-        MessageList<Object> messageList = MessageList.newInstance();
-        messageList.add(request);
-
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(request.release()).andReturn(true).atLeastOnce();
         expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
@@ -170,8 +153,8 @@ public class HttpChannelHandlerTest {
         expect(httpUIRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
-        ChannelInboundHandler handler = getHandler();
-        handler.messageReceived(channelHandlerContext, messageList);
+        HttpChannelHandler handler = getHandler();
+        handler.channelRead0(channelHandlerContext, request);
         verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
     }
 

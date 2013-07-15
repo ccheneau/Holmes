@@ -21,8 +21,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.MessageList;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
@@ -40,7 +39,7 @@ import java.util.Map.Entry;
 /**
  * HttpChannelHandler redirect HTTP requests to proper handler.
  */
-public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
+public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final HttpRequestHandler contentRequestHandler;
     private final HttpRequestHandler backendRequestHandler;
     private final HttpRequestHandler uiRequestHandler;
@@ -63,41 +62,36 @@ public final class HttpChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void messageReceived(final ChannelHandlerContext ctx, final MessageList<Object> messages) {
+    public void channelRead0(final ChannelHandlerContext ctx, final FullHttpRequest request) {
 
-        MessageList<FullHttpRequest> requests = messages.cast();
-        for (int i = 0; i < requests.size(); i++) {
-            FullHttpRequest request = requests.get(i);
-            if (logger.isDebugEnabled()) {
-                logger.debug("messageReceived url:{}", request.getUri());
-                for (Entry<String, String> entry : request.headers())
-                    logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
+        if (logger.isDebugEnabled()) {
+            logger.debug("messageReceived url:{}", request.getUri());
+            for (Entry<String, String> entry : request.headers())
+                logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
 
-                if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
-                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(HttpConstants.DEFAULT_CHARSET));
-                    Map<String, List<String>> params = queryStringDecoder.parameters();
-                    if (params != null)
-                        for (Entry<String, List<String>> entry : params.entrySet())
-                            logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
-                }
-            }
-
-            String requestPath = new QueryStringDecoder(request.getUri()).path();
-            try {
-                // Dispatch request to proper handler
-                if (contentRequestHandler.canProcess(requestPath, request.getMethod()))
-                    contentRequestHandler.processRequest(request, ctx.channel());
-                else if (backendRequestHandler.canProcess(requestPath, request.getMethod()))
-                    backendRequestHandler.processRequest(request, ctx.channel());
-                else if (uiRequestHandler.canProcess(requestPath, request.getMethod()))
-                    uiRequestHandler.processRequest(request, ctx.channel());
-                else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
-
-            } catch (HttpRequestException ex) {
-                sendError(ctx, ex.getStatus());
+            if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
+                QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(HttpConstants.DEFAULT_CHARSET));
+                Map<String, List<String>> params = queryStringDecoder.parameters();
+                if (params != null)
+                    for (Entry<String, List<String>> entry : params.entrySet())
+                        logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
             }
         }
-        messages.releaseAllAndRecycle();
+
+        String requestPath = new QueryStringDecoder(request.getUri()).path();
+        try {
+            // Dispatch request to proper handler
+            if (contentRequestHandler.canProcess(requestPath, request.getMethod()))
+                contentRequestHandler.processRequest(request, ctx.channel());
+            else if (backendRequestHandler.canProcess(requestPath, request.getMethod()))
+                backendRequestHandler.processRequest(request, ctx.channel());
+            else if (uiRequestHandler.canProcess(requestPath, request.getMethod()))
+                uiRequestHandler.processRequest(request, ctx.channel());
+            else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+
+        } catch (HttpRequestException ex) {
+            sendError(ctx, ex.getStatus());
+        }
     }
 
     @Override

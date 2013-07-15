@@ -127,9 +127,12 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
         @Override
         public void finish() throws IOException {
+            // Write response
+            channel.write(response);
+
             // Streaming is not supported. Entire response will be written
             // downstream once finish() is called.
-            channel.write(response).addListener(ChannelFutureListener.CLOSE);
+            channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT).addListener(ChannelFutureListener.CLOSE);
         }
     }
 }

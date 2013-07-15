@@ -73,8 +73,9 @@ public class HttpUIRequestHandlerTest {
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
@@ -93,8 +94,9 @@ public class HttpUIRequestHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
@@ -113,8 +115,9 @@ public class HttpUIRequestHandlerTest {
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel));
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel));
+        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();

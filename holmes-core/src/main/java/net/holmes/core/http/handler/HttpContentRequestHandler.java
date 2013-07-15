@@ -112,15 +112,20 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
         // Write the content
         try {
-            ChannelFuture writeFuture = channel.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
-            // Decide whether to close the connection or not.
-            if (!HttpHeaders.isKeepAlive(request)) {
-                // Close the connection when the whole content is written out.
-                writeFuture.addListener(ChannelFutureListener.CLOSE);
-            }
+            channel.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
         } catch (IOException e) {
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
         }
+
+        // Write the end marker
+        ChannelFuture writeFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+
+        // Decide whether to close the connection or not.
+        if (!HttpHeaders.isKeepAlive(request)) {
+            // Close the connection when the whole content is written out.
+            writeFuture.addListener(ChannelFutureListener.CLOSE);
+        }
+
     }
 
     /**
