@@ -21,9 +21,9 @@ import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.model.AbstractNode;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,11 +34,10 @@ import java.util.concurrent.TimeUnit;
  * Scheduled service used to clean local caches.
  */
 public class CacheCleanerService extends AbstractScheduledService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CacheCleanerService.class);
     private final Cache<String, List<AbstractNode>> podcastCache;
     private final Cache<String, String> imageCache;
     private final int cleanDelayMinutes;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new cache cleaner service.
@@ -57,7 +56,7 @@ public class CacheCleanerService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (logger.isDebugEnabled()) logger.debug("Launch cache cleaner");
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch cache cleaner");
         podcastCache.cleanUp();
         imageCache.cleanUp();
     }

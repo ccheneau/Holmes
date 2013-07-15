@@ -31,8 +31,8 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.InetSocketAddress;
@@ -42,13 +42,12 @@ import java.net.InetSocketAddress;
  */
 public final class HttpServer implements Service {
     public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServer.class);
     private static final int MAX_CONTENT_LENGTH = 65536;
     private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
     private final EventLoopGroup eventLoopGroup;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new http server.
@@ -67,7 +66,7 @@ public final class HttpServer implements Service {
 
     @Override
     public void start() {
-        logger.info("Starting HTTP server");
+        LOGGER.info("Starting HTTP server");
 
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
 
@@ -93,20 +92,20 @@ public final class HttpServer implements Service {
         try {
             bootstrap.bind(bindAddress).sync();
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
 
-        logger.info("HTTP server bound on " + bindAddress);
+        LOGGER.info("HTTP server bound on " + bindAddress);
     }
 
     @Override
     public void stop() {
-        logger.info("Stopping HTTP server");
+        LOGGER.info("Stopping HTTP server");
 
         // Stop the server
         eventLoopGroup.shutdownGracefully();
         webApplication.destroy();
 
-        logger.info("HTTP server stopped");
+        LOGGER.info("HTTP server stopped");
     }
 }

@@ -20,9 +20,9 @@ package net.holmes.core.scheduled;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.index.MediaIndexManager;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
@@ -31,10 +31,9 @@ import java.util.concurrent.TimeUnit;
  * Scheduled service used to clean index.
  */
 public final class MediaIndexCleanerService extends AbstractScheduledService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaIndexCleanerService.class);
     private final MediaIndexManager mediaIndexManager;
     private final int cleanDelayMinutes;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new media index cleaner service.
@@ -50,7 +49,7 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (logger.isDebugEnabled()) logger.debug("Launch media index cleaner");
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch media index cleaner");
         mediaIndexManager.clean();
     }
 

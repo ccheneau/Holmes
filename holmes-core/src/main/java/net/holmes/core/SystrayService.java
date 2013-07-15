@@ -20,8 +20,8 @@ package net.holmes.core;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -48,11 +48,10 @@ public final class SystrayService implements Service {
     private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
     private static final String MENU_ITEM_FONT = "MenuItem.font";
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystrayService.class);
     private final Configuration configuration;
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new systray service.
@@ -126,7 +125,7 @@ public final class SystrayService implements Service {
                 try {
                     System.exit(0);
                 } catch (SecurityException e) {
-                    logger.error(e.getMessage(), e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         });
@@ -142,7 +141,7 @@ public final class SystrayService implements Service {
 
                         Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
                     } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
@@ -162,7 +161,7 @@ public final class SystrayService implements Service {
                         String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
                         Desktop.getDesktop().browse(new URI(holmesUrl));
                     } catch (IOException | URISyntaxException e) {
-                        logger.error(e.getMessage(), e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
@@ -178,7 +177,7 @@ public final class SystrayService implements Service {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL));
                     } catch (IOException | URISyntaxException e) {
-                        logger.error(e.getMessage(), e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
@@ -194,7 +193,7 @@ public final class SystrayService implements Service {
                     try {
                         Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL));
                     } catch (IOException | URISyntaxException e) {
-                        logger.error(e.getMessage(), e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
@@ -215,7 +214,7 @@ public final class SystrayService implements Service {
         try {
             systemTray.add(holmesTrayIcon);
         } catch (AWTException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

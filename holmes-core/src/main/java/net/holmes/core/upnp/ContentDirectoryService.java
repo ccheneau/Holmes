@@ -19,7 +19,6 @@ package net.holmes.core.upnp;
 
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.*;
 import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
@@ -29,6 +28,7 @@ import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,8 +39,7 @@ import java.util.List;
  * UPnP Content directory service.
  */
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
-    @InjectLogger
-    private Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContentDirectoryService.class);
     @Inject
     private MediaManager mediaManager;
     @Inject
@@ -60,10 +59,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
                                final SortCriterion[] orderBy) throws ContentDirectoryException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("browse  " + browseFlag + " objectId=" + objectID + " firstResult=" + firstResult
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("browse  " + browseFlag + " objectId=" + objectID + " firstResult=" + firstResult
                     + " nbResults=" + maxResults);
-            logger.debug("filter: {}", filter);
+            LOGGER.debug("filter: {}", filter);
         }
 
 
@@ -94,10 +93,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         BrowseResult br = result.buildBrowseResult();
-        if (logger.isDebugEnabled()) {
-            logger.debug("itemCount:{}", result.getItemCount());
-            logger.debug("totalCount:{}", result.getTotalCount());
-            logger.debug(br.getResult());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("itemCount:{}", result.getItemCount());
+            LOGGER.debug("totalCount:{}", result.getTotalCount());
+            LOGGER.debug(br.getResult());
         }
         return br;
     }

@@ -20,9 +20,9 @@ package net.holmes.core.scheduled;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.MediaManager;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
@@ -31,10 +31,9 @@ import java.util.concurrent.TimeUnit;
  * Scheduled service used to scan all media.
  */
 public class MediaScannerService extends AbstractScheduledService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaScannerService.class);
     private final MediaManager mediaManager;
     private final int scanAllDelayMinutes;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new media scanner service.
@@ -50,7 +49,7 @@ public class MediaScannerService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (logger.isDebugEnabled()) logger.debug("Launch media scanner");
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch media scanner");
         mediaManager.scanAll();
     }
 

@@ -20,8 +20,8 @@ package net.holmes.core;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.common.Service;
-import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,13 +35,12 @@ import java.nio.channels.FileLock;
  */
 public final class HolmesServer implements Service {
     private static final String LOCK_FILE_NAME = "holmes.lock";
+    private static final Logger LOGGER = LoggerFactory.getLogger(HolmesServer.class);
     private final Service httpServer;
     private final Service upnpServer;
     private final Service systray;
     private final Service scheduler;
     private final String localHolmesDataDir;
-    @InjectLogger
-    private Logger logger;
     private RandomAccessFile randomAccessFile = null;
     private FileLock fileLock = null;
 
@@ -67,7 +66,7 @@ public final class HolmesServer implements Service {
     @Override
     public void start() {
         if (lockInstance()) {
-            logger.info("Starting Holmes server");
+            LOGGER.info("Starting Holmes server");
 
             // Start Holmes server
             httpServer.start();
@@ -75,13 +74,13 @@ public final class HolmesServer implements Service {
             systray.start();
             scheduler.start();
 
-            logger.info("Holmes server started");
+            LOGGER.info("Holmes server started");
         }
     }
 
     @Override
     public void stop() {
-        logger.info("Stopping Holmes server");
+        LOGGER.info("Stopping Holmes server");
         // Remove lock
         unlockInstance();
 
@@ -91,7 +90,7 @@ public final class HolmesServer implements Service {
         upnpServer.stop();
         httpServer.stop();
 
-        logger.info("Holmes server stopped");
+        LOGGER.info("Holmes server stopped");
     }
 
     /**
@@ -101,7 +100,7 @@ public final class HolmesServer implements Service {
      */
     @Subscribe
     public void handleDeadEvent(final DeadEvent deadEvent) {
-        logger.warn("Event not handled: {}", deadEvent.getEvent().toString());
+        LOGGER.warn("Event not handled: {}", deadEvent.getEvent().toString());
     }
 
     /**
@@ -120,7 +119,7 @@ public final class HolmesServer implements Service {
                 return true;
             }
         } catch (IOException e) {
-            logger.error("Unable to create and/or lock file: {}", e.getMessage());
+            LOGGER.error("Unable to create and/or lock file: {}", e.getMessage());
         }
         return false;
     }
@@ -133,9 +132,9 @@ public final class HolmesServer implements Service {
                 fileLock.release();
                 randomAccessFile.close();
                 if (lockFile.exists() && !lockFile.delete())
-                    logger.error("Unable to remove lock file: {}", lockFile.getPath());
+                    LOGGER.error("Unable to remove lock file: {}", lockFile.getPath());
             } catch (IOException e) {
-                logger.error("Unable to unlock file: {} {}", lockFile.getPath(), e.getMessage());
+                LOGGER.error("Unable to unlock file: {} {}", lockFile.getPath(), e.getMessage());
             }
         }
     }

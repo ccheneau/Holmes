@@ -38,11 +38,11 @@ import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.model.*;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -63,6 +63,7 @@ import static net.holmes.core.media.model.RootNode.*;
  * Media manager implementation.
  */
 public final class MediaManagerImpl implements MediaManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
 
     private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
@@ -70,8 +71,6 @@ public final class MediaManagerImpl implements MediaManager {
     private final MediaIndexManager mediaIndexManager;
     private final Cache<String, List<AbstractNode>> podcastCache;
     private final Cache<String, String> imageCache;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new media manager implementation.
@@ -111,7 +110,7 @@ public final class MediaManagerImpl implements MediaManager {
                     node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
                 else
                     node = getFileNode(nodeId, indexElement, mediaType);
-            } else logger.warn("{} not found in media index", nodeId);
+            } else LOGGER.warn("{} not found in media index", nodeId);
         }
         return node;
     }
@@ -152,7 +151,7 @@ public final class MediaManagerImpl implements MediaManager {
                             if (node.isValidDirectory())
                                 childNodes = getFolderChildNodes(parentNode.getId(), node, mediaType);
                         }
-                    } else logger.error("{} node not found in index", parentNode.getId());
+                    } else LOGGER.error("{} node not found in index", parentNode.getId());
                 }
                 break;
         }
@@ -317,7 +316,7 @@ public final class MediaManagerImpl implements MediaManager {
                 }
             });
         } catch (ExecutionException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -362,7 +361,7 @@ public final class MediaManagerImpl implements MediaManager {
                         try {
                             bufferedImage = ImageIO.read(new File(fileName).toURI().toURL());
                         } catch (IOException e) {
-                            logger.error(e.getMessage(), e);
+                            LOGGER.error(e.getMessage(), e);
                         }
                         if (bufferedImage != null)
                             resolution = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
@@ -370,7 +369,7 @@ public final class MediaManagerImpl implements MediaManager {
                     }
                 });
             } catch (ExecutionException e) {
-                logger.error(e.getMessage(), e);
+                LOGGER.error(e.getMessage(), e);
             }
         return null;
     }
@@ -414,7 +413,7 @@ public final class MediaManagerImpl implements MediaManager {
                 if (rootNode != PODCAST) mediaIndexManager.removeChildren(configNode.getId());
                 break;
             default:
-                logger.error("Unknown event");
+                LOGGER.error("Unknown event");
                 break;
         }
     }
@@ -435,7 +434,7 @@ public final class MediaManagerImpl implements MediaManager {
                 if (node != null) scanNode(node);
                 break;
             default:
-                logger.error("Unknown event");
+                LOGGER.error("Unknown event");
                 break;
         }
     }

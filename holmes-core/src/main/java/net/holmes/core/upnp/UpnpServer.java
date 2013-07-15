@@ -21,9 +21,9 @@ import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.inject.InjectLogger;
 import org.fourthline.cling.UpnpService;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -31,10 +31,9 @@ import javax.inject.Inject;
  * UPnP server main class.
  */
 public final class UpnpServer implements Service {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpServer.class);
     private final Injector injector;
     private final Configuration configuration;
-    @InjectLogger
-    private Logger logger;
     private UpnpService upnpService = null;
 
     /**
@@ -52,18 +51,18 @@ public final class UpnpServer implements Service {
     @Override
     public void start() {
         if (configuration.getParameter(Parameter.ENABLE_UPNP)) {
-            logger.info("Starting UPnP server");
+            LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
-            logger.info("UPnP server started");
-        } else logger.info("UPnP server is disabled");
+            LOGGER.info("UPnP server started");
+        } else LOGGER.info("UPnP server is disabled");
     }
 
     @Override
     public void stop() {
         if (upnpService != null) {
-            logger.info("Stopping UPnP server");
+            LOGGER.info("Stopping UPnP server");
             upnpService.shutdown();
-            logger.info("UPnP server stopped");
+            LOGGER.info("UPnP server stopped");
         }
     }
 }

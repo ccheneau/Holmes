@@ -21,9 +21,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.holmes.core.inject.InjectLogger;
 import net.holmes.core.media.model.RootNode;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collection;
@@ -34,9 +34,8 @@ import java.util.UUID;
  * Media index manager implementation.
  */
 public class MediaIndexManagerImpl implements MediaIndexManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaIndexManagerImpl.class);
     private final BiMap<String, MediaIndexElement> elements;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new media index manager implementation.
@@ -81,7 +80,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             // Check parent id
             if (elValue.getParentId().equals(uuid) || toRemove.contains(elValue.getParentId())) {
                 toRemove.add(indexEntry.getKey());
-                logger.debug("Remove child entry {} from media index", elValue.toString());
+                LOGGER.debug("Remove child entry {} from media index", elValue.toString());
             }
         }
 
@@ -105,12 +104,12 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             if (RootNode.getById(elId) == RootNode.NONE && RootNode.getById(elValue.getParentId()) == RootNode.NONE
                     && (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId()))) {
                 toRemove.add(elId);
-                logger.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
+                LOGGER.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
             }
             // Check element is still on file system
             if (!toRemove.contains(elId) && elValue.isLocalPath() && !new File(elValue.getPath()).exists()) {
                 toRemove.add(elId);
-                logger.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
+                LOGGER.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
             }
         }
         // Remove elements

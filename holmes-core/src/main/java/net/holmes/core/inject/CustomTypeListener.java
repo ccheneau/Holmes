@@ -19,18 +19,15 @@ package net.holmes.core.inject;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.MembersInjector;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Guice type listener for slf4j logger injection and event bus registration.
+ * Guice type listener for event bus registration.
  */
 public final class CustomTypeListener implements TypeListener {
 
@@ -47,47 +44,12 @@ public final class CustomTypeListener implements TypeListener {
 
     @Override
     public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
-        // Inject slf4j logger
-        for (Field field : type.getRawType().getDeclaredFields())
-            if (field.isAnnotationPresent(InjectLogger.class) && field.getType() == org.slf4j.Logger.class) {
-                encounter.register(new Slf4jMembersInjector<T>(field));
-                break;
-            }
-
         // Register to event bus
         for (Method method : type.getRawType().getMethods())
             if (method.isAnnotationPresent(Subscribe.class)) {
                 encounter.register(new EventBusRegisterListener<T>(eventBus));
                 break;
             }
-    }
-
-    /**
-     * Inject SLF4J logger.
-     */
-    private static class Slf4jMembersInjector<T> implements MembersInjector<T> {
-        private final Field field;
-        private final org.slf4j.Logger logger;
-
-        /**
-         * Instantiates a new slf4j members injector.
-         *
-         * @param field field
-         */
-        public Slf4jMembersInjector(final Field field) {
-            this.field = field;
-            this.logger = LoggerFactory.getLogger(field.getDeclaringClass());
-            this.field.setAccessible(true);
-        }
-
-        @Override
-        public void injectMembers(final T t) {
-            try {
-                field.set(t, logger);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     /**

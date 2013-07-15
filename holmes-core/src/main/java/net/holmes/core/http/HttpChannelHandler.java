@@ -27,8 +27,8 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
-import net.holmes.core.inject.InjectLogger;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,11 +40,10 @@ import java.util.Map.Entry;
  * HttpChannelHandler redirect HTTP requests to proper handler.
  */
 public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpChannelHandler.class);
     private final HttpRequestHandler contentRequestHandler;
     private final HttpRequestHandler backendRequestHandler;
     private final HttpRequestHandler uiRequestHandler;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Instantiates a new http channel handler.
@@ -64,17 +63,17 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final FullHttpRequest request) {
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("messageReceived url:{}", request.getUri());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("messageReceived url:{}", request.getUri());
             for (Entry<String, String> entry : request.headers())
-                logger.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
+                LOGGER.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
 
             if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
                 QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(HttpConstants.DEFAULT_CHARSET));
                 Map<String, List<String>> params = queryStringDecoder.parameters();
                 if (params != null)
                     for (Entry<String, List<String>> entry : params.entrySet())
-                        logger.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
+                        LOGGER.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
             }
         }
 
@@ -100,8 +99,8 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
         }
-        if (logger.isDebugEnabled())
-            logger.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
 
         if (ctx.channel().isActive()) sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
     }
