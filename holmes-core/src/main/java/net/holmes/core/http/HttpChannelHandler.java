@@ -61,7 +61,7 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
     }
 
     @Override
-    public void channelRead0(final ChannelHandlerContext ctx, final FullHttpRequest request) {
+    public void channelRead0(final ChannelHandlerContext context, final FullHttpRequest request) {
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("messageReceived url:{}", request.getUri());
@@ -79,30 +79,42 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
 
         String requestPath = new QueryStringDecoder(request.getUri()).path();
         try {
-            // Dispatch request to proper handler
-            if (contentRequestHandler.canProcess(requestPath, request.getMethod()))
-                contentRequestHandler.processRequest(request, ctx.channel());
-            else if (backendRequestHandler.canProcess(requestPath, request.getMethod()))
-                backendRequestHandler.processRequest(request, ctx.channel());
-            else if (uiRequestHandler.canProcess(requestPath, request.getMethod()))
-                uiRequestHandler.processRequest(request, ctx.channel());
-            else sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+            // Process request
+            getRequestHandler(requestPath, request.getMethod()).processRequest(request, context.channel());
 
         } catch (HttpRequestException ex) {
-            sendError(ctx, ex.getStatus());
+            sendError(context, ex.getStatus());
         }
     }
 
+    /**
+     * Gets the handler that matches the request.
+     *
+     * @param requestPath request path
+     * @param method      http method
+     * @return handler that matches the request
+     * @throws HttpRequestException
+     */
+    private HttpRequestHandler getRequestHandler(String requestPath, HttpMethod method) throws HttpRequestException {
+        if (contentRequestHandler.canProcess(requestPath, method))
+            return contentRequestHandler;
+        else if (backendRequestHandler.canProcess(requestPath, method))
+            return backendRequestHandler;
+        else if (uiRequestHandler.canProcess(requestPath, method))
+            return uiRequestHandler;
+        else throw new HttpRequestException("Cannot process request", HttpResponseStatus.BAD_REQUEST);
+    }
+
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
+    public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
         if (cause instanceof TooLongFrameException) {
-            sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+            sendError(context, HttpResponseStatus.BAD_REQUEST);
             return;
         }
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
 
-        if (ctx.channel().isActive()) sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        if (context.channel().isActive()) sendError(context, HttpResponseStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
