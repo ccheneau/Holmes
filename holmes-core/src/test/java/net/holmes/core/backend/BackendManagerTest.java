@@ -19,6 +19,7 @@ package net.holmes.core.backend;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
 import net.holmes.core.media.model.RootNode;
@@ -59,13 +60,13 @@ public class BackendManagerTest {
         assertNotNull(backendManager.getFolder("fauxRaccordsTest", RootNode.PODCAST));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testGetBadFolder() {
         // Check get bad folder throws exception
         backendManager.getFolder("badFolder", RootNode.VIDEO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testGetBadPodcast() {
         // Check get bab podcast folder throws exception
         backendManager.getFolder("badFolder", RootNode.PODCAST);
@@ -79,14 +80,14 @@ public class BackendManagerTest {
         assertEquals(backendManager.getFolders(RootNode.AUDIO).size(), originalSize + 1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddFolderWithSameName() {
         // test add folder with same name throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newAudioFolder", System.getProperty("java.io.tmpdir")), RootNode.AUDIO);
         backendManager.addFolder(new ConfigurationFolder(null, "newAudioFolder", "/"), RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddFolderWithSamePath() {
         // test add folder with same name throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newAudioFolder", System.getProperty("java.io.tmpdir")), RootNode.AUDIO);
@@ -101,51 +102,51 @@ public class BackendManagerTest {
         assertEquals(backendManager.getFolders(RootNode.PODCAST).size(), originalSize + 1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddPodcastWithSameName() {
         // test add podcast with same name throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "http://google.com"), RootNode.PODCAST);
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "http://google.fr"), RootNode.PODCAST);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddPodcastWithSameUrl() {
         // test add podcast with same url throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "http://google.com"), RootNode.PODCAST);
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast2", "http://google.com"), RootNode.PODCAST);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddFolderWithoutName() {
         // test add folder without name throws exception
         backendManager.addFolder(new ConfigurationFolder(null, null, System.getProperty("java.io.tmpdir")), RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddFolderWithoutPath() {
         // test add folder without path throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newAudioFolder", null), RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddFolderWithBadPath() {
         // test add folder with bad path throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newAudioFolder", "bad_path"), RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddPodcastWithoutName() {
         // test add podcast without name throws exception
         backendManager.addFolder(new ConfigurationFolder(null, null, "http://google.com"), RootNode.PODCAST);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddPodcastWithoutUrl() {
         // test add podcast without url throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", null), RootNode.PODCAST);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testAddPodcastWithBadUrl() {
         // test add podcast with bad url throws exception
         backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "bad_url"), RootNode.PODCAST);
@@ -169,13 +170,13 @@ public class BackendManagerTest {
         assertEquals(folder.getPath(), "http://google.com");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testEditBadFolder() {
         // test edit bad folder
         backendManager.editFolder("bad_folder", new ConfigurationFolder("bad_folder", "editedAudiosTest", System.getProperty("java.io.tmpdir")), RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testEditBadPodcast() {
         // test edit bad podcast
         backendManager.editFolder("bad_podcast", new ConfigurationFolder("fauxRaccordsTest", "editedPodcast", "http://google.com"), RootNode.PODCAST);
@@ -197,13 +198,13 @@ public class BackendManagerTest {
         assertEquals(backendManager.getFolders(RootNode.PODCAST).size(), originalSize - 1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testRemoveBadFolder() {
         // test remove bad folder
         backendManager.removeFolder("bad_folder", RootNode.AUDIO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testRemoveBadPodcast() {
         // test remove bad podcast
         backendManager.removeFolder("bad_podcast", RootNode.PODCAST);
@@ -221,22 +222,22 @@ public class BackendManagerTest {
         backendManager.saveSettings(new Settings("holmes", 8085, true, true, true));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testSaveSettingsWithoutServerName() {
         backendManager.saveSettings(new Settings(null, 8085, true, true, true));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testSaveSettingsWithEmptyServerName() {
         backendManager.saveSettings(new Settings("", 8085, true, true, true));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testSaveSettingsWithoutServerPort() {
         backendManager.saveSettings(new Settings("holmes", null, true, true, true));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = BackendException.class)
     public void testSaveSettingsWithBadServerPort() {
         backendManager.saveSettings(new Settings("holmes", 80, true, true, true));
     }

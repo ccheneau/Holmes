@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -37,10 +38,11 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
     @Override
     public Response toResponse(final BackendException e) {
         String entityMessage;
-        if (resourceBundle.getString(e.getMessage()) == null)
-            entityMessage = e.getMessage();
-        else
+        try {
             entityMessage = resourceBundle.getString(e.getMessage());
+        } catch (MissingResourceException ex) {
+            entityMessage = e.getMessage();
+        }
 
         return Response.status(Status.BAD_REQUEST)//
                 .type(MediaType.TEXT_PLAIN) //
