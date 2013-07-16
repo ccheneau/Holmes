@@ -17,22 +17,33 @@
 
 package net.holmes.core.backend.exception;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.ResourceBundle;
 
 /**
  * Map illegal argument exception to Http response.
  */
 @Provider
-public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
+public class BackendExceptionMapper implements ExceptionMapper<BackendException> {
+
+    @Inject
+    private ResourceBundle resourceBundle;
 
     @Override
-    public Response toResponse(final IllegalArgumentException e) {
+    public Response toResponse(final BackendException e) {
+        String entityMessage;
+        if (resourceBundle.getString(e.getMessage()) == null)
+            entityMessage = e.getMessage();
+        else
+            entityMessage = resourceBundle.getString(e.getMessage());
+
         return Response.status(Status.BAD_REQUEST)//
                 .type(MediaType.TEXT_PLAIN) //
-                .entity(e.getMessage()).build();
+                .entity(entityMessage).build();
     }
 }

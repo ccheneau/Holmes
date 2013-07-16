@@ -17,22 +17,27 @@
 
 package net.holmes.core.backend.exception;
 
-import org.junit.Test;
+/**
+ * Backend exception.
+ */
+public class BackendException extends RuntimeException {
 
-import javax.ws.rs.core.Response;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-public class IllegalArgumentExceptionMapperTest {
-
-    @Test
-    public void testIllegalArgumentExceptionMapper() {
-        IllegalArgumentException illegalArgumentException = new IllegalArgumentException("message");
-        IllegalArgumentExceptionMapper illegalArgumentExceptionMapper = new IllegalArgumentExceptionMapper();
-        Response response = illegalArgumentExceptionMapper.toResponse(illegalArgumentException);
-        assertNotNull(response);
-        assertNotNull(response.getEntity().toString());
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    /**
+     * Instantiates a new configuration exception.
+     *
+     * @param exception the exception
+     */
+    public BackendException(final Throwable exception) {
+        super(exception);
     }
+
+    /**
+     * Instantiates a new configuration exception.
+     *
+     * @param message the message
+     */
+    public BackendException(final String message) {
+        super(message);
+    }
+
 }

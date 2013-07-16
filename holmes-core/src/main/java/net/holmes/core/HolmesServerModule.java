@@ -31,6 +31,7 @@ import com.sun.jersey.spi.container.WebApplication;
 import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
+import net.holmes.core.backend.exception.BackendExceptionMapper;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.XmlConfigurationImpl;
@@ -144,11 +145,13 @@ final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
+        bind(BackendExceptionMapper.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
+
 
         // Bind caches
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {

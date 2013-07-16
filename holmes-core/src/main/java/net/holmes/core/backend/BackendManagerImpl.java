@@ -20,7 +20,7 @@ package net.holmes.core.backend;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
-import net.holmes.core.backend.exception.ConfigurationException;
+import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
 import net.holmes.core.common.NodeFile;
@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
@@ -46,20 +45,17 @@ public final class BackendManagerImpl implements BackendManager {
 
     private final Configuration configuration;
     private final EventBus eventBus;
-    private final ResourceBundle resourceBundle;
 
     /**
      * Instantiates a new backend manager implementation.
      *
-     * @param configuration  configuration
-     * @param eventBus       event bus
-     * @param resourceBundle resource bundle
+     * @param configuration configuration
+     * @param eventBus      event bus
      */
     @Inject
-    public BackendManagerImpl(final Configuration configuration, final EventBus eventBus, final ResourceBundle resourceBundle) {
+    public BackendManagerImpl(final Configuration configuration, final EventBus eventBus) {
         this.configuration = configuration;
         this.eventBus = eventBus;
-        this.resourceBundle = resourceBundle;
     }
 
     @Override
@@ -78,7 +74,7 @@ public final class BackendManagerImpl implements BackendManager {
         for (ConfigurationNode node : configNodes) {
             if (node.getId().equals(id)) return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
-        throw new IllegalArgumentException(resourceBundle.getString(rootNode == RootNode.PODCAST ? "backend.podcast.unknown.error" : "backend.folder.unknown.error"));
+        throw new BackendException(rootNode == RootNode.PODCAST ? "backend.podcast.unknown.error" : "backend.folder.unknown.error");
     }
 
     @Override
@@ -97,7 +93,7 @@ public final class BackendManagerImpl implements BackendManager {
         try {
             configuration.saveConfig();
         } catch (IOException e) {
-            throw new ConfigurationException(e);
+            throw new BackendException(e);
         }
 
         // Post event
@@ -121,7 +117,7 @@ public final class BackendManagerImpl implements BackendManager {
             try {
                 configuration.saveConfig();
             } catch (IOException e) {
-                throw new ConfigurationException(e);
+                throw new BackendException(e);
             }
 
             // Post Event
@@ -141,7 +137,7 @@ public final class BackendManagerImpl implements BackendManager {
             // Save config
             configuration.saveConfig();
         } catch (IOException e) {
-            throw new ConfigurationException(e);
+            throw new BackendException(e);
         }
 
         // Post Event
@@ -157,7 +153,7 @@ public final class BackendManagerImpl implements BackendManager {
             }
         }
         if (currentNode == null)
-            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.unknown.error" : "backend.folder.unknown.error"));
+            throw new BackendException(podcast ? "backend.podcast.unknown.error" : "backend.folder.unknown.error");
 
         return currentNode;
     }
@@ -173,10 +169,10 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void saveSettings(final Settings settings) {
         if (Strings.isNullOrEmpty(settings.getServerName()))
-            throw new IllegalArgumentException(resourceBundle.getString("backend.settings.server.name.error"));
+            throw new BackendException("backend.settings.server.name.error");
         if (settings.getHttpServerPort() == null || settings.getHttpServerPort() < Configuration.MIN_HTTP_SERVER_PORT
                 || settings.getHttpServerPort() > Configuration.MAX_HTTP_SERVER_PORT)
-            throw new IllegalArgumentException(resourceBundle.getString("backend.settings.http.port.error"));
+            throw new BackendException("backend.settings.http.port.error");
 
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
@@ -186,7 +182,7 @@ public final class BackendManagerImpl implements BackendManager {
         try {
             configuration.saveConfig();
         } catch (IOException e) {
-            throw new ConfigurationException(e);
+            throw new BackendException(e);
         }
     }
 
@@ -201,28 +197,28 @@ public final class BackendManagerImpl implements BackendManager {
     private void checkFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final boolean podcast) {
         // Check folder's name and path are not empty
         if (Strings.isNullOrEmpty(folder.getName()))
-            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.name.error" : "backend.folder.name.error"));
+            throw new BackendException(podcast ? "backend.podcast.name.error" : "backend.folder.name.error");
         else if (Strings.isNullOrEmpty(folder.getPath()))
-            throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.url.error" : "backend.folder.path.error"));
+            throw new BackendException(podcast ? "backend.podcast.url.error" : "backend.folder.path.error");
 
         if (podcast) {
             // Check podcast URL is correct
             if (!folder.getPath().toLowerCase().startsWith("http://") && !folder.getPath().toLowerCase().startsWith("file://"))
-                throw new IllegalArgumentException(resourceBundle.getString("backend.podcast.url.malformed.error"));
+                throw new BackendException("backend.podcast.url.malformed.error");
         } else {
             // Check folder path is correct
             NodeFile file = new NodeFile(folder.getPath());
             if (!file.isValidDirectory())
-                throw new IllegalArgumentException(resourceBundle.getString("backend.folder.path.unknown.error"));
+                throw new BackendException("backend.folder.path.unknown.error");
         }
 
         // Check for duplication
         for (ConfigurationNode node : configNodes) {
             if (excludedId == null || !excludedId.equals(node.getId())) {
                 if (node.getLabel().equals(folder.getName()))
-                    throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error"));
+                    throw new BackendException(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error");
                 else if (node.getPath().equals(folder.getPath()))
-                    throw new IllegalArgumentException(resourceBundle.getString(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error"));
+                    throw new BackendException(podcast ? "backend.podcast.already.exist.error" : "backend.folder.already.exist.error");
             }
         }
 
