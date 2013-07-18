@@ -44,6 +44,8 @@ import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.dao.MediaDao;
+import net.holmes.core.media.dao.MediaDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
@@ -70,6 +72,7 @@ public class TestModule extends AbstractModule {
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
 
+        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class);
 

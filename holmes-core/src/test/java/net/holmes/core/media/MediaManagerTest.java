@@ -20,9 +20,7 @@ package net.holmes.core.media;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
@@ -221,42 +219,6 @@ public class MediaManagerTest {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
             mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
-        }
-    }
-
-    @Test
-    public void testHandleConfigEventAdd() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.ADD, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            mediaManagerImpl.handleConfigEvent(configurationEvent);
-        }
-    }
-
-    @Test
-    public void testHandleConfigEventUpdate() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UPDATE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            mediaManagerImpl.handleConfigEvent(configurationEvent);
-        }
-    }
-
-    @Test
-    public void testHandleConfigEventDelete() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.DELETE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            mediaManagerImpl.handleConfigEvent(configurationEvent);
-        }
-    }
-
-    @Test
-    public void testHandleConfigEventUnknown() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UNKNOWN, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
-            mediaManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
 }

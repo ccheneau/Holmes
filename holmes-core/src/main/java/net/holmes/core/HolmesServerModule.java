@@ -50,6 +50,8 @@ import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.inject.provider.WebApplicationProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.dao.MediaDao;
+import net.holmes.core.media.dao.MediaDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
@@ -146,6 +148,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
         bind(BackendExceptionMapper.class).in(Singleton.class);
+        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);

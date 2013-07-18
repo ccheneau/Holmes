@@ -21,6 +21,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.eventbus.Subscribe;
+import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.media.model.RootNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,9 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.UUID;
+
+import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
+import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
  * Media index manager implementation.
@@ -115,6 +121,38 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         // Remove elements
         for (String id : toRemove) {
             elements.remove(id);
+        }
+    }
+
+    /**
+     * Configuration has changed, update media index.
+     *
+     * @param configurationEvent configuration event
+     */
+    @Subscribe
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
+        ConfigurationNode configNode = configurationEvent.getNode();
+        RootNode rootNode = configurationEvent.getRootNode();
+        switch (configurationEvent.getType()) {
+            case ADD:
+                // Add node to mediaIndex
+                put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                break;
+            case UPDATE:
+                // Remove node and child nodes from mediaIndex
+                remove(configNode.getId());
+                if (rootNode != PODCAST) removeChildren(configNode.getId());
+                // Add node to mediaIndex
+                put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                break;
+            case DELETE:
+                // Remove node and child nodes from mediaIndex
+                remove(configNode.getId());
+                if (rootNode != PODCAST) removeChildren(configNode.getId());
+                break;
+            default:
+                LOGGER.error("Unknown event");
+                break;
         }
     }
 }
