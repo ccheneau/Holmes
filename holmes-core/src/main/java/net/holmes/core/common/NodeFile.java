@@ -37,15 +37,6 @@ public class NodeFile extends File {
     }
 
     /**
-     * Check this is a readable file or directory.
-     *
-     * @return true if this is a valid file or directory
-     */
-    public boolean isValid() {
-        return exists() && canRead() && !isHidden();
-    }
-
-    /**
      * Check this is a readable file.
      *
      * @return true if this is a valid file

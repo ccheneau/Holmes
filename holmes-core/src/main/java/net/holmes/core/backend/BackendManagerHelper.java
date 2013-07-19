@@ -25,11 +25,14 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Backend manager utils.
  */
 public final class BackendManagerHelper {
+
+    private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 
     private BackendManagerHelper() {
     }
@@ -86,7 +89,7 @@ public final class BackendManagerHelper {
         checkNonEmptyString(podcast.getPath(), "backend.podcast.url.error");
 
         // Check podcast URL is correct
-        if (!podcast.getPath().toLowerCase().startsWith("http://") && !podcast.getPath().toLowerCase().startsWith("file://"))
+        if (!URL_PATTERN.matcher(podcast.getPath()).matches())
             throw new BackendException("backend.podcast.url.malformed.error");
 
         // Check for duplication

@@ -28,6 +28,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.sun.jersey.spi.container.WebApplication;
+import com.thoughtworks.xstream.XStream;
 import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
@@ -44,10 +45,7 @@ import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.ImageCacheProvider;
-import net.holmes.core.inject.provider.PodcastCacheProvider;
-import net.holmes.core.inject.provider.UpnpServiceProvider;
-import net.holmes.core.inject.provider.WebApplicationProvider;
+import net.holmes.core.inject.provider.*;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.dao.MediaDao;
@@ -149,6 +147,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(ResourceBundle.class).toInstance(resourceBundle);
         bind(BackendExceptionMapper.class).in(Singleton.class);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
+        bind(XStream.class).toProvider(XStreamProvider.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);

@@ -19,6 +19,8 @@ package net.holmes.core.media.dao;
 
 import com.google.common.cache.Cache;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ExecutionError;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.sun.syndication.io.FeedException;
 import net.holmes.core.common.MediaType;
 import net.holmes.core.common.NodeFile;
@@ -105,7 +107,11 @@ public class MediaDaoImpl implements MediaDao {
                 MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
                 if (mediaType == MediaType.TYPE_PODCAST) {
                     // Get podcast entries
-                    childNodes = getPodcastEntries(parentNodeId, indexElement.getPath());
+                    try {
+                        childNodes = getPodcastEntries(parentNodeId, indexElement.getPath());
+                    } catch (ExecutionException e) {
+                        LOGGER.error(e.getMessage(), e);
+                    }
                 } else {
                     // Get folder child nodes
                     NodeFile node = new NodeFile(indexElement.getPath());
@@ -156,16 +162,14 @@ public class MediaDaoImpl implements MediaDao {
     private AbstractNode getFileNode(String nodeId, MediaIndexElement indexElement, MediaType mediaType) {
         AbstractNode node = null;
         NodeFile nodeFile = new NodeFile(indexElement.getPath());
-        if (nodeFile.isValid())
-            if (nodeFile.isFile()) {
-                // Content node
-                MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
-                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
-            } else if (nodeFile.isDirectory()) {
-                // Folder node
-                String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
-                node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
-            }
+        if (nodeFile.isValidFile())
+            // Content node
+            node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeTypeManager.getMimeType(nodeFile.getName()));
+        else if (nodeFile.isValidDirectory()) {
+            // Folder node
+            String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
+            node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
+        }
         return node;
     }
 
@@ -203,27 +207,22 @@ public class MediaDaoImpl implements MediaDao {
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) {
-        try {
-            return podcastCache.get(podcastUrl, new Callable<List<AbstractNode>>() {
-                @Override
-                public List<AbstractNode> call() throws IOException, FeedException {
-                    // No entries in cache, read them from RSS feed
-                    final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-                    new PodcastParser() {
-                        @Override
-                        public void newPodcastEntryNode(PodcastEntryNode podcastEntryNode) {
-                            // Add podcast entry node
-                            podcastEntryNodes.add(podcastEntryNode);
-                        }
-                    }.parse(podcastUrl, podcastId);
-                    return podcastEntryNodes;
-                }
-            });
-        } catch (ExecutionException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
+    private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) throws ExecutionException {
+        return podcastCache.get(podcastUrl, new Callable<List<AbstractNode>>() {
+            @Override
+            public List<AbstractNode> call() throws IOException, FeedException {
+                // No entries in cache, read them from RSS feed
+                final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
+                new PodcastParser() {
+                    @Override
+                    public void newPodcastEntryNode(PodcastEntryNode podcastEntryNode) {
+                        // Add podcast entry node
+                        podcastEntryNodes.add(podcastEntryNode);
+                    }
+                }.parse(podcastUrl, podcastId);
+                return podcastEntryNodes;
+            }
+        });
     }
 
     /**
@@ -238,23 +237,15 @@ public class MediaDaoImpl implements MediaDao {
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override
-                    public String call() {
-                        String resolution = null;
-                        BufferedImage bufferedImage = null;
-                        try {
-                            bufferedImage = ImageIO.read(new File(fileName).toURI().toURL());
-                        } catch (IOException e) {
-                            LOGGER.error(e.getMessage(), e);
-                        }
-                        if (bufferedImage != null)
-                            resolution = String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
-                        return resolution != null ? resolution : "0x0";
+                    public String call() throws IOException {
+                        BufferedImage bufferedImage = ImageIO.read(new File(fileName).toURI().toURL());
+                        return String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
                     }
                 });
-            } catch (ExecutionException e) {
+            } catch (ExecutionException | UncheckedExecutionException | ExecutionError e) {
                 LOGGER.error(e.getMessage(), e);
             }
-        return null;
+        return "0x0";
     }
 
     /**
@@ -264,7 +255,7 @@ public class MediaDaoImpl implements MediaDao {
      * @param parentId  parent id
      * @param file      file
      * @param mediaType media type
-     * @return built node
+     * @return content node
      */
     private ContentNode buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         if (mimeType != null) {

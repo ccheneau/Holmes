@@ -18,7 +18,6 @@
 package net.holmes.core.common.configuration;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.media.model.RootNode;
 
 import javax.inject.Inject;
@@ -37,6 +36,7 @@ public final class XmlConfigurationImpl implements Configuration {
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_PATH = "conf";
     private final String localHolmesDataDir;
+    private final XStream xstream;
     private XmlRootNode rootNode = null;
 
     /**
@@ -46,8 +46,9 @@ public final class XmlConfigurationImpl implements Configuration {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @Inject
-    public XmlConfigurationImpl(@Named("localHolmesDataDir") String localHolmesDataDir) throws IOException {
+    public XmlConfigurationImpl(@Named("localHolmesDataDir") String localHolmesDataDir, XStream xstream) throws IOException {
         this.localHolmesDataDir = localHolmesDataDir;
+        this.xstream = xstream;
         loadConfig();
     }
 
@@ -58,7 +59,7 @@ public final class XmlConfigurationImpl implements Configuration {
      */
     private Path getConfigFile() {
         Path confPath = Paths.get(localHolmesDataDir, CONF_PATH);
-        if ((Files.exists(confPath) && Files.isDirectory(confPath)) || confPath.toFile().mkdirs()) {
+        if (Files.isDirectory(confPath) || confPath.toFile().mkdirs()) {
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
         }
         throw new RuntimeException("Failed to create " + confPath);
@@ -74,10 +75,10 @@ public final class XmlConfigurationImpl implements Configuration {
         boolean configLoaded = false;
 
         Path confFile = getConfigFile();
-        if (Files.exists(confFile) && Files.isReadable(confFile)) {
+        if (Files.isReadable(confFile)) {
             try (InputStream in = new FileInputStream(confFile.toFile())) {
                 // Load configuration from XML
-                rootNode = (XmlRootNode) getXStream().fromXML(in);
+                rootNode = (XmlRootNode) xstream.fromXML(in);
                 configLoaded = true;
             } catch (FileNotFoundException e) {
                 //Ignore
@@ -95,21 +96,8 @@ public final class XmlConfigurationImpl implements Configuration {
     public void saveConfig() throws IOException {
         try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
             // Save configuration to XML
-            getXStream().toXML(rootNode, out);
+            xstream.toXML(rootNode, out);
         }
-    }
-
-    /**
-     * Gets XStream.
-     *
-     * @return XStream
-     */
-    private XStream getXStream() {
-        XStream xs = new XStream(new DomDriver("UTF-8"));
-        xs.alias("config", XmlRootNode.class);
-        xs.alias("node", ConfigurationNode.class);
-
-        return xs;
     }
 
     @Override

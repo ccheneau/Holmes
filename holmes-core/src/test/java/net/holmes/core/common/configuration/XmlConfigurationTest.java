@@ -17,6 +17,8 @@
 
 package net.holmes.core.common.configuration;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.media.model.RootNode;
 import org.junit.Test;
 
@@ -31,7 +33,7 @@ public class XmlConfigurationTest {
     public void testXmlConfiguration() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -46,7 +48,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationEmpty() {
         String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -61,7 +63,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationNull() {
         String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -76,7 +78,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationWithBadPath() {
         String configDir = "///bbb";
         try {
-            new XmlConfigurationImpl(configDir);
+            new XmlConfigurationImpl(configDir, getXStreams());
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -86,7 +88,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationHttpServerPort() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertNotNull(configuration.getHttpServerPort());
             configuration.setHttpServerPort(9999);
             assertEquals(Integer.valueOf(9999), configuration.getHttpServerPort());
@@ -99,7 +101,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationUpnpServerName() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertNotNull(configuration.getUpnpServerName());
             configuration.setUpnpServerName("testUpnpServerName");
             assertEquals("testUpnpServerName", configuration.getUpnpServerName());
@@ -112,7 +114,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationParameter() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertTrue(configuration.getParameter(Parameter.ENABLE_SYSTRAY));
             configuration.setParameter(Parameter.ENABLE_SYSTRAY, false);
             assertFalse(configuration.getParameter(Parameter.ENABLE_SYSTRAY));
@@ -125,7 +127,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationIntParameter() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             assertEquals(Integer.valueOf(2), configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS));
         } catch (IOException e) {
             fail(e.getMessage());
@@ -136,10 +138,19 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationSaveConfig() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir, getXStreams());
             configuration.saveConfig();
         } catch (IOException e) {
             fail(e.getMessage());
         }
     }
+
+    private XStream getXStreams() {
+        XStream xs = new XStream(new DomDriver("UTF-8"));
+        xs.alias("config", XmlRootNode.class);
+        xs.alias("node", ConfigurationNode.class);
+
+        return xs;
+    }
+
 }
