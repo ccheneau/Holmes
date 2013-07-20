@@ -104,9 +104,7 @@ public final class SystrayService implements Service {
      */
     private void initHolmesTrayMenu() {
         // Check the SystemTray is supported
-        if (!SystemTray.isSupported()) {
-            return;
-        }
+        if (!SystemTray.isSupported()) return;
 
         // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));

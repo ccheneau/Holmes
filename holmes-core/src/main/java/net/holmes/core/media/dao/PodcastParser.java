@@ -37,7 +37,7 @@ import java.util.UUID;
 /**
  * Parser for podcast entries.
  */
-public abstract class PodcastParser {
+abstract class PodcastParser {
 
     /**
      * Parses podcast entry

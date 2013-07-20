@@ -42,7 +42,7 @@ public class NodeFile extends File {
      * @return true if this is a valid file
      */
     public boolean isValidFile() {
-        return exists() && isFile() && canRead() && !isHidden();
+        return isFile() && canRead() && !isHidden();
     }
 
     /**
@@ -51,17 +51,16 @@ public class NodeFile extends File {
      * @return true if this is a valid directory
      */
     public boolean isValidDirectory() {
-        return exists() && isDirectory() && canRead() && !isHidden();
+        return isDirectory() && canRead() && !isHidden();
     }
 
     /**
      * List readable children files.
      *
-     * @param listSubFiles       list children files
-     * @param listSubDirectories list folders
+     * @param listSubFiles list sub files
      * @return children files
      */
-    public List<File> listValidFiles(boolean listSubFiles, boolean listSubDirectories) {
+    public List<File> listValidFiles(boolean listSubFiles) {
         List<File> fileList = Lists.newArrayList();
         File[] files = listFiles();
         if (files != null)
@@ -69,7 +68,7 @@ public class NodeFile extends File {
                 if (file.canRead() && !file.isHidden())
                     if (listSubFiles && file.isFile())
                         fileList.add(file);
-                    else if (listSubDirectories && file.isDirectory() && file.listFiles() != null)
+                    else if (file.isDirectory() && file.listFiles() != null)
                         fileList.add(file);
 
         return fileList;

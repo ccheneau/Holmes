@@ -183,7 +183,7 @@ public class MediaDaoImpl implements MediaDao {
      */
     private List<AbstractNode> getFolderChildNodes(final String parentId, final NodeFile folder, final MediaType mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        for (File file : folder.listValidFiles(true, true)) {
+        for (File file : folder.listValidFiles(true)) {
             // Add node to mediaIndex
             String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
             if (file.isDirectory())

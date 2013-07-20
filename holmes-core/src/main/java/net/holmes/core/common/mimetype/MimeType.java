@@ -74,7 +74,7 @@ public final class MimeType {
     /**
      * Checks mimeType is a media.
      *
-     * @return
+     * @return true if mimeType is a media
      */
     public boolean isMedia() {
         return MediaType.TYPE_AUDIO == type || MediaType.TYPE_IMAGE == type || MediaType.TYPE_VIDEO == type;
@@ -83,7 +83,7 @@ public final class MimeType {
     /**
      * Checks mimeType is a subTitle.
      *
-     * @return
+     * @return true if mimeType is a subtitle
      */
     public boolean isSubTitle() {
         return MediaType.TYPE_APPLICATION == type && MimeType.SUBTITLE_SUBTYPE.equals(subType);

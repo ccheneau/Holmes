@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 /**
  * Backend manager utils.
  */
-public final class BackendManagerHelper {
+final class BackendManagerHelper {
 
     private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 

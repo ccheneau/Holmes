@@ -77,7 +77,7 @@ public final class UtilHandler {
             // Get child folders
             NodeFile fPath = new NodeFile(parentPath);
             if (fPath.isValidDirectory()) {
-                for (File childDir : fPath.listValidFiles(false, true))
+                for (File childDir : fPath.listValidFiles(false))
                     folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
             }
         }

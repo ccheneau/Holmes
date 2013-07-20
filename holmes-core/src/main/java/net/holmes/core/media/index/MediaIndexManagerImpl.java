@@ -118,6 +118,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
                 LOGGER.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
             }
         }
+
         // Remove elements
         for (String id : toRemove) {
             elements.remove(id);
@@ -151,7 +152,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
                 if (rootNode != PODCAST) removeChildren(configNode.getId());
                 break;
             default:
-                LOGGER.error("Unknown event");
+                LOGGER.error("Unknown event type: {}", configurationEvent.getType());
                 break;
         }
     }
