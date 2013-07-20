@@ -17,14 +17,11 @@
 
 package com.sun.syndication.feed.module.itunes;
 
-import com.sun.syndication.feed.module.itunes.types.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class contains information for iTunes podcast feeds that exist at the Channel level.
@@ -38,32 +35,11 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
     private String ownerName;
     private String ownerEmailAddress;
     private URL image;
-    private List<Category> categories;
 
     /**
      * Creates a new instance of FeedInformationImpl
      */
     public FeedInformationImpl() {
-    }
-
-    /**
-     * The parent categories for this feed
-     *
-     * @return The parent categories for this feed
-     */
-    @Override
-    public List<Category> getCategories() {
-        return categories == null ? new ArrayList<Category>() : categories;
-    }
-
-    /**
-     * The parent categories for this feed
-     *
-     * @param categories The parent categories for this feed
-     */
-    @Override
-    public void setCategories(final List<Category> categories) {
-        this.categories = categories;
     }
 
     /**
@@ -140,9 +116,6 @@ public class FeedInformationImpl extends AbstractITunesObject implements FeedInf
         FeedInformationImpl info = (FeedInformationImpl) obj;
         this.setAuthor(info.getAuthor());
         this.setBlock(info.getBlock());
-
-        this.getCategories().clear();
-        this.getCategories().addAll(info.getCategories());
 
         this.setExplicit(info.getExplicit());
 

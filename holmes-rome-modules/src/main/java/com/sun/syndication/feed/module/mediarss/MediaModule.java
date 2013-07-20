@@ -19,7 +19,6 @@ package com.sun.syndication.feed.module.mediarss;
 
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
-import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
 
 /**
  * This is the base module for MediaRSS.
@@ -39,11 +38,4 @@ public interface MediaModule extends Module {
      * @return Returns Metadata associated with the feed.
      */
     Metadata getMetadata();
-
-    /**
-     * Returns a player reference associated with the feed.
-     *
-     * @return Returns a player reference associated with the feed.
-     */
-    PlayerReference getPlayer();
 }

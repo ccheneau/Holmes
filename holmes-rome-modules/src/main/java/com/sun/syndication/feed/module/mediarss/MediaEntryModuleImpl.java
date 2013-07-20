@@ -89,7 +89,6 @@ public class MediaEntryModuleImpl extends MediaModuleImpl implements MediaEntryM
         m.setMediaContents(mediaContents.clone());
         m.setMediaGroups(mediaGroups.clone());
         m.setMetadata((getMetadata() == null) ? null : (Metadata) getMetadata().clone());
-        m.setPlayer(getPlayer());
 
         return m;
     }

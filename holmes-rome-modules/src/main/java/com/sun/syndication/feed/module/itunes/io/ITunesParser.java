@@ -21,9 +21,7 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.itunes.AbstractITunesObject;
 import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
 import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
-import com.sun.syndication.feed.module.itunes.types.Category;
 import com.sun.syndication.feed.module.itunes.types.Duration;
-import com.sun.syndication.feed.module.itunes.types.Subcategory;
 import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -92,22 +90,6 @@ public class ITunesParser implements ModuleParser {
                 }
             }
 
-            List<?> categories = element.getChildren("category", ns);
-            for (Object category1 : categories) {
-                Element category = (Element) category1;
-                if (category != null && category.getAttribute("text") != null) {
-                    Category cat = new Category();
-                    cat.setName(category.getAttribute("text").getValue().trim());
-
-                    Element subcategory = category.getChild("category", ns);
-                    if (subcategory != null && subcategory.getAttribute("text") != null) {
-                        Subcategory subcategory1 = new Subcategory();
-                        subcategory1.setName(subcategory.getAttribute("text").getValue().trim());
-                        cat.setSubcategory(subcategory1);
-                    }
-                    feedInfo.getCategories().add(cat);
-                }
-            }
 
         } else if (element.getName().equals("item")) {
             EntryInformationImpl entryInfo = new EntryInformationImpl();

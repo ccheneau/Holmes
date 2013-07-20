@@ -17,10 +17,7 @@
 
 package com.sun.syndication.feed.module.itunes;
 
-import com.sun.syndication.feed.module.itunes.types.Category;
-
 import java.net.URL;
-import java.util.List;
 
 /**
  * This class contains information for iTunes podcast feeds that exist at the Channel level.
@@ -29,20 +26,6 @@ import java.util.List;
  * @version $Revision: 1.2 $
  */
 public interface FeedInformation extends ITunes {
-
-    /**
-     * The parent categories for this feed
-     *
-     * @return The parent categories for this feed
-     */
-    List<Category> getCategories();
-
-    /**
-     * The parent categories for this feed
-     *
-     * @param categories The parent categories for this feed
-     */
-    void setCategories(List<Category> categories);
 
     /**
      * Sets the URL for the image.

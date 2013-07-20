@@ -33,7 +33,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * @author Nathanial X. Freitas
@@ -66,7 +65,6 @@ public class MediaModuleParser implements ModuleParser {
             mod = new MediaEntryModuleImpl();
 
         mod.setMetadata(parseMetadata(mmRoot));
-        mod.setPlayer(parsePlayer(mmRoot));
 
         if (mod instanceof MediaEntryModuleImpl) {
             MediaEntryModuleImpl m = (MediaEntryModuleImpl) mod;
@@ -94,12 +92,9 @@ public class MediaModuleParser implements ModuleParser {
             if (content.getAttributeValue("url") != null)
                 try {
                     mc = new MediaContent(new UrlReference(new URI(content.getAttributeValue("url"))));
-                    mc.setPlayer(parsePlayer(content));
                 } catch (Exception ex) {
                     LOGGER.warn("Exception parsing content tag.", ex);
                 }
-            else
-                mc = new MediaContent(parsePlayer(content));
 
             if (mc != null) {
                 values.add(mc);
@@ -175,80 +170,6 @@ public class MediaModuleParser implements ModuleParser {
      */
     private Metadata parseMetadata(final Element element) {
         Metadata md = new Metadata();
-        // categories
-        List<?> categories = element.getChildren("category", NS);
-        List<Category> catValues = new ArrayList<>();
-
-        for (int i = 0; categories != null && i < categories.size(); i++)
-            try {
-                Element cat = (Element) categories.get(i);
-                catValues.add(new Category(cat.getAttributeValue("scheme"), cat.getAttributeValue("label"), cat.getText()));
-            } catch (Exception ex) {
-                LOGGER.warn("Exception parsing category tag.", ex);
-            }
-        md.setCategories(catValues.toArray(new Category[catValues.size()]));
-
-        // copyright
-        try {
-            Element copy = element.getChild("copyright", NS);
-            if (copy != null) {
-                md.setCopyright(copy.getText());
-                md.setCopyrightUrl((copy.getAttributeValue("url") != null) ? new URI(copy.getAttributeValue("url")) : null);
-            }
-        } catch (URISyntaxException ex) {
-            LOGGER.warn("Exception parsing copyright tag.", ex);
-        }
-
-        // credits
-        List<?> credits = element.getChildren("credit", NS);
-        List<Credit> crValues = new ArrayList<>();
-        for (int i = 0; credits != null && i < credits.size(); i++) {
-            Element cred = (Element) credits.get(i);
-            crValues.add(new Credit(cred.getAttributeValue("scheme"), cred.getAttributeValue("role"), cred.getText()));
-        }
-        md.setCredits(crValues.toArray(new Credit[crValues.size()]));
-
-        // description
-        Element description = element.getChild("description", NS);
-        if (description != null) {
-            md.setDescription(description.getText());
-            md.setDescriptionType(description.getAttributeValue("type"));
-        }
-
-        // hash
-        Element hash = element.getChild("hash", NS);
-        if (hash != null) md.setHash(new Hash(hash.getAttributeValue("algo"), hash.getText()));
-
-        // keywords
-        Element keywords = element.getChild("keywords", NS);
-        if (keywords != null) {
-            StringTokenizer tok = new StringTokenizer(keywords.getText(), ",");
-            String[] value = new String[tok.countTokens()];
-            for (int i = 0; tok.hasMoreTokens(); i++)
-                value[i] = tok.nextToken().trim();
-            md.setKeywords(value);
-        }
-
-        // ratings
-        List<?> ratings = element.getChildren("rating", NS);
-        List<Rating> ratValues = new ArrayList<>();
-        for (int i = 0; ratings != null && i < ratings.size(); i++) {
-            Element rat = (Element) ratings.get(i);
-            if (rat.getText() != null && rat.getAttributeValue("scheme") != null)
-                ratValues.add(new Rating(rat.getAttributeValue("scheme"), rat.getText()));
-        }
-        md.setRatings(ratValues.toArray(new Rating[ratValues.size()]));
-
-        // text
-        List<?> texts = element.getChildren("text", NS);
-        List<Text> txtValues = new ArrayList<>();
-        for (int i = 0; texts != null && i < texts.size(); i++) {
-            Element text = (Element) texts.get(i);
-            Time start = (text.getAttributeValue("start") == null) ? null : new Time(text.getAttributeValue("start"));
-            Time end = (text.getAttributeValue("end") == null) ? null : new Time(text.getAttributeValue("end"));
-            txtValues.add(new Text(text.getAttributeValue("type"), text.getTextTrim(), start, end));
-        }
-        md.setText(txtValues.toArray(new Text[txtValues.size()]));
 
         // thumbnails
         List<?> thumbnails = element.getChildren("thumbnail", NS);
@@ -270,66 +191,6 @@ public class MediaModuleParser implements ModuleParser {
         }
         md.setThumbnail(tbnValues.toArray(new Thumbnail[tbnValues.size()]));
 
-        // title
-        Element title = element.getChild("title", NS);
-        if (title != null) {
-            md.setTitle(title.getText());
-            md.setTitleType(title.getAttributeValue("type"));
-        }
-
-        // restrictions
-        List<?> restrictions = element.getChildren("restriction", NS);
-        List<Restriction> rstValues = new ArrayList<>();
-        for (Object restriction : restrictions) {
-            Element r = (Element) restriction;
-            Restriction.Type type = null;
-
-            if (r.getAttributeValue("type").equalsIgnoreCase("uri"))
-                type = Restriction.Type.URI;
-            else if (r.getAttributeValue("type").equalsIgnoreCase("country"))
-                type = Restriction.Type.COUNTRY;
-
-            Restriction.Relationship relationship = null;
-            if (r.getAttributeValue("relationship").equalsIgnoreCase("allow"))
-                relationship = Restriction.Relationship.ALLOW;
-            else if (r.getAttributeValue("relationship").equalsIgnoreCase("deny"))
-                relationship = Restriction.Relationship.DENY;
-
-            rstValues.add(new Restriction(relationship, type, r.getTextTrim()));
-        }
-        md.setRestrictions(rstValues.toArray(new Restriction[rstValues.size()]));
-
-        // handle adult
-        Element adult = element.getChild("adult", NS);
-        if (adult != null && md.getRatings().length == 0) {
-            Rating[] r = new Rating[1];
-            r[0] = new Rating("urn:simple", adult.getTextTrim().equals("true") ? "adult" : "nonadult");
-            md.setRatings(r);
-        }
         return md;
-    }
-
-    /**
-     * Parses the player.
-     *
-     * @param element the element
-     * @return player reference
-     */
-    private PlayerReference parsePlayer(final Element element) {
-        Element player = element.getChild("player", NS);
-        PlayerReference playerReference = null;
-
-        if (player != null) {
-            Integer width = (player.getAttributeValue("width") == null) ? null : Integer.valueOf(player.getAttributeValue("width"));
-            Integer height = (player.getAttributeValue("height") == null) ? null : Integer.valueOf(player.getAttributeValue("height"));
-
-            try {
-                playerReference = new PlayerReference(new URI(player.getAttributeValue("url")), width, height);
-            } catch (Exception ex) {
-                LOGGER.warn("Exception parsing player tag.", ex);
-            }
-        }
-
-        return playerReference;
     }
 }

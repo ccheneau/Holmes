@@ -19,7 +19,6 @@ package com.sun.syndication.feed.module.mediarss;
 
 import com.sun.syndication.feed.module.ModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
-import com.sun.syndication.feed.module.mediarss.types.PlayerReference;
 
 /**
  * This class represents feed/channel level elements for MediaRSS
@@ -30,7 +29,6 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     private static final long serialVersionUID = 1506805082848531979L;
 
     private Metadata metadata;
-    private PlayerReference player;
 
     /**
      * Creates a new instance of MediaModuleImpl
@@ -72,25 +70,6 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         return metadata;
     }
 
-    /**
-     * Player for a feed.
-     *
-     * @param player Player for a feed.
-     */
-    public void setPlayer(final PlayerReference player) {
-        this.player = player;
-    }
-
-    /**
-     * Player for a feed.
-     *
-     * @return Player for a feed.
-     */
-    @Override
-    public PlayerReference getPlayer() {
-        return player;
-    }
-
     @Override
     public String getUri() {
         return MediaModule.URI;
@@ -101,7 +80,6 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         super.clone();
         MediaModuleImpl m = new MediaModuleImpl();
         m.setMetadata((Metadata) metadata.clone());
-        m.setPlayer(player);
         return m;
     }
 
@@ -113,6 +91,5 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         } catch (CloneNotSupportedException e) {
             this.metadata = null;
         }
-        this.player = m.getPlayer();
     }
 }
