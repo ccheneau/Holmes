@@ -111,7 +111,7 @@ final class DirectoryBrowseResult {
      */
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws ContentDirectoryException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
-        if (contentNode.getResolution() != null) res.setResolution(contentNode.getResolution());
+        res.setResolution(contentNode.getResolution());
 
         addDidlItem(parentNodeId, contentNode, contentNode.getName(), contentNode.getMimeType(), res);
     }
@@ -127,7 +127,7 @@ final class DirectoryBrowseResult {
     public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws ContentDirectoryException {
         MimeType mimeType = podcastEntryNode.getMimeType();
         Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
-        if (podcastEntryNode.getDuration() != null) res.setDuration(podcastEntryNode.getDuration());
+        res.setDuration(podcastEntryNode.getDuration());
 
         addDidlItem(parentNodeId, podcastEntryNode, entryName, mimeType, res);
     }

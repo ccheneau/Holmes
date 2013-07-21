@@ -78,13 +78,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result = new DirectoryBrowseResult(firstResult, maxResults);
                 // Add child nodes
                 List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
-                if (childNodes != null)
-                    for (AbstractNode childNode : childNodes)
-                        addNode(objectID, childNode, result, childNodes.size());
+                for (AbstractNode childNode : childNodes)
+                    addNode(objectID, childNode, result, childNodes.size());
                 break;
             case METADATA:
                 result = new DirectoryBrowseResult(0, 1);
-                // Get node metadata
+                // Get node
                 addNode(browseNode.getParentId(), browseNode, result, 0);
                 break;
             default:
@@ -120,9 +119,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             } else if (node instanceof FolderNode) {
                 // Get child counts
                 List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
-                int childCount = childNodes != null ? childNodes.size() : 0;
                 // Add container to result
-                result.addContainer(nodeId, node, childCount);
+                result.addContainer(nodeId, node, childNodes != null ? childNodes.size() : 0);
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);

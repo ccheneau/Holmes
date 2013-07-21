@@ -99,7 +99,7 @@ public class MediaDaoImpl implements MediaDao {
 
     @Override
     public List<AbstractNode> getChildNodes(String parentNodeId) {
-        List<AbstractNode> childNodes = null;
+        List<AbstractNode> childNodes = Lists.newArrayList();
         if (parentNodeId != null) {
             // Get node in mediaIndex
             MediaIndexElement indexElement = mediaIndexManager.get(parentNodeId);
@@ -108,7 +108,7 @@ public class MediaDaoImpl implements MediaDao {
                 if (mediaType == MediaType.TYPE_PODCAST) {
                     // Get podcast entries
                     try {
-                        childNodes = getPodcastEntries(parentNodeId, indexElement.getPath());
+                        childNodes.addAll(getPodcastEntries(parentNodeId, indexElement.getPath()));
                     } catch (ExecutionException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
@@ -116,7 +116,7 @@ public class MediaDaoImpl implements MediaDao {
                     // Get folder child nodes
                     NodeFile node = new NodeFile(indexElement.getPath());
                     if (node.isValidDirectory())
-                        childNodes = getFolderChildNodes(parentNodeId, node, mediaType);
+                        childNodes.addAll(getFolderChildNodes(parentNodeId, node, mediaType));
                 }
             } else LOGGER.error("{} node not found in index", parentNodeId);
         }
