@@ -18,12 +18,12 @@
 package com.sun.syndication.feed.module.mediarss.io;
 
 import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
-import com.sun.syndication.feed.module.mediarss.types.*;
+import com.sun.syndication.feed.module.mediarss.types.Metadata;
+import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
+import com.sun.syndication.feed.module.mediarss.types.Time;
 import com.sun.syndication.io.ModuleParser;
-import com.sun.syndication.io.impl.NumberParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.slf4j.Logger;
@@ -57,109 +57,10 @@ public class MediaModuleParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element mmRoot) {
-        MediaModuleImpl mod;
-
-        if (mmRoot.getName().equals("channel") || mmRoot.getName().equals("feed"))
-            mod = new MediaModuleImpl();
-        else
-            mod = new MediaEntryModuleImpl();
-
+        MediaModuleImpl mod = new MediaModuleImpl();
         mod.setMetadata(parseMetadata(mmRoot));
 
-        if (mod instanceof MediaEntryModuleImpl) {
-            MediaEntryModuleImpl m = (MediaEntryModuleImpl) mod;
-            m.setMediaContents(parseContent(mmRoot));
-            m.setMediaGroups(parseGroup(mmRoot));
-        }
-
         return mod;
-    }
-
-    /**
-     * Parses the content.
-     *
-     * @param element the element
-     * @return media content[]
-     */
-    private MediaContent[] parseContent(final Element element) {
-        List<?> contents = element.getChildren("content", NS);
-        List<MediaContent> values = new ArrayList<>();
-
-        for (int i = 0; contents != null && i < contents.size(); i++) {
-            Element content = (Element) contents.get(i);
-            MediaContent mc = null;
-
-            if (content.getAttributeValue("url") != null)
-                try {
-                    mc = new MediaContent(new UrlReference(new URI(content.getAttributeValue("url"))));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-
-            if (mc != null) {
-                values.add(mc);
-                try {
-                    mc.setAudioChannels((content.getAttributeValue("channels") == null) ? null : Integer.valueOf(content.getAttributeValue("channels")));
-                    mc.setBitrate((content.getAttributeValue("bitrate") == null) ? null : Float.valueOf(content.getAttributeValue("bitrate")));
-                    mc.setDuration((content.getAttributeValue("duration") == null) ? null : Long.valueOf(content.getAttributeValue("duration")));
-                } catch (Exception ex) {
-                    LOGGER.warn("Exception parsing content tag.", ex);
-                }
-
-                String expression = content.getAttributeValue("expression");
-
-                if (expression != null) {
-                    if (expression.equalsIgnoreCase("full"))
-                        mc.setExpression(Expression.FULL);
-                    else if (expression.equalsIgnoreCase("sample"))
-                        mc.setExpression(Expression.SAMPLE);
-                    else if (expression.equalsIgnoreCase("nonstop"))
-                        mc.setExpression(Expression.NONSTOP);
-                }
-
-                mc.setFileSize((content.getAttributeValue("fileSize") == null) ? null : NumberParser.parseLong(content.getAttributeValue("fileSize")));
-                mc.setFramerate((content.getAttributeValue("framerate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("framerate")));
-                mc.setHeight((content.getAttributeValue("height") == null) ? null : NumberParser.parseInt(content.getAttributeValue("height")));
-                mc.setLanguage(content.getAttributeValue("lang"));
-                mc.setMetadata(parseMetadata(content));
-                mc.setSamplingrate((content.getAttributeValue("samplingrate") == null) ? null : NumberParser.parseFloat(content.getAttributeValue("samplingrate")));
-
-                mc.setType(content.getAttributeValue("type"));
-                mc.setWidth((content.getAttributeValue("width") == null) ? null : NumberParser.parseInt(content.getAttributeValue("width")));
-
-                mc.setDefaultContent((content.getAttributeValue("isDefault") == null) ? false : Boolean.valueOf(content.getAttributeValue("isDefault")));
-            } else
-                LOGGER.warn("Could not find MediaContent.");
-
-        }
-        return values.toArray(new MediaContent[values.size()]);
-    }
-
-    /**
-     * Parses the group.
-     *
-     * @param element the element
-     * @return media group[]
-     */
-    private MediaGroup[] parseGroup(final Element element) {
-        List<?> groups = element.getChildren("group", NS);
-        List<MediaGroup> values = new ArrayList<>();
-
-        for (int i = 0; groups != null && i < groups.size(); i++) {
-            Element group = (Element) groups.get(i);
-            MediaGroup g = new MediaGroup(parseContent(group));
-
-            for (int j = 0; j < g.getContents().length; j++)
-                if (g.getContents()[j].isDefaultContent()) {
-                    g.setDefaultContentIndex(j);
-                    break;
-                }
-
-            g.setMetadata(parseMetadata(group));
-            values.add(g);
-        }
-
-        return values.toArray(new MediaGroup[values.size()]);
     }
 
     /**

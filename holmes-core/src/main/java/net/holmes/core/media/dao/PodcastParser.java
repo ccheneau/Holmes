@@ -19,7 +19,6 @@ package net.holmes.core.media.dao;
 
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModule;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -94,7 +93,7 @@ abstract class PodcastParser {
      */
     private String getIconUrl(SyndEntry rssEntry) {
         String iconUrl = null;
-        MediaEntryModule mediaInfo = (MediaEntryModule) (rssEntry.getModule(MediaModule.URI));
+        MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MediaModule.URI));
         if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
             iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
         return iconUrl;
