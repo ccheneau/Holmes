@@ -34,15 +34,12 @@ final class BackendManagerHelper {
 
     private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 
-    private BackendManagerHelper() {
-    }
-
     /**
      * Validate server name.
      *
      * @param serverName server name to validate
      */
-    public static void validateServerName(final String serverName) {
+    public void validateServerName(final String serverName) {
         checkNonEmptyString(serverName, "backend.settings.server.name.error");
     }
 
@@ -51,7 +48,7 @@ final class BackendManagerHelper {
      *
      * @param serverPort server port to validate
      */
-    public static void validateHttpServerPort(final Integer serverPort) {
+    public void validateHttpServerPort(final Integer serverPort) {
         if (serverPort == null || serverPort < Configuration.MIN_HTTP_SERVER_PORT || serverPort > Configuration.MAX_HTTP_SERVER_PORT)
             throw new BackendException("backend.settings.http.port.error");
     }
@@ -63,7 +60,7 @@ final class BackendManagerHelper {
      * @param configNodes existing folders
      * @param excludedId  folder id excluded from duplication checking
      */
-    public static void validateFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId) {
+    public void validateFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId) {
         // Check folder's name and path are not empty
         checkNonEmptyString(folder.getName(), "backend.folder.name.error");
         checkNonEmptyString(folder.getPath(), "backend.folder.path.error");
@@ -83,7 +80,7 @@ final class BackendManagerHelper {
      * @param configNodes existing podcasts
      * @param excludedId  podcast id excluded from duplication check
      */
-    public static void validatePodcast(final ConfigurationFolder podcast, final List<ConfigurationNode> configNodes, final String excludedId) {
+    public void validatePodcast(final ConfigurationFolder podcast, final List<ConfigurationNode> configNodes, final String excludedId) {
         // Check podcast name and path are not empty
         checkNonEmptyString(podcast.getName(), "backend.podcast.name.error");
         checkNonEmptyString(podcast.getPath(), "backend.podcast.url.error");
@@ -104,7 +101,7 @@ final class BackendManagerHelper {
      * @param podcast     podcast or not
      * @return configuration node
      */
-    public static ConfigurationNode findConfigurationNode(String id, List<ConfigurationNode> configNodes, boolean podcast) {
+    public ConfigurationNode findConfigurationNode(String id, List<ConfigurationNode> configNodes, boolean podcast) {
         for (ConfigurationNode node : configNodes)
             if (node.getId().equals(id)) return node;
 
@@ -117,7 +114,7 @@ final class BackendManagerHelper {
      * @param toCheck      string to check
      * @param errorMessage error message
      */
-    private static void checkNonEmptyString(String toCheck, String errorMessage) {
+    private void checkNonEmptyString(String toCheck, String errorMessage) {
         if (Strings.isNullOrEmpty(toCheck)) throw new BackendException((errorMessage));
     }
 
@@ -129,7 +126,7 @@ final class BackendManagerHelper {
      * @param excludedId   folder id to exclude from duplication check
      * @param errorMessage error message
      */
-    private static void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final String errorMessage) {
+    private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final String errorMessage) {
         for (ConfigurationNode node : configNodes) {
             if (excludedId != null && excludedId.equals(node.getId())) continue;
             if (node.getLabel().equals(folder.getName()) || node.getPath().equals(folder.getPath()))

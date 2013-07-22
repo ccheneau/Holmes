@@ -24,6 +24,6 @@ public class BackendPackageTest {
 
     @Test
     public void testGetName() {
-        Assert.assertNotNull(BackendPackage.getName());
+        Assert.assertNotNull(new BackendPackage().getName());
     }
 }

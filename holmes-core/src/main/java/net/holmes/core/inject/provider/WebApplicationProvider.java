@@ -55,7 +55,7 @@ public final class WebApplicationProvider implements Provider<WebApplication> {
 
         // Set web application properties
         Map<String, Object> props = Maps.newHashMap();
-        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, BackendPackage.getName());
+        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, new BackendPackage().getName());
         props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
         // Initialize web application

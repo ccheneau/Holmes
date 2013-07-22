@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static net.holmes.core.backend.BackendManagerHelper.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
@@ -44,6 +43,7 @@ public final class BackendManagerImpl implements BackendManager {
 
     private final Configuration configuration;
     private final EventBus eventBus;
+    private final BackendManagerHelper helper;
 
     /**
      * Instantiates a new backend manager implementation.
@@ -55,6 +55,7 @@ public final class BackendManagerImpl implements BackendManager {
     public BackendManagerImpl(final Configuration configuration, final EventBus eventBus) {
         this.configuration = configuration;
         this.eventBus = eventBus;
+        this.helper = new BackendManagerHelper();
     }
 
     @Override
@@ -69,7 +70,7 @@ public final class BackendManagerImpl implements BackendManager {
 
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
-        ConfigurationNode node = findConfigurationNode(id, configuration.getFolders(rootNode), rootNode == RootNode.PODCAST);
+        ConfigurationNode node = helper.findConfigurationNode(id, configuration.getFolders(rootNode), rootNode == RootNode.PODCAST);
         return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
     }
 
@@ -78,8 +79,8 @@ public final class BackendManagerImpl implements BackendManager {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
 
         // Validate
-        if (rootNode == RootNode.PODCAST) validatePodcast(folder, configNodes, null);
-        else validateFolder(folder, configNodes, null);
+        if (rootNode == RootNode.PODCAST) helper.validatePodcast(folder, configNodes, null);
+        else helper.validateFolder(folder, configNodes, null);
 
         // Set new folder id
         folder.setId(UUID.randomUUID().toString());
@@ -103,11 +104,11 @@ public final class BackendManagerImpl implements BackendManager {
         boolean podcast = rootNode == RootNode.PODCAST;
 
         // Check folder
-        if (podcast) validatePodcast(folder, configNodes, id);
-        else validateFolder(folder, configNodes, id);
+        if (podcast) helper.validatePodcast(folder, configNodes, id);
+        else helper.validateFolder(folder, configNodes, id);
 
         // Save config if name or path has changed
-        ConfigurationNode currentNode = findConfigurationNode(id, configNodes, podcast);
+        ConfigurationNode currentNode = helper.findConfigurationNode(id, configNodes, podcast);
         if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
             currentNode.setLabel(folder.getName());
             currentNode.setPath(folder.getPath());
@@ -125,7 +126,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        ConfigurationNode currentNode = findConfigurationNode(id, configNodes, rootNode == RootNode.PODCAST);
+        ConfigurationNode currentNode = helper.findConfigurationNode(id, configNodes, rootNode == RootNode.PODCAST);
 
         // Remove node
         configNodes.remove(currentNode);
@@ -150,8 +151,8 @@ public final class BackendManagerImpl implements BackendManager {
 
     @Override
     public void saveSettings(final Settings settings) {
-        validateServerName(settings.getServerName());
-        validateHttpServerPort(settings.getHttpServerPort());
+        helper.validateServerName(settings.getServerName());
+        helper.validateHttpServerPort(settings.getHttpServerPort());
 
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());

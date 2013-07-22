@@ -22,15 +22,13 @@ package net.holmes.core.backend;
  */
 public final class BackendPackage {
 
-    private BackendPackage() {
-    }
 
     /**
      * Gets the backend package name.
      *
      * @return the backend package name
      */
-    public static String getName() {
+    public String getName() {
         return BackendPackage.class.getPackage().getName();
     }
 }
