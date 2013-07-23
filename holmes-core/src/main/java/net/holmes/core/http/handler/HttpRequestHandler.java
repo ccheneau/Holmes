@@ -25,8 +25,6 @@ import io.netty.handler.codec.http.HttpMethod;
  * Http request handler.
  */
 public interface HttpRequestHandler {
-    Integer CHUNK_SIZE = 8192;
-
     /**
      * Check if handler can process request.
      *

@@ -20,8 +20,8 @@ package net.holmes.core.http.handler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaManager;
@@ -111,19 +111,15 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         channel.write(response);
 
         // Write the content
-        try {
-            channel.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
-        } catch (IOException e) {
-            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
-        }
+        channel.write(new DefaultFileRegion(randomFile.getChannel(), startOffset, fileLength - startOffset), channel.newProgressivePromise());
 
         // Write the end marker
-        ChannelFuture writeFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+        ChannelFuture lastContentFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not.
         if (!HttpHeaders.isKeepAlive(request)) {
             // Close the connection when the whole content is written out.
-            writeFuture.addListener(ChannelFutureListener.CLOSE);
+            lastContentFuture.addListener(ChannelFutureListener.CLOSE);
         }
 
     }

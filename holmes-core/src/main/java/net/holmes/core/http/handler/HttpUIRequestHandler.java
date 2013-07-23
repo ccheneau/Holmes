@@ -21,8 +21,8 @@ import com.google.common.base.Strings;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
@@ -73,11 +73,11 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             if (!file.exists()) throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
 
             // Read the file
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
+            RandomAccessFile randomFile = new RandomAccessFile(file, "r");
 
             // Define response header
             HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-            HttpHeaders.setContentLength(response, raf.length());
+            HttpHeaders.setContentLength(response, randomFile.length());
             response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
             if (mimeType != null)
@@ -90,15 +90,15 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             channel.write(response);
 
             // Write the content
-            channel.write(new ChunkedFile(raf, 0, raf.length(), CHUNK_SIZE));
+            channel.write(new DefaultFileRegion(randomFile.getChannel(), 0, randomFile.length()), channel.newProgressivePromise());
 
             // Write the end marker
-            ChannelFuture writeFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+            ChannelFuture lastContentFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
             // Decide whether to close the connection or not.
             if (!HttpHeaders.isKeepAlive(request)) {
                 // Close the connection when the whole content is written out.
-                writeFuture.addListener(ChannelFutureListener.CLOSE);
+                lastContentFuture.addListener(ChannelFutureListener.CLOSE);
             }
         } catch (IOException e) {
             throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
