@@ -2019,10 +2019,6 @@
             <priority>MAJOR</priority>
             <parameters>
                 <parameter>
-                    <key>format</key>
-                    <value>^[a-z][a-zA-Z0-9]*$</value>
-                </parameter>
-                <parameter>
                     <key>applyToPublic</key>
                     <value>true</value>
                 </parameter>
@@ -2038,6 +2034,10 @@
                     <key>applyToPrivate</key>
                     <value>true</value>
                 </parameter>
+                <parameter>
+                    <key>format</key>
+                    <value>^[a-z][a-zA-Z0-9]*$</value>
+                </parameter>
             </parameters>
         </rule>
         <rule>
@@ -2051,12 +2051,12 @@
             <priority>MAJOR</priority>
             <parameters>
                 <parameter>
-                    <key>format</key>
-                    <value>^[a-z][a-zA-Z0-9]*$</value>
-                </parameter>
-                <parameter>
                     <key>allowClassName</key>
                     <value>false</value>
+                </parameter>
+                <parameter>
+                    <key>format</key>
+                    <value>^[a-z][a-zA-Z0-9]*$</value>
                 </parameter>
             </parameters>
         </rule>
@@ -2118,10 +2118,6 @@
             <priority>MAJOR</priority>
             <parameters>
                 <parameter>
-                    <key>format</key>
-                    <value>^[a-z][a-zA-Z0-9]*$</value>
-                </parameter>
-                <parameter>
                     <key>applyToPublic</key>
                     <value>true</value>
                 </parameter>
@@ -2136,6 +2132,10 @@
                 <parameter>
                     <key>applyToPrivate</key>
                     <value>true</value>
+                </parameter>
+                <parameter>
+                    <key>format</key>
+                    <value>^[a-z][a-zA-Z0-9]*$</value>
                 </parameter>
             </parameters>
         </rule>
@@ -2145,10 +2145,6 @@
             <priority>MINOR</priority>
             <parameters>
                 <parameter>
-                    <key>format</key>
-                    <value>^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$</value>
-                </parameter>
-                <parameter>
                     <key>applyToPublic</key>
                     <value>true</value>
                 </parameter>
@@ -2163,6 +2159,10 @@
                 <parameter>
                     <key>applyToPrivate</key>
                     <value>true</value>
+                </parameter>
+                <parameter>
+                    <key>format</key>
+                    <value>^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$</value>
                 </parameter>
             </parameters>
         </rule>
@@ -2198,6 +2198,10 @@
             <priority>MAJOR</priority>
             <parameters>
                 <parameter>
+                    <key>ignoreAbstractMethods</key>
+                    <value>true</value>
+                </parameter>
+                <parameter>
                     <key>tokens</key>
                     <value>VARIABLE_DEF</value>
                 </parameter>
@@ -2207,10 +2211,6 @@
                 </parameter>
                 <parameter>
                     <key>ignoreSetter</key>
-                    <value>true</value>
-                </parameter>
-                <parameter>
-                    <key>ignoreAbstractMethods</key>
                     <value>true</value>
                 </parameter>
             </parameters>
@@ -2247,16 +2247,16 @@
             <priority>MINOR</priority>
             <parameters>
                 <parameter>
+                    <key>ignoreNumbers</key>
+                    <value>-1,0,1,2,3,4,5,6,7,9,10,99,100,1000,1000000</value>
+                </parameter>
+                <parameter>
                     <key>ignoreHashCodeMethod</key>
                     <value>true</value>
                 </parameter>
                 <parameter>
                     <key>ignoreAnnotation</key>
                     <value>true</value>
-                </parameter>
-                <parameter>
-                    <key>ignoreNumbers</key>
-                    <value>-1,0,1,2,3,4,5,6,7,9,10,99,100,1000,1000000</value>
                 </parameter>
             </parameters>
         </rule>
@@ -2687,4 +2687,48 @@
             <priority>MAJOR</priority>
         </rule>
     </rules>
+    <alerts>
+        <alert>
+            <metric>package_cycles</metric>
+            <operator>&gt;</operator>
+            <warning>0</warning>
+            <error></error>
+        </alert>
+        <alert>
+            <metric>public_undocumented_api</metric>
+            <operator>&gt;</operator>
+            <warning>0</warning>
+            <error></error>
+        </alert>
+        <alert>
+            <metric>blocker_violations</metric>
+            <operator>&gt;</operator>
+            <warning></warning>
+            <error>0</error>
+        </alert>
+        <alert>
+            <metric>critical_violations</metric>
+            <operator>&gt;</operator>
+            <warning></warning>
+            <error>0</error>
+        </alert>
+        <alert>
+            <metric>class_complexity</metric>
+            <operator>&gt;</operator>
+            <warning>10</warning>
+            <error></error>
+        </alert>
+        <alert>
+            <metric>test_failures</metric>
+            <operator>&gt;</operator>
+            <warning></warning>
+            <error>0</error>
+        </alert>
+        <alert>
+            <metric>test_errors</metric>
+            <operator>&gt;</operator>
+            <warning></warning>
+            <error>0</error>
+        </alert>
+    </alerts>
 </profile>
