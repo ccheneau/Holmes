@@ -19,10 +19,8 @@ package net.holmes.core.http.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.netty.channel.Channel;
-import io.netty.channel.DefaultChannelPromise;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
@@ -133,8 +131,9 @@ public class HttpContentRequestHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
@@ -173,8 +172,9 @@ public class HttpContentRequestHandlerTest {
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
@@ -212,8 +212,9 @@ public class HttpContentRequestHandlerTest {
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
         expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
