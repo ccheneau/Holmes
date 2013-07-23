@@ -65,18 +65,10 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
     @Override
     public void copyFrom(final Object obj) {
         EntryInformationImpl info = (EntryInformationImpl) obj;
-        this.setAuthor(info.getAuthor());
-        this.setBlock(info.getBlock());
 
         if (info.getDuration() != null)
             this.setDuration(new Duration(info.getDuration().getMilliseconds()));
 
-        this.setExplicit(info.getExplicit());
-
-        this.setKeywords(info.getKeywords().clone());
-
-        this.setSubtitle(info.getSubtitle());
-        this.setSummary(info.getSummary());
     }
 
     /**

@@ -20,26 +20,16 @@ package com.sun.syndication.feed.module.itunes.io;
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.itunes.AbstractITunesObject;
 import com.sun.syndication.feed.module.itunes.EntryInformationImpl;
-import com.sun.syndication.feed.module.itunes.FeedInformationImpl;
 import com.sun.syndication.feed.module.itunes.types.Duration;
 import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.jdom.output.XMLOutputter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.10 $
  */
 public class ITunesParser implements ModuleParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ITunesParser.class);
     private final Namespace ns;
 
     /**
@@ -47,15 +37,6 @@ public class ITunesParser implements ModuleParser {
      */
     public ITunesParser() {
         ns = Namespace.getNamespace(AbstractITunesObject.URI);
-    }
-
-    /**
-     * Creates a new instance of ITunesParser.
-     *
-     * @param ns the namespace
-     */
-    public ITunesParser(final Namespace ns) {
-        this.ns = ns;
     }
 
     @Override
@@ -67,31 +48,7 @@ public class ITunesParser implements ModuleParser {
     public Module parse(final Element element) {
         AbstractITunesObject module = null;
 
-        if (element.getName().equals("channel")) {
-            FeedInformationImpl feedInfo = new FeedInformationImpl();
-            module = feedInfo;
-
-            //Now I am going to get the channel specific tags
-            Element owner = element.getChild("owner", ns);
-            if (owner != null) {
-                Element name = owner.getChild("name", ns);
-                if (name != null) feedInfo.setOwnerName(name.getValue().trim());
-
-                Element email = owner.getChild("email", ns);
-                if (email != null) feedInfo.setOwnerEmailAddress(email.getValue().trim());
-            }
-
-            Element image = element.getChild("image", ns);
-            if (image != null && image.getAttributeValue("href") != null) {
-                try {
-                    feedInfo.setImage(new URL(image.getAttributeValue("href").trim()));
-                } catch (MalformedURLException e) {
-                    LOGGER.debug("Malformed URL Exception reading itunes:image tag: " + image.getAttributeValue("href"));
-                }
-            }
-
-
-        } else if (element.getName().equals("item")) {
+        if (element.getName().equals("item")) {
             EntryInformationImpl entryInfo = new EntryInformationImpl();
             module = entryInfo;
 
@@ -99,47 +56,6 @@ public class ITunesParser implements ModuleParser {
             if (duration != null && duration.getValue() != null)
                 entryInfo.setDuration(new Duration(duration.getValue().trim()));
         }
-        if (module != null) {
-            //All these are common to both Channel and Item
-            Element author = element.getChild("author", ns);
-            if (author != null && author.getText() != null) module.setAuthor(author.getText());
-
-            Element block = element.getChild("block", ns);
-            if (block != null) module.setBlock(true);
-
-            Element explicit = element.getChild("explicit", ns);
-            if (explicit != null && explicit.getValue() != null && explicit.getValue().trim().equalsIgnoreCase("yes"))
-                module.setExplicit(true);
-
-            Element keywords = element.getChild("keywords", ns);
-            if (keywords != null) {
-                StringTokenizer tok = new StringTokenizer(getXmlInnerText(keywords).trim(), ",");
-                String[] keywordsArray = new String[tok.countTokens()];
-
-                for (int i = 0; tok.hasMoreTokens(); i++)
-                    keywordsArray[i] = tok.nextToken();
-
-                module.setKeywords(keywordsArray);
-            }
-
-            Element subtitle = element.getChild("subtitle", ns);
-            if (subtitle != null) module.setSubtitle(subtitle.getTextTrim());
-
-            Element summary = element.getChild("summary", ns);
-            if (summary != null) module.setSummary(summary.getTextTrim());
-        }
-
         return module;
-    }
-
-    /**
-     * Gets the xml inner text.
-     *
-     * @param element the element
-     * @return the xml inner text
-     */
-    private String getXmlInnerText(final Element element) {
-        List<?> children = element.getContent();
-        return new XMLOutputter().outputString(children);
     }
 }
