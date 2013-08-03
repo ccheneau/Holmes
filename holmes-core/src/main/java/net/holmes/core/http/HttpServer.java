@@ -47,7 +47,8 @@ public final class HttpServer implements Service {
     private final Injector injector;
     private final Configuration configuration;
     private final WebApplication webApplication;
-    private final EventLoopGroup eventLoopGroup;
+    private final EventLoopGroup bossGroup;
+    private final EventLoopGroup workerGroup;
 
     /**
      * Instantiates a new http server.
@@ -61,7 +62,8 @@ public final class HttpServer implements Service {
         this.injector = injector;
         this.configuration = configuration;
         this.webApplication = webApplication;
-        this.eventLoopGroup = new NioEventLoopGroup();
+        this.bossGroup = new NioEventLoopGroup();
+        this.workerGroup = new NioEventLoopGroup();
     }
 
     @Override
@@ -72,7 +74,7 @@ public final class HttpServer implements Service {
 
         // Configure the server.
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(eventLoopGroup) //
+        bootstrap.group(bossGroup, workerGroup) //
                 .channel(NioServerSocketChannel.class) //
                 .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -103,7 +105,8 @@ public final class HttpServer implements Service {
         LOGGER.info("Stopping HTTP server");
 
         // Stop the server
-        eventLoopGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
         webApplication.destroy();
 
         LOGGER.info("HTTP server stopped");
