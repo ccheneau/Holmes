@@ -26,7 +26,7 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -49,7 +49,6 @@ public class HttpBackendRequestHandlerTest {
     private FullHttpRequest request = createMock(FullHttpRequest.class);
     @Inject
     private WebApplication webApplication;
-    private Channel channel = createMock(Channel.class);
     private ContainerResponse response = createMock(ContainerResponse.class);
     private Injector injector;
 
@@ -90,11 +89,11 @@ public class HttpBackendRequestHandlerTest {
         webApplication.handleRequest(isA(ContainerRequest.class), isA(ContainerResponseWriter.class));
         expectLastCall().atLeastOnce();
 
-        Channel channel = createMock(Channel.class);
-        replay(request, webApplication);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        replay(request, webApplication, context);
         HttpBackendRequestHandler backendRequestHandler = getHandler();
-        backendRequestHandler.processRequest(request, channel);
-        verify(request, webApplication);
+        backendRequestHandler.processRequest(request, context);
+        verify(request, webApplication, context);
     }
 
     @Test(expected = HttpRequestException.class)
@@ -104,13 +103,13 @@ public class HttpBackendRequestHandlerTest {
 
         expect(request.headers()).andReturn(headers).atLeastOnce();
 
-        Channel channel = createMock(Channel.class);
-        replay(request);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        replay(request, context);
         try {
             HttpBackendRequestHandler backendRequestHandler = getHandler();
-            backendRequestHandler.processRequest(request, channel);
+            backendRequestHandler.processRequest(request, context);
         } finally {
-            verify(request);
+            verify(request, context);
         }
     }
 
@@ -128,13 +127,13 @@ public class HttpBackendRequestHandlerTest {
         webApplication.handleRequest(isA(ContainerRequest.class), isA(ContainerResponseWriter.class));
         expectLastCall().andThrow(new IOException());
 
-        Channel channel = createMock(Channel.class);
-        replay(request, webApplication);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        replay(request, webApplication, context);
         try {
             HttpBackendRequestHandler backendRequestHandler = getHandler();
-            backendRequestHandler.processRequest(request, channel);
+            backendRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, webApplication);
+            verify(request, webApplication, context);
         }
     }
 
@@ -146,9 +145,10 @@ public class HttpBackendRequestHandlerTest {
         expect(response.getStatus()).andReturn(0).atLeastOnce();
         expect(response.getHttpHeaders()).andReturn(headers).atLeastOnce();
 
-        replay(channel, response);
-        BackendResponseWriter backendResponseWriter = new BackendResponseWriter(channel);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        replay(context, response);
+        BackendResponseWriter backendResponseWriter = new BackendResponseWriter(context);
         backendResponseWriter.writeStatusAndHeaders(1, response);
-        verify(channel, response);
+        verify(context, response);
     }
 }

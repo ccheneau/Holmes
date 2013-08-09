@@ -35,8 +35,6 @@ import static org.junit.Assert.assertTrue;
 
 public class HttpUIRequestHandlerTest {
 
-    private FullHttpRequest request = createMock(FullHttpRequest.class);
-    private Channel channel = createMock(Channel.class);
     private Injector injector;
     @Inject
     private MimeTypeManager mimeTypeManager;
@@ -67,19 +65,23 @@ public class HttpUIRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        Channel channel = createMock(Channel.class);
 
-        replay(request, channel);
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+
+        replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        httpUIRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        httpUIRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 
     @Test
@@ -90,18 +92,22 @@ public class HttpUIRequestHandlerTest {
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
 
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        Channel channel = createMock(Channel.class);
 
-        replay(request, channel);
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+
+        replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        httpUIRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        httpUIRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 
     @Test
@@ -111,57 +117,70 @@ public class HttpUIRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
 
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getUri()).andReturn("/" + indexHtml.getName());
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        Channel channel = createMock(Channel.class);
 
-        replay(request, channel);
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+
+        replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        httpUIRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        httpUIRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestNonExistingIndex() throws Exception {
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+
         expect(request.getUri()).andReturn("/");
 
-        replay(request);
+        replay(request, context);
         try {
             HttpUIRequestHandler httpUIRequestHandler = getHandler();
-            httpUIRequestHandler.processRequest(request, channel);
+            httpUIRequestHandler.processRequest(request, context);
         } finally {
-            verify(request);
+            verify(request, context);
         }
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestEmptyFile() throws Exception {
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+
         expect(request.getUri()).andReturn("");
 
-        replay(request);
+        replay(request, context);
         try {
             HttpUIRequestHandler httpUIRequestHandler = getHandler();
-            httpUIRequestHandler.processRequest(request, channel);
+            httpUIRequestHandler.processRequest(request, context);
         } finally {
-            verify(request);
+            verify(request, context);
         }
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestNonExistingFile() throws Exception {
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+
         expect(request.getUri()).andReturn("/badFile");
 
-        replay(request);
+        replay(request, context);
         try {
             HttpUIRequestHandler httpUIRequestHandler = getHandler();
-            httpUIRequestHandler.processRequest(request, channel);
+            httpUIRequestHandler.processRequest(request, context);
         } finally {
-            verify(request);
+            verify(request, context);
         }
     }
 

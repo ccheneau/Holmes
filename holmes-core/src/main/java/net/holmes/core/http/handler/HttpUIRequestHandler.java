@@ -18,9 +18,9 @@
 package net.holmes.core.http.handler;
 
 import com.google.common.base.Strings;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.common.mimetype.MimeType;
@@ -32,6 +32,11 @@ import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * Handler for Holmes UI pages.
@@ -57,15 +62,17 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();
-        if ("/".equals(fileName))
+        if ("/".equals(fileName)) {
             fileName = "/index.html";
+        }
 
-        if (Strings.isNullOrEmpty(fileName))
+        if (Strings.isNullOrEmpty(fileName)) {
             throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
+        }
 
         try {
             // Get file
@@ -76,24 +83,24 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             RandomAccessFile randomFile = new RandomAccessFile(file, "r");
 
             // Define response header
-            HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            HttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK);
             HttpHeaders.setContentLength(response, randomFile.length());
-            response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+            response.headers().set(SERVER, HttpServer.HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
             if (mimeType != null)
-                response.headers().add(HttpHeaders.Names.CONTENT_TYPE, mimeType.getMimeType());
+                response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
 
             if (HttpHeaders.isKeepAlive(request))
-                response.headers().add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+                response.headers().set(CONNECTION, KEEP_ALIVE);
 
             // Write the response header.
-            channel.write(response);
+            context.write(response);
 
             // Write the content
-            channel.write(new DefaultFileRegion(randomFile.getChannel(), 0, randomFile.length()), channel.newProgressivePromise());
+            context.write(new DefaultFileRegion(randomFile.getChannel(), 0, randomFile.length()), context.newProgressivePromise());
 
             // Write the end marker
-            ChannelFuture lastContentFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+            ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
             // Decide whether to close the connection or not.
             if (!HttpHeaders.isKeepAlive(request)) {

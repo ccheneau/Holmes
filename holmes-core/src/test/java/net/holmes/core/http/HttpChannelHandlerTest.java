@@ -17,8 +17,6 @@
 
 package net.holmes.core.http;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,8 +26,6 @@ import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
@@ -44,17 +40,9 @@ public class HttpChannelHandlerTest {
     private ChannelHandlerContext channelHandlerContext = createMock(ChannelHandlerContext.class);
     private FullHttpRequest request = createMock(FullHttpRequest.class);
     private Channel channel = createMock(Channel.class);
-    private Injector injector;
-
-    @Before
-    public void setUp() {
-        injector = Guice.createInjector(new TestModule());
-    }
 
     private HttpChannelHandler getHandler() {
-        HttpChannelHandler handler = new HttpChannelHandler(httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
-        injector.injectMembers(handler);
-        return handler;
+        return new HttpChannelHandler(httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
     }
 
     @Test
@@ -65,9 +53,8 @@ public class HttpChannelHandlerTest {
         expect(request.getUri()).andReturn("/content?id=2").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
-        httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(Channel.class));
+        httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler);
@@ -87,7 +74,7 @@ public class HttpChannelHandlerTest {
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
-        httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(Channel.class));
+        httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().andThrow(new HttpRequestException("message", HttpResponseStatus.NOT_FOUND)).atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler);
@@ -105,10 +92,9 @@ public class HttpChannelHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.POST).atLeastOnce();
         expect(request.content()).andReturn(Unpooled.copiedBuffer("Param1", Charset.defaultCharset())).atLeastOnce();
-        expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpBackendRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
-        httpBackendRequestHandler.processRequest(isA(FullHttpRequest.class), isA(Channel.class));
+        httpBackendRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler);
@@ -125,32 +111,11 @@ public class HttpChannelHandlerTest {
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpBackendRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpUIRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
-        httpUIRequestHandler.processRequest(isA(FullHttpRequest.class), isA(Channel.class));
+        httpUIRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().atLeastOnce();
-
-        replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
-        HttpChannelHandler handler = getHandler();
-        handler.channelRead0(channelHandlerContext, request);
-        verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
-    }
-
-    @Test
-    public void testBadChannelHandler() throws Exception {
-        HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
-
-        expect(request.getUri()).andReturn("/index.html").atLeastOnce();
-        expect(request.headers()).andReturn(headers).atLeastOnce();
-        expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
-        expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
-        expect(httpContentRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
-        expect(httpBackendRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
-        expect(httpUIRequestHandler.canProcess(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
 
         replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
         HttpChannelHandler handler = getHandler();

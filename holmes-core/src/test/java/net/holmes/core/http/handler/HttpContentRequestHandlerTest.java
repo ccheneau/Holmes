@@ -37,8 +37,6 @@ import static org.junit.Assert.*;
 
 public class HttpContentRequestHandlerTest {
 
-    private FullHttpRequest request = createMock(FullHttpRequest.class);
-    private Channel channel = createMock(Channel.class);
     @Inject
     private MediaManager mediaManager;
     private Injector injector;
@@ -82,46 +80,55 @@ public class HttpContentRequestHandlerTest {
 
     @Test(expected = NullPointerException.class)
     public void testProcessRequestNoContent() throws Exception {
-        expect(request.getUri()).andReturn("/content").atLeastOnce();
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
 
-        replay(request, channel);
+        expect(request.getUri()).andReturn("/content").atLeastOnce();
+        replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, channel);
+            contentRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, channel);
+            verify(request, context);
         }
 
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestNullContent() throws Exception {
-        expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
 
-        replay(request, channel);
+        expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
+        replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, channel);
+            contentRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, channel);
+            verify(request, context);
         }
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestUnknownContent() throws Exception {
-        expect(request.getUri()).andReturn("/content?id=25").atLeastOnce();
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
 
-        replay(request, channel);
+        expect(request.getUri()).andReturn("/content?id=25").atLeastOnce();
+        replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, channel);
+            contentRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, channel);
+            verify(request, context);
         }
     }
 
     @Test
     public void testProcessRequestWithoutKeepAlive() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
@@ -130,19 +137,24 @@ public class HttpContentRequestHandlerTest {
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        Channel channel = createMock(Channel.class);
 
-        replay(request, channel);
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+
+        replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        contentRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestEmptyOffset() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
@@ -151,17 +163,20 @@ public class HttpContentRequestHandlerTest {
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
 
-        replay(request, channel);
+        replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, channel);
+            contentRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, channel);
+            verify(request, context);
         }
     }
 
     @Test
     public void testProcessRequestWithOffset() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
@@ -171,38 +186,47 @@ public class HttpContentRequestHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        Channel channel = createMock(Channel.class);
 
-        replay(request, channel);
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+
+        replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        contentRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 
     @Test(expected = HttpRequestException.class)
     public void testProcessRequestWithBadOffset() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
-        headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
-
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
 
-        replay(request, channel);
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
+
+        replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, channel);
+            contentRequestHandler.processRequest(request, context);
         } finally {
-            verify(request, channel);
+            verify(request, context);
         }
     }
 
     @Test
     public void testProcessRequest() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        Channel channel = createMock(Channel.class);
+
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
@@ -211,14 +235,14 @@ public class HttpContentRequestHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
 
-        expect(channel.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(channel.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
-        replay(request, channel);
+        replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, channel);
-        verify(request, channel);
+        contentRequestHandler.processRequest(request, context);
+        verify(request, context, channel);
     }
 }

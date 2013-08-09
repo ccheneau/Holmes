@@ -25,8 +25,8 @@ import com.sun.jersey.spi.container.ContainerResponseWriter;
 import com.sun.jersey.spi.container.WebApplication;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.HttpServer;
 
@@ -37,6 +37,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map.Entry;
+
+import static io.netty.handler.codec.http.HttpHeaders.Names.HOST;
+import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
+import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * Handler for backend requests from Holmes UI.
@@ -61,19 +66,19 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
         try {
             // Build backend request
-            String baseUrl = "http://" + request.headers().get(HttpHeaders.Names.HOST) + REQUEST_PATH;
+            String baseUrl = "http://" + request.headers().get(HOST) + REQUEST_PATH;
             final URI baseUri = new URI(baseUrl);
             final URI requestUri = new URI(baseUrl.substring(0, baseUrl.length() - 1) + request.getUri());
             final ContainerRequest backendRequest = new ContainerRequest(webApplication, request.getMethod().name(), baseUri, requestUri, getHeaders(request),
                     new ByteBufInputStream(request.content()));
 
             // Process backend request
-            webApplication.handleRequest(backendRequest, new BackendResponseWriter(channel));
+            webApplication.handleRequest(backendRequest, new BackendResponseWriter(context));
         } catch (URISyntaxException | IOException e) {
-            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -97,22 +102,22 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
      */
     public static final class BackendResponseWriter implements ContainerResponseWriter {
 
-        private final Channel channel;
+        private final ChannelHandlerContext context;
         private FullHttpResponse response;
 
         /**
          * Instantiates a new backend response writer.
          *
-         * @param channel channel to write to
+         * @param context channel context to write to
          */
-        public BackendResponseWriter(final Channel channel) {
-            this.channel = channel;
+        public BackendResponseWriter(final ChannelHandlerContext context) {
+            this.context = context;
         }
 
         @Override
         public OutputStream writeStatusAndHeaders(final long contentLength, final ContainerResponse cResponse) throws IOException {
             // Set http headers
-            response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
+            response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.valueOf(cResponse.getStatus()));
             for (Entry<String, List<Object>> headerEntry : cResponse.getHttpHeaders().entrySet()) {
                 List<String> values = Lists.newArrayList();
                 for (Object v : headerEntry.getValue())
@@ -120,7 +125,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
 
                 response.headers().add(headerEntry.getKey(), values);
             }
-            response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+            response.headers().add(SERVER, HttpServer.HTTP_SERVER_NAME);
 
             return new ByteBufOutputStream(response.content());
         }
@@ -128,11 +133,11 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
         @Override
         public void finish() throws IOException {
             // Write response
-            channel.write(response);
+            context.write(response);
 
             // Streaming is not supported. Entire response will be written
             // downstream once finish() is called.
-            channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT).addListener(ChannelFutureListener.CLOSE);
+            context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT).addListener(ChannelFutureListener.CLOSE);
         }
     }
 }

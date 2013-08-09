@@ -22,7 +22,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import net.holmes.core.http.handler.HttpRequestException;
@@ -35,6 +34,11 @@ import javax.inject.Named;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
+import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * HttpChannelHandler redirect HTTP requests to proper handler.
@@ -80,7 +84,7 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
         String requestPath = new QueryStringDecoder(request.getUri()).path();
         try {
             // Process request
-            getRequestHandler(requestPath, request.getMethod()).processRequest(request, context.channel());
+            getRequestHandler(requestPath, request.getMethod()).processRequest(request, context);
 
         } catch (HttpRequestException ex) {
             sendError(context, ex.getStatus());
@@ -102,19 +106,15 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
             return backendRequestHandler;
         else if (uiRequestHandler.canProcess(requestPath, method))
             return uiRequestHandler;
-        else throw new HttpRequestException("Cannot process request", HttpResponseStatus.BAD_REQUEST);
+        else throw new HttpRequestException("Cannot process request", BAD_REQUEST);
     }
 
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
-        if (cause instanceof TooLongFrameException) {
-            sendError(context, HttpResponseStatus.BAD_REQUEST);
-            return;
-        }
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
 
-        if (context.channel().isActive()) sendError(context, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        if (context.channel().isActive()) sendError(context, INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -126,8 +126,8 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
     private void sendError(final ChannelHandlerContext context, final HttpResponseStatus status) {
         // Build error response
         ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buffer);
-        response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         // Close the connection as soon as the error message is sent.
         context.channel().write(response).addListener(ChannelFutureListener.CLOSE);

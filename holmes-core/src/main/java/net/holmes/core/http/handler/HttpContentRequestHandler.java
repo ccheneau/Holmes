@@ -17,9 +17,9 @@
 
 package net.holmes.core.http.handler;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.common.NodeFile;
@@ -33,6 +33,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
+import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer.
@@ -58,24 +64,24 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(final FullHttpRequest request, final Channel channel) throws HttpRequestException {
+    public void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
         // Get content node
         ContentNode node = getContentNode(request.getUri());
         if (node == null)
-            throw new HttpRequestException(request.getUri(), HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException(request.getUri(), NOT_FOUND);
 
         // Check node
         NodeFile file = new NodeFile(node.getPath());
         if (!file.isValidFile())
-            throw new HttpRequestException(node.getPath(), HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException(node.getPath(), NOT_FOUND);
 
         // Get start offset
         long startOffset = 0;
-        String range = request.headers().get(HttpHeaders.Names.RANGE);
+        String range = request.headers().get(RANGE);
         if (range != null) {
             Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
             if (matcher.find()) startOffset = Long.parseLong(matcher.group(1));
-            else throw new HttpRequestException(range, HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE);
+            else throw new HttpRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
         // Get file descriptor
@@ -85,36 +91,36 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
             randomFile = new RandomAccessFile(file, "r");
             fileLength = randomFile.length();
         } catch (IOException e) {
-            throw new HttpRequestException(e, HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException(e, NOT_FOUND);
         }
 
         // Build response header
         HttpResponse response;
         if (startOffset == 0) {
-            response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            response = new DefaultFullHttpResponse(HTTP_1_1, OK);
             HttpHeaders.setContentLength(response, fileLength);
-            response.headers().add(HttpHeaders.Names.CONTENT_TYPE, node.getMimeType().getMimeType());
-            response.headers().add(HttpHeaders.Names.ACCEPT_RANGES, HttpHeaders.Values.BYTES);
+            response.headers().add(CONTENT_TYPE, node.getMimeType().getMimeType());
+            response.headers().add(ACCEPT_RANGES, BYTES);
         } else if (startOffset > 0 && startOffset < fileLength) {
-            response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PARTIAL_CONTENT);
+            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
             HttpHeaders.setContentLength(response, fileLength - startOffset);
-            response.headers().add(HttpHeaders.Names.CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
+            response.headers().add(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else {
-            throw new HttpRequestException("Invalid start offset", HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE);
+            throw new HttpRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
         }
         if (HttpHeaders.isKeepAlive(request)) {
-            response.headers().add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+            response.headers().add(CONNECTION, KEEP_ALIVE);
         }
-        response.headers().add(HttpHeaders.Names.SERVER, HttpServer.HTTP_SERVER_NAME);
+        response.headers().add(SERVER, HttpServer.HTTP_SERVER_NAME);
 
         // Write the response
-        channel.write(response);
+        context.write(response);
 
         // Write the content
-        channel.write(new DefaultFileRegion(randomFile.getChannel(), startOffset, fileLength - startOffset), channel.newProgressivePromise());
+        context.write(new DefaultFileRegion(randomFile.getChannel(), startOffset, fileLength - startOffset), context.newProgressivePromise());
 
         // Write the end marker
-        ChannelFuture lastContentFuture = channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+        ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not.
         if (!HttpHeaders.isKeepAlive(request)) {

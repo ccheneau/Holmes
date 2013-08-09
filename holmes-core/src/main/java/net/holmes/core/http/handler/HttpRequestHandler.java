@@ -17,7 +17,7 @@
 
 package net.holmes.core.http.handler;
 
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 
@@ -38,8 +38,8 @@ public interface HttpRequestHandler {
      * Process request.
      *
      * @param request Http request
-     * @param channel Channel
+     * @param context Channel context
      * @throws HttpRequestException Http request exception
      */
-    void processRequest(FullHttpRequest request, Channel channel) throws HttpRequestException;
+    void processRequest(FullHttpRequest request, ChannelHandlerContext context) throws HttpRequestException;
 }
