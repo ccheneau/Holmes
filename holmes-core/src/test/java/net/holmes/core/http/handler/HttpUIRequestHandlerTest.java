@@ -21,6 +21,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.test.TestModule;
 import org.junit.Before;
@@ -74,7 +75,7 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
@@ -100,7 +101,7 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
@@ -126,7 +127,7 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(DefaultFileRegion.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 

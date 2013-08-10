@@ -20,8 +20,8 @@ package net.holmes.core.http.handler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaManager;
@@ -91,7 +91,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
             randomFile = new RandomAccessFile(file, "r");
             fileLength = randomFile.length();
         } catch (IOException e) {
-            throw new HttpRequestException(e, NOT_FOUND);
+            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
         }
 
         // Build response header
@@ -117,7 +117,11 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         context.write(response);
 
         // Write the content
-        context.write(new DefaultFileRegion(randomFile.getChannel(), startOffset, fileLength - startOffset), context.newProgressivePromise());
+        try {
+            context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE), context.newProgressivePromise());
+        } catch (IOException e) {
+            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
+        }
 
         // Write the end marker
         ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);

@@ -83,8 +83,8 @@ public final class HttpServer implements Service {
                         ChannelPipeline pipeline = channel.pipeline();
                         pipeline.addLast("decoder", new HttpRequestDecoder()) //
                                 .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))//
-                                .addLast("encoder", new HttpResponseEncoder())//
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())//
+                                .addLast("encoder", new HttpResponseEncoder())//
                                         // Add HTTP request handler
                                 .addLast("httpChannelHandler", injector.getInstance(ChannelInboundHandler.class));
                     }

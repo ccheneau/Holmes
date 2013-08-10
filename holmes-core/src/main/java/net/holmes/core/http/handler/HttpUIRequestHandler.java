@@ -21,8 +21,8 @@ import com.google.common.base.Strings;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.http.HttpServer;
@@ -35,7 +35,7 @@ import java.io.RandomAccessFile;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
@@ -71,13 +71,13 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         }
 
         if (Strings.isNullOrEmpty(fileName)) {
-            throw new HttpRequestException("file name is null", HttpResponseStatus.NOT_FOUND);
+            throw new HttpRequestException("file name is null", NOT_FOUND);
         }
 
         try {
             // Get file
             File file = new File(uiDirectory, fileName);
-            if (!file.exists()) throw new HttpRequestException(fileName, HttpResponseStatus.NOT_FOUND);
+            if (!file.exists()) throw new HttpRequestException(fileName, NOT_FOUND);
 
             // Read the file
             RandomAccessFile randomFile = new RandomAccessFile(file, "r");
@@ -97,7 +97,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             context.write(response);
 
             // Write the content
-            context.write(new DefaultFileRegion(randomFile.getChannel(), 0, randomFile.length()), context.newProgressivePromise());
+            context.write(new ChunkedFile(randomFile, 0, randomFile.length(), CHUNK_SIZE), context.newProgressivePromise());
 
             // Write the end marker
             ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
@@ -108,7 +108,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
                 lastContentFuture.addListener(ChannelFutureListener.CLOSE);
             }
         } catch (IOException e) {
-            throw new HttpRequestException(e, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
         }
     }
 }

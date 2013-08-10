@@ -22,7 +22,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.DefaultChannelPromise;
-import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.http.*;
 import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
@@ -151,19 +150,4 @@ public class HttpChannelHandlerTest {
             verify(channelHandlerContext, channel);
         }
     }
-
-    @Test
-    public void testExceptionCaughtChannelInactiveTooLongFrameException() throws Exception {
-        expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
-        expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-
-        replay(channelHandlerContext, channel);
-        ChannelInboundHandler handler = getHandler();
-        try {
-            handler.exceptionCaught(channelHandlerContext, new TooLongFrameException("message"));
-        } finally {
-            verify(channelHandlerContext, channel);
-        }
-    }
-
 }
