@@ -100,11 +100,11 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
      * @throws HttpRequestException
      */
     private HttpRequestHandler getRequestHandler(String requestPath, HttpMethod method) throws HttpRequestException {
-        if (contentRequestHandler.canProcess(requestPath, method))
+        if (contentRequestHandler.accept(requestPath, method))
             return contentRequestHandler;
-        else if (backendRequestHandler.canProcess(requestPath, method))
+        else if (backendRequestHandler.accept(requestPath, method))
             return backendRequestHandler;
-        else if (uiRequestHandler.canProcess(requestPath, method))
+        else if (uiRequestHandler.accept(requestPath, method))
             return uiRequestHandler;
         else throw new HttpRequestException("Cannot process request", BAD_REQUEST);
     }

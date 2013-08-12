@@ -59,7 +59,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(final String requestPath, final HttpMethod method) {
+    public boolean accept(final String requestPath, final HttpMethod method) {
         return method.equals(HttpMethod.GET) && requestPath.startsWith(REQUEST_PATH);
     }
 

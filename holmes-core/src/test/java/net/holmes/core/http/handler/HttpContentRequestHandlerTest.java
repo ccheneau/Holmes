@@ -71,12 +71,12 @@ public class HttpContentRequestHandlerTest {
     }
 
     @Test
-    public void testCanProcess() {
+    public void testAccept() {
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        assertTrue(contentRequestHandler.canProcess("/content/request", HttpMethod.GET));
-        assertFalse(contentRequestHandler.canProcess("/content/request", HttpMethod.POST));
-        assertFalse(contentRequestHandler.canProcess("bad_request", HttpMethod.GET));
-        assertFalse(contentRequestHandler.canProcess("bad_request", HttpMethod.POST));
+        assertTrue(contentRequestHandler.accept("/content/request", HttpMethod.GET));
+        assertFalse(contentRequestHandler.accept("/content/request", HttpMethod.POST));
+        assertFalse(contentRequestHandler.accept("bad_request", HttpMethod.GET));
+        assertFalse(contentRequestHandler.accept("bad_request", HttpMethod.POST));
     }
 
     @Test(expected = NullPointerException.class)

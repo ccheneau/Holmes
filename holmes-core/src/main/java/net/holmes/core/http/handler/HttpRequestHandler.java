@@ -34,7 +34,7 @@ public interface HttpRequestHandler {
      * @param method      Http method (GET, POST...)
      * @return true if handler can process request
      */
-    boolean canProcess(String requestPath, HttpMethod method);
+    boolean accept(String requestPath, HttpMethod method);
 
     /**
      * Process request.

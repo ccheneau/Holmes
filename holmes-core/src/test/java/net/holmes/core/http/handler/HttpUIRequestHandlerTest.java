@@ -53,10 +53,10 @@ public class HttpUIRequestHandlerTest {
     }
 
     @Test
-    public void testCanProcess() {
+    public void testAccept() {
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        assertTrue(httpUIRequestHandler.canProcess("", HttpMethod.GET));
-        assertFalse(httpUIRequestHandler.canProcess("", HttpMethod.POST));
+        assertTrue(httpUIRequestHandler.accept("", HttpMethod.GET));
+        assertFalse(httpUIRequestHandler.accept("", HttpMethod.POST));
     }
 
     @Test

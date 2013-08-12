@@ -65,13 +65,13 @@ public class HttpBackendRequestHandlerTest {
     }
 
     @Test
-    public void testCanProcess() {
+    public void testAccept() {
         replay(webApplication);
         HttpBackendRequestHandler backendRequestHandler = getHandler();
-        assertTrue(backendRequestHandler.canProcess("/backend/request", HttpMethod.GET));
-        assertTrue(backendRequestHandler.canProcess("/backend/request", HttpMethod.POST));
-        assertFalse(backendRequestHandler.canProcess("bad_request", HttpMethod.GET));
-        assertFalse(backendRequestHandler.canProcess("bad_request", HttpMethod.POST));
+        assertTrue(backendRequestHandler.accept("/backend/request", HttpMethod.GET));
+        assertTrue(backendRequestHandler.accept("/backend/request", HttpMethod.POST));
+        assertFalse(backendRequestHandler.accept("bad_request", HttpMethod.GET));
+        assertFalse(backendRequestHandler.accept("bad_request", HttpMethod.POST));
         verify(webApplication);
     }
 

@@ -57,7 +57,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(final String requestPath, final HttpMethod method) {
+    public boolean accept(final String requestPath, final HttpMethod method) {
         return method.equals(HttpMethod.GET);
     }
 

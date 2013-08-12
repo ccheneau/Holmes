@@ -53,7 +53,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     /**
      * Instantiates a new http backend request handler.
      *
-     * @param webApplication web application
+     * @param webApplication jersey web application
      */
     @Inject
     public HttpBackendRequestHandler(final WebApplication webApplication) {
@@ -61,7 +61,7 @@ public final class HttpBackendRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public boolean canProcess(final String requestPath, final HttpMethod method) {
+    public boolean accept(final String requestPath, final HttpMethod method) {
         return requestPath.startsWith(REQUEST_PATH);
     }
 
