@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static net.holmes.core.media.model.RootNode.*;
+import static net.holmes.core.media.model.RootNode.ROOT;
 
 /**
  * Media manager implementation.
@@ -76,28 +76,21 @@ public final class MediaManagerImpl implements MediaManager {
     public List<AbstractNode> getChildNodes(final AbstractNode parentNode) {
         List<AbstractNode> childNodes;
         RootNode rootNode = RootNode.getById(parentNode.getId());
-        switch (rootNode) {
-            case ROOT:
-                // Child nodes of root are audio, video, picture and pod-cast root nodes
-                childNodes = Lists.newArrayList();
-                boolean hideEmpty = configuration.getParameter(Parameter.HIDE_EMPTY_ROOT_NODES);
-                addRootNode(childNodes, hideEmpty, AUDIO);
-                addRootNode(childNodes, hideEmpty, VIDEO);
-                addRootNode(childNodes, hideEmpty, PICTURE);
-                addRootNode(childNodes, hideEmpty, PODCAST);
-                break;
-            case AUDIO:
-            case VIDEO:
-            case PICTURE:
-            case PODCAST:
-                // Child nodes are stored in configuration
-                childNodes = mediaDao.getConfigurationChildNodes(rootNode);
-                break;
-            default:
-                // Get podcast or folder child nodes
-                childNodes = mediaDao.getChildNodes(parentNode.getId());
-                break;
-        }
+        if (rootNode == ROOT) {
+            // Get child nodes of root node
+            childNodes = Lists.newArrayList();
+            boolean hideEmpty = configuration.getParameter(Parameter.HIDE_EMPTY_ROOT_NODES);
+            for (RootNode aRootNode : RootNode.values()) {
+                if (aRootNode.getParentId().equals(ROOT.getId()))
+                    addRootNode(childNodes, hideEmpty, aRootNode);
+            }
+        } else if (rootNode.getParentId().equals(ROOT.getId()))
+            // Child nodes are stored in configuration
+            childNodes = mediaDao.getConfigurationChildNodes(rootNode);
+        else
+            // Get podcast or folder child nodes
+            childNodes = mediaDao.getChildNodes(parentNode.getId());
+
         return childNodes;
     }
 
