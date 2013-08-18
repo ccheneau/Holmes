@@ -111,10 +111,11 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
 
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
-        if (LOGGER.isDebugEnabled())
-            LOGGER.debug("exceptionCaught: {} : {}", cause.getClass().toString(), cause.getMessage());
-
-        if (context.channel().isActive()) sendError(context, INTERNAL_SERVER_ERROR);
+        if (context.channel().isActive()) {
+            if (LOGGER.isDebugEnabled())
+                LOGGER.debug("exceptionCaught:" + cause.getMessage(), cause);
+            sendError(context, INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
