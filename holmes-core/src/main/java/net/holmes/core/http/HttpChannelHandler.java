@@ -58,7 +58,8 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
      */
     @Inject
     public HttpChannelHandler(@Named("content") final HttpRequestHandler contentRequestHandler,
-                              @Named("backend") final HttpRequestHandler backendRequestHandler, @Named("ui") final HttpRequestHandler uiRequestHandler) {
+                              @Named("backend") final HttpRequestHandler backendRequestHandler,
+                              @Named("ui") final HttpRequestHandler uiRequestHandler) {
         this.contentRequestHandler = contentRequestHandler;
         this.backendRequestHandler = backendRequestHandler;
         this.uiRequestHandler = uiRequestHandler;
@@ -87,7 +88,7 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
             getRequestHandler(requestPath, request.getMethod()).processRequest(request, context);
 
         } catch (HttpRequestException ex) {
-            sendError(context, ex.getStatus());
+            sendError(context, ex.getMessage(), ex.getStatus());
         }
     }
 
@@ -111,22 +112,20 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
 
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
-        if (context.channel().isActive()) {
-            if (LOGGER.isDebugEnabled())
-                LOGGER.debug("exceptionCaught:" + cause.getMessage(), cause);
-            sendError(context, INTERNAL_SERVER_ERROR);
-        }
+        if (context.channel().isActive())
+            sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
     }
 
     /**
      * Send error.
      *
      * @param context channel context
+     * @param message message
      * @param status  response status
      */
-    private void sendError(final ChannelHandlerContext context, final HttpResponseStatus status) {
+    private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
         // Build error response
-        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
         response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 

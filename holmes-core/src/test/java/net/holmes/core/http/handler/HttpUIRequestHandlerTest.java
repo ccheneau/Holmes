@@ -19,7 +19,9 @@ package net.holmes.core.http.handler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.DefaultChannelPromise;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeTypeManager;
@@ -75,9 +77,8 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
@@ -101,9 +102,8 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
@@ -127,9 +127,8 @@ public class HttpUIRequestHandlerTest {
         Channel channel = createMock(Channel.class);
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(ChunkedFile.class), isA(ChannelProgressivePromise.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.newProgressivePromise()).andReturn(new DefaultChannelProgressivePromise(channel)).atLeastOnce();
 
         replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();

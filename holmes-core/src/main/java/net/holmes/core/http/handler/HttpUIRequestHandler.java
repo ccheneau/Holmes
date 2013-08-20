@@ -83,7 +83,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             RandomAccessFile randomFile = new RandomAccessFile(file, "r");
 
             // Define response header
-            HttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK);
+            HttpResponse response = new DefaultHttpResponse(HTTP_1_1, OK);
             HttpHeaders.setContentLength(response, randomFile.length());
             response.headers().set(SERVER, HttpServer.HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
@@ -97,7 +97,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             context.write(response);
 
             // Write the content
-            context.write(new ChunkedFile(randomFile, 0, randomFile.length(), CHUNK_SIZE), context.newProgressivePromise());
+            context.write(new ChunkedFile(randomFile, 0, randomFile.length(), CHUNK_SIZE));
 
             // Write the end marker
             ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);

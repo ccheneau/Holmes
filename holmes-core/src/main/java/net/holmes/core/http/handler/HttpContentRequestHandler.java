@@ -97,7 +97,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         // Build response header
         HttpResponse response;
         if (startOffset == 0) {
-            response = new DefaultFullHttpResponse(HTTP_1_1, OK);
+            response = new DefaultHttpResponse(HTTP_1_1, OK);
             HttpHeaders.setContentLength(response, fileLength);
             response.headers().add(CONTENT_TYPE, node.getMimeType().getMimeType());
             response.headers().add(ACCEPT_RANGES, BYTES);
@@ -118,7 +118,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
 
         // Write the content
         try {
-            context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE), context.newProgressivePromise());
+            context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
         } catch (IOException e) {
             throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
         }
