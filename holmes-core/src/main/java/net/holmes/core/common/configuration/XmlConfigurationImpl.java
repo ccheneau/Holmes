@@ -17,6 +17,7 @@
 
 package net.holmes.core.common.configuration;
 
+import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import net.holmes.core.media.model.RootNode;
 
@@ -122,7 +123,7 @@ public final class XmlConfigurationImpl implements Configuration {
 
     @Override
     public List<ConfigurationNode> getFolders(final RootNode folderRootNode) {
-        List<ConfigurationNode> folders = null;
+        List<ConfigurationNode> folders;
         switch (folderRootNode) {
             case AUDIO:
                 folders = this.rootNode.getAudioFolders();
@@ -137,6 +138,7 @@ public final class XmlConfigurationImpl implements Configuration {
                 folders = this.rootNode.getVideoFolders();
                 break;
             default:
+                folders = Lists.newArrayList();
                 break;
         }
         return folders;

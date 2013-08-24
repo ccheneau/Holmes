@@ -38,7 +38,7 @@ public class XmlConfigurationTest {
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
             assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertNull(configuration.getFolders(RootNode.ROOT));
+            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -53,7 +53,7 @@ public class XmlConfigurationTest {
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
             assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertNull(configuration.getFolders(RootNode.ROOT));
+            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -68,7 +68,7 @@ public class XmlConfigurationTest {
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
             assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertNull(configuration.getFolders(RootNode.ROOT));
+            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }

@@ -126,28 +126,23 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public List<AbstractNode> getConfigurationChildNodes(final RootNode rootNode) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
-        if (configNodes != null && !configNodes.isEmpty()) {
-            if (rootNode == PODCAST)
-                // Add podcast nodes
-                for (ConfigurationNode configNode : configNodes) {
+        // Add podcast nodes
+        for (ConfigurationNode configNode : configuration.getFolders(rootNode))
+            if (rootNode == PODCAST) {
+                // Add node to mediaIndex
+                mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.buildMediaIndexElement(rootNode, configNode));
+                // Add child node
+                nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
+            } else {
+                NodeFile file = new NodeFile(configNode.getPath());
+                if (file.isValidDirectory()) {
                     // Add node to mediaIndex
                     mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.buildMediaIndexElement(rootNode, configNode));
                     // Add child node
-                    nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
+                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                 }
-            else
-                // Add folder nodes
-                for (ConfigurationNode configNode : configNodes) {
-                    NodeFile file = new NodeFile(configNode.getPath());
-                    if (file.isValidDirectory()) {
-                        // Add node to mediaIndex
-                        mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.buildMediaIndexElement(rootNode, configNode));
-                        // Add child node
-                        nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
-                    }
-                }
-        }
+            }
+
         return nodes;
     }
 
@@ -192,8 +187,7 @@ public class MediaDaoImpl implements MediaDao {
             else {
                 // Add file node
                 AbstractNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName()));
-                if (node != null)
-                    nodes.add(node);
+                if (node != null) nodes.add(node);
             }
         }
         return nodes;
@@ -226,6 +220,27 @@ public class MediaDaoImpl implements MediaDao {
     }
 
     /**
+     * Build content node.
+     *
+     * @param nodeId    node id
+     * @param parentId  parent id
+     * @param file      file
+     * @param mediaType media type
+     * @return content node
+     */
+    private ContentNode buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
+        // Check mime type
+        if (mimeType != null)
+            if (mimeType.getType() == mediaType)
+                // build content node
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
+            else if (mimeType.isSubTitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+                // build subtitle node
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
+        return null;
+    }
+
+    /**
      * Gets the content resolution. Only available for image.
      *
      * @param fileName the file name
@@ -246,27 +261,5 @@ public class MediaDaoImpl implements MediaDao {
                 LOGGER.error(e.getMessage(), e);
             }
         return "0x0";
-    }
-
-    /**
-     * Build content node.
-     *
-     * @param nodeId    node id
-     * @param parentId  parent id
-     * @param file      file
-     * @param mediaType media type
-     * @return content node
-     */
-    private ContentNode buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
-        if (mimeType != null) {
-            // Check mime type
-            if (mimeType.getType() == mediaType)
-                // build content node
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES) && mimeType.isSubTitle())
-                // build subtitle node
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
-        }
-        return null;
     }
 }
