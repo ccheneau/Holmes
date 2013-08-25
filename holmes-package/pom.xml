@@ -47,6 +47,7 @@
                             <finalName>holmes-${project.version}</finalName>
                             <descriptor>src/main/assembly/windows.xml</descriptor>
                             <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
                     <execution>
@@ -59,11 +60,13 @@
                             <finalName>holmes-${project.version}</finalName>
                             <descriptor>src/main/assembly/linux.xml</descriptor>
                             <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
+
 
         <resources>
             <resource>
@@ -75,4 +78,38 @@
             </resource>
         </resources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>generate-inno-setup</id>
+            <activation>
+                <property>
+                    <name>inno-setup.path</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>${inno-setup.path}</executable>
+                            <arguments>
+                                <!--<argument>/Q</argument>-->
+                                <argument>holmes.iss</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

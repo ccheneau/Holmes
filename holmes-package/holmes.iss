@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-LicenseFile=target\holmes-{#MyAppVersion}\license.txt
+LicenseFile=target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\license.txt
 OutputBaseFilename=holmes-{#MyAppVersion}-setup
 OutputDir=target
 Compression=lzma
@@ -35,13 +35,13 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "target\holmes-{#MyAppVersion}\bin\startup.bat"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "target\holmes-{#MyAppVersion}\holmes.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "target\holmes-{#MyAppVersion}\license.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "target\holmes-{#MyAppVersion}\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "target\holmes-{#MyAppVersion}\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "target\holmes-{#MyAppVersion}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "target\holmes-{#MyAppVersion}\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\bin\startup.bat"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\holmes.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\license.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
