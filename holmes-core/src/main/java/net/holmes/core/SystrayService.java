@@ -18,6 +18,7 @@
 package net.holmes.core;
 
 import net.holmes.core.common.Service;
+import net.holmes.core.common.SystemTrayIcon;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import org.slf4j.Logger;
@@ -26,14 +27,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,7 +67,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUIManager()) initHolmesTrayMenu();
+        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
     }
 
     @Override
@@ -102,13 +99,13 @@ public final class SystrayService implements Service {
     /**
      * Initialize system tray menu.
      */
-    private void initHolmesTrayMenu() {
+    private void initSystemTrayMenu() {
         // Check the SystemTray is supported
         if (!SystemTray.isSupported()) return;
 
         // Initialize systray icon
         final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
-        final HolmesTrayIcon holmesTrayIcon = new HolmesTrayIcon(image, resourceBundle.getString("systray.title"));
+        final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
@@ -213,82 +210,6 @@ public final class SystrayService implements Service {
             systemTray.add(holmesTrayIcon);
         } catch (AWTException e) {
             LOGGER.error(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * System tray icon.
-     * Freely inspired from <a href="http://grepcode.com/file/repo1.maven.org/maven2/org.jvnet.hudson.plugins.hudsontrayapp/client-jdk16/0.7.3/org/jdesktop/swinghelper/tray/JXTrayIcon.java">org.jdesktop.swinghelper.tray.JXTrayIcon</a> class (under LGPL v2.1 license)
-     */
-    public static class HolmesTrayIcon extends TrayIcon {
-
-        private static final JDialog DIALOG;
-
-        static {
-            DIALOG = new JDialog((Frame) null, "HolmesSysTray");
-            DIALOG.setUndecorated(true);
-            DIALOG.setAlwaysOnTop(true);
-        }
-
-        private static final PopupMenuListener POPUP_LISTENER = new PopupMenuListener() {
-            @Override
-            public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
-            }
-
-            @Override
-            public void popupMenuWillBecomeInvisible(final PopupMenuEvent event) {
-                DIALOG.setVisible(false);
-            }
-
-            @Override
-            public void popupMenuCanceled(final PopupMenuEvent event) {
-                DIALOG.setVisible(false);
-            }
-        };
-        private JPopupMenu popupMenu;
-
-        /**
-         * Instantiates a new holmes tray icon.
-         *
-         * @param image   icon image
-         * @param tooltip icon tooltip
-         */
-        public HolmesTrayIcon(final Image image, final String tooltip) {
-            super(image, tooltip);
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(final MouseEvent event) {
-                    showPopupMenu(event);
-                }
-            });
-        }
-
-        /**
-         * Show popup menu.
-         *
-         * @param event mouse event
-         */
-        private void showPopupMenu(final MouseEvent event) {
-            if (popupMenu != null) {
-                DIALOG.setLocation(event.getX(), event.getY() - popupMenu.getPreferredSize().height);
-                DIALOG.setVisible(true);
-                popupMenu.show(DIALOG.getContentPane(), 0, 0);
-                DIALOG.toFront();
-            }
-        }
-
-        /**
-         * Set popup menu.
-         *
-         * @param popupMenu popup menu
-         */
-        public void setPopupMenu(final JPopupMenu popupMenu) {
-            if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(POPUP_LISTENER);
-
-            if (popupMenu != null) {
-                this.popupMenu = popupMenu;
-                this.popupMenu.addPopupMenuListener(POPUP_LISTENER);
-            }
         }
     }
 }
