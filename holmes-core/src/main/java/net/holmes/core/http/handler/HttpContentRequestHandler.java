@@ -126,12 +126,9 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         // Write the end marker
         ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
-        // Decide whether to close the connection or not.
-        if (!HttpHeaders.isKeepAlive(request)) {
-            // Close the connection when the whole content is written out.
+        // Decide whether to close the connection or not when the whole content is written out.
+        if (!HttpHeaders.isKeepAlive(request))
             lastContentFuture.addListener(ChannelFutureListener.CLOSE);
-        }
-
     }
 
     /**

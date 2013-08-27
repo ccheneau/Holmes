@@ -42,6 +42,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * Handler for Holmes UI pages.
  */
 public final class HttpUIRequestHandler implements HttpRequestHandler {
+    private static final String DEFAULT_PAGE = "index.html";
     private final String uiDirectory;
     private final MimeTypeManager mimeTypeManager;
 
@@ -49,6 +50,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
      * Instantiates a new http ui request handler.
      *
      * @param mimeTypeManager mime type manager
+     * @param uiDirectory     UI base directory
      */
     @Inject
     public HttpUIRequestHandler(final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
@@ -66,13 +68,11 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();
-        if ("/".equals(fileName)) {
-            fileName = "/index.html";
-        }
+        if ("/".equals(fileName))
+            fileName += DEFAULT_PAGE;
 
-        if (Strings.isNullOrEmpty(fileName)) {
+        if (Strings.isNullOrEmpty(fileName))
             throw new HttpRequestException("file name is null", NOT_FOUND);
-        }
 
         try {
             // Get file
@@ -102,11 +102,10 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             // Write the end marker
             ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
-            // Decide whether to close the connection or not.
-            if (!HttpHeaders.isKeepAlive(request)) {
-                // Close the connection when the whole content is written out.
+            // Decide whether to close the connection or not when the whole content is written out.
+            if (!HttpHeaders.isKeepAlive(request))
                 lastContentFuture.addListener(ChannelFutureListener.CLOSE);
-            }
+
         } catch (IOException e) {
             throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
         }
