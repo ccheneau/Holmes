@@ -30,7 +30,7 @@ import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.DIDLObject.Property.DC;
 import org.fourthline.cling.support.model.DIDLObject.Property.UPNP;
 import org.fourthline.cling.support.model.Res;
-import org.fourthline.cling.support.model.container.StorageFolder;
+import org.fourthline.cling.support.model.container.Container;
 import org.fourthline.cling.support.model.item.*;
 
 import java.net.URI;
@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
  */
 final class DirectoryBrowseResult {
     private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final DIDLObject.Class CONTAINER_CLASS = new DIDLObject.Class("object.container");
     private final DIDLContent didl;
     private final long firstResult;
     private final long maxResults;
@@ -181,10 +182,11 @@ final class DirectoryBrowseResult {
      * @throws ContentDirectoryException
      */
     public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws ContentDirectoryException {
-        StorageFolder folder = new StorageFolder(node.getId(), parentNodeId, node.getName(), null, childCount, null);
-        setDidlMetadata(folder, node);
+        Container container = new Container(node.getId(), parentNodeId, node.getName(), null, CONTAINER_CLASS, childCount);
+        container.setSearchable(true);
+        setDidlMetadata(container, node);
 
-        didl.addContainer(folder);
+        didl.addContainer(container);
         itemCount += 1;
     }
 
