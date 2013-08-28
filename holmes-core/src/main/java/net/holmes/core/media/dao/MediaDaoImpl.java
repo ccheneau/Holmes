@@ -26,7 +26,6 @@ import net.holmes.core.common.MediaType;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
-import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.media.index.MediaIndexElement;
@@ -46,6 +45,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
+import static net.holmes.core.common.configuration.Parameter.ENABLE_CONTENT_RESOLUTION;
+import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
@@ -93,7 +94,6 @@ public class MediaDaoImpl implements MediaDao {
                 // File node
                 node = getFileNode(nodeId, indexElement, mediaType);
         } else LOGGER.warn("{} not found in media index", nodeId);
-
         return node;
     }
 
@@ -142,7 +142,6 @@ public class MediaDaoImpl implements MediaDao {
                     nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                 }
             }
-
         return nodes;
     }
 
@@ -178,7 +177,7 @@ public class MediaDaoImpl implements MediaDao {
      */
     private List<AbstractNode> getFolderChildNodes(final String parentId, final NodeFile folder, final MediaType mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        for (File file : folder.listValidFiles(true)) {
+        for (File file : folder.listChildFiles(true)) {
             // Add node to mediaIndex
             String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), file.getAbsolutePath(), null, true));
             if (file.isDirectory())
@@ -234,7 +233,7 @@ public class MediaDaoImpl implements MediaDao {
             if (mimeType.getType() == mediaType)
                 // build content node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (mimeType.isSubTitle() && configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES))
+            else if (mimeType.isSubTitle() && configuration.getParameter(ENABLE_EXTERNAL_SUBTITLES))
                 // build subtitle node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
         return null;
@@ -248,7 +247,7 @@ public class MediaDaoImpl implements MediaDao {
      * @return the content resolution
      */
     private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getParameter(Parameter.ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
+        if (configuration.getParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override

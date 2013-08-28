@@ -57,16 +57,16 @@ public class NodeFile extends File {
     /**
      * List readable child files.
      *
-     * @param listFiles list files
+     * @param includeFiles include file list in result
      * @return child files
      */
-    public List<File> listValidFiles(boolean listFiles) {
+    public List<File> listChildFiles(boolean includeFiles) {
         List<File> fileList = Lists.newArrayList();
         File[] files = listFiles();
         if (files != null)
             for (File file : files)
                 if (file.canRead() && !file.isHidden())
-                    if (listFiles && file.isFile())
+                    if (includeFiles && file.isFile())
                         fileList.add(file);
                     else if (file.isDirectory() && file.listFiles() != null)
                         fileList.add(file);
