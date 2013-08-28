@@ -27,7 +27,6 @@ import javax.ws.rs.core.MediaType;
 /**
  * Handler for settings REST requests.
  */
-@SuppressWarnings("ALL")
 @Path("/backend/settings")
 public final class SettingsHandler {
 
