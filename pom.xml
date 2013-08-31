@@ -40,8 +40,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cling.version>2.0-alpha2</cling.version>
+        <easymock.version>3.1</easymock.version>
         <guava.version>14.0.1</guava.version>
         <guice.version>3.0</guice.version>
+        <javassist.version>3.18.0-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>
         <jersey.version>1.17.1</jersey.version>
         <junit.version>4.11</junit.version>
@@ -51,7 +53,6 @@
         <seamless.version>1.0-alpha2</seamless.version>
         <slf4j.version>1.7.5</slf4j.version>
         <xstream.version>1.4.4</xstream.version>
-        <javassist.version>3.18.0-GA</javassist.version>
     </properties>
 
     <build>
@@ -313,12 +314,22 @@
             </dependency>
 
             <!-- test dependencies -->
+            <!-- junit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            <!-- easy mock -->
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>${easymock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
