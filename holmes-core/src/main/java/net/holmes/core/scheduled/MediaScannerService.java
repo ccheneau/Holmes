@@ -56,7 +56,7 @@ public class MediaScannerService extends AbstractScheduledService {
     @Override
     protected Scheduler scheduler() {
         if (scanAllDelayMinutes > 0)
-            return Scheduler.newFixedRateSchedule(scanAllDelayMinutes, scanAllDelayMinutes, TimeUnit.MINUTES);
+            return Scheduler.newFixedDelaySchedule(scanAllDelayMinutes, scanAllDelayMinutes, TimeUnit.MINUTES);
         return null;
     }
 

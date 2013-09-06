@@ -56,7 +56,7 @@ public final class MediaIndexCleanerService extends AbstractScheduledService {
     @Override
     protected Scheduler scheduler() {
         if (cleanDelayMinutes > 0)
-            return Scheduler.newFixedRateSchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES);
+            return Scheduler.newFixedDelaySchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES);
         return null;
     }
 }
