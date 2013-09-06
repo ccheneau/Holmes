@@ -17,10 +17,10 @@
 
 package net.holmes.core;
 
+import net.holmes.core.common.ResourceLoader;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.SystemTrayIcon;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,12 +37,16 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
+import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
+import static net.holmes.core.common.ResourceLoader.ResourceDir.SYSTRAY;
+import static net.holmes.core.common.configuration.Parameter.ENABLE_SYSTRAY;
+import static net.holmes.core.common.configuration.Parameter.ICONS_IN_SYSTRAY_MENU;
+
 /**
  * Manages system tray icon.
  */
 public final class SystrayService implements Service {
-    private static final String HOLMES_SITE_URL = "http://ccheneau.github.io/Holmes/";
-    private static final String HOLMES_WIKI_URL = "https://github.com/ccheneau/Holmes/wiki";
     private static final String MENU_ITEM_FONT = "MenuItem.font";
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
     private static final Logger LOGGER = LoggerFactory.getLogger(SystrayService.class);
@@ -67,7 +71,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configuration.getParameter(Parameter.ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
+        if (configuration.getParameter(ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
     }
 
     @Override
@@ -104,53 +108,51 @@ public final class SystrayService implements Service {
         if (!SystemTray.isSupported()) return;
 
         // Initialize systray icon
-        final Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
+        Image image;
+        try {
+            image = Toolkit.getDefaultToolkit().createImage(ResourceLoader.getData(SYSTRAY, "logo.png"));
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            return;
+        }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
+        boolean showMenuIcon = configuration.getParameter(ICONS_IN_SYSTRAY_MENU);
+
         // Quit Holmes menu item
-        Icon holmesExitIcon = new ImageIcon(getClass().getResource("/icon-exit.png"));
-        JMenuItem quitItem = new JMenuItem(resourceBundle.getString("systray.quit"), holmesExitIcon);
-        quitItem.addActionListener(new ActionListener() {
+        JMenuItem quitItem = new SystrayMenuItem() {
             @Override
-            public void actionPerformed(final ActionEvent event) {
+            public void onClick(ActionEvent event) {
                 try {
                     System.exit(0);
                 } catch (SecurityException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
-        });
+        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon);
 
         // Holmes logs menu item
-        Icon holmesLogsIcon = new ImageIcon(getClass().getResource("/icon-logs.png"));
-        JMenuItem logsItem = new JMenuItem(resourceBundle.getString("systray.logs"), holmesLogsIcon);
-        logsItem.addActionListener(new ActionListener() {
+        JMenuItem logsItem = new SystrayMenuItem() {
             @Override
-            public void actionPerformed(final ActionEvent event) {
+            public void onClick(ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-
                         Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
                     } catch (IOException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
-        });
+        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon);
 
         // Holmes ui menu item
-        Icon holmesUiIcon = new ImageIcon(getClass().getResource("/icon-logo.png"));
-        JMenuItem holmesUiItem = new JMenuItem(resourceBundle.getString("systray.holmes.ui"), holmesUiIcon);
-        Font boldFont = UIManager.getFont(MENU_ITEM_BOLD_FONT);
-        if (boldFont != null) holmesUiItem.setFont(boldFont);
-
-        holmesUiItem.addActionListener(new ActionListener() {
+        JMenuItem holmesUiItem = new SystrayMenuItem() {
             @Override
-            public void actionPerformed(final ActionEvent event) {
+            public void onClick(ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
@@ -160,39 +162,35 @@ public final class SystrayService implements Service {
                     }
                 }
             }
-        });
+        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, UIManager.getFont(MENU_ITEM_BOLD_FONT));
 
         // Holmes site menu item
-        Icon holmesSiteIcon = new ImageIcon(getClass().getResource("/icon-site.png"));
-        JMenuItem holmesSiteItem = new JMenuItem(resourceBundle.getString("systray.holmes.home"), holmesSiteIcon);
-        holmesSiteItem.addActionListener(new ActionListener() {
+        JMenuItem holmesSiteItem = new SystrayMenuItem() {
             @Override
-            public void actionPerformed(final ActionEvent event) {
+            public void onClick(ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL));
+                        Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
                     } catch (IOException | URISyntaxException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
-        });
+        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon);
 
         // Holmes wiki menu item
-        Icon holmesWikiIcon = new ImageIcon(getClass().getResource("/icon-info.png"));
-        JMenuItem holmesWikiItem = new JMenuItem(resourceBundle.getString("systray.holmes.wiki"), holmesWikiIcon);
-        holmesWikiItem.addActionListener(new ActionListener() {
+        JMenuItem holmesWikiItem = new SystrayMenuItem() {
             @Override
-            public void actionPerformed(final ActionEvent event) {
+            public void onClick(ActionEvent event) {
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL));
+                        Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
                     } catch (IOException | URISyntaxException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
-        });
+        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon);
 
         // Add items to popup menu
         popupMenu.add(holmesUiItem);
@@ -211,5 +209,60 @@ public final class SystrayService implements Service {
         } catch (AWTException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * System tray menu item.
+     */
+    private abstract static class SystrayMenuItem {
+
+        /**
+         * Get menu item.
+         *
+         * @param text     menu item text
+         * @param iconPath path to icon resource
+         * @param showIcon whether to show icon
+         * @return menu item
+         */
+        public JMenuItem getMenuItem(final String text, final String iconPath, final boolean showIcon) {
+            return getMenuItem(text, iconPath, showIcon, null);
+        }
+
+        /**
+         * Get menu item.
+         *
+         * @param text     menu item text
+         * @param iconPath path to icon resource
+         * @param showIcon whether to show icon
+         * @param font     menu item font
+         * @return menu item
+         */
+        public JMenuItem getMenuItem(final String text, final String iconPath, final boolean showIcon, final Font font) {
+            Icon icon = null;
+            if (showIcon)
+                try {
+                    icon = new ImageIcon(ResourceLoader.getData(SYSTRAY, iconPath));
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+
+            JMenuItem menuItem = new JMenuItem(text, icon);
+            if (font != null) menuItem.setFont(font);
+
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    onClick(event);
+                }
+            });
+            return menuItem;
+        }
+
+        /**
+         * Fires onClick event.
+         *
+         * @param event event
+         */
+        public abstract void onClick(final ActionEvent event);
     }
 }

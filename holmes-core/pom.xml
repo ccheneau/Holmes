@@ -18,7 +18,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <net.holmes.home>${project.build.directory}/test/homesHome</net.holmes.home>
+                        <net.holmes.home>${project.basedir}/src/test/resources/holmesHomeTest</net.holmes.home>
                         <user.home>${project.build.directory}/test/userHome</user.home>
                     </systemPropertyVariables>
                 </configuration>

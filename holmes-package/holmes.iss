@@ -42,6 +42,7 @@ Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\Readme.txt"; DestD
 Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\lib\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "target\holmes-{#MyAppVersion}\holmes-{#MyAppVersion}\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
