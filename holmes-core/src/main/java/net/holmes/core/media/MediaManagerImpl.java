@@ -63,12 +63,12 @@ public final class MediaManagerImpl implements MediaManager {
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
         RootNode rootNode = RootNode.getById(nodeId);
-        if (rootNode != RootNode.NONE) {
+        if (rootNode != RootNode.NONE)
             // Root node
             node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
-        } else if (nodeId != null) {
+        else if (nodeId != null)
             node = mediaDao.getNode(nodeId);
-        }
+
         return node;
     }
 

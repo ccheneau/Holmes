@@ -27,7 +27,6 @@ import javax.inject.Named;
  * Manages scheduled services.
  */
 public class HolmesSchedulerService implements Service {
-
     private final AbstractScheduledService mediaIndexCleanerService;
     private final AbstractScheduledService podcastCacheCleanerService;
     private final AbstractScheduledService mediaScannerService;
