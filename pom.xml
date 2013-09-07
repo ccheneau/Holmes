@@ -40,8 +40,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cling.version>2.0-alpha2</cling.version>
-        <easymock.version>3.1</easymock.version>
-        <guava.version>14.0.1</guava.version>
+        <easymock.version>3.2</easymock.version>
+        <guava.version>15.0-rc1</guava.version>
         <guice.version>3.0</guice.version>
         <javassist.version>3.18.0-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>

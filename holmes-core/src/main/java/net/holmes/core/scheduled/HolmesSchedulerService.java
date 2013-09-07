@@ -49,15 +49,15 @@ public class HolmesSchedulerService implements Service {
 
     @Override
     public void start() {
-        mediaIndexCleanerService.start();
-        podcastCacheCleanerService.start();
-        mediaScannerService.start();
+        mediaIndexCleanerService.startAsync();
+        podcastCacheCleanerService.startAsync();
+        mediaScannerService.startAsync();
     }
 
     @Override
     public void stop() {
-        mediaScannerService.stop();
-        podcastCacheCleanerService.stop();
-        mediaIndexCleanerService.stop();
+        mediaScannerService.stopAsync();
+        podcastCacheCleanerService.stopAsync();
+        mediaIndexCleanerService.stopAsync();
     }
 }
