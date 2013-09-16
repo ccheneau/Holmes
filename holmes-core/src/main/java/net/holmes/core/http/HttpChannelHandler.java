@@ -130,6 +130,6 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
         response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         // Close the connection as soon as the error message is sent.
-        context.channel().write(response).addListener(ChannelFutureListener.CLOSE);
+        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }
