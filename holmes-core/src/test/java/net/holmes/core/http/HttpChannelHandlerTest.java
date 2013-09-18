@@ -71,7 +71,7 @@ public class HttpChannelHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
-        expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.writeAndFlush(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(httpContentRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
         httpContentRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().andThrow(new HttpRequestException("message", HttpResponseStatus.NOT_FOUND)).atLeastOnce();
@@ -126,7 +126,7 @@ public class HttpChannelHandlerTest {
     public void testExceptionCaught() throws Exception {
         expect(channelHandlerContext.channel()).andReturn(channel).atLeastOnce();
         expect(channel.isActive()).andReturn(true).atLeastOnce();
-        expect(channel.write(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(channel.writeAndFlush(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
         replay(channelHandlerContext, channel);
         ChannelInboundHandler handler = getHandler();
