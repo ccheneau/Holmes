@@ -23,7 +23,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.NodeFile;
-import net.holmes.core.http.HttpServer;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
@@ -111,7 +110,7 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         if (HttpHeaders.isKeepAlive(request)) {
             response.headers().add(CONNECTION, KEEP_ALIVE);
         }
-        response.headers().add(SERVER, HttpServer.HTTP_SERVER_NAME);
+        response.headers().add(SERVER, HTTP_SERVER_NAME);
 
         // Write the response
         context.write(response);

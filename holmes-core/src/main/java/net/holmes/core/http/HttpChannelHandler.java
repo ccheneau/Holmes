@@ -31,12 +31,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
@@ -45,23 +42,20 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  */
 public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpChannelHandler.class);
+    private static final String BACKEND_REQUEST_PATH = "/backend";
     private final HttpRequestHandler contentRequestHandler;
-    private final HttpRequestHandler backendRequestHandler;
     private final HttpRequestHandler uiRequestHandler;
 
     /**
      * Instantiates a new http channel handler.
      *
      * @param contentRequestHandler content request handler
-     * @param backendRequestHandler backend request handler
      * @param uiRequestHandler      UI request handler
      */
     @Inject
     public HttpChannelHandler(@Named("content") final HttpRequestHandler contentRequestHandler,
-                              @Named("backend") final HttpRequestHandler backendRequestHandler,
                               @Named("ui") final HttpRequestHandler uiRequestHandler) {
         this.contentRequestHandler = contentRequestHandler;
-        this.backendRequestHandler = backendRequestHandler;
         this.uiRequestHandler = uiRequestHandler;
     }
 
@@ -72,24 +66,22 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
             LOGGER.debug("messageReceived url:{}", request.getUri());
             for (Entry<String, String> entry : request.headers())
                 LOGGER.debug("Request header: {} ==> {}", entry.getKey(), entry.getValue());
-
-            if (request.getMethod().equals(HttpMethod.POST) && request.content().isReadable()) {
-                QueryStringDecoder queryStringDecoder = new QueryStringDecoder("/?" + request.content().toString(HttpConstants.DEFAULT_CHARSET));
-                Map<String, List<String>> params = queryStringDecoder.parameters();
-                if (params != null)
-                    for (Entry<String, List<String>> entry : params.entrySet())
-                        LOGGER.debug("Post parameter: {} ==> {}", entry.getKey(), entry.getValue());
-            }
         }
 
         String requestPath = new QueryStringDecoder(request.getUri()).path();
-        try {
-            // Process request
-            getRequestHandler(requestPath, request.getMethod()).processRequest(request, context);
+        HttpRequestHandler handler = getRequestHandler(requestPath, request.getMethod());
 
-        } catch (HttpRequestException ex) {
-            sendError(context, ex.getMessage(), ex.getStatus());
-        }
+        if (handler != null)
+            try {
+                // Process request
+                handler.processRequest(request, context);
+
+            } catch (HttpRequestException ex) {
+                sendError(context, ex.getMessage(), ex.getStatus());
+            }
+        else
+            // Forward request to pipeline
+            context.fireChannelRead(request);
     }
 
     /**
@@ -97,17 +89,16 @@ public final class HttpChannelHandler extends SimpleChannelInboundHandler<FullHt
      *
      * @param requestPath request path
      * @param method      http method
-     * @return handler that matches the request
-     * @throws HttpRequestException
+     * @return handler that matches the request or null
      */
-    private HttpRequestHandler getRequestHandler(String requestPath, HttpMethod method) throws HttpRequestException {
-        if (contentRequestHandler.accept(requestPath, method))
-            return contentRequestHandler;
-        else if (backendRequestHandler.accept(requestPath, method))
-            return backendRequestHandler;
-        else if (uiRequestHandler.accept(requestPath, method))
-            return uiRequestHandler;
-        else throw new HttpRequestException("Cannot process request", BAD_REQUEST);
+    private HttpRequestHandler getRequestHandler(String requestPath, HttpMethod method) {
+        if (!requestPath.startsWith(BACKEND_REQUEST_PATH)) {
+            if (contentRequestHandler.accept(requestPath, method))
+                return contentRequestHandler;
+            else if (uiRequestHandler.accept(requestPath, method))
+                return uiRequestHandler;
+        }
+        return null;
     }
 
     @Override

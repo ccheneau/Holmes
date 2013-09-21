@@ -17,7 +17,6 @@
 
 package net.holmes.core.http;
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
@@ -27,21 +26,18 @@ import net.holmes.core.http.handler.HttpRequestException;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
-
 import static org.easymock.EasyMock.*;
 
 public class HttpChannelHandlerTest {
 
     private HttpRequestHandler httpUIRequestHandler = createMock(HttpRequestHandler.class);
-    private HttpRequestHandler httpBackendRequestHandler = createMock(HttpRequestHandler.class);
     private HttpRequestHandler httpContentRequestHandler = createMock(HttpRequestHandler.class);
     private ChannelHandlerContext channelHandlerContext = createMock(ChannelHandlerContext.class);
     private FullHttpRequest request = createMock(FullHttpRequest.class);
     private Channel channel = createMock(Channel.class);
 
     private HttpChannelHandler getHandler() {
-        return new HttpChannelHandler(httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
+        return new HttpChannelHandler(httpContentRequestHandler, httpUIRequestHandler);
     }
 
     @Test
@@ -83,26 +79,6 @@ public class HttpChannelHandlerTest {
     }
 
     @Test
-    public void testBackendChannelHandler() throws Exception {
-        HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
-
-        expect(request.getUri()).andReturn("/backend/getVersion").atLeastOnce();
-        expect(request.headers()).andReturn(headers).atLeastOnce();
-        expect(request.getMethod()).andReturn(HttpMethod.POST).atLeastOnce();
-        expect(request.content()).andReturn(Unpooled.copiedBuffer("Param1", Charset.defaultCharset())).atLeastOnce();
-        expect(httpContentRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
-        expect(httpBackendRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
-        httpBackendRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
-        expectLastCall().atLeastOnce();
-
-        replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler);
-        HttpChannelHandler handler = getHandler();
-        handler.channelRead0(channelHandlerContext, request);
-        verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler);
-    }
-
-    @Test
     public void testUIChannelHandler() throws Exception {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaders.Names.HOST, "localhost");
@@ -111,15 +87,14 @@ public class HttpChannelHandlerTest {
         expect(request.headers()).andReturn(headers).atLeastOnce();
         expect(request.getMethod()).andReturn(HttpMethod.GET).atLeastOnce();
         expect(httpContentRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
-        expect(httpBackendRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(false).atLeastOnce();
         expect(httpUIRequestHandler.accept(isA(String.class), isA(HttpMethod.class))).andReturn(true).atLeastOnce();
         httpUIRequestHandler.processRequest(isA(FullHttpRequest.class), isA(ChannelHandlerContext.class));
         expectLastCall().atLeastOnce();
 
-        replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
+        replay(request, channel, channelHandlerContext, httpContentRequestHandler, httpUIRequestHandler);
         HttpChannelHandler handler = getHandler();
         handler.channelRead0(channelHandlerContext, request);
-        verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpBackendRequestHandler, httpUIRequestHandler);
+        verify(request, channel, channelHandlerContext, httpContentRequestHandler, httpUIRequestHandler);
     }
 
     @Test

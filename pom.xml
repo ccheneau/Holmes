@@ -45,10 +45,10 @@
         <guice.version>3.0</guice.version>
         <javassist.version>3.18.0-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>
-        <jersey.version>1.17.1</jersey.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <netty.version>4.0.9.Final</netty.version>
+        <resteasy.version>3.0.4.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha2</seamless.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -123,17 +123,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <inherited>true</inherited>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <dependencyManagement>
@@ -274,36 +263,33 @@
                 <version>${rome.version}</version>
             </dependency>
 
-            <!-- jersey -->
+            <!-- RestEasy -->
             <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-server</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-core</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-json</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey.contribs</groupId>
-                <artifactId>jersey-guice</artifactId>
-                <version>${jersey.version}</version>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs</artifactId>
+                <version>${resteasy.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>com.google.inject.extensions</groupId>
-                        <artifactId>guice-servlet</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.jersey</groupId>
-                        <artifactId>jersey-servlet</artifactId>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-guice</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-netty4</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson-provider</artifactId>
+                <version>${resteasy.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- guava -->

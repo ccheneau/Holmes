@@ -1,7 +1,7 @@
 var Application = (function(application) {
 	application.Views.SettingsView = Backbone.View.extend({
 		el : $("#main_content"),
-		url : '/backend/settings',
+		url : "/backend/settings",
 		initialize : function() {
 			this.template = $.getTemplate("settings.html");
 		},

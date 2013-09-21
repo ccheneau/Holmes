@@ -25,7 +25,6 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
-import com.sun.jersey.spi.container.WebApplication;
 import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
@@ -35,7 +34,6 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
@@ -83,7 +81,6 @@ public class TestModule extends AbstractModule {
 
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class);
 
-        bind(WebApplication.class).toInstance(createMock(WebApplication.class));
         bind(BackendManager.class).to(BackendManagerImpl.class);
 
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
@@ -92,7 +89,6 @@ public class TestModule extends AbstractModule {
         }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class);
 
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
         bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
 

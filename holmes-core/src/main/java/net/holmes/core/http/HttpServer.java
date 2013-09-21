@@ -18,7 +18,6 @@
 package net.holmes.core.http;
 
 import com.google.inject.Injector;
-import com.sun.jersey.spi.container.WebApplication;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
@@ -31,73 +30,91 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
+import org.jboss.resteasy.core.SynchronousDispatcher;
+import org.jboss.resteasy.plugins.guice.ModuleProcessor;
+import org.jboss.resteasy.plugins.server.netty.RequestDispatcher;
+import org.jboss.resteasy.plugins.server.netty.RequestHandler;
+import org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder;
+import org.jboss.resteasy.plugins.server.netty.RestEasyHttpResponseEncoder;
+import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.InetSocketAddress;
 
+import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
+
 /**
  * HTTP server main class.
  */
 public final class HttpServer implements Service {
-    public static final String HTTP_SERVER_NAME = "Holmes HTTP server";
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpServer.class);
     private static final int MAX_CONTENT_LENGTH = 65536;
+    private static final int BACKLOG = 128;
     private final Injector injector;
     private final Configuration configuration;
-    private final WebApplication webApplication;
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workerGroup;
+    private final ResteasyDeployment deployment;
 
     /**
      * Instantiates a new http server.
      *
-     * @param injector       injector
-     * @param webApplication web application
-     * @param configuration  configuration
+     * @param injector      injector
+     * @param configuration configuration
      */
     @Inject
-    public HttpServer(final Injector injector, final WebApplication webApplication, final Configuration configuration) {
+    public HttpServer(final Injector injector, final Configuration configuration) {
         this.injector = injector;
         this.configuration = configuration;
-        this.webApplication = webApplication;
         this.bossGroup = new NioEventLoopGroup();
         this.workerGroup = new NioEventLoopGroup();
+        this.deployment = new ResteasyDeployment();
     }
 
     @Override
     public void start() {
         LOGGER.info("Starting HTTP server");
 
-        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
+        // Start RestEasy deployment
+        deployment.start();
+        final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher) deployment.getDispatcher(), deployment.getProviderFactory(), null);
 
         // Configure the server.
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup) //
-                .channel(NioServerSocketChannel.class) //
-                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT) //
+        bootstrap.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
-                        pipeline.addLast("decoder", new HttpRequestDecoder()) //
-                                .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))//
-                                .addLast("encoder", new HttpResponseEncoder())//
-                                .addLast("chunkedWriter", new ChunkedWriteHandler())//
+                        pipeline.addLast("decoder", new HttpRequestDecoder())
+                                .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))
+                                .addLast("encoder", new HttpResponseEncoder())
+                                .addLast("chunkedWriter", new ChunkedWriteHandler())
                                         // Add HTTP request handler
-                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundHandler.class));
+                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundHandler.class))
+                                        // Add RestEasy handlers
+                                .addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP))
+                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))
+                                .addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
+
                     }
-                });
+                })
+                .option(ChannelOption.SO_BACKLOG, BACKLOG)
+                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         // Bind and start server to accept incoming connections.
-        try {
-            bootstrap.bind(bindAddress).sync();
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
+        bootstrap.bind(bindAddress).syncUninterruptibly();
 
-        LOGGER.info("HTTP server bound on " + bindAddress);
+        // Register backend JAX-RS handlers declared in Guice injector .
+        ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
+        processor.processInjector(injector);
+
+        LOGGER.info("HTTP server bound on {}", bindAddress);
     }
 
     @Override
@@ -107,7 +124,7 @@ public final class HttpServer implements Service {
         // Stop the server
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
-        webApplication.destroy();
+        deployment.stop();
 
         LOGGER.info("HTTP server stopped");
     }

@@ -11,6 +11,19 @@
     <name>Holmes Romes modules fork</name>
     <description>Fork for rome:modules project</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>false</inherited>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <!-- slf4j -->
         <dependency>

@@ -29,6 +29,7 @@ public interface Configuration {
 
     String DEFAULT_UPNP_SERVER_NAME = "Holmes";
     int DEFAULT_HTTP_SERVER_PORT = 8085;
+    int DEFAULT_UPNP_SERVICE_PORT = 5002;
     int MIN_HTTP_SERVER_PORT = 1024;
     int MAX_HTTP_SERVER_PORT = 9999;
 

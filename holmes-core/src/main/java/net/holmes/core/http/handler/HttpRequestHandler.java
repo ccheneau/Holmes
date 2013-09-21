@@ -25,6 +25,7 @@ import io.netty.handler.codec.http.HttpMethod;
  * Http request handler.
  */
 public interface HttpRequestHandler {
+    String HTTP_SERVER_NAME = "Holmes HTTP server";
     int CHUNK_SIZE = 8192;
 
     /**

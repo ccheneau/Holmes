@@ -25,7 +25,6 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
-import net.holmes.core.http.HttpServer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -85,7 +84,7 @@ public final class HttpUIRequestHandler implements HttpRequestHandler {
             // Define response header
             HttpResponse response = new DefaultHttpResponse(HTTP_1_1, OK);
             HttpHeaders.setContentLength(response, randomFile.length());
-            response.headers().set(SERVER, HttpServer.HTTP_SERVER_NAME);
+            response.headers().set(SERVER, HTTP_SERVER_NAME);
             MimeType mimeType = mimeTypeManager.getMimeType(fileName);
             if (mimeType != null)
                 response.headers().set(CONTENT_TYPE, mimeType.getMimeType());

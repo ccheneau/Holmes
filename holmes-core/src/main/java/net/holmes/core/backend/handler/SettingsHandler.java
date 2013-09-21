@@ -60,7 +60,9 @@ public final class SettingsHandler {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveSettings(final Settings settings) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Settings saveSettings(final Settings settings) {
         backendManager.saveSettings(settings);
+        return settings;
     }
 }

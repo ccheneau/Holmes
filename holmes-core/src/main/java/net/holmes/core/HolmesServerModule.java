@@ -27,12 +27,12 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
-import com.sun.jersey.spi.container.WebApplication;
 import com.thoughtworks.xstream.XStream;
 import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
+import net.holmes.core.backend.handler.*;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.XmlConfigurationImpl;
@@ -40,12 +40,14 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.handler.HttpBackendRequestHandler;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
 import net.holmes.core.http.handler.HttpUIRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.*;
+import net.holmes.core.inject.provider.ImageCacheProvider;
+import net.holmes.core.inject.provider.PodcastCacheProvider;
+import net.holmes.core.inject.provider.UpnpServiceProvider;
+import net.holmes.core.inject.provider.XStreamProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.dao.MediaDao;
@@ -145,7 +147,6 @@ final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
-        bind(BackendExceptionMapper.class).in(Singleton.class);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(XStream.class).toProvider(XStreamProvider.class);
 
@@ -178,8 +179,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
-        // Bind Jersey application
-        bind(WebApplication.class).toProvider(WebApplicationProvider.class).in(Singleton.class);
+        // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
@@ -188,7 +188,18 @@ final class HolmesServerModule extends AbstractModule {
         // Bind Http handlers
         bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("backend")).to(HttpBackendRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
+
+        // Rest handlers
+        bind(AudioFoldersHandler.class);
+        bind(PictureFoldersHandler.class);
+        bind(PodcastsHandler.class);
+        bind(SettingsHandler.class);
+        bind(UtilHandler.class);
+        bind(VideoFoldersHandler.class);
+
+        // Rest exception mapper
+        bind(BackendExceptionMapper.class);
+
     }
 }
