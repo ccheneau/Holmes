@@ -17,34 +17,24 @@
 
 package net.holmes.core.http.handler;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
-import io.netty.handler.stream.ChunkedFile;
+import com.google.common.base.Strings;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 
 import javax.inject.Inject;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.*;
-import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
-import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
-import static io.netty.handler.codec.http.HttpResponseStatus.*;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 
 /**
  * Handler for content (i.e. video, audio or picture) streaming to UPnP media renderer.
  */
-public final class HttpContentRequestHandler implements HttpRequestHandler {
+public final class HttpContentRequestHandler extends HttpRequestHandler {
     private static final String REQUEST_PATH = "/content";
-    private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
     private final MediaManager mediaManager;
 
     /**
@@ -63,71 +53,13 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
     }
 
     @Override
-    public void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
+    HttpRequestFile getRequestFile(FullHttpRequest request) throws HttpRequestException {
         // Get content node
         ContentNode node = getContentNode(request.getUri());
         if (node == null)
             throw new HttpRequestException(request.getUri(), NOT_FOUND);
 
-        // Check node
-        NodeFile file = new NodeFile(node.getPath());
-        if (!file.isValidFile())
-            throw new HttpRequestException(node.getPath(), NOT_FOUND);
-
-        // Get start offset
-        long startOffset = 0;
-        String range = request.headers().get(RANGE);
-        if (range != null) {
-            Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
-            if (matcher.find()) startOffset = Long.parseLong(matcher.group(1));
-            else throw new HttpRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
-        }
-
-        // Get file descriptor
-        RandomAccessFile randomFile;
-        long fileLength;
-        try {
-            randomFile = new RandomAccessFile(file, "r");
-            fileLength = randomFile.length();
-        } catch (IOException e) {
-            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
-        }
-
-        // Build response header
-        HttpResponse response;
-        if (startOffset == 0) {
-            response = new DefaultHttpResponse(HTTP_1_1, OK);
-            HttpHeaders.setContentLength(response, fileLength);
-            response.headers().add(CONTENT_TYPE, node.getMimeType().getMimeType());
-            response.headers().add(ACCEPT_RANGES, BYTES);
-        } else if (startOffset > 0 && startOffset < fileLength) {
-            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
-            HttpHeaders.setContentLength(response, fileLength - startOffset);
-            response.headers().add(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
-        } else {
-            throw new HttpRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
-        }
-        if (HttpHeaders.isKeepAlive(request)) {
-            response.headers().add(CONNECTION, KEEP_ALIVE);
-        }
-        response.headers().add(SERVER, HTTP_SERVER_NAME);
-
-        // Write the response
-        context.write(response);
-
-        // Write the content
-        try {
-            context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
-        } catch (IOException e) {
-            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
-        }
-
-        // Write the end marker
-        ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
-
-        // Decide whether to close the connection or not when the whole content is written out.
-        if (!HttpHeaders.isKeepAlive(request))
-            lastContentFuture.addListener(ChannelFutureListener.CLOSE);
+        return new HttpRequestFile(new NodeFile(node.getPath()), node.getMimeType());
     }
 
     /**
@@ -140,8 +72,8 @@ public final class HttpContentRequestHandler implements HttpRequestHandler {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
 
-        String contentId = decoder.parameters().get("id").get(0);
-        if (contentId != null) {
+        String contentId = decoder.parameters().get("id") != null ? decoder.parameters().get("id").get(0) : null;
+        if (!Strings.isNullOrEmpty(contentId)) {
             AbstractNode node = mediaManager.getNode(contentId);
             if (node instanceof ContentNode)
                 contentNode = (ContentNode) node;

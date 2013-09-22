@@ -32,8 +32,18 @@ public class NodeFile extends File {
      *
      * @param path file path
      */
-    public NodeFile(String path) {
+    public NodeFile(final String path) {
         super(path);
+    }
+
+    /**
+     * Instantiates a new node file.
+     *
+     * @param parent The parent path name string
+     * @param child  The child path name string
+     */
+    public NodeFile(final String parent, final String child) {
+        super(parent, child);
     }
 
     /**
@@ -55,7 +65,7 @@ public class NodeFile extends File {
     }
 
     /**
-     * List readable child files.
+     * List readable child folders and files.
      *
      * @param includeFiles include file list in result
      * @return child files

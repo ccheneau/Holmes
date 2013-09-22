@@ -81,8 +81,8 @@ public class HttpContentRequestHandlerTest {
         assertFalse(contentRequestHandler.accept("bad_request", HttpMethod.POST));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testProcessRequestNoContent() throws Exception {
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestNoContentId() throws Exception {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
@@ -98,7 +98,7 @@ public class HttpContentRequestHandlerTest {
     }
 
     @Test(expected = HttpRequestException.class)
-    public void testProcessRequestNullContent() throws Exception {
+    public void testProcessRequestNullContentId() throws Exception {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
@@ -113,7 +113,7 @@ public class HttpContentRequestHandlerTest {
     }
 
     @Test(expected = HttpRequestException.class)
-    public void testProcessRequestUnknownContent() throws Exception {
+    public void testProcessRequestUnknownContentId() throws Exception {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
@@ -212,6 +212,28 @@ public class HttpContentRequestHandlerTest {
 
         headers.add(HttpHeaders.Names.HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
+
+        replay(request, context);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.processRequest(request, context);
+        } finally {
+            verify(request, context);
+        }
+    }
+
+    @Test(expected = HttpRequestException.class)
+    public void testProcessRequestWithNegativeOffset() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
+        AbstractNode node = getContentNodeFromMediaManager();
+        HttpHeaders headers = new DefaultHttpHeaders();
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
+
+        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HttpHeaders.Names.RANGE, "bytes=-1-");
 
         replay(request, context);
         try {

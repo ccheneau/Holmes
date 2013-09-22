@@ -19,8 +19,10 @@ package net.holmes.core.http;
 
 import com.google.inject.Injector;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.channel.*;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -43,6 +45,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.net.InetSocketAddress;
 
+import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
+import static io.netty.channel.ChannelOption.*;
 import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
 
 /**
@@ -102,9 +106,9 @@ public final class HttpServer implements Service {
 
                     }
                 })
-                .option(ChannelOption.SO_BACKLOG, BACKLOG)
-                .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT)
-                .childOption(ChannelOption.SO_KEEPALIVE, true);
+                .option(SO_BACKLOG, BACKLOG)
+                .childOption(ALLOCATOR, DEFAULT)
+                .childOption(SO_KEEPALIVE, true);
 
         // Bind and start server to accept incoming connections.
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
