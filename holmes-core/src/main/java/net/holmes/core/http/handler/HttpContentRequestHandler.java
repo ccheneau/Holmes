@@ -48,7 +48,7 @@ public final class HttpContentRequestHandler extends HttpRequestHandler {
     }
 
     @Override
-    public boolean accept(final String requestPath, final HttpMethod method) {
+    boolean accept(final String requestPath, final HttpMethod method) {
         return method.equals(HttpMethod.GET) && requestPath.startsWith(REQUEST_PATH);
     }
 

@@ -35,6 +35,10 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.util.List;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.HOST;
+import static io.netty.handler.codec.http.HttpMethod.GET;
+import static io.netty.handler.codec.http.HttpMethod.POST;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -75,10 +79,10 @@ public class HttpContentRequestHandlerTest {
     @Test
     public void testAccept() {
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        assertTrue(contentRequestHandler.accept("/content/request", HttpMethod.GET));
-        assertFalse(contentRequestHandler.accept("/content/request", HttpMethod.POST));
-        assertFalse(contentRequestHandler.accept("bad_request", HttpMethod.GET));
-        assertFalse(contentRequestHandler.accept("bad_request", HttpMethod.POST));
+        assertTrue(contentRequestHandler.accept("/content/request", GET));
+        assertFalse(contentRequestHandler.accept("/content/request", POST));
+        assertFalse(contentRequestHandler.accept("bad_request", GET));
+        assertFalse(contentRequestHandler.accept("bad_request", POST));
     }
 
     @Test(expected = HttpRequestException.class)
@@ -87,10 +91,11 @@ public class HttpContentRequestHandlerTest {
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
         expect(request.getUri()).andReturn("/content").atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -103,10 +108,11 @@ public class HttpContentRequestHandlerTest {
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
         expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -118,10 +124,11 @@ public class HttpContentRequestHandlerTest {
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
         expect(request.getUri()).andReturn("/content?id=25").atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -134,11 +141,12 @@ public class HttpContentRequestHandlerTest {
 
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
         headers.add(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
 
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
         Channel channel = createMock(Channel.class);
 
@@ -148,7 +156,7 @@ public class HttpContentRequestHandlerTest {
 
         replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, context);
+        contentRequestHandler.channelRead0(context, request);
         verify(request, context, channel);
     }
 
@@ -159,16 +167,17 @@ public class HttpContentRequestHandlerTest {
 
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "");
 
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -181,12 +190,13 @@ public class HttpContentRequestHandlerTest {
 
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=5-");
 
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
+        expect(request.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
 
         Channel channel = createMock(Channel.class);
 
@@ -196,7 +206,7 @@ public class HttpContentRequestHandlerTest {
 
         replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, context);
+        contentRequestHandler.channelRead0(context, request);
         verify(request, context, channel);
     }
 
@@ -209,14 +219,15 @@ public class HttpContentRequestHandlerTest {
         HttpHeaders headers = new DefaultHttpHeaders();
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=500000-");
 
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -229,16 +240,17 @@ public class HttpContentRequestHandlerTest {
 
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
-        expect(request.headers()).andReturn(headers).atLeastOnce();
-
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
         headers.add(HttpHeaders.Names.RANGE, "bytes=-1-");
+
+        expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
+        expect(request.headers()).andReturn(headers).atLeastOnce();
 
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
-            contentRequestHandler.processRequest(request, context);
+            contentRequestHandler.channelRead0(context, request);
         } finally {
             verify(request, context);
         }
@@ -252,11 +264,12 @@ public class HttpContentRequestHandlerTest {
 
         AbstractNode node = getContentNodeFromMediaManager();
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaders.Names.HOST, "localhost");
+        headers.add(HOST, "localhost");
 
         expect(request.getUri()).andReturn("/content?id=" + node.getId()).atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.headers()).andReturn(headers).atLeastOnce();
-        expect(request.getProtocolVersion()).andReturn(HttpVersion.HTTP_1_1).atLeastOnce();
+        expect(request.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
 
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
@@ -264,7 +277,7 @@ public class HttpContentRequestHandlerTest {
 
         replay(request, context, channel);
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        contentRequestHandler.processRequest(request, context);
+        contentRequestHandler.channelRead0(context, request);
         verify(request, context, channel);
     }
 }

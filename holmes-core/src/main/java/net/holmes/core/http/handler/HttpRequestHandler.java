@@ -17,11 +17,15 @@
 
 package net.holmes.core.http.handler;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
+import io.netty.util.CharsetUtil;
 import net.holmes.core.common.NodeFile;
 
 import java.io.IOException;
@@ -39,10 +43,31 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 /**
  * Http request handler.
  */
-public abstract class HttpRequestHandler {
+public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final String HTTP_SERVER_NAME = "Holmes HTTP server";
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
     private static final int CHUNK_SIZE = 8192;
+
+    @Override
+    public void channelRead0(final ChannelHandlerContext context, final FullHttpRequest request) throws HttpRequestException {
+        String requestPath = new QueryStringDecoder(request.getUri()).path();
+        if (accept(requestPath, request.getMethod()))
+            // Process request
+            processRequest(request, context);
+        else
+            // Forward request to pipeline
+            context.fireChannelRead(request);
+    }
+
+    @Override
+    public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
+        if (context.channel().isActive())
+            if (cause instanceof HttpRequestException) {
+                HttpRequestException httpRequestException = (HttpRequestException) cause;
+                sendError(context, httpRequestException.getMessage(), httpRequestException.getStatus());
+            } else
+                sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
+    }
 
     /**
      * Process request.
@@ -51,7 +76,7 @@ public abstract class HttpRequestHandler {
      * @param context Channel context
      * @throws HttpRequestException Http request exception
      */
-    public void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
+    private void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
         // Get request file
         HttpRequestFile requestFile = getRequestFile(request);
 
@@ -115,21 +140,37 @@ public abstract class HttpRequestHandler {
     }
 
     /**
+     * Send error.
+     *
+     * @param context channel context
+     * @param message message
+     * @param status  response status
+     */
+    private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
+        // Build error response
+        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+
+        // Close the connection as soon as the error message is sent.
+        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    /**
      * Check if handler can process request.
      *
      * @param requestPath request path
      * @param method      Http method (GET, POST...)
      * @return true if handler can process request
      */
-    public abstract boolean accept(final String requestPath, final HttpMethod method);
+    abstract boolean accept(final String requestPath, final HttpMethod method);
 
     /**
      * Get request file
      *
      * @param request HTTP request
      * @return request file
-     * @throws net.holmes.core.http.handler.HttpRequestException
-     *
+     * @throws HttpRequestException
      */
     abstract HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException;
 }

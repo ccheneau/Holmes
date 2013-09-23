@@ -18,8 +18,9 @@
 package net.holmes.core.http;
 
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -32,6 +33,7 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.http.handler.HttpRequestHandler;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.guice.ModuleProcessor;
 import org.jboss.resteasy.plugins.server.netty.RequestDispatcher;
@@ -97,8 +99,9 @@ public final class HttpServer implements Service {
                                 .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))
                                 .addLast("encoder", new HttpResponseEncoder())
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())
-                                        // Add HTTP request handler
-                                .addLast("httpChannelHandler", injector.getInstance(ChannelInboundHandler.class))
+                                        // Add HTTP request handlers
+                                .addLast("httpContentRequestHandler", injector.getInstance(Key.get(HttpRequestHandler.class, Names.named("content"))))
+                                .addLast("httpUIRequestHandler", injector.getInstance(Key.get(HttpRequestHandler.class, Names.named("ui"))))
                                         // Add RestEasy handlers
                                 .addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP))
                                 .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))

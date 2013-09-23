@@ -28,7 +28,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.thoughtworks.xstream.XStream;
-import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
@@ -38,7 +37,6 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.XmlConfigurationImpl;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
-import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
@@ -186,7 +184,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
         // Bind Http handlers
-        bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
 

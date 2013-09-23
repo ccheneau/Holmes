@@ -35,6 +35,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
  */
 public final class HttpUIRequestHandler extends HttpRequestHandler {
     private static final String DEFAULT_PAGE = "index.html";
+    private static final String BACKEND_REQUEST_PATH = "/backend";
     private final String uiDirectory;
     private final MimeTypeManager mimeTypeManager;
 
@@ -51,12 +52,12 @@ public final class HttpUIRequestHandler extends HttpRequestHandler {
     }
 
     @Override
-    public boolean accept(final String requestPath, final HttpMethod method) {
-        return method.equals(HttpMethod.GET);
+    boolean accept(final String requestPath, final HttpMethod method) {
+        return method.equals(HttpMethod.GET) && !requestPath.startsWith(BACKEND_REQUEST_PATH);
     }
 
     @Override
-    public HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException {
+    HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException {
         // Get file name
         QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
         String fileName = decoder.path().trim();

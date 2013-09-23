@@ -25,14 +25,12 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
-import io.netty.channel.ChannelInboundHandler;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
-import net.holmes.core.http.HttpChannelHandler;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.handler.HttpContentRequestHandler;
 import net.holmes.core.http.handler.HttpRequestHandler;
@@ -90,7 +88,6 @@ public class TestModule extends AbstractModule {
 
         bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
         bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
-        bind(ChannelInboundHandler.class).to(HttpChannelHandler.class);
 
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class);
