@@ -19,11 +19,13 @@ package net.holmes.core.test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.thoughtworks.xstream.XStream;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.media.model.RootNode;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -39,7 +41,8 @@ public class TestConfiguration implements Configuration {
     private Integer httpServerPort = DEFAULT_HTTP_SERVER_PORT;
     private Map<Parameter, String> parameters;
 
-    public TestConfiguration() {
+    @Inject
+    public TestConfiguration(final XStream xStream) {
         videoFolders = Lists.newArrayList();
         videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = Lists.newArrayList();
