@@ -27,7 +27,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * Map illegal argument exception to Http response.
+ * Map backend exceptions to Http response.
  */
 @Provider
 public class BackendExceptionMapper implements ExceptionMapper<BackendException> {
