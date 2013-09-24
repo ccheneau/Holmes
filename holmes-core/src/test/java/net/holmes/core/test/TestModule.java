@@ -28,6 +28,7 @@ import com.google.inject.name.Names;
 import com.thoughtworks.xstream.XStream;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
+import net.holmes.core.backend.exception.BackendExceptionMapper;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.mimetype.MimeTypeManager;
@@ -103,5 +104,6 @@ public class TestModule extends AbstractModule {
         bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaScanner")).to(MediaScannerService.class);
 
+        bind(BackendExceptionMapper.class);
     }
 }

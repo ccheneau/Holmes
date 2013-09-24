@@ -228,6 +228,11 @@ public class BackendManagerTest {
     }
 
     @Test(expected = BackendException.class)
+    public void testSaveSettingsIOException() {
+        backendManager.saveSettings(new Settings("IOException", 8085, true, true, true));
+    }
+
+    @Test(expected = BackendException.class)
     public void testSaveSettingsWithEmptyServerName() {
         backendManager.saveSettings(new Settings("", 8085, true, true, true));
     }

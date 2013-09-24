@@ -27,6 +27,7 @@ import net.holmes.core.media.model.RootNode;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,9 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public void saveConfig() {
+    public void saveConfig() throws IOException {
+        if (upnpServerName.equals("IOException")) throw new IOException();
+
     }
 
     private ConfigurationNode getTestContentFolder(String label, String path) {
