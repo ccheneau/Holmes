@@ -280,4 +280,21 @@ public class HttpContentRequestHandlerTest {
         contentRequestHandler.channelRead0(context, request);
         verify(request, context, channel);
     }
+
+    @Test
+    public void testProcessRequestPassThrough() throws Exception {
+
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        expect(request.getUri()).andReturn("/backend/something").atLeastOnce();
+        expect(request.getMethod()).andReturn(GET).atLeastOnce();
+
+        expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
+
+        replay(request, context);
+        HttpContentRequestHandler httpUIRequestHandler = getHandler();
+        httpUIRequestHandler.channelRead0(context, request);
+        verify(request, context);
+    }
+
 }
