@@ -21,7 +21,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultChannelPromise;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -85,12 +84,12 @@ public class HttpRequestHandlerTest {
     private HttpRequestHandler getHandler() {
         return new HttpRequestHandler() {
             @Override
-            boolean accept(String requestPath, HttpMethod method) {
+            boolean accept(final FullHttpRequest request) {
                 return true;
             }
 
             @Override
-            HttpRequestFile getRequestFile(FullHttpRequest request) throws HttpRequestException {
+            HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException {
                 return null;
             }
         };

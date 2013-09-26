@@ -61,9 +61,8 @@ public class HttpUIRequestHandlerTest {
     @Test
     public void testAccept() {
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        assertTrue(httpUIRequestHandler.accept("", GET));
-        assertFalse(httpUIRequestHandler.accept("", POST));
-        assertFalse(httpUIRequestHandler.accept("/backend/something", GET));
+        assertTrue(httpUIRequestHandler.accept(new DefaultFullHttpRequest(HTTP_1_1, GET, "/")));
+        assertFalse(httpUIRequestHandler.accept(new DefaultFullHttpRequest(HTTP_1_1, GET, "/backend/something")));
     }
 
     @Test
@@ -93,19 +92,19 @@ public class HttpUIRequestHandlerTest {
     }
 
     @Test
-    public void testProcessRequestPassThrough() throws Exception {
-
-        FullHttpRequest request = createMock(FullHttpRequest.class);
+    public void testProcessRequestPost() throws Exception {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        expect(request.getUri()).andReturn("/backend/something").atLeastOnce();
-        expect(request.getMethod()).andReturn(GET).atLeastOnce();
+        FullHttpRequest request = createMock(FullHttpRequest.class);
 
+        expect(request.getMethod()).andReturn(POST).atLeastOnce();
         expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
-
         replay(request, context);
-        HttpUIRequestHandler httpUIRequestHandler = getHandler();
-        httpUIRequestHandler.channelRead0(context, request);
-        verify(request, context);
+        try {
+            HttpUIRequestHandler httpUIRequestHandler = getHandler();
+            httpUIRequestHandler.channelRead0(context, request);
+        } finally {
+            verify(request, context);
+        }
     }
 
     @Test
@@ -136,23 +135,15 @@ public class HttpUIRequestHandlerTest {
 
     @Test
     public void testProcessRequestBadMimeType() throws Exception {
-        File indexHtml = File.createTempFile("index", ".html1");
-        indexHtml.deleteOnExit();
-        HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HOST, "localhost");
 
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        expect(request.headers()).andReturn(headers).atLeastOnce();
-        expect(request.getUri()).andReturn("/" + indexHtml.getName()).atLeastOnce();
-        expect(request.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
+        expect(request.getUri()).andReturn("/index.html1").atLeastOnce();
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
         Channel channel = createMock(Channel.class);
 
-        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
 
         replay(request, context, channel);
         HttpUIRequestHandler httpUIRequestHandler = getHandler();
@@ -182,7 +173,7 @@ public class HttpUIRequestHandlerTest {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
 
-        expect(request.getUri()).andReturn("").atLeastOnce();
+        expect(request.getUri()).andReturn("/").atLeastOnce();
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
         replay(request, context);
@@ -199,7 +190,7 @@ public class HttpUIRequestHandlerTest {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
 
-        expect(request.getUri()).andReturn("/badFile").atLeastOnce();
+        expect(request.getUri()).andReturn("/badFile.html").atLeastOnce();
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
 
         replay(request, context);

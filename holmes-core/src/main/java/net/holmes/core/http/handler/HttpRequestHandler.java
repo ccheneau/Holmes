@@ -37,6 +37,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
 import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
 import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
+import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
@@ -49,9 +50,8 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
     private static final int CHUNK_SIZE = 8192;
 
     @Override
-    public void channelRead0(final ChannelHandlerContext context, final FullHttpRequest request) throws HttpRequestException {
-        String requestPath = new QueryStringDecoder(request.getUri()).path();
-        if (accept(requestPath, request.getMethod()))
+    public void channelRead0(final ChannelHandlerContext context, final FullHttpRequest request) throws HttpRequestException, IOException {
+        if (request.getMethod().equals(GET) && accept(request))
             // Process request
             processRequest(request, context);
         else
@@ -75,8 +75,9 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
      * @param request Http request
      * @param context Channel context
      * @throws HttpRequestException Http request exception
+     * @throws IOException
      */
-    private void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException {
+    private void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException, IOException {
         // Get request file
         HttpRequestFile requestFile = getRequestFile(request);
 
@@ -85,58 +86,54 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
         if (!file.isValidFile())
             throw new HttpRequestException(file.getPath(), NOT_FOUND);
 
-        try {
-            // Get file descriptor
-            RandomAccessFile randomFile = new RandomAccessFile(file, "r");
-            long fileLength = randomFile.length();
+        // Get file descriptor
+        RandomAccessFile randomFile = new RandomAccessFile(file, "r");
+        long fileLength = randomFile.length();
 
-            // Get start offset
-            long startOffset = 0;
-            String range = request.headers().get(RANGE);
-            if (range != null) {
-                Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
-                if (matcher.find()) startOffset = Long.parseLong(matcher.group(1));
-                else throw new HttpRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
-            }
-
-            // Build response
-            HttpResponse response;
-            if (startOffset == 0) {
-                response = new DefaultHttpResponse(HTTP_1_1, OK);
-                response.headers().set(ACCEPT_RANGES, BYTES);
-            } else if (startOffset < fileLength) {
-                response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
-                response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
-            } else {
-                throw new HttpRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
-            }
-
-            // Add response headers
-            response.headers().set(SERVER, HTTP_SERVER_NAME);
-            HttpHeaders.setContentLength(response, fileLength - startOffset);
-            if (requestFile.getMimeType() != null) {
-                response.headers().set(CONTENT_TYPE, requestFile.getMimeType().getMimeType());
-            }
-            if (isKeepAlive(request)) {
-                response.headers().set(CONNECTION, KEEP_ALIVE);
-            }
-
-            // Write the response
-            context.write(response);
-
-            // Write the content
-            context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
-
-            // Write the end marker
-            ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
-
-            // Decide whether to close the connection or not when the whole content is written out.
-            if (!isKeepAlive(request))
-                lastContentFuture.addListener(ChannelFutureListener.CLOSE);
-
-        } catch (IOException e) {
-            throw new HttpRequestException(e, INTERNAL_SERVER_ERROR);
+        // Get start offset
+        long startOffset = 0;
+        String range = request.headers().get(RANGE);
+        if (range != null) {
+            Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
+            if (matcher.find())
+                startOffset = Long.parseLong(matcher.group(1));
+            else
+                throw new HttpRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
+
+        // Build response
+        HttpResponse response;
+        if (startOffset == 0) {
+            response = new DefaultHttpResponse(HTTP_1_1, OK);
+            response.headers().set(ACCEPT_RANGES, BYTES);
+        } else if (startOffset < fileLength) {
+            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
+            response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
+        } else
+            throw new HttpRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+
+        // Add response headers
+        response.headers().set(SERVER, HTTP_SERVER_NAME);
+        HttpHeaders.setContentLength(response, fileLength - startOffset);
+        response.headers().set(CONTENT_TYPE, requestFile.getMimeType().getMimeType());
+
+        if (isKeepAlive(request))
+            response.headers().set(CONNECTION, KEEP_ALIVE);
+
+
+        // Write the response
+        context.write(response);
+
+        // Write the content
+        context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
+
+        // Write the end marker
+        ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+
+        // Decide whether to close the connection or not when the whole content is written out.
+        if (!isKeepAlive(request))
+            lastContentFuture.addListener(ChannelFutureListener.CLOSE);
+
     }
 
     /**
@@ -159,11 +156,10 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
     /**
      * Check if handler can process request.
      *
-     * @param requestPath request path
-     * @param method      Http method (GET, POST...)
+     * @param request Http request
      * @return true if handler can process request
      */
-    abstract boolean accept(final String requestPath, final HttpMethod method);
+    abstract boolean accept(final FullHttpRequest request);
 
     /**
      * Get request file

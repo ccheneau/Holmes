@@ -79,19 +79,19 @@ public class HttpContentRequestHandlerTest {
     @Test
     public void testAccept() {
         HttpContentRequestHandler contentRequestHandler = getHandler();
-        assertTrue(contentRequestHandler.accept("/content/request", GET));
-        assertFalse(contentRequestHandler.accept("/content/request", POST));
-        assertFalse(contentRequestHandler.accept("bad_request", GET));
-        assertFalse(contentRequestHandler.accept("bad_request", POST));
+        assertTrue(contentRequestHandler.accept(new DefaultFullHttpRequest(HTTP_1_1, GET, "/content/request?id=1")));
+        assertFalse(contentRequestHandler.accept(new DefaultFullHttpRequest(HTTP_1_1, GET, "/bad_request?id=1")));
+        assertFalse(contentRequestHandler.accept(new DefaultFullHttpRequest(HTTP_1_1, GET, "/content/request")));
     }
 
-    @Test(expected = HttpRequestException.class)
+    @Test
     public void testProcessRequestNoContentId() throws Exception {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest request = createMock(FullHttpRequest.class);
 
         expect(request.getUri()).andReturn("/content").atLeastOnce();
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
+        expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
         replay(request, context);
         try {
             HttpContentRequestHandler contentRequestHandler = getHandler();
@@ -99,7 +99,22 @@ public class HttpContentRequestHandlerTest {
         } finally {
             verify(request, context);
         }
+    }
 
+    @Test
+    public void testProcessRequestPost() throws Exception {
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest request = createMock(FullHttpRequest.class);
+
+        expect(request.getMethod()).andReturn(POST).atLeastOnce();
+        expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
+        replay(request, context);
+        try {
+            HttpContentRequestHandler contentRequestHandler = getHandler();
+            contentRequestHandler.channelRead0(context, request);
+        } finally {
+            verify(request, context);
+        }
     }
 
     @Test(expected = HttpRequestException.class)
@@ -280,21 +295,4 @@ public class HttpContentRequestHandlerTest {
         contentRequestHandler.channelRead0(context, request);
         verify(request, context, channel);
     }
-
-    @Test
-    public void testProcessRequestPassThrough() throws Exception {
-
-        FullHttpRequest request = createMock(FullHttpRequest.class);
-        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        expect(request.getUri()).andReturn("/backend/something").atLeastOnce();
-        expect(request.getMethod()).andReturn(GET).atLeastOnce();
-
-        expect(context.fireChannelRead(request)).andReturn(context).atLeastOnce();
-
-        replay(request, context);
-        HttpContentRequestHandler httpUIRequestHandler = getHandler();
-        httpUIRequestHandler.channelRead0(context, request);
-        verify(request, context);
-    }
-
 }

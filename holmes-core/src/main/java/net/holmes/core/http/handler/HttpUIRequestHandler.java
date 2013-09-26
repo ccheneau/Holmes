@@ -17,9 +17,7 @@
 
 package net.holmes.core.http.handler;
 
-import com.google.common.base.Strings;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.mimetype.MimeType;
@@ -28,14 +26,11 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
-
 /**
  * Handler for Holmes UI pages.
  */
 public final class HttpUIRequestHandler extends HttpRequestHandler {
     private static final String DEFAULT_PAGE = "index.html";
-    private static final String BACKEND_REQUEST_PATH = "/backend";
     private final String uiDirectory;
     private final MimeTypeManager mimeTypeManager;
 
@@ -52,25 +47,34 @@ public final class HttpUIRequestHandler extends HttpRequestHandler {
     }
 
     @Override
-    boolean accept(final String requestPath, final HttpMethod method) {
-        return method.equals(HttpMethod.GET) && !requestPath.startsWith(BACKEND_REQUEST_PATH);
+    boolean accept(final FullHttpRequest request) {
+        return mimeTypeManager.getMimeType(getFileName(request)) != null;
     }
 
     @Override
     HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException {
         // Get file name
-        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-        String fileName = decoder.path().trim();
-        if ("/".equals(fileName))
-            fileName += DEFAULT_PAGE;
-
-        if (Strings.isNullOrEmpty(fileName))
-            throw new HttpRequestException("file name is null", NOT_FOUND);
+        String fileName = getFileName(request);
 
         // Get file and mime type
         NodeFile file = new NodeFile(uiDirectory, fileName);
         MimeType mimeType = mimeTypeManager.getMimeType(fileName);
 
         return new HttpRequestFile(file, mimeType);
+    }
+
+    /**
+     * Get file name from Http request.
+     *
+     * @param request Http request
+     * @return file name
+     */
+    private String getFileName(final FullHttpRequest request) {
+        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+        String fileName = decoder.path().trim();
+        if ("/".equals(fileName))
+            fileName += DEFAULT_PAGE;
+
+        return fileName;
     }
 }

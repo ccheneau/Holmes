@@ -19,7 +19,6 @@ package net.holmes.core.http.handler;
 
 import com.google.common.base.Strings;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.media.MediaManager;
@@ -48,15 +47,16 @@ public final class HttpContentRequestHandler extends HttpRequestHandler {
     }
 
     @Override
-    boolean accept(final String requestPath, final HttpMethod method) {
-        return method.equals(HttpMethod.GET) && requestPath.startsWith(REQUEST_PATH);
+    boolean accept(final FullHttpRequest request) {
+        QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
+        return decoder.path().startsWith(REQUEST_PATH) && decoder.parameters().get("id") != null;
     }
 
     @Override
     HttpRequestFile getRequestFile(FullHttpRequest request) throws HttpRequestException {
         // Get content node
         ContentNode node = getContentNode(request.getUri());
-        if (node == null)
+        if (node == null || node.getMimeType() == null)
             throw new HttpRequestException(request.getUri(), NOT_FOUND);
 
         return new HttpRequestFile(new NodeFile(node.getPath()), node.getMimeType());
@@ -72,7 +72,7 @@ public final class HttpContentRequestHandler extends HttpRequestHandler {
         ContentNode contentNode = null;
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
 
-        String contentId = decoder.parameters().get("id") != null ? decoder.parameters().get("id").get(0) : null;
+        String contentId = decoder.parameters().get("id").get(0);
         if (!Strings.isNullOrEmpty(contentId)) {
             AbstractNode node = mediaManager.getNode(contentId);
             if (node instanceof ContentNode)
