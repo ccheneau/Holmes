@@ -20,7 +20,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertEquals(settings.getServerName(), "serverName");
     }
 
@@ -29,7 +29,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setServerName("newServerName");
         assertEquals(settings.getServerName(), "newServerName");
     }
@@ -39,7 +39,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getHttpServerPort() == 999);
     }
 
@@ -48,7 +48,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setHttpServerPort(1000);
         assertTrue(settings.getHttpServerPort() == 1000);
     }
@@ -58,7 +58,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getPrependPodcastItem());
     }
 
@@ -67,7 +67,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setPrependPodcastItem(false);
         assertFalse(settings.getPrependPodcastItem());
     }
@@ -77,7 +77,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetEnableExternalSubtitles() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getEnableExternalSubtitles());
     }
 
@@ -86,28 +86,9 @@ public class SettingsTest {
      */
     @Test
     public void testSetEnableExternalSubtitles() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setEnableExternalSubtitles(false);
         assertFalse(settings.getEnableExternalSubtitles());
-    }
-
-    /**
-     * Method: getHideEmptyRootNodes()
-     */
-    @Test
-    public void testGetHideEmptyRootNodes() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        assertTrue(settings.getHideEmptyRootNodes());
-    }
-
-    /**
-     * Method: setHideEmptyRootNodes(Boolean hideEmptyRootNodes)
-     */
-    @Test
-    public void testSetHideEmptyRootNodes() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        settings.setHideEmptyRootNodes(false);
-        assertFalse(settings.getHideEmptyRootNodes());
     }
 
     /**
@@ -115,9 +96,9 @@ public class SettingsTest {
      */
     @Test
     public void testHashCode() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        Settings settings2 = new Settings("serverName", 999, true, true, true);
-        Settings settings3 = new Settings("serverName3", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings2 = new Settings("serverName", 999, true, true);
+        Settings settings3 = new Settings("serverName3", 999, true, true);
         assertEquals(settings.hashCode(), settings2.hashCode());
         assertNotEquals(settings.hashCode(), settings3.hashCode());
     }
@@ -127,13 +108,12 @@ public class SettingsTest {
      */
     @Test
     public void testEquals() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        Settings settings2 = new Settings("serverName", 999, true, true, true);
-        Settings settings3 = new Settings("serverName3", 999, true, true, true);
-        Settings settings4 = new Settings("serverName", 1000, true, true, true);
-        Settings settings5 = new Settings("serverName", 999, false, true, true);
-        Settings settings6 = new Settings("serverName", 999, true, false, true);
-        Settings settings7 = new Settings("serverName", 999, true, true, false);
+        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings2 = new Settings("serverName", 999, true, true);
+        Settings settings3 = new Settings("serverName3", 999, true, true);
+        Settings settings4 = new Settings("serverName", 1000, true, true);
+        Settings settings5 = new Settings("serverName", 999, false, true);
+        Settings settings6 = new Settings("serverName", 999, true, false);
         assertEquals(settings, settings2);
         assertEquals(settings, settings);
         assertNotEquals(settings, null);
@@ -142,6 +122,5 @@ public class SettingsTest {
         assertNotEquals(settings, settings4);
         assertNotEquals(settings, settings5);
         assertNotEquals(settings, settings6);
-        assertNotEquals(settings, settings7);
     }
 }

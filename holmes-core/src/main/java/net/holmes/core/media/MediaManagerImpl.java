@@ -20,7 +20,6 @@ package net.holmes.core.media;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.model.AbstractNode;
@@ -79,10 +78,9 @@ public final class MediaManagerImpl implements MediaManager {
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
-            boolean hideEmpty = configuration.getParameter(Parameter.HIDE_EMPTY_ROOT_NODES);
             for (RootNode aRootNode : RootNode.values()) {
                 if (aRootNode.getParentId().equals(ROOT.getId()))
-                    addRootNode(childNodes, hideEmpty, aRootNode);
+                    addRootNode(childNodes, aRootNode);
             }
         } else if (rootNode.getParentId().equals(ROOT.getId()))
             // Child nodes are stored in configuration
@@ -98,11 +96,10 @@ public final class MediaManagerImpl implements MediaManager {
      * Adds the root node.
      *
      * @param childNodes the child nodes
-     * @param hideEmpty  hide if empty
      * @param rootNode   the root node
      */
-    private void addRootNode(List<AbstractNode> childNodes, final boolean hideEmpty, final RootNode rootNode) {
-        if (!hideEmpty || !configuration.getFolders(rootNode).isEmpty())
+    private void addRootNode(List<AbstractNode> childNodes, final RootNode rootNode) {
+        if (!configuration.getFolders(rootNode).isEmpty())
             childNodes.add(new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString(rootNode.getBundleKey())));
     }
 

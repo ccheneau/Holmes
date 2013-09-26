@@ -34,7 +34,6 @@ public enum Parameter {
     LOCAL_CACHE_CLEAN_DELAY_MINUTES("local_cache_clean_delay_minutes", "60"), //
     MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15"), //
     MEDIA_SCAN_ALL_DELAY_MINUTES("media_scan_all_delay_minutes", "0"), //
-    HIDE_EMPTY_ROOT_NODES("hide_empty_root_nodes", "true"), //
     UPNP_SERVICE_PORT("upnp_service_port", String.valueOf(Configuration.DEFAULT_UPNP_SERVICE_PORT)), //
     ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true");
 

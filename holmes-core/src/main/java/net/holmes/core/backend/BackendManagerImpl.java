@@ -145,8 +145,7 @@ public final class BackendManagerImpl implements BackendManager {
     public Settings getSettings() {
         return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
                 configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME),
-                configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES),
-                configuration.getParameter(Parameter.HIDE_EMPTY_ROOT_NODES));
+                configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
     }
 
     @Override
@@ -158,7 +157,6 @@ public final class BackendManagerImpl implements BackendManager {
         configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
         configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
-        configuration.setParameter(Parameter.HIDE_EMPTY_ROOT_NODES, settings.getHideEmptyRootNodes());
         try {
             // save settings
             configuration.saveConfig();
