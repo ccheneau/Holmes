@@ -35,6 +35,9 @@ import javax.inject.Named;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
+import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
+
 /**
  * UPnP Content directory service.
  */
@@ -73,22 +76,18 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         DirectoryBrowseResult result;
-        switch (browseFlag) {
-            case DIRECT_CHILDREN:
-                result = new DirectoryBrowseResult(firstResult, maxResults);
-                // Add child nodes
-                List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
-                for (AbstractNode childNode : childNodes)
-                    addNode(objectID, childNode, result, childNodes.size());
-                break;
-            case METADATA:
-                result = new DirectoryBrowseResult(0, 1);
-                // Get node
-                addNode(browseNode.getParentId(), browseNode, result, 0);
-                break;
-            default:
-                result = new DirectoryBrowseResult(0, 1);
-                break;
+        if (DIRECT_CHILDREN == browseFlag) {
+            result = new DirectoryBrowseResult(firstResult, maxResults);
+            // Add child nodes
+            List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
+            for (AbstractNode childNode : childNodes)
+                addNode(objectID, childNode, result, childNodes.size());
+        } else if (METADATA == browseFlag) {
+            result = new DirectoryBrowseResult(0, 1);
+            // Get node
+            addNode(browseNode.getParentId(), browseNode, result, 0);
+        } else {
+            result = new DirectoryBrowseResult(0, 1);
         }
 
         BrowseResult br = result.buildBrowseResult();

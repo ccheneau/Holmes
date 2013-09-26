@@ -23,7 +23,6 @@ import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.test.TestModule;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
-import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,8 @@ import org.junit.Test;
 import java.util.List;
 
 import static net.holmes.core.media.model.RootNode.*;
+import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
+import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -49,7 +50,7 @@ public class ContentDirectoryServiceTest {
 
     @Test
     public void testBrowseRootDC() throws ContentDirectoryException {
-        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), BrowseFlag.DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), DIRECT_CHILDREN, null, 0, 10, null);
         assertNotNull(result);
 
     }
@@ -66,11 +67,11 @@ public class ContentDirectoryServiceTest {
         assertTrue(childNodes.size() > 0);
 
         // Browse video root node
-        BrowseResult result = contentDirectoryService.browse(VIDEO.getId(), BrowseFlag.DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(VIDEO.getId(), DIRECT_CHILDREN, null, 0, 10, null);
         assertNotNull(result);
 
         // Browse first child of video root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), BrowseFlag.DIRECT_CHILDREN, null, 0, 10, null);
+        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null);
         assertNotNull(result);
     }
 
@@ -86,23 +87,30 @@ public class ContentDirectoryServiceTest {
         assertTrue(childNodes.size() > 0);
 
         // Browse podcast root node
-        BrowseResult result = contentDirectoryService.browse(PODCAST.getId(), BrowseFlag.DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(PODCAST.getId(), DIRECT_CHILDREN, null, 0, 10, null);
         assertNotNull(result);
 
         // Browse first child of podcast root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), BrowseFlag.DIRECT_CHILDREN, null, 0, 10, null);
+        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null);
         assertNotNull(result);
     }
 
     @Test
     public void testBrowseRootMetadata() throws ContentDirectoryException {
-        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), BrowseFlag.METADATA, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), METADATA, null, 0, 10, null);
+        assertNotNull(result);
+
+    }
+
+    @Test
+    public void testBrowseRootNullFlag() throws ContentDirectoryException {
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), null, null, 0, 10, null);
         assertNotNull(result);
 
     }
 
     @Test(expected = ContentDirectoryException.class)
     public void testBrowseNull() throws ContentDirectoryException {
-        contentDirectoryService.browse(null, BrowseFlag.METADATA, null, 0, 10, null);
+        contentDirectoryService.browse(null, METADATA, null, 0, 10, null);
     }
 }
