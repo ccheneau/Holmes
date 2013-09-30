@@ -108,7 +108,6 @@ public final class MimeType {
         return Objects.toStringHelper(this)
                 .addValue(type)
                 .addValue(subType)
-                .addValue(type)
                 .addValue(mimeType)
                 .toString();
     }
