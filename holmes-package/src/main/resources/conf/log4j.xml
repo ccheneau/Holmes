@@ -37,7 +37,7 @@
         </layout>
     </appender>
 
-    <logger name="org.jboss.resteasy.core">
+    <logger name="org.jboss.resteasy">
         <level value="error"/>
     </logger>
 
