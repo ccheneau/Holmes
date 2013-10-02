@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.http.handler;
+package net.holmes.core.http.file;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -27,9 +27,15 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 import net.holmes.core.common.NodeFile;
+import net.holmes.core.common.mimetype.MimeType;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,68 +43,74 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
 import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
 import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
-import static io.netty.handler.codec.http.HttpMethod.GET;
+import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 
 /**
- * Http request handler.
+ * Http file request handler.
  */
-public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private static final String HTTP_SERVER_NAME = "Holmes HTTP server";
+public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<HttpFileRequest> {
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
+    private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
+    private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
+    private static final int HTTP_CACHE_SECONDS = 60;
     private static final int CHUNK_SIZE = 8192;
 
-    @Override
-    public void channelRead0(final ChannelHandlerContext context, final FullHttpRequest request) throws HttpRequestException, IOException {
-        if (request.getMethod().equals(GET) && accept(request))
-            // Process request
-            processRequest(request, context);
-        else
-            // Forward request to pipeline
-            context.fireChannelRead(request);
-    }
-
-    @Override
-    public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
-        if (context.channel().isActive())
-            if (cause instanceof HttpRequestException) {
-                HttpRequestException httpRequestException = (HttpRequestException) cause;
-                sendError(context, httpRequestException.getMessage(), httpRequestException.getStatus());
-            } else
-                sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
+    /**
+     * Add content length and type headers.
+     *
+     * @param response   HTTP response
+     * @param fileLength file length
+     * @param mimeType   mime type
+     */
+    private static void setContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
+        setContentLength(response, fileLength);
+        response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
     }
 
     /**
-     * Process request.
+     * Add date and cache headers.
      *
-     * @param request Http request
-     * @param context Channel context
-     * @throws HttpRequestException Http request exception
-     * @throws IOException
+     * @param response HTTP response
+     * @param file     file to cache
      */
-    private void processRequest(final FullHttpRequest request, final ChannelHandlerContext context) throws HttpRequestException, IOException {
-        // Get request file
-        HttpRequestFile requestFile = getRequestFile(request);
+    private static void setDateAndCacheHeaders(HttpResponse response, NodeFile file) {
+        // Add date header
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
+        Calendar time = new GregorianCalendar();
+        response.headers().set(DATE, dateFormatter.format(time.getTime()));
 
+        // Add cache headers
+        response.headers().set(LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
+        time.add(Calendar.SECOND, HTTP_CACHE_SECONDS);
+        response.headers().set(EXPIRES, dateFormatter.format(time.getTime()));
+        response.headers().set(CACHE_CONTROL, "private, max-age=" + HTTP_CACHE_SECONDS);
+    }
+
+    @Override
+    protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
-        NodeFile file = requestFile.getNodeFile();
+        NodeFile file = request.getNodeFile();
         if (!file.isValidFile())
-            throw new HttpRequestException(file.getPath(), NOT_FOUND);
+            throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
 
         // Get file descriptor
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
         long fileLength = randomFile.length();
 
         // Get start offset
+        FullHttpRequest httpRequest = request.getHttpRequest();
         long startOffset = 0;
-        String range = request.headers().get(RANGE);
+        String range = httpRequest.headers().get(RANGE);
         if (range != null) {
             Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
             if (matcher.find())
                 startOffset = Long.parseLong(matcher.group(1));
             else
-                throw new HttpRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
+                throw new HttpFileRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
         // Build response
@@ -110,16 +122,16 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
             response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
             response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else
-            throw new HttpRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+            throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
 
-        // Add response headers
-        response.headers().set(SERVER, HTTP_SERVER_NAME);
-        HttpHeaders.setContentLength(response, fileLength - startOffset);
-        response.headers().set(CONTENT_TYPE, requestFile.getMimeType().getMimeType());
+        // Add http headers
+        response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
+        setContentHeaders(response, fileLength - startOffset, request.getMimeType());
+        setDateAndCacheHeaders(response, file);
 
-        if (isKeepAlive(request))
+        // Keep alive header
+        if (isKeepAlive(httpRequest))
             response.headers().set(CONNECTION, KEEP_ALIVE);
-
 
         // Write the response
         context.write(response);
@@ -131,9 +143,19 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
         ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not when the whole content is written out.
-        if (!isKeepAlive(request))
+        if (!isKeepAlive(httpRequest))
             lastContentFuture.addListener(ChannelFutureListener.CLOSE);
 
+    }
+
+    @Override
+    public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
+        if (context.channel().isActive())
+            if (cause instanceof HttpFileRequestException) {
+                HttpFileRequestException httpFileRequestException = (HttpFileRequestException) cause;
+                sendError(context, httpFileRequestException.getMessage(), httpFileRequestException.getStatus());
+            } else
+                sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -152,21 +174,4 @@ public abstract class HttpRequestHandler extends SimpleChannelInboundHandler<Ful
         // Close the connection as soon as the error message is sent.
         context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
-
-    /**
-     * Check if handler can process request.
-     *
-     * @param request Http request
-     * @return true if handler can process request
-     */
-    abstract boolean accept(final FullHttpRequest request);
-
-    /**
-     * Get request file
-     *
-     * @param request HTTP request
-     * @return request file
-     * @throws HttpRequestException
-     */
-    abstract HttpRequestFile getRequestFile(final FullHttpRequest request) throws HttpRequestException;
 }

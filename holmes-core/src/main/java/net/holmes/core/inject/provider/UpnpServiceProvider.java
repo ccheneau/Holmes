@@ -71,20 +71,19 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     @SuppressWarnings("unchecked")
     @Override
     public UpnpService get() {
-
         // Create Upnp service
         UpnpServiceConfiguration upnpConfiguration = new DefaultUpnpServiceConfiguration(configuration.getIntParameter(UPNP_SERVICE_PORT));
         UpnpService upnpService = new UpnpServiceImpl(upnpConfiguration);
 
         // Device identity
-        DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier(HOLMES_FRIENDLY_NAME.toString()));
+        DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier(HOLMES_UPNP_SERVER_NAME.toString()));
 
         // Device type
         DeviceType type = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
 
         // Device details
-        ModelDetails modelDetails = new ModelDetails(HOLMES_SHORT_NAME.toString(), HOLMES_DESCRIPTION.toString(), HOLMES_MODEL_NUMBER.toString(), HOLMES_SITE_URL.toString());
-        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
+        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), HOLMES_UPNP_MODEL_NUMBER.toString(), HOLMES_SITE_URL.toString());
+        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
         DLNADoc dD1 = new DLNADoc("DMS", "1.50");
         DLNADoc dD2 = new DLNADoc("M-DMS", "1.50");
         DLNADoc[] dlnaDocs = new DLNADoc[]{dD1, dD2};

@@ -15,37 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.http.handler;
+package net.holmes.core.http.file;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * Http request exception.
+ * Http file request exception.
  */
-public final class HttpRequestException extends Exception {
+public final class HttpFileRequestException extends Exception {
     private static final long serialVersionUID = 1022835130881123877L;
 
     private final transient HttpResponseStatus status;
 
     /**
-     * Instantiates a new http request exception.
+     * Instantiates a new http file request exception.
      *
      * @param message message
      * @param status  status
      */
-    public HttpRequestException(final String message, final HttpResponseStatus status) {
+    public HttpFileRequestException(final String message, final HttpResponseStatus status) {
         super(message);
-        this.status = status;
-    }
-
-    /**
-     * Instantiates a new http request exception.
-     *
-     * @param exception the root exception
-     * @param status    status
-     */
-    public HttpRequestException(final Exception exception, final HttpResponseStatus status) {
-        super(exception);
         this.status = status;
     }
 

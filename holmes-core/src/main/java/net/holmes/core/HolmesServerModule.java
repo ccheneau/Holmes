@@ -38,9 +38,7 @@ import net.holmes.core.common.configuration.XmlConfigurationImpl;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.handler.HttpContentRequestHandler;
-import net.holmes.core.http.handler.HttpRequestHandler;
-import net.holmes.core.http.handler.HttpUIRequestHandler;
+import net.holmes.core.http.file.HttpFileRequestDecoder;
 import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
@@ -139,7 +137,6 @@ final class HolmesServerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
         // Bind utils
         bind(EventBus.class).toInstance(eventBus);
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
@@ -183,11 +180,10 @@ final class HolmesServerModule extends AbstractModule {
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
 
-        // Bind Http handlers
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
+        // Bind Http decoder
+        bind(HttpFileRequestDecoder.class);
 
-        // Rest handlers
+        // Bind Rest handlers
         bind(AudioFoldersHandler.class);
         bind(PictureFoldersHandler.class);
         bind(PodcastsHandler.class);
@@ -195,8 +191,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(UtilHandler.class);
         bind(VideoFoldersHandler.class);
 
-        // Rest exception mapper
+        // Bind Rest exception mapper
         bind(BackendExceptionMapper.class);
-
     }
 }

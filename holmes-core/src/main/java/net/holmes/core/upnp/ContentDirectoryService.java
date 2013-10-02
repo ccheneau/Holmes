@@ -35,6 +35,7 @@ import javax.inject.Named;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 
@@ -112,7 +113,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Build content url
-                String url = "http://" + localIP + ":" + configuration.getHttpServerPort() + "/content?id=" + node.getId();
+                String url = "http://" + localIP + ":" + configuration.getHttpServerPort() + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {

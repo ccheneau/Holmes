@@ -34,9 +34,6 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.handler.HttpContentRequestHandler;
-import net.holmes.core.http.handler.HttpRequestHandler;
-import net.holmes.core.http.handler.HttpUIRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
@@ -89,9 +86,6 @@ public class TestModule extends AbstractModule {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class);
         bind(new TypeLiteral<Cache<String, String>>() {
         }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class);
-
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("content")).to(HttpContentRequestHandler.class);
-        bind(HttpRequestHandler.class).annotatedWith(Names.named("ui")).to(HttpUIRequestHandler.class);
 
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class);

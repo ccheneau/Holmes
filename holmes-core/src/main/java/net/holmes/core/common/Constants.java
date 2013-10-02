@@ -21,14 +21,15 @@ package net.holmes.core.common;
  * Global constants.
  */
 public enum Constants {
-    HOLMES_SITE_URL("http://ccheneau.github.io/Holmes/"), //
-    HOLMES_WIKI_URL("https://github.com/ccheneau/Holmes/wiki"), //
-    HOLMES_FRIENDLY_NAME("Holmes UPnP Server"), //
-    HOLMES_SHORT_NAME("HUS"), //
-    HOLMES_DESCRIPTION("UPnP/AV 1.0 Compliant Media Server"),
-    HOLMES_MODEL_NUMBER("01"),
-    UPNP_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ");
-
+    HOLMES_SITE_URL("http://ccheneau.github.io/Holmes/"),
+    HOLMES_WIKI_URL("https://github.com/ccheneau/Holmes/wiki"),
+    HOLMES_UPNP_SERVER_NAME("Holmes UPnP Server"),
+    HOLMES_UPNP_SHORT_NAME("HUS"),
+    HOLMES_UPNP_DESCRIPTION("UPnP/AV 1.0 Compliant Media Server"),
+    HOLMES_UPNP_MODEL_NUMBER("01"),
+    HOLMES_HTTP_SERVER_NAME("Holmes HTTP Server"),
+    UPNP_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ"),
+    HTTP_CONTENT_REQUEST_PATH("/content");
     private final String value;
 
     /**
