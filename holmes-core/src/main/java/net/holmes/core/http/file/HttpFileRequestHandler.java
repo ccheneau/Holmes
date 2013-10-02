@@ -90,6 +90,23 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         response.headers().set(CACHE_CONTROL, "private, max-age=" + HTTP_CACHE_SECONDS);
     }
 
+    /**
+     * Send error.
+     *
+     * @param context channel context
+     * @param message message
+     * @param status  response status
+     */
+    private static void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
+        // Build error response
+        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+
+        // Close the connection as soon as the error message is sent.
+        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
     @Override
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
@@ -156,22 +173,5 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
                 sendError(context, httpFileRequestException.getMessage(), httpFileRequestException.getStatus());
             } else
                 sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * Send error.
-     *
-     * @param context channel context
-     * @param message message
-     * @param status  response status
-     */
-    private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
-        // Build error response
-        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-
-        // Close the connection as soon as the error message is sent.
-        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }
