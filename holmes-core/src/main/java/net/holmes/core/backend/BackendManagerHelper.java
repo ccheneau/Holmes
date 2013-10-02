@@ -109,7 +109,7 @@ final class BackendManagerHelper {
     }
 
     /**
-     * Checks string is not null or empty/
+     * Checks string is not null or empty.
      *
      * @param toCheck      string to check
      * @param errorMessage error message
