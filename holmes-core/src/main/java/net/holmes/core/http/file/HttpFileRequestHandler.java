@@ -55,7 +55,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
     private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
     private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
-    private static final int HTTP_CACHE_SECONDS = 60;
+    private static final int HTTP_CACHE_SECONDS = 3600;
     private static final int CHUNK_SIZE = 8192;
 
     /**
