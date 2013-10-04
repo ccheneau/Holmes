@@ -105,7 +105,7 @@ public final class SystrayService implements Service {
      */
     private void initSystemTrayMenu() {
         // Check the SystemTray is supported
-        if (!SystemTray.isSupported()) return;
+        if (!SystemTray.isSupported() || !Desktop.isDesktopSupported()) return;
 
         // Initialize systray icon
         Image image;
@@ -117,6 +117,7 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
+        final String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
@@ -126,71 +127,42 @@ public final class SystrayService implements Service {
         // Quit Holmes menu item
         JMenuItem quitItem = new SystrayMenuItem() {
             @Override
-            public void onClick(ActionEvent event) {
-                try {
-                    System.exit(0);
-                } catch (SecurityException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+            public void onClick() {
+                System.exit(0);
             }
-        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon);
+        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon, null);
 
         // Holmes logs menu item
         JMenuItem logsItem = new SystrayMenuItem() {
             @Override
-            public void onClick(ActionEvent event) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
+            public void onClick() throws IOException {
+                Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
             }
-        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon);
+        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
 
         // Holmes ui menu item
         JMenuItem holmesUiItem = new SystrayMenuItem() {
             @Override
-            public void onClick(ActionEvent event) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
-                        Desktop.getDesktop().browse(new URI(holmesUrl));
-                    } catch (IOException | URISyntaxException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
+            public void onClick() throws URISyntaxException, IOException {
+                Desktop.getDesktop().browse(new URI(holmesUrl));
             }
         }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, UIManager.getFont(MENU_ITEM_BOLD_FONT));
 
         // Holmes site menu item
         JMenuItem holmesSiteItem = new SystrayMenuItem() {
             @Override
-            public void onClick(ActionEvent event) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
-                    } catch (IOException | URISyntaxException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
+            public void onClick() throws URISyntaxException, IOException {
+                Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon);
+        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon, null);
 
         // Holmes wiki menu item
         JMenuItem holmesWikiItem = new SystrayMenuItem() {
             @Override
-            public void onClick(ActionEvent event) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
-                    } catch (IOException | URISyntaxException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
+            public void onClick() throws URISyntaxException, IOException {
+                Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon);
+        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
 
         // Add items to popup menu
         popupMenu.add(holmesUiItem);
@@ -222,18 +194,6 @@ public final class SystrayService implements Service {
          * @param text     menu item text
          * @param iconPath path to icon resource
          * @param showIcon whether to show icon
-         * @return menu item
-         */
-        public JMenuItem getMenuItem(final String text, final String iconPath, final boolean showIcon) {
-            return getMenuItem(text, iconPath, showIcon, null);
-        }
-
-        /**
-         * Get menu item.
-         *
-         * @param text     menu item text
-         * @param iconPath path to icon resource
-         * @param showIcon whether to show icon
          * @param font     menu item font
          * @return menu item
          */
@@ -252,7 +212,11 @@ public final class SystrayService implements Service {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    onClick(event);
+                    try {
+                        onClick();
+                    } catch (URISyntaxException | IOException e) {
+                        LOGGER.error(e.getMessage(), e);
+                    }
                 }
             });
             return menuItem;
@@ -261,8 +225,9 @@ public final class SystrayService implements Service {
         /**
          * Fires onClick event.
          *
-         * @param event event
+         * @throws URISyntaxException
+         * @throws IOException
          */
-        public abstract void onClick(final ActionEvent event);
+        public abstract void onClick() throws URISyntaxException, IOException;
     }
 }
