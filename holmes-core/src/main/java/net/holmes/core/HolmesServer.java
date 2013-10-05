@@ -124,6 +124,9 @@ public final class HolmesServer implements Service {
         return false;
     }
 
+    /**
+     * Release and remove Holmes lock file
+     */
     private void unlockInstance() {
         // Release lock file on system exit
         if (fileLock != null) {

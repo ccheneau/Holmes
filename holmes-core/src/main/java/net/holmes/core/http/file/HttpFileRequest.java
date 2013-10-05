@@ -22,7 +22,7 @@ import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.mimetype.MimeType;
 
 /**
- * Http Requested file.
+ * Http file request.
  */
 public final class HttpFileRequest {
     private final FullHttpRequest httpRequest;
@@ -30,7 +30,7 @@ public final class HttpFileRequest {
     private final MimeType mimeType;
 
     /**
-     * Instantiates a new RequestFile.
+     * Instantiates a new HttpFileRequest.
      *
      * @param httpRequest HTTP request
      * @param nodeFile    file
