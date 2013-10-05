@@ -27,9 +27,9 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 /**
  * Loader for Holmes static resources
  */
-public final class ResourceLoader {
+public final class StaticResourceLoader {
 
-    private ResourceLoader() {
+    private StaticResourceLoader() {
     }
 
     /**
@@ -40,26 +40,26 @@ public final class ResourceLoader {
      * @return resource byte data
      * @throws IOException if resource is not found
      */
-    public static byte[] getData(final ResourceDir resourceDir, final String fileName) throws IOException {
+    public static byte[] getData(final StaticResourceDir resourceDir, final String fileName) throws IOException {
         Path resourcePath = Paths.get(HOLMES_HOME.getValue(), "resources", resourceDir.getValue(), fileName);
         return Files.readAllBytes(resourcePath);
     }
 
     /**
-     * Static resources sub directory.
+     * Static resources directory.
      */
-    public static enum ResourceDir {
+    public enum StaticResourceDir {
 
         UPNP("upnp"), //
         SYSTRAY("systray");
         private final String value;
 
         /**
-         * New resource sub directory.
+         * New static resource directory.
          *
          * @param value value
          */
-        ResourceDir(final String value) {
+        StaticResourceDir(final String value) {
             this.value = value;
         }
 

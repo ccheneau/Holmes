@@ -18,7 +18,7 @@
 package net.holmes.core.inject.provider;
 
 import com.google.inject.Injector;
-import net.holmes.core.common.ResourceLoader;
+import net.holmes.core.common.StaticResourceLoader;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.upnp.ContentDirectoryService;
 import org.fourthline.cling.DefaultUpnpServiceConfiguration;
@@ -41,7 +41,7 @@ import javax.inject.Provider;
 import java.io.IOException;
 
 import static net.holmes.core.common.Constants.*;
-import static net.holmes.core.common.ResourceLoader.ResourceDir.UPNP;
+import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
 import static net.holmes.core.common.configuration.Parameter.UPNP_SERVICE_PORT;
 
 /**
@@ -101,8 +101,8 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         Icon[] icons = null;
         try {
             // Set icons
-            byte[] largeIconData = ResourceLoader.getData(UPNP, "icon-256.png");
-            byte[] smallIconData = ResourceLoader.getData(UPNP, "icon-32.png");
+            byte[] largeIconData = StaticResourceLoader.getData(UPNP, "icon-256.png");
+            byte[] smallIconData = StaticResourceLoader.getData(UPNP, "icon-32.png");
             Icon largeIcon = new Icon(ICON_MIME_TYPE, LARGE_ICON_SIZE, LARGE_ICON_SIZE, ICON_DEPTH, "upnp-icon-256.png", largeIconData);
             Icon smallIcon = new Icon(ICON_MIME_TYPE, SMALL_ICON_SIZE, SMALL_ICON_SIZE, ICON_DEPTH, "upnp-icon-32.png", smallIconData);
             icons = new Icon[]{largeIcon, smallIcon};

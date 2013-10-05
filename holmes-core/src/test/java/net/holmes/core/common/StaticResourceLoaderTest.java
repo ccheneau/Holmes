@@ -21,23 +21,23 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static net.holmes.core.common.ResourceLoader.ResourceDir.SYSTRAY;
-import static net.holmes.core.common.ResourceLoader.ResourceDir.UPNP;
+import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
+import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
 import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for ResourceLoader
  */
-public class ResourceLoaderTest {
+public class StaticResourceLoaderTest {
 
     @Test
     public void testGetResource() throws IOException {
-        byte[] data = ResourceLoader.getData(UPNP, "icon-32.png");
+        byte[] data = StaticResourceLoader.getData(UPNP, "icon-32.png");
         assertNotNull(data);
     }
 
     @Test(expected = IOException.class)
     public void testGetBadResource() throws IOException {
-        ResourceLoader.getData(SYSTRAY, "bad_resource.png");
+        StaticResourceLoader.getData(SYSTRAY, "bad_resource.png");
     }
 }

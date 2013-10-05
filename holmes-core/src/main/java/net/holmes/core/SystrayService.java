@@ -17,8 +17,8 @@
 
 package net.holmes.core;
 
-import net.holmes.core.common.ResourceLoader;
 import net.holmes.core.common.Service;
+import net.holmes.core.common.StaticResourceLoader;
 import net.holmes.core.common.SystemTrayIcon;
 import net.holmes.core.common.configuration.Configuration;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
-import static net.holmes.core.common.ResourceLoader.ResourceDir.SYSTRAY;
+import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_SYSTRAY;
 import static net.holmes.core.common.configuration.Parameter.ICONS_IN_SYSTRAY_MENU;
 
@@ -110,7 +110,7 @@ public final class SystrayService implements Service {
         // Initialize systray icon
         Image image;
         try {
-            image = Toolkit.getDefaultToolkit().createImage(ResourceLoader.getData(SYSTRAY, "logo.png"));
+            image = Toolkit.getDefaultToolkit().createImage(StaticResourceLoader.getData(SYSTRAY, "logo.png"));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return;
@@ -201,7 +201,7 @@ public final class SystrayService implements Service {
             Icon icon = null;
             if (showIcon)
                 try {
-                    icon = new ImageIcon(ResourceLoader.getData(SYSTRAY, iconPath));
+                    icon = new ImageIcon(StaticResourceLoader.getData(SYSTRAY, iconPath));
                 } catch (IOException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
