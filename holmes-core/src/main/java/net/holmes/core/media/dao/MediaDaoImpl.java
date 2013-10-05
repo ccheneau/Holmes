@@ -208,7 +208,7 @@ public class MediaDaoImpl implements MediaDao {
                 final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                 new PodcastParser() {
                     @Override
-                    public void newPodcastEntryNode(PodcastEntryNode podcastEntryNode) {
+                    public void addPodcastEntryNode(PodcastEntryNode podcastEntryNode) {
                         // Add podcast entry node
                         podcastEntryNodes.add(podcastEntryNode);
                     }

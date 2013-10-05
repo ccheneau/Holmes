@@ -48,15 +48,16 @@ abstract class PodcastParser {
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
             if (rssEntries != null)
                 for (SyndEntry rssEntry : rssEntries) {
-                    if (rssEntry.getEnclosures() != null && !rssEntry.getEnclosures().isEmpty()) {
+                    if (rssEntry.getEnclosures() != null) {
                         for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                             MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
                             if (mimeType != null && mimeType.isMedia()) {
+                                // Build podcast entry node
                                 PodcastEntryNode podcastEntryNode = new PodcastEntryNode(UUID.randomUUID().toString(), podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
                                 podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
                                 podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
-                                // Fire new podcast entry node
-                                newPodcastEntryNode(podcastEntryNode);
+                                // Add podcast entry node
+                                addPodcastEntryNode(podcastEntryNode);
                             }
                         }
                     }
@@ -65,11 +66,11 @@ abstract class PodcastParser {
     }
 
     /**
-     * New podcast entry node.
+     * Add podcast entry node.
      *
      * @param podcastEntryNode new podcast entry node
      */
-    public abstract void newPodcastEntryNode(PodcastEntryNode podcastEntryNode);
+    public abstract void addPodcastEntryNode(PodcastEntryNode podcastEntryNode);
 
     /**
      * Get RSS entry duration.
