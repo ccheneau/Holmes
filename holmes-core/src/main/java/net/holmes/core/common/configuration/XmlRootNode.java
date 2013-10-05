@@ -50,8 +50,6 @@ public final class XmlRootNode {
         if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
         if (this.podcasts == null) this.podcasts = Lists.newLinkedList();
         if (this.parameters == null) this.parameters = new Properties();
-
-
     }
 
     /**
@@ -76,7 +74,6 @@ public final class XmlRootNode {
         // Remove obsolete parameters
         for (String obsoleteParam : obsoleteParams)
             this.parameters.remove(obsoleteParam);
-
     }
 
     /**
