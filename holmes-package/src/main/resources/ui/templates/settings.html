@@ -1,8 +1,10 @@
-<div class="page-header"><h3>{{title}}</h3></div>
+<div class="page-header">
+    <h3>{{title}}</h3>
+</div>
 <div id="messagebox"></div>
 <div class="form-horizontal">
     <div class="control-group">
-        <label class="control-label">{{settingsServerName}}</label>
+        <label label-default="label-default" class="control-label label-default">{{settingsServerName}}</label>
 
         <div class="controls">
             <input id="settingsServerName" type="text" class="input-medium" required="required"
@@ -10,23 +12,26 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label">{{settingsServerPort}}</label>
+        <label label-default="label-default" class="control-label label-default">{{settingsServerPort}}</label>
 
         <div class="controls">
-            <input id="settingsHttpServerPort" type="number" class="input-small" size="6" min="1024" max="99999"
-                   required="required" value="{{settings.httpServerPort}}"/>
+            <input id="settingsHttpServerPort" type="number" class="input-sm" size="6"
+                   min="1024" max="99999" required="required" value="{{settings.httpServerPort}}"
+                    />
         </div>
     </div>
     <div class="control-group">
         <div class="controls">
-            <label class="checkbox"><input id="chkPrependPodcastItem" type="checkbox"
-                {{#settings.prependPodcastItem}}checked{{/settings.prependPodcastItem}} /><span>{{settingsPrependPodcastItem}}</span></label>
+            <label label-default="label-default" class="checkbox">
+                <input id="chkPrependPodcastItem" type="checkbox"/><span>{{settingsPrependPodcastItem}}</span>
+            </label>
         </div>
         <div class="controls">
-            <label class="checkbox"><input id="chkEnableExternalSubtitles" type="checkbox"
-                {{#settings.enableExternalSubtitles}}checked{{/settings.enableExternalSubtitles}} /><span>{{settingsEnableExternalSubtitles}}</span></label>
+            <label label-default="label-default" class="checkbox">
+                <input id="chkEnableExternalSubtitles" type="checkbox"/><span>{{settingsEnableExternalSubtitles}}</span>
+            </label>
         </div>
     </div>
     <button class="btn btn-primary" id="btnSettingsSave">{{save}}</button>
-    <button class="btn" id="btnSettingsCancel">{{cancel}}</button>
+    <button class="btn btn-default" id="btnSettingsCancel">{{cancel}}</button>
 </div>

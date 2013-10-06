@@ -1,52 +1,62 @@
-<div class="page-header"><h3>{{title}} - <a href="#" class="{{dialogId}}AddOpen btn btn-link">{{addLabel}}</a></h3></div>
-     
-    <!-- Modal Dialog -->
-    <div id="{{dialogId}}" class="modal hide fade" data-keyboard="false" data-backdrop="static" tabindex="-1">
-    	<div class="modal-header movable-header">
-    		<button type="button" class="close {{dialogId}}Close">x</button>
-    		<h3 id="{{dialogId}}Header"></h3>
-    	</div>
-    	<div class="modal-body">
-    		<div id="messagebox"></div>
-			<input id="folderId" type="hidden"/>
-			<div class="input-prepend">
-				<span class="add-on-50 add-on">{{nameLabel}}</span>
-				<input class="input-large" id="folderName" type="text" required="required"/>
-			</div>
-			<br/>
-			<div class="input-prepend {{#browsable}}input-append{{/browsable}}">
-				<span class="add-on-50 add-on">{{pathLabel}}</span>
-				<input class="input-xlarge-400 input-xlarge" id="folderPath" type="text" required="required"/>
-				{{#browsable}}
-					<span class="add-on"><a href="#" class="{{dialogId}}Browse"><i class="icon-folder-open"></i></a></span>
-				{{/browsable}}
-			</div>
-    	</div>
-    	<div class="modal-footer">
-    		<button class="btn {{dialogId}}Close">{{cancelLabel}}</button>
-    		<button class="btn btn-primary {{dialogId}}Save">{{saveLabel}}</button>
-    	</div>
+<div class="page-header">
+    <h3>{{title}} - <a href="#" class="{{dialogId}}AddOpen btn btn-link">{{addLabel}}</a></h3>
+</div>
+<!-- Modal Dialog -->
+<div id="{{dialogId}}" class="modal fade" data-keyboard="false" data-backdrop="static"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header movable-header">
+                <button type="button" class="close {{dialogId}}Close">x</button>
+                <h3 id="{{dialogId}}Header"></h3>
+            </div>
+            <div class="modal-body">
+                <div id="messagebox"></div>
+                <input id="folderId" type="hidden"/>
+
+                <div class="input-group"><span class="input-group-addon-50 input-group-addon">{{nameLabel}}</span>
+                    <input
+                            class="input-lg" id="folderName" type="text" required="required"/>
+                </div>
+                <br/>
+
+                <div class="input-group {{#browsable}}input-group{{/browsable}}"><span
+                        class="input-group-addon-50 input-group-addon">{{pathLabel}}</span>
+                    <input
+                            class="input-xlarge-400 input-xlarge" id="folderPath" type="text" required="required"
+                            />{{#browsable}} <span class="input-group-addon"><a href="#" class="{{dialogId}}Browse"><i
+                            class="glyphicon glyphicon-folder-open"></i></a></span>
+                    {{/browsable}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default {{dialogId}}Close">{{cancelLabel}}</button>
+                <button class="btn btn-primary {{dialogId}}Save">{{saveLabel}}</button>
+            </div>
+        </div>
     </div>
-    
-    <table class="table table-bordered table-striped table-condensed table-hover">
-	<thead>
-		<tr>
-			<th style="width:33%;">{{nameLabel}}</th>
-			<th>{{pathLabel}}</th>
-			<th style="width: 36px"></th>
-		</tr>
-	</thead>
-	<tbody>
-{{#folders}}
-		<tr class="{{dialogId}}EditOpen" data-id="{{id}}">
-			<td>{{name}}</td>
-			<td>{{path}}</td>
-			<td>
-				<a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><i class="icon-edit"></i></a>
-				<a href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}"><i class="icon-trash"></i></a>
-			</td>
-		</tr>
-{{/folders}}
-	</tbody>
+</div>
+<table class="table table-bordered table-striped table-condensed table-hover">
+    <thead>
+    <tr>
+        <th style="width: 33%;">{{nameLabel}}</th>
+        <th>{{pathLabel}}</th>
+        <th style="width: 44px;"></th>
+    </tr>
+    </thead>
+    <tbody>{{#folders}}
+    <tr class="{{dialogId}}EditOpen" data-id="{{id}}">
+        <td>{{name}}</td>
+        <td>{{path}}</td>
+        <td><a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><i
+                class="glyphicon glyphicon-edit"></i></a>
+            <a
+                    href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}"><i
+                    class="glyphicon glyphicon-trash"></i>
+            </a>
+        </td>
+    </tr>
+    {{/folders}}
+    </tbody>
 </table>
-<br />
+<br/>
