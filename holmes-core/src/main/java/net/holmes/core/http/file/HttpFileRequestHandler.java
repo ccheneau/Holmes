@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -84,10 +83,6 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         response.headers().set(DATE, dateFormatter.format(time.getTime()));
 
         // Add cache headers
-        response.headers().set(LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
-        time.add(Calendar.SECOND, HTTP_CACHE_SECONDS);
-        response.headers().set(EXPIRES, dateFormatter.format(time.getTime()));
-        response.headers().set(CACHE_CONTROL, "private, max-age=" + HTTP_CACHE_SECONDS);
     }
 
     /**

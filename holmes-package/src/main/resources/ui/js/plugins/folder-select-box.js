@@ -47,7 +47,7 @@ var folderSelectBox = (function() {
 	    		autoOpen : false , 
 	    		title : title , 
 	    		height : 300 ,
-	    		buttons: [{ text : cancelLabel , class: 'btn', click : _folderTreeDialogOnCancel},
+	    		buttons: [{ text : cancelLabel , class: 'btn btn-default', click : _folderTreeDialogOnCancel},
 	    		          { text : okLabel , class: 'btn btn-primary', click : _folderTreeDialogOnOk}]
 	    	});
 	    	

@@ -14,17 +14,17 @@
                 <div id="messagebox"></div>
                 <input id="folderId" type="hidden"/>
 
-                <div class="input-group"><span class="input-group-addon-50 input-group-addon">{{nameLabel}}</span>
-                    <input
-                            class="input-lg" id="folderName" type="text" required="required"/>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">{{nameLabel}}</span>
+                    <input class="form-control" id="folderName" type="text" required="required"/>
                 </div>
                 <br/>
 
-                <div class="input-group {{#browsable}}input-group{{/browsable}}"><span
-                        class="input-group-addon-50 input-group-addon">{{pathLabel}}</span>
-                    <input
-                            class="input-xlarge-400 input-xlarge" id="folderPath" type="text" required="required"
-                            />{{#browsable}} <span class="input-group-addon"><a href="#" class="{{dialogId}}Browse"><i
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">{{pathLabel}}</span>
+                    <input class="form-control" id="folderPath" type="text" required="required"/>
+                    {{#browsable}}
+                    <span class="input-group-addon"><a href="#" class="{{dialogId}}Browse"><i
                             class="glyphicon glyphicon-folder-open"></i></a></span>
                     {{/browsable}}
                 </div>
