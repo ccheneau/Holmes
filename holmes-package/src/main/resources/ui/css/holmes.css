@@ -28,16 +28,8 @@ a:focus {
     padding: 10px 5px 10px 15px;
 }
 
-.sidebar-nav  a i {
-    opacity: 0.25;
-}
-
-.sidebar-nav a:hover  i {
-    opacity: 0.5;
-}
-
-.sidebar-nav  .active a i {
-    opacity: 1;
+.sidebar-nav .active {
+   background-color:#EEEEEE;
 }
 
 .white-bg {
