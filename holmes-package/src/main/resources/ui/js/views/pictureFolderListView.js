@@ -53,7 +53,7 @@ var Application = (function(application) {
 			var pictureFolder = new Application.Models.PictureFolder({id : folderId});
 			pictureFolder.fetch({
 				success : function(model) {
-					// initialiaze dialog 
+					// initialize dialog
 					$("#pictureDlgHeader").html($.i18n.prop("msg.picture.update.title"));
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
@@ -113,7 +113,7 @@ var Application = (function(application) {
 		onPictureFolderRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.picture.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.picture.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var pictureFolder = new Application.Models.PictureFolder({id : folderId});

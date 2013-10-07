@@ -21,7 +21,7 @@ var folderSelectBox = (function() {
 	    init: function(url, title, cancelLabel, okLabel) {
 	    	// add div to body
 	    	$('body').append('<div id="folderTree"></div>');
-	    	
+
 	    	// build folder tree
 	    	_folderTree = $("#folderTree").jstree({ 
 	    		"json_data" : {
@@ -43,17 +43,27 @@ var folderSelectBox = (function() {
 	    	// build folder dialog
 	    	_folderDialog = $("#folderTree").dialog({
 	    		modal : false ,
-	    		dialogClass : 'modal-dialog',
-	    		autoOpen : false , 
-	    		title : title , 
+	    		className : 'modal-dialog',
+	    		autoOpen : false ,
+	    		closeButton: true,
+	    		title : title ,
 	    		height : 300 ,
-	    		buttons: [{ text : cancelLabel , class: 'btn btn-default', click : _folderTreeDialogOnCancel},
-	    		          { text : okLabel , class: 'btn btn-primary', click : _folderTreeDialogOnOk}]
+	    		buttons: {
+                    cancel: {
+                        text : cancelLabel,
+                        class: "btn btn-default",
+                        click: _folderTreeDialogOnCancel
+                    },
+                    success: {
+                        text: okLabel,
+                        class: "btn btn-primary",
+                        click: _folderTreeDialogOnOk
+                    }
+	    		}
 	    	});
 	    	
 	    	// dialog style hack
-	    	$('.ui-dialog-titlebar-close').html('x');
-	    	$('.ui-dialog-titlebar-close').css('margin','-11px 0 0');
+	    	$('.ui-dialog-titlebar-close').html('X');
 	    },
 	    show : function(linkedItem) {
 	    	// show dialog

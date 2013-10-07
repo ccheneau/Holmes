@@ -113,7 +113,7 @@ var Application = (function(application) {
 		onVideoFolderRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.video.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.video.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var videoFolder = new Application.Models.VideoFolder({id : folderId});

@@ -8,7 +8,7 @@ yepnope({
 		underscore : '/js/lib/underscore-min.js',
 		backbone : '/js/lib/backbone-min.js',
 		mustache : '/js/lib/mustache.js',
-		bootbox : '/js/lib/bootbox.min.js',
+		bootbox : '/js/lib/bootbox-4.0.0.min.js',
 		jstree : '/js/lib/jquery.jstree.js',
 		
 		// plugins
@@ -68,6 +68,8 @@ yepnope({
 	},
 	complete : function() {
 		$.logger('Launching Holmes UI ...');
+
+        bootbox.setDefaults({locale: $.i18n.prop("locale")});
 
 		window.defaultView = new Application.Views.DefaultView();
 		window.settingsView = new Application.Views.SettingsView();

@@ -113,7 +113,7 @@ var Application = (function(application) {
 		onAudioFolderRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.audio.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.audio.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var audioFolder = new Application.Models.AudioFolder({id : folderId});

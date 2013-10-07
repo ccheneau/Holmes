@@ -104,7 +104,7 @@ var Application = (function(application) {
 		onPodcastRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.podcast.remove.confirm"), $.i18n.prop("msg.no"),$.i18n.prop("msg.yes"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.podcast.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var podcast = new Application.Models.Podcast({id : folderId});
