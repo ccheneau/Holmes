@@ -29,15 +29,15 @@
                         <div class="col-lg-10">
                             {{#browsable}}
                             <div class="input-group input-group-sm">
-                                <input class="form-control" id="folderPath" type="text" required="required"/>
+                                {{/browsable}}
+                                <input class="form-control  input-sm" id="folderPath" type="text" required="required"/>
+                                {{#browsable}}
                                     <span class="input-group-addon">
                                         <a href="#" class="{{dialogId}}Browse"><i
                                                 class="glyphicon glyphicon-folder-open"></i></a>
                                     </span>
+
                             </div>
-                            {{/browsable}}
-                            {{^browsable}}
-                            <input class="form-control input-sm" id="folderPath" type="text" required="required"/>
                             {{/browsable}}
                         </div>
                     </div>
