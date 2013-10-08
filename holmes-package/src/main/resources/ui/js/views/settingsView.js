@@ -41,7 +41,7 @@ var Application = (function(application) {
 				error : function(model, response) {
 					$("#messagebox").message({
 						text : response.responseText || response.statusText,
-						type : "error"
+						type : "danger"
 					});
 				}
 			});

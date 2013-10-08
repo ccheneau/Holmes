@@ -1,7 +1,7 @@
 /**
  * JQuery plugin - show message
  * option:
- * 		- type : success|info|error
+ * 		- type : success|info|warning|danger
  * 		- text : message text
  */
 (function ($) {

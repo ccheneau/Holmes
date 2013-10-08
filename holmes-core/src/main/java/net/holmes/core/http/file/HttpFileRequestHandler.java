@@ -54,53 +54,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
     private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
     private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
-    private static final int HTTP_CACHE_SECONDS = 3600;
     private static final int CHUNK_SIZE = 8192;
-
-    /**
-     * Add content length and type headers.
-     *
-     * @param response   HTTP response
-     * @param fileLength file length
-     * @param mimeType   mime type
-     */
-    private static void setContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
-        setContentLength(response, fileLength);
-        response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
-    }
-
-    /**
-     * Add date and cache headers.
-     *
-     * @param response HTTP response
-     * @param file     file to cache
-     */
-    private static void setDateAndCacheHeaders(HttpResponse response, NodeFile file) {
-        // Add date header
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
-        dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
-        Calendar time = new GregorianCalendar();
-        response.headers().set(DATE, dateFormatter.format(time.getTime()));
-
-        // Add cache headers
-    }
-
-    /**
-     * Send error.
-     *
-     * @param context channel context
-     * @param message message
-     * @param status  response status
-     */
-    private static void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
-        // Build error response
-        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-
-        // Close the connection as soon as the error message is sent.
-        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-    }
 
     @Override
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
@@ -113,33 +67,18 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
         long fileLength = randomFile.length();
 
-        // Get start offset
         FullHttpRequest httpRequest = request.getHttpRequest();
-        long startOffset = 0;
-        String range = httpRequest.headers().get(RANGE);
-        if (range != null) {
-            Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
-            if (matcher.find())
-                startOffset = Long.parseLong(matcher.group(1));
-            else
-                throw new HttpFileRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
-        }
+
+        // Get start offset
+        long startOffset = getStartOffset(httpRequest);
 
         // Build response
-        HttpResponse response;
-        if (startOffset == 0) {
-            response = new DefaultHttpResponse(HTTP_1_1, OK);
-            response.headers().set(ACCEPT_RANGES, BYTES);
-        } else if (startOffset < fileLength) {
-            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
-            response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
-        } else
-            throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+        HttpResponse response = buildHttpResponse(startOffset, fileLength);
 
         // Add http headers
         response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
         setContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        setDateAndCacheHeaders(response, file);
+        setDateHeader(response);
 
         // Keep alive header
         if (isKeepAlive(httpRequest))
@@ -168,5 +107,88 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
                 sendError(context, httpFileRequestException.getMessage(), httpFileRequestException.getStatus());
             } else
                 sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Build Http response.
+     *
+     * @param startOffset start offset
+     * @param fileLength  file length
+     * @return Http response
+     * @throws HttpFileRequestException
+     */
+    private HttpResponse buildHttpResponse(final long startOffset, final long fileLength) throws HttpFileRequestException {
+        HttpResponse response;
+        if (startOffset == 0) {
+            response = new DefaultHttpResponse(HTTP_1_1, OK);
+            response.headers().set(ACCEPT_RANGES, BYTES);
+        } else if (startOffset < fileLength) {
+            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
+            response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
+        } else
+            throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+        return response;
+    }
+
+    /**
+     * Get start offset from Http request.
+     *
+     * @param httpRequest Http request
+     * @return start offset
+     * @throws HttpFileRequestException
+     */
+    private long getStartOffset(final FullHttpRequest httpRequest) throws HttpFileRequestException {
+        long startOffset = 0;
+        String range = httpRequest.headers().get(RANGE);
+        if (range != null) {
+            Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
+            if (matcher.find())
+                startOffset = Long.parseLong(matcher.group(1));
+            else
+                throw new HttpFileRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
+        }
+        return startOffset;
+    }
+
+    /**
+     * Add content length and type headers.
+     *
+     * @param response   HTTP response
+     * @param fileLength file length
+     * @param mimeType   mime type
+     */
+    private void setContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
+        setContentLength(response, fileLength);
+        response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
+    }
+
+    /**
+     * Add date header.
+     *
+     * @param response HTTP response
+     */
+    private void setDateHeader(HttpResponse response) {
+        // Add date header
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
+        Calendar time = new GregorianCalendar();
+        response.headers().set(DATE, dateFormatter.format(time.getTime()));
+    }
+
+    /**
+     * Send error.
+     *
+     * @param context channel context                                                    z
+     * @param message message
+     * @param status  response status
+     */
+    private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
+        // Build error response
+        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+
+        // Close the connection as soon as the error message is sent.
+        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }

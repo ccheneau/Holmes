@@ -63,7 +63,7 @@ var folderSelectBox = (function() {
 	    	});
 	    	
 	    	// dialog style hack
-	    	$('.ui-dialog-titlebar-close').html('X');
+	    	$('.ui-dialog-titlebar-close').html('x');
 	    },
 	    show : function(linkedItem) {
 	    	// show dialog

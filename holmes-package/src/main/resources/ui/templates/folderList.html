@@ -13,20 +13,34 @@
                 <div id="messagebox"></div>
                 <input id="folderId" type="hidden"/>
 
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">{{nameLabel}}</span>
-                    <input class="form-control" id="folderName" type="text" required="required"/>
-                </div>
-                <br/>
+                <div class=" form-horizontal">
+                    <div class="form-group">
+                        <label for="folderName" class="col-lg-2 control-label">{{nameLabel}}</label>
 
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">{{pathLabel}}</span>
-                    <input class="form-control" id="folderPath" type="text" required="required"/>
-                    {{#browsable}}
-                    <span class="input-group-addon">
-                        <a href="#" class="{{dialogId}}Browse"><i class="glyphicon glyphicon-folder-open"></i></a>
-                    </span>
-                    {{/browsable}}
+                        <div class="col-lg-4">
+                            <input class="form-control input-sm" id="folderName" type="text" required="required"/>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div class="form-group">
+                        <label for="folderPath" class="col-lg-2 control-label">{{pathLabel}}</label>
+
+                        <div class="col-lg-10">
+                            {{#browsable}}
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" id="folderPath" type="text" required="required"/>
+                                    <span class="input-group-addon">
+                                        <a href="#" class="{{dialogId}}Browse"><i
+                                                class="glyphicon glyphicon-folder-open"></i></a>
+                                    </span>
+                            </div>
+                            {{/browsable}}
+                            {{^browsable}}
+                            <input class="form-control input-sm" id="folderPath" type="text" required="required"/>
+                            {{/browsable}}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

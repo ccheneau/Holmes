@@ -99,7 +99,7 @@ var Application = (function(application) {
 							that.collection.fetch();
 						},
 						error : function(model, response) {
-							$("#messagebox").message({text: response.responseText || response.statusText, type: "error"});
+							$("#messagebox").message({text: response.responseText || response.statusText, type: "danger"});
 						}
 					});
 			return false;
