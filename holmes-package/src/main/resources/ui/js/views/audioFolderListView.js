@@ -139,6 +139,8 @@ var Application = (function(application) {
 			$('#audioDlg').modal('show');
 		},
 		hideDialog : function(){
+			$(".modal-backdrop").remove();
+			$("body").removeClass("modal-open");
 			$('#audioDlg').modal('hide');
 		}
 	});

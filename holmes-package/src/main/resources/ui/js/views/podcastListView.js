@@ -130,6 +130,8 @@ var Application = (function(application) {
 			$('#podcastDlg').modal('show');
 		},
 		hideDialog : function(){
+			$(".modal-backdrop").remove();
+			$("body").removeClass("modal-open");
 			$('#podcastDlg').modal('hide');
 		}
 	});

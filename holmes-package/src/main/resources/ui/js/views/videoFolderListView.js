@@ -139,6 +139,8 @@ var Application = (function(application) {
 			$('#videoDlg').modal('show');
 		},
 		hideDialog : function(){
+			$(".modal-backdrop").remove();
+			$("body").removeClass("modal-open");
 			$('#videoDlg').modal('hide');
 		}
 	});
