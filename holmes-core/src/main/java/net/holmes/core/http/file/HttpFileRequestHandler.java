@@ -32,8 +32,6 @@ import net.holmes.core.common.mimetype.MimeType;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +76,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Add http headers
         response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
         setContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        setDateHeader(response);
+        setDateHeader(response, file);
 
         // Keep alive header
         if (isKeepAlive(httpRequest))
@@ -167,12 +165,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      *
      * @param response HTTP response
      */
-    private void setDateHeader(HttpResponse response) {
+    private void setDateHeader(final HttpResponse response, final NodeFile file) {
         // Add date header
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
-        Calendar time = new GregorianCalendar();
-        response.headers().set(DATE, dateFormatter.format(time.getTime()));
+        response.headers().set(DATE, dateFormatter.format(file.lastModified()));
     }
 
     /**
