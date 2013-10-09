@@ -40,6 +40,7 @@ yepnope({
 		    $('#easter').click(function() {
 		    	$('body').attr('class','roll');
 		    });
+		    $.ajaxSetup({ cache: false });
 		},
 		"jqueryI18n" : function() {
 			// initialize i18n
