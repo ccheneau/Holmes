@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="page-header" xmlns="http://www.w3.org/1999/html">
     <h3>{{title}}</h3>
 </div>
 <div id="messagebox"></div>
@@ -23,12 +23,14 @@
     <div class="form-group">
         <div class="col-lg-offset-4 col-lg-8">
             <label label-default="label-default" class="checkbox">
-                <input id="chkPrependPodcastItem" type="checkbox"/><span>{{settingsPrependPodcastItem}}</span>
+                <input id="chkPrependPodcastItem" type="checkbox"
+                {{#settings.prependPodcastItem}}checked{{/settings.prependPodcastItem}} /><span>{{settingsPrependPodcastItem}}</span>
             </label>
         </div>
         <div class="col-lg-offset-4 col-lg-8">
             <label label-default="label-default" class="checkbox">
-                <input id="chkEnableExternalSubtitles" type="checkbox"/><span>{{settingsEnableExternalSubtitles}}</span>
+                <input id="chkEnableExternalSubtitles" type="checkbox"
+                {{#settings.enableExternalSubtitles}}checked{{/settings.enableExternalSubtitles}} /><span>{{settingsEnableExternalSubtitles}}</span>
             </label>
         </div>
     </div>
