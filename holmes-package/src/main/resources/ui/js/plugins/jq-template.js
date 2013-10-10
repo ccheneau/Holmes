@@ -1,13 +1,12 @@
 /**
- * JQuery plugin - get template
+ * JQuery plugin - get mustache template
  */
 (function ($) {
 	$.getTemplate = function(template) {
 		return $.ajax({
 			type : "GET",
 			url : "/templates/" + template,
-			async : false,
-			cache : true
+			async : false
 		}).responseText;
 	};
 })(jQuery);
