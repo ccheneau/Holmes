@@ -70,7 +70,7 @@ yepnope({
 	complete : function() {
 		$.logger('Launching Holmes UI ...');
 
-        bootbox.setDefaults({locale: $.i18n.prop("locale")});
+        bootbox.setDefaults({locale: $.i18n.prop('locale'),  className: 'overflowHidden'});
 
 		window.defaultView = new Application.Views.DefaultView();
 		window.settingsView = new Application.Views.SettingsView();
