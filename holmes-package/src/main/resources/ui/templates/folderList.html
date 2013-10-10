@@ -34,8 +34,9 @@
                                 <input class="form-control  input-sm" id="folderPath" type="text" required="required"/>
                                 {{#browsable}}
                                     <span class="input-group-addon">
-                                        <a href="#" class="{{dialogId}}Browse"><i
-                                                class="glyphicon glyphicon-folder-open"></i></a>
+                                        <a href="#" class="{{dialogId}}Browse">
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                        </a>
                                     </span>
                             </div>
                             {{/browsable}}
@@ -64,10 +65,12 @@
         <td>{{name}}</td>
         <td>{{path}}</td>
         <td>
-            <a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><span
-                    class="glyphicon glyphicon-edit"></span></a>
-            <a href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}"><span
-                    class="glyphicon glyphicon-trash"></span></a>
+            <a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+            <a href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>
         </td>
     </tr>
     {{/folders}}
