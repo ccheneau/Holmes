@@ -37,7 +37,6 @@
                                         <a href="#" class="{{dialogId}}Browse"><i
                                                 class="glyphicon glyphicon-folder-open"></i></a>
                                     </span>
-
                             </div>
                             {{/browsable}}
                         </div>
@@ -64,12 +63,11 @@
     <tr class="{{dialogId}}EditOpen" data-id="{{id}}">
         <td>{{name}}</td>
         <td>{{path}}</td>
-        <td><a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><i
-                class="glyphicon glyphicon-edit"></i></a>
-            <a
-                    href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}"><i
-                    class="glyphicon glyphicon-trash"></i>
-            </a>
+        <td>
+            <a href="#" class="{{dialogId}}EditOpen" data-id="{{id}}" title="{{editLabel}}"><span
+                    class="glyphicon glyphicon-edit"></span></a>
+            <a href="#" class="{{removeTarget}}" data-id="{{id}}" title="{{removeLabel}}"><span
+                    class="glyphicon glyphicon-trash"></span></a>
         </td>
     </tr>
     {{/folders}}

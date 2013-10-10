@@ -2,9 +2,9 @@
  * JQuery plugin - logger
  */
 (function ($) {
-	$.logger = function(logvar){
+	$.logger = function(message){
         if ((window['console'] !== undefined)) {
-          console.log(logvar);
+          console.log(message);
         };
     }
 })(jQuery);
