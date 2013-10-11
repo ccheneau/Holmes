@@ -53,7 +53,7 @@ var Application = (function(application) {
 			var videoFolder = new Application.Models.VideoFolder({id : folderId});
 			videoFolder.fetch({
 				success : function(result) {
-					// initialiaze dialog 
+					// initialize dialog
 					$("#videoDlgHeader").html($.i18n.prop("msg.video.update.title"));
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));

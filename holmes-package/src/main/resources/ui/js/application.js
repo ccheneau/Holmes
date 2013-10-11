@@ -11,7 +11,7 @@ var Application = (function() {
         $('#'+ item).addClass('active');                
 	},
 	
-	// implements router
+	// router
 	application.Router.RoutesManager = Backbone.Router.extend({
 		initialize : function(args) {
 			this.videoFolders = args.videoFolders;

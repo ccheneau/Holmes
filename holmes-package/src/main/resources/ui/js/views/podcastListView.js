@@ -35,7 +35,7 @@ var Application = (function(application) {
 		},
 		// open add podcast dialog
 		onPodcastDlgAddOpen : function() {
-			// initialiaze dialog 
+			// initialize dialog
 			$("#podcastDlgHeader").html($.i18n.prop("msg.podcast.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
