@@ -22,7 +22,8 @@ var Application = (function(application) {
 				cancelLabel : $.i18n.prop("msg.cancel"),
 				browsable : true,
 				dialogId : "audioDlg",
-				removeTarget : "audioFolderRemove"
+				removeTarget : "audioFolderRemove",
+				icon : "music"
 			});
 			this.$el.html(renderedContent);
 		},

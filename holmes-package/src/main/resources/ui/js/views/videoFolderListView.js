@@ -22,7 +22,8 @@ var Application = (function(application) {
 				cancelLabel : $.i18n.prop("msg.cancel"),
 				browsable : true,
 				dialogId : "videoDlg",
-				removeTarget : "videoFolderRemove"
+				removeTarget : "videoFolderRemove",
+				icon : "film"
 			});
 			this.$el.html(renderedContent);
 		},

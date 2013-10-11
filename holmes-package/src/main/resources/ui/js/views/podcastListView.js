@@ -21,7 +21,8 @@ var Application = (function(application) {
 				saveLabel : $.i18n.prop("msg.save"),
 				cancelLabel : $.i18n.prop("msg.cancel"),
 				dialogId : "podcastDlg",
-				removeTarget : "podcastRemove"
+				removeTarget : "podcastRemove",
+				icon : "list"
 			});
 			this.$el.html(renderedContent);
 		},

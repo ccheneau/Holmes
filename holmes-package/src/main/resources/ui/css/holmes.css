@@ -1,5 +1,4 @@
 body {
-	background-color: #F6F6F6;
 	padding-top: 80px;
 }
 
@@ -29,12 +28,11 @@ a:focus {
 }
 
 .sidebar-nav .active {
-   background-color:#E1E1E1;
    font-weight: bolder;
 }
 
-.white-bg {
-	background-color: white;
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+    margin-right: 0px;
 }
 
 .draggable-header {

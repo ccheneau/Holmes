@@ -22,7 +22,8 @@ var Application = (function(application) {
 				cancelLabel : $.i18n.prop("msg.cancel"),
 				browsable : true,
 				dialogId : "pictureDlg",
-				removeTarget : "pictureFolderRemove"
+				removeTarget : "pictureFolderRemove",
+				icon : "picture"
 			});
 			this.$el.html(renderedContent);
 		},
