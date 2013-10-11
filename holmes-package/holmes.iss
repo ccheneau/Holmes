@@ -1,5 +1,5 @@
 #define MyAppName "Holmes UPnP Media Server"
-#define MyAppVersion "0.5.0"
+#define MyAppVersion "0.5.1"
 #define MyAppPublisher "Cedric Cheneau"
 #define MyAppURL "http://ccheneau.github.io/Holmes/"
 #define MyAppExeName "startup.bat"
