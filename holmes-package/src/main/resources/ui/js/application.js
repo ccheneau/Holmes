@@ -1,9 +1,19 @@
 var Application = (function() {
 	var application = {};
+    application.version = "";
 	application.Models = {};
 	application.Collections = {};
 	application.Views = {};
 	application.Router = {};
+
+    this._init = function(){
+        // get Holmes version
+        $.get('/backend/util/getVersion', function(response) {
+            application.version = response;
+            $("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
+        });
+    };
+    this._init();
 
 	// toggle nav menu
 	toggleMenu = function(item) {

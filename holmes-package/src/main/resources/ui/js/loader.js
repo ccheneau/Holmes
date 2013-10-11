@@ -56,11 +56,6 @@ yepnope({
 					});
 				}
 			});
-			
-			// get Holmes version
-		    $.get('/backend/util/getVersion', function(response) {
-		    	$("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
-		    });
 		},
 		"folderSelectBox" : function() {
 			folderSelectBox.init('/backend/util/getChildFolders',
