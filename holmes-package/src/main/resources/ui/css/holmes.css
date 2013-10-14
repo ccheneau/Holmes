@@ -14,23 +14,6 @@ a:focus {
 	width: 10px;
 }
 
-.sidebar-nav {
-    padding: 0;
-    max-width:200px;
-}
-
-.sidebar-nav .divider {
-    margin: 0 -15px;
-}
-
-.sidebar-nav li a {
-    padding: 10px 5px 10px 15px;
-}
-
-.sidebar-nav .active {
-   font-weight: bolder;
-}
-
 body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
     margin-right: 0px;
 }

@@ -6,8 +6,8 @@ var Application = (function(application) {
 		},
 		render : function() {
 			var renderedContent = Mustache.to_html(this.template, {
-				defaultTitle : $.i18n.prop("msg.welcome.title"),
-				defaultContent : $.i18n.prop("msg.welcome.content")
+				title : $.i18n.prop("msg.welcome.title"),
+				description : $.i18n.prop("msg.welcome.description")
 			});
 			this.$el.html(renderedContent);
 		}

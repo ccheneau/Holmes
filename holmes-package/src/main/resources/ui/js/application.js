@@ -17,7 +17,7 @@ var Application = (function() {
 
 	// toggle nav menu
 	toggleMenu = function(item) {
-        $('ul.nav > li').removeClass('active');
+        $('#sidebar-nav a').removeClass('active');
         $('#'+ item).addClass('active');                
 	},
 	

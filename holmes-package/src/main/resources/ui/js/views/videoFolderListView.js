@@ -13,6 +13,7 @@ var Application = (function(application) {
 			var renderedContent = Mustache.to_html(this.template, {
 				folders : this.collection.toJSON(),
 				title : $.i18n.prop("msg.video.list.title"),
+				description : $.i18n.prop("msg.video.list.description"),
 				nameLabel : $.i18n.prop("msg.name"),
 				pathLabel : $.i18n.prop("msg.path"),
 				addLabel : $.i18n.prop("msg.add"),
