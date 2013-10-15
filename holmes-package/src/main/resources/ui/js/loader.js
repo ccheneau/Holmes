@@ -8,7 +8,7 @@ yepnope({
 		underscore : '/js/lib/underscore-min.js',
 		backbone : '/js/lib/backbone-min.js',
 		mustache : '/js/lib/mustache.js',
-		bootbox : '/js/lib/bootbox-4.0.0.min.js',
+		bootbox : '/js/lib/bootbox-4.1.0.min.js',
 		jstree : '/js/lib/jquery.jstree.js',
 		
 		// plugins
