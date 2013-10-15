@@ -1,7 +1,7 @@
 yepnope({
 	load : {
 		// lib
-		jquery : '/js/lib/jquery-1.9.1.min.js',
+		jquery : '/js/lib/jquery-1.10.2.min.js',
 		jqueryUI : '/js/lib/jquery-ui-1.10.0.custom.min.js',
 		bootstrap : '/js/lib/bootstrap.min.js',
 		jqueryI18n : '/js/lib/jquery.i18n.properties-min-1.0.9.js',
