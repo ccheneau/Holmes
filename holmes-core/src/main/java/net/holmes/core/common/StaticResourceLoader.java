@@ -66,7 +66,7 @@ public final class StaticResourceLoader {
         /**
          * Gets the resource sub directory value.
          *
-         * @return he resource sub directory value
+         * @return the resource sub directory value
          */
         public String getValue() {
             return value;
