@@ -2,8 +2,9 @@ body {
 	padding-top: 80px;
 }
 
-a:focus {
+a:focus, a:hover {
    outline: 0;
+   text-decoration: none;
 }
 
 #easter {
