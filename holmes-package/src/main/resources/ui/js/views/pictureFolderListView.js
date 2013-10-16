@@ -27,6 +27,9 @@ var Application = (function(application) {
 				icon : "picture"
 			});
 			this.$el.html(renderedContent);
+			$(".pictureDlgEditOpen").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".pictureFolderRemove").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".pictureDlgAddOpen").tooltip({delay:{ show: 1000, hide: 0}});
 		},
 		events : {
 			"click .pictureDlgAddOpen" : "onPictureDlgAddOpen",

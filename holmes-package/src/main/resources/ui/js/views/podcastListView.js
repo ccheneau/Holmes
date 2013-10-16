@@ -26,6 +26,9 @@ var Application = (function(application) {
 				icon : "list"
 			});
 			this.$el.html(renderedContent);
+			$(".podcastDlgEditOpen").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".podcastRemove").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".podcastDlgAddOpen").tooltip({delay:{ show: 1000, hide: 0}});
 		},
 		events : {
 			"click .podcastDlgAddOpen" : "onPodcastDlgAddOpen",

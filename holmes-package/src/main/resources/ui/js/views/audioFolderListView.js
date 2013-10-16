@@ -27,6 +27,9 @@ var Application = (function(application) {
 				icon : "music"
 			});
 			this.$el.html(renderedContent);
+			$(".audioDlgEditOpen").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".audioFolderRemove").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".audioDlgAddOpen").tooltip({delay:{ show: 1000, hide: 0}});
 		},
 		events : {
 			"click .audioDlgAddOpen" : "onAudioDlgAddOpen",

@@ -27,6 +27,9 @@ var Application = (function(application) {
 				icon : "film"
 			});
 			this.$el.html(renderedContent);
+			$(".videoDlgEditOpen").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".videoFolderRemove").tooltip({delay:{ show: 1000, hide: 0}});
+			$(".videoDlgAddOpen").tooltip({delay:{ show: 1000, hide: 0}});
 		},
 		events : {
 			"click .videoDlgAddOpen" : "onVideoDlgAddOpen",
