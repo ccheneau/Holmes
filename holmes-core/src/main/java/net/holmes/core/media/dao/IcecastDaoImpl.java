@@ -145,7 +145,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @VisibleForTesting
-    void parseYellowPage(File ypFile) {
+    void parseYellowPage(final File ypFile) {
         XStream xstream = new XStream(new Xpp3Driver());
         xstream.alias("directory", IcecastDirectory.class);
         xstream.alias("entry", IcecastEntry.class);
@@ -153,12 +153,12 @@ public final class IcecastDaoImpl implements IcecastDao {
         xstream.aliasField("server_name", IcecastEntry.class, "name");
         xstream.aliasField("listen_url", IcecastEntry.class, "url");
         xstream.aliasField("server_type", IcecastEntry.class, "type");
-        xstream.ignoreUnknownElements("bitrate|channels|samplerate|current_song");
+        xstream.ignoreUnknownElements();
 
         try (InputStream in = new FileInputStream(ypFile)) {
             // Load configuration from XML
             synchronized (directoryLock) {
-                directory = (IcecastDirectory) xstream.fromXML(in);
+                setDirectory((IcecastDirectory) xstream.fromXML(in));
                 if (LOGGER.isDebugEnabled())
                     LOGGER.debug("Icecast directory contains {} entries", directory.getEntries().size());
             }
@@ -172,18 +172,23 @@ public final class IcecastDaoImpl implements IcecastDao {
         return directory;
     }
 
+    @VisibleForTesting
+    void setDirectory(IcecastDirectory directory) {
+        this.directory = directory;
+    }
+
     /**
      * Predicate used to filter Icecast entries by genre.
      */
     private static final class IcecastEntryGenrePredicate implements Predicate<IcecastEntry> {
-        private String genre;
+        private final String genre;
 
         IcecastEntryGenrePredicate(final String genre) {
             this.genre = genre;
         }
 
         @Override
-        public boolean apply(IcecastEntry entry) {
+        public boolean apply(final IcecastEntry entry) {
             return entry != null && entry.getGenre().contains(genre);
         }
     }
