@@ -119,13 +119,18 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public Boolean getParameter(Parameter param) {
+    public Boolean getBooleanParameter(Parameter param) {
         return Boolean.valueOf(parameters.get(param));
     }
 
     @Override
     public Integer getIntParameter(Parameter param) {
         return Integer.valueOf(parameters.get(param));
+    }
+
+    @Override
+    public String getParameter(Parameter param) {
+        return parameters.get(param);
     }
 
     @Override

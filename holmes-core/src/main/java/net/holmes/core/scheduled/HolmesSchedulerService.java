@@ -30,6 +30,7 @@ public class HolmesSchedulerService implements Service {
     private final AbstractScheduledService mediaIndexCleanerService;
     private final AbstractScheduledService podcastCacheCleanerService;
     private final AbstractScheduledService mediaScannerService;
+    private final AbstractScheduledService icecastDownloadService;
 
     /**
      * Instantiates a new holmes scheduler service.
@@ -41,10 +42,12 @@ public class HolmesSchedulerService implements Service {
     @Inject
     public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService, //
                                   @Named("podcastCacheCleaner") final AbstractScheduledService podcastCacheCleanerService, //
-                                  @Named("mediaScanner") final AbstractScheduledService mediaScannerService) {
+                                  @Named("mediaScanner") final AbstractScheduledService mediaScannerService, //
+                                  @Named("icecast") final AbstractScheduledService icecastDownloadService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
         this.podcastCacheCleanerService = podcastCacheCleanerService;
         this.mediaScannerService = mediaScannerService;
+        this.icecastDownloadService = icecastDownloadService;
     }
 
     @Override
@@ -52,10 +55,12 @@ public class HolmesSchedulerService implements Service {
         mediaIndexCleanerService.startAsync();
         podcastCacheCleanerService.startAsync();
         mediaScannerService.startAsync();
+        icecastDownloadService.startAsync();
     }
 
     @Override
     public void stop() {
+        icecastDownloadService.stopAsync();
         mediaScannerService.stopAsync();
         podcastCacheCleanerService.stopAsync();
         mediaIndexCleanerService.stopAsync();

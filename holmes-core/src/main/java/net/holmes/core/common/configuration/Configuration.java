@@ -77,20 +77,28 @@ public interface Configuration {
     List<ConfigurationNode> getFolders(RootNode folderRootNode);
 
     /**
-     * Gets the parameter.
+     * Gets the boolean parameter.
      *
      * @param parameter parameter
-     * @return parameter
+     * @return boolean parameter
      */
-    Boolean getParameter(Parameter parameter);
+    Boolean getBooleanParameter(Parameter parameter);
 
     /**
      * Gets the int parameter.
      *
      * @param parameter parameter
-     * @return parameter as int
+     * @return int parameter
      */
     Integer getIntParameter(Parameter parameter);
+
+    /**
+     * Gets the parameter.
+     *
+     * @param parameter parameter
+     * @return parameter
+     */
+    String getParameter(Parameter parameter);
 
     /**
      * Sets parameter value.

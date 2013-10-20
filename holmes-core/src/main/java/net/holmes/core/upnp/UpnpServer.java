@@ -50,7 +50,7 @@ public final class UpnpServer implements Service {
 
     @Override
     public void start() {
-        if (configuration.getParameter(Parameter.ENABLE_UPNP)) {
+        if (configuration.getBooleanParameter(Parameter.ENABLE_UPNP)) {
             LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
             LOGGER.info("UPnP server started");

@@ -233,7 +233,7 @@ public class MediaDaoImpl implements MediaDao {
             if (mimeType.getType() == mediaType)
                 // build content node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
-            else if (mimeType.isSubTitle() && configuration.getParameter(ENABLE_EXTERNAL_SUBTITLES))
+            else if (mimeType.isSubTitle() && configuration.getBooleanParameter(ENABLE_EXTERNAL_SUBTITLES))
                 // build subtitle node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
         return null;
@@ -247,7 +247,7 @@ public class MediaDaoImpl implements MediaDao {
      * @return the content resolution
      */
     private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
+        if (configuration.getBooleanParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override

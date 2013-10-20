@@ -35,7 +35,9 @@ public enum Parameter {
     MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15"), //
     MEDIA_SCAN_ALL_DELAY_MINUTES("media_scan_all_delay_minutes", "0"), //
     UPNP_SERVICE_PORT("upnp_service_port", String.valueOf(Configuration.DEFAULT_UPNP_SERVICE_PORT)), //
-    ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true");
+    ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true"),//
+    ICECAST_YELLOW_PAGE_URL("icecast_yellow_page_url", "http://dir.xiph.org/yp.xml"), //
+    ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_MINUTES("icecast_yellow_page_download_delay_minutes", "60");
 
     private final String name;
     private final String defaultValue;

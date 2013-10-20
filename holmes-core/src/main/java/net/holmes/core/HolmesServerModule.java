@@ -27,7 +27,6 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
-import com.thoughtworks.xstream.XStream;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
@@ -43,18 +42,16 @@ import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
-import net.holmes.core.inject.provider.XStreamProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.dao.IcecastDao;
+import net.holmes.core.media.dao.IcecastDaoImpl;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.dao.MediaDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.scheduled.CacheCleanerService;
-import net.holmes.core.scheduled.HolmesSchedulerService;
-import net.holmes.core.scheduled.MediaIndexCleanerService;
-import net.holmes.core.scheduled.MediaScannerService;
+import net.holmes.core.scheduled.*;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
@@ -95,7 +92,6 @@ final class HolmesServerModule extends AbstractModule {
             return holmesDataPath.toString();
 
         throw new RuntimeException("Failed to create " + holmesDataPath);
-
     }
 
     /**
@@ -143,7 +139,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(XStream.class).toProvider(XStreamProvider.class);
+        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
 
         // Bind media service
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
@@ -167,6 +163,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaScanner")).to(MediaScannerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
         // Bind servers
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);

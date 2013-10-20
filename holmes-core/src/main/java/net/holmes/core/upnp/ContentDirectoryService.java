@@ -143,7 +143,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
+        if (configuration.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
         } else return title;

@@ -144,8 +144,8 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Settings getSettings() {
         return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
-                configuration.getParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME),
-                configuration.getParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
+                configuration.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME),
+                configuration.getBooleanParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
     }
 
     @Override

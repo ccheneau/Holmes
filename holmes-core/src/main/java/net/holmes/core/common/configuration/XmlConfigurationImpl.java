@@ -19,6 +19,7 @@ package net.holmes.core.common.configuration;
 
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.media.model.RootNode;
 
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ import java.util.List;
 public final class XmlConfigurationImpl implements Configuration {
 
     private static final String CONF_FILE_NAME = "config.xml";
-    private static final String CONF_PATH = "conf";
+    private static final String CONF_DIR = "conf";
     private final String localHolmesDataDir;
     private final XStream xstream;
     private XmlRootNode rootNode = null;
@@ -47,9 +48,11 @@ public final class XmlConfigurationImpl implements Configuration {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @Inject
-    public XmlConfigurationImpl(@Named("localHolmesDataDir") String localHolmesDataDir, XStream xstream) throws IOException {
+    public XmlConfigurationImpl(@Named("localHolmesDataDir") final String localHolmesDataDir) throws IOException {
         this.localHolmesDataDir = localHolmesDataDir;
-        this.xstream = xstream;
+        this.xstream = new XStream(new DomDriver("UTF-8"));
+        this.xstream.alias("config", XmlRootNode.class);
+        this.xstream.alias("node", ConfigurationNode.class);
         loadConfig();
     }
 
@@ -59,7 +62,7 @@ public final class XmlConfigurationImpl implements Configuration {
      * @return configuration file
      */
     private Path getConfigFile() {
-        Path confPath = Paths.get(localHolmesDataDir, CONF_PATH);
+        Path confPath = Paths.get(localHolmesDataDir, CONF_DIR);
         if (Files.isDirectory(confPath) || confPath.toFile().mkdirs()) {
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
         }
@@ -145,13 +148,18 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public Boolean getParameter(final Parameter parameter) {
-        return this.rootNode.getParameter(parameter);
+    public Boolean getBooleanParameter(final Parameter parameter) {
+        return this.rootNode.getBooleanParameter(parameter);
     }
 
     @Override
     public Integer getIntParameter(final Parameter parameter) {
         return this.rootNode.getIntParameter(parameter);
+    }
+
+    @Override
+    public String getParameter(final Parameter parameter) {
+        return this.rootNode.getParameter(parameter);
     }
 
     @Override

@@ -15,25 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.inject.provider;
+package net.holmes.core.media.model;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import net.holmes.core.common.configuration.ConfigurationNode;
-import net.holmes.core.common.configuration.XmlRootNode;
-
-import javax.inject.Provider;
+import java.util.List;
 
 /**
- * XStream provider.
+ * Icecast directory.
  */
-public class XStreamProvider implements Provider<XStream> {
+public class IcecastDirectory {
+    private final List<IcecastEntry> entries;
 
-    @Override
-    public XStream get() {
-        XStream xs = new XStream(new DomDriver("UTF-8"));
-        xs.alias("config", XmlRootNode.class);
-        xs.alias("node", ConfigurationNode.class);
-        return xs;
+    /**
+     * Instantiates a new Icecast directory.
+     *
+     * @param entries Icecast entries
+     */
+    public IcecastDirectory(List<IcecastEntry> entries) {
+        this.entries = entries;
+    }
+
+    public List<IcecastEntry> getEntries() {
+        return entries;
     }
 }
