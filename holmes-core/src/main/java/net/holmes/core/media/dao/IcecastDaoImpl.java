@@ -19,6 +19,7 @@ package net.holmes.core.media.dao;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
@@ -36,8 +37,12 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
+import static java.util.Calendar.DAY_OF_YEAR;
+import static net.holmes.core.common.configuration.Parameter.ICECAST_GENRE_LIST;
 import static net.holmes.core.common.configuration.Parameter.ICECAST_YELLOW_PAGE_URL;
 
 /**
@@ -50,6 +55,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     private static final int DWL_DATA_LENGTH = 8192;
     private final Configuration configuration;
     private final String localHolmesDataDir;
+    private final List<String> genreList;
     private final Object directoryLock = new Object();
     private IcecastDirectory directory;
 
@@ -63,38 +69,22 @@ public final class IcecastDaoImpl implements IcecastDao {
     public IcecastDaoImpl(final Configuration configuration, @Named("localHolmesDataDir") final String localHolmesDataDir) {
         this.configuration = configuration;
         this.localHolmesDataDir = localHolmesDataDir;
-    }
-
-    @VisibleForTesting
-    IcecastDaoImpl() {
-        this.configuration = null;
-        this.localHolmesDataDir = null;
+        this.genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
     }
 
     @Override
-    public boolean downloadYellowPage() {
-        boolean result = false;
+    public boolean checkDownloadYellowPage() {
+        // Check xml file already exists and is not older than one day.
+        // If not, download Yellow page.
+        Calendar cal = Calendar.getInstance();
+        cal.add(DAY_OF_YEAR, -1);
+        Path xmlFile = getIcecastXmlFile();
         try {
-            URL icecastYellowPage = new URL(configuration.getParameter(ICECAST_YELLOW_PAGE_URL));
-            File tempFile = getIcecastXmlTempFile().toFile();
-            try (InputStream in = new BufferedInputStream(icecastYellowPage.openStream());
-                 OutputStream out = new BufferedOutputStream(new FileOutputStream(tempFile))) {
-
-                // Download Icecast yellow page to temp file.
-                byte data[] = new byte[DWL_DATA_LENGTH];
-                int count;
-                while ((count = in.read(data, 0, DWL_DATA_LENGTH)) != -1)
-                    out.write(data, 0, count);
-
-            }
-            // Rename temp file once download is complete
-            Path xmlFile = getIcecastXmlFile();
-            Files.deleteIfExists(xmlFile);
-            result = tempFile.renameTo(xmlFile.toFile());
+            return Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return result;
+        return false;
     }
 
     @Override
@@ -110,6 +100,11 @@ public final class IcecastDaoImpl implements IcecastDao {
             return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
         }
         return Lists.newArrayList();
+    }
+
+    @Override
+    public List<String> getGenres() {
+        return genreList;
     }
 
     /**
@@ -142,6 +137,32 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private Path getIcecastXmlTempFile() {
         return Paths.get(getDataPath().toString(), ICECAST_FILE_NAME + ".tmp");
+    }
+
+    /**
+     * Download Icecast yellow page.
+     *
+     * @return true on download success
+     */
+    private boolean downloadYellowPage() throws IOException {
+        LOGGER.info("Start downloading Icecast Yellow page");
+        URL icecastYellowPage = new URL(configuration.getParameter(ICECAST_YELLOW_PAGE_URL));
+        File tempFile = getIcecastXmlTempFile().toFile();
+        try (InputStream in = new BufferedInputStream(icecastYellowPage.openStream());
+             OutputStream out = new BufferedOutputStream(new FileOutputStream(tempFile))) {
+
+            // Download Icecast yellow page to temp file.
+            byte data[] = new byte[DWL_DATA_LENGTH];
+            int count;
+            while ((count = in.read(data, 0, DWL_DATA_LENGTH)) != -1)
+                out.write(data, 0, count);
+
+            LOGGER.info("End downloading Icecast Yellow page");
+        }
+        // Rename temp file once download is complete
+        Path xmlFile = getIcecastXmlFile();
+        Files.deleteIfExists(xmlFile);
+        return tempFile.renameTo(xmlFile.toFile());
     }
 
     @VisibleForTesting

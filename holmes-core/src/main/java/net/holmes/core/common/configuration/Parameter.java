@@ -37,7 +37,8 @@ public enum Parameter {
     UPNP_SERVICE_PORT("upnp_service_port", String.valueOf(Configuration.DEFAULT_UPNP_SERVICE_PORT)), //
     ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true"),//
     ICECAST_YELLOW_PAGE_URL("icecast_yellow_page_url", "http://dir.xiph.org/yp.xml"), //
-    ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_MINUTES("icecast_yellow_page_download_delay_minutes", "60");
+    ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS("icecast_yellow_page_download_delay_hours", "24"),//
+    ICECAST_GENRE_LIST("icecast_genre_list", "70s,80s,90s,adult,alternative,ambient,anime,bass,best,blues,chill,christian,classic,classical,club,college,community,contemporary,country,dance,deep,disco,dj,downtempo,drum,dubstep,eclectic,electro,folk,fun,funk,game,gospel,hip hop,hiphop,hit,house,indie,instrumental,international,jazz,jpop,jrock,latin,live,lounge,metal,minecraft,minimal,misc,mix,mixed,music,musique,news,oldies,pop,progressive,promodj,punk,radio,rap,reggae,religious,rnb,rock,salsa,scanner,smooth,soul,sport,sports,talk,techno,top,trance,urban,various,webradio,world");
 
     private final String name;
     private final String defaultValue;

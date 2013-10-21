@@ -20,6 +20,7 @@ package net.holmes.core.media.dao;
 import net.holmes.core.media.model.IcecastEntry;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Dao for Icecast data.
@@ -27,16 +28,23 @@ import java.util.Collection;
 public interface IcecastDao {
 
     /**
-     * Download yellow page from Icecast directory.
+     * Check for download yellow page from Icecast directory.
      *
-     * @return true on download success
+     * @return true if Yellow page exists
      */
-    boolean downloadYellowPage();
+    boolean checkDownloadYellowPage();
 
     /**
      * Parse yellow page;
      */
     void parseYellowPage();
+
+    /**
+     * Get available genres.
+     *
+     * @return genre list
+     */
+    List<String> getGenres();
 
     /**
      * Get Icecast entries by genre.

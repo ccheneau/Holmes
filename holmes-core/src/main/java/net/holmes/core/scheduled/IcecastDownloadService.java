@@ -21,19 +21,17 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.media.dao.IcecastDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
  * Icecast directory download service.
  */
 public class IcecastDownloadService extends AbstractScheduledService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IcecastDownloadService.class);
     private final IcecastDao icecastDao;
-    private final int downloadDelayMinutes;
+    private final int downloadDelayHours;
 
     /**
      * Instantiates a new Icecast directory download service.
@@ -44,21 +42,19 @@ public class IcecastDownloadService extends AbstractScheduledService {
     @Inject
     public IcecastDownloadService(final IcecastDao icecastDao, final Configuration configuration) {
         this.icecastDao = icecastDao;
-        this.downloadDelayMinutes = configuration.getIntParameter(Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_MINUTES);
+        this.downloadDelayHours = configuration.getIntParameter(Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS);
 
     }
 
     @Override
     protected void runOneIteration() {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Start Icecast directory download");
-        if (icecastDao.downloadYellowPage()) icecastDao.parseYellowPage();
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("End Icecast directory download");
+        if (icecastDao.checkDownloadYellowPage()) icecastDao.parseYellowPage();
     }
 
     @Override
     protected Scheduler scheduler() {
-        if (downloadDelayMinutes > 0)
-            return Scheduler.newFixedDelaySchedule(0, downloadDelayMinutes, TimeUnit.MINUTES);
+        if (downloadDelayHours > 0)
+            return Scheduler.newFixedDelaySchedule(0, downloadDelayHours, HOURS);
         return null;
     }
 }
