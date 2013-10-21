@@ -47,7 +47,7 @@
         <javax.inject.version>1</javax.inject.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <netty.version>4.0.10.Final</netty.version>
+        <netty.version>4.0.11.Final</netty.version>
         <resteasy.version>3.0.4.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha2</seamless.version>
