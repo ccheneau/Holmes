@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.media.dao;
+package net.holmes.core.media.dao.icecast;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
@@ -25,8 +25,6 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.media.model.IcecastDirectory;
-import net.holmes.core.media.model.IcecastEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

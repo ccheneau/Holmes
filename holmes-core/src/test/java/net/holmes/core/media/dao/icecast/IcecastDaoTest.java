@@ -15,11 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.media.dao;
+package net.holmes.core.media.dao.icecast;
 
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.media.model.IcecastDirectory;
-import net.holmes.core.media.model.IcecastEntry;
 import org.junit.Test;
 
 import java.io.File;

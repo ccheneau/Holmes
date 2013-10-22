@@ -15,42 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.media.dao;
+package net.holmes.core.media.dao.icecast;
 
-import net.holmes.core.media.model.IcecastEntry;
-
-import java.util.Collection;
 import java.util.List;
 
 /**
- * Dao for Icecast data.
+ * Icecast directory.
  */
-public interface IcecastDao {
+public class IcecastDirectory {
+    private final List<IcecastEntry> entries;
 
     /**
-     * Check for download yellow page from Icecast directory.
+     * Instantiates a new Icecast directory.
      *
-     * @return true if Yellow page exists
+     * @param entries Icecast entries
      */
-    boolean checkDownloadYellowPage();
+    public IcecastDirectory(List<IcecastEntry> entries) {
+        this.entries = entries;
+    }
 
-    /**
-     * Parse yellow page;
-     */
-    void parseYellowPage();
-
-    /**
-     * Get available genres.
-     *
-     * @return genre list
-     */
-    List<String> getGenres();
-
-    /**
-     * Get Icecast entries by genre.
-     *
-     * @param genre Icecast genre
-     * @return Icecast entries
-     */
-    Collection<IcecastEntry> getEntriesByGenre(final String genre);
+    public List<IcecastEntry> getEntries() {
+        return entries;
+    }
 }
