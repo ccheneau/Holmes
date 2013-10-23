@@ -1,5 +1,6 @@
 body {
 	padding-top: 80px;
+	 background: url("../img/background.png") repeat;
 }
 
 a:focus, a:hover {
