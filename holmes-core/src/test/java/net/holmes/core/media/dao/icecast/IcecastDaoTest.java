@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
+import static net.holmes.core.common.configuration.Parameter.ENABLE_ICECAST_DIRECTORY;
 import static net.holmes.core.common.configuration.Parameter.ICECAST_GENRE_LIST;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -40,6 +41,7 @@ public class IcecastDaoTest {
         Configuration configuration = createMock(Configuration.class);
 
         expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
+        expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
 
         replay(configuration);
         try {
@@ -69,6 +71,7 @@ public class IcecastDaoTest {
         Configuration configuration = createMock(Configuration.class);
 
         expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
+        expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
 
         replay(configuration);
         IcecastDaoImpl icecastDao = new IcecastDaoImpl(configuration, localHolmesDataDir);
