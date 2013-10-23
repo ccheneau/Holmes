@@ -39,9 +39,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.Calendar.DAY_OF_YEAR;
-import static net.holmes.core.common.configuration.Parameter.ICECAST_GENRE_LIST;
-import static net.holmes.core.common.configuration.Parameter.ICECAST_YELLOW_PAGE_URL;
+import static java.util.Calendar.HOUR;
+import static net.holmes.core.common.configuration.Parameter.*;
 
 /**
  * Icecast Dao implementation.
@@ -54,6 +53,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     private final Configuration configuration;
     private final String localHolmesDataDir;
     private final List<String> genreList;
+    private final boolean enableIcecast;
     private final Object directoryLock = new Object();
     private IcecastDirectory directory;
 
@@ -68,17 +68,19 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.configuration = configuration;
         this.localHolmesDataDir = localHolmesDataDir;
         this.genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
+        this.enableIcecast = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
     }
 
     @Override
     public boolean checkDownloadYellowPage() {
-        // Check xml file already exists and is not older than one day.
+        // Check xml file already exists and is not too old.
         // If not, download Yellow page.
+
         Calendar cal = Calendar.getInstance();
-        cal.add(DAY_OF_YEAR, -1);
+        cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
         Path xmlFile = getIcecastXmlFile();
         try {
-            return Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage();
+            return enableIcecast && Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
