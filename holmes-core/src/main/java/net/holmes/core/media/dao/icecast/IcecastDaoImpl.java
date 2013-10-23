@@ -96,15 +96,19 @@ public final class IcecastDaoImpl implements IcecastDao {
 
     @Override
     public boolean loaded() {
-        return directory != null && directory.getEntries().size() > 0;
+        synchronized (directoryLock) {
+            return directory != null && directory.getEntries().size() > 0;
+        }
     }
 
     @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
-        if (directory != null && directory.getEntries() != null)
-            return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
+        synchronized (directoryLock) {
+            if (directory != null && directory.getEntries() != null)
+                return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
 
-        return Lists.newArrayList();
+            return Lists.newArrayList();
+        }
     }
 
     @Override
