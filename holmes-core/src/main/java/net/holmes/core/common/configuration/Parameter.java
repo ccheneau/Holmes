@@ -27,6 +27,7 @@ public enum Parameter {
     ENABLE_UPNP("enable_upnp", "true"), //
     ENABLE_EXTERNAL_SUBTITLES("enable_external_subtitles", "true"), //
     ENABLE_CONTENT_RESOLUTION("enable_content_resolution", "true"), //
+    ENABLE_ICECAST_DIRECTORY("enable_icecast_directory", "true"), //
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"), //
     PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"), //
     IMAGE_CACHE_MAX_ELEMENTS("image_cache_max_elements", "5000"), //
