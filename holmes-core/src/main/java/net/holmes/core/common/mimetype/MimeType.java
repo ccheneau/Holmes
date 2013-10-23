@@ -27,7 +27,8 @@ import net.holmes.core.common.MediaType;
  */
 public final class MimeType {
 
-    public static final String SUBTITLE_SUBTYPE = "x-subrip";
+    public static final String SUB_TYPE_SUBTITLE = "x-subrip";
+    public static final String SUB_TYPE_OGG = "ogg";
     private final MediaType type;
     private final String subType;
     private final String mimeType;
@@ -86,7 +87,7 @@ public final class MimeType {
      * @return true if mimeType is a subtitle
      */
     public boolean isSubTitle() {
-        return MediaType.TYPE_APPLICATION == type && MimeType.SUBTITLE_SUBTYPE.equals(subType);
+        return MediaType.TYPE_APPLICATION == type && MimeType.SUB_TYPE_SUBTITLE.equals(subType);
     }
 
     @Override

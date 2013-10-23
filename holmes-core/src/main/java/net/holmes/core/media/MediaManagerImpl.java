@@ -19,7 +19,6 @@ package net.holmes.core.media;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
-import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.model.AbstractNode;
@@ -39,21 +38,17 @@ import static net.holmes.core.media.model.RootNode.ROOT;
  */
 public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
-    private final Configuration configuration;
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
 
     /**
      * Instantiates a new media manager implementation.
      *
-     * @param configuration  configuration
      * @param resourceBundle resource bundle
      * @param mediaDao       media dao
      */
     @Inject
-    public MediaManagerImpl(final Configuration configuration, final ResourceBundle resourceBundle,
-                            final MediaDao mediaDao) {
-        this.configuration = configuration;
+    public MediaManagerImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao) {
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
     }
@@ -84,9 +79,9 @@ public final class MediaManagerImpl implements MediaManager {
             }
         } else if (rootNode.getParentId().equals(ROOT.getId()))
             // Child nodes are stored in configuration
-            childNodes = mediaDao.getConfigurationChildNodes(rootNode);
+            childNodes = mediaDao.getSubRootChildNodes(rootNode);
         else
-            // Get podcast or folder child nodes
+            // Get child nodes
             childNodes = mediaDao.getChildNodes(parentNode.getId());
 
         return childNodes;
@@ -99,7 +94,7 @@ public final class MediaManagerImpl implements MediaManager {
      * @param rootNode   the root node
      */
     private void addRootNode(List<AbstractNode> childNodes, final RootNode rootNode) {
-        if (!configuration.getFolders(rootNode).isEmpty())
+        if (!mediaDao.getSubRootChildNodes(rootNode).isEmpty())
             childNodes.add(new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString(rootNode.getBundleKey())));
     }
 

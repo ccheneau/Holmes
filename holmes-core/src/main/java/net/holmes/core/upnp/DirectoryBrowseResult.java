@@ -20,6 +20,7 @@ package net.holmes.core.upnp;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
+import net.holmes.core.media.model.IcecastEntryNode;
 import net.holmes.core.media.model.PodcastEntryNode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -135,7 +136,21 @@ final class DirectoryBrowseResult {
     }
 
     /**
-     * Add item to didl
+     * Adds Icecast entry to result.
+     *
+     * @param parentNodeId     parent node id
+     * @param icecastEntryNode Icecast entry node
+     * @throws ContentDirectoryException
+     */
+    public void addIcecastItem(final String parentNodeId, final IcecastEntryNode icecastEntryNode) throws ContentDirectoryException {
+        MimeType mimeType = icecastEntryNode.getMimeType();
+        Res res = new Res(getUpnpMimeType(mimeType), null, icecastEntryNode.getUrl());
+
+        addDidlItem(parentNodeId, icecastEntryNode, icecastEntryNode.getName(), mimeType, res);
+    }
+
+    /**
+     * Add item to didl.
      *
      * @param parentNodeId parent node id
      * @param node         node to add
@@ -160,9 +175,12 @@ final class DirectoryBrowseResult {
                 item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
             case TYPE_APPLICATION:
-                // Add subtitle item
-                if (MimeType.SUBTITLE_SUBTYPE.equals(mimeType.getSubType()))
+                if (MimeType.SUB_TYPE_SUBTITLE.equals(mimeType.getSubType()))
+                    // Add subtitle item
                     item = new TextItem(node.getId(), parentNodeId, name, null, res);
+                else if (MimeType.SUB_TYPE_OGG.equals(mimeType.getSubType()))
+                    // Add OGG item
+                    item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
                 break;
             default:
                 break;

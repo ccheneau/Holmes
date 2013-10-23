@@ -93,10 +93,15 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
+    public boolean loaded() {
+        return directory != null && directory.getEntries().size() > 0;
+    }
+
+    @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
-        if (directory != null && directory.getEntries() != null) {
+        if (directory != null && directory.getEntries() != null)
             return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
-        }
+
         return Lists.newArrayList();
     }
 
@@ -112,9 +117,9 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private Path getDataPath() {
         Path dataPath = Paths.get(localHolmesDataDir, DATA_DIR);
-        if (Files.isDirectory(dataPath) || dataPath.toFile().mkdirs()) {
+        if (Files.isDirectory(dataPath) || dataPath.toFile().mkdirs())
             return dataPath;
-        }
+
         throw new RuntimeException("Failed to create " + dataPath);
 
     }

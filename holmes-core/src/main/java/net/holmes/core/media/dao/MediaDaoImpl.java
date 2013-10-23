@@ -28,8 +28,9 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
+import net.holmes.core.media.dao.icecast.IcecastDao;
+import net.holmes.core.media.dao.icecast.IcecastEntry;
 import net.holmes.core.media.index.MediaIndexElement;
-import net.holmes.core.media.index.MediaIndexElementFactory;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.model.*;
 import org.slf4j.Logger;
@@ -42,11 +43,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
+import static net.holmes.core.common.MediaType.TYPE_IMAGE;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_CONTENT_RESOLUTION;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
+import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
+import static net.holmes.core.media.model.RootNode.ICECAST;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
@@ -57,6 +62,7 @@ public class MediaDaoImpl implements MediaDao {
     private final Configuration configuration;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexManager mediaIndexManager;
+    private final IcecastDao icecastDao;
     private final Cache<String, String> imageCache;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
@@ -66,16 +72,19 @@ public class MediaDaoImpl implements MediaDao {
      * @param configuration     configuration
      * @param mimeTypeManager   mime type manager
      * @param mediaIndexManager media index manager
+     * @param icecastDao        Icecast dao
      * @param podcastCache      podcast cache
      * @param imageCache        image cache
      */
     @Inject
     public MediaDaoImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final MediaIndexManager mediaIndexManager,
+                        final IcecastDao icecastDao,
                         @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
                         @Named("imageCache") final Cache<String, String> imageCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexManager = mediaIndexManager;
+        this.icecastDao = icecastDao;
         this.podcastCache = podcastCache;
         this.imageCache = imageCache;
     }
@@ -87,12 +96,20 @@ public class MediaDaoImpl implements MediaDao {
         MediaIndexElement indexElement = mediaIndexManager.get(nodeId);
         if (indexElement != null) {
             MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
-            if (mediaType == MediaType.TYPE_PODCAST)
-                // Podcast node
-                node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
-            else
-                // File node
-                node = getFileNode(nodeId, indexElement, mediaType);
+            switch (mediaType) {
+                case TYPE_PODCAST:
+                    // Podcast node
+                    node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
+                    break;
+                case TYPE_ICECAST_GENRE:
+                    // Icecast genre node
+                    node = new IcecastGenreNode(nodeId, ICECAST.getId(), indexElement.getName(), indexElement.getPath());
+                    break;
+                default:
+                    // File node
+                    node = getFileNode(nodeId, indexElement, mediaType);
+                    break;
+            }
         } else LOGGER.warn("{} not found in media index", nodeId);
         return node;
     }
@@ -100,48 +117,74 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public List<AbstractNode> getChildNodes(String parentNodeId) {
         List<AbstractNode> childNodes = Lists.newArrayList();
-        if (parentNodeId != null) {
-            // Get node in mediaIndex
-            MediaIndexElement indexElement = mediaIndexManager.get(parentNodeId);
-            if (indexElement != null) {
-                MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
-                if (mediaType == MediaType.TYPE_PODCAST) {
+        // Get node in mediaIndex
+        MediaIndexElement indexElement = mediaIndexManager.get(parentNodeId);
+        if (indexElement != null) {
+            MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
+            switch (mediaType) {
+                case TYPE_PODCAST:
                     // Get podcast entries
                     try {
                         childNodes.addAll(getPodcastEntries(parentNodeId, indexElement.getPath()));
                     } catch (ExecutionException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
-                } else {
+                    break;
+                case TYPE_ICECAST_GENRE:
+                    childNodes.addAll(getIcecastEntries(parentNodeId, indexElement.getPath()));
+                    break;
+                default:
                     // Get folder child nodes
                     NodeFile node = new NodeFile(indexElement.getPath());
                     if (node.isValidDirectory())
                         childNodes.addAll(getFolderChildNodes(parentNodeId, node, mediaType));
-                }
-            } else LOGGER.error("{} node not found in index", parentNodeId);
-        }
+                    break;
+            }
+        } else LOGGER.error("{} node not found in index", parentNodeId);
+
         return childNodes;
     }
 
+
     @Override
-    public List<AbstractNode> getConfigurationChildNodes(final RootNode rootNode) {
+    public List<AbstractNode> getSubRootChildNodes(final RootNode rootNode) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        // Add podcast nodes
-        for (ConfigurationNode configNode : configuration.getFolders(rootNode))
-            if (rootNode == PODCAST) {
-                // Add node to mediaIndex
-                mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.buildMediaIndexElement(rootNode, configNode));
-                // Add child node
-                nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
-            } else {
-                NodeFile file = new NodeFile(configNode.getPath());
-                if (file.isValidDirectory()) {
+        switch (rootNode) {
+            case PODCAST:
+                // Add podcast nodes stored in configuration
+                for (ConfigurationNode configNode : configuration.getFolders(rootNode)) {
                     // Add node to mediaIndex
-                    mediaIndexManager.put(configNode.getId(), MediaIndexElementFactory.buildMediaIndexElement(rootNode, configNode));
+                    mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                     // Add child node
-                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
+                    nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
                 }
-            }
+                break;
+            case ICECAST:
+                if (icecastDao.loaded()) {
+                    // Add Icecast genre from Icecast dao
+                    String id;
+                    for (String genre : icecastDao.getGenres()) {
+                        id = "icecast_genre_" + genre;
+                        // Add node to media index
+                        mediaIndexManager.put(id, buildMediaIndexElement(rootNode, genre, genre));
+                        // Add child node
+                        nodes.add(new IcecastGenreNode(id, rootNode.getId(), genre, genre));
+                    }
+                }
+                break;
+            default:
+                // Add folder nodes stored in configuration
+                for (ConfigurationNode configNode : configuration.getFolders(rootNode)) {
+                    NodeFile file = new NodeFile(configNode.getPath());
+                    if (file.isValidDirectory()) {
+                        // Add node to mediaIndex
+                        mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                        // Add child node
+                        nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
+                    }
+                }
+                break;
+        }
         return nodes;
     }
 
@@ -219,6 +262,20 @@ public class MediaDaoImpl implements MediaDao {
     }
 
     /**
+     * Gets Icecast entries by genre.
+     *
+     * @param genre genre
+     * @return Icecast entries
+     */
+    private List<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
+        List<AbstractNode> result = Lists.newArrayList();
+        for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre))
+            result.add(new IcecastEntryNode(UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl()));
+
+        return result;
+    }
+
+    /**
      * Build content node.
      *
      * @param nodeId    node id
@@ -247,7 +304,7 @@ public class MediaDaoImpl implements MediaDao {
      * @return the content resolution
      */
     private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getBooleanParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == MediaType.TYPE_IMAGE)
+        if (configuration.getBooleanParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == TYPE_IMAGE)
             try {
                 return imageCache.get(fileName, new Callable<String>() {
                     @Override

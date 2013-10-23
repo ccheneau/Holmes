@@ -128,6 +128,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add podcast entry to result
                 String entryName = formatPodcastEntryName(result.getResultCount(), childNodeSize, node.getName());
                 result.addPodcastItem(nodeId, (PodcastEntryNode) node, entryName);
+            } else if (node instanceof IcecastGenreNode) {
+                // Add Icecast genre to result
+                result.addContainer(nodeId, node, 1);
+            } else if (node instanceof IcecastEntryNode) {
+                // Add Icecast entry to result
+                result.addIcecastItem(nodeId, (IcecastEntryNode) node);
             }
         }
     }

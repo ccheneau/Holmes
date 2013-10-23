@@ -35,7 +35,7 @@ public interface MediaDao {
     AbstractNode getNode(String nodeId);
 
     /**
-     * Get podcast or folder child nodes.
+     * Get child nodes.
      *
      * @param parentNodeId parent node id
      * @return child nodes
@@ -43,10 +43,10 @@ public interface MediaDao {
     List<AbstractNode> getChildNodes(String parentNodeId);
 
     /**
-     * Get child nodes of a configuration node (child nodes are stored in configuration).
+     * Get child nodes of a sub root node.
      *
-     * @param rootNode root node from configuration
-     * @return configuration child nodes
+     * @param rootNode root node
+     * @return child nodes
      */
-    List<AbstractNode> getConfigurationChildNodes(RootNode rootNode);
+    List<AbstractNode> getSubRootChildNodes(RootNode rootNode);
 }

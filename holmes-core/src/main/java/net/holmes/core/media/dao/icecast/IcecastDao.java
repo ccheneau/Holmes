@@ -38,6 +38,13 @@ public interface IcecastDao {
     void parseYellowPage();
 
     /**
+     * Whether Icecast directory is loaded.
+     *
+     * @return true if Icecast directory is loaded
+     */
+    boolean loaded();
+
+    /**
      * Get available genres.
      *
      * @return genre list
