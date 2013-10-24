@@ -48,6 +48,6 @@ public class SettingsHandlerTest {
     @Test
     public void testSaveSettings() {
         SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        settingsHandler.saveSettings(new Settings("serverName", 2000, true, true));
+        settingsHandler.saveSettings(new Settings("serverName", 2000, true, true, true));
     }
 }

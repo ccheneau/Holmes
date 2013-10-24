@@ -24,7 +24,6 @@ import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
-import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.event.ConfigurationEvent;
 import net.holmes.core.media.model.RootNode;
 
@@ -34,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import static net.holmes.core.common.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
@@ -144,8 +144,9 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Settings getSettings() {
         return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
-                configuration.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME),
-                configuration.getBooleanParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES));
+                configuration.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
+                configuration.getBooleanParameter(ENABLE_EXTERNAL_SUBTITLES),
+                configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
 
     @Override
@@ -155,8 +156,9 @@ public final class BackendManagerImpl implements BackendManager {
 
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
-        configuration.setParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
-        configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
+        configuration.setParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
+        configuration.setParameter(ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
+        configuration.setParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {
             // save settings
             configuration.saveConfig();

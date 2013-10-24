@@ -219,31 +219,31 @@ public class BackendManagerTest {
     @Test
     public void testSaveSettings() {
         // test save settings
-        backendManager.saveSettings(new Settings("holmes", 8085, true, true));
+        backendManager.saveSettings(new Settings("holmes", 8085, true, true, true));
     }
 
     @Test(expected = BackendException.class)
     public void testSaveSettingsWithoutServerName() {
-        backendManager.saveSettings(new Settings(null, 8085, true, true));
+        backendManager.saveSettings(new Settings(null, 8085, true, true, true));
     }
 
     @Test(expected = BackendException.class)
     public void testSaveSettingsIOException() {
-        backendManager.saveSettings(new Settings("IOException", 8085, true, true));
+        backendManager.saveSettings(new Settings("IOException", 8085, true, true, true));
     }
 
     @Test(expected = BackendException.class)
     public void testSaveSettingsWithEmptyServerName() {
-        backendManager.saveSettings(new Settings("", 8085, true, true));
+        backendManager.saveSettings(new Settings("", 8085, true, true, true));
     }
 
     @Test(expected = BackendException.class)
     public void testSaveSettingsWithoutServerPort() {
-        backendManager.saveSettings(new Settings("holmes", null, true, true));
+        backendManager.saveSettings(new Settings("holmes", null, true, true, true));
     }
 
     @Test(expected = BackendException.class)
     public void testSaveSettingsWithBadServerPort() {
-        backendManager.saveSettings(new Settings("holmes", 80, true, true));
+        backendManager.saveSettings(new Settings("holmes", 80, true, true, true));
     }
 }
