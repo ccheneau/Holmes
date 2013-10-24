@@ -78,7 +78,7 @@ public final class MediaManagerImpl implements MediaManager {
                     addRootNode(childNodes, aRootNode);
             }
         } else if (rootNode.getParentId().equals(ROOT.getId()))
-            // Child nodes are stored in configuration
+            // Get child nodes of sub root node
             childNodes = mediaDao.getSubRootChildNodes(rootNode);
         else
             // Get child nodes
@@ -88,7 +88,7 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Adds the root node.
+     * Adds the root node if this root node has children
      *
      * @param childNodes the child nodes
      * @param rootNode   the root node
