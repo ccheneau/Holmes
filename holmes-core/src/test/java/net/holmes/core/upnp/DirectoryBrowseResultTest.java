@@ -20,7 +20,7 @@ package net.holmes.core.upnp;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.media.model.FolderNode;
-import net.holmes.core.media.model.PodcastEntryNode;
+import net.holmes.core.media.model.RawUrlNode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,6 +29,7 @@ import org.junit.rules.TestName;
 import java.io.File;
 import java.io.IOException;
 
+import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.junit.Assert.*;
 
 public class DirectoryBrowseResultTest {
@@ -148,9 +149,9 @@ public class DirectoryBrowseResultTest {
     @Test
     public void testAddPodcastItem() throws ContentDirectoryException {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
-        directoryBrowseResult.addPodcastItem("1", node, "name");
+        directoryBrowseResult.addUrlItem("1", node, "name");
         assertEquals(directoryBrowseResult.getItemCount(), 1);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
     }

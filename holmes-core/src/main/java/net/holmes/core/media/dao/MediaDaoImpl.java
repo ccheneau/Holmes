@@ -54,6 +54,7 @@ import static net.holmes.core.common.MediaType.TYPE_IMAGE;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_CONTENT_RESOLUTION;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
+import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.media.model.RootNode.ICECAST;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
@@ -254,7 +255,7 @@ public class MediaDaoImpl implements MediaDao {
                 final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                 new PodcastParser() {
                     @Override
-                    public void addPodcastEntryNode(PodcastEntryNode podcastEntryNode) {
+                    public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
                         // Add podcast entry node
                         podcastEntryNodes.add(podcastEntryNode);
                     }
@@ -273,7 +274,7 @@ public class MediaDaoImpl implements MediaDao {
     private Collection<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
         Map<String, AbstractNode> result = Maps.newHashMap();
         for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre))
-            result.put(entry.getName(), new IcecastEntryNode(UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl()));
+            result.put(entry.getName(), new RawUrlNode(TYPE_ICECAST_ENTRY, UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
 
         return result.values();
     }

@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
+import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 
@@ -124,16 +125,18 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
-            } else if (node instanceof PodcastEntryNode) {
-                // Add podcast entry to result
-                String entryName = formatPodcastEntryName(result.getResultCount(), childNodeSize, node.getName());
-                result.addPodcastItem(nodeId, (PodcastEntryNode) node, entryName);
+            } else if (node instanceof RawUrlNode) {
+                RawUrlNode rawUrlNode = (RawUrlNode) node;
+                String entryName = node.getName();
+
+                if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY)
+                    //  Format podcast entry name
+                    entryName = formatPodcastEntryName(result.getResultCount(), childNodeSize, node.getName());
+
+                result.addUrlItem(nodeId, rawUrlNode, entryName);
             } else if (node instanceof IcecastGenreNode) {
                 // Add Icecast genre to result
                 result.addContainer(nodeId, node, 1);
-            } else if (node instanceof IcecastEntryNode) {
-                // Add Icecast entry to result
-                result.addIcecastItem(nodeId, (IcecastEntryNode) node);
             }
         }
     }

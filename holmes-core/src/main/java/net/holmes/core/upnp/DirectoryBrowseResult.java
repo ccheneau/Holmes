@@ -20,8 +20,7 @@ package net.holmes.core.upnp;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
-import net.holmes.core.media.model.IcecastEntryNode;
-import net.holmes.core.media.model.PodcastEntryNode;
+import net.holmes.core.media.model.RawUrlNode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
@@ -120,33 +119,19 @@ final class DirectoryBrowseResult {
     }
 
     /**
-     * Adds podcast item to result.
+     * Adds raw Url item to result.
      *
-     * @param parentNodeId     parent node id
-     * @param podcastEntryNode podcast entry node
-     * @param entryName        podcast entry name
+     * @param parentNodeId parent node id
+     * @param rawUrlNode   Url node
+     * @param entryName    entry name
      * @throws ContentDirectoryException
      */
-    public void addPodcastItem(final String parentNodeId, final PodcastEntryNode podcastEntryNode, final String entryName) throws ContentDirectoryException {
-        MimeType mimeType = podcastEntryNode.getMimeType();
-        Res res = new Res(getUpnpMimeType(mimeType), null, podcastEntryNode.getUrl());
-        res.setDuration(podcastEntryNode.getDuration());
+    public void addUrlItem(final String parentNodeId, final RawUrlNode rawUrlNode, final String entryName) throws ContentDirectoryException {
+        MimeType mimeType = rawUrlNode.getMimeType();
+        Res res = new Res(getUpnpMimeType(mimeType), null, rawUrlNode.getUrl());
+        res.setDuration(rawUrlNode.getDuration());
 
-        addDidlItem(parentNodeId, podcastEntryNode, entryName, mimeType, res);
-    }
-
-    /**
-     * Adds Icecast entry to result.
-     *
-     * @param parentNodeId     parent node id
-     * @param icecastEntryNode Icecast entry node
-     * @throws ContentDirectoryException
-     */
-    public void addIcecastItem(final String parentNodeId, final IcecastEntryNode icecastEntryNode) throws ContentDirectoryException {
-        MimeType mimeType = icecastEntryNode.getMimeType();
-        Res res = new Res(getUpnpMimeType(mimeType), null, icecastEntryNode.getUrl());
-
-        addDidlItem(parentNodeId, icecastEntryNode, icecastEntryNode.getName(), mimeType, res);
+        addDidlItem(parentNodeId, rawUrlNode, entryName, mimeType, res);
     }
 
     /**

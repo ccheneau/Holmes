@@ -78,7 +78,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      *
      * @return the node type
      */
-    NodeType getType() {
+    public NodeType getType() {
         return type;
     }
 

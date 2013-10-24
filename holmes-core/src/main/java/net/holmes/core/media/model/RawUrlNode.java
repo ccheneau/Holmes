@@ -21,49 +21,48 @@ import com.google.common.base.Objects;
 import net.holmes.core.common.mimetype.MimeType;
 
 /**
- * Icecast entry node.
+ * Raw Url node.
  */
-public class IcecastEntryNode extends AbstractNode {
+public final class RawUrlNode extends AbstractNode {
 
-    private final String url;
     private final MimeType mimeType;
+    private final String url;
+    private final String duration;
 
     /**
-     * Instantiates a new Icecast entry node.
+     * Instantiates a new raw Url node.
      *
+     * @param type     type
      * @param id       node id
      * @param parentId parent node id
      * @param name     node name
      * @param mimeType mime type
      * @param url      url
+     * @param duration duration
      */
-    public IcecastEntryNode(final String id, final String parentId, final String name, final MimeType mimeType, final String url) {
-        super(NodeType.TYPE_ICECAST_ENTRY, id, parentId, name);
-        this.url = url;
+    public RawUrlNode(final NodeType type, final String id, final String parentId, final String name, final MimeType mimeType, final String url,
+                      final String duration) {
+        super(type, id, parentId, name);
         this.mimeType = mimeType;
+        this.url = url;
+        this.duration = duration;
     }
 
-    /**
-     * Gets the Icecast entry mime type.
-     *
-     * @return the Icecast entry mime type
-     */
     public MimeType getMimeType() {
-        return this.mimeType;
+        return mimeType;
     }
 
-    /**
-     * Gets the Icecast entry url.
-     *
-     * @return the Icecast entry url
-     */
     public String getUrl() {
         return url;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url);
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url, duration);
     }
 
     @Override
@@ -72,17 +71,18 @@ public class IcecastEntryNode extends AbstractNode {
         if (obj == null || getClass() != obj.getClass()) return false;
         if (!super.equals(obj)) return false;
 
-        final IcecastEntryNode other = (IcecastEntryNode) obj;
-        return Objects.equal(this.type, other.type) && Objects.equal(this.url, other.url);
+        final RawUrlNode other = (RawUrlNode) obj;
+        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(type)
-                .addValue(url)
-                .addValue(id)
                 .addValue(mimeType)
+                .addValue(url)
+                .addValue(duration)
+                .addValue(id)
+                .addValue(type)
                 .addValue(parentId)
                 .addValue(name)
                 .addValue(modifiedDate)

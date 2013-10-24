@@ -22,6 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.junit.Assert.*;
 
 /**
@@ -43,7 +44,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetMimeType() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getMimeType(), mimeType);
     }
 
@@ -53,7 +54,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetUrl() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getUrl(), "url");
     }
 
@@ -63,7 +64,7 @@ public class PodcastEntryNodeTest {
     @Test
     public void testGetDuration() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         assertEquals(node.getDuration(), "duration");
     }
 
@@ -73,8 +74,8 @@ public class PodcastEntryNodeTest {
     @Test
     public void testHashCode() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
-        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node1 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node2 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         assertNotNull(node1.hashCode());
         assertEquals(node1.hashCode(), node2.hashCode());
     }
@@ -85,14 +86,14 @@ public class PodcastEntryNodeTest {
     @Test
     public void testEquals() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
-        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
-        PodcastEntryNode node3 = new PodcastEntryNode("id1", "parentId", "name", mimeType, "url", "duration");
-        PodcastEntryNode node4 = new PodcastEntryNode("id", "parentId1", "name", mimeType, "url", "duration");
-        PodcastEntryNode node5 = new PodcastEntryNode("id", "parentId", "name1", mimeType, "url", "duration");
-        PodcastEntryNode node6 = new PodcastEntryNode("id", "parentId", "name", null, "url", "duration");
-        PodcastEntryNode node7 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url1", "duration");
-        PodcastEntryNode node8 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration1");
+        RawUrlNode node1 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node2 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node3 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node4 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId1", "name", mimeType, "url", "duration");
+        RawUrlNode node5 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name1", mimeType, "url", "duration");
+        RawUrlNode node6 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", null, "url", "duration");
+        RawUrlNode node7 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url1", "duration");
+        RawUrlNode node8 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration1");
         assertEquals(node1, node1);
         assertEquals(node1, node2);
         assertNotEquals(node1, null);
@@ -111,8 +112,8 @@ public class PodcastEntryNodeTest {
     @Test
     public void testToString() throws Exception {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        PodcastEntryNode node1 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
-        PodcastEntryNode node2 = new PodcastEntryNode("id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node1 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
+        RawUrlNode node2 = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         assertNotNull(node1.toString());
         assertEquals(node1.toString(), node2.toString());
     }
