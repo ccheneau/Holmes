@@ -104,7 +104,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
-            if (directory != null && directory.getEntries() != null)
+            if (enableIcecast && directory != null && directory.getEntries() != null)
                 return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
 
             return Lists.newArrayList();
