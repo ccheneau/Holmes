@@ -19,7 +19,6 @@ package net.holmes.core.media.dao;
 
 import com.google.common.cache.Cache;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ExecutionError;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.sun.syndication.io.FeedException;
@@ -45,7 +44,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -135,6 +133,7 @@ public class MediaDaoImpl implements MediaDao {
                     }
                     break;
                 case TYPE_ICECAST_GENRE:
+                    // Get Icecast entries
                     childNodes.addAll(getIcecastEntries(parentNodeId, indexElement.getPath()));
                     break;
                 default:
@@ -272,11 +271,11 @@ public class MediaDaoImpl implements MediaDao {
      * @return Icecast entries
      */
     private Collection<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
-        Map<String, AbstractNode> result = Maps.newHashMap();
+        Collection<AbstractNode> result = Lists.newArrayList();
         for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre))
-            result.put(entry.getName(), new RawUrlNode(TYPE_ICECAST_ENTRY, UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
+            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
 
-        return result.values();
+        return result;
     }
 
     /**

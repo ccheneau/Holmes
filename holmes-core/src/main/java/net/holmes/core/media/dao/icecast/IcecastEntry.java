@@ -17,6 +17,8 @@
 
 package net.holmes.core.media.dao.icecast;
 
+import com.google.common.base.Objects;
+
 /**
  * Icecast entry.
  */
@@ -55,5 +57,19 @@ public class IcecastEntry {
 
     public String getGenre() {
         return genre;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, type, genre);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        final IcecastEntry other = (IcecastEntry) obj;
+        return Objects.equal(this.name, other.name) && Objects.equal(this.type, other.type) && Objects.equal(this.genre, other.genre);
     }
 }

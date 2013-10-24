@@ -17,24 +17,24 @@
 
 package net.holmes.core.media.dao.icecast;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Icecast directory.
  */
 public class IcecastDirectory {
-    private final List<IcecastEntry> entries;
+    private final Set<IcecastEntry> entries;
 
     /**
      * Instantiates a new Icecast directory.
      *
      * @param entries Icecast entries
      */
-    public IcecastDirectory(List<IcecastEntry> entries) {
+    public IcecastDirectory(Set<IcecastEntry> entries) {
         this.entries = entries;
     }
 
-    public List<IcecastEntry> getEntries() {
+    public Set<IcecastEntry> getEntries() {
         return entries;
     }
 }
