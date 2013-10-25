@@ -21,6 +21,8 @@ import com.google.common.base.Objects;
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.media.model.RootNode;
 
+import static net.holmes.core.media.model.RootNode.NONE;
+
 /**
  * Configuration event.
  */
@@ -41,6 +43,17 @@ public class ConfigurationEvent {
         this.type = type;
         this.node = node;
         this.rootNode = rootNode;
+    }
+
+    /**
+     * Instantiates a new configuration event.
+     *
+     * @param type event type
+     */
+    public ConfigurationEvent(final EventType type) {
+        this.type = type;
+        this.node = null;
+        this.rootNode = NONE;
     }
 
     public EventType getType() {
@@ -68,6 +81,6 @@ public class ConfigurationEvent {
      * Event type.
      */
     public enum EventType {
-        ADD, UPDATE, DELETE, UNKNOWN
+        ADD_FOLDER, UPDATE_FOLDER, DELETE_FOLDER, SAVE_SETTINGS, UNKNOWN
     }
 }

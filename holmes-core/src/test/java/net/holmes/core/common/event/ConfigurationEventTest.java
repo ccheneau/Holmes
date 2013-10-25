@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static net.holmes.core.common.event.ConfigurationEvent.EventType.ADD_FOLDER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -45,7 +46,7 @@ public class ConfigurationEventTest {
     @Test
     public void testGetType() throws Exception {
         ConfigurationEvent event = buildConfigurationEvent(null);
-        assertEquals(event.getType(), ConfigurationEvent.EventType.ADD);
+        assertEquals(event.getType(), ADD_FOLDER);
     }
 
     /**
@@ -77,6 +78,6 @@ public class ConfigurationEventTest {
     }
 
     private ConfigurationEvent buildConfigurationEvent(ConfigurationNode node) {
-        return new ConfigurationEvent(ConfigurationEvent.EventType.ADD, node, RootNode.ROOT);
+        return new ConfigurationEvent(ADD_FOLDER, node, RootNode.ROOT);
     }
 }

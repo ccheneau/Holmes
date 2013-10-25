@@ -22,9 +22,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.Subscribe;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +43,7 @@ import java.util.List;
 
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.common.configuration.Parameter.*;
+import static net.holmes.core.common.event.ConfigurationEvent.EventType.SAVE_SETTINGS;
 
 /**
  * Icecast Dao implementation.
@@ -53,8 +56,9 @@ public final class IcecastDaoImpl implements IcecastDao {
     private final Configuration configuration;
     private final String localHolmesDataDir;
     private final List<String> genreList;
-    private final boolean enableIcecast;
     private final Object directoryLock = new Object();
+    private final Object settingsLock = new Object();
+    private boolean enable;
     private IcecastDirectory directory;
 
     /**
@@ -68,19 +72,18 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.configuration = configuration;
         this.localHolmesDataDir = localHolmesDataDir;
         this.genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
-        this.enableIcecast = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+        this.enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
     }
 
     @Override
     public boolean checkDownloadYellowPage() {
         // Check xml file already exists and is not too old.
         // If not, download Yellow page.
-
         Calendar cal = Calendar.getInstance();
         cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
         Path xmlFile = getIcecastXmlFile();
         try {
-            return enableIcecast && Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage();
+            return enable && (Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage());
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -95,16 +98,16 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
-    public boolean loaded() {
+    public boolean isLoaded() {
         synchronized (directoryLock) {
-            return directory != null && directory.getEntries().size() > 0;
+            return enable && directory != null && directory.getEntries().size() > 0;
         }
     }
 
     @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
-            if (enableIcecast && directory != null && directory.getEntries() != null)
+            if (directory != null && directory.getEntries() != null)
                 return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
 
             return Lists.newArrayList();
@@ -187,11 +190,7 @@ public final class IcecastDaoImpl implements IcecastDao {
 
         try (InputStream in = new FileInputStream(ypFile)) {
             // Load configuration from XML
-            synchronized (directoryLock) {
-                setDirectory((IcecastDirectory) xstream.fromXML(in));
-                if (LOGGER.isDebugEnabled())
-                    LOGGER.debug("Icecast directory contains {} entries", directory.getEntries().size());
-            }
+            setDirectory((IcecastDirectory) xstream.fromXML(in));
         } catch (IOException e) {
             LOGGER.warn(e.getMessage(), e);
         }
@@ -204,7 +203,31 @@ public final class IcecastDaoImpl implements IcecastDao {
 
     @VisibleForTesting
     void setDirectory(IcecastDirectory directory) {
-        this.directory = directory;
+        synchronized (directoryLock) {
+            this.directory = directory;
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
+            }
+        }
+    }
+
+    /**
+     * Configuration settings have changed, check for download Icecast Yellow page.
+     *
+     * @param configurationEvent configuration event
+     */
+    @Subscribe
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
+        if (configurationEvent.getType() == SAVE_SETTINGS)
+            synchronized (settingsLock) {
+                enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+                if (enable && checkDownloadYellowPage())
+                    // Check for download Icecast Yellow page and parse it.
+                    parseYellowPage();
+                else
+                    // Reset directory
+                    setDirectory(null);
+            }
     }
 
     /**

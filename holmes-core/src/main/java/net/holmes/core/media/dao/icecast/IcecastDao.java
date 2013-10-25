@@ -42,7 +42,7 @@ public interface IcecastDao {
      *
      * @return true if Icecast directory is loaded
      */
-    boolean loaded();
+    boolean isLoaded();
 
     /**
      * Get available genres.

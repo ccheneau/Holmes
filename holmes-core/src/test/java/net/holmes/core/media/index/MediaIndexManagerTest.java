@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 import static org.junit.Assert.*;
 
 public class MediaIndexManagerTest {
@@ -103,7 +104,7 @@ public class MediaIndexManagerTest {
     public void testHandleConfigEventAdd() {
         if (mediaIndexManager instanceof MediaIndexManagerImpl) {
             MediaIndexManagerImpl mediaIndexManagerImpl = (MediaIndexManagerImpl) mediaIndexManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.ADD, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(ADD_FOLDER, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
             mediaIndexManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
@@ -112,7 +113,7 @@ public class MediaIndexManagerTest {
     public void testHandleConfigEventUpdate() {
         if (mediaIndexManager instanceof MediaIndexManagerImpl) {
             MediaIndexManagerImpl mediaIndexManagerImpl = (MediaIndexManagerImpl) mediaIndexManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.UPDATE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(UPDATE_FOLDER, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
             mediaIndexManagerImpl.handleConfigEvent(configurationEvent);
         }
     }
@@ -121,7 +122,7 @@ public class MediaIndexManagerTest {
     public void testHandleConfigEventDelete() {
         if (mediaIndexManager instanceof MediaIndexManagerImpl) {
             MediaIndexManagerImpl mediaIndexManagerImpl = (MediaIndexManagerImpl) mediaIndexManager;
-            ConfigurationEvent configurationEvent = new ConfigurationEvent(ConfigurationEvent.EventType.DELETE, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
+            ConfigurationEvent configurationEvent = new ConfigurationEvent(DELETE_FOLDER, new ConfigurationNode("id", "label", "path"), RootNode.VIDEO);
             mediaIndexManagerImpl.handleConfigEvent(configurationEvent);
         }
     }

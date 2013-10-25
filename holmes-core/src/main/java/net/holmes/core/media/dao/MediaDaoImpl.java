@@ -163,7 +163,7 @@ public class MediaDaoImpl implements MediaDao {
                 }
                 break;
             case ICECAST:
-                if (icecastDao.loaded()) {
+                if (icecastDao.isLoaded()) {
                     // Add Icecast genre from Icecast dao
                     String id;
                     for (String genre : icecastDao.getGenres()) {

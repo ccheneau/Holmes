@@ -135,24 +135,23 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         ConfigurationNode configNode = configurationEvent.getNode();
         RootNode rootNode = configurationEvent.getRootNode();
         switch (configurationEvent.getType()) {
-            case ADD:
+            case ADD_FOLDER:
                 // Add node to mediaIndex
                 put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                 break;
-            case UPDATE:
+            case UPDATE_FOLDER:
                 // Remove node and child nodes from mediaIndex
                 remove(configNode.getId());
                 if (rootNode != PODCAST) removeChildren(configNode.getId());
                 // Add node to mediaIndex
                 put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
                 break;
-            case DELETE:
+            case DELETE_FOLDER:
                 // Remove node and child nodes from mediaIndex
                 remove(configNode.getId());
                 if (rootNode != PODCAST) removeChildren(configNode.getId());
                 break;
             default:
-                LOGGER.error("Unknown event type: {}", configurationEvent.getType());
                 break;
         }
     }

@@ -95,7 +95,7 @@ public final class BackendManagerImpl implements BackendManager {
         }
 
         // Post event
-        eventBus.post(new ConfigurationEvent(ADD, newNode, rootNode));
+        eventBus.post(new ConfigurationEvent(ADD_FOLDER, newNode, rootNode));
     }
 
     @Override
@@ -117,9 +117,8 @@ public final class BackendManagerImpl implements BackendManager {
             } catch (IOException e) {
                 throw new BackendException(e);
             }
-
             // Post Event
-            eventBus.post(new ConfigurationEvent(UPDATE, currentNode, rootNode));
+            eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, currentNode, rootNode));
         }
     }
 
@@ -136,9 +135,8 @@ public final class BackendManagerImpl implements BackendManager {
         } catch (IOException e) {
             throw new BackendException(e);
         }
-
         // Post Event
-        eventBus.post(new ConfigurationEvent(DELETE, currentNode, rootNode));
+        eventBus.post(new ConfigurationEvent(DELETE_FOLDER, currentNode, rootNode));
     }
 
     @Override
@@ -165,5 +163,7 @@ public final class BackendManagerImpl implements BackendManager {
         } catch (IOException e) {
             throw new BackendException(e);
         }
+        // Post event
+        eventBus.post(new ConfigurationEvent(SAVE_SETTINGS));
     }
 }
