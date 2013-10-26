@@ -17,55 +17,49 @@
 
 package net.holmes.core;
 
-import com.google.common.eventbus.DeadEvent;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import net.holmes.core.common.event.MediaEvent;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
+import net.holmes.core.common.Service;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.*;
 
 public class HolmesServerTest {
 
-    private HolmesServer holmesServer;
-    private HolmesServer holmesServer2;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-        holmesServer = injector.getInstance(HolmesServer.class);
-        holmesServer2 = injector.getInstance(HolmesServer.class);
-    }
-
     @Test
     public void testHolmesServer() {
+        Service service = createMock(Service.class);
+
+        HolmesServer holmesServer = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
+
+        service.start();
+        expectLastCall().times(4);
+        service.stop();
+        expectLastCall().times(4);
+
+        replay(service);
         holmesServer.start();
         holmesServer.stop();
-    }
-
-    @Test
-    public void testHolmesServerStartTwice() {
-        try {
-            holmesServer.start();
-            holmesServer.start();
-        } finally {
-            holmesServer.stop();
-        }
+        verify(service);
     }
 
     @Test(expected = RuntimeException.class)
     public void testHolmesServerStartTwoServers() {
+        Service service = createMock(Service.class);
+
+        HolmesServer holmesServer = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesServer holmesServer2 = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
+
+        service.start();
+        expectLastCall().times(4);
+        service.stop();
+        expectLastCall().times(4);
+
+        replay(service);
         try {
             holmesServer.start();
             holmesServer2.start();
         } finally {
             holmesServer.stop();
+            verify(service);
         }
-    }
-
-    @Test
-    public void testHandleDeadEvent() {
-        holmesServer.handleDeadEvent(new DeadEvent("", new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, "parameter")));
     }
 }

@@ -17,64 +17,86 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
+import static net.holmes.core.media.model.RootNode.PICTURE;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class PictureFoldersHandlerTest {
-    @Inject
-    private BackendManager backendManager;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
 
     @Test
     public void testGetPictureFolders() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolders(PICTURE)).andReturn(Lists.newArrayList(new ConfigurationFolder("imagesTest", "imagesTest", "path"))).atLeastOnce();
+
+        replay(backendManager);
         PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
         assertNotNull(pictureFoldersHandler.getPictureFolders());
+        verify(backendManager);
     }
 
     @Test
     public void testGetPictureFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolder("imagesTest", PICTURE)).andReturn(new ConfigurationFolder("imagesTest", "imagesTest", "path")).atLeastOnce();
+
+        replay(backendManager);
         PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
         assertNotNull(pictureFoldersHandler.getPictureFolder("imagesTest"));
+        verify(backendManager);
     }
 
     @Test
     public void testAddPictureFolder() {
-        PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder(null, "newImagesTest", System.getProperty("java.io.tmpdir"));
+
+        backendManager.addFolder(folder, PICTURE);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
         ConfigurationFolder newFolder = pictureFoldersHandler.addPictureFolder(folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testEditPictureFolder() {
-        PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder("imagesTest", "editedImagesTest", System.getProperty("java.io.tmpdir"));
+
+        backendManager.editFolder("imagesTest", folder, PICTURE);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
         ConfigurationFolder newFolder = pictureFoldersHandler.editPictureFolder("imagesTest", folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testRemovePictureFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        backendManager.removeFolder("imagesTest", PICTURE);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
         PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);
         ConfigurationFolder folder = pictureFoldersHandler.removePictureFolder("imagesTest");
         assertNotNull(folder);
         assertEquals(folder.getId(), "imagesTest");
+        verify(backendManager);
     }
 }

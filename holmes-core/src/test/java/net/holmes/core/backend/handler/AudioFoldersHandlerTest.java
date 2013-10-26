@@ -17,64 +17,86 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
+import static net.holmes.core.media.model.RootNode.AUDIO;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class AudioFoldersHandlerTest {
-    @Inject
-    private BackendManager backendManager;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
 
     @Test
     public void testGetAudioFolders() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolders(AUDIO)).andReturn(Lists.newArrayList(new ConfigurationFolder("audiosTest", "audiosTest", "path"))).atLeastOnce();
+
+        replay(backendManager);
         AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
         assertNotNull(audioFoldersHandler.getAudioFolders());
+        verify(backendManager);
     }
 
     @Test
     public void testGetAudioFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolder("audiosTest", AUDIO)).andReturn(new ConfigurationFolder("audiosTest", "audiosTest", "path")).atLeastOnce();
+
+        replay(backendManager);
         AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
         assertNotNull(audioFoldersHandler.getAudioFolder("audiosTest"));
+        verify(backendManager);
     }
 
     @Test
     public void testAddAudioFolder() {
-        AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder(null, "newAudioFolder", System.getProperty("java.io.tmpdir"));
+
+        backendManager.addFolder(folder, AUDIO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
         ConfigurationFolder newFolder = audioFoldersHandler.addAudioFolder(folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testEditAudioFolder() {
-        AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder("audiosTest", "editedAudiosTest", System.getProperty("java.io.tmpdir"));
+
+        backendManager.editFolder("audiosTest", folder, AUDIO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
         ConfigurationFolder newFolder = audioFoldersHandler.editAudioFolder("audiosTest", folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testRemoveAudioFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        backendManager.removeFolder("audiosTest", AUDIO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
         AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);
         ConfigurationFolder folder = audioFoldersHandler.removeAudioFolder("audiosTest");
         assertNotNull(folder);
         assertEquals(folder.getId(), "audiosTest");
+        verify(backendManager);
     }
 }

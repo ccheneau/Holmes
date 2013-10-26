@@ -17,31 +17,29 @@
 
 package net.holmes.core.http;
 
-import com.google.inject.Guice;
+import com.google.common.collect.Maps;
+import com.google.inject.Binding;
 import com.google.inject.Injector;
-import net.holmes.core.common.Service;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
+import com.google.inject.Key;
+import net.holmes.core.common.configuration.Configuration;
 import org.junit.Test;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import static org.easymock.EasyMock.*;
 
 public class HttpServerTest {
 
-    @Inject
-    @Named("http")
-    private Service httpServer;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
-
     @Test
     public void testHttpServer() {
+        Injector injector = createMock(Injector.class);
+        Configuration configuration = createMock(Configuration.class);
+        HttpServer httpServer = new HttpServer(injector, configuration);
+
+        expect(configuration.getHttpServerPort()).andReturn(8080).atLeastOnce();
+        expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
+
+        replay(injector, configuration);
         httpServer.start();
         httpServer.stop();
+        verify(injector, configuration);
     }
 }

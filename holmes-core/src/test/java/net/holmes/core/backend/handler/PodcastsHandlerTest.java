@@ -17,64 +17,86 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
+import static net.holmes.core.media.model.RootNode.PODCAST;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class PodcastsHandlerTest {
-    @Inject
-    private BackendManager backendManager;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
 
     @Test
     public void testGetPodcasts() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolders(PODCAST)).andReturn(Lists.newArrayList(new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr"))).atLeastOnce();
+
+        replay(backendManager);
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
         assertNotNull(podcastsHandler.getPodcasts());
+        verify(backendManager);
     }
 
     @Test
     public void testGetPodcast() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolder("fauxRaccordsTest", PODCAST)).andReturn(new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr")).atLeastOnce();
+
+        replay(backendManager);
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
         assertNotNull(podcastsHandler.getPodcast("fauxRaccordsTest"));
+        verify(backendManager);
     }
 
     @Test
     public void testAddPodcast() {
-        PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder(null, "newPodcast", "http://google.com");
+
+        backendManager.addFolder(folder, PODCAST);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
         ConfigurationFolder newFolder = podcastsHandler.addPodcast(folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testEditPodcast() {
-        PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr");
+
+        backendManager.editFolder("fauxRaccordsTest", folder, PODCAST);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
         ConfigurationFolder newFolder = podcastsHandler.editPodcast("fauxRaccordsTest", folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testRemovePodcast() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        backendManager.removeFolder("fauxRaccordsTest", PODCAST);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);
         ConfigurationFolder folder = podcastsHandler.removePodcast("fauxRaccordsTest");
         assertNotNull(folder);
         assertEquals(folder.getId(), "fauxRaccordsTest");
+        verify(backendManager);
     }
 }

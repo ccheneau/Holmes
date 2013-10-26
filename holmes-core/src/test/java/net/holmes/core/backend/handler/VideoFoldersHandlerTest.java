@@ -17,64 +17,86 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
+import static net.holmes.core.media.model.RootNode.VIDEO;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class VideoFoldersHandlerTest {
-    @Inject
-    private BackendManager backendManager;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
 
     @Test
     public void testGetVideoFolders() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolders(VIDEO)).andReturn(Lists.newArrayList(new ConfigurationFolder("videosTest", "videosTest", System.getProperty("java.io.tmpdir")))).atLeastOnce();
+
+        replay(backendManager);
         VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         assertNotNull(videoFoldersHandler.getVideoFolders());
+        verify(backendManager);
     }
 
     @Test
     public void testGetVideoFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getFolder("videosTest", VIDEO)).andReturn(new ConfigurationFolder("videosTest", "videosTest", System.getProperty("java.io.tmpdir"))).atLeastOnce();
+
+        replay(backendManager);
         VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         assertNotNull(videoFoldersHandler.getVideoFolder("videosTest"));
+        verify(backendManager);
     }
 
     @Test
     public void testAddVideoFolder() {
-        VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder(null, "newVideoFolder", System.getProperty("java.io.tmpdir"));
+
+        backendManager.addFolder(folder, VIDEO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         ConfigurationFolder newFolder = videoFoldersHandler.addVideoFolder(folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testEditVideoFolder() {
-        VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
+        BackendManager backendManager = createMock(BackendManager.class);
         ConfigurationFolder folder = new ConfigurationFolder("videosTest", "editedVideosTest", System.getProperty("java.io.tmpdir"));
+
+        backendManager.editFolder("videosTest", folder, VIDEO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
+        VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         ConfigurationFolder newFolder = videoFoldersHandler.editVideoFolder("videosTest", folder);
         assertNotNull(newFolder);
         assertEquals(newFolder, folder);
+        verify(backendManager);
     }
 
     @Test
     public void testRemoveVideoFolder() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        backendManager.removeFolder("videosTest", VIDEO);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
         VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);
         ConfigurationFolder folder = videoFoldersHandler.removeVideoFolder("videosTest");
         assertNotNull(folder);
         assertEquals(folder.getId(), "videosTest");
+        verify(backendManager);
     }
 }

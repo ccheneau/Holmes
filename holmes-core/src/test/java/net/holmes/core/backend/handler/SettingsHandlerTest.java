@@ -17,37 +17,38 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 
 public class SettingsHandlerTest {
-    @Inject
-    private BackendManager backendManager;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
 
     @Test
     public void testGetSettings() {
+        BackendManager backendManager = createMock(BackendManager.class);
+
+        expect(backendManager.getSettings()).andReturn(new Settings("serverName", 2000, true, true, true)).atLeastOnce();
+
+        replay(backendManager);
         SettingsHandler settingsHandler = new SettingsHandler(backendManager);
         assertNotNull(settingsHandler.getSettings());
+        verify(backendManager);
     }
 
     @Test
     public void testSaveSettings() {
+        BackendManager backendManager = createMock(BackendManager.class);
+        Settings settings = new Settings("serverName", 2000, true, true, true);
+
+        backendManager.saveSettings(settings);
+        expectLastCall().atLeastOnce();
+
+        replay(backendManager);
         SettingsHandler settingsHandler = new SettingsHandler(backendManager);
-        settingsHandler.saveSettings(new Settings("serverName", 2000, true, true, true));
+        settingsHandler.saveSettings(settings);
+        verify(backendManager);
     }
 }
