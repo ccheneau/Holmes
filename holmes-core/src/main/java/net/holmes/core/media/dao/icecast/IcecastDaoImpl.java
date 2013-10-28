@@ -24,6 +24,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.event.ConfigurationEvent;
@@ -34,6 +35,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.*;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,7 +55,6 @@ public final class IcecastDaoImpl implements IcecastDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(IcecastDaoImpl.class);
     private static final String ICECAST_FILE_NAME = "icecast.xml";
     private static final String DATA_DIR = "data";
-    private static final int DWL_DATA_LENGTH = 8192;
     private final Configuration configuration;
     private final String localHolmesDataDir;
     private final List<String> genreList;
@@ -91,10 +93,9 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
-    public void parseYellowPage() {
+    public boolean parseYellowPage() {
         Path ypPath = getIcecastXmlFile();
-        if (Files.exists(ypPath))
-            parseYellowPage(ypPath.toFile());
+        return Files.exists(ypPath) && parseYellowPage(ypPath.toFile());
     }
 
     @Override
@@ -155,21 +156,19 @@ public final class IcecastDaoImpl implements IcecastDao {
      * Download Icecast yellow page.
      *
      * @return true on download success
+     * @throws IOException
      */
     private boolean downloadYellowPage() throws IOException {
-        LOGGER.info("Start downloading Icecast Yellow page");
+        LOGGER.info("Downloading Icecast Yellow page");
         URL icecastYellowPage = new URL(configuration.getParameter(ICECAST_YELLOW_PAGE_URL));
         File tempFile = getIcecastXmlTempFile().toFile();
-        try (InputStream in = new BufferedInputStream(icecastYellowPage.openStream());
-             OutputStream out = new BufferedOutputStream(new FileOutputStream(tempFile))) {
+        try (ReadableByteChannel in = Channels.newChannel(icecastYellowPage.openStream());
+             FileOutputStream out = new FileOutputStream(tempFile)) {
 
             // Download Icecast yellow page to temp file.
-            byte data[] = new byte[DWL_DATA_LENGTH];
-            int count;
-            while ((count = in.read(data, 0, DWL_DATA_LENGTH)) != -1)
-                out.write(data, 0, count);
+            out.getChannel().transferFrom(in, 0, Long.MAX_VALUE);
 
-            LOGGER.info("End downloading Icecast Yellow page");
+            LOGGER.info("Icecast Yellow page downloaded");
         }
         // Rename temp file once download is complete
         Path xmlFile = getIcecastXmlFile();
@@ -178,7 +177,8 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @VisibleForTesting
-    void parseYellowPage(final File ypFile) {
+    boolean parseYellowPage(final File ypFile) {
+        boolean result = true;
         XStream xstream = new XStream(new Xpp3Driver());
         xstream.alias("directory", IcecastDirectory.class);
         xstream.alias("entry", IcecastEntry.class);
@@ -191,9 +191,15 @@ public final class IcecastDaoImpl implements IcecastDao {
         try (InputStream in = new FileInputStream(ypFile)) {
             // Load configuration from XML
             setDirectory((IcecastDirectory) xstream.fromXML(in));
-        } catch (IOException e) {
-            LOGGER.warn(e.getMessage(), e);
+        } catch (IOException | XStreamException e) {
+            LOGGER.error(e.getMessage(), e);
+            result = false;
         }
+
+        // Remove Yellow page on error
+        if (!result && !ypFile.delete()) LOGGER.error("Failed to remove {}", ypFile.getAbsolutePath());
+
+        return result;
     }
 
     @VisibleForTesting
@@ -205,9 +211,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     void setDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
-            }
+            LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
         }
     }
 
