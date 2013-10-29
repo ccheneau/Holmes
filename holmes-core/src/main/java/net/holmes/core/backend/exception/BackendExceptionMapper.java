@@ -17,6 +17,8 @@
 
 package net.holmes.core.backend.exception;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -47,5 +49,10 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
         return Response.status(Status.BAD_REQUEST)//
                 .type(MediaType.TEXT_PLAIN) //
                 .entity(entityMessage).build();
+    }
+
+    @VisibleForTesting
+    void setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
     }
 }

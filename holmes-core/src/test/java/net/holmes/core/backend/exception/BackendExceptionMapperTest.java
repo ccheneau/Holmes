@@ -17,13 +17,8 @@
 
 package net.holmes.core.backend.exception;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import net.holmes.core.test.TestModule;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ResourceBundle;
@@ -33,34 +28,29 @@ import static org.junit.Assert.assertNotNull;
 
 public class BackendExceptionMapperTest {
 
-    @Inject
-    private BackendExceptionMapper backendExceptionMapper;
-    @Inject
-    private ResourceBundle resourceBundle;
-
-    @Before
-    public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
-    }
-
     @Test
     public void testBackendExceptionMapper() {
-        String messageKey = resourceBundle.getKeys().nextElement();
-        Response response = backendExceptionMapper.toResponse(new BackendException(messageKey));
+        BackendExceptionMapper backendExceptionMapper = new BackendExceptionMapper();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messageTest");
+        backendExceptionMapper.setResourceBundle(resourceBundle);
+
+        Response response = backendExceptionMapper.toResponse(new BackendException("messageKey"));
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
         assertEquals(response.getMediaType(), MediaType.TEXT_PLAIN_TYPE);
-        assertEquals(response.getEntity().toString(), resourceBundle.getString(messageKey));
+        assertEquals(response.getEntity().toString(), "messageValue");
     }
 
     @Test
     public void testBackendExceptionMapperBadMessageKey() {
-        String messageKey = "badMessageKey";
-        Response response = backendExceptionMapper.toResponse(new BackendException(messageKey));
+        BackendExceptionMapper backendExceptionMapper = new BackendExceptionMapper();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messageTest");
+        backendExceptionMapper.setResourceBundle(resourceBundle);
+
+        Response response = backendExceptionMapper.toResponse(new BackendException("badMessageKey"));
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
         assertEquals(response.getMediaType(), MediaType.TEXT_PLAIN_TYPE);
-        assertEquals(response.getEntity().toString(), messageKey);
+        assertEquals(response.getEntity().toString(), "badMessageKey");
     }
 }
