@@ -88,7 +88,7 @@ public class DirectoryBrowseResultTest {
 
     @Test
     public void testAddSubtitleItem() throws IOException, ContentDirectoryException {
-        File file = File.createTempFile(testName.getMethodName(), "avi");
+        File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/x-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
@@ -100,8 +100,8 @@ public class DirectoryBrowseResultTest {
     }
 
     @Test
-    public void testAddBadSubtitleItem() throws IOException, ContentDirectoryException {
-        File file = File.createTempFile(testName.getMethodName(), "avi");
+    public void testAddBadApplicationItem() throws IOException, ContentDirectoryException {
+        File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/bad-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
@@ -110,6 +110,19 @@ public class DirectoryBrowseResultTest {
         directoryBrowseResult.addItem("1", node, "http://google.com");
         assertEquals(directoryBrowseResult.getItemCount(), 0);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 0);
+    }
+
+    @Test
+    public void testAddOggItem() throws IOException, ContentDirectoryException {
+        File file = File.createTempFile(testName.getMethodName(), "ogg");
+        file.deleteOnExit();
+        MimeType mimeType = new MimeType("application/ogg");
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+
+        DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
+        directoryBrowseResult.addItem("1", node, "http://google.com");
+        assertEquals(directoryBrowseResult.getItemCount(), 1);
+        assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
     }
 
     @Test
@@ -193,5 +206,4 @@ public class DirectoryBrowseResultTest {
         assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 2);
     }
-
 }
