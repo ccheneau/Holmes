@@ -22,6 +22,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
@@ -43,6 +44,7 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.common.configuration.Parameter.*;
@@ -78,18 +80,14 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
-    public boolean checkDownloadYellowPage() {
-        // Check xml file already exists and is not too old.
-        // If not, download Yellow page.
-        Calendar cal = Calendar.getInstance();
-        cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
-        Path xmlFile = getIcecastXmlFile();
+    public boolean isAvailableYellowPage() {
+        // Check local Yellow page exists and is not too old.
+        // If not, download new Yellow page.
         try {
-            return enable && (Files.exists(xmlFile) && Files.getLastModifiedTime(xmlFile).toMillis() >= cal.getTimeInMillis() || downloadYellowPage());
+            return enable && (!needsYellowPageDownload() || downloadYellowPage());
         } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -176,6 +174,24 @@ public final class IcecastDaoImpl implements IcecastDao {
         return tempFile.renameTo(xmlFile.toFile());
     }
 
+    /**
+     * Check if Icecast Yellow page needs download.
+     *
+     * @return true if Icecast Yellow page need download
+     */
+    private boolean needsYellowPageDownload() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
+
+        Path xmlFile = getIcecastXmlFile();
+        try {
+            return !Files.exists(xmlFile) || Files.getLastModifiedTime(xmlFile).toMillis() < cal.getTimeInMillis();
+        } catch (IOException e) {
+            return true;
+        }
+
+    }
+
     @VisibleForTesting
     boolean parseYellowPage(final File ypFile) {
         boolean result = true;
@@ -188,10 +204,26 @@ public final class IcecastDaoImpl implements IcecastDao {
         xstream.aliasField("server_type", IcecastEntry.class, "type");
         xstream.ignoreUnknownElements();
 
-        try (InputStream in = new FileInputStream(ypFile)) {
-            // Load configuration from XML
-            setDirectory((IcecastDirectory) xstream.fromXML(in));
-        } catch (IOException | XStreamException e) {
+        try (InputStream in = new FileInputStream(ypFile);
+             ObjectInputStream ois = xstream.createObjectInputStream(in)) {
+            Set<IcecastEntry> entries = Sets.newHashSet();
+            // Parse Xml file using object input stream
+            try {
+                Object object = ois.readObject();
+                while (object != null) {
+                    if (object instanceof IcecastEntry)
+                        entries.add((IcecastEntry) object);
+
+                    object = ois.readObject();
+                }
+            } catch (EOFException e) {
+                // End of file reached. Ignore
+            }
+            // Set new Icecast directory
+            if (!entries.isEmpty())
+                setDirectory(new IcecastDirectory(entries));
+
+        } catch (IOException | XStreamException | ClassNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
             result = false;
         }
@@ -221,16 +253,17 @@ public final class IcecastDaoImpl implements IcecastDao {
      * @param configurationEvent configuration event
      */
     @Subscribe
-    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) throws IOException {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
                 enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
-                if (enable && checkDownloadYellowPage())
+                if (enable) {
                     // Check for download Icecast Yellow page and parse it.
-                    parseYellowPage();
-                else
+                    if (needsYellowPageDownload() && downloadYellowPage()) parseYellowPage();
+                } else {
                     // Reset directory
                     setDirectory(null);
+                }
             }
     }
 
