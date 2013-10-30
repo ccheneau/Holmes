@@ -258,8 +258,8 @@ public final class IcecastDaoImpl implements IcecastDao {
             synchronized (settingsLock) {
                 enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
                 if (enable) {
-                    // Check for download Icecast Yellow page and parse it.
-                    if (needsYellowPageDownload() && downloadYellowPage()) parseYellowPage();
+                    // Parse Yellow page if it is not already loaded
+                    if (isAvailableYellowPage() && !isLoaded()) parseYellowPage();
                 } else {
                     // Reset directory
                     setDirectory(null);
