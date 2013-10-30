@@ -179,16 +179,12 @@ public final class IcecastDaoImpl implements IcecastDao {
      *
      * @return true if Icecast Yellow page need download
      */
-    private boolean needsYellowPageDownload() {
+    private boolean needsYellowPageDownload() throws IOException {
         Calendar cal = Calendar.getInstance();
         cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
 
         Path xmlFile = getIcecastXmlFile();
-        try {
-            return !Files.exists(xmlFile) || Files.getLastModifiedTime(xmlFile).toMillis() < cal.getTimeInMillis();
-        } catch (IOException e) {
-            return true;
-        }
+        return !Files.exists(xmlFile) || Files.getLastModifiedTime(xmlFile).toMillis() < cal.getTimeInMillis();
 
     }
 
