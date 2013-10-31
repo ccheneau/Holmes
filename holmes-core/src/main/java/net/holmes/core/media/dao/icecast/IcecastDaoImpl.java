@@ -191,6 +191,8 @@ public final class IcecastDaoImpl implements IcecastDao {
     @VisibleForTesting
     boolean parseYellowPage(final File ypFile) {
         boolean result = true;
+
+        // Configure XStream
         XStream xstream = new XStream(new Xpp3Driver());
         xstream.alias("directory", IcecastDirectory.class);
         xstream.alias("entry", IcecastEntry.class);
@@ -200,10 +202,11 @@ public final class IcecastDaoImpl implements IcecastDao {
         xstream.aliasField("server_type", IcecastEntry.class, "type");
         xstream.ignoreUnknownElements();
 
+        // Parse Xml file using object input stream
         try (InputStream in = new FileInputStream(ypFile);
              ObjectInputStream ois = xstream.createObjectInputStream(in)) {
+
             Set<IcecastEntry> entries = Sets.newHashSet();
-            // Parse Xml file using object input stream
             try {
                 Object object = ois.readObject();
                 while (object != null) {
@@ -235,8 +238,7 @@ public final class IcecastDaoImpl implements IcecastDao {
         return directory;
     }
 
-    @VisibleForTesting
-    void setDirectory(IcecastDirectory directory) {
+    private void setDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
             LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
