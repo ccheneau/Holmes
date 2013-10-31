@@ -65,10 +65,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
         long fileLength = randomFile.length();
 
-        FullHttpRequest httpRequest = request.getHttpRequest();
-
         // Get start offset
-        long startOffset = getStartOffset(httpRequest);
+        long startOffset = getStartOffset(request.getHttpRequest());
 
         // Build response
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
@@ -79,7 +77,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         setDateHeader(response, file);
 
         // Keep alive header
-        if (isKeepAlive(httpRequest))
+        boolean keepAlive = isKeepAlive(request.getHttpRequest());
+        if (keepAlive)
             response.headers().set(CONNECTION, KEEP_ALIVE);
 
         // Write the response
@@ -92,7 +91,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not when the whole content is written out.
-        if (!isKeepAlive(httpRequest))
+        if (!keepAlive)
             lastContentFuture.addListener(ChannelFutureListener.CLOSE);
 
     }
