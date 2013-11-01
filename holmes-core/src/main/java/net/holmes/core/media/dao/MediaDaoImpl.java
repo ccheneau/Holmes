@@ -44,11 +44,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import static net.holmes.core.common.MediaType.TYPE_IMAGE;
+import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_CONTENT_RESOLUTION;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
@@ -273,7 +273,7 @@ public class MediaDaoImpl implements MediaDao {
     private Collection<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
         Collection<AbstractNode> result = Lists.newArrayList();
         for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre))
-            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, UUID.randomUUID().toString(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
+            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, newUniqueId(), parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
 
         return result;
     }

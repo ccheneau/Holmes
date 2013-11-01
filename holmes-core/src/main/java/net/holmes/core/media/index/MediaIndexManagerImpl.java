@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map.Entry;
-import java.util.UUID;
 
+import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
@@ -59,7 +59,7 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     public String add(final MediaIndexElement element) {
         String uuid = elements.inverse().get(element);
         if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
+            uuid = newUniqueId();
             elements.put(uuid, element);
         }
         return uuid;

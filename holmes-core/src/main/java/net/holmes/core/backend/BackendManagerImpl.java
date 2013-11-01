@@ -31,8 +31,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
+import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.common.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
@@ -83,7 +83,7 @@ public final class BackendManagerImpl implements BackendManager {
         else helper.validateFolder(folder, configNodes, null);
 
         // Set new folder id
-        folder.setId(UUID.randomUUID().toString());
+        folder.setId(newUniqueId());
 
         // Save config
         ConfigurationNode newNode = new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath());

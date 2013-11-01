@@ -31,8 +31,8 @@ import net.holmes.core.media.model.RawUrlNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.UUID;
 
+import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 
 /**
@@ -55,7 +55,7 @@ abstract class PodcastParser {
                             MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
                             if (mimeType != null && mimeType.isMedia()) {
                                 // Build podcast entry node
-                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, UUID.randomUUID().toString(), podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
+                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, newUniqueId(), podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
                                 podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
                                 podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
                                 // Add podcast entry node
