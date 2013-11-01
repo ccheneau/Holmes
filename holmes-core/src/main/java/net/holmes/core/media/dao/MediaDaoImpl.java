@@ -165,13 +165,13 @@ public class MediaDaoImpl implements MediaDao {
             case ICECAST:
                 if (icecastDao.isLoaded()) {
                     // Add Icecast genre from Icecast dao
-                    String id;
                     for (String genre : icecastDao.getGenres()) {
-                        id = "icecast_genre_" + genre;
+                        String id = "icecast_genre_" + genre;
+                        String genreName = Character.toUpperCase(genre.charAt(0)) + genre.substring(1);
                         // Add node to media index
-                        mediaIndexManager.put(id, buildMediaIndexElement(rootNode, genre, genre));
+                        mediaIndexManager.put(id, buildMediaIndexElement(rootNode, genre, genreName));
                         // Add child node
-                        nodes.add(new IcecastGenreNode(id, rootNode.getId(), genre, genre));
+                        nodes.add(new IcecastGenreNode(id, rootNode.getId(), genreName, genre));
                     }
                 }
                 break;
