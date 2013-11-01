@@ -116,7 +116,7 @@ public class MediaManagerTest {
 
     @Test
     public void testPictureNodesWithoutContentResolution() {
-        configuration.setParameter(Parameter.ENABLE_CONTENT_RESOLUTION, false);
+        configuration.setBooleanParameter(Parameter.ENABLE_CONTENT_RESOLUTION, false);
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
@@ -160,7 +160,7 @@ public class MediaManagerTest {
 
     @Test
     public void testVideoNodesWithoutSubTitles() {
-        configuration.setParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, false);
+        configuration.setBooleanParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, false);
         AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
 

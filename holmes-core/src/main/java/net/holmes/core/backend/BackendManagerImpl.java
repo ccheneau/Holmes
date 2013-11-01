@@ -154,9 +154,9 @@ public final class BackendManagerImpl implements BackendManager {
 
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
-        configuration.setParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
-        configuration.setParameter(ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
-        configuration.setParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
+        configuration.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
+        configuration.setBooleanParameter(ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
+        configuration.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {
             // save settings
             configuration.saveConfig();

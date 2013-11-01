@@ -149,35 +149,14 @@ public final class XmlRootNode {
     }
 
     /**
-     * Gets boolean parameter.
-     *
-     * @param parameter parameter
-     * @return parameter boolean value
-     */
-    public Boolean getBooleanParameter(final Parameter parameter) {
-        String value = (String) this.parameters.get(parameter.getName());
-        return Boolean.valueOf(value == null ? parameter.getDefaultValue() : value);
-    }
-
-    /**
-     * Gets int parameter value.
-     *
-     * @param parameter parameter
-     * @return int parameter value
-     */
-    public Integer getIntParameter(final Parameter parameter) {
-        String value = (String) this.parameters.get(parameter.getName());
-        return Integer.valueOf(value == null ? parameter.getDefaultValue() : value);
-    }
-
-    /**
      * Gets parameter value.
      *
      * @param parameter parameter
      * @return int parameter value
      */
     public String getParameter(final Parameter parameter) {
-        return (String) this.parameters.get(parameter.getName());
+        String value = (String) this.parameters.get(parameter.getName());
+        return value == null ? parameter.getDefaultValue() : value;
     }
 
     /**
@@ -186,7 +165,7 @@ public final class XmlRootNode {
      * @param parameter parameter
      * @param value     parameter value
      */
-    public void setParameter(final Parameter parameter, final Boolean value) {
-        this.parameters.setProperty(parameter.getName(), value.toString());
+    public void setParameter(final Parameter parameter, final String value) {
+        this.parameters.setProperty(parameter.getName(), value);
     }
 }

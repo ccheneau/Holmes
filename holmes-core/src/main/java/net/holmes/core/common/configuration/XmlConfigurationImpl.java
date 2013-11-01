@@ -149,12 +149,12 @@ public final class XmlConfigurationImpl implements Configuration {
 
     @Override
     public Boolean getBooleanParameter(final Parameter parameter) {
-        return this.rootNode.getBooleanParameter(parameter);
+        return Boolean.valueOf(getParameter(parameter));
     }
 
     @Override
     public Integer getIntParameter(final Parameter parameter) {
-        return this.rootNode.getIntParameter(parameter);
+        return Integer.valueOf(getParameter(parameter));
     }
 
     @Override
@@ -163,7 +163,7 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public void setParameter(final Parameter parameter, final Boolean value) {
-        this.rootNode.setParameter(parameter, value);
+    public void setBooleanParameter(final Parameter parameter, final Boolean value) {
+        this.rootNode.setParameter(parameter, value.toString());
     }
 }

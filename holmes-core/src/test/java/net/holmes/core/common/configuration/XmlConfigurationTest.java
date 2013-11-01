@@ -114,7 +114,7 @@ public class XmlConfigurationTest {
         try {
             XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
             assertTrue(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
-            configuration.setParameter(Parameter.ENABLE_SYSTRAY, false);
+            configuration.setBooleanParameter(Parameter.ENABLE_SYSTRAY, false);
             assertFalse(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
         } catch (IOException e) {
             fail(e.getMessage());

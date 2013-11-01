@@ -134,7 +134,7 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public void setParameter(Parameter param, Boolean value) {
+    public void setBooleanParameter(Parameter param, Boolean value) {
         parameters.put(param, value.toString());
     }
 }

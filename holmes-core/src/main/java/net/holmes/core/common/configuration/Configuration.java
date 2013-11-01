@@ -101,10 +101,10 @@ public interface Configuration {
     String getParameter(Parameter parameter);
 
     /**
-     * Sets parameter value.
+     * Sets boolean parameter value.
      *
      * @param parameter parameter
      * @param value     parameter value
      */
-    void setParameter(Parameter parameter, Boolean value);
+    void setBooleanParameter(Parameter parameter, Boolean value);
 }
