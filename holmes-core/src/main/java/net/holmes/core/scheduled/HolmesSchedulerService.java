@@ -40,9 +40,9 @@ public class HolmesSchedulerService implements Service {
      * @param mediaScannerService        media scanner
      */
     @Inject
-    public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService, //
-                                  @Named("podcastCacheCleaner") final AbstractScheduledService podcastCacheCleanerService, //
-                                  @Named("mediaScanner") final AbstractScheduledService mediaScannerService, //
+    public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService,
+                                  @Named("podcastCacheCleaner") final AbstractScheduledService podcastCacheCleanerService,
+                                  @Named("mediaScanner") final AbstractScheduledService mediaScannerService,
                                   @Named("icecast") final AbstractScheduledService icecastDownloadService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
         this.podcastCacheCleanerService = podcastCacheCleanerService;

@@ -36,21 +36,18 @@ import java.util.concurrent.TimeUnit;
 public class CacheCleanerService extends AbstractScheduledService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheCleanerService.class);
     private final Cache<String, List<AbstractNode>> podcastCache;
-    private final Cache<String, String> imageCache;
     private final int cleanDelayMinutes;
 
     /**
      * Instantiates a new cache cleaner service.
      *
      * @param podcastCache  podcast cache
-     * @param imageCache    image cache
      * @param configuration configuration
      */
     @Inject
     public CacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
-                               @Named("imageCache") final Cache<String, String> imageCache, final Configuration configuration) {
+                               final Configuration configuration) {
         this.podcastCache = podcastCache;
-        this.imageCache = imageCache;
         this.cleanDelayMinutes = configuration.getIntParameter(Parameter.LOCAL_CACHE_CLEAN_DELAY_MINUTES);
     }
 
@@ -58,7 +55,6 @@ public class CacheCleanerService extends AbstractScheduledService {
     protected void runOneIteration() {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch cache cleaner");
         podcastCache.cleanUp();
-        imageCache.cleanUp();
     }
 
     @Override

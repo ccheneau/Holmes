@@ -39,7 +39,6 @@ import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.file.HttpFileRequestDecoder;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.media.MediaManager;
@@ -150,8 +149,6 @@ final class HolmesServerModule extends AbstractModule {
         // Bind caches
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
-        bind(new TypeLiteral<Cache<String, String>>() {
-        }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class).in(Singleton.class);
 
         // Bind constants
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
@@ -175,7 +172,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
-        bind(UpnpService.class).toProvider(UpnpServiceProvider.class);
+        bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
 
         // Bind Http decoder
         bind(HttpFileRequestDecoder.class);

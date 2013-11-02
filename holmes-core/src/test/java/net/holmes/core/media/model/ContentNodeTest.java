@@ -80,17 +80,6 @@ public class ContentNodeTest {
     }
 
     /**
-     * Method: getResolution()
-     */
-    @Test
-    public void testGetResolution() throws Exception {
-        File file = File.createTempFile(testName.getMethodName(), "avi");
-        file.deleteOnExit();
-        ContentNode node = buildContentNode("", file);
-        assertEquals(node.getResolution(), "resolution");
-    }
-
-    /**
      * Method: hashCode()
      */
     @Test
@@ -133,6 +122,6 @@ public class ContentNodeTest {
 
     private ContentNode buildContentNode(String suffix, File file) {
         MimeType mimeType = new MimeType("video/x-msvideo");
-        return new ContentNode("id" + suffix, "parentId" + suffix, "name" + suffix, file, mimeType, "resolution" + suffix);
+        return new ContentNode("id" + suffix, "parentId" + suffix, "name" + suffix, file, mimeType);
     }
 }

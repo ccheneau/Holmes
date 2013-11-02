@@ -34,7 +34,6 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.ImageCacheProvider;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
@@ -81,8 +80,6 @@ public class TestModule extends AbstractModule {
 
         bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
         }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class);
-        bind(new TypeLiteral<Cache<String, String>>() {
-        }).annotatedWith(Names.named("imageCache")).toProvider(ImageCacheProvider.class);
 
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class);

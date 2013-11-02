@@ -51,7 +51,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("video/x-msvideo");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -64,7 +64,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -78,7 +78,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("image/jpeg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -91,7 +91,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/x-subrip");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -104,7 +104,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/bad-subrip");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -117,7 +117,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "ogg");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("application/ogg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -130,7 +130,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("bad-type/bad-subtype");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addItem("1", node, "http://google.com");
@@ -143,7 +143,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("\\bad_url");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -174,7 +174,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -193,7 +193,7 @@ public class DirectoryBrowseResultTest {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         MimeType mimeType = new MimeType("audio/mpeg");
-        ContentNode node = new ContentNode("id", "1", "name", file, mimeType, null);
+        ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 0);

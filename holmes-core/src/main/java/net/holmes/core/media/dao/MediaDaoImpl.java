@@ -19,8 +19,6 @@ package net.holmes.core.media.dao;
 
 import com.google.common.cache.Cache;
 import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.ExecutionError;
-import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.sun.syndication.io.FeedException;
 import net.holmes.core.common.MediaType;
 import net.holmes.core.common.NodeFile;
@@ -36,10 +34,8 @@ import net.holmes.core.media.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -47,9 +43,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import static net.holmes.core.common.MediaType.TYPE_IMAGE;
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.common.configuration.Parameter.ENABLE_CONTENT_RESOLUTION;
 import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
@@ -65,7 +59,6 @@ public class MediaDaoImpl implements MediaDao {
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexManager mediaIndexManager;
     private final IcecastDao icecastDao;
-    private final Cache<String, String> imageCache;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     /**
@@ -76,19 +69,16 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaIndexManager media index manager
      * @param icecastDao        Icecast dao
      * @param podcastCache      podcast cache
-     * @param imageCache        image cache
      */
     @Inject
     public MediaDaoImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final MediaIndexManager mediaIndexManager,
                         final IcecastDao icecastDao,
-                        @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
-                        @Named("imageCache") final Cache<String, String> imageCache) {
+                        @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexManager = mediaIndexManager;
         this.icecastDao = icecastDao;
         this.podcastCache = podcastCache;
-        this.imageCache = imageCache;
     }
 
     @Override
@@ -292,33 +282,10 @@ public class MediaDaoImpl implements MediaDao {
         if (mimeType != null)
             if (mimeType.getType() == mediaType)
                 // build content node
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, getContentResolution(file.getAbsolutePath(), mimeType));
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
             else if (mimeType.isSubTitle() && configuration.getBooleanParameter(ENABLE_EXTERNAL_SUBTITLES))
                 // build subtitle node
-                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType, null);
+                return new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
         return null;
-    }
-
-    /**
-     * Gets the content resolution. Only available for image.
-     *
-     * @param fileName the file name
-     * @param mimeType the mime type
-     * @return the content resolution
-     */
-    private String getContentResolution(final String fileName, final MimeType mimeType) {
-        if (configuration.getBooleanParameter(ENABLE_CONTENT_RESOLUTION) && mimeType.getType() == TYPE_IMAGE)
-            try {
-                return imageCache.get(fileName, new Callable<String>() {
-                    @Override
-                    public String call() throws IOException {
-                        BufferedImage bufferedImage = ImageIO.read(new File(fileName).toURI().toURL());
-                        return String.format("%dx%d", bufferedImage.getWidth(), bufferedImage.getHeight());
-                    }
-                });
-            } catch (ExecutionException | UncheckedExecutionException | ExecutionError e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        return "0x0";
     }
 }

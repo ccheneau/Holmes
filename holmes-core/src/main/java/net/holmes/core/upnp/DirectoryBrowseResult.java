@@ -113,7 +113,6 @@ final class DirectoryBrowseResult {
      */
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws ContentDirectoryException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
-        res.setResolution(contentNode.getResolution());
 
         addDidlItem(parentNodeId, contentNode, contentNode.getName(), contentNode.getMimeType(), res);
     }

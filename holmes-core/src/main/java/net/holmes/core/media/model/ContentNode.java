@@ -30,7 +30,6 @@ public final class ContentNode extends AbstractNode {
     private final MimeType mimeType;
     private final Long size;
     private final String path;
-    private final String resolution;
 
     /**
      * Instantiates a new content node.
@@ -41,13 +40,12 @@ public final class ContentNode extends AbstractNode {
      * @param file     node file
      * @param mimeType mime type
      */
-    public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType, final String resolution) {
+    public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType) {
         super(NodeType.TYPE_CONTENT, id, parentId, name);
         this.path = file.getAbsolutePath();
         this.mimeType = mimeType;
         this.size = file.length();
         this.modifiedDate = file.lastModified();
-        this.resolution = resolution;
     }
 
     /**
@@ -77,18 +75,9 @@ public final class ContentNode extends AbstractNode {
         return path;
     }
 
-    /**
-     * Gets the resolution.
-     *
-     * @return the resolution
-     */
-    public String getResolution() {
-        return resolution;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path, resolution);
+        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path);
     }
 
     @Override
@@ -98,7 +87,7 @@ public final class ContentNode extends AbstractNode {
         if (!super.equals(obj)) return false;
 
         final ContentNode other = (ContentNode) obj;
-        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.size, other.size) && Objects.equal(this.path, other.path) && Objects.equal(this.resolution, other.resolution);
+        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.size, other.size) && Objects.equal(this.path, other.path);
     }
 
     @Override
@@ -107,7 +96,6 @@ public final class ContentNode extends AbstractNode {
                 .addValue(mimeType)
                 .addValue(size)
                 .addValue(path)
-                .addValue(resolution)
                 .addValue(id)
                 .addValue(type)
                 .addValue(parentId)

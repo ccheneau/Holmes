@@ -131,7 +131,7 @@ public class HttpFileRequestDecoderTest {
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
-        expect(mediaManager.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"), "resolution")).atLeastOnce();
+        expect(mediaManager.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
 
         replay(context, request, mediaManager, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
