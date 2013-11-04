@@ -223,7 +223,8 @@ public final class IcecastDaoImpl implements IcecastDao {
                 setDirectory(new IcecastDirectory(entries));
 
         } catch (IOException | XStreamException | ClassNotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.warn("Failed to parse Icecast directory");
+            if (LOGGER.isDebugEnabled()) LOGGER.debug(e.getMessage(), e);
             result = false;
         }
 
