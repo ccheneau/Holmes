@@ -46,6 +46,8 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.scheduled.*;
 import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
+import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
 import org.fourthline.cling.UpnpService;
 
 import java.util.List;
@@ -66,6 +68,7 @@ public class TestModule extends AbstractModule {
 
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
+        bind(UpnpDeviceMetadata.class).to(UpnpDeviceMetadataImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class);
 

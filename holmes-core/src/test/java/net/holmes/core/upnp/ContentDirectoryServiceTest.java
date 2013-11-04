@@ -22,6 +22,7 @@ import com.google.inject.Injector;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.test.TestModule;
+import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class ContentDirectoryServiceTest {
 
     @Test
     public void testBrowseRootDC() throws ContentDirectoryException {
-        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
 
     }
@@ -67,11 +68,11 @@ public class ContentDirectoryServiceTest {
         assertTrue(childNodes.size() > 0);
 
         // Browse video root node
-        BrowseResult result = contentDirectoryService.browse(VIDEO.getId(), DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(VIDEO.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
 
         // Browse first child of video root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null);
+        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
     }
 
@@ -87,30 +88,30 @@ public class ContentDirectoryServiceTest {
         assertTrue(childNodes.size() > 0);
 
         // Browse podcast root node
-        BrowseResult result = contentDirectoryService.browse(PODCAST.getId(), DIRECT_CHILDREN, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(PODCAST.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
 
         // Browse first child of podcast root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null);
+        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
     }
 
     @Test
     public void testBrowseRootMetadata() throws ContentDirectoryException {
-        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), METADATA, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), METADATA, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
 
     }
 
     @Test
     public void testBrowseRootNullFlag() throws ContentDirectoryException {
-        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), null, null, 0, 10, null);
+        BrowseResult result = contentDirectoryService.browse(ROOT.getId(), null, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
 
     }
 
     @Test(expected = ContentDirectoryException.class)
     public void testBrowseNull() throws ContentDirectoryException {
-        contentDirectoryService.browse(null, METADATA, null, 0, 10, null);
+        contentDirectoryService.browse(null, METADATA, null, 0, 10, null, new RemoteClientInfo());
     }
 }

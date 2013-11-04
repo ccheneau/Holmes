@@ -21,7 +21,8 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.*;
-import org.fourthline.cling.support.contentdirectory.AbstractContentDirectoryService;
+import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
+import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
@@ -50,6 +52,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Inject
     private Configuration configuration;
     @Inject
+    private UpnpDeviceMetadata upnpDeviceMetadata;
+    @Inject
     @Named("localIP")
     private String localIP;
 
@@ -63,13 +67,27 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
-                               final SortCriterion[] orderBy) throws ContentDirectoryException {
+                               final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("browse  " + browseFlag + " objectId=" + objectID + " firstResult=" + firstResult
                     + " nbResults=" + maxResults);
             LOGGER.debug("filter: {}", filter);
+            LOGGER.debug("User agent: " + remoteClientInfo.getRequestUserAgent());
+            if (remoteClientInfo.getConnection() != null)
+                LOGGER.debug("Remote Address: " + remoteClientInfo.getRemoteAddress().getHostAddress());
+            if (remoteClientInfo.getRequestHeaders() != null) {
+                for (Map.Entry<String, List<String>> stringListEntry : remoteClientInfo.getRequestHeaders().entrySet()) {
+                    LOGGER.debug("Header: " + stringListEntry.getKey() + " => " + stringListEntry.getValue());
+                }
+            }
         }
 
+        // Get available mime types
+        List<String> availableMimeTypes;
+        if (remoteClientInfo.getConnection() != null) {
+            availableMimeTypes = upnpDeviceMetadata.getAvailableMimeTypes(remoteClientInfo.getRemoteAddress().getHostAddress());
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}}", availableMimeTypes);
+        }
 
         // Get browse node
         AbstractNode browseNode = mediaManager.getNode(objectID);
