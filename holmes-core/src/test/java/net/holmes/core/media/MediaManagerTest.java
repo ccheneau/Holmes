@@ -160,25 +160,6 @@ public class MediaManagerTest {
     }
 
     @Test
-    public void testVideoNodesWithoutSubTitles() {
-        configuration.setBooleanParameter(Parameter.ENABLE_EXTERNAL_SUBTITLES, false);
-        AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
-        assertNotNull(node);
-
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(1, childNodes.size());
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
-
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
-        assertEquals(2, nodes.size());
-        assertConfigNodes(nodes, "video.avi");
-    }
-
-    @Test
     public void testPodcastNodes() {
         AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);

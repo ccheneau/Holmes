@@ -44,7 +44,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.common.configuration.Parameter.ENABLE_EXTERNAL_SUBTITLES;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.media.model.RootNode.ICECAST;
@@ -283,7 +282,7 @@ public class MediaDaoImpl implements MediaDao {
             if (mimeType.getType() == mediaType)
                 // build content node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
-            else if (mimeType.isSubTitle() && configuration.getBooleanParameter(ENABLE_EXTERNAL_SUBTITLES))
+            else if (mimeType.isSubTitle())
                 // build subtitle node
                 return new ContentNode(nodeId, parentId, file.getName(), file, mimeType);
         return null;

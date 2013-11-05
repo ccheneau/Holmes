@@ -20,7 +20,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertEquals(settings.getServerName(), "serverName");
     }
 
@@ -29,7 +29,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setServerName("newServerName");
         assertEquals(settings.getServerName(), "newServerName");
     }
@@ -39,7 +39,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getHttpServerPort() == 999);
     }
 
@@ -48,7 +48,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setHttpServerPort(1000);
         assertTrue(settings.getHttpServerPort() == 1000);
     }
@@ -58,7 +58,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getPrependPodcastItem());
     }
 
@@ -67,28 +67,9 @@ public class SettingsTest {
      */
     @Test
     public void testSetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setPrependPodcastItem(false);
         assertFalse(settings.getPrependPodcastItem());
-    }
-
-    /**
-     * Method: getEnableExternalSubtitles()
-     */
-    @Test
-    public void testGetEnableExternalSubtitles() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        assertTrue(settings.getEnableExternalSubtitles());
-    }
-
-    /**
-     * Method: setEnableExternalSubtitles(final Boolean enableExternalSubtitles)
-     */
-    @Test
-    public void testSetEnableExternalSubtitles() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
-        settings.setEnableExternalSubtitles(false);
-        assertFalse(settings.getEnableExternalSubtitles());
     }
 
     /**
@@ -96,7 +77,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         assertTrue(settings.getEnableIcecastDirectory());
     }
 
@@ -105,7 +86,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true, true);
+        Settings settings = new Settings("serverName", 999, true, true);
         settings.setEnableIcecastDirectory(false);
         assertFalse(settings.getEnableIcecastDirectory());
     }

@@ -33,7 +33,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.common.configuration.Parameter.*;
+import static net.holmes.core.common.configuration.Parameter.ENABLE_ICECAST_DIRECTORY;
+import static net.holmes.core.common.configuration.Parameter.PREPEND_PODCAST_ENTRY_NAME;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
@@ -143,7 +144,6 @@ public final class BackendManagerImpl implements BackendManager {
     public Settings getSettings() {
         return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
                 configuration.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
-                configuration.getBooleanParameter(ENABLE_EXTERNAL_SUBTITLES),
                 configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
 
@@ -155,7 +155,6 @@ public final class BackendManagerImpl implements BackendManager {
         configuration.setUpnpServerName(settings.getServerName());
         configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
-        configuration.setBooleanParameter(ENABLE_EXTERNAL_SUBTITLES, settings.getEnableExternalSubtitles());
         configuration.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {
             // save settings

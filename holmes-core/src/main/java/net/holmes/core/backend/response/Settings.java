@@ -25,7 +25,6 @@ public final class Settings {
     private String serverName;
     private Integer httpServerPort;
     private Boolean prependPodcastItem;
-    private Boolean enableExternalSubtitles;
     private Boolean enableIcecastDirectory;
 
     /**
@@ -37,18 +36,15 @@ public final class Settings {
     /**
      * Instantiates a new settings.
      *
-     * @param serverName              server name
-     * @param httpServerPort          Http server port
-     * @param prependPodcastItem      prepend pod-cast item
-     * @param enableExternalSubtitles enable external subtitles
-     * @param enableIcecastDirectory  enable Icecast directory
+     * @param serverName             server name
+     * @param httpServerPort         Http server port
+     * @param prependPodcastItem     prepend pod-cast item
+     * @param enableIcecastDirectory enable Icecast directory
      */
-    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem,
-                    final Boolean enableExternalSubtitles, final Boolean enableIcecastDirectory) {
+    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem, final Boolean enableIcecastDirectory) {
         this.serverName = serverName;
         this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
-        this.enableExternalSubtitles = enableExternalSubtitles;
         this.enableIcecastDirectory = enableIcecastDirectory;
     }
 
@@ -74,14 +70,6 @@ public final class Settings {
 
     public void setPrependPodcastItem(final Boolean prependPodcastItem) {
         this.prependPodcastItem = prependPodcastItem;
-    }
-
-    public Boolean getEnableExternalSubtitles() {
-        return enableExternalSubtitles;
-    }
-
-    public void setEnableExternalSubtitles(final Boolean enableExternalSubtitles) {
-        this.enableExternalSubtitles = enableExternalSubtitles;
     }
 
     public Boolean getEnableIcecastDirectory() {

@@ -14,7 +14,6 @@ var Application = (function(application) {
 					settingsServerName : $.i18n.prop("msg.settings.serverName"),
 					settingsServerPort : $.i18n.prop("msg.settings.httpServerPort"),
 					settingsPrependPodcastItem : $.i18n.prop("msg.settings.prependPodcastItem"),
-					settingsEnableExternalSubtitles : $.i18n.prop("msg.settings.enableExternalSubtitles"),
 					settingsEnableIcecastDirectory : $.i18n.prop("msg.settings.enableIcecastDirectory"),
 					cancel : $.i18n.prop("msg.cancel"),
 					save : $.i18n.prop("msg.save")
@@ -31,7 +30,6 @@ var Application = (function(application) {
 				"serverName" : $("#settingsServerName").val().trim(),
 				"httpServerPort" : $("#settingsHttpServerPort").val().trim(),
 				"prependPodcastItem" : $("#chkPrependPodcastItem").is(':checked') ? "true" : "false",
-				"enableExternalSubtitles" : $("#chkEnableExternalSubtitles").is(':checked') ? "true" : "false",
 				"enableIcecastDirectory" : $("#chkEnableIcecastDirectory").is(':checked') ? "true" : "false"
 			}, {
 				success : function() {
