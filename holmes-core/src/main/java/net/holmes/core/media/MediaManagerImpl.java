@@ -148,9 +148,9 @@ public final class MediaManagerImpl implements MediaManager {
         }
 
         @Override
-        public boolean apply(final AbstractNode entry) {
-            if (entry instanceof MimeTypeNode) {
-                MimeType mimeType = ((MimeTypeNode) entry).getMimeType();
+        public boolean apply(final AbstractNode node) {
+            if (node instanceof MimeTypeNode) {
+                MimeType mimeType = ((MimeTypeNode) node).getMimeType();
                 return availableMimeTypes == null || mimeType == null || availableMimeTypes.contains(mimeType.getMimeType());
             } else
                 return true;
