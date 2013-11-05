@@ -58,6 +58,6 @@ public class MediaEvent {
      * Media event type.
      */
     public enum MediaEventType {
-        SCAN_ALL, SCAN_NODE, UNKNOWN
+        SCAN_NODE, UNKNOWN
     }
 }

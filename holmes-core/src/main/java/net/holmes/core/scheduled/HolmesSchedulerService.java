@@ -29,7 +29,6 @@ import javax.inject.Named;
 public class HolmesSchedulerService implements Service {
     private final AbstractScheduledService mediaIndexCleanerService;
     private final AbstractScheduledService podcastCacheCleanerService;
-    private final AbstractScheduledService mediaScannerService;
     private final AbstractScheduledService icecastDownloadService;
 
     /**
@@ -37,16 +36,13 @@ public class HolmesSchedulerService implements Service {
      *
      * @param mediaIndexCleanerService   media index cleaner
      * @param podcastCacheCleanerService podcast cache cleaner
-     * @param mediaScannerService        media scanner
      */
     @Inject
     public HolmesSchedulerService(@Named("mediaIndexCleaner") final AbstractScheduledService mediaIndexCleanerService,
                                   @Named("podcastCacheCleaner") final AbstractScheduledService podcastCacheCleanerService,
-                                  @Named("mediaScanner") final AbstractScheduledService mediaScannerService,
                                   @Named("icecast") final AbstractScheduledService icecastDownloadService) {
         this.mediaIndexCleanerService = mediaIndexCleanerService;
         this.podcastCacheCleanerService = podcastCacheCleanerService;
-        this.mediaScannerService = mediaScannerService;
         this.icecastDownloadService = icecastDownloadService;
     }
 
@@ -54,14 +50,12 @@ public class HolmesSchedulerService implements Service {
     public void start() {
         mediaIndexCleanerService.startAsync();
         podcastCacheCleanerService.startAsync();
-        mediaScannerService.startAsync();
         icecastDownloadService.startAsync();
     }
 
     @Override
     public void stop() {
         icecastDownloadService.stopAsync();
-        mediaScannerService.stopAsync();
         podcastCacheCleanerService.stopAsync();
         mediaIndexCleanerService.stopAsync();
     }

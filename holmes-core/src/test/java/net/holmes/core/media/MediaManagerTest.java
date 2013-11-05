@@ -176,19 +176,6 @@ public class MediaManagerTest {
     }
 
     @Test
-    public void testScanAll() {
-        mediaManager.scanAll();
-    }
-
-    @Test
-    public void testHandleMediaEventScanAll() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
-            mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_ALL, null));
-        }
-    }
-
-    @Test
     public void testHandleMediaEventScanNode() {
         if (mediaManager instanceof MediaManagerImpl) {
             MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;

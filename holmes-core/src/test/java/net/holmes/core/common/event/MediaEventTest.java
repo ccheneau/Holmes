@@ -43,7 +43,7 @@ public class MediaEventTest {
     @Test
     public void testGetType() throws Exception {
         MediaEvent event = buildMediaEvent("");
-        assertEquals(event.getType(), MediaEvent.MediaEventType.SCAN_ALL);
+        assertEquals(event.getType(), MediaEvent.MediaEventType.SCAN_NODE);
     }
 
     /**
@@ -67,6 +67,6 @@ public class MediaEventTest {
     }
 
     private MediaEvent buildMediaEvent(String suffix) {
-        return new MediaEvent(MediaEvent.MediaEventType.SCAN_ALL, "parameter" + suffix);
+        return new MediaEvent(MediaEvent.MediaEventType.SCAN_NODE, "parameter" + suffix);
     }
 }

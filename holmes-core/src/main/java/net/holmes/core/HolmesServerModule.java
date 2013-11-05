@@ -50,7 +50,10 @@ import net.holmes.core.media.dao.icecast.IcecastDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.scheduled.*;
+import net.holmes.core.scheduled.CacheCleanerService;
+import net.holmes.core.scheduled.HolmesSchedulerService;
+import net.holmes.core.scheduled.IcecastDownloadService;
+import net.holmes.core.scheduled.MediaIndexCleanerService;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
@@ -162,7 +165,6 @@ final class HolmesServerModule extends AbstractModule {
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaScanner")).to(MediaScannerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
         // Bind servers

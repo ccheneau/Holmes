@@ -94,15 +94,6 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     /**
-     * Scan all configuration nodes
-     */
-    @Override
-    public void scanAll() {
-        AbstractNode rootNode = getNode(RootNode.ROOT.getId());
-        scanNode(rootNode);
-    }
-
-    /**
      * Scan a specific node and its children
      *
      * @param node node to scan
@@ -124,9 +115,6 @@ public final class MediaManagerImpl implements MediaManager {
     @Subscribe
     public void handleMediaEvent(final MediaEvent mediaEvent) {
         switch (mediaEvent.getType()) {
-            case SCAN_ALL:
-                scanAll();
-                break;
             case SCAN_NODE:
                 AbstractNode node = getNode(mediaEvent.getParameter());
                 if (node != null) scanNode(node);

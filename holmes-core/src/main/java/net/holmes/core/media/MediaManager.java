@@ -42,9 +42,4 @@ public interface MediaManager {
      * @return child nodes
      */
     Collection<AbstractNode> getChildNodes(AbstractNode parentNode, List<String> availableMimeTypes);
-
-    /**
-     * Perform a full scan.
-     */
-    void scanAll();
 }
