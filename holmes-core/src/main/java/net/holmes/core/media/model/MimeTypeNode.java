@@ -15,36 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.media;
+package net.holmes.core.media.model;
 
-import net.holmes.core.media.model.AbstractNode;
-
-import java.util.Collection;
-import java.util.List;
+import net.holmes.core.common.mimetype.MimeType;
 
 /**
- * Media manager.
+ * Abstract node with mime type
  */
-public interface MediaManager {
-    /**
-     * Get node.
-     *
-     * @param nodeId node id
-     * @return node
-     */
-    AbstractNode getNode(String nodeId);
+public abstract class MimeTypeNode extends AbstractNode {
+
+    final MimeType mimeType;
 
     /**
-     * Get child nodes.
+     * Instantiates a new MimeTyeNode.
      *
-     * @param parentNode         parent node
-     * @param availableMimeTypes list of available mime types
-     * @return child nodes
+     * @param type     node type
+     * @param id       node id
+     * @param parentId parent node id
+     * @param name     node name
+     * @param mimeType mime type
      */
-    Collection<AbstractNode> getChildNodes(AbstractNode parentNode, List<String> availableMimeTypes);
+    MimeTypeNode(final NodeType type, final String id, final String parentId, final String name, final MimeType mimeType) {
+        super(type, id, parentId, name);
+        this.mimeType = mimeType;
+    }
 
     /**
-     * Perform a full scan.
+     * Gets mime type.
+     *
+     * @return mime type
      */
-    void scanAll();
+    public MimeType getMimeType() {
+        return mimeType;
+    }
 }

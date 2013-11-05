@@ -17,17 +17,22 @@
 
 package net.holmes.core.media;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.common.event.MediaEvent;
+import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
+import net.holmes.core.media.model.MimeTypeNode;
 import net.holmes.core.media.model.RootNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -67,15 +72,15 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Override
-    public List<AbstractNode> getChildNodes(final AbstractNode parentNode) {
+    public Collection<AbstractNode> getChildNodes(final AbstractNode parentNode, final List<String> availableMimeTypes) {
         List<AbstractNode> childNodes;
         RootNode rootNode = RootNode.getById(parentNode.getId());
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
-            for (RootNode aRootNode : RootNode.values()) {
-                if (aRootNode.getParentId().equals(ROOT.getId()))
-                    addRootNode(childNodes, aRootNode);
+            for (RootNode subRootNode : RootNode.values()) {
+                if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getSubRootChildNodes(subRootNode).isEmpty())
+                    childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));
             }
         } else if (rootNode.getParentId().equals(ROOT.getId()))
             // Get child nodes of sub root node
@@ -84,18 +89,8 @@ public final class MediaManagerImpl implements MediaManager {
             // Get child nodes
             childNodes = mediaDao.getChildNodes(parentNode.getId());
 
-        return childNodes;
-    }
-
-    /**
-     * Adds the root node if this root node has children
-     *
-     * @param childNodes the child nodes
-     * @param rootNode   the root node
-     */
-    private void addRootNode(List<AbstractNode> childNodes, final RootNode rootNode) {
-        if (!mediaDao.getSubRootChildNodes(rootNode).isEmpty())
-            childNodes.add(new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString(rootNode.getBundleKey())));
+        // Filter child nodes according to available mime types
+        return Collections2.filter(childNodes, new MimeTypeFilter(availableMimeTypes));
     }
 
     /**
@@ -114,7 +109,7 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
-            List<AbstractNode> childNodes = getChildNodes(node);
+            Collection<AbstractNode> childNodes = getChildNodes(node, null);
             if (childNodes != null)
                 for (AbstractNode childNode : childNodes)
                     scanNode(childNode);
@@ -139,6 +134,26 @@ public final class MediaManagerImpl implements MediaManager {
             default:
                 LOGGER.error("Unknown event");
                 break;
+        }
+    }
+
+    /**
+     * Filter nodes according to available mime types.
+     */
+    private static final class MimeTypeFilter implements Predicate<AbstractNode> {
+        private final List<String> availableMimeTypes;
+
+        MimeTypeFilter(final List<String> availableMimeTypes) {
+            this.availableMimeTypes = availableMimeTypes;
+        }
+
+        @Override
+        public boolean apply(final AbstractNode entry) {
+            if (entry instanceof MimeTypeNode) {
+                MimeType mimeType = ((MimeTypeNode) entry).getMimeType();
+                return availableMimeTypes == null || mimeType == null || availableMimeTypes.contains(mimeType.getMimeType());
+            } else
+                return true;
         }
     }
 }

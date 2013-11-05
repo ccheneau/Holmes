@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +84,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         // Get available mime types
-        List<String> availableMimeTypes;
+        List<String> availableMimeTypes = null;
         if (remoteClientInfo.getConnection() != null) {
             availableMimeTypes = upnpDeviceMetadata.getAvailableMimeTypes(remoteClientInfo.getRemoteAddress().getHostAddress());
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}}", availableMimeTypes);
@@ -99,13 +100,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            List<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode);
+            Collection<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode, availableMimeTypes);
             for (AbstractNode childNode : childNodes)
-                addNode(objectID, childNode, result, childNodes.size());
+                addNode(objectID, childNode, result, childNodes.size(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
-            addNode(browseNode.getParentId(), browseNode, result, 0);
+            addNode(browseNode.getParentId(), browseNode, result, 0, availableMimeTypes);
         } else {
             result = new DirectoryBrowseResult(0, 1);
         }
@@ -122,13 +123,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     /**
      * Adds node.
      *
-     * @param nodeId        node id
-     * @param node          node
-     * @param result        result
-     * @param childNodeSize child node size
+     * @param nodeId             node id
+     * @param node               node
+     * @param result             result
+     * @param totalCount         total count
+     * @param availableMimeTypes availableMimeTypes
      * @throws ContentDirectoryException
      */
-    private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long childNodeSize) throws ContentDirectoryException {
+    private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Build content url
@@ -137,9 +139,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                List<AbstractNode> childNodes = mediaManager.getChildNodes(node);
+                Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, availableMimeTypes);
                 // Add container to result
-                result.addContainer(nodeId, node, childNodes != null ? childNodes.size() : 0);
+                result.addContainer(nodeId, node, childNodes.size());
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
@@ -149,7 +151,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
 
                 if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY)
                     //  Format podcast entry name
-                    entryName = formatPodcastEntryName(result.getResultCount(), childNodeSize, node.getName());
+                    entryName = formatPodcastEntryName(result.getResultCount(), totalCount, node.getName());
 
                 result.addUrlItem(nodeId, rawUrlNode, entryName);
             } else if (node instanceof IcecastGenreNode) {

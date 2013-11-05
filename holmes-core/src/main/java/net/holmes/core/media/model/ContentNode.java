@@ -25,9 +25,8 @@ import java.io.File;
 /**
  * Content node.
  */
-public final class ContentNode extends AbstractNode {
+public final class ContentNode extends MimeTypeNode {
 
-    private final MimeType mimeType;
     private final Long size;
     private final String path;
 
@@ -41,20 +40,10 @@ public final class ContentNode extends AbstractNode {
      * @param mimeType mime type
      */
     public ContentNode(final String id, final String parentId, final String name, final File file, final MimeType mimeType) {
-        super(NodeType.TYPE_CONTENT, id, parentId, name);
+        super(NodeType.TYPE_CONTENT, id, parentId, name, mimeType);
         this.path = file.getAbsolutePath();
-        this.mimeType = mimeType;
         this.size = file.length();
         this.modifiedDate = file.lastModified();
-    }
-
-    /**
-     * Gets the content node mime type.
-     *
-     * @return the content node mime type
-     */
-    public MimeType getMimeType() {
-        return this.mimeType;
     }
 
     /**

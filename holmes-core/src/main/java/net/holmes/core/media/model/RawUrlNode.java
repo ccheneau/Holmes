@@ -23,9 +23,8 @@ import net.holmes.core.common.mimetype.MimeType;
 /**
  * Raw Url node.
  */
-public final class RawUrlNode extends AbstractNode {
+public final class RawUrlNode extends MimeTypeNode {
 
-    private final MimeType mimeType;
     private final String url;
     private final String duration;
 
@@ -42,14 +41,9 @@ public final class RawUrlNode extends AbstractNode {
      */
     public RawUrlNode(final NodeType type, final String id, final String parentId, final String name, final MimeType mimeType, final String url,
                       final String duration) {
-        super(type, id, parentId, name);
-        this.mimeType = mimeType;
+        super(type, id, parentId, name, mimeType);
         this.url = url;
         this.duration = duration;
-    }
-
-    public MimeType getMimeType() {
-        return mimeType;
     }
 
     public String getUrl() {

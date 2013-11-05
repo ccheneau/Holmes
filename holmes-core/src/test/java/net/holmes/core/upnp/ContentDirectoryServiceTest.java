@@ -28,7 +28,7 @@ import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Collection;
 
 import static net.holmes.core.media.model.RootNode.*;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
@@ -63,7 +63,7 @@ public class ContentDirectoryServiceTest {
         assertNotNull(videoNode);
 
         // Get children of video root node
-        List<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode);
+        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode, null);
         assertNotNull(childNodes);
         assertTrue(childNodes.size() > 0);
 
@@ -72,7 +72,7 @@ public class ContentDirectoryServiceTest {
         assertNotNull(result);
 
         // Browse first child of video root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        result = contentDirectoryService.browse(childNodes.iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
     }
 
@@ -83,7 +83,7 @@ public class ContentDirectoryServiceTest {
         assertNotNull(videoNode);
 
         // Get children of podcast root node
-        List<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode);
+        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode, null);
         assertNotNull(childNodes);
         assertTrue(childNodes.size() > 0);
 
@@ -92,7 +92,7 @@ public class ContentDirectoryServiceTest {
         assertNotNull(result);
 
         // Browse first child of podcast root node
-        result = contentDirectoryService.browse(childNodes.get(0).getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        result = contentDirectoryService.browse(childNodes.iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
         assertNotNull(result);
     }
 
