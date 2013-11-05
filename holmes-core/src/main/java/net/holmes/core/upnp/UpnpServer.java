@@ -97,22 +97,27 @@ public final class UpnpServer implements Service {
 
         @Override
         public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+            // Ignore
         }
 
         @Override
         public void remoteDeviceDiscoveryFailed(Registry registry, RemoteDevice device, Exception ex) {
+            // Ignore
         }
 
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
-            LOGGER.info("Remote device available: " + device.getDisplayString());
+            final String deviceDisplay = device.getDisplayString();
+            LOGGER.info("Remote device available: " + deviceDisplay);
 
             if (configuration.getBooleanParameter(Parameter.ENABLE_UPNP_PROTOCOL_INFO)) {
                 // Search device's connection manager.
                 RemoteService service = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
-                if (service != null) {
+                if (service != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
                     // Device host IP
                     final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
+
+                    LOGGER.info("Get protocol info for {} [{}]", deviceDisplay, deviceHost);
 
                     // Get remote device protocol info
                     upnpService.getControlPoint().execute(new GetProtocolInfo(service) {
@@ -128,7 +133,7 @@ public final class UpnpServer implements Service {
 
                         @Override
                         public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                            LOGGER.debug("Failed to get protocol info for {}: {}", device.getDisplayString(), defaultMsg);
+                            LOGGER.debug("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
                         }
                     });
                 }
@@ -137,6 +142,7 @@ public final class UpnpServer implements Service {
 
         @Override
         public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
+            // Ignore
         }
 
         @Override
@@ -147,18 +153,22 @@ public final class UpnpServer implements Service {
 
         @Override
         public void localDeviceAdded(Registry registry, LocalDevice device) {
+            // Ignore
         }
 
         @Override
         public void localDeviceRemoved(Registry registry, LocalDevice device) {
+            // Ignore
         }
 
         @Override
         public void beforeShutdown(Registry registry) {
+            // Ignore
         }
 
         @Override
         public void afterShutdown() {
+            // Ignore
         }
     }
 }

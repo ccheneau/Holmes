@@ -18,6 +18,8 @@
 package net.holmes.core.upnp.metadata;
 
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -26,10 +28,12 @@ import java.util.Map;
  * Upnp device metadata implementation.
  */
 public class UpnpDeviceMetadataImpl implements UpnpDeviceMetadata {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpDeviceMetadataImpl.class);
     private Map<String, List<String>> deviceMimeTypes = Maps.newConcurrentMap();
 
     @Override
     public void addDevice(String deviceHost, List<String> availableMimeTypes) {
+        LOGGER.info("Add device [{}] with supported mime types: {}", deviceHost, availableMimeTypes);
         deviceMimeTypes.put(deviceHost, availableMimeTypes);
     }
 
@@ -40,6 +44,7 @@ public class UpnpDeviceMetadataImpl implements UpnpDeviceMetadata {
 
     @Override
     public void removeDevice(String deviceHost) {
+        LOGGER.info("Remove device [{}]", deviceHost);
         deviceMimeTypes.remove(deviceHost);
     }
 }

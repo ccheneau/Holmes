@@ -107,7 +107,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
             if (directory != null && directory.getEntries() != null)
-                return Collections2.filter(directory.getEntries(), new IcecastEntryGenrePredicate(genre));
+                return Collections2.filter(directory.getEntries(), new IcecastEntryGenreFilter(genre));
 
             return Lists.newArrayList();
         }
@@ -229,7 +229,8 @@ public final class IcecastDaoImpl implements IcecastDao {
         }
 
         // Remove Yellow page on error
-        if (!result && !ypFile.delete()) LOGGER.error("Failed to remove {}", ypFile.getAbsolutePath());
+        if (!result && ypFile.delete())
+            LOGGER.error("Failed to parse Icecast directory. Remove file {}", ypFile.getAbsolutePath());
 
         return result;
     }
@@ -267,12 +268,12 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     /**
-     * Predicate used to filter Icecast entries by genre.
+     * Filter Icecast entries by genre.
      */
-    private static final class IcecastEntryGenrePredicate implements Predicate<IcecastEntry> {
+    private static final class IcecastEntryGenreFilter implements Predicate<IcecastEntry> {
         private final String genre;
 
-        IcecastEntryGenrePredicate(final String genre) {
+        IcecastEntryGenreFilter(final String genre) {
             this.genre = genre;
         }
 
