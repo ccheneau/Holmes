@@ -19,16 +19,13 @@ package net.holmes.core.upnp;
 
 import org.fourthline.cling.binding.annotations.*;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
-import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.csv.CSV;
 import org.fourthline.cling.model.types.csv.CSVString;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
-import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
-import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.SortCriterion;
 
 import java.util.List;
@@ -138,7 +135,8 @@ public abstract class AbstractContentDirectoryService {
             @UpnpInputArgument(name = "Filter") String filter,
             @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") String orderBy) throws ContentDirectoryException {
+            @UpnpInputArgument(name = "SortCriteria") String orderBy,
+            RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
 
         SortCriterion[] orderByCriteria;
         try {
@@ -147,19 +145,12 @@ public abstract class AbstractContentDirectoryService {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA.getCode(), e.getMessage(), e);
         }
 
-        return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria);
+        return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria, remoteClientInfo);
     }
 
     /**
-     * Override this method to implement searching of your content.
+     * Implement this method to implement searching of your content.
      */
-    public BrowseResult search(String containerId, String searchCriteria, String filter,
-                               long firstResult, long maxResults, SortCriterion[] orderBy) throws ContentDirectoryException {
-
-        try {
-            return new BrowseResult(new DIDLParser().generate(new DIDLContent()), 0, 0);
-        } catch (Exception e) {
-            throw new ContentDirectoryException(ErrorCode.ACTION_FAILED.getCode(), e.getMessage(), e);
-        }
-    }
+    public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
+                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 }

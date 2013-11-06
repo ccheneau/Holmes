@@ -23,10 +23,11 @@ import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.*;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
-import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
+import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.SortCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,11 @@ import java.util.List;
 import java.util.Map;
 
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
+import static net.holmes.core.media.MediaManager.ChildNodeRequest;
+import static net.holmes.core.media.MediaManager.ChildNodeResult;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
+import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 
@@ -72,12 +77,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             LOGGER.debug("browse  " + browseFlag + " objectId=" + objectID + " firstResult=" + firstResult
                     + " nbResults=" + maxResults);
             LOGGER.debug("filter: {}", filter);
-            LOGGER.debug("User agent: " + remoteClientInfo.getRequestUserAgent());
+            LOGGER.debug("User agent: {}", remoteClientInfo.getRequestUserAgent());
             if (remoteClientInfo.getConnection() != null)
-                LOGGER.debug("Remote Address: " + remoteClientInfo.getRemoteAddress());
+                LOGGER.debug("Remote Address: {}", remoteClientInfo.getRemoteAddress());
             if (remoteClientInfo.getRequestHeaders() != null) {
                 for (Map.Entry<String, List<String>> stringListEntry : remoteClientInfo.getRequestHeaders().entrySet()) {
-                    LOGGER.debug("Header: " + stringListEntry.getKey() + " => " + stringListEntry.getValue());
+                    LOGGER.debug("Header: {} => {}", stringListEntry.getKey(), stringListEntry.getValue());
                 }
             }
         }
@@ -92,14 +97,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         // Get browse node
         AbstractNode browseNode = mediaManager.getNode(objectID);
         if (browseNode == null) {
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.NO_SUCH_OBJECT, objectID);
+            throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
         }
 
         DirectoryBrowseResult result;
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            MediaManager.ChildNodeResult childNodeResult = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(browseNode, availableMimeTypes));
+            ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(browseNode, availableMimeTypes));
             for (AbstractNode childNode : childNodeResult.getChildNodes())
                 addNode(objectID, childNode, result, childNodeResult.getTotalCount(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
@@ -117,6 +122,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             LOGGER.debug(br.getResult());
         }
         return br;
+    }
+
+    @Override
+    public BrowseResult search(final String containerId, final String searchCriteria, final String filter, final long firstResult,
+                               final long maxResults, final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
+        // Search is not implemented
+        try {
+            return new BrowseResult(new DIDLParser().generate(new DIDLContent()), 0, 0);
+        } catch (Exception e) {
+            throw new ContentDirectoryException(ACTION_FAILED.getCode(), e.getMessage(), e);
+        }
     }
 
     /**
@@ -138,7 +154,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                MediaManager.ChildNodeResult childNodeResult = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node, availableMimeTypes));
+                ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(node, availableMimeTypes));
                 // Add container to result
                 result.addContainer(nodeId, node, childNodeResult.getTotalCount());
             } else if (node instanceof PodcastNode) {
@@ -161,7 +177,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     /**
-     * Get post-cast entry name.
+     * Format post-cast entry name.
      * If prepend_podcast_entry_name configuration parameter is set to true,
      * item number is added to title.
      *
