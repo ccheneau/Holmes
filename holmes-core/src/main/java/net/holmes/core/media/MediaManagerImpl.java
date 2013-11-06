@@ -72,9 +72,9 @@ public final class MediaManagerImpl implements MediaManager {
     }
 
     @Override
-    public Collection<AbstractNode> getChildNodes(final AbstractNode parentNode, final List<String> availableMimeTypes) {
+    public ChildNodeResult getChildNodes(final ChildNodeRequest request) {
         List<AbstractNode> childNodes;
-        RootNode rootNode = RootNode.getById(parentNode.getId());
+        RootNode rootNode = RootNode.getById(request.getParentNode().getId());
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
@@ -87,10 +87,11 @@ public final class MediaManagerImpl implements MediaManager {
             childNodes = mediaDao.getSubRootChildNodes(rootNode);
         else
             // Get child nodes
-            childNodes = mediaDao.getChildNodes(parentNode.getId());
+            childNodes = mediaDao.getChildNodes(request.getParentNode().getId());
 
         // Filter child nodes according to available mime types
-        return Collections2.filter(childNodes, new MimeTypeFilter(availableMimeTypes));
+        Collection<AbstractNode> result = Collections2.filter(childNodes, new MimeTypeFilter(request.getAvailableMimeTypes()));
+        return new ChildNodeResult(result, result.size());
     }
 
     /**
@@ -100,9 +101,9 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
-            Collection<AbstractNode> childNodes = getChildNodes(node, null);
-            if (childNodes != null)
-                for (AbstractNode childNode : childNodes)
+            ChildNodeResult result = getChildNodes(new ChildNodeRequest(node));
+            if (result.getChildNodes() != null)
+                for (AbstractNode childNode : result.getChildNodes())
                     scanNode(childNode);
         }
     }

@@ -37,9 +37,92 @@ public interface MediaManager {
     /**
      * Get child nodes.
      *
-     * @param parentNode         parent node
-     * @param availableMimeTypes list of available mime types
-     * @return child nodes
+     * @param request child node request
+     * @return child node result
      */
-    Collection<AbstractNode> getChildNodes(AbstractNode parentNode, List<String> availableMimeTypes);
+    ChildNodeResult getChildNodes(ChildNodeRequest request);
+
+    /**
+     * Child node request.
+     */
+    final class ChildNodeRequest {
+
+        private final AbstractNode parentNode;
+        private final List<String> availableMimeTypes;
+
+        /**
+         * Instantiates a new child node request.
+         *
+         * @param parentNode parent node
+         */
+        public ChildNodeRequest(final AbstractNode parentNode) {
+            this(parentNode, null);
+        }
+
+        /**
+         * Instantiates a new child node request.
+         *
+         * @param parentNode         parent node
+         * @param availableMimeTypes available mime types.
+         */
+        public ChildNodeRequest(final AbstractNode parentNode, final List<String> availableMimeTypes) {
+            this.parentNode = parentNode;
+            this.availableMimeTypes = availableMimeTypes;
+        }
+
+        /**
+         * Get parent node.
+         *
+         * @return parent node
+         */
+        public AbstractNode getParentNode() {
+            return parentNode;
+        }
+
+        /**
+         * Get available mime types.
+         *
+         * @return available mime types
+         */
+        public List<String> getAvailableMimeTypes() {
+            return availableMimeTypes;
+        }
+    }
+
+    /**
+     * Child node result
+     */
+    final class ChildNodeResult {
+        private final Collection<AbstractNode> childNodes;
+        private final int totalCount;
+
+        /**
+         * Instantiates a new child node result.
+         *
+         * @param childNodes child nodes
+         * @param totalCount total count
+         */
+        public ChildNodeResult(Collection<AbstractNode> childNodes, int totalCount) {
+            this.childNodes = childNodes;
+            this.totalCount = totalCount;
+        }
+
+        /**
+         * Get child nodes.
+         *
+         * @return child nodes
+         */
+        public Collection<AbstractNode> getChildNodes() {
+            return childNodes;
+        }
+
+        /**
+         * Get total count.
+         *
+         * @return total count
+         */
+        public int getTotalCount() {
+            return totalCount;
+        }
+    }
 }

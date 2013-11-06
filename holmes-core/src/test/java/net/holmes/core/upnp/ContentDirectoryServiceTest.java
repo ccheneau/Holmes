@@ -28,8 +28,6 @@ import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
-
 import static net.holmes.core.media.model.RootNode.*;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
@@ -63,17 +61,17 @@ public class ContentDirectoryServiceTest {
         assertNotNull(videoNode);
 
         // Get children of video root node
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode, null);
-        assertNotNull(childNodes);
-        assertTrue(childNodes.size() > 0);
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(videoNode));
+        assertNotNull(result.getChildNodes());
+        assertTrue(result.getTotalCount() > 0);
 
         // Browse video root node
-        BrowseResult result = contentDirectoryService.browse(VIDEO.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
-        assertNotNull(result);
+        BrowseResult browseResult = contentDirectoryService.browse(VIDEO.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        assertNotNull(browseResult);
 
         // Browse first child of video root node
-        result = contentDirectoryService.browse(childNodes.iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
-        assertNotNull(result);
+        browseResult = contentDirectoryService.browse(result.getChildNodes().iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        assertNotNull(browseResult);
     }
 
     @Test
@@ -83,17 +81,17 @@ public class ContentDirectoryServiceTest {
         assertNotNull(videoNode);
 
         // Get children of podcast root node
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(videoNode, null);
-        assertNotNull(childNodes);
-        assertTrue(childNodes.size() > 0);
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(videoNode));
+        assertNotNull(result.getChildNodes());
+        assertTrue(result.getTotalCount() > 0);
 
         // Browse podcast root node
-        BrowseResult result = contentDirectoryService.browse(PODCAST.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
-        assertNotNull(result);
+        BrowseResult browseResult = contentDirectoryService.browse(PODCAST.getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        assertNotNull(browseResult);
 
         // Browse first child of podcast root node
-        result = contentDirectoryService.browse(childNodes.iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
-        assertNotNull(result);
+        browseResult = contentDirectoryService.browse(result.getChildNodes().iterator().next().getId(), DIRECT_CHILDREN, null, 0, 10, null, new RemoteClientInfo());
+        assertNotNull(browseResult);
     }
 
     @Test

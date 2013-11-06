@@ -55,10 +55,10 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(childNodes.size(), 4);
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(result.getTotalCount(), 4);
     }
 
     @Test
@@ -66,17 +66,17 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(1, childNodes.size());
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(1, result.getTotalCount());
+        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
 
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
-        assertEquals(3, nodes.size());
-        assertConfigNodes(nodes, "video.avi", "video.srt");
+        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(3, result.getTotalCount());
+        assertConfigNodes(result.getChildNodes(), "video.avi", "video.srt");
     }
 
     @Test
@@ -84,17 +84,17 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(1, childNodes.size());
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(1, result.getTotalCount());
+        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
 
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
-        assertEquals(2, nodes.size());
-        assertConfigNodes(nodes, "audio.mp3", "");
+        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(2, result.getTotalCount());
+        assertConfigNodes(result.getChildNodes(), "audio.mp3", "");
     }
 
     @Test
@@ -102,17 +102,17 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(1, childNodes.size());
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(1, result.getTotalCount());
+        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
 
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
-        assertEquals(2, nodes.size());
-        assertConfigNodes(nodes, "image.jpg");
+        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(2, result.getTotalCount());
+        assertConfigNodes(result.getChildNodes(), "image.jpg");
     }
 
     @Test
@@ -121,17 +121,17 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(1, childNodes.size());
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(1, result.getTotalCount());
+        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
 
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
-        assertEquals(2, nodes.size());
-        assertConfigNodes(nodes, "image.jpg");
+        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(2, result.getTotalCount());
+        assertConfigNodes(result.getChildNodes(), "image.jpg");
     }
 
     private void assertConfigNodes(Collection<AbstractNode> nodes, String... fileNodeNames) {
@@ -142,12 +142,12 @@ public class MediaManagerTest {
                 AbstractNode node1 = mediaManager.getNode(abstractNode.getId());
                 assertNotNull(node1);
                 assertEquals("subFolder", node1.getName());
-                Collection<AbstractNode> nodes1 = mediaManager.getChildNodes(node1, null);
-                assertNotNull(nodes1);
-                assertFalse(nodes1.isEmpty());
-                assertEquals(1, nodes1.size());
-                assertTrue(fileNodeNameList.contains(nodes1.iterator().next().getName()));
-                AbstractNode node2 = mediaManager.getNode(nodes1.iterator().next().getId());
+                MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node1));
+                assertNotNull(result.getChildNodes());
+                assertFalse(result.getChildNodes().isEmpty());
+                assertEquals(1, result.getTotalCount());
+                assertTrue(fileNodeNameList.contains(result.getChildNodes().iterator().next().getName()));
+                AbstractNode node2 = mediaManager.getNode(result.getChildNodes().iterator().next().getId());
                 assertNotNull(node2);
                 assertTrue(fileNodeNameList.contains(node2.getName()));
             } else if (abstractNode != null) {
@@ -164,15 +164,15 @@ public class MediaManagerTest {
         AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);
 
-        Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, null);
-        assertNotNull(childNodes);
-        assertFalse(childNodes.isEmpty());
-        assertEquals(childNodes.size(), 1);
-        assertNotNull(mediaManager.getNode(childNodes.iterator().next().getId()));
+        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
+        assertEquals(result.getTotalCount(), 1);
+        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
 
-        Collection<AbstractNode> nodes = mediaManager.getChildNodes(childNodes.iterator().next(), null);
-        assertNotNull(nodes);
-        assertFalse(nodes.isEmpty());
+        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        assertNotNull(result.getChildNodes());
+        assertFalse(result.getChildNodes().isEmpty());
     }
 
     @Test

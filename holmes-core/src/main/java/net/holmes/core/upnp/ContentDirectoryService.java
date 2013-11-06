@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +74,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             LOGGER.debug("filter: {}", filter);
             LOGGER.debug("User agent: " + remoteClientInfo.getRequestUserAgent());
             if (remoteClientInfo.getConnection() != null)
-                LOGGER.debug("Remote Address: " + remoteClientInfo.getRemoteAddress().getHostAddress());
+                LOGGER.debug("Remote Address: " + remoteClientInfo.getRemoteAddress());
             if (remoteClientInfo.getRequestHeaders() != null) {
                 for (Map.Entry<String, List<String>> stringListEntry : remoteClientInfo.getRequestHeaders().entrySet()) {
                     LOGGER.debug("Header: " + stringListEntry.getKey() + " => " + stringListEntry.getValue());
@@ -87,7 +86,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         List<String> availableMimeTypes = null;
         if (remoteClientInfo.getConnection() != null) {
             availableMimeTypes = upnpDeviceMetadata.getAvailableMimeTypes(remoteClientInfo.getRemoteAddress().getHostAddress());
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}}", availableMimeTypes);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}", availableMimeTypes);
         }
 
         // Get browse node
@@ -100,9 +99,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            Collection<AbstractNode> childNodes = mediaManager.getChildNodes(browseNode, availableMimeTypes);
-            for (AbstractNode childNode : childNodes)
-                addNode(objectID, childNode, result, childNodes.size(), availableMimeTypes);
+            MediaManager.ChildNodeResult childNodeResult = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(browseNode, availableMimeTypes));
+            for (AbstractNode childNode : childNodeResult.getChildNodes())
+                addNode(objectID, childNode, result, childNodeResult.getTotalCount(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
@@ -139,9 +138,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                Collection<AbstractNode> childNodes = mediaManager.getChildNodes(node, availableMimeTypes);
+                MediaManager.ChildNodeResult childNodeResult = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node, availableMimeTypes));
                 // Add container to result
-                result.addContainer(nodeId, node, childNodes.size());
+                result.addContainer(nodeId, node, childNodeResult.getTotalCount());
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
