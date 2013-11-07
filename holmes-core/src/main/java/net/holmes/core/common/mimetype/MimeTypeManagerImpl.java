@@ -17,12 +17,14 @@
 
 package net.holmes.core.common.mimetype;
 
+import com.google.common.base.Strings;
 import com.google.common.io.Files;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -52,5 +54,13 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
 
         // Get mime type
         return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));
+    }
+
+    @Override
+    public boolean isMimeTypeCompliant(MimeType mimeType, List<String> availableMimeTypes) {
+        String aliasMimeType = mimeType != null ? (String) properties.get(mimeType.getMimeType()) : null;
+        return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType()) || availableMimeTypes == null || availableMimeTypes.isEmpty()
+                || availableMimeTypes.contains(mimeType.getMimeType())
+                || aliasMimeType != null && availableMimeTypes.contains(aliasMimeType);
     }
 }

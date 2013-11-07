@@ -17,6 +17,8 @@
 
 package net.holmes.core.common.mimetype;
 
+import java.util.List;
+
 /**
  * Mime type manager.
  */
@@ -29,4 +31,13 @@ public interface MimeTypeManager {
      * @return mime type
      */
     MimeType getMimeType(String fileName);
+
+    /**
+     * Check mime type is compliant with available mimetypes.
+     *
+     * @param mimeType           mime type to check
+     * @param availableMimeTypes list of available mime types
+     * @return true if mime type is compliant
+     */
+    boolean isMimeTypeCompliant(MimeType mimeType, List<String> availableMimeTypes);
 }

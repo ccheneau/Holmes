@@ -22,7 +22,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.common.event.MediaEvent;
-import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
@@ -45,17 +45,20 @@ public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
+    private final MimeTypeManager mimeTypeManager;
 
     /**
      * Instantiates a new media manager implementation.
      *
-     * @param resourceBundle resource bundle
-     * @param mediaDao       media dao
+     * @param resourceBundle  resource bundle
+     * @param mediaDao        media dao
+     * @param mimeTypeManager mime type manager
      */
     @Inject
-    public MediaManagerImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao) {
+    public MediaManagerImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao, MimeTypeManager mimeTypeManager) {
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
+        this.mimeTypeManager = mimeTypeManager;
     }
 
     @Override
@@ -129,7 +132,7 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Filter nodes according to available mime types.
      */
-    private static final class MimeTypeFilter implements Predicate<AbstractNode> {
+    private final class MimeTypeFilter implements Predicate<AbstractNode> {
         private final List<String> availableMimeTypes;
 
         MimeTypeFilter(final List<String> availableMimeTypes) {
@@ -138,11 +141,8 @@ public final class MediaManagerImpl implements MediaManager {
 
         @Override
         public boolean apply(final AbstractNode node) {
-            if (node instanceof MimeTypeNode) {
-                MimeType mimeType = ((MimeTypeNode) node).getMimeType();
-                return availableMimeTypes == null || mimeType == null || availableMimeTypes.contains(mimeType.getMimeType());
-            } else
-                return true;
+            return !(node instanceof MimeTypeNode)
+                    || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), availableMimeTypes);
         }
     }
 }
