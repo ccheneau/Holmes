@@ -26,9 +26,9 @@ import java.io.Serializable;
  */
 public class MediaIndexElement implements Serializable {
     private static final long serialVersionUID = -7736893745535506209L;
-
     private final String parentId;
     private final String mediaType;
+    private final String mimeType;
     private final String name;
     private final String path;
     private final boolean localPath;
@@ -38,13 +38,15 @@ public class MediaIndexElement implements Serializable {
      *
      * @param parentId  parent id
      * @param mediaType media type
+     * @param mimeType  mime type
      * @param path      path
      * @param name      name
      * @param localPath local path
      */
-    public MediaIndexElement(final String parentId, final String mediaType, final String path, final String name, final boolean localPath) {
+    public MediaIndexElement(final String parentId, final String mediaType, final String mimeType, final String path, final String name, final boolean localPath) {
         this.parentId = parentId;
         this.mediaType = mediaType;
+        this.mimeType = mimeType;
         this.path = path;
         this.name = name;
         this.localPath = localPath;
@@ -70,9 +72,13 @@ public class MediaIndexElement implements Serializable {
         return localPath;
     }
 
+    public String getMimeType() {
+        return mimeType;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(parentId, mediaType, name, path, localPath);
+        return Objects.hashCode(parentId, mediaType, mimeType, name, path, localPath);
     }
 
     @Override
@@ -81,7 +87,12 @@ public class MediaIndexElement implements Serializable {
         if (obj == null || getClass() != obj.getClass()) return false;
 
         final MediaIndexElement other = (MediaIndexElement) obj;
-        return Objects.equal(this.parentId, other.parentId) && Objects.equal(this.mediaType, other.mediaType) && Objects.equal(this.name, other.name) && Objects.equal(this.path, other.path) && Objects.equal(this.localPath, other.localPath);
+        return Objects.equal(this.parentId, other.parentId)
+                && Objects.equal(this.mediaType, other.mediaType)
+                && Objects.equal(this.mimeType, other.mimeType)
+                && Objects.equal(this.name, other.name)
+                && Objects.equal(this.path, other.path)
+                && Objects.equal(this.localPath, other.localPath);
     }
 
     @Override
@@ -89,6 +100,7 @@ public class MediaIndexElement implements Serializable {
         return Objects.toStringHelper(this)
                 .addValue(parentId)
                 .addValue(mediaType)
+                .addValue(mimeType)
                 .addValue(name)
                 .addValue(path)
                 .addValue(localPath)

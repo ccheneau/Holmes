@@ -51,7 +51,7 @@ public interface IcecastDao {
      *
      * @return genre list
      */
-    List<String> getGenres();
+    List<IcecastGenre> getGenres();
 
     /**
      * Get Icecast entries by genre.

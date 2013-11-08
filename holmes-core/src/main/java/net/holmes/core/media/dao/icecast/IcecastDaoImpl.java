@@ -29,6 +29,7 @@ import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.event.ConfigurationEvent;
+import net.holmes.core.media.index.MediaIndexManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,9 +58,11 @@ public final class IcecastDaoImpl implements IcecastDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(IcecastDaoImpl.class);
     private static final String ICECAST_FILE_NAME = "icecast.xml";
     private static final String DATA_DIR = "data";
+    private static final String ICECAST_GENRE_ID_ROOT = "IceCastGenre_";
     private final Configuration configuration;
     private final String localHolmesDataDir;
-    private final List<String> genreList;
+    private final MediaIndexManager mediaIndexManager;
+    private final List<IcecastGenre> genres;
     private final Object directoryLock = new Object();
     private final Object settingsLock = new Object();
     private boolean enable;
@@ -72,11 +75,15 @@ public final class IcecastDaoImpl implements IcecastDao {
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public IcecastDaoImpl(final Configuration configuration, @Named("localHolmesDataDir") final String localHolmesDataDir) {
+    public IcecastDaoImpl(final Configuration configuration, @Named("localHolmesDataDir") final String localHolmesDataDir, final MediaIndexManager mediaIndexManager) {
         this.configuration = configuration;
         this.localHolmesDataDir = localHolmesDataDir;
-        this.genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
+        this.mediaIndexManager = mediaIndexManager;
         this.enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+        List<String> genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
+        genres = Lists.newArrayListWithCapacity(genreList.size());
+        for (String genre : genreList)
+            genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
     }
 
     @Override
@@ -114,8 +121,8 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
-    public List<String> getGenres() {
-        return genreList;
+    public List<IcecastGenre> getGenres() {
+        return genres;
     }
 
     /**
@@ -244,6 +251,11 @@ public final class IcecastDaoImpl implements IcecastDao {
         synchronized (directoryLock) {
             this.directory = directory;
             LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
+        }
+
+        // Remove previous elements from media index
+        for (IcecastGenre genre : genres) {
+            mediaIndexManager.removeChildren(genre.getId());
         }
     }
 

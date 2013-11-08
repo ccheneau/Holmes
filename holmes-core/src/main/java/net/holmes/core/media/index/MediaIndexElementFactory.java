@@ -36,7 +36,7 @@ public final class MediaIndexElementFactory {
      * @return media index element
      */
     public static MediaIndexElement buildMediaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
-        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), configNode.getPath(), configNode.getLabel(),
+        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, configNode.getPath(), configNode.getLabel(),
                 rootNode.isLocalPath());
     }
 
@@ -49,7 +49,7 @@ public final class MediaIndexElementFactory {
      * @return media index element
      */
     public static MediaIndexElement buildMediaIndexElement(final RootNode rootNode, final String path, final String name) {
-        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), path, name,
+        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, path, name,
                 rootNode.isLocalPath());
     }
 }

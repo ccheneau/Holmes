@@ -27,6 +27,7 @@ public enum MediaType {
     TYPE_PODCAST("podcast"), //
     TYPE_APPLICATION("application"),//
     TYPE_ICECAST_GENRE("icecast_genre"),//
+    TYPE_RAW_URL("raw_url"), //
     TYPE_NONE("none");
 
     private final String value;

@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
+import static net.holmes.core.media.model.RootNode.NONE;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
@@ -93,21 +94,24 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         // Remove elements
         for (String id : toRemove)
             elements.remove(id);
+
+        // Clean index
+        clean();
     }
 
     @Override
     public synchronized void clean() {
         String elId;
         MediaIndexElement elValue;
-        Collection<String> toRemove = Lists.newArrayList();
 
         // Search elements to remove
+        Collection<String> toRemove = Lists.newArrayList();
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
             elId = indexEntry.getKey();
             elValue = indexEntry.getValue();
 
             // Check parent id is still in index (only for non root nodes and direct children)
-            if (RootNode.getById(elId) == RootNode.NONE && RootNode.getById(elValue.getParentId()) == RootNode.NONE
+            if (RootNode.getById(elId) == NONE && RootNode.getById(elValue.getParentId()) == NONE
                     && (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId()))) {
                 toRemove.add(elId);
                 LOGGER.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());

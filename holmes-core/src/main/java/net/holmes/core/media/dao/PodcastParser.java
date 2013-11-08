@@ -26,13 +26,14 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.media.index.MediaIndexElement;
 import net.holmes.core.media.model.RawUrlNode;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static net.holmes.core.common.UniqueId.newUniqueId;
+import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 
 /**
@@ -54,10 +55,14 @@ abstract class PodcastParser {
                         for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                             MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
                             if (mimeType != null && mimeType.isMedia()) {
+                                // Add to media index
+                                String podcastEntryId = addMediaIndexElement(new MediaIndexElement(podcastId, TYPE_RAW_URL.getValue(), mimeType.getMimeType(), enclosure.getUrl(), rssEntry.getTitle(), false));
+
                                 // Build podcast entry node
-                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, newUniqueId(), podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
+                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, podcastEntryId, podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
                                 podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
                                 podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
+
                                 // Add podcast entry node
                                 addPodcastEntryNode(podcastEntryNode);
                             }
@@ -68,11 +73,19 @@ abstract class PodcastParser {
     }
 
     /**
+     * Add entry to media index.
+     *
+     * @param mediaIndexElement media index element
+     * @return index element id
+     */
+    public abstract String addMediaIndexElement(final MediaIndexElement mediaIndexElement);
+
+    /**
      * Add podcast entry node.
      *
      * @param podcastEntryNode new podcast entry node
      */
-    public abstract void addPodcastEntryNode(RawUrlNode podcastEntryNode);
+    public abstract void addPodcastEntryNode(final RawUrlNode podcastEntryNode);
 
     /**
      * Get RSS entry duration.

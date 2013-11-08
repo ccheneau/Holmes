@@ -26,12 +26,13 @@ public class MediaIndexElementTest {
 
     @Test
     public void testEquals() {
-        MediaIndexElement element1 = new MediaIndexElement("parentId", "mediaType", "path", "name", true);
-        MediaIndexElement element2 = new MediaIndexElement("parentId", "mediaType", "path", "name", true);
-        MediaIndexElement element3 = new MediaIndexElement("parentId1", "mediaType", "path", "name", true);
-        MediaIndexElement element4 = new MediaIndexElement("parentId", "mediaType1", "path", "name", true);
-        MediaIndexElement element5 = new MediaIndexElement("parentId", "mediaType", "path1", "name", true);
-        MediaIndexElement element6 = new MediaIndexElement("parentId", "mediaType", "path", "name1", false);
+        MediaIndexElement element1 = new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true);
+        MediaIndexElement element2 = new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true);
+        MediaIndexElement element3 = new MediaIndexElement("parentId1", "mediaType", "mimeType", "path", "name", true);
+        MediaIndexElement element4 = new MediaIndexElement("parentId", "mediaType1", "mimeType", "path", "name", true);
+        MediaIndexElement element5 = new MediaIndexElement("parentId", "mediaType", "mimeType", "path1", "name", true);
+        MediaIndexElement element6 = new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name1", false);
+        MediaIndexElement element7 = new MediaIndexElement("parentId", "mediaType", "mimeType1", "path", "name1", false);
         assertEquals(element1, element1);
         assertEquals(element1, element2);
         assertNotEquals(element1, null);
@@ -40,5 +41,6 @@ public class MediaIndexElementTest {
         assertNotEquals(element1, element4);
         assertNotEquals(element1, element5);
         assertNotEquals(element1, element6);
+        assertNotEquals(element1, element7);
     }
 }
