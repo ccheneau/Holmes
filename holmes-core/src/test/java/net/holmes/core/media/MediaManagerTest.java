@@ -20,7 +20,6 @@ package net.holmes.core.media;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.FolderNode;
@@ -99,25 +98,6 @@ public class MediaManagerTest {
 
     @Test
     public void testPictureNodes() {
-        AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
-        assertNotNull(node);
-
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
-        assertNotNull(result.getChildNodes());
-        assertFalse(result.getChildNodes().isEmpty());
-        assertEquals(1, result.getTotalCount());
-        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
-
-        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
-        assertNotNull(result.getChildNodes());
-        assertFalse(result.getChildNodes().isEmpty());
-        assertEquals(2, result.getTotalCount());
-        assertConfigNodes(result.getChildNodes(), "image.jpg");
-    }
-
-    @Test
-    public void testPictureNodesWithoutContentResolution() {
-        configuration.setBooleanParameter(Parameter.ENABLE_CONTENT_RESOLUTION, false);
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
