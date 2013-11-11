@@ -93,9 +93,9 @@ public enum RootNode {
     }
 
     /**
-     * Whether to look for child elements in local path.
+     * Whether child elements are stored in local file system.
      *
-     * @return
+     * @return true if child elements are stored on file system
      */
     public boolean isLocalPath() {
         return this.localPath;

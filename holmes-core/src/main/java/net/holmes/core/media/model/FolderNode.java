@@ -22,7 +22,7 @@ import com.google.common.base.Objects;
 import java.io.File;
 
 /**
- * Folder node.
+ * Folder node represents a folder on file system.
  */
 public final class FolderNode extends AbstractNode {
 

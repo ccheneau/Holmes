@@ -23,7 +23,7 @@ import net.holmes.core.common.mimetype.MimeType;
 import java.io.File;
 
 /**
- * Content node.
+ * Content node represents a content stored on file system.
  */
 public final class ContentNode extends MimeTypeNode {
 

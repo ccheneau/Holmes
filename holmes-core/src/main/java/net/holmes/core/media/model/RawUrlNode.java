@@ -21,7 +21,7 @@ import com.google.common.base.Objects;
 import net.holmes.core.common.mimetype.MimeType;
 
 /**
- * Raw Url node.
+ * Raw Url node represents a link to external Url.
  */
 public final class RawUrlNode extends MimeTypeNode {
 

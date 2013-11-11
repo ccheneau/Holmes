@@ -20,7 +20,7 @@ package net.holmes.core.media.model;
 import net.holmes.core.common.mimetype.MimeType;
 
 /**
- * Abstract node with mime type
+ * Abstract node with mime type (i.e. url or content)
  */
 public abstract class MimeTypeNode extends AbstractNode {
 
