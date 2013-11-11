@@ -94,9 +94,6 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         // Remove elements
         for (String id : toRemove)
             elements.remove(id);
-
-        // Clean index
-        clean();
     }
 
     @Override
