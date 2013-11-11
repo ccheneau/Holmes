@@ -227,7 +227,7 @@ public final class IcecastDaoImpl implements IcecastDao {
             }
             // Set new Icecast directory
             if (!entries.isEmpty())
-                setDirectory(new IcecastDirectory(entries));
+                loadDirectory(new IcecastDirectory(entries));
 
         } catch (IOException | XStreamException | ClassNotFoundException e) {
             LOGGER.warn("Failed to parse Icecast directory");
@@ -247,7 +247,7 @@ public final class IcecastDaoImpl implements IcecastDao {
         return directory;
     }
 
-    private void setDirectory(IcecastDirectory directory) {
+    private void loadDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
             LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
@@ -274,7 +274,7 @@ public final class IcecastDaoImpl implements IcecastDao {
                     if (isAvailableYellowPage() && !isLoaded()) parseYellowPage();
                 } else {
                     // Reset directory
-                    setDirectory(null);
+                    loadDirectory(null);
                 }
             }
     }
