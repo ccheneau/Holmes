@@ -168,7 +168,7 @@ public class MediaDaoImpl implements MediaDao {
                         // Upper case genre's first letter
                         String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
                         // Add Icecast genre to media index
-                        mediaIndexManager.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), false));
+                        mediaIndexManager.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
                         // Add child node
                         nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
                     }
