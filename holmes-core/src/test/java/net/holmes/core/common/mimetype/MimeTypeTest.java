@@ -59,6 +59,14 @@ public class MimeTypeTest {
         new MimeTypeManagerImpl("/badMimeTypePath");
     }
 
+    /**
+     * Test null mime type path.
+     */
+    @Test(expected = RuntimeException.class)
+    public void testNullMimePath() {
+        new MimeTypeManagerImpl(null);
+    }
+
     @Test
     public void testIsCompliant() {
         MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");

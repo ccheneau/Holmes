@@ -23,6 +23,7 @@ import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.test.TestModule;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
@@ -31,8 +32,7 @@ import org.junit.Test;
 import static net.holmes.core.media.model.RootNode.*;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ContentDirectoryServiceTest {
 
@@ -111,5 +111,26 @@ public class ContentDirectoryServiceTest {
     @Test(expected = ContentDirectoryException.class)
     public void testBrowseNull() throws ContentDirectoryException {
         contentDirectoryService.browse(null, METADATA, null, 0, 10, null, new RemoteClientInfo());
+    }
+
+    @Test
+    public void testSearch() throws ContentDirectoryException {
+        BrowseResult result = contentDirectoryService.search("containerId", "sortCriteria", "filter", 0, 100, null, null);
+        assertEquals(new UnsignedIntegerFourBytes(0), result.getCount());
+    }
+
+    @Test
+    public void testGetSearchCapabilities() {
+        assertNotNull(contentDirectoryService.getSearchCapabilities());
+    }
+
+    @Test
+    public void testGetSortCapabilities() {
+        assertNotNull(contentDirectoryService.getSortCapabilities());
+    }
+
+    @Test
+    public void testGetSystemUpdateId() {
+        assertNotNull(contentDirectoryService.getSystemUpdateID());
     }
 }
