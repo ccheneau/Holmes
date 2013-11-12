@@ -29,27 +29,14 @@ public final class MediaIndexElementFactory {
     }
 
     /**
-     * Gets the media index element.
+     * Gets the media index element for configuration node.
      *
      * @param rootNode   root node
      * @param configNode config node
      * @return media index element
      */
-    public static MediaIndexElement buildMediaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
+    public static MediaIndexElement buildConfigMediaIndexElement(final RootNode rootNode, final ConfigurationNode configNode) {
         return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, configNode.getPath(), configNode.getLabel(),
-                rootNode.isLocalPath());
-    }
-
-    /**
-     * Gets the media index element.
-     *
-     * @param rootNode root node
-     * @param path     path
-     * @param name     name
-     * @return media index element
-     */
-    public static MediaIndexElement buildMediaIndexElement(final RootNode rootNode, final String path, final String name) {
-        return new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, path, name,
-                rootNode.isLocalPath());
+                rootNode.isLocalPath(), true);
     }
 }

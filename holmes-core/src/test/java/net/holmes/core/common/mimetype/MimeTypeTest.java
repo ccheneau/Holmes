@@ -16,6 +16,7 @@
  */
 package net.holmes.core.common.mimetype;
 
+import com.google.common.collect.Lists;
 import net.holmes.core.common.MediaType;
 import org.junit.Test;
 
@@ -35,8 +36,8 @@ public class MimeTypeTest {
 
         assertNotNull(mimeType);
         assertEquals(MediaType.TYPE_VIDEO, mimeType.getType());
-        assertEquals("x-msvideo", mimeType.getSubType());
-        assertEquals("video/x-msvideo", mimeType.getMimeType());
+        assertEquals("avi", mimeType.getSubType());
+        assertEquals("video/avi", mimeType.getMimeType());
     }
 
     /**
@@ -56,5 +57,27 @@ public class MimeTypeTest {
     @Test(expected = RuntimeException.class)
     public void testBadMimePath() {
         new MimeTypeManagerImpl("/badMimeTypePath");
+    }
+
+    @Test
+    public void testIsCompliant() {
+        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
+
+        MimeType mimeType = new MimeType("video/avi");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
+        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList()));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, null));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(null, null));
+
+        mimeType = new MimeType("video/x-msvideo");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
+        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
+
+        mimeType = new MimeType("");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
+
+        mimeType = new MimeType("audio/mpeg");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
     }
 }

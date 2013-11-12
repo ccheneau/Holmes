@@ -46,20 +46,20 @@ public class MediaIndexManagerTest {
      */
     @Test
     public void testAddToMediaIndex() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         MediaIndexElement indexElement = mediaIndexManager.get(uuid1);
         assertNotNull(indexElement);
         assertEquals(indexElement.getName(), "name");
-        String uuid2 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true));
+        String uuid2 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         assertEquals(uuid1, uuid2);
 
-        uuid2 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "path", "mimeType", "name2", true));
+        uuid2 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "path", "mimeType", "name2", true, false));
         assertFalse(uuid1.equals(uuid2));
     }
 
     @Test
     public void testRemoveFromMediaIndex() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid1));
         mediaIndexManager.remove(uuid1);
         assertNull(mediaIndexManager.get(uuid1));
@@ -67,9 +67,9 @@ public class MediaIndexManagerTest {
 
     @Test
     public void testRemoveChildrenMediaIndex() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid1));
-        String uuid2 = mediaIndexManager.add(new MediaIndexElement(uuid1, "mediaType", "mimeType", "path", "name", true));
+        String uuid2 = mediaIndexManager.add(new MediaIndexElement(uuid1, "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid2));
         mediaIndexManager.removeChildren(uuid1);
         assertNotNull(mediaIndexManager.get(uuid1));
@@ -78,7 +78,7 @@ public class MediaIndexManagerTest {
 
     @Test
     public void testCleanMediaIndexNonExistingParent() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid1));
         mediaIndexManager.clean();
         assertNull(mediaIndexManager.get(uuid1));
@@ -86,7 +86,7 @@ public class MediaIndexManagerTest {
 
     @Test
     public void testCleanMediaIndexNonExistingFile() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("1_VIDEOS", "mediaType", "mimeType", "path", "name", true));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("1_VIDEOS", "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid1));
         mediaIndexManager.clean();
         assertNull(mediaIndexManager.get(uuid1));
@@ -94,7 +94,15 @@ public class MediaIndexManagerTest {
 
     @Test
     public void testCleanMediaIndexNonLocalPath() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("4_PODCASTS", "mediaType", "mimeType", "path", "name", false));
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("4_PODCASTS", "mediaType", "mimeType", "path", "name", false, false));
+        assertNotNull(mediaIndexManager.get(uuid1));
+        mediaIndexManager.clean();
+        assertNull(mediaIndexManager.get(uuid1));
+    }
+
+    @Test
+    public void testCleanMediaIndexLocked() {
+        String uuid1 = mediaIndexManager.add(new MediaIndexElement("4_PODCASTS", "mediaType", "mimeType", "path", "name", false, true));
         assertNotNull(mediaIndexManager.get(uuid1));
         mediaIndexManager.clean();
         assertNotNull(mediaIndexManager.get(uuid1));

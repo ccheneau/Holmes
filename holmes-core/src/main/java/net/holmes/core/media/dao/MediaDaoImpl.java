@@ -45,7 +45,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
-import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
+import static net.holmes.core.media.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
 import static net.holmes.core.media.model.RootNode.ICECAST;
@@ -156,7 +156,7 @@ public class MediaDaoImpl implements MediaDao {
                 // Add podcast nodes stored in configuration
                 for (ConfigurationNode configNode : configuration.getFolders(rootNode)) {
                     // Add node to mediaIndex
-                    mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                    mediaIndexManager.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                     // Add child node
                     nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
                 }
@@ -165,9 +165,10 @@ public class MediaDaoImpl implements MediaDao {
                 if (icecastDao.isLoaded()) {
                     // Add Icecast genre from Icecast dao
                     for (IcecastGenre genre : icecastDao.getGenres()) {
+                        // Upper case genre's first letter
                         String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
                         // Add Icecast genre to media index
-                        mediaIndexManager.put(genre.getId(), buildMediaIndexElement(rootNode, genre.getName(), genreName));
+                        mediaIndexManager.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), false));
                         // Add child node
                         nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
                     }
@@ -179,7 +180,7 @@ public class MediaDaoImpl implements MediaDao {
                     NodeFile file = new NodeFile(configNode.getPath());
                     if (file.isValidDirectory()) {
                         // Add node to mediaIndex
-                        mediaIndexManager.put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                        mediaIndexManager.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                         // Add child node
                         nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                     }
@@ -227,13 +228,13 @@ public class MediaDaoImpl implements MediaDao {
             // Add node to mediaIndex
             if (file.isDirectory()) {
                 // Add folder node
-                String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), null, file.getAbsolutePath(), null, true));
+                String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), null, file.getAbsolutePath(), null, true, false));
                 nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
             } else {
                 MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
                 if (mimeType != null) {
                     // Add file node
-                    String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true));
+                    String nodeId = mediaIndexManager.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true, false));
                     AbstractNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName()));
                     if (node != null) nodes.add(node);
                 }
@@ -290,7 +291,7 @@ public class MediaDaoImpl implements MediaDao {
         Collection<AbstractNode> result = Lists.newArrayList();
         for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre)) {
             // Add entry to media index
-            String nodeId = mediaIndexManager.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), entry.getType(), entry.getUrl(), entry.getName(), false));
+            String nodeId = mediaIndexManager.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), entry.getType(), entry.getUrl(), entry.getName(), false, false));
             // Add Raw Url to result
             result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
         }

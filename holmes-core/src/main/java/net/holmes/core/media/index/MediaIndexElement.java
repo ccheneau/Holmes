@@ -32,6 +32,7 @@ public class MediaIndexElement implements Serializable {
     private final String name;
     private final String path;
     private final boolean localPath;
+    private final boolean locked;
 
     /**
      * Instantiates a new media index element.
@@ -41,15 +42,17 @@ public class MediaIndexElement implements Serializable {
      * @param mimeType  mime type
      * @param path      path
      * @param name      name
-     * @param localPath local path
+     * @param localPath whether element is stored on local file system
+     * @param locked    locked element, cannot be removed from media index
      */
-    public MediaIndexElement(final String parentId, final String mediaType, final String mimeType, final String path, final String name, final boolean localPath) {
+    public MediaIndexElement(final String parentId, final String mediaType, final String mimeType, final String path, final String name, final boolean localPath, final boolean locked) {
         this.parentId = parentId;
         this.mediaType = mediaType;
         this.mimeType = mimeType;
         this.path = path;
         this.name = name;
         this.localPath = localPath;
+        this.locked = locked;
     }
 
     public String getParentId() {
@@ -76,9 +79,13 @@ public class MediaIndexElement implements Serializable {
         return mimeType;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(parentId, mediaType, mimeType, name, path, localPath);
+        return Objects.hashCode(parentId, mediaType, mimeType, name, path, localPath, locked);
     }
 
     @Override
@@ -92,7 +99,8 @@ public class MediaIndexElement implements Serializable {
                 && Objects.equal(this.mimeType, other.mimeType)
                 && Objects.equal(this.name, other.name)
                 && Objects.equal(this.path, other.path)
-                && Objects.equal(this.localPath, other.localPath);
+                && Objects.equal(this.localPath, other.localPath)
+                && Objects.equal(this.locked, other.locked);
     }
 
     @Override

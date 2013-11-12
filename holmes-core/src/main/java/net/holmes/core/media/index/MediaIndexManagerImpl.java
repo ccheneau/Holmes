@@ -33,8 +33,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.media.index.MediaIndexElementFactory.buildMediaIndexElement;
-import static net.holmes.core.media.model.RootNode.NONE;
+import static net.holmes.core.media.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
@@ -106,17 +105,17 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
             elId = indexEntry.getKey();
             elValue = indexEntry.getValue();
-
-            // Check parent id is still in index (only for non root nodes and direct children)
-            if (RootNode.getById(elId) == NONE && RootNode.getById(elValue.getParentId()) == NONE
-                    && (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId()))) {
-                toRemove.add(elId);
-                LOGGER.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
-            }
-            // Check element is still on file system
-            if (!toRemove.contains(elId) && elValue.isLocalPath() && !new File(elValue.getPath()).exists()) {
-                toRemove.add(elId);
-                LOGGER.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
+            if (!elValue.isLocked()) {
+                // Check parent id is still in index
+                if (elements.get(elValue.getParentId()) == null || toRemove.contains(elValue.getParentId())) {
+                    toRemove.add(elId);
+                    LOGGER.debug("Remove entry {} from media index (invalid parent id)", elValue.toString());
+                }
+                // Check element is still on file system
+                if (!toRemove.contains(elId) && elValue.isLocalPath() && !new File(elValue.getPath()).exists()) {
+                    toRemove.add(elId);
+                    LOGGER.debug("Remove entry {} from media index (path does not exist)", elValue.toString());
+                }
             }
         }
 
@@ -138,14 +137,14 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         switch (configurationEvent.getType()) {
             case ADD_FOLDER:
                 // Add node to mediaIndex
-                put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case UPDATE_FOLDER:
                 // Remove node and child nodes from mediaIndex
                 remove(configNode.getId());
                 if (rootNode != PODCAST) removeChildren(configNode.getId());
                 // Add node to mediaIndex
-                put(configNode.getId(), buildMediaIndexElement(rootNode, configNode));
+                put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case DELETE_FOLDER:
                 // Remove node and child nodes from mediaIndex
