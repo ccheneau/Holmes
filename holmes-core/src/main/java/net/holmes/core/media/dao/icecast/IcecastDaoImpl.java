@@ -47,6 +47,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.common.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.SAVE_SETTINGS;
@@ -63,9 +64,10 @@ public final class IcecastDaoImpl implements IcecastDao {
     private final String localHolmesDataDir;
     private final MediaIndexManager mediaIndexManager;
     private final List<IcecastGenre> genres;
+    private final int maxDownloadRetry;
     private final Object directoryLock = new Object();
     private final Object settingsLock = new Object();
-    private boolean enable;
+    private boolean icecastEnabled;
     private IcecastDirectory directory;
 
     /**
@@ -79,21 +81,27 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.configuration = configuration;
         this.localHolmesDataDir = localHolmesDataDir;
         this.mediaIndexManager = mediaIndexManager;
-        this.enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+        this.icecastEnabled = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
         List<String> genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
-        genres = Lists.newArrayListWithCapacity(genreList.size());
+        this.genres = Lists.newArrayListWithCapacity(genreList.size());
+        this.maxDownloadRetry = max(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
         for (String genre : genreList)
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
     }
 
     @Override
-    public boolean isAvailableYellowPage() {
-        // Check local Yellow page exists and is not too old.
-        // If not, download new Yellow page.
-        try {
-            return enable && (!needsYellowPageDownload() || downloadYellowPage());
-        } catch (IOException e) {
-            return false;
+    public void checkYellowPage() {
+        if (icecastEnabled) {
+            boolean result = false;
+            int retry = 0;
+            while (!result && retry < maxDownloadRetry) {
+                try {
+                    result = (!needsYellowPageDownload() || downloadYellowPage()) && parseYellowPage();
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+                retry++;
+            }
         }
     }
 
@@ -106,7 +114,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     @Override
     public boolean isLoaded() {
         synchronized (directoryLock) {
-            return enable && directory != null && directory.getEntries().size() > 0;
+            return icecastEnabled && directory != null && directory.getEntries().size() > 0;
         }
     }
 
@@ -184,7 +192,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     /**
      * Check if Icecast Yellow page needs download.
      *
-     * @return true if Icecast Yellow page need download
+     * @return true if Icecast Yellow page needs download
      */
     private boolean needsYellowPageDownload() throws IOException {
         Calendar cal = Calendar.getInstance();
@@ -230,7 +238,6 @@ public final class IcecastDaoImpl implements IcecastDao {
                 loadDirectory(new IcecastDirectory(entries));
 
         } catch (IOException | XStreamException | ClassNotFoundException e) {
-            LOGGER.warn("Failed to parse Icecast directory");
             if (LOGGER.isDebugEnabled()) LOGGER.debug(e.getMessage(), e);
             result = false;
         }
@@ -253,7 +260,7 @@ public final class IcecastDaoImpl implements IcecastDao {
             LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
         }
 
-        // Remove previous elements from media index
+        // Remove previous Icecast elements from media index
         for (IcecastGenre genre : genres) {
             mediaIndexManager.removeChildren(genre.getId());
         }
@@ -268,10 +275,10 @@ public final class IcecastDaoImpl implements IcecastDao {
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) throws IOException {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
-                enable = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
-                if (enable) {
-                    // Parse Yellow page if it is not already loaded
-                    if (isAvailableYellowPage() && !isLoaded()) parseYellowPage();
+                icecastEnabled = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+                if (icecastEnabled) {
+                    // Download and parse Yellow page if it is not already loaded
+                    if (!isLoaded()) checkYellowPage();
                 } else {
                     // Reset directory
                     loadDirectory(null);

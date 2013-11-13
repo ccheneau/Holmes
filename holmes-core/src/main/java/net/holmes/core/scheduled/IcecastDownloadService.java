@@ -48,7 +48,7 @@ public class IcecastDownloadService extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (icecastDao.isAvailableYellowPage()) icecastDao.parseYellowPage();
+        icecastDao.checkYellowPage();
     }
 
     @Override

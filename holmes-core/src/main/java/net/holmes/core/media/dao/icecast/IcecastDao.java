@@ -26,11 +26,9 @@ import java.util.List;
 public interface IcecastDao {
 
     /**
-     * Check Icecast yellow page is available.
-     *
-     * @return true if Yellow page exists
+     * Check Icecast Yellow page. Download and parse Yellow page if needed.
      */
-    boolean isAvailableYellowPage();
+    void checkYellowPage();
 
     /**
      * Parse yellow page.

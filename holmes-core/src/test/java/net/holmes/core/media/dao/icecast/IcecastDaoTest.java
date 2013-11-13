@@ -27,8 +27,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.common.configuration.Parameter.ENABLE_ICECAST_DIRECTORY;
-import static net.holmes.core.common.configuration.Parameter.ICECAST_GENRE_LIST;
+import static net.holmes.core.common.configuration.Parameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -44,6 +43,7 @@ public class IcecastDaoTest {
 
         expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
         expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         mediaIndexManager.removeChildren("IceCastGenre_genre1");
         expectLastCall().atLeastOnce();
@@ -81,6 +81,7 @@ public class IcecastDaoTest {
 
         expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
         expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         replay(configuration, mediaIndexManager);
         IcecastDaoImpl icecastDao = new IcecastDaoImpl(configuration, localHolmesDataDir, mediaIndexManager);
