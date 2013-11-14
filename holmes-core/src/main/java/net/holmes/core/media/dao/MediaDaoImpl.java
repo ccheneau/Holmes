@@ -99,7 +99,7 @@ public class MediaDaoImpl implements MediaDao {
                     node = new IcecastGenreNode(nodeId, ICECAST.getId(), indexElement.getName(), indexElement.getPath());
                     break;
                 case TYPE_RAW_URL:
-                    // Raw Url
+                    // Raw Url node
                     node = new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), new MimeType(indexElement.getMimeType()), indexElement.getPath(), null);
                     break;
                 default:
@@ -205,7 +205,7 @@ public class MediaDaoImpl implements MediaDao {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
             if (mimeType != null)
-                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeTypeManager.getMimeType(nodeFile.getName()));
+                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
         } else if (nodeFile.isValidDirectory()) {
             // Folder node
             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
