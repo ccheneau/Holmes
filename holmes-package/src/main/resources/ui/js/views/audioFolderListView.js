@@ -137,15 +137,9 @@ var Application = (function(application) {
 		},
 		showDialog : function(){
 			$("#messagebox").html("");
-			$("#audioDlg").draggable({
-				handle: ".modal-header",
-				start : function(event, ui) {ui.helper.removeClass('fade');}
-			});
 			$('#audioDlg').modal('show');
 		},
 		hideDialog : function(){
-			$(".modal-backdrop").remove();
-			$("body").removeClass("modal-open");
 			$('#audioDlg').modal('hide');
 		}
 	});
