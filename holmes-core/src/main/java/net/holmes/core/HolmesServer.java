@@ -34,8 +34,8 @@ import java.nio.channels.FileLock;
  * Holmes server main class.
  */
 public final class HolmesServer implements Service {
-    private static final String LOCK_FILE_NAME = "holmes.lock";
     private static final Logger LOGGER = LoggerFactory.getLogger(HolmesServer.class);
+    private static final String LOCK_FILE_NAME = "holmes.lock";
     private final Service httpServer;
     private final Service upnpServer;
     private final Service systray;

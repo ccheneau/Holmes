@@ -86,7 +86,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             // Add file request to message list
             out.add(fileRequest);
         else {
-            // Forward request to Netty pipeline
+            // Forward request to pipeline
             request.retain();
             out.add(request);
         }

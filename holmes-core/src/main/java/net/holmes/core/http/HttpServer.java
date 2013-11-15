@@ -84,6 +84,8 @@ public final class HttpServer implements Service {
 
         // Start RestEasy deployment
         deployment.start();
+
+        // Create a RestEasy request dispatcher
         final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher) deployment.getDispatcher(), deployment.getProviderFactory(), null);
 
         // Configure the server.
@@ -100,7 +102,7 @@ public final class HttpServer implements Service {
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())
                                         // Add HTTP file request handlers
                                 .addLast("httpFileRequestDecoder", injector.getInstance(HttpFileRequestDecoder.class))
-                                .addLast("httpFileRequestHandler", new HttpFileRequestHandler())
+                                .addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class))
                                         // Add RestEasy handlers
                                 .addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP))
                                 .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))

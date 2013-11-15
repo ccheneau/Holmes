@@ -38,6 +38,7 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.file.HttpFileRequestDecoder;
+import net.holmes.core.http.file.HttpFileRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
@@ -137,37 +138,38 @@ final class HolmesServerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // Bind utils
-        bind(EventBus.class).toInstance(eventBus);
-        bindListener(Matchers.any(), new CustomTypeListener(eventBus));
-        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
-        bind(ResourceBundle.class).toInstance(resourceBundle);
-        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
-        bind(UpnpDeviceMetadata.class).to(UpnpDeviceMetadataImpl.class).in(Singleton.class);
-
-        // Bind media service
-        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
-        bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
-
-
-        // Bind caches
-        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
-        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
-
         // Bind constants
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
         bindConstant().annotatedWith(Names.named("localIP")).to(localIP);
 
+        // Bind utils
+        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
+        bind(ResourceBundle.class).toInstance(resourceBundle);
+
+        // Bind event bus
+        bind(EventBus.class).toInstance(eventBus);
+        bindListener(Matchers.any(), new CustomTypeListener(eventBus));
+
+        // Bind media service
+        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
+        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
+        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
+        bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+
+
+        // Bind caches
+        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
+        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
+
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
-        // Bind servers
+        // Bind services
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
@@ -177,10 +179,12 @@ final class HolmesServerModule extends AbstractModule {
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
+        bind(UpnpDeviceMetadata.class).to(UpnpDeviceMetadataImpl.class).in(Singleton.class);
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
 
-        // Bind Http decoder
+        // Bind Http handlers
         bind(HttpFileRequestDecoder.class);
+        bind(HttpFileRequestHandler.class);
 
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);
@@ -189,8 +193,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(SettingsHandler.class);
         bind(UtilHandler.class);
         bind(VideoFoldersHandler.class);
-
-        // Bind Rest exception mapper
         bind(BackendExceptionMapper.class);
     }
 }

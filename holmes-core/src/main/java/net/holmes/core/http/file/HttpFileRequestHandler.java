@@ -54,6 +54,12 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
     private static final int CHUNK_SIZE = 8192;
 
+    /**
+     * Instantiates a new Http file request handler.
+     */
+    public HttpFileRequestHandler() {
+    }
+
     @Override
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
@@ -73,8 +79,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
 
         // Add http headers
         response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
-        setContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        setDateHeader(response, file);
+        addContentHeaders(response, fileLength - startOffset, request.getMimeType());
+        addDateHeader(response, file);
 
         // Keep alive header
         boolean keepAlive = isKeepAlive(request.getHttpRequest());
@@ -154,7 +160,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @param fileLength file length
      * @param mimeType   mime type
      */
-    private void setContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
+    private void addContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
         setContentLength(response, fileLength);
         response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
     }
@@ -164,7 +170,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      *
      * @param response HTTP response
      */
-    private void setDateHeader(final HttpResponse response, final NodeFile file) {
+    private void addDateHeader(final HttpResponse response, final NodeFile file) {
         // Add date header
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
