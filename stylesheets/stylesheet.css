@@ -29,6 +29,9 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+.download_list li {
+	list-style-type: none;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
