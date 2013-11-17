@@ -1,4 +1,4 @@
-#define MyAppName "Holmes UPnP Media Server"
+#define MyAppName "Holmes Media Server"
 #define MyAppVersion "0.6.0"
 #define MyAppPublisher "Cedric Cheneau"
 #define MyAppURL "http://ccheneau.github.io/Holmes/"
