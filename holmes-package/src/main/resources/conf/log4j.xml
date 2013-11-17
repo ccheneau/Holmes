@@ -29,7 +29,7 @@
         <param name="File" value="${user.home}/.holmes/log/holmes.log"/>
         <param name="Encoding" value="UTF-8"/>
         <param name="MaxFileSize" value="5MB"/>
-        <param name="append" value="true"/>
+        <param name="append" value="false"/>
         <!-- Keep one backup file -->
         <param name="MaxBackupIndex" value="1"/>
         <layout class="org.apache.log4j.PatternLayout">
