@@ -3,13 +3,13 @@ Holmes
 
 Holmes stands for Home Light Media Server.
 
-A Java application that implements DLNA/UPnP protocol for playing videos, music, pictures and podcasts (RSS) to compatible devices.
+A Java application that implements DLNA/UPnP protocol for playing videos, music, pictures, podcasts (RSS) and [Icecast](http://www.icecast.org/) web radio to compatible devices.
 
 Holmes has been tested with following video players and devices:
 * [VLC](http://www.videolan.org/vlc/) 2.x
+* PlayStation 3
 * Freebox V6 (a french set top box)
 * LG SmartTV
-* PlayStation 3
 
 
 See [Holmes wiki](https://github.com/ccheneau/Holmes/wiki) for more information
