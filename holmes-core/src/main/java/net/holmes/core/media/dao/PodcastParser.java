@@ -94,11 +94,8 @@ abstract class PodcastParser {
      * @return duration
      */
     private String getDuration(SyndEntry rssEntry) {
-        String duration = null;
         EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-        if (itunesInfo != null && itunesInfo.getDuration() != null)
-            duration = itunesInfo.getDuration().toString();
-        return duration;
+        return itunesInfo != null && itunesInfo.getDuration() != null ? itunesInfo.getDuration().toString() : null;
     }
 
     /**
@@ -108,11 +105,10 @@ abstract class PodcastParser {
      * @return icon Url
      */
     private String getIconUrl(SyndEntry rssEntry) {
-        String iconUrl = null;
         MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MediaModule.URI));
-        if (mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null && mediaInfo.getMetadata().getThumbnail().length > 0)
-            iconUrl = mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString();
-        return iconUrl;
+        return mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null &&
+                mediaInfo.getMetadata().getThumbnail().length > 0 ?
+                mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString() : null;
     }
 
     /**
@@ -122,9 +118,7 @@ abstract class PodcastParser {
      * @return published date
      */
     private Long getPublishedDate(SyndEntry rssEntry) {
-        if (rssEntry.getPublishedDate() != null)
-            return rssEntry.getPublishedDate().getTime();
-        return null;
+        return rssEntry.getPublishedDate() != null ? rssEntry.getPublishedDate().getTime() : null;
     }
 }
 
