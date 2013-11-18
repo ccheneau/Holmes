@@ -53,8 +53,6 @@ public class IcecastDownloadService extends AbstractScheduledService {
 
     @Override
     protected Scheduler scheduler() {
-        if (downloadDelayHours > 0)
-            return Scheduler.newFixedDelaySchedule(0, downloadDelayHours, HOURS);
-        return null;
+        return downloadDelayHours > 0 ? Scheduler.newFixedDelaySchedule(0, downloadDelayHours, HOURS) : null;
     }
 }
