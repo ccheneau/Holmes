@@ -18,12 +18,14 @@
 package net.holmes.core.media.dao;
 
 import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import com.sun.syndication.io.FeedException;
 import net.holmes.core.common.MediaType;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.media.dao.icecast.IcecastDao;
@@ -36,13 +38,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 import static net.holmes.core.media.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
@@ -69,17 +71,18 @@ public class MediaDaoImpl implements MediaDao {
      * @param mimeTypeManager   mime type manager
      * @param mediaIndexManager media index manager
      * @param icecastDao        Icecast dao
-     * @param podcastCache      podcast cache
      */
     @Inject
     public MediaDaoImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final MediaIndexManager mediaIndexManager,
-                        final IcecastDao icecastDao,
-                        @Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache) {
+                        final IcecastDao icecastDao) {
         this.configuration = configuration;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexManager = mediaIndexManager;
         this.icecastDao = icecastDao;
-        this.podcastCache = podcastCache;
+        this.podcastCache = CacheBuilder.newBuilder()
+                .maximumSize(configuration.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS))
+                .expireAfterWrite(configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
+                .build();
     }
 
     @Override
@@ -188,6 +191,12 @@ public class MediaDaoImpl implements MediaDao {
                 break;
         }
         return nodes;
+    }
+
+    @Override
+    public void cleanUpCache() {
+        podcastCache.cleanUp();
+        mediaIndexManager.clean();
     }
 
     /**

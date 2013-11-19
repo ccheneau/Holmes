@@ -43,6 +43,11 @@ public interface MediaManager {
     ChildNodeResult getChildNodes(ChildNodeRequest request);
 
     /**
+     * Clean up cache
+     */
+    void cleanUpCache();
+
+    /**
      * Child node request.
      */
     final class ChildNodeRequest {

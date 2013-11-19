@@ -97,6 +97,11 @@ public final class MediaManagerImpl implements MediaManager {
         return new ChildNodeResult(result, result.size());
     }
 
+    @Override
+    public void cleanUpCache() {
+        mediaDao.cleanUpCache();
+    }
+
     /**
      * Scan a specific node and its children
      *

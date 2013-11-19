@@ -29,8 +29,7 @@ public enum Parameter {
     ENABLE_ICECAST_DIRECTORY("enable_icecast_directory", "true"), //
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"), //
     PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"), //
-    LOCAL_CACHE_CLEAN_DELAY_MINUTES("local_cache_clean_delay_minutes", "60"), //
-    MEDIA_INDEX_CLEAN_DELAY_MINUTES("media_index_clean_delay_minutes", "15"), //
+    CACHE_CLEAN_DELAY_MINUTES("cache_clean_delay_minutes", "30"), //
     UPNP_SERVICE_PORT("upnp_service_port", String.valueOf(Configuration.DEFAULT_UPNP_SERVICE_PORT)), //
     ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true"),//
     ICECAST_YELLOW_PAGE_URL("icecast_yellow_page_url", "http://dir.xiph.org/yp.xml"), //

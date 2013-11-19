@@ -18,13 +18,11 @@
 package net.holmes.core;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.cache.Cache;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import net.holmes.core.backend.BackendManager;
@@ -40,7 +38,6 @@ import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.file.HttpFileRequestDecoder;
 import net.holmes.core.http.file.HttpFileRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
@@ -50,11 +47,9 @@ import net.holmes.core.media.dao.icecast.IcecastDao;
 import net.holmes.core.media.dao.icecast.IcecastDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
-import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
-import net.holmes.core.scheduled.MediaIndexCleanerService;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
@@ -65,7 +60,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
@@ -160,13 +154,8 @@ final class HolmesServerModule extends AbstractModule {
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
 
 
-        // Bind caches
-        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
-        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class).in(Singleton.class);
-
         // Bind scheduled services
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
         // Bind services

@@ -49,4 +49,9 @@ public interface MediaDao {
      * @return child nodes
      */
     List<AbstractNode> getSubRootChildNodes(RootNode rootNode);
+
+    /**
+     * Clean up cache
+     */
+    void cleanUpCache();
 }

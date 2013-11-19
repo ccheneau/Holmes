@@ -17,48 +17,45 @@
 
 package net.holmes.core.scheduled;
 
-import com.google.common.cache.Cache;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.MediaManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static net.holmes.core.common.configuration.Parameter.CACHE_CLEAN_DELAY_MINUTES;
 
 /**
- * Scheduled service used to clean local caches.
+ * Scheduled service used to clean caches.
  */
 public class CacheCleanerService extends AbstractScheduledService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheCleanerService.class);
-    private final Cache<String, List<AbstractNode>> podcastCache;
+    private final MediaManager mediaManager;
     private final int cleanDelayMinutes;
 
     /**
      * Instantiates a new cache cleaner service.
      *
-     * @param podcastCache  podcast cache
+     * @param mediaManager  media manager
      * @param configuration configuration
      */
     @Inject
-    public CacheCleanerService(@Named("podcastCache") final Cache<String, List<AbstractNode>> podcastCache,
-                               final Configuration configuration) {
-        this.podcastCache = podcastCache;
-        this.cleanDelayMinutes = configuration.getIntParameter(Parameter.LOCAL_CACHE_CLEAN_DELAY_MINUTES);
+    public CacheCleanerService(final MediaManager mediaManager, final Configuration configuration) {
+        this.mediaManager = mediaManager;
+        this.cleanDelayMinutes = configuration.getIntParameter(CACHE_CLEAN_DELAY_MINUTES);
     }
 
     @Override
     protected void runOneIteration() {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch cache cleaner");
-        podcastCache.cleanUp();
+        mediaManager.cleanUpCache();
     }
 
     @Override
     protected Scheduler scheduler() {
-        return cleanDelayMinutes > 0 ? Scheduler.newFixedDelaySchedule(cleanDelayMinutes, cleanDelayMinutes, TimeUnit.MINUTES) : null;
+        return cleanDelayMinutes > 0 ? Scheduler.newFixedDelaySchedule(cleanDelayMinutes, cleanDelayMinutes, MINUTES) : null;
     }
 }

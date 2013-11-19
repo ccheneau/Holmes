@@ -170,4 +170,9 @@ public class MediaManagerTest {
             mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
         }
     }
+
+    @Test
+    public void testCacheCleanUp() {
+        mediaManager.cleanUpCache();
+    }
 }

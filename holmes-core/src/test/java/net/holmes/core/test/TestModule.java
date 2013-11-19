@@ -17,12 +17,10 @@
 
 package net.holmes.core.test;
 
-import com.google.common.cache.Cache;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import net.holmes.core.backend.BackendManager;
@@ -34,7 +32,6 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.PodcastCacheProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
 import net.holmes.core.media.dao.MediaDao;
@@ -43,17 +40,14 @@ import net.holmes.core.media.dao.icecast.IcecastDao;
 import net.holmes.core.media.dao.icecast.IcecastDaoImpl;
 import net.holmes.core.media.index.MediaIndexManager;
 import net.holmes.core.media.index.MediaIndexManagerImpl;
-import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
-import net.holmes.core.scheduled.MediaIndexCleanerService;
 import net.holmes.core.upnp.UpnpServer;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
 import org.fourthline.cling.UpnpService;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.easymock.EasyMock.createMock;
@@ -84,9 +78,6 @@ public class TestModule extends AbstractModule {
 
         bind(BackendManager.class).to(BackendManagerImpl.class);
 
-        bind(new TypeLiteral<Cache<String, List<AbstractNode>>>() {
-        }).annotatedWith(Names.named("podcastCache")).toProvider(PodcastCacheProvider.class);
-
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class);
         bind(Service.class).annotatedWith(Names.named("systray")).toInstance(createMock(Service.class));
@@ -94,8 +85,7 @@ public class TestModule extends AbstractModule {
 
         bind(UpnpService.class).toInstance(createMock(UpnpService.class));
 
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("mediaIndexCleaner")).to(MediaIndexCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("podcastCacheCleaner")).to(CacheCleanerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
         bind(BackendExceptionMapper.class);
