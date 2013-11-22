@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +60,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Inject
     private UpnpDeviceMetadata upnpDeviceMetadata;
     @Inject
-    @Named("localIP")
-    private String localIP;
+    @Named("localAddress")
+    private InetAddress localAddress;
 
     /**
      * Instantiates a new content directory service.
@@ -149,7 +150,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Build content url
-                String url = "http://" + localIP + ":" + configuration.getHttpServerPort() + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
+                String url = "http://" + localAddress.getHostName() + ":" + configuration.getHttpServerPort() + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {

@@ -45,6 +45,7 @@
         <guice.version>3.0</guice.version>
         <javassist.version>3.18.1-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>
+        <jmdns.version>3.4.1</jmdns.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <netty.version>4.0.12.Final</netty.version>
@@ -299,6 +300,13 @@
                 <artifactId>resteasy-jackson-provider</artifactId>
                 <version>${resteasy.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <!-- jmdns -->
+            <dependency>
+                <groupId>javax.jmdns</groupId>
+                <artifactId>jmdns</artifactId>
+                <version>${jmdns.version}</version>
             </dependency>
 
             <!-- guava -->

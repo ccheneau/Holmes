@@ -25,6 +25,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
+import net.holmes.core.airplay.AirplayServer;
+import net.holmes.core.airplay.command.AirplayCommandManager;
+import net.holmes.core.airplay.command.AirplayCommandManagerImpl;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
@@ -75,7 +78,7 @@ final class HolmesServerModule extends AbstractModule {
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
     private final String uiDirectory = getUiDirectory();
-    private final String localIP = getLocalIPV4();
+    private final InetAddress localAddress = getLocalAddress();
 
     /**
      * Get local data directory where Holmes configuration and logs are saved.
@@ -114,17 +117,17 @@ final class HolmesServerModule extends AbstractModule {
      * @return local IPv4 address
      */
     @VisibleForTesting
-    static String getLocalIPV4() {
+    static InetAddress getLocalAddress() {
         try {
             for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
                 NetworkInterface networkInterface = interfaces.nextElement();
                 for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
                     InetAddress inetAddress = inetAddresses.nextElement();
                     if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
-                        return inetAddress.getHostAddress();
+                        return inetAddress;
                 }
             }
-            return InetAddress.getLocalHost().getHostAddress();
+            return InetAddress.getLocalHost();
         } catch (SocketException | UnknownHostException e) {
             throw new RuntimeException(e);
         }
@@ -136,7 +139,8 @@ final class HolmesServerModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
-        bindConstant().annotatedWith(Names.named("localIP")).to(localIP);
+
+        bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(localAddress);
 
         // Bind utils
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
@@ -153,7 +157,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
 
-
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
@@ -161,8 +164,12 @@ final class HolmesServerModule extends AbstractModule {
         // Bind services
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(Names.named("airplay")).to(AirplayServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
+
+        // Bind Airplay
+        bind(AirplayCommandManager.class).to(AirplayCommandManagerImpl.class).in(Singleton.class);
 
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);

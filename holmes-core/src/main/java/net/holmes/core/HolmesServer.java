@@ -38,6 +38,7 @@ public final class HolmesServer implements Service {
     private static final String LOCK_FILE_NAME = "holmes.lock";
     private final Service httpServer;
     private final Service upnpServer;
+    private final Service airplayServer;
     private final Service systray;
     private final Service scheduler;
     private final String localHolmesDataDir;
@@ -54,10 +55,12 @@ public final class HolmesServer implements Service {
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("systray") final Service systray,
-                        @Named("scheduler") final Service scheduler, @Named("localHolmesDataDir") String localHolmesDataDir) {
+    public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("airplay") final Service airplayServer,
+                        @Named("systray") final Service systray, @Named("scheduler") final Service scheduler,
+                        @Named("localHolmesDataDir") String localHolmesDataDir) {
         this.httpServer = httpServer;
         this.upnpServer = upnpServer;
+        this.airplayServer = airplayServer;
         this.systray = systray;
         this.scheduler = scheduler;
         this.localHolmesDataDir = localHolmesDataDir;
@@ -71,6 +74,7 @@ public final class HolmesServer implements Service {
             // Start Holmes server
             httpServer.start();
             upnpServer.start();
+            airplayServer.start();
             systray.start();
             scheduler.start();
 
@@ -87,6 +91,7 @@ public final class HolmesServer implements Service {
         // Stop Holmes server
         scheduler.stop();
         systray.stop();
+        airplayServer.stop();
         upnpServer.stop();
         httpServer.stop();
 

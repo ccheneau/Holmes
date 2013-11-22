@@ -25,6 +25,7 @@ public enum Parameter {
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"), // 
     ENABLE_SYSTRAY("enable_systray", "true"), //
     ENABLE_UPNP("enable_upnp", "true"), //
+    ENABLE_AIRPLAY("enable_airplay", "true"), //
     ENABLE_UPNP_PROTOCOL_INFO("enable_upnp_protocol_info", "true"), //
     ENABLE_ICECAST_DIRECTORY("enable_icecast_directory", "true"), //
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"), //

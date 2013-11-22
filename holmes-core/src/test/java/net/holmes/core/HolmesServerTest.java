@@ -28,12 +28,12 @@ public class HolmesServerTest {
     public void testHolmesServer() {
         Service service = createMock(Service.class);
 
-        HolmesServer holmesServer = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
 
         service.start();
-        expectLastCall().times(4);
+        expectLastCall().times(5);
         service.stop();
-        expectLastCall().times(4);
+        expectLastCall().times(5);
 
         replay(service);
         holmesServer.start();
@@ -45,13 +45,13 @@ public class HolmesServerTest {
     public void testHolmesServerStartTwoServers() {
         Service service = createMock(Service.class);
 
-        HolmesServer holmesServer = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
-        HolmesServer holmesServer2 = new HolmesServer(service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesServer holmesServer2 = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
 
         service.start();
-        expectLastCall().times(4);
+        expectLastCall().times(5);
         service.stop();
-        expectLastCall().times(4);
+        expectLastCall().times(5);
 
         replay(service);
         try {

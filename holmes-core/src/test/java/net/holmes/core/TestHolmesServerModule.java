@@ -55,7 +55,7 @@ public class TestHolmesServerModule {
 
     @Test
     public void testGetLocalIPV4() {
-        assertNotNull(HolmesServerModule.getLocalIPV4());
+        assertNotNull(HolmesServerModule.getLocalAddress());
     }
 
     @Test

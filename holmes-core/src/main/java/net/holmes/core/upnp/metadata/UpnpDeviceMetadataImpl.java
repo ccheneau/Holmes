@@ -33,7 +33,7 @@ public class UpnpDeviceMetadataImpl implements UpnpDeviceMetadata {
 
     @Override
     public void addDevice(String deviceHost, List<String> availableMimeTypes) {
-        LOGGER.info("Add device [{}] with supported mime types: {}", deviceHost, availableMimeTypes);
+        LOGGER.info("Add Upnp device [{}] with supported mime types: {}", deviceHost, availableMimeTypes);
         deviceMimeTypes.put(deviceHost, availableMimeTypes);
     }
 
@@ -44,7 +44,7 @@ public class UpnpDeviceMetadataImpl implements UpnpDeviceMetadata {
 
     @Override
     public void removeDevice(String deviceHost) {
-        LOGGER.info("Remove device [{}]", deviceHost);
+        LOGGER.info("Remove Upnp device [{}]", deviceHost);
         deviceMimeTypes.remove(deviceHost);
     }
 }
