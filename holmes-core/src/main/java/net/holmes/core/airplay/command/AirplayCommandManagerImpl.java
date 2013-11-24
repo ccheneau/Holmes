@@ -33,7 +33,7 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
 
     @Override
     public void addDevice(AirplayDevice device) {
-        if (!deviceMap.containsKey(device.hashCode())) {
+        if (device != null && !deviceMap.containsKey(device.hashCode())) {
             LOGGER.info("Add Airplay device {}", device.toString());
             deviceMap.put(device.hashCode(), device);
         }
@@ -41,7 +41,7 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
 
     @Override
     public void removeDevice(AirplayDevice device) {
-        if (deviceMap.containsKey(device.hashCode())) {
+        if (device != null && deviceMap.containsKey(device.hashCode())) {
             LOGGER.info("Remove Airplay device {}", device.toString());
             deviceMap.remove(device.hashCode());
             //TODO close existing connection on remove

@@ -65,8 +65,34 @@ public class AirplayServer implements Service {
         if (configuration.getBooleanParameter(ENABLE_AIRPLAY)) {
             LOGGER.info("Starting Airplay server");
             try {
+                // Create JmDNS
                 jmDNS = JmDNS.create(localAddress);
-                jmDNS.addServiceListener(AIR_PLAY_TCP, new AirPlayServiceListener());
+
+                // Loop up for available devices
+                ServiceInfo[] devicesInfo = jmDNS.list(AIR_PLAY_TCP);
+                if (devicesInfo != null && devicesInfo.length > 0)
+                    for (ServiceInfo serviceInfo : devicesInfo)
+                        airplayCommandManager.addDevice(getDevice(serviceInfo));
+
+                // Add Listener to manager inbound and outbound devices
+                jmDNS.addServiceListener(AIR_PLAY_TCP, new ServiceListener() {
+
+                    @Override
+                    public void serviceAdded(ServiceEvent event) {
+                        // Nothing, waiting for service to be resolved with serviceResolved method
+                    }
+
+                    @Override
+                    public void serviceRemoved(ServiceEvent event) {
+                        airplayCommandManager.removeDevice(getDevice(event.getInfo()));
+                    }
+
+                    @Override
+                    public void serviceResolved(ServiceEvent event) {
+                        airplayCommandManager.addDevice(getDevice(event.getInfo()));
+                    }
+                });
+
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }
@@ -88,39 +114,18 @@ public class AirplayServer implements Service {
     }
 
     /**
-     * Airplay service listener.
+     * Get Airplay device associated to jmDNS service info.
+     * For now, only IPV4 addresses are accepted.
+     *
+     * @param serviceInfo jmDNS service information
+     * @return Airplay device
      */
-    private class AirPlayServiceListener implements ServiceListener {
-
-        @Override
-        public void serviceAdded(ServiceEvent event) {
-            // Nothing, waiting for service to be resolved with serviceResolved method
+    private AirplayDevice getDevice(ServiceInfo serviceInfo) {
+        if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
+            for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
+                if (!inet4Address.isLoopbackAddress())
+                    return new AirplayDevice(serviceInfo.getName(), inet4Address, serviceInfo.getPort());
         }
-
-        @Override
-        public void serviceRemoved(ServiceEvent event) {
-            airplayCommandManager.removeDevice(getDevice(event));
-        }
-
-        @Override
-        public void serviceResolved(ServiceEvent event) {
-            airplayCommandManager.addDevice(getDevice(event));
-        }
-
-        /**
-         * Get Airplay device associated to jmDNS service event.
-         * For now, only IPV4 addresses are accepted.
-         *
-         * @param event jmDNS service event
-         * @return Airplay device
-         */
-        private AirplayDevice getDevice(ServiceEvent event) {
-            ServiceInfo serviceInfo = event.getInfo();
-            if (serviceInfo != null && serviceInfo.getInet4Addresses() != null)
-                for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
-                    if (!inet4Address.isLoopbackAddress())
-                        return new AirplayDevice(event.getName(), inet4Address, serviceInfo.getPort());
-            return null;
-        }
+        return null;
     }
 }
