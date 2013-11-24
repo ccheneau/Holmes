@@ -1,5 +1,5 @@
 #define MyAppName "Holmes Media Server"
-#define MyAppVersion "0.6.1"
+#define MyAppVersion "0.7.0"
 #define MyAppPublisher "Cedric Cheneau"
 #define MyAppURL "http://ccheneau.github.io/Holmes/"
 #define MyAppExeName "startup.bat"
