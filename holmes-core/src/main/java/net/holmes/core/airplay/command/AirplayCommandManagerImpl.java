@@ -18,7 +18,6 @@
 package net.holmes.core.airplay.command;
 
 import com.google.common.collect.Maps;
-import net.holmes.core.airplay.model.AirplayDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

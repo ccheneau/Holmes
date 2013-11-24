@@ -48,6 +48,8 @@ import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
 import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
 import org.fourthline.cling.UpnpService;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import static org.easymock.EasyMock.createMock;
@@ -72,7 +74,12 @@ public class TestModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(System.getProperty("java.io.tmpdir"));
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(System.getProperty("java.io.tmpdir"));
-        bindConstant().annotatedWith(Names.named("localIP")).to("localhost");
+
+        try {
+            bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(InetAddress.getByName("localhost"));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class);
 

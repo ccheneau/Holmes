@@ -18,7 +18,7 @@
 package net.holmes.core.airplay;
 
 import net.holmes.core.airplay.command.AirplayCommandManager;
-import net.holmes.core.airplay.model.AirplayDevice;
+import net.holmes.core.airplay.command.AirplayDevice;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import org.slf4j.Logger;

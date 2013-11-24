@@ -15,33 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.airplay.command.model;
 
-import java.util.Map;
+import static net.holmes.core.airplay.command.model.AbstractCommand.CommandParameter.POSITION;
+import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.SCRUB;
 
 /**
- * Airplay command manager
+ * Airplay scrub command
  */
-public interface AirplayCommandManager {
-
+public class ScrubCommand extends AbstractCommand {
     /**
-     * Add Airplay device.
+     * Instantiates a new Airplay scrub command.
      *
-     * @param device device
+     * @param rate rate
      */
-    void addDevice(AirplayDevice device);
-
-    /**
-     * Remove Airplay device.
-     *
-     * @param device device
-     */
-    void removeDevice(AirplayDevice device);
-
-    /**
-     * Get Airplay devices.
-     *
-     * @return Airplay devices
-     */
-    Map<Integer, AirplayDevice> getDevices();
+    public ScrubCommand(final Double rate) {
+        super(SCRUB);
+        addParameter(POSITION, rate.toString());
+    }
 }

@@ -15,33 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.airplay.command.model;
 
-import java.util.Map;
+import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.PLAY;
 
 /**
- * Airplay command manager
+ * Airplay play command
  */
-public interface AirplayCommandManager {
+public class PlayCommand extends AbstractCommand {
 
     /**
-     * Add Airplay device.
+     * Instantiates a new Airplay play command.
      *
-     * @param device device
+     * @param contentUrl    content Url
+     * @param startPosition start position
      */
-    void addDevice(AirplayDevice device);
-
-    /**
-     * Remove Airplay device.
-     *
-     * @param device device
-     */
-    void removeDevice(AirplayDevice device);
-
-    /**
-     * Get Airplay devices.
-     *
-     * @return Airplay devices
-     */
-    Map<Integer, AirplayDevice> getDevices();
+    public PlayCommand(final String contentUrl, final Double startPosition) {
+        super(PLAY);
+        setContent(String.format("Content-Location: %s\n" +
+                "Start-Position: %f\n", contentUrl, startPosition));
+    }
 }

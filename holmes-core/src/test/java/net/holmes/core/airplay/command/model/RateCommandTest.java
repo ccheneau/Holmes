@@ -15,33 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.airplay.command.model;
 
-import java.util.Map;
 
-/**
- * Airplay command manager
- */
-public interface AirplayCommandManager {
+import org.junit.Test;
 
-    /**
-     * Add Airplay device.
-     *
-     * @param device device
-     */
-    void addDevice(AirplayDevice device);
+import static org.junit.Assert.assertNotNull;
 
-    /**
-     * Remove Airplay device.
-     *
-     * @param device device
-     */
-    void removeDevice(AirplayDevice device);
+public class RateCommandTest {
 
-    /**
-     * Get Airplay devices.
-     *
-     * @return Airplay devices
-     */
-    Map<Integer, AirplayDevice> getDevices();
+    @Test
+    public void testRateCommand() {
+        RateCommand rateCommand = new RateCommand(0d);
+        assertNotNull(rateCommand.getCommand());
+    }
 }

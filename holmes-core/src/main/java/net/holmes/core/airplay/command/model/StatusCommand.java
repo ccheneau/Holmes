@@ -15,33 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.airplay.command.model;
 
-import java.util.Map;
+import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.STATUS;
 
 /**
- * Airplay command manager
+ * Airplay status command
  */
-public interface AirplayCommandManager {
+public class StatusCommand extends AbstractCommand {
 
     /**
-     * Add Airplay device.
-     *
-     * @param device device
+     * Instantiates a new Airplay status command.
      */
-    void addDevice(AirplayDevice device);
-
-    /**
-     * Remove Airplay device.
-     *
-     * @param device device
-     */
-    void removeDevice(AirplayDevice device);
-
-    /**
-     * Get Airplay devices.
-     *
-     * @return Airplay devices
-     */
-    Map<Integer, AirplayDevice> getDevices();
+    public StatusCommand() {
+        super(STATUS);
+    }
 }
