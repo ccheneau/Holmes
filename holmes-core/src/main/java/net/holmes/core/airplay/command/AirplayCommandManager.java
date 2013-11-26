@@ -17,6 +17,9 @@
 
 package net.holmes.core.airplay.command;
 
+import net.holmes.core.airplay.command.model.AbstractCommand;
+import net.holmes.core.airplay.command.model.CommandResponse;
+
 import java.util.Map;
 
 /**
@@ -44,4 +47,13 @@ public interface AirplayCommandManager {
      * @return Airplay devices
      */
     Map<Integer, AirplayDevice> getDevices();
+
+    /**
+     * Send command to Airplay device.
+     *
+     * @param deviceId device ID
+     * @param command  command to run
+     * @return command response
+     */
+    CommandResponse sendCommand(Integer deviceId, AbstractCommand command);
 }
