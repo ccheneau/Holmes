@@ -27,10 +27,10 @@ public class ScrubCommand extends AbstractCommand {
     /**
      * Instantiates a new Airplay scrub command.
      *
-     * @param rate rate
+     * @param position position
      */
-    public ScrubCommand(final Double rate) {
+    public ScrubCommand(final Double position) {
         super(SCRUB);
-        addParameter(POSITION, rate.toString());
+        addParameter(POSITION, position.toString());
     }
 }
