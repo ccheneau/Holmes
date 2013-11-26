@@ -20,13 +20,14 @@ package net.holmes.core.backend.exception;
 import com.google.common.annotations.VisibleForTesting;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
  * Map backend exceptions to Http response.
@@ -46,8 +47,8 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
             entityMessage = e.getMessage();
         }
 
-        return Response.status(Status.BAD_REQUEST)//
-                .type(MediaType.TEXT_PLAIN) //
+        return Response.status(BAD_REQUEST)//
+                .type(TEXT_PLAIN) //
                 .entity(entityMessage).build();
     }
 
