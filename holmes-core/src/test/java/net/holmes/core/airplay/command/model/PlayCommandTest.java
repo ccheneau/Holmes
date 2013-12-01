@@ -18,15 +18,21 @@
 package net.holmes.core.airplay.command.model;
 
 
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertNotNull;
 
 public class PlayCommandTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlayCommandTest.class);
 
     @Test
     public void testPlayCommand() {
         PlayCommand playCommand = new PlayCommand("url", 0d);
-        assertNotNull(playCommand.getCommand());
+        HttpRequestBase request = playCommand.getHttpRequest("127.0.0.1", 8080);
+        assertNotNull(request);
+        LOGGER.debug(request.toString());
     }
 }

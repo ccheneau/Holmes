@@ -15,19 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.backend.handler;
 
-import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.STATUS;
+import net.holmes.core.airplay.command.AirplayCommandManager;
+
+import javax.inject.Inject;
+import javax.ws.rs.Path;
 
 /**
- * Airplay status command
+ * Handler for Airplay requests.
  */
-public class StatusCommand extends AbstractCommand {
+@Path("/backend/airplay")
+public class AirplayHandler {
+
+    private final AirplayCommandManager airplayCommandManager;
 
     /**
-     * Instantiates a new Airplay status command.
+     * Instantiates a new Airplay handler.
+     *
+     * @param airplayCommandManager Airplay command manager
      */
-    public StatusCommand() {
-        super(STATUS);
+    @Inject
+    public AirplayHandler(final AirplayCommandManager airplayCommandManager) {
+        this.airplayCommandManager = airplayCommandManager;
     }
 }

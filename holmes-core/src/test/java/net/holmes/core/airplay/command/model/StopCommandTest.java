@@ -17,15 +17,21 @@
 
 package net.holmes.core.airplay.command.model;
 
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertNotNull;
 
 public class StopCommandTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StopCommandTest.class);
 
     @Test
     public void testStopCommand() {
         StopCommand stopCommand = new StopCommand();
-        assertNotNull(stopCommand.getCommand());
+        HttpRequestBase request = stopCommand.getHttpRequest("127.0.0.1", 8080);
+        assertNotNull(request);
+        LOGGER.debug(request.toString());
     }
 }

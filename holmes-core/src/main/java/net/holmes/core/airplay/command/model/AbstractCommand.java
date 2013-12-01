@@ -17,14 +17,24 @@
 
 package net.holmes.core.airplay.command.model;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.handler.codec.http.HttpMethod;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
+import static io.netty.handler.codec.http.HttpHeaders.Names.USER_AGENT;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpMethod.POST;
 
@@ -32,10 +42,11 @@ import static io.netty.handler.codec.http.HttpMethod.POST;
  * Airplay command.
  */
 public abstract class AbstractCommand {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
+    private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
     private final CommandType type;
-    private final Map<CommandParameter, String> parameters = Maps.newHashMap();
-    private String content;
+    private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
+    private final List<NameValuePair> postParameters = Lists.newArrayList();
 
     /**
      * Instantiates a new Airplay command.
@@ -47,47 +58,69 @@ public abstract class AbstractCommand {
     }
 
     /**
-     * Add command parameter.
+     * Add Url parameter.
      *
-     * @param parameter parameter
-     * @param value     parameter value
+     * @param parameter Url parameter
+     * @param value     Url parameter value
      */
-    public void addParameter(final CommandParameter parameter, final String value) {
-        parameters.put(parameter, value);
+    public void addUrlParameter(final UrlParameter parameter, final String value) {
+        urlParameters.put(parameter, value);
     }
 
     /**
-     * Set command content.
+     * Add post parameter.
      *
-     * @param content command content
+     * @param parameter post parameter
+     * @param value     post parameter value
      */
-    public void setContent(final String content) {
-        this.content = content;
+    public void addPostParameter(final PostParameter parameter, final String value) {
+        this.postParameters.add(new BasicNameValuePair(parameter.getValue(), value));
     }
 
     /**
-     * Get command string.
+     * Get Http request.
      *
-     * @return command
+     * @param deviceHost device host
+     * @param devicePort device port
+     * @return Http request
      */
-    public String getCommand() {
-        String parameterValue = "";
-        if (!parameters.isEmpty()) {
-            List<String> params = Lists.newArrayList();
-            for (CommandParameter commandParameter : parameters.keySet()) {
-                params.add(commandParameter.getValue() + "=" + parameters.get(commandParameter));
+    public HttpRequestBase getHttpRequest(final String deviceHost, final int devicePort) {
+        HttpRequestBase request = null;
+        if (type.getMethod().equals(GET)) {
+            request = new HttpGet(getRequestUri(deviceHost, devicePort));
+            request.setHeader(USER_AGENT, AIRPLAY_USER_AGENT);
+            request.addHeader(CONTENT_LENGTH, "0");
+        } else if (type.getMethod().equals(POST)) {
+            request = new HttpPost(getRequestUri(deviceHost, devicePort));
+            request.setHeader(USER_AGENT, AIRPLAY_USER_AGENT);
+            if (!postParameters.isEmpty())
+                try {
+                    ((HttpPost) request).setEntity(new UrlEncodedFormEntity(postParameters));
+                } catch (UnsupportedEncodingException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+        }
+        return request;
+    }
+
+    /**
+     * Get request Uri.
+     *
+     * @param deviceHost device host
+     * @param devicePort device port
+     * @return request Uri
+     */
+    private String getRequestUri(final String deviceHost, final int devicePort) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("http://").append(deviceHost).append(":").append(devicePort).append("/").append(type.getValue());
+        if (!urlParameters.isEmpty()) {
+            sb.append("?");
+            for (UrlParameter param : urlParameters.keySet()) {
+                sb.append(param.getValue()).append("=").append(urlParameters.get(param)).append("&");
             }
-            parameterValue = "?" + Joiner.on('&').join(params);
+            sb.deleteCharAt(sb.length() - 1);
         }
-
-        String headerPart = String.format("%s /%s%s HTTP/1.1\n" +
-                "Content-Length: %d\n" +
-                "User-Agent: MediaControl/1.0\n", type.getMethod().name(), type.getValue(), parameterValue, content == null ? 0 : content.length());
-        if (content == null || content.length() == 0) {
-            return headerPart;
-        } else {
-            return headerPart + "\n" + content;
-        }
+        return sb.toString();
     }
 
     /**
@@ -127,26 +160,53 @@ public abstract class AbstractCommand {
     }
 
     /**
-     * Airplay command parameter
+     * Airplay Url parameter
      */
-    public static enum CommandParameter {
+    public static enum UrlParameter {
         VALUE("value"),
         POSITION("position");
         private final String value;
 
         /**
-         * Instantiates a new command parameter
+         * Instantiates a new Url parameter
          *
          * @param value value
          */
-        CommandParameter(final String value) {
+        private UrlParameter(final String value) {
             this.value = value;
         }
 
         /**
-         * Get command parameter value.
+         * Get Url parameter value.
          *
-         * @return command parameter value
+         * @return Url parameter value
+         */
+        public String getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * Airplay post parameter
+     */
+    public static enum PostParameter {
+        CONTENT_LOCATION("Content-Location"),
+        START_POSITION("Start-Position");
+        private final String value;
+
+        /**
+         * Instantiates a new post parameter
+         *
+         * @param value value
+         */
+        private PostParameter(final String value) {
+            this.value = value;
+        }
+
+        /**
+         * Get post parameter value.
+         *
+         * @return post parameter value
          */
         public String getValue() {
             return value;

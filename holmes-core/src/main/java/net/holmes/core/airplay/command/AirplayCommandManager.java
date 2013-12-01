@@ -17,9 +17,11 @@
 
 package net.holmes.core.airplay.command;
 
+import net.holmes.core.airplay.command.exception.UnknownDeviceException;
 import net.holmes.core.airplay.command.model.AbstractCommand;
 import net.holmes.core.airplay.command.model.CommandResponse;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -54,6 +56,8 @@ public interface AirplayCommandManager {
      * @param deviceId device ID
      * @param command  command to run
      * @return command response
+     * @throws IOException
+     * @throws UnknownDeviceException
      */
-    CommandResponse sendCommand(Integer deviceId, AbstractCommand command);
+    CommandResponse sendCommand(Integer deviceId, AbstractCommand command) throws IOException, UnknownDeviceException;
 }

@@ -18,15 +18,21 @@
 package net.holmes.core.airplay.command.model;
 
 
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertNotNull;
 
 public class ScrubCommandTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScrubCommandTest.class);
 
     @Test
     public void tesScrubCommand() {
         ScrubCommand scrubCommand = new ScrubCommand(0d);
-        assertNotNull(scrubCommand.getCommand());
+        HttpRequestBase request = scrubCommand.getHttpRequest("127.0.0.1", 8080);
+        assertNotNull(request);
+        LOGGER.debug(request.toString());
     }
 }

@@ -18,6 +18,8 @@
 package net.holmes.core.airplay.command.model;
 
 import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.PLAY;
+import static net.holmes.core.airplay.command.model.AbstractCommand.PostParameter.CONTENT_LOCATION;
+import static net.holmes.core.airplay.command.model.AbstractCommand.PostParameter.START_POSITION;
 
 /**
  * Airplay play command
@@ -32,7 +34,7 @@ public class PlayCommand extends AbstractCommand {
      */
     public PlayCommand(final String contentUrl, final Double startPosition) {
         super(PLAY);
-        setContent(String.format("Content-Location: %s\n" +
-                "Start-Position: %f\n", contentUrl, startPosition));
+        addPostParameter(CONTENT_LOCATION, contentUrl);
+        addPostParameter(START_POSITION, startPosition.toString());
     }
 }

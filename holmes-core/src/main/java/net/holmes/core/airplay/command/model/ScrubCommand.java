@@ -17,8 +17,8 @@
 
 package net.holmes.core.airplay.command.model;
 
-import static net.holmes.core.airplay.command.model.AbstractCommand.CommandParameter.POSITION;
 import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.SCRUB;
+import static net.holmes.core.airplay.command.model.AbstractCommand.UrlParameter.POSITION;
 
 /**
  * Airplay scrub command
@@ -31,6 +31,6 @@ public class ScrubCommand extends AbstractCommand {
      */
     public ScrubCommand(final Double position) {
         super(SCRUB);
-        addParameter(POSITION, position.toString());
+        addUrlParameter(POSITION, position.toString());
     }
 }

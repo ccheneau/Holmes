@@ -15,17 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.inject.provider;
 
-import org.junit.Test;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
-import static org.junit.Assert.assertNotNull;
+import javax.inject.Provider;
 
-public class StatusCommandTest {
-
-    @Test
-    public void testStatusCommand() {
-        StatusCommand statusCommand = new StatusCommand();
-        assertNotNull(statusCommand.getCommand());
+/**
+ * Guice provider for Http client.
+ */
+public class HttpClientProvider implements Provider<HttpClient> {
+    @Override
+    public HttpClient get() {
+        return HttpClientBuilder.create().build();
     }
 }

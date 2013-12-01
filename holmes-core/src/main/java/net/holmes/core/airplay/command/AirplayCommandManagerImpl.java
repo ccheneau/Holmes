@@ -17,25 +17,46 @@
 
 package net.holmes.core.airplay.command;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import net.holmes.core.airplay.command.exception.UnknownDeviceException;
 import net.holmes.core.airplay.command.model.AbstractCommand;
 import net.holmes.core.airplay.command.model.CommandResponse;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.Socket;
+import javax.inject.Inject;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
+import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 
 /**
  * Airplay command manager implementation.
  */
 public class AirplayCommandManagerImpl implements AirplayCommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayCommandManagerImpl.class);
-    private Map<Integer, AirplayDevice> devices = Maps.newHashMap();
-    private Map<Integer, Socket> sockets = Maps.newHashMap();
+    private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
+    private final HttpClient httpClient;
+    private final Map<Integer, AirplayDevice> devices;
+
+    /**
+     * Instantiates a new Airplay command manager implementation.
+     *
+     * @param httpClient Http client
+     */
+    @Inject
+    public AirplayCommandManagerImpl(final HttpClient httpClient) {
+        this.httpClient = httpClient;
+        this.devices = Maps.newHashMap();
+    }
 
     @Override
     public void addDevice(AirplayDevice device) {
@@ -51,14 +72,6 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
             // Remove device
             LOGGER.info("Remove Airplay device {}", device.toString());
             devices.remove(device.hashCode());
-
-            // Close device socket
-            if (sockets.get(device.hashCode()) != null)
-                try {
-                    sockets.get(device.hashCode()).close();
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
         }
     }
 
@@ -68,67 +81,40 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
     }
 
     @Override
-    public CommandResponse sendCommand(Integer deviceId, AbstractCommand command) {
+    public CommandResponse sendCommand(Integer deviceId, AbstractCommand command) throws IOException, UnknownDeviceException {
         // Get device
         AirplayDevice device = devices.get(deviceId);
-        if (device != null) {
-            // Get device socket
-            Socket socket = sockets.get(deviceId);
-            if (socket == null || socket.isClosed()) {
-                try {
-                    socket = new Socket(device.getInetAddress(), device.getPort());
-                    sockets.put(deviceId, socket);
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+        if (device == null) throw new UnknownDeviceException(deviceId);
+
+        // Get http request
+        HttpRequestBase httpRequest = command.getHttpRequest(device.getInetAddress().getHostAddress(), device.getPort());
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("sendCommand: {}", httpRequest);
+
+        // Launch http request
+        HttpResponse httpResponse = httpClient.execute(httpRequest);
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("command Response: {}", httpResponse);
+
+        // Build command response
+        CommandResponse response;
+        Header contentType = httpResponse.getFirstHeader(CONTENT_TYPE);
+        boolean hasContentParameters = contentType != null && contentType.getValue().equalsIgnoreCase(CONTENT_TYPE_PARAMETERS);
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()))) {
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            StringBuilder sbMessage = new StringBuilder();
+            Map<String, String> contentParameters = Maps.newHashMap();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (hasContentParameters) {
+                    // Parse content parameter
+                    Iterable<String> it = Splitter.on(':').trimResults().split(line);
+                    contentParameters.put(Iterables.getFirst(it, ""), Iterables.getLast(it));
+                } else
+                    // Append to message
+                    sbMessage.append(line).append('\n');
             }
-            if (socket != null && !socket.isClosed()) {
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-
-                    // Send command
-                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Send command: {}", command.getCommand());
-                    out.write(command.getCommand() + "\n");
-                    out.flush();
-
-                    // Get response
-                    StringBuilder fullResponse = new StringBuilder();
-                    String partialResponse;
-                    while (!(partialResponse = in.readLine().trim()).equals(""))
-                        fullResponse.append(partialResponse).append("\n");
-                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Response: {}", fullResponse.toString());
-
-                    // Get content length
-                    int contentLength = 0;
-                    if (fullResponse.indexOf(CONTENT_LENGTH) != -1) {
-                        int start = fullResponse.indexOf(CONTENT_LENGTH);
-                        int end = fullResponse.indexOf("\n", start + CONTENT_LENGTH.length() + 1);
-                        contentLength = Integer.parseInt(fullResponse.substring(start + CONTENT_LENGTH.length() + 1, end).trim());
-                    }
-                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Content length: {}", contentLength);
-
-                    // Get content
-                    StringBuilder content = null;
-                    if (contentLength > 0) {
-                        content = new StringBuilder(contentLength);
-                        char buffer[] = new char[1024];
-                        int read, totalRead = 0;
-                        do {
-                            read = in.read(buffer);
-                            totalRead += read;
-                            content.append(buffer, 0, read);
-                        } while (read != -1 && totalRead < contentLength);
-                    }
-                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Content: {}", content);
-
-                    // Return response
-                    return new CommandResponse(fullResponse.toString(), content == null ? null : content.toString());
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
-        } else
-            LOGGER.error("Device not found: {}", deviceId);
-        return null;
+            response = new CommandResponse(statusCode, sbMessage.toString(), contentParameters);
+        }
+        return response;
     }
 }
