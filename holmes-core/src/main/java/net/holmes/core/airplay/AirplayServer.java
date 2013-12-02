@@ -39,7 +39,7 @@ import static net.holmes.core.common.configuration.Parameter.ENABLE_AIRPLAY;
 /**
  * Airplay server
  */
-public class AirplayServer implements Service {
+public final class AirplayServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayServer.class);
     private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
     private final Configuration configuration;
@@ -124,7 +124,7 @@ public class AirplayServer implements Service {
         if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress())
-                    return new AirplayDevice(serviceInfo.getName(), inet4Address, serviceInfo.getPort());
+                    return new AirplayDevice(serviceInfo.getName(), inet4Address.getHostAddress(), serviceInfo.getPort());
         }
         return null;
     }

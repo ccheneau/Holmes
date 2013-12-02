@@ -22,7 +22,7 @@ import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.
 /**
  * Airplay stop command
  */
-public class StopCommand extends AbstractCommand {
+public final class StopCommand extends AbstractCommand {
     /**
      * Instantiates a new Airplay stop command.
      */

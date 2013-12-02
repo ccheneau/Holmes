@@ -23,7 +23,7 @@ import static net.holmes.core.airplay.command.model.AbstractCommand.UrlParameter
 /**
  * Airplay scrub command
  */
-public class ScrubCommand extends AbstractCommand {
+public final class ScrubCommand extends AbstractCommand {
     /**
      * Instantiates a new Airplay scrub command.
      *

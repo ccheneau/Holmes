@@ -19,7 +19,6 @@ package net.holmes.core.airplay.command;
 
 import org.junit.Test;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +28,7 @@ public class AirplayCommandManagerImplTest {
     @Test
     public void testAddDevice() throws UnknownHostException {
         AirplayCommandManagerImpl airplayCommandManager = new AirplayCommandManagerImpl(null);
-        airplayCommandManager.addDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
+        airplayCommandManager.addDevice(new AirplayDevice("name", "127.0.0.1", 8080));
         assertEquals(airplayCommandManager.getDevices().size(), 1);
     }
 
@@ -43,23 +42,23 @@ public class AirplayCommandManagerImplTest {
     @Test
     public void testAddDeviceTwice() throws UnknownHostException {
         AirplayCommandManagerImpl airplayCommandManager = new AirplayCommandManagerImpl(null);
-        airplayCommandManager.addDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
-        airplayCommandManager.addDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
+        airplayCommandManager.addDevice(new AirplayDevice("name", "127.0.0.1", 8080));
+        airplayCommandManager.addDevice(new AirplayDevice("name", "127.0.0.1", 8080));
         assertEquals(airplayCommandManager.getDevices().size(), 1);
     }
 
     @Test
     public void testRemoveDevice() throws UnknownHostException {
         AirplayCommandManagerImpl airplayCommandManager = new AirplayCommandManagerImpl(null);
-        airplayCommandManager.addDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
-        airplayCommandManager.removeDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
+        airplayCommandManager.addDevice(new AirplayDevice("name", "127.0.0.1", 8080));
+        airplayCommandManager.removeDevice(new AirplayDevice("name", "127.0.0.1", 8080));
         assertEquals(airplayCommandManager.getDevices().size(), 0);
     }
 
     @Test
     public void testRemoveNullDevice() throws UnknownHostException {
         AirplayCommandManagerImpl airplayCommandManager = new AirplayCommandManagerImpl(null);
-        airplayCommandManager.addDevice(new AirplayDevice("name", InetAddress.getByName("127.0.0.1"), 0));
+        airplayCommandManager.addDevice(new AirplayDevice("name", "127.0.0.1", 8080));
         airplayCommandManager.removeDevice(null);
         assertEquals(airplayCommandManager.getDevices().size(), 1);
     }

@@ -41,7 +41,7 @@ import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 /**
  * Airplay command manager implementation.
  */
-public class AirplayCommandManagerImpl implements AirplayCommandManager {
+public final class AirplayCommandManagerImpl implements AirplayCommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayCommandManagerImpl.class);
     private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
     private final HttpClient httpClient;
@@ -87,7 +87,7 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
         if (device == null) throw new UnknownDeviceException(deviceId);
 
         // Get http request
-        HttpRequestBase httpRequest = command.getHttpRequest(device.getInetAddress().getHostAddress(), device.getPort());
+        HttpRequestBase httpRequest = command.getHttpRequest(device.getHostAddress(), device.getPort());
         if (LOGGER.isDebugEnabled()) LOGGER.debug("sendCommand: {}", httpRequest);
 
         // Launch http request
@@ -104,7 +104,7 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
             StringBuilder sbMessage = new StringBuilder();
             Map<String, String> contentParameters = Maps.newHashMap();
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
                 if (hasContentParameters) {
                     // Parse content parameter
                     Iterable<String> it = Splitter.on(':').trimResults().split(line);
@@ -112,7 +112,7 @@ public class AirplayCommandManagerImpl implements AirplayCommandManager {
                 } else
                     // Append to message
                     sbMessage.append(line).append('\n');
-            }
+
             response = new CommandResponse(statusCode, sbMessage.toString(), contentParameters);
         }
         return response;

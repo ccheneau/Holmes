@@ -19,27 +19,25 @@ package net.holmes.core.airplay.command;
 
 import com.google.common.base.Objects;
 
-import java.net.InetAddress;
-
 /**
  * Air play device
  */
 public class AirplayDevice {
 
     private final String name;
-    private final InetAddress inetAddress;
+    private final String hostAddress;
     private final int port;
 
     /**
      * Instantiates a new Airplay device.
      *
      * @param name        device name
-     * @param inetAddress device inet address
+     * @param hostAddress device host address
      * @param port        device port
      */
-    public AirplayDevice(String name, InetAddress inetAddress, int port) {
+    public AirplayDevice(final String name, final String hostAddress, final int port) {
         this.name = name;
-        this.inetAddress = inetAddress;
+        this.hostAddress = hostAddress;
         this.port = port;
     }
 
@@ -47,8 +45,8 @@ public class AirplayDevice {
         return name;
     }
 
-    public InetAddress getInetAddress() {
-        return inetAddress;
+    public String getHostAddress() {
+        return hostAddress;
     }
 
     public int getPort() {
@@ -57,7 +55,7 @@ public class AirplayDevice {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, inetAddress, port);
+        return Objects.hashCode(name, hostAddress, port);
     }
 
     @Override
@@ -67,14 +65,14 @@ public class AirplayDevice {
         if (!super.equals(obj)) return false;
 
         final AirplayDevice other = (AirplayDevice) obj;
-        return Objects.equal(this.name, other.name) && Objects.equal(this.inetAddress, other.inetAddress) && Objects.equal(this.port, other.port);
+        return Objects.equal(this.name, other.name) && Objects.equal(this.hostAddress, other.hostAddress) && Objects.equal(this.port, other.port);
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
                 .addValue(name)
-                .addValue(inetAddress)
+                .addValue(hostAddress)
                 .addValue(port)
                 .toString();
     }

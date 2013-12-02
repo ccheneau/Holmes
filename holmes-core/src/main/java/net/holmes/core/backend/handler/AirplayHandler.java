@@ -26,7 +26,7 @@ import javax.ws.rs.Path;
  * Handler for Airplay requests.
  */
 @Path("/backend/airplay")
-public class AirplayHandler {
+public final class AirplayHandler {
 
     private final AirplayCommandManager airplayCommandManager;
 

@@ -24,7 +24,7 @@ import static net.holmes.core.airplay.command.model.AbstractCommand.PostParamete
 /**
  * Airplay play command
  */
-public class PlayCommand extends AbstractCommand {
+public final class PlayCommand extends AbstractCommand {
 
     /**
      * Instantiates a new Airplay play command.

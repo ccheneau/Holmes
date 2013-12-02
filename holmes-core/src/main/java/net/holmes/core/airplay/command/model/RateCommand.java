@@ -17,6 +17,7 @@
 
 package net.holmes.core.airplay.command.model;
 
+import static net.holmes.core.airplay.command.model.AbstractCommand.CommandType.RATE;
 import static net.holmes.core.airplay.command.model.AbstractCommand.UrlParameter.VALUE;
 
 /**
@@ -30,7 +31,7 @@ public class RateCommand extends AbstractCommand {
      * @param rate rate
      */
     public RateCommand(final Double rate) {
-        super(CommandType.RATE);
+        super(RATE);
         addUrlParameter(VALUE, rate.toString());
     }
 }
