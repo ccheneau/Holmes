@@ -56,6 +56,9 @@ import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder
 public final class HttpServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpServer.class);
     private static final int MAX_CONTENT_LENGTH = 65536;
+    private static final int MAX_INITIAL_LINE_LENGTH = 4096;
+    private static final int MAX_HEADER_SIZE = 8192;
+    private static final int MAX_CHUNK_SIZE = 8192;
     private static final int BACKLOG = 128;
     private final Injector injector;
     private final Configuration configuration;
@@ -96,7 +99,7 @@ public final class HttpServer implements Service {
                     @Override
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
-                        pipeline.addLast("decoder", new HttpRequestDecoder())
+                        pipeline.addLast("decoder", new HttpRequestDecoder(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE, MAX_CHUNK_SIZE, false))
                                 .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))
                                 .addLast("encoder", new HttpResponseEncoder())
                                 .addLast("chunkedWriter", new ChunkedWriteHandler())
