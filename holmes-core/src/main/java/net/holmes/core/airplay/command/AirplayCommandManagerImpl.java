@@ -100,7 +100,6 @@ public final class AirplayCommandManagerImpl implements AirplayCommandManager {
         boolean hasContentParameters = contentType != null && contentType.getValue().equalsIgnoreCase(CONTENT_TYPE_PARAMETERS);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()))) {
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
             StringBuilder sbMessage = new StringBuilder();
             Map<String, String> contentParameters = Maps.newHashMap();
             String line;
@@ -113,7 +112,7 @@ public final class AirplayCommandManagerImpl implements AirplayCommandManager {
                     // Append to message
                     sbMessage.append(line).append('\n');
 
-            response = new CommandResponse(statusCode, sbMessage.toString(), contentParameters);
+            response = new CommandResponse(httpResponse.getStatusLine().getStatusCode(), sbMessage.toString(), contentParameters);
         }
         return response;
     }
