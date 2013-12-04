@@ -47,6 +47,11 @@ public class AirplayStreamingManagerImpl implements AirplayStreamingManager {
 
     private final HttpClient httpClient;
 
+    /**
+     * Instantiates a new Airplay streaming manager implementation.
+     *
+     * @param httpClient Http client
+     */
     @Inject
     public AirplayStreamingManagerImpl(final HttpClient httpClient) {
         this.httpClient = httpClient;
