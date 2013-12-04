@@ -15,24 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.transport.airplay.model;
 
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.SCRUB;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.POSITION;
 
-import org.apache.http.client.methods.HttpRequestBase;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static org.junit.Assert.assertNotNull;
-
-public class PlayCommandTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayCommandTest.class);
-
-    @Test
-    public void testPlayCommand() {
-        PlayCommand playCommand = new PlayCommand("url", 0d);
-        HttpRequestBase request = playCommand.getHttpRequest("127.0.0.1", 8080);
-        assertNotNull(request);
-        LOGGER.debug(request.toString());
+/**
+ * Airplay scrub command
+ */
+public final class ScrubCommand extends AbstractCommand {
+    /**
+     * Instantiates a new Airplay scrub command.
+     *
+     * @param position position
+     */
+    public ScrubCommand(final Double position) {
+        super(SCRUB);
+        addUrlParameter(POSITION, position.toString());
     }
 }

@@ -26,8 +26,6 @@ import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import net.holmes.core.airplay.AirplayServer;
-import net.holmes.core.airplay.command.AirplayCommandManager;
-import net.holmes.core.airplay.command.AirplayCommandManagerImpl;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
@@ -54,9 +52,9 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
+import net.holmes.core.transport.device.DeviceManager;
+import net.holmes.core.transport.device.DeviceManagerImpl;
 import net.holmes.core.upnp.UpnpServer;
-import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
-import net.holmes.core.upnp.metadata.UpnpDeviceMetadataImpl;
 import org.apache.http.client.HttpClient;
 import org.fourthline.cling.UpnpService;
 
@@ -169,14 +167,13 @@ final class HolmesServerModule extends AbstractModule {
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
-        // Bind Airplay
-        bind(AirplayCommandManager.class).to(AirplayCommandManagerImpl.class).in(Singleton.class);
-
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
+        // Bind device manager
+        bind(DeviceManager.class).to(DeviceManagerImpl.class).in(Singleton.class);
+
         // Bind Upnp service
-        bind(UpnpDeviceMetadata.class).to(UpnpDeviceMetadataImpl.class).in(Singleton.class);
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
 
         // Bind Http client
@@ -187,7 +184,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(HttpFileRequestHandler.class);
 
         // Bind Rest handlers
-        bind(AirplayHandler.class);
         bind(AudioFoldersHandler.class);
         bind(PictureFoldersHandler.class);
         bind(PodcastsHandler.class);

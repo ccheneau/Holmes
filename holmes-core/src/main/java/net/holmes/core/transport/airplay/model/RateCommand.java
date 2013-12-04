@@ -15,23 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.transport.airplay.model;
 
-import org.apache.http.client.methods.HttpRequestBase;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.RATE;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.VALUE;
 
-import static org.junit.Assert.assertNotNull;
+/**
+ * Airplay rate command
+ */
+public class RateCommand extends AbstractCommand {
 
-public class StopCommandTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StopCommandTest.class);
-
-    @Test
-    public void testStopCommand() {
-        StopCommand stopCommand = new StopCommand();
-        HttpRequestBase request = stopCommand.getHttpRequest("127.0.0.1", 8080);
-        assertNotNull(request);
-        LOGGER.debug(request.toString());
+    /**
+     * Instantiates a new Airplay rate command.
+     *
+     * @param rate rate
+     */
+    public RateCommand(final Double rate) {
+        super(RATE);
+        addUrlParameter(VALUE, rate.toString());
     }
 }

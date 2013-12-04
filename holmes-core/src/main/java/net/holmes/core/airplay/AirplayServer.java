@@ -17,10 +17,10 @@
 
 package net.holmes.core.airplay;
 
-import net.holmes.core.airplay.command.AirplayCommandManager;
-import net.holmes.core.airplay.command.AirplayDevice;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.transport.device.DeviceManager;
+import net.holmes.core.transport.device.model.Device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +35,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 
 import static net.holmes.core.common.configuration.Parameter.ENABLE_AIRPLAY;
+import static net.holmes.core.transport.device.model.DeviceType.AIRPLAY;
 
 /**
  * Airplay server
@@ -44,7 +45,7 @@ public final class AirplayServer implements Service {
     private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
     private final Configuration configuration;
     private final InetAddress localAddress;
-    private final AirplayCommandManager airplayCommandManager;
+    private final DeviceManager deviceManager;
     private JmDNS jmDNS = null;
 
     /**
@@ -52,12 +53,13 @@ public final class AirplayServer implements Service {
      *
      * @param configuration configuration
      * @param localAddress  local address
+     * @param deviceManager device manager
      */
     @Inject
-    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final AirplayCommandManager airplayCommandManager) {
+    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final DeviceManager deviceManager) {
         this.configuration = configuration;
         this.localAddress = localAddress;
-        this.airplayCommandManager = airplayCommandManager;
+        this.deviceManager = deviceManager;
     }
 
     @Override
@@ -71,8 +73,9 @@ public final class AirplayServer implements Service {
                 // Loop up for available devices
                 ServiceInfo[] devicesInfo = jmDNS.list(AIR_PLAY_TCP);
                 if (devicesInfo != null && devicesInfo.length > 0)
-                    for (ServiceInfo serviceInfo : devicesInfo)
-                        airplayCommandManager.addDevice(getDevice(serviceInfo));
+                    for (ServiceInfo serviceInfo : devicesInfo) {
+                        deviceManager.addDevice(buildDevice(serviceInfo));
+                    }
 
                 // Add Listener to manager inbound and outbound devices
                 jmDNS.addServiceListener(AIR_PLAY_TCP, new ServiceListener() {
@@ -84,12 +87,12 @@ public final class AirplayServer implements Service {
 
                     @Override
                     public void serviceRemoved(ServiceEvent event) {
-                        airplayCommandManager.removeDevice(getDevice(event.getInfo()));
+                        deviceManager.removeDevice(event.getInfo().getKey());
                     }
 
                     @Override
                     public void serviceResolved(ServiceEvent event) {
-                        airplayCommandManager.addDevice(getDevice(event.getInfo()));
+                        deviceManager.addDevice(buildDevice(event.getInfo()));
                     }
                 });
 
@@ -114,17 +117,17 @@ public final class AirplayServer implements Service {
     }
 
     /**
-     * Get Airplay device associated to jmDNS service info.
+     * Build Airplay device associated to jmDNS service info.
      * For now, only IPV4 addresses are accepted.
      *
      * @param serviceInfo jmDNS service information
      * @return Airplay device
      */
-    private AirplayDevice getDevice(ServiceInfo serviceInfo) {
+    private Device buildDevice(ServiceInfo serviceInfo) {
         if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress())
-                    return new AirplayDevice(serviceInfo.getName(), inet4Address.getHostAddress(), serviceInfo.getPort());
+                    return new Device(serviceInfo.getKey(), AIRPLAY, serviceInfo.getName(), inet4Address.getHostAddress(), serviceInfo.getPort(), null);
         }
         return null;
     }

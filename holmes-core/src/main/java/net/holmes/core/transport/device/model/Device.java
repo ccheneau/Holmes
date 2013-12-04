@@ -15,30 +15,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.transport.device.model;
 
 import com.google.common.base.Objects;
 
-/**
- * Air play device
- */
-public class AirplayDevice {
+import java.util.List;
 
+/**
+ * Device
+ */
+public class Device {
+    private final String id;
+    private final DeviceType deviceType;
     private final String name;
     private final String hostAddress;
     private final int port;
+    private final List<String> supportedMimeTypes;
 
     /**
-     * Instantiates a new Airplay device.
+     * Instantiates a new device
      *
-     * @param name        device name
-     * @param hostAddress device host address
-     * @param port        device port
+     * @param id                 device id
+     * @param deviceType         device type
+     * @param name               device name
+     * @param hostAddress        device host
+     * @param port               device port
+     * @param supportedMimeTypes supported mime types
      */
-    public AirplayDevice(final String name, final String hostAddress, final int port) {
+    public Device(final String id, final DeviceType deviceType, final String name, final String hostAddress, final int port, final List<String> supportedMimeTypes) {
+        this.id = id;
+        this.deviceType = deviceType;
         this.name = name;
         this.hostAddress = hostAddress;
         this.port = port;
+        this.supportedMimeTypes = supportedMimeTypes;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public DeviceType getDeviceType() {
+        return deviceType;
     }
 
     public String getName() {
@@ -53,27 +71,19 @@ public class AirplayDevice {
         return port;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name, hostAddress, port);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
-
-        final AirplayDevice other = (AirplayDevice) obj;
-        return Objects.equal(this.name, other.name) && Objects.equal(this.hostAddress, other.hostAddress) && Objects.equal(this.port, other.port);
+    public List<String> getSupportedMimeTypes() {
+        return supportedMimeTypes;
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
+                .addValue(id)
+                .addValue(deviceType)
                 .addValue(name)
                 .addValue(hostAddress)
                 .addValue(port)
+                .addValue(supportedMimeTypes)
                 .toString();
     }
 }

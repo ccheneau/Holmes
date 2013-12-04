@@ -1,4 +1,4 @@
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.transport.airplay.model;
 
 import java.util.Map;
 

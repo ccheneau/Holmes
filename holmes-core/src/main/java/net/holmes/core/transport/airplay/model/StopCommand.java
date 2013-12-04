@@ -15,35 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.upnp.metadata;
+package net.holmes.core.transport.airplay.model;
 
-import java.util.List;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.STOP;
 
 /**
- * Upnp device metadata
+ * Airplay stop command
  */
-public interface UpnpDeviceMetadata {
-
+public final class StopCommand extends AbstractCommand {
     /**
-     * Add device.
-     *
-     * @param deviceHost         device host
-     * @param availableMimeTypes available mime types
+     * Instantiates a new Airplay stop command.
      */
-    void addDevice(String deviceHost, List<String> availableMimeTypes);
-
-    /**
-     * Get available mime types for device.
-     *
-     * @param deviceHost device host
-     * @return available mime types
-     */
-    List<String> getAvailableMimeTypes(String deviceHost);
-
-    /**
-     * Remove device.
-     *
-     * @param deviceHost device host
-     */
-    void removeDevice(String deviceHost);
+    public StopCommand() {
+        super(STOP);
+    }
 }

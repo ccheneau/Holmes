@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command;
+package net.holmes.core.transport.airplay;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import net.holmes.core.airplay.command.exception.UnknownDeviceException;
-import net.holmes.core.airplay.command.model.AbstractCommand;
-import net.holmes.core.airplay.command.model.CommandResponse;
+import net.holmes.core.transport.airplay.model.AbstractCommand;
+import net.holmes.core.transport.airplay.model.CommandResponse;
+import net.holmes.core.transport.device.model.Device;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -39,53 +39,21 @@ import java.util.Map;
 import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 
 /**
- * Airplay command manager implementation.
+ * Airplay streaming manager implementation.
  */
-public final class AirplayCommandManagerImpl implements AirplayCommandManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AirplayCommandManagerImpl.class);
+public class AirplayStreamingManagerImpl implements AirplayStreamingManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AirplayStreamingManagerImpl.class);
     private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
+
     private final HttpClient httpClient;
-    private final Map<Integer, AirplayDevice> devices;
 
-    /**
-     * Instantiates a new Airplay command manager implementation.
-     *
-     * @param httpClient Http client
-     */
     @Inject
-    public AirplayCommandManagerImpl(final HttpClient httpClient) {
+    public AirplayStreamingManagerImpl(final HttpClient httpClient) {
         this.httpClient = httpClient;
-        this.devices = Maps.newHashMap();
     }
 
     @Override
-    public void addDevice(AirplayDevice device) {
-        if (device != null && !devices.containsKey(device.hashCode())) {
-            LOGGER.info("Add Airplay device {}", device.toString());
-            devices.put(device.hashCode(), device);
-        }
-    }
-
-    @Override
-    public void removeDevice(AirplayDevice device) {
-        if (device != null && devices.containsKey(device.hashCode())) {
-            // Remove device
-            LOGGER.info("Remove Airplay device {}", device.toString());
-            devices.remove(device.hashCode());
-        }
-    }
-
-    @Override
-    public Map<Integer, AirplayDevice> getDevices() {
-        return devices;
-    }
-
-    @Override
-    public CommandResponse sendCommand(Integer deviceId, AbstractCommand command) throws IOException, UnknownDeviceException {
-        // Get device
-        AirplayDevice device = devices.get(deviceId);
-        if (device == null) throw new UnknownDeviceException(deviceId);
-
+    public CommandResponse sendCommand(Device device, AbstractCommand command) throws IOException {
         // Get http request
         HttpRequestBase httpRequest = command.getHttpRequest(device.getHostAddress(), device.getPort());
         if (LOGGER.isDebugEnabled()) LOGGER.debug("sendCommand: {}", httpRequest);

@@ -15,28 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.backend.handler;
-
-import net.holmes.core.airplay.command.AirplayCommandManager;
-
-import javax.inject.Inject;
-import javax.ws.rs.Path;
+package net.holmes.core.transport.device.exception;
 
 /**
- * Handler for Airplay requests.
+ * Unknown device exception.
  */
-@Path("/backend/airplay")
-public final class AirplayHandler {
-
-    private final AirplayCommandManager airplayCommandManager;
+public class UnknownDeviceException extends Exception {
 
     /**
-     * Instantiates a new Airplay handler.
+     * Instantiates a new UnknownDeviceException.
      *
-     * @param airplayCommandManager Airplay command manager
+     * @param deviceId device Id
      */
-    @Inject
-    public AirplayHandler(final AirplayCommandManager airplayCommandManager) {
-        this.airplayCommandManager = airplayCommandManager;
+    public UnknownDeviceException(final String deviceId) {
+        super("Unknown device: " + deviceId);
     }
 }

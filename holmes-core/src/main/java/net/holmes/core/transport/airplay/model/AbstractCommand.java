@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.transport.airplay.model;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

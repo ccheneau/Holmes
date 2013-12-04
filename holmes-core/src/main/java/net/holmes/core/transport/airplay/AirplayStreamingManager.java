@@ -15,24 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.upnp.metadata;
+package net.holmes.core.transport.airplay;
 
-import com.google.common.collect.Lists;
-import org.junit.Test;
+import net.holmes.core.transport.airplay.model.AbstractCommand;
+import net.holmes.core.transport.airplay.model.CommandResponse;
+import net.holmes.core.transport.device.model.Device;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.io.IOException;
 
-public class UpnpDeviceMetadataTest {
-
-    @Test
-    public void testUpnpDeviceMetadata() {
-        UpnpDeviceMetadata upnpDeviceMetadata = new UpnpDeviceMetadataImpl();
-
-        upnpDeviceMetadata.addDevice("device", Lists.newArrayList("something"));
-        assertNotNull(upnpDeviceMetadata.getAvailableMimeTypes("device"));
-
-        upnpDeviceMetadata.removeDevice("device");
-        assertNull(upnpDeviceMetadata.getAvailableMimeTypes("device"));
-    }
+/**
+ * Airplay streaming manager
+ */
+public interface AirplayStreamingManager {
+    /**
+     * Send command to Airplay device.
+     *
+     * @param device  device
+     * @param command command to run
+     * @return command response
+     * @throws java.io.IOException
+     */
+    CommandResponse sendCommand(Device device, AbstractCommand command) throws IOException;
 }

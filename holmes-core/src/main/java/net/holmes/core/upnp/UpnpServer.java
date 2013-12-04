@@ -22,7 +22,8 @@ import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.upnp.metadata.UpnpDeviceMetadata;
+import net.holmes.core.transport.device.DeviceManager;
+import net.holmes.core.transport.device.model.Device;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
@@ -41,15 +42,18 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.util.List;
 
+import static net.holmes.core.transport.device.model.DeviceType.UPNP;
+
 /**
  * UPnP server main class.
  */
 public final class UpnpServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpnpServer.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
+    private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
     private final Injector injector;
     private final Configuration configuration;
-    private final UpnpDeviceMetadata upnpDeviceMetadata;
+    private final DeviceManager deviceManager;
     private UpnpService upnpService = null;
 
     /**
@@ -57,12 +61,13 @@ public final class UpnpServer implements Service {
      *
      * @param injector      Guice injector
      * @param configuration configuration
+     * @param deviceManager device manager
      */
     @Inject
-    public UpnpServer(final Injector injector, final Configuration configuration, final UpnpDeviceMetadata upnpDeviceMetadata) {
+    public UpnpServer(final Injector injector, final Configuration configuration, final DeviceManager deviceManager) {
         this.injector = injector;
         this.configuration = configuration;
-        this.upnpDeviceMetadata = upnpDeviceMetadata;
+        this.deviceManager = deviceManager;
     }
 
     @Override
@@ -112,23 +117,25 @@ public final class UpnpServer implements Service {
 
             if (configuration.getBooleanParameter(Parameter.ENABLE_UPNP_PROTOCOL_INFO)) {
                 // Search device's connection manager.
-                RemoteService service = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
-                if (service != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
+                RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
+                RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
+                if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
                     // Device host IP
                     final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
-
-                    LOGGER.info("Get protocol info for {} [{}]", deviceDisplay, deviceHost);
+                    final String deviceId = device.getIdentity().getUdn().getIdentifierString();
+                    LOGGER.info("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
 
                     // Get remote device protocol info
-                    upnpService.getControlPoint().execute(new GetProtocolInfo(service) {
+                    upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
-                            // Got protocol info, add available mime types to Upnp device metadata
+                            // Got protocol info, get available mime types
                             List<String> mimeTypes = Lists.newArrayList();
                             for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
                                 mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                             }
-                            upnpDeviceMetadata.addDevice(deviceHost, mimeTypes);
+                            // Add device
+                            deviceManager.addDevice(new Device(deviceId, UPNP, deviceDisplay, deviceHost, 0, mimeTypes));
                         }
 
                         @Override
@@ -148,7 +155,7 @@ public final class UpnpServer implements Service {
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             LOGGER.info("Remote device removed: " + device.getDisplayString());
-            upnpDeviceMetadata.removeDevice(device.getIdentity().getDescriptorURL().getHost());
+            deviceManager.removeDevice(device.getIdentity().getUdn().getIdentifierString());
         }
 
         @Override

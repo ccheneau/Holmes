@@ -15,24 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.airplay.command.model;
+package net.holmes.core.transport.device.model;
 
-
-import org.apache.http.client.methods.HttpRequestBase;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static org.junit.Assert.assertNotNull;
-
-public class RateCommandTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RateCommandTest.class);
-
-    @Test
-    public void testRateCommand() {
-        RateCommand rateCommand = new RateCommand(0d);
-        HttpRequestBase request = rateCommand.getHttpRequest("127.0.0.1", 8080);
-        assertNotNull(request);
-        LOGGER.debug(request.toString());
-    }
+/**
+ * Device type
+ */
+public enum DeviceType {
+    UPNP, AIRPLAY;
 }
