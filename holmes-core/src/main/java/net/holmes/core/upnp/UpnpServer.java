@@ -115,35 +115,33 @@ public final class UpnpServer implements Service {
             final String deviceDisplay = device.getDisplayString();
             LOGGER.info("Remote device available: " + deviceDisplay);
 
-            if (configuration.getBooleanParameter(Parameter.ENABLE_UPNP_PROTOCOL_INFO)) {
-                // Search device's connection manager.
-                RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
-                RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
-                if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
-                    // Device host IP
-                    final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
-                    final String deviceId = device.getIdentity().getUdn().getIdentifierString();
-                    LOGGER.info("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
+            // Search device's connection manager.
+            RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
+            RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
+            if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
+                // Device host IP
+                final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
+                final String deviceId = device.getIdentity().getUdn().getIdentifierString();
+                LOGGER.info("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
 
-                    // Get remote device protocol info
-                    upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
-                        @Override
-                        public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
-                            // Got protocol info, get available mime types
-                            List<String> mimeTypes = Lists.newArrayList();
-                            for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
-                                mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
-                            }
-                            // Add device
-                            deviceManager.addDevice(new Device(deviceId, UPNP, deviceDisplay, deviceHost, 0, mimeTypes));
+                // Get remote device protocol info
+                upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
+                    @Override
+                    public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
+                        // Got protocol info, get available mime types
+                        List<String> mimeTypes = Lists.newArrayList();
+                        for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+                            mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                         }
+                        // Add device
+                        deviceManager.addDevice(new Device(deviceId, UPNP, deviceDisplay, deviceHost, 0, mimeTypes));
+                    }
 
-                        @Override
-                        public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                            LOGGER.debug("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
-                        }
-                    });
-                }
+                    @Override
+                    public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                        LOGGER.debug("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
+                    }
+                });
             }
         }
 
