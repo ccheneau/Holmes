@@ -22,7 +22,7 @@ import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParame
 import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParameter.START_POSITION;
 
 /**
- * Airplay play command
+ * Airplay play command: Start video playback
  */
 public final class PlayCommand extends AbstractCommand {
 
@@ -30,7 +30,7 @@ public final class PlayCommand extends AbstractCommand {
      * Instantiates a new Airplay play command.
      *
      * @param contentUrl    content Url
-     * @param startPosition start position
+     * @param startPosition start position between 0 (start) and 1 (end)
      */
     public PlayCommand(final String contentUrl, final Double startPosition) {
         super(PLAY);

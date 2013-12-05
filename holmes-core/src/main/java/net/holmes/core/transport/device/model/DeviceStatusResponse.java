@@ -15,25 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay;
-
-import net.holmes.core.transport.airplay.model.AbstractCommand;
-import net.holmes.core.transport.airplay.model.CommandResponse;
-import net.holmes.core.transport.device.model.Device;
-
-import java.io.IOException;
+package net.holmes.core.transport.device.model;
 
 /**
- * Airplay streaming manager
+ * Device status response
  */
-public interface AirplayStreamingManager {
-    /**
-     * Send command to Airplay device.
-     *
-     * @param device  device
-     * @param command command to run
-     * @return command response
-     * @throws java.io.IOException
-     */
-    CommandResponse sendCommand(Device device, AbstractCommand command) throws IOException;
+public class DeviceStatusResponse {
 }

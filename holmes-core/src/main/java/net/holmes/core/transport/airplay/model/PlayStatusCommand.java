@@ -17,20 +17,20 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.SCRUB;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.POSITION;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.PLAY_STATUS;
 
 /**
- * Airplay scrub command
+ * Airplay play status command: Retrieve the current playback position.
+ * Result:
+ * - duration: duration in seconds
+ * - position: position in seconds
  */
-public final class ScrubCommand extends AbstractCommand {
+public class PlayStatusCommand extends AbstractCommand {
+
     /**
-     * Instantiates a new Airplay scrub command.
-     *
-     * @param position position
+     * Instantiates a new play status command.
      */
-    public ScrubCommand(final Double position) {
-        super(SCRUB);
-        addUrlParameter(POSITION, position.toString());
+    public PlayStatusCommand() {
+        super(PLAY_STATUS);
     }
 }

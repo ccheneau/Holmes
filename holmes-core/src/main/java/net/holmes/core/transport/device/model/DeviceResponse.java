@@ -15,10 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.upnp;
+package net.holmes.core.transport.device.model;
 
 /**
- * Upnp streaming manager
+ * Device response
  */
-public class UpnpStreamingManager {
+public class DeviceResponse {
+    private final boolean result;
+    private final String message;
+
+    public DeviceResponse(boolean result, String message) {
+        this.result = result;
+        this.message = message;
+    }
+
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

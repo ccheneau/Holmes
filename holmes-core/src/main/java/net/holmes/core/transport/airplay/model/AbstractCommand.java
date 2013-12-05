@@ -128,9 +128,9 @@ public abstract class AbstractCommand {
      */
     public static enum CommandType {
         PLAY("play", POST),
+        PLAY_STATUS("scrub", GET),
         RATE("rate", POST),
-        SCRUB("scrub", GET),
-        STATUS("status", POST),
+        SEEK("scrub", POST),
         STOP("stop", POST);
         private final String value;
         private final HttpMethod method;

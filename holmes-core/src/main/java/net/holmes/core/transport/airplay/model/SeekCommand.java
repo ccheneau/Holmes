@@ -17,21 +17,20 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.RATE;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.VALUE;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.SEEK;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.POSITION;
 
 /**
- * Airplay rate command: Change the playback rate
+ * Airplay scrub command: Seek at an arbitrary location in the video
  */
-public class RateCommand extends AbstractCommand {
-
+public final class SeekCommand extends AbstractCommand {
     /**
-     * Instantiates a new Airplay rate command.
+     * Instantiates a new Airplay scrub command.
      *
-     * @param rate playback rate: 0 is paused, 1 is playing at the normal speed
+     * @param position position in seconds
      */
-    public RateCommand(final Double rate) {
-        super(RATE);
-        addUrlParameter(VALUE, rate.toString());
+    public SeekCommand(final Double position) {
+        super(SEEK);
+        addUrlParameter(POSITION, position.toString());
     }
 }
