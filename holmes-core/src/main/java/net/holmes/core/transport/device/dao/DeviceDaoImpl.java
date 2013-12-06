@@ -15,13 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device;
+package net.holmes.core.transport.device.dao;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
 import net.holmes.core.transport.device.model.Device;
-import net.holmes.core.transport.device.model.DeviceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,16 +28,16 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Device manager implementation.
+ * Device dao implementation.
  */
-public class DeviceManagerImpl implements DeviceManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceManagerImpl.class);
+public class DeviceDaoImpl implements DeviceDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceDaoImpl.class);
     private final Map<String, Device> devices;
 
     /**
-     * Instantiates a new device manager implementation.
+     * Instantiates a new device dao implementation.
      */
-    public DeviceManagerImpl() {
+    public DeviceDaoImpl() {
         this.devices = Maps.newHashMap();
     }
 
@@ -65,11 +64,11 @@ public class DeviceManagerImpl implements DeviceManager {
     }
 
     @Override
-    public Collection<Device> findDevices(final String hostAddress, final DeviceType type) {
+    public Collection<Device> findDevices(final String hostAddress) {
         return Collections2.filter(devices.values(), new Predicate<Device>() {
             @Override
             public boolean apply(Device input) {
-                return input.getHostAddress().equals(hostAddress) && input.getDeviceType() == type;
+                return input.getHostAddress().equals(hostAddress);
             }
         });
     }

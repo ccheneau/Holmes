@@ -52,8 +52,8 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
-import net.holmes.core.transport.device.DeviceManager;
-import net.holmes.core.transport.device.DeviceManagerImpl;
+import net.holmes.core.transport.device.dao.DeviceDao;
+import net.holmes.core.transport.device.dao.DeviceDaoImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.apache.http.client.HttpClient;
 import org.fourthline.cling.UpnpService;
@@ -171,7 +171,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind device manager
-        bind(DeviceManager.class).to(DeviceManagerImpl.class).in(Singleton.class);
+        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
 
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);

@@ -18,8 +18,29 @@
 package net.holmes.core.transport.device.model;
 
 /**
- * Device type
+ * Streaming response
  */
-public enum DeviceType {
-    UPNP, AIRPLAY;
+public class StreamingResponse {
+    private final boolean result;
+    private final String message;
+
+    /**
+     * Instantiates a new streaming response.
+     *
+     * @param result  result
+     * @param message message
+     */
+    public StreamingResponse(boolean result, String message) {
+        this.result = result;
+        this.message = message;
+    }
+
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

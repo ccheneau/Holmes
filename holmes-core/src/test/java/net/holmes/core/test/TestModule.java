@@ -43,8 +43,8 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
-import net.holmes.core.transport.device.DeviceManager;
-import net.holmes.core.transport.device.DeviceManagerImpl;
+import net.holmes.core.transport.device.dao.DeviceDao;
+import net.holmes.core.transport.device.dao.DeviceDaoImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
@@ -67,7 +67,7 @@ public class TestModule extends AbstractModule {
 
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
-        bind(DeviceManager.class).to(DeviceManagerImpl.class).in(Singleton.class);
+        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class);
 

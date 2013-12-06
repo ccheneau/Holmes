@@ -41,8 +41,8 @@ import static io.netty.handler.codec.http.HttpMethod.POST;
 /**
  * Airplay command.
  */
-public abstract class AbstractCommand {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
+public abstract class AirplayCommand {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AirplayCommand.class);
     private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
     private final CommandType type;
     private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
@@ -53,7 +53,7 @@ public abstract class AbstractCommand {
      *
      * @param type command type
      */
-    public AbstractCommand(final CommandType type) {
+    public AirplayCommand(final CommandType type) {
         this.type = type;
     }
 

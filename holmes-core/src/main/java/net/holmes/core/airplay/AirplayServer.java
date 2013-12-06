@@ -19,8 +19,8 @@ package net.holmes.core.airplay;
 
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.transport.device.DeviceManager;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.airplay.model.AirplayDevice;
+import net.holmes.core.transport.device.dao.DeviceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 
 import static net.holmes.core.common.configuration.Parameter.ENABLE_AIRPLAY;
-import static net.holmes.core.transport.device.model.DeviceType.AIRPLAY;
 
 /**
  * Airplay server
@@ -45,7 +44,7 @@ public final class AirplayServer implements Service {
     private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
     private final Configuration configuration;
     private final InetAddress localAddress;
-    private final DeviceManager deviceManager;
+    private final DeviceDao deviceDao;
     private JmDNS jmDNS = null;
 
     /**
@@ -53,13 +52,13 @@ public final class AirplayServer implements Service {
      *
      * @param configuration configuration
      * @param localAddress  local address
-     * @param deviceManager device manager
+     * @param deviceDao device dao
      */
     @Inject
-    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final DeviceManager deviceManager) {
+    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final DeviceDao deviceDao) {
         this.configuration = configuration;
         this.localAddress = localAddress;
-        this.deviceManager = deviceManager;
+        this.deviceDao = deviceDao;
     }
 
     @Override
@@ -74,7 +73,7 @@ public final class AirplayServer implements Service {
                 ServiceInfo[] devicesInfo = jmDNS.list(AIR_PLAY_TCP);
                 if (devicesInfo != null && devicesInfo.length > 0)
                     for (ServiceInfo serviceInfo : devicesInfo) {
-                        deviceManager.addDevice(buildDevice(serviceInfo));
+                        deviceDao.addDevice(buildDevice(serviceInfo));
                     }
 
                 // Add Listener to manager inbound and outbound devices
@@ -87,12 +86,12 @@ public final class AirplayServer implements Service {
 
                     @Override
                     public void serviceRemoved(ServiceEvent event) {
-                        deviceManager.removeDevice(event.getInfo().getKey());
+                        deviceDao.removeDevice(event.getInfo().getKey());
                     }
 
                     @Override
                     public void serviceResolved(ServiceEvent event) {
-                        deviceManager.addDevice(buildDevice(event.getInfo()));
+                        deviceDao.addDevice(buildDevice(event.getInfo()));
                     }
                 });
 
@@ -123,11 +122,11 @@ public final class AirplayServer implements Service {
      * @param serviceInfo jmDNS service information
      * @return Airplay device
      */
-    private Device buildDevice(ServiceInfo serviceInfo) {
+    private AirplayDevice buildDevice(ServiceInfo serviceInfo) {
         if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress())
-                    return new Device(serviceInfo.getKey(), AIRPLAY, serviceInfo.getName(), inet4Address.getHostAddress(), serviceInfo.getPort(), null);
+                    return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address.getHostAddress(), serviceInfo.getPort());
         }
         return null;
     }

@@ -15,17 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device;
+package net.holmes.core.transport.device.dao;
 
 import net.holmes.core.transport.device.model.Device;
-import net.holmes.core.transport.device.model.DeviceType;
 
 import java.util.Collection;
 
 /**
- * Device manager
+ * Device dao
  */
-public interface DeviceManager {
+public interface DeviceDao {
 
     /**
      * Add device.
@@ -61,8 +60,7 @@ public interface DeviceManager {
      * Find devices.
      *
      * @param hostAddress host address
-     * @param type        device type
      * @return list of devices
      */
-    Collection<Device> findDevices(final String hostAddress, final DeviceType type);
+    Collection<Device> findDevices(final String hostAddress);
 }

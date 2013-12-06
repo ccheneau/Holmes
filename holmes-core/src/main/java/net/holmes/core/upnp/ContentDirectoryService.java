@@ -22,8 +22,9 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.*;
-import net.holmes.core.transport.device.DeviceManager;
+import net.holmes.core.transport.device.dao.DeviceDao;
 import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
@@ -45,7 +46,6 @@ import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.media.MediaManager.ChildNodeRequest;
 import static net.holmes.core.media.MediaManager.ChildNodeResult;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
-import static net.holmes.core.transport.device.model.DeviceType.UPNP;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
@@ -61,7 +61,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Inject
     private Configuration configuration;
     @Inject
-    private DeviceManager deviceManager;
+    private DeviceDao deviceDao;
     @Inject
     @Named("localAddress")
     private InetAddress localAddress;
@@ -94,8 +94,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         // Get available mime types
         List<String> availableMimeTypes = Lists.newArrayList();
         if (remoteClientInfo.getConnection() != null) {
-            for (Device device : deviceManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress(), UPNP)) {
-                availableMimeTypes.addAll(device.getSupportedMimeTypes());
+            for (Device device : deviceDao.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
+                if (device instanceof UpnpDevice)
+                    availableMimeTypes.addAll(((UpnpDevice) device).getSupportedMimeTypes());
             }
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}", availableMimeTypes);
         }

@@ -18,7 +18,28 @@
 package net.holmes.core.transport.device.model;
 
 /**
- * Device status response
+ * Streaming status
  */
-public class DeviceStatusResponse {
+public final class StreamingStatus {
+    private final Double duration;
+    private final Double position;
+
+    /**
+     * Instantiates a new streaming status.
+     *
+     * @param duration duration in seconds
+     * @param position playback position in seconds
+     */
+    public StreamingStatus(final Double duration, Double position) {
+        this.duration = duration;
+        this.position = position;
+    }
+
+    public Double getDuration() {
+        return duration;
+    }
+
+    public Double getPosition() {
+        return position;
+    }
 }

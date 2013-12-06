@@ -22,8 +22,8 @@ import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.transport.device.DeviceManager;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.device.dao.DeviceDao;
+import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
@@ -42,8 +42,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.util.List;
 
-import static net.holmes.core.transport.device.model.DeviceType.UPNP;
-
 /**
  * UPnP server main class.
  */
@@ -53,7 +51,7 @@ public final class UpnpServer implements Service {
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
     private final Injector injector;
     private final Configuration configuration;
-    private final DeviceManager deviceManager;
+    private final DeviceDao deviceDao;
     private UpnpService upnpService = null;
 
     /**
@@ -61,13 +59,13 @@ public final class UpnpServer implements Service {
      *
      * @param injector      Guice injector
      * @param configuration configuration
-     * @param deviceManager device manager
+     * @param deviceDao     device manager
      */
     @Inject
-    public UpnpServer(final Injector injector, final Configuration configuration, final DeviceManager deviceManager) {
+    public UpnpServer(final Injector injector, final Configuration configuration, final DeviceDao deviceDao) {
         this.injector = injector;
         this.configuration = configuration;
-        this.deviceManager = deviceManager;
+        this.deviceDao = deviceDao;
     }
 
     @Override
@@ -117,7 +115,7 @@ public final class UpnpServer implements Service {
 
             // Search device's connection manager.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
-            RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
+            final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
             if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
                 // Device host IP
                 final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
@@ -134,7 +132,7 @@ public final class UpnpServer implements Service {
                             mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                         }
                         // Add device
-                        deviceManager.addDevice(new Device(deviceId, UPNP, deviceDisplay, deviceHost, 0, mimeTypes));
+                        deviceDao.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
                     }
 
                     @Override
@@ -153,7 +151,7 @@ public final class UpnpServer implements Service {
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             LOGGER.info("Remote device removed: " + device.getDisplayString());
-            deviceManager.removeDevice(device.getIdentity().getUdn().getIdentifierString());
+            deviceDao.removeDevice(device.getIdentity().getUdn().getIdentifierString());
         }
 
         @Override

@@ -15,53 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device.model;
+package net.holmes.core.transport.airplay.model;
+
+import com.google.common.base.Objects;
+import net.holmes.core.transport.device.model.Device;
 
 /**
- * Streaming device
+ * Airplay streaming device.
  */
-public abstract class Device {
-    protected final String id;
-    protected final String name;
-    protected final String hostAddress;
+public class AirplayDevice extends Device {
+    private final int port;
 
     /**
-     * Instantiates a new device
+     * Instantiates a new Airplay device
      *
      * @param id          device id
      * @param name        device name
      * @param hostAddress device host
+     * @param port        device port
      */
-    public Device(final String id, final String name, final String hostAddress) {
-        this.id = id;
-        this.name = name;
-        this.hostAddress = hostAddress;
+    public AirplayDevice(final String id, final String name, final String hostAddress, final int port) {
+        super(id, name, hostAddress);
+        this.port = port;
     }
 
-    /**
-     * Get device id.
-     *
-     * @return device id
-     */
-    public String getId() {
-        return id;
+    public int getPort() {
+        return port;
     }
 
-    /**
-     * Get device name.
-     *
-     * @return device name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Get device host address.
-     *
-     * @return device host address
-     */
-    public String getHostAddress() {
-        return hostAddress;
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .addValue(id)
+                .addValue(name)
+                .addValue(hostAddress)
+                .addValue(port)
+                .toString();
     }
 }

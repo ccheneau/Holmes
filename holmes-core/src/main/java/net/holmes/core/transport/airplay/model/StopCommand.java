@@ -17,12 +17,12 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.STOP;
+import static net.holmes.core.transport.airplay.model.AirplayCommand.CommandType.STOP;
 
 /**
  * Airplay stop command: Stop playback.
  */
-public final class StopCommand extends AbstractCommand {
+public final class StopCommand extends AirplayCommand {
     /**
      * Instantiates a new Airplay stop command.
      */

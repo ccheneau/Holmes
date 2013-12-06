@@ -17,37 +17,37 @@
 
 package net.holmes.core.transport.upnp;
 
-import net.holmes.core.transport.device.DeviceStreamingManager;
-import net.holmes.core.transport.device.model.Device;
-import net.holmes.core.transport.device.model.DeviceResponse;
-import net.holmes.core.transport.device.model.DeviceStatusResponse;
+import net.holmes.core.transport.device.DeviceStreamer;
+import net.holmes.core.transport.device.model.StreamingResponse;
+import net.holmes.core.transport.device.model.StreamingStatus;
+import net.holmes.core.transport.upnp.model.UpnpDevice;
 
 /**
- * UPnP streaming manager implementation.
+ * Manage streaming on Upnp device.
  */
-public class UpnpStreamingManagerImpl implements DeviceStreamingManager {
+public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
     @Override
-    public DeviceResponse play(Device device, String url) {
+    public StreamingResponse play(UpnpDevice device, String url) {
         return null;
     }
 
     @Override
-    public DeviceResponse stop(Device device) {
+    public StreamingResponse stop(UpnpDevice device) {
         return null;
     }
 
     @Override
-    public DeviceResponse pause(Device device) {
+    public StreamingResponse pause(UpnpDevice device) {
         return null;
     }
 
     @Override
-    public DeviceResponse restore(Device device) {
+    public StreamingResponse resume(UpnpDevice device) {
         return null;
     }
 
     @Override
-    public DeviceStatusResponse status(Device device) {
+    public StreamingStatus status(UpnpDevice device) {
         return null;
     }
 }
