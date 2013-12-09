@@ -18,8 +18,6 @@
 package net.holmes.core.transport.device;
 
 import net.holmes.core.transport.device.model.Device;
-import net.holmes.core.transport.device.model.StreamingResponse;
-import net.holmes.core.transport.device.model.StreamingStatus;
 
 /**
  * Device streamer.
@@ -31,39 +29,34 @@ public interface DeviceStreamer<T extends Device> {
      *
      * @param device device
      * @param url    content url
-     * @return device response
      */
-    StreamingResponse play(T device, String url);
+    void play(T device, String url);
 
     /**
      * Stop content playback.
      *
      * @param device device
-     * @return device response
      */
-    StreamingResponse stop(T device);
+    void stop(T device);
 
     /**
      * Pause content playback.
      *
      * @param device device
-     * @return device response
      */
-    StreamingResponse pause(T device);
+    void pause(T device);
 
     /**
      * Resume content playback.
      *
      * @param device device
-     * @return device response
      */
-    StreamingResponse resume(T device);
+    void resume(T device);
 
     /**
-     * Get content playback status
+     * Update content playback status
      *
      * @param device device
-     * @return device status response
      */
-    StreamingStatus status(T device);
+    void updateStatus(T device);
 }

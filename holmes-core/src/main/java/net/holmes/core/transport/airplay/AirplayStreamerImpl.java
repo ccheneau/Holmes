@@ -22,8 +22,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import net.holmes.core.transport.airplay.model.*;
 import net.holmes.core.transport.device.DeviceStreamer;
-import net.holmes.core.transport.device.model.StreamingResponse;
-import net.holmes.core.transport.device.model.StreamingStatus;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -39,7 +37,6 @@ import java.io.InputStreamReader;
 import java.util.Map;
 
 import static org.apache.http.HttpHeaders.CONTENT_TYPE;
-import static org.apache.http.HttpStatus.SC_OK;
 
 /**
  * Manage streaming on Airplay device.
@@ -64,38 +61,37 @@ public class AirplayStreamerImpl implements DeviceStreamer<AirplayDevice> {
 
 
     @Override
-    public StreamingResponse play(AirplayDevice device, String url) {
-        CommandResponse cmdResponse = sendCommand(device, new PlayCommand(url, 0d));
-        return new StreamingResponse(cmdResponse.getStatusCode() == SC_OK, cmdResponse.getMessage());
+    public void play(AirplayDevice device, String url) {
+        sendCommand(device, new PlayCommand(url, 0d));
     }
 
     @Override
-    public StreamingResponse stop(AirplayDevice device) {
-        CommandResponse cmdResponse = sendCommand(device, new StopCommand());
-        return new StreamingResponse(cmdResponse.getStatusCode() == SC_OK, cmdResponse.getMessage());
+    public void stop(AirplayDevice device) {
+        sendCommand(device, new StopCommand());
     }
 
     @Override
-    public StreamingResponse pause(AirplayDevice device) {
-        CommandResponse cmdResponse = sendCommand(device, new RateCommand(0d));
-        return new StreamingResponse(cmdResponse.getStatusCode() == SC_OK, cmdResponse.getMessage());
+    public void pause(AirplayDevice device) {
+        sendCommand(device, new RateCommand(0d));
     }
 
     @Override
-    public StreamingResponse resume(AirplayDevice device) {
-        CommandResponse cmdResponse = sendCommand(device, new RateCommand(1d));
-        return new StreamingResponse(cmdResponse.getStatusCode() == SC_OK, cmdResponse.getMessage());
+    public void resume(AirplayDevice device) {
+        sendCommand(device, new RateCommand(1d));
     }
 
     @Override
-    public StreamingStatus status(AirplayDevice device) {
+    public void updateStatus(AirplayDevice device) {
         CommandResponse cmdResponse = sendCommand(device, new PlayStatusCommand());
+        /*
         if (cmdResponse.getStatusCode() == SC_OK) {
             Double duration = getContentParameterValue(CONTENT_PARAMETER_DURATION, cmdResponse.getContentParameters());
             Double position = getContentParameterValue(CONTENT_PARAMETER_POSITION, cmdResponse.getContentParameters());
+        }
             return new StreamingStatus(duration, position);
         } else
             return new StreamingStatus(0d, 0d);
+            */
     }
 
     /**
@@ -105,7 +101,7 @@ public class AirplayStreamerImpl implements DeviceStreamer<AirplayDevice> {
      * @param command Airplay command
      * @return command response
      */
-    private CommandResponse sendCommand(AirplayDevice device, AirplayCommand command) {
+    private CommandResponse sendCommand(AirplayDevice device, AbstractCommand command) {
         // Get http request
         HttpRequestBase httpRequest = command.getHttpRequest(device.getHostAddress(), device.getPort());
         if (LOGGER.isDebugEnabled()) LOGGER.debug("sendCommand: {}", httpRequest);

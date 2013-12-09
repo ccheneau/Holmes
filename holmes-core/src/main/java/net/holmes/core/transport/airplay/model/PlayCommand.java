@@ -17,14 +17,14 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import static net.holmes.core.transport.airplay.model.AirplayCommand.CommandType.PLAY;
-import static net.holmes.core.transport.airplay.model.AirplayCommand.PostParameter.CONTENT_LOCATION;
-import static net.holmes.core.transport.airplay.model.AirplayCommand.PostParameter.START_POSITION;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.PLAY;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParameter.CONTENT_LOCATION;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParameter.START_POSITION;
 
 /**
  * Airplay play command: Start video playback
  */
-public final class PlayCommand extends AirplayCommand {
+public final class PlayCommand extends AbstractCommand {
 
     /**
      * Instantiates a new Airplay play command.

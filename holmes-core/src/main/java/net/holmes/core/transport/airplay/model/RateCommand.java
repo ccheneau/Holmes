@@ -17,13 +17,13 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import static net.holmes.core.transport.airplay.model.AirplayCommand.CommandType.RATE;
-import static net.holmes.core.transport.airplay.model.AirplayCommand.UrlParameter.VALUE;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.RATE;
+import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.VALUE;
 
 /**
  * Airplay rate command: Change the playback rate
  */
-public class RateCommand extends AirplayCommand {
+public class RateCommand extends AbstractCommand {
 
     /**
      * Instantiates a new Airplay rate command.

@@ -17,37 +17,103 @@
 
 package net.holmes.core.transport.upnp;
 
+import com.google.inject.Inject;
 import net.holmes.core.transport.device.DeviceStreamer;
-import net.holmes.core.transport.device.model.StreamingResponse;
-import net.holmes.core.transport.device.model.StreamingStatus;
 import net.holmes.core.transport.upnp.model.UpnpDevice;
+import org.fourthline.cling.UpnpService;
+import org.fourthline.cling.controlpoint.ControlPoint;
+import org.fourthline.cling.model.action.ActionInvocation;
+import org.fourthline.cling.model.message.UpnpResponse;
+import org.fourthline.cling.support.avtransport.callback.Pause;
+import org.fourthline.cling.support.avtransport.callback.Play;
+import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
+import org.fourthline.cling.support.avtransport.callback.Stop;
 
 /**
  * Manage streaming on Upnp device.
  */
 public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
-    @Override
-    public StreamingResponse play(UpnpDevice device, String url) {
-        return null;
+    private final ControlPoint controlPoint;
+
+    @Inject
+    public UpnpStreamerImpl(UpnpService upnpService) {
+        this.controlPoint = upnpService.getControlPoint();
     }
 
     @Override
-    public StreamingResponse stop(UpnpDevice device) {
-        return null;
+    public void play(final UpnpDevice device, final String url) {
+        // Set content Url
+        controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), url) {
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                logFailure(invocation, operation, defaultMsg);
+            }
+
+            @Override
+            public void success(ActionInvocation invocation) {
+                // Play content
+                controlPoint.execute(new Play(device.getAvTransportService()) {
+                    @Override
+                    public void success(ActionInvocation invocation) {
+                    }
+
+                    @Override
+                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                        logFailure(invocation, response, defaultMsg);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public StreamingResponse pause(UpnpDevice device) {
-        return null;
+    public void stop(UpnpDevice device) {
+        controlPoint.execute(new Stop(device.getAvTransportService()) {
+            @Override
+            public void success(ActionInvocation invocation) {
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                logFailure(invocation, operation, defaultMsg);
+            }
+        });
     }
 
     @Override
-    public StreamingResponse resume(UpnpDevice device) {
-        return null;
+    public void pause(UpnpDevice device) {
+        controlPoint.execute(new Pause(device.getAvTransportService()) {
+            @Override
+            public void success(ActionInvocation invocation) {
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                logFailure(invocation, response, defaultMsg);
+            }
+        });
     }
 
     @Override
-    public StreamingStatus status(UpnpDevice device) {
-        return null;
+    public void resume(UpnpDevice device) {
+        // Resume content playback
+        controlPoint.execute(new Play(device.getAvTransportService()) {
+            @Override
+            public void success(ActionInvocation invocation) {
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                logFailure(invocation, response, defaultMsg);
+            }
+        });
+    }
+
+    @Override
+    public void updateStatus(UpnpDevice device) {
+    }
+
+    private void logFailure(final ActionInvocation invocation, final UpnpResponse response, final String defaultMsg) {
+
     }
 }
