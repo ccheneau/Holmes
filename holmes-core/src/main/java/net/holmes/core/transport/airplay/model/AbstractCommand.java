@@ -17,36 +17,30 @@
 
 package net.holmes.core.transport.airplay.model;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.util.CharsetUtil;
 
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.USER_AGENT;
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpHeaders.Values.CLOSE;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpMethod.POST;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
  * Airplay command.
  */
 public abstract class AbstractCommand {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
     private final CommandType type;
     private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
-    private final List<NameValuePair> postParameters = Lists.newArrayList();
+    private final Map<PostParameter, String> postParameters = Maps.newHashMap();
 
     /**
      * Instantiates a new Airplay command.
@@ -74,7 +68,7 @@ public abstract class AbstractCommand {
      * @param value     post parameter value
      */
     public void addPostParameter(final PostParameter parameter, final String value) {
-        this.postParameters.add(new BasicNameValuePair(parameter.getValue(), value));
+        this.postParameters.put(parameter, value);
     }
 
     /**
@@ -84,22 +78,26 @@ public abstract class AbstractCommand {
      * @param devicePort device port
      * @return Http request
      */
-    public HttpRequestBase getHttpRequest(final String deviceHost, final int devicePort) {
-        HttpRequestBase request = null;
-        if (type.getMethod().equals(GET)) {
-            request = new HttpGet(getRequestUri(deviceHost, devicePort));
-            request.setHeader(USER_AGENT, AIRPLAY_USER_AGENT);
-            request.addHeader(CONTENT_LENGTH, "0");
-        } else if (type.getMethod().equals(POST)) {
-            request = new HttpPost(getRequestUri(deviceHost, devicePort));
-            request.setHeader(USER_AGENT, AIRPLAY_USER_AGENT);
-            if (!postParameters.isEmpty())
-                try {
-                    ((HttpPost) request).setEntity(new UrlEncodedFormEntity(postParameters));
-                } catch (UnsupportedEncodingException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+    public HttpRequest getHttpRequest(final String deviceHost, final int devicePort) {
+        ByteBuf content;
+        int contentLength;
+        if (!postParameters.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (PostParameter param : postParameters.keySet()) {
+                sb.append(param.getValue()).append("=").append(postParameters.get(param)).append("\r\n");
+            }
+            content = Unpooled.copiedBuffer(sb.toString(), CharsetUtil.UTF_8);
+            contentLength = sb.length();
+        } else {
+            content = Unpooled.buffer(0);
+            contentLength = 0;
         }
+
+        HttpRequest request = new DefaultFullHttpRequest(HTTP_1_1, type.getMethod(), getRequestUri(deviceHost, devicePort), content, false);
+        request.headers().set(USER_AGENT, AIRPLAY_USER_AGENT);
+        request.headers().set(CONTENT_LENGTH, contentLength);
+        request.headers().set(CONNECTION, CLOSE);
+
         return request;
     }
 

@@ -181,12 +181,6 @@
             <artifactId>jmdns</artifactId>
         </dependency>
 
-        <!-- http client -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-
         <!-- xstream -->
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>

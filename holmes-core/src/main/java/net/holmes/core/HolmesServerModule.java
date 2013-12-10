@@ -39,7 +39,6 @@ import net.holmes.core.http.HttpServer;
 import net.holmes.core.http.file.HttpFileRequestDecoder;
 import net.holmes.core.http.file.HttpFileRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.HttpClientProvider;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.MediaManagerImpl;
@@ -55,7 +54,6 @@ import net.holmes.core.scheduled.IcecastDownloadService;
 import net.holmes.core.transport.device.dao.DeviceDao;
 import net.holmes.core.transport.device.dao.DeviceDaoImpl;
 import net.holmes.core.upnp.UpnpServer;
-import org.apache.http.client.HttpClient;
 import org.fourthline.cling.UpnpService;
 
 import java.net.*;
@@ -175,9 +173,6 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
-
-        // Bind Http client
-        bind(HttpClient.class).toProvider(HttpClientProvider.class).in(Singleton.class);
 
         // Bind Http handlers
         bind(HttpFileRequestDecoder.class);
