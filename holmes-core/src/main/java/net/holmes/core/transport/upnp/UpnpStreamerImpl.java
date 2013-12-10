@@ -28,13 +28,21 @@ import org.fourthline.cling.support.avtransport.callback.Pause;
 import org.fourthline.cling.support.avtransport.callback.Play;
 import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
 import org.fourthline.cling.support.avtransport.callback.Stop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manage streaming on Upnp device.
  */
 public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpStreamerImpl.class);
     private final ControlPoint controlPoint;
 
+    /**
+     * Instantiates a new Upnp streaming implementation.
+     *
+     * @param upnpService Upnp service
+     */
     @Inject
     public UpnpStreamerImpl(UpnpService upnpService) {
         this.controlPoint = upnpService.getControlPoint();
@@ -114,6 +122,6 @@ public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
     }
 
     private void logFailure(final ActionInvocation invocation, final UpnpResponse response, final String defaultMsg) {
-
+        LOGGER.error("action: {}, response: {}, message: {}", invocation.getAction().toString(), response.getResponseDetails(), defaultMsg);
     }
 }
