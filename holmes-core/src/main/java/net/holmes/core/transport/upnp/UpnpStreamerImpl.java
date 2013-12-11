@@ -17,6 +17,7 @@
 
 package net.holmes.core.transport.upnp;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.upnp.model.UpnpDevice;
@@ -24,27 +25,26 @@ import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
-import org.fourthline.cling.support.avtransport.callback.Pause;
-import org.fourthline.cling.support.avtransport.callback.Play;
-import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
-import org.fourthline.cling.support.avtransport.callback.Stop;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fourthline.cling.support.avtransport.callback.*;
+import org.fourthline.cling.support.model.PositionInfo;
+
+import static net.holmes.core.transport.event.StreamingEventType.*;
 
 /**
  * Manage streaming on Upnp device.
  */
-public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpStreamerImpl.class);
+public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private final ControlPoint controlPoint;
 
     /**
      * Instantiates a new Upnp streaming implementation.
      *
      * @param upnpService Upnp service
+     * @param eventBus    event bus
      */
     @Inject
-    public UpnpStreamerImpl(UpnpService upnpService) {
+    public UpnpStreamerImpl(final UpnpService upnpService, final EventBus eventBus) {
+        super(eventBus);
         this.controlPoint = upnpService.getControlPoint();
     }
 
@@ -53,75 +53,87 @@ public class UpnpStreamerImpl implements DeviceStreamer<UpnpDevice> {
         // Set content Url
         controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), url) {
             @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                logFailure(invocation, operation, defaultMsg);
-            }
-
-            @Override
             public void success(ActionInvocation invocation) {
                 // Play content
                 controlPoint.execute(new Play(device.getAvTransportService()) {
                     @Override
                     public void success(ActionInvocation invocation) {
+                        sendSuccess(PLAY, device.getId());
                     }
 
                     @Override
                     public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                        logFailure(invocation, response, defaultMsg);
+                        sendFailure(PLAY, device.getId(), defaultMsg);
                     }
                 });
-            }
-        });
-    }
-
-    @Override
-    public void stop(UpnpDevice device) {
-        controlPoint.execute(new Stop(device.getAvTransportService()) {
-            @Override
-            public void success(ActionInvocation invocation) {
             }
 
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                logFailure(invocation, operation, defaultMsg);
+                sendFailure(PLAY, device.getId(), defaultMsg);
+            }
+
+        });
+    }
+
+    @Override
+    public void stop(final UpnpDevice device) {
+        controlPoint.execute(new Stop(device.getAvTransportService()) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                sendSuccess(STOP, device.getId());
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                sendFailure(STOP, device.getId(), defaultMsg);
             }
         });
     }
 
     @Override
-    public void pause(UpnpDevice device) {
+    public void pause(final UpnpDevice device) {
         controlPoint.execute(new Pause(device.getAvTransportService()) {
             @Override
             public void success(ActionInvocation invocation) {
+                sendSuccess(PAUSE, device.getId());
             }
 
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                logFailure(invocation, response, defaultMsg);
+                sendFailure(PAUSE, device.getId(), defaultMsg);
             }
         });
     }
 
     @Override
-    public void resume(UpnpDevice device) {
+    public void resume(final UpnpDevice device) {
         // Resume content playback
         controlPoint.execute(new Play(device.getAvTransportService()) {
             @Override
             public void success(ActionInvocation invocation) {
+                sendSuccess(RESUME, device.getId());
             }
 
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                logFailure(invocation, response, defaultMsg);
+                sendFailure(RESUME, device.getId(), defaultMsg);
             }
         });
     }
 
     @Override
-    public void updateStatus(UpnpDevice device) {
-    }
+    public void updateStatus(final UpnpDevice device) {
+        controlPoint.execute(new GetPositionInfo(device.getAvTransportService()) {
+            @Override
+            public void received(ActionInvocation invocation, PositionInfo positionInfo) {
+                sendSuccess(STATUS, device.getId(), positionInfo.getTrackElapsedSeconds(), positionInfo.getTrackDurationSeconds());
+            }
 
-    private void logFailure(final ActionInvocation invocation, final UpnpResponse response, final String defaultMsg) {
-        LOGGER.error("action: {}, response: {}, message: {}", invocation.getAction().toString(), response.getResponseDetails(), defaultMsg);
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                sendFailure(STATUS, device.getId(), defaultMsg);
+            }
+        });
     }
 }

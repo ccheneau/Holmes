@@ -17,12 +17,25 @@
 
 package net.holmes.core.transport.device;
 
+import com.google.common.eventbus.EventBus;
 import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.event.StreamingEvent;
+import net.holmes.core.transport.event.StreamingEventType;
 
 /**
  * Device streamer.
  */
-public interface DeviceStreamer<T extends Device> {
+public abstract class DeviceStreamer<T extends Device> {
+    private final EventBus eventBus;
+
+    /**
+     * Instantiates a new device streamer.
+     *
+     * @param eventBus event bus
+     */
+    public DeviceStreamer(final EventBus eventBus) {
+        this.eventBus = eventBus;
+    }
 
     /**
      * Play content to device
@@ -30,33 +43,67 @@ public interface DeviceStreamer<T extends Device> {
      * @param device device
      * @param url    content url
      */
-    void play(T device, String url);
+    public abstract void play(T device, String url);
 
     /**
      * Stop content playback.
      *
      * @param device device
      */
-    void stop(T device);
+    public abstract void stop(T device);
 
     /**
      * Pause content playback.
      *
      * @param device device
      */
-    void pause(T device);
+    public abstract void pause(T device);
 
     /**
      * Resume content playback.
      *
      * @param device device
      */
-    void resume(T device);
+    public abstract void resume(T device);
 
     /**
      * Update content playback status
      *
      * @param device device
      */
-    void updateStatus(T device);
+    public abstract void updateStatus(T device);
+
+    /**
+     * Post error streaming event.
+     *
+     * @param type         event type
+     * @param deviceId     device id
+     * @param errorMessage error message
+     */
+    protected void sendFailure(final StreamingEventType type, final String deviceId, final String errorMessage) {
+        eventBus.post(new StreamingEvent(type, deviceId, errorMessage));
+    }
+
+    /**
+     * Post success streaming event.
+     *
+     * @param type     event type
+     * @param deviceId device id
+     */
+    protected void sendSuccess(final StreamingEventType type, final String deviceId) {
+        eventBus.post(new StreamingEvent(type, deviceId, null, null));
+    }
+
+    /**
+     * Post success streaming event.
+     *
+     * @param type     event type
+     * @param deviceId device id
+     * @param duration content duration
+     * @param position playback position
+     */
+    protected void sendSuccess(final StreamingEventType type, final String deviceId, final Long duration, final Long position) {
+        eventBus.post(new StreamingEvent(type, deviceId, duration, position));
+    }
+
 }
