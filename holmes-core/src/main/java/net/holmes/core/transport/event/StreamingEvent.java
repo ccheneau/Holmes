@@ -98,4 +98,11 @@ public final class StreamingEvent {
                 .addValue(position)
                 .toString();
     }
+
+    /**
+     * Streaming event type.
+     */
+    public static enum StreamingEventType {
+        PLAY, STOP, PAUSE, RESUME, STATUS;
+    }
 }

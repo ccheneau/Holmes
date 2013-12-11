@@ -24,7 +24,7 @@ import net.holmes.core.transport.device.DeviceStreamer;
 import javax.inject.Inject;
 import java.util.Map;
 
-import static net.holmes.core.transport.event.StreamingEventType.*;
+import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
 
 /**
  * Manage streaming on Airplay device.

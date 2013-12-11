@@ -28,7 +28,7 @@ import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.*;
 import org.fourthline.cling.support.model.PositionInfo;
 
-import static net.holmes.core.transport.event.StreamingEventType.*;
+import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
 
 /**
  * Manage streaming on Upnp device.
