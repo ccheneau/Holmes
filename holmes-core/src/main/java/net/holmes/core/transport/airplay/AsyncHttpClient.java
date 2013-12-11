@@ -89,7 +89,7 @@ public abstract class AsyncHttpClient {
             channel.closeFuture().sync();
 
         } catch (InterruptedException e) {
-            onFailure(e);
+            failure(e);
         } finally {
             group.shutdownGracefully();
         }
@@ -100,14 +100,14 @@ public abstract class AsyncHttpClient {
      *
      * @param contentParameters content parameters map
      */
-    public abstract void onSuccess(Map<String, String> contentParameters);
+    public abstract void success(Map<String, String> contentParameters);
 
     /**
      * Failure callback.
      *
      * @param throwable exception
      */
-    public abstract void onFailure(Throwable throwable);
+    public abstract void failure(Throwable throwable);
 
     /**
      * Asynchronous http client handler.
@@ -130,7 +130,7 @@ public abstract class AsyncHttpClient {
                         }
                     }
                 }
-                onSuccess(contentParameters);
+                success(contentParameters);
                 return;
             }
             // Throw exception if response is not valid
@@ -139,7 +139,7 @@ public abstract class AsyncHttpClient {
 
         @Override
         public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
-            onFailure(cause);
+            failure(cause);
             ctx.close();
         }
     }
