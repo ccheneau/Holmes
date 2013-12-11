@@ -20,6 +20,7 @@ package net.holmes.core.transport.device.dao;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
+import net.holmes.core.transport.device.exception.UnknownDeviceException;
 import net.holmes.core.transport.device.model.Device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +55,10 @@ public class DeviceDaoImpl implements DeviceDao {
     }
 
     @Override
-    public Device getDevice(final String deviceId) {
-        return devices.get(deviceId);
+    public Device getDevice(final String deviceId) throws UnknownDeviceException {
+        Device device = devices.get(deviceId);
+        if (device == null) throw new UnknownDeviceException(deviceId);
+        return device;
     }
 
     @Override

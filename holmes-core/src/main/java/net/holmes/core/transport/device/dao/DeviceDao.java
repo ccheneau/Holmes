@@ -17,6 +17,7 @@
 
 package net.holmes.core.transport.device.dao;
 
+import net.holmes.core.transport.device.exception.UnknownDeviceException;
 import net.holmes.core.transport.device.model.Device;
 
 import java.util.Collection;
@@ -46,8 +47,9 @@ public interface DeviceDao {
      *
      * @param deviceId device id
      * @return device
+     * @throws UnknownDeviceException
      */
-    Device getDevice(final String deviceId);
+    Device getDevice(final String deviceId) throws UnknownDeviceException;
 
     /**
      * Get all devices.
