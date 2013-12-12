@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 public class MediaManagerTest {
 
     @Inject
-    private MediaManager mediaManager;
+    private MediaService mediaService;
 
     @Inject
     private Configuration configuration;
@@ -51,10 +51,10 @@ public class MediaManagerTest {
 
     @Test
     public void testGetRootNode() {
-        AbstractNode node = mediaManager.getNode(RootNode.ROOT.getId());
+        AbstractNode node = mediaService.getNode(RootNode.ROOT.getId());
         assertNotNull(node);
 
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(result.getTotalCount(), 4);
@@ -62,16 +62,16 @@ public class MediaManagerTest {
 
     @Test
     public void testVideoNodes() {
-        AbstractNode node = mediaManager.getNode(RootNode.VIDEO.getId());
+        AbstractNode node = mediaService.getNode(RootNode.VIDEO.getId());
         assertNotNull(node);
 
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(1, result.getTotalCount());
-        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
+        assertNotNull(mediaService.getNode(result.getChildNodes().iterator().next().getId()));
 
-        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(result.getChildNodes().iterator().next()));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(3, result.getTotalCount());
@@ -80,16 +80,16 @@ public class MediaManagerTest {
 
     @Test
     public void testAudioNodes() {
-        AbstractNode node = mediaManager.getNode(RootNode.AUDIO.getId());
+        AbstractNode node = mediaService.getNode(RootNode.AUDIO.getId());
         assertNotNull(node);
 
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(1, result.getTotalCount());
-        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
+        assertNotNull(mediaService.getNode(result.getChildNodes().iterator().next().getId()));
 
-        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(result.getChildNodes().iterator().next()));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(2, result.getTotalCount());
@@ -98,16 +98,16 @@ public class MediaManagerTest {
 
     @Test
     public void testPictureNodes() {
-        AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
+        AbstractNode node = mediaService.getNode(RootNode.PICTURE.getId());
         assertNotNull(node);
 
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(1, result.getTotalCount());
-        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
+        assertNotNull(mediaService.getNode(result.getChildNodes().iterator().next().getId()));
 
-        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(result.getChildNodes().iterator().next()));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(2, result.getTotalCount());
@@ -119,20 +119,20 @@ public class MediaManagerTest {
         for (AbstractNode abstractNode : nodes) {
             if (abstractNode instanceof FolderNode) {
                 assertEquals("subFolder", abstractNode.getName());
-                AbstractNode node1 = mediaManager.getNode(abstractNode.getId());
+                AbstractNode node1 = mediaService.getNode(abstractNode.getId());
                 assertNotNull(node1);
                 assertEquals("subFolder", node1.getName());
-                MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node1));
+                MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node1));
                 assertNotNull(result.getChildNodes());
                 assertFalse(result.getChildNodes().isEmpty());
                 assertEquals(1, result.getTotalCount());
                 assertTrue(fileNodeNameList.contains(result.getChildNodes().iterator().next().getName()));
-                AbstractNode node2 = mediaManager.getNode(result.getChildNodes().iterator().next().getId());
+                AbstractNode node2 = mediaService.getNode(result.getChildNodes().iterator().next().getId());
                 assertNotNull(node2);
                 assertTrue(fileNodeNameList.contains(node2.getName()));
             } else if (abstractNode != null) {
                 assertTrue(fileNodeNameList.contains(abstractNode.getName()));
-                AbstractNode node1 = mediaManager.getNode(abstractNode.getId());
+                AbstractNode node1 = mediaService.getNode(abstractNode.getId());
                 assertNotNull(node1);
                 assertTrue(fileNodeNameList.contains(node1.getName()));
             }
@@ -141,38 +141,38 @@ public class MediaManagerTest {
 
     @Test
     public void testPodcastNodes() {
-        AbstractNode node = mediaManager.getNode(RootNode.PODCAST.getId());
+        AbstractNode node = mediaService.getNode(RootNode.PODCAST.getId());
         assertNotNull(node);
 
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(node));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(node));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
         assertEquals(result.getTotalCount(), 1);
-        assertNotNull(mediaManager.getNode(result.getChildNodes().iterator().next().getId()));
+        assertNotNull(mediaService.getNode(result.getChildNodes().iterator().next().getId()));
 
-        result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(result.getChildNodes().iterator().next()));
+        result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(result.getChildNodes().iterator().next()));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
     }
 
     @Test
     public void testHandleMediaEventScanNode() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+        if (mediaService instanceof MediaServiceImpl) {
+            MediaServiceImpl mediaManagerImpl = (MediaServiceImpl) mediaService;
             mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.SCAN_NODE, "audiosTest"));
         }
     }
 
     @Test
     public void testHandleMediaEventUnknown() {
-        if (mediaManager instanceof MediaManagerImpl) {
-            MediaManagerImpl mediaManagerImpl = (MediaManagerImpl) mediaManager;
+        if (mediaService instanceof MediaServiceImpl) {
+            MediaServiceImpl mediaManagerImpl = (MediaServiceImpl) mediaService;
             mediaManagerImpl.handleMediaEvent(new MediaEvent(MediaEvent.MediaEventType.UNKNOWN, null));
         }
     }
 
     @Test
     public void testCacheCleanUp() {
-        mediaManager.cleanUpCache();
+        mediaService.cleanUpCache();
     }
 }

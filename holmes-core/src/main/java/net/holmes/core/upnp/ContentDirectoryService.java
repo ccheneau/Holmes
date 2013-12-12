@@ -20,7 +20,7 @@ package net.holmes.core.upnp;
 import com.google.common.collect.Lists;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.*;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.model.Device;
@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
-import static net.holmes.core.media.MediaManager.ChildNodeRequest;
-import static net.holmes.core.media.MediaManager.ChildNodeResult;
+import static net.holmes.core.media.MediaService.ChildNodeRequest;
+import static net.holmes.core.media.MediaService.ChildNodeResult;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
@@ -57,7 +57,7 @@ import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentDirectoryService.class);
     @Inject
-    private MediaManager mediaManager;
+    private MediaService mediaService;
     @Inject
     private Configuration configuration;
     @Inject
@@ -102,7 +102,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         // Get browse node
-        AbstractNode browseNode = mediaManager.getNode(objectID);
+        AbstractNode browseNode = mediaService.getNode(objectID);
         if (browseNode == null) {
             throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
         }
@@ -111,7 +111,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(browseNode, availableMimeTypes));
+            ChildNodeResult childNodeResult = mediaService.getChildNodes(new ChildNodeRequest(browseNode, availableMimeTypes));
             for (AbstractNode childNode : childNodeResult.getChildNodes())
                 addNode(objectID, childNode, result, childNodeResult.getTotalCount(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
@@ -161,7 +161,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(node, availableMimeTypes));
+                ChildNodeResult childNodeResult = mediaService.getChildNodes(new ChildNodeRequest(node, availableMimeTypes));
                 // Add container to result
                 result.addContainer(nodeId, node, childNodeResult.getTotalCount());
             } else if (node instanceof PodcastNode) {

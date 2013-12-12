@@ -39,23 +39,23 @@ import java.util.ResourceBundle;
 import static net.holmes.core.media.model.RootNode.ROOT;
 
 /**
- * Media manager implementation.
+ * Media service implementation.
  */
-public final class MediaManagerImpl implements MediaManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
+public final class MediaServiceImpl implements MediaService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaServiceImpl.class);
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
     private final MimeTypeManager mimeTypeManager;
 
     /**
-     * Instantiates a new media manager implementation.
+     * Instantiates a new media service implementation.
      *
      * @param resourceBundle  resource bundle
      * @param mediaDao        media dao
      * @param mimeTypeManager mime type manager
      */
     @Inject
-    public MediaManagerImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao, MimeTypeManager mimeTypeManager) {
+    public MediaServiceImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao, MimeTypeManager mimeTypeManager) {
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
         this.mimeTypeManager = mimeTypeManager;

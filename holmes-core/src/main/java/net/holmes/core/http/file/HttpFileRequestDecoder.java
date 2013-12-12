@@ -24,7 +24,7 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
-import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 
@@ -40,20 +40,20 @@ import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
  */
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
     private static final String DEFAULT_UI_PAGE = "index.html";
-    private final MediaManager mediaManager;
+    private final MediaService mediaService;
     private final MimeTypeManager mimeTypeManager;
     private final String uiDirectory;
 
     /**
      * Instantiates a new HTTP file request decoder.
      *
-     * @param mediaManager    media manager
+     * @param mediaService    media service
      * @param mimeTypeManager mime type manager
      * @param uiDirectory     UI base directory
      */
     @Inject
-    public HttpFileRequestDecoder(final MediaManager mediaManager, final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
-        this.mediaManager = mediaManager;
+    public HttpFileRequestDecoder(final MediaService mediaService, final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
+        this.mediaService = mediaService;
         this.mimeTypeManager = mimeTypeManager;
         this.uiDirectory = uiDirectory;
     }
@@ -65,7 +65,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
             if (decoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && decoder.parameters().get("id") != null) {
                 // Request for a content file is valid if content is found in media index
-                AbstractNode node = mediaManager.getNode(decoder.parameters().get("id").get(0));
+                AbstractNode node = mediaService.getNode(decoder.parameters().get("id").get(0));
                 if (node instanceof ContentNode) {
                     ContentNode contentNode = (ContentNode) node;
                     fileRequest = new HttpFileRequest(request, new NodeFile(contentNode.getPath()), contentNode.getMimeType());

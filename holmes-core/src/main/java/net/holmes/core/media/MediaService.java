@@ -23,9 +23,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Media manager.
+ * Media service.
  */
-public interface MediaManager {
+public interface MediaService {
     /**
      * Get node.
      *

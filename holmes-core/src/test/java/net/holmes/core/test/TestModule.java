@@ -32,8 +32,8 @@ import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
 import net.holmes.core.http.HttpServer;
 import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.media.MediaManager;
-import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.MediaService;
+import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.dao.MediaDaoImpl;
 import net.holmes.core.media.dao.icecast.IcecastDao;
@@ -76,7 +76,7 @@ public class TestModule extends AbstractModule {
         bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
         bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);
-        bind(MediaManager.class).to(MediaManagerImpl.class);
+        bind(MediaService.class).to(MediaServiceImpl.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class);
 
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");

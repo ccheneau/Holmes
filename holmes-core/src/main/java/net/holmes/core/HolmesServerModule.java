@@ -40,8 +40,8 @@ import net.holmes.core.http.file.HttpFileRequestDecoder;
 import net.holmes.core.http.file.HttpFileRequestHandler;
 import net.holmes.core.inject.CustomTypeListener;
 import net.holmes.core.inject.provider.UpnpServiceProvider;
-import net.holmes.core.media.MediaManager;
-import net.holmes.core.media.MediaManagerImpl;
+import net.holmes.core.media.MediaService;
+import net.holmes.core.media.MediaServiceImpl;
 import net.holmes.core.media.dao.MediaDao;
 import net.holmes.core.media.dao.MediaDaoImpl;
 import net.holmes.core.media.dao.icecast.IcecastDao;
@@ -157,7 +157,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
-        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);

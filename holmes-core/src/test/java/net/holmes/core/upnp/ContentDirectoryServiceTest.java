@@ -19,7 +19,7 @@ package net.holmes.core.upnp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.test.TestModule;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
@@ -37,14 +37,14 @@ import static org.junit.Assert.*;
 public class ContentDirectoryServiceTest {
 
     private ContentDirectoryService contentDirectoryService;
-    private MediaManager mediaManager;
+    private MediaService mediaService;
 
     @Before
     public void setUp() {
         contentDirectoryService = new ContentDirectoryService();
         Injector injector = Guice.createInjector(new TestModule());
         injector.injectMembers(contentDirectoryService);
-        mediaManager = injector.getInstance(MediaManager.class);
+        mediaService = injector.getInstance(MediaService.class);
     }
 
     @Test
@@ -57,11 +57,11 @@ public class ContentDirectoryServiceTest {
     @Test
     public void testBrowseVideoDC() throws ContentDirectoryException {
         // Get video root node
-        AbstractNode videoNode = mediaManager.getNode(VIDEO.getId());
+        AbstractNode videoNode = mediaService.getNode(VIDEO.getId());
         assertNotNull(videoNode);
 
         // Get children of video root node
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(videoNode));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(videoNode));
         assertNotNull(result.getChildNodes());
         assertTrue(result.getTotalCount() > 0);
 
@@ -77,11 +77,11 @@ public class ContentDirectoryServiceTest {
     @Test
     public void testBrowsePodcastDC() throws ContentDirectoryException {
         // Get podcast root node
-        AbstractNode videoNode = mediaManager.getNode(PODCAST.getId());
+        AbstractNode videoNode = mediaService.getNode(PODCAST.getId());
         assertNotNull(videoNode);
 
         // Get children of podcast root node
-        MediaManager.ChildNodeResult result = mediaManager.getChildNodes(new MediaManager.ChildNodeRequest(videoNode));
+        MediaService.ChildNodeResult result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(videoNode));
         assertNotNull(result.getChildNodes());
         assertTrue(result.getTotalCount() > 0);
 

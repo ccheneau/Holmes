@@ -41,7 +41,7 @@ public class TransportServiceImpl implements TransportService {
     private final DeviceStreamer airplayStreamer;
 
     /**
-     * Instantiates a new transport service implementation/
+     * Instantiates a new transport service implementation.
      *
      * @param deviceDao       device DAO
      * @param upnpStreamer    upnp streamer

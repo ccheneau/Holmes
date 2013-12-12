@@ -22,7 +22,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.common.mimetype.MimeTypeManager;
-import net.holmes.core.media.MediaManager;
+import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.ContentNode;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class HttpFileRequestDecoderTest {
     public void testDecodeUiFile() throws Exception {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
@@ -49,8 +49,8 @@ public class HttpFileRequestDecoderTest {
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
         expect(mimeTypeManager.getMimeType("/index.html")).andReturn(new MimeType("text/html")).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0).getClass(), HttpFileRequest.class);
@@ -58,14 +58,14 @@ public class HttpFileRequestDecoderTest {
         assertNotNull(fileRequest.getNodeFile());
         assertNotNull(fileRequest.getMimeType());
         assertNotNull(fileRequest.getHttpRequest());
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodeUiFileEmpty() throws Exception {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
@@ -73,19 +73,19 @@ public class HttpFileRequestDecoderTest {
         expect(request.getUri()).andReturn("/").atLeastOnce();
         expect(mimeTypeManager.getMimeType("/index.html")).andReturn(new MimeType("text/html")).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0).getClass(), HttpFileRequest.class);
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodeUiFileNoMimeType() throws Exception {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
@@ -94,47 +94,47 @@ public class HttpFileRequestDecoderTest {
         expect(request.retain()).andReturn(request).atLeastOnce();
         expect(mimeTypeManager.getMimeType("/index.html1")).andReturn(null).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), request);
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodePostMessage() throws Exception {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
         expect(request.getMethod()).andReturn(POST).atLeastOnce();
         expect(request.retain()).andReturn(request).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), request);
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodeContentFile() {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
-        expect(mediaManager.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
+        expect(mediaService.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0).getClass(), HttpFileRequest.class);
@@ -142,35 +142,35 @@ public class HttpFileRequestDecoderTest {
         assertNotNull(fileRequest.getNodeFile());
         assertNotNull(fileRequest.getMimeType());
         assertNotNull(fileRequest.getHttpRequest());
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodeContentFileEmptyContentId() {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
         expect(request.retain()).andReturn(request).atLeastOnce();
-        expect(mediaManager.getNode("")).andReturn(null).atLeastOnce();
+        expect(mediaService.getNode("")).andReturn(null).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), request);
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 
     @Test
     public void testDecodeContentFileNullContentId() {
         FullHttpRequest request = createMock(FullHttpRequest.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
+        MediaService mediaService = createMock(MediaService.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         List<Object> out = Lists.newArrayList();
 
@@ -179,11 +179,11 @@ public class HttpFileRequestDecoderTest {
         expect(request.retain()).andReturn(request).atLeastOnce();
         expect(mimeTypeManager.getMimeType("/content")).andReturn(null).atLeastOnce();
 
-        replay(context, request, mediaManager, mimeTypeManager);
-        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
+        replay(context, request, mediaService, mimeTypeManager);
+        HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
         decoder.decode(context, request, out);
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), request);
-        verify(context, request, mediaManager, mimeTypeManager);
+        verify(context, request, mediaService, mimeTypeManager);
     }
 }

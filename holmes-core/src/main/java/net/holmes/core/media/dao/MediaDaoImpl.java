@@ -54,7 +54,7 @@ import static net.holmes.core.media.model.RootNode.ICECAST;
 import static net.holmes.core.media.model.RootNode.PODCAST;
 
 /**
- * MediaManager node factory.
+ * Media DAO implementation.
  */
 public class MediaDaoImpl implements MediaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaDaoImpl.class);
