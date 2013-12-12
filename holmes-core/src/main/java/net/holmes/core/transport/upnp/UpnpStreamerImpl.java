@@ -49,9 +49,9 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     }
 
     @Override
-    public void play(final UpnpDevice device, final String url) {
+    public void play(final UpnpDevice device, final String contentUrl) {
         // Set content Url
-        controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), url) {
+        controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl) {
             @Override
             public void success(ActionInvocation invocation) {
                 // Play content

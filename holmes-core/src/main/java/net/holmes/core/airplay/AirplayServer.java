@@ -19,8 +19,8 @@ package net.holmes.core.airplay;
 
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
+import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.airplay.model.AirplayDevice;
-import net.holmes.core.transport.device.dao.DeviceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,21 +44,21 @@ public final class AirplayServer implements Service {
     private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
     private final Configuration configuration;
     private final InetAddress localAddress;
-    private final DeviceDao deviceDao;
+    private final TransportService transportService;
     private JmDNS jmDNS = null;
 
     /**
      * Instantiates a new Airplay server.
      *
-     * @param configuration configuration
-     * @param localAddress  local address
-     * @param deviceDao device dao
+     * @param configuration    configuration
+     * @param localAddress     local address
+     * @param transportService transport service
      */
     @Inject
-    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final DeviceDao deviceDao) {
+    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final TransportService transportService) {
         this.configuration = configuration;
         this.localAddress = localAddress;
-        this.deviceDao = deviceDao;
+        this.transportService = transportService;
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class AirplayServer implements Service {
                 ServiceInfo[] devicesInfo = jmDNS.list(AIR_PLAY_TCP);
                 if (devicesInfo != null && devicesInfo.length > 0)
                     for (ServiceInfo serviceInfo : devicesInfo) {
-                        deviceDao.addDevice(buildDevice(serviceInfo));
+                        transportService.addDevice(buildDevice(serviceInfo));
                     }
 
                 // Add Listener to manager inbound and outbound devices
@@ -86,12 +86,12 @@ public final class AirplayServer implements Service {
 
                     @Override
                     public void serviceRemoved(ServiceEvent event) {
-                        deviceDao.removeDevice(event.getInfo().getKey());
+                        transportService.removeDevice(event.getInfo().getKey());
                     }
 
                     @Override
                     public void serviceResolved(ServiceEvent event) {
-                        deviceDao.addDevice(buildDevice(event.getInfo()));
+                        transportService.addDevice(buildDevice(event.getInfo()));
                     }
                 });
 

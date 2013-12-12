@@ -51,8 +51,13 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
+import net.holmes.core.transport.TransportService;
+import net.holmes.core.transport.TransportServiceImpl;
+import net.holmes.core.transport.airplay.AirplayStreamerImpl;
+import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.dao.DeviceDao;
 import net.holmes.core.transport.device.dao.DeviceDaoImpl;
+import net.holmes.core.transport.upnp.UpnpStreamerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
@@ -168,15 +173,18 @@ final class HolmesServerModule extends AbstractModule {
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
-        // Bind device manager
-        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
-
         // Bind Upnp service
         bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
 
         // Bind Http handlers
         bind(HttpFileRequestDecoder.class);
         bind(HttpFileRequestHandler.class);
+
+        // Bind streaming and device manager
+        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
+        bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);
 
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);

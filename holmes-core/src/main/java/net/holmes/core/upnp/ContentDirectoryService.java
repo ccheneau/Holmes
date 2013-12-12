@@ -22,7 +22,7 @@ import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.media.MediaManager;
 import net.holmes.core.media.model.*;
-import net.holmes.core.transport.device.dao.DeviceDao;
+import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.model.Device;
 import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
@@ -61,7 +61,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Inject
     private Configuration configuration;
     @Inject
-    private DeviceDao deviceDao;
+    private TransportService transportService;
     @Inject
     @Named("localAddress")
     private InetAddress localAddress;
@@ -94,7 +94,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         // Get available mime types
         List<String> availableMimeTypes = Lists.newArrayList();
         if (remoteClientInfo.getConnection() != null) {
-            for (Device device : deviceDao.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
+            for (Device device : transportService.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
                 if (device instanceof UpnpDevice)
                     availableMimeTypes.addAll(((UpnpDevice) device).getSupportedMimeTypes());
             }

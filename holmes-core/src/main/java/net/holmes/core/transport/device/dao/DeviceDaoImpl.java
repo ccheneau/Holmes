@@ -22,8 +22,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
 import net.holmes.core.transport.device.exception.UnknownDeviceException;
 import net.holmes.core.transport.device.model.Device;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -32,7 +30,6 @@ import java.util.Map;
  * Device dao implementation.
  */
 public class DeviceDaoImpl implements DeviceDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceDaoImpl.class);
     private final Map<String, Device> devices;
 
     /**
@@ -44,13 +41,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
     @Override
     public void addDevice(final Device device) {
-        LOGGER.info("Add device {}", device);
         devices.put(device.getId(), device);
     }
 
     @Override
     public void removeDevice(final String deviceId) {
-        LOGGER.info("Remove device {}", deviceId);
         devices.remove(deviceId);
     }
 

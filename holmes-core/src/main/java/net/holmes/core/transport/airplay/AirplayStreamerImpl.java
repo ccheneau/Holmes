@@ -44,8 +44,8 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     }
 
     @Override
-    public void play(final AirplayDevice device, final String url) {
-        new AsyncHttpClient(new PlayCommand(url, 0d)) {
+    public void play(final AirplayDevice device, final String contentUrl) {
+        new AsyncHttpClient(new PlayCommand(contentUrl, 0d)) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PLAY, device.getId());

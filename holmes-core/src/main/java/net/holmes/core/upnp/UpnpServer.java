@@ -22,7 +22,7 @@ import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.transport.device.dao.DeviceDao;
+import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -51,21 +51,21 @@ public final class UpnpServer implements Service {
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
     private final Injector injector;
     private final Configuration configuration;
-    private final DeviceDao deviceDao;
+    private final TransportService transportService;
     private UpnpService upnpService = null;
 
     /**
      * Instantiates a new UPnP server.
      *
-     * @param injector      Guice injector
-     * @param configuration configuration
-     * @param deviceDao     device manager
+     * @param injector         Guice injector
+     * @param configuration    configuration
+     * @param transportService transport service
      */
     @Inject
-    public UpnpServer(final Injector injector, final Configuration configuration, final DeviceDao deviceDao) {
+    public UpnpServer(final Injector injector, final Configuration configuration, final TransportService transportService) {
         this.injector = injector;
         this.configuration = configuration;
-        this.deviceDao = deviceDao;
+        this.transportService = transportService;
     }
 
     @Override
@@ -132,7 +132,7 @@ public final class UpnpServer implements Service {
                             mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                         }
                         // Add device
-                        deviceDao.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
+                        transportService.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
                     }
 
                     @Override
@@ -151,7 +151,7 @@ public final class UpnpServer implements Service {
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             LOGGER.info("Remote device removed: " + device.getDisplayString());
-            deviceDao.removeDevice(device.getIdentity().getUdn().getIdentifierString());
+            transportService.removeDevice(device.getIdentity().getUdn().getIdentifierString());
         }
 
         @Override

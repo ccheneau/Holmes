@@ -43,8 +43,13 @@ import net.holmes.core.media.index.MediaIndexManagerImpl;
 import net.holmes.core.scheduled.CacheCleanerService;
 import net.holmes.core.scheduled.HolmesSchedulerService;
 import net.holmes.core.scheduled.IcecastDownloadService;
+import net.holmes.core.transport.TransportService;
+import net.holmes.core.transport.TransportServiceImpl;
+import net.holmes.core.transport.airplay.AirplayStreamerImpl;
+import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.dao.DeviceDao;
 import net.holmes.core.transport.device.dao.DeviceDaoImpl;
+import net.holmes.core.transport.upnp.UpnpStreamerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
@@ -68,6 +73,9 @@ public class TestModule extends AbstractModule {
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
+        bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class);
         bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class);
 

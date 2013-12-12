@@ -41,10 +41,10 @@ public abstract class DeviceStreamer<T extends Device> {
     /**
      * Play content to device
      *
-     * @param device device
-     * @param url    content url
+     * @param device     device
+     * @param contentUrl content url
      */
-    public abstract void play(T device, String url);
+    public abstract void play(T device, String contentUrl);
 
     /**
      * Stop content playback.
