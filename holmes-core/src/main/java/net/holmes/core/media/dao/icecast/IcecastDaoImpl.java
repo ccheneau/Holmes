@@ -95,6 +95,7 @@ public final class IcecastDaoImpl implements IcecastDao {
             boolean result = false;
             int retry = 0;
             while (!result && retry < maxDownloadRetry) {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("checkYellowPage {} / {}", retry + 1, maxDownloadRetry);
                 try {
                     result = (!needsYellowPageDownload() || downloadYellowPage()) && parseYellowPage();
                 } catch (IOException e) {
@@ -205,6 +206,7 @@ public final class IcecastDaoImpl implements IcecastDao {
 
     @VisibleForTesting
     boolean parseYellowPage(final File ypFile) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("parse Yellow page");
         boolean result = true;
 
         // Configure XStream
