@@ -24,6 +24,9 @@ import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.UnknownDeviceException;
 import net.holmes.core.transport.event.StreamingEvent;
+import net.holmes.core.transport.session.SessionDao;
+import net.holmes.core.transport.session.StreamingSession;
+import net.holmes.core.transport.session.UnknownSessionException;
 import net.holmes.core.transport.upnp.UpnpDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
 
+import static net.holmes.core.transport.session.SessionStatus.*;
+
 /**
  * Transport service implementation.
  */
@@ -39,6 +44,7 @@ public class TransportServiceImpl implements TransportService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportServiceImpl.class);
 
     private final DeviceDao deviceDao;
+    private final SessionDao sessionDao;
     private final DeviceStreamer upnpStreamer;
     private final DeviceStreamer airplayStreamer;
 
@@ -46,12 +52,16 @@ public class TransportServiceImpl implements TransportService {
      * Instantiates a new transport service implementation.
      *
      * @param deviceDao       device DAO
+     * @param sessionDao      session DAO
      * @param upnpStreamer    upnp streamer
      * @param airplayStreamer airplay streamer
      */
     @Inject
-    public TransportServiceImpl(final DeviceDao deviceDao, @Named("upnp") final DeviceStreamer upnpStreamer, @Named("airplay") final DeviceStreamer airplayStreamer) {
+    public TransportServiceImpl(final DeviceDao deviceDao, final SessionDao sessionDao,
+                                @Named("upnp") final DeviceStreamer upnpStreamer,
+                                @Named("airplay") final DeviceStreamer airplayStreamer) {
         this.deviceDao = deviceDao;
+        this.sessionDao = sessionDao;
         this.upnpStreamer = upnpStreamer;
         this.airplayStreamer = airplayStreamer;
     }
@@ -66,6 +76,7 @@ public class TransportServiceImpl implements TransportService {
     public void removeDevice(final String deviceId) {
         LOGGER.info("Remove device {}", deviceId);
         deviceDao.removeDevice(deviceId);
+        sessionDao.removeDevice(deviceId);
     }
 
     @Override
@@ -79,30 +90,41 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
+    public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
+        return sessionDao.getSession(deviceId);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public void play(final String deviceId, final String contentUrl, final String contentName) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
+        sessionDao.initSession(deviceId, contentUrl, contentName);
         getStreamer(device).play(device, contentUrl);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void stop(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).stop(device);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void pause(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).pause(device);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void resume(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).resume(device);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void updateStatus(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).updateStatus(device);
@@ -111,20 +133,36 @@ public class TransportServiceImpl implements TransportService {
     /**
      * Handle streaming event.
      *
-     * @param streamingEvent streaming event
+     * @param event streaming event
      */
     @Subscribe
-    public void handleStreamingEvent(final StreamingEvent streamingEvent) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("handle streaming event: {}", streamingEvent);
-        switch (streamingEvent.getType()) {
-            case PLAY:
-            case STOP:
-            case PAUSE:
-            case RESUME:
-            case STATUS:
-                break;
-            default:
-                break;
+    public void handleStreamingEvent(final StreamingEvent event) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("handle streaming event: {}", event);
+        try {
+            if (event.isSuccess())
+                // Update streaming session
+                switch (event.getType()) {
+                    case PLAY:
+                    case RESUME:
+                        sessionDao.updateSessionStatus(event.getDeviceId(), PLAYING);
+                        break;
+                    case STOP:
+                        sessionDao.updateSessionStatus(event.getDeviceId(), WAITING);
+                        break;
+                    case PAUSE:
+                        sessionDao.updateSessionStatus(event.getDeviceId(), PAUSED);
+                        break;
+                    case STATUS:
+                        sessionDao.updateSessionPosition(event.getDeviceId(), event.getPosition(), event.getDuration());
+                        break;
+                    default:
+                        break;
+                }
+            else
+                sessionDao.updateErrorMessage(event.getDeviceId(), event.getErrorMessage());
+
+        } catch (UnknownSessionException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 

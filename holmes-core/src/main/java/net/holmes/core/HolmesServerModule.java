@@ -57,6 +57,8 @@ import net.holmes.core.transport.airplay.AirplayStreamerImpl;
 import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceDaoImpl;
 import net.holmes.core.transport.device.DeviceStreamer;
+import net.holmes.core.transport.session.SessionDao;
+import net.holmes.core.transport.session.SessionDaoImpl;
 import net.holmes.core.transport.upnp.UpnpStreamerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
@@ -182,6 +184,7 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind streaming and device manager
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
+        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
         bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);

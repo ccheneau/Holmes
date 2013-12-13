@@ -19,6 +19,8 @@ package net.holmes.core.transport;
 
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
+import net.holmes.core.transport.session.StreamingSession;
+import net.holmes.core.transport.session.UnknownSessionException;
 
 import java.util.Collection;
 
@@ -56,6 +58,15 @@ public interface TransportService {
      * @return list of all devices
      */
     Collection<Device> getDevices();
+
+    /**
+     * Get streaming session.
+     *
+     * @param deviceId device id
+     * @return streaming session
+     * @throws UnknownSessionException
+     */
+    StreamingSession getSession(String deviceId) throws UnknownSessionException;
 
     /**
      * Play content to device.
