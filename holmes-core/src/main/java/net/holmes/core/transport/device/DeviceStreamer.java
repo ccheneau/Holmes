@@ -39,7 +39,7 @@ public abstract class DeviceStreamer<T extends Device> {
     }
 
     /**
-     * Play content to device
+     * Play content on device
      *
      * @param device     device
      * @param contentUrl content url
@@ -54,21 +54,21 @@ public abstract class DeviceStreamer<T extends Device> {
     public abstract void stop(T device);
 
     /**
-     * Pause content playback.
+     * Pause content playback on device.
      *
      * @param device device
      */
     public abstract void pause(T device);
 
     /**
-     * Resume content playback.
+     * Resume content playback on device.
      *
      * @param device device
      */
     public abstract void resume(T device);
 
     /**
-     * Update content playback status
+     * Update content playback status on device.
      *
      * @param device device
      */
