@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.RATE;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.VALUE;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.RATE;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.UrlParameter.VALUE;
 
 /**
  * Airplay rate command: Change the playback rate

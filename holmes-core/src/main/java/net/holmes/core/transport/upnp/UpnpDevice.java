@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.upnp.model;
+package net.holmes.core.transport.upnp;
 
 import com.google.common.base.Objects;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.device.Device;
 import org.fourthline.cling.model.meta.RemoteService;
 
 import java.util.List;

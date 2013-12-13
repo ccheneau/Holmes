@@ -18,7 +18,6 @@
 package net.holmes.core.transport.device;
 
 import com.google.common.eventbus.EventBus;
-import net.holmes.core.transport.device.model.Device;
 import net.holmes.core.transport.event.StreamingEvent;
 import net.holmes.core.transport.event.StreamingEvent.StreamingEventType;
 

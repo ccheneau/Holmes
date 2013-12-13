@@ -31,8 +31,7 @@ import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import net.holmes.core.transport.airplay.model.AbstractCommand;
-import net.holmes.core.transport.airplay.model.AirplayDevice;
+import net.holmes.core.transport.airplay.command.AbstractCommand;
 
 import java.util.Map;
 

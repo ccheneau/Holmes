@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.PLAY;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParameter.CONTENT_LOCATION;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.PostParameter.START_POSITION;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.PLAY;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.PostParameter.CONTENT_LOCATION;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.PostParameter.START_POSITION;
 
 /**
  * Airplay play command: Start video playback

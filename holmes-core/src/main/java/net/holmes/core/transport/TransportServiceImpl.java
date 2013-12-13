@@ -18,13 +18,13 @@
 package net.holmes.core.transport;
 
 import com.google.common.eventbus.Subscribe;
-import net.holmes.core.transport.airplay.model.AirplayDevice;
+import net.holmes.core.transport.airplay.AirplayDevice;
+import net.holmes.core.transport.device.Device;
+import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceStreamer;
-import net.holmes.core.transport.device.dao.DeviceDao;
-import net.holmes.core.transport.device.exception.UnknownDeviceException;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.device.UnknownDeviceException;
 import net.holmes.core.transport.event.StreamingEvent;
-import net.holmes.core.transport.upnp.model.UpnpDevice;
+import net.holmes.core.transport.upnp.UpnpDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

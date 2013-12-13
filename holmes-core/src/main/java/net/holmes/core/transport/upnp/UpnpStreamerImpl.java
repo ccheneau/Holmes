@@ -20,7 +20,6 @@ package net.holmes.core.transport.upnp;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import net.holmes.core.transport.device.DeviceStreamer;
-import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;

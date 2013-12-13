@@ -15,13 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device.dao;
+package net.holmes.core.transport.device;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
-import net.holmes.core.transport.device.exception.UnknownDeviceException;
-import net.holmes.core.transport.device.model.Device;
 
 import java.util.Collection;
 import java.util.Map;

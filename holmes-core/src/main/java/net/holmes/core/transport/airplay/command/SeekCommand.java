@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.SEEK;
-import static net.holmes.core.transport.airplay.model.AbstractCommand.UrlParameter.POSITION;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.SEEK;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.UrlParameter.POSITION;
 
 /**
  * Airplay seek command: Seek at an arbitrary location in the video

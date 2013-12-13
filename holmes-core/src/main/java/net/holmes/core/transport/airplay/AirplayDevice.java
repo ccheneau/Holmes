@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay;
 
 import com.google.common.base.Objects;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.device.Device;
 
 /**
  * Airplay streaming device.

@@ -15,22 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.PLAY_STATUS;
+import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.STOP;
 
 /**
- * Airplay play status command: Retrieve the current playback position.
- * Result:
- * - duration: duration in seconds
- * - position: position in seconds
+ * Airplay stop command: Stop playback.
  */
-public class PlayStatusCommand extends AbstractCommand {
-
+public final class StopCommand extends AbstractCommand {
     /**
-     * Instantiates a new play status command.
+     * Instantiates a new Airplay stop command.
      */
-    public PlayStatusCommand() {
-        super(PLAY_STATUS);
+    public StopCommand() {
+        super(STOP);
     }
 }

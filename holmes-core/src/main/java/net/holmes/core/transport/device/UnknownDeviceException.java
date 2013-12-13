@@ -15,18 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
-
-import static net.holmes.core.transport.airplay.model.AbstractCommand.CommandType.STOP;
+package net.holmes.core.transport.device;
 
 /**
- * Airplay stop command: Stop playback.
+ * Unknown device exception.
  */
-public final class StopCommand extends AbstractCommand {
+public class UnknownDeviceException extends Exception {
+
     /**
-     * Instantiates a new Airplay stop command.
+     * Instantiates a new UnknownDeviceException.
+     *
+     * @param deviceId device Id
      */
-    public StopCommand() {
-        super(STOP);
+    public UnknownDeviceException(final String deviceId) {
+        super("Unknown device: " + deviceId);
     }
 }

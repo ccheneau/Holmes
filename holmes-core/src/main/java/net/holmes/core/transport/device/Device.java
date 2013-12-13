@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device.model;
+package net.holmes.core.transport.device;
 
 /**
  * Streaming device

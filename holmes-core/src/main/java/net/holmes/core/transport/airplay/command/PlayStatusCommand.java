@@ -15,19 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device.exception;
+package net.holmes.core.transport.airplay.command;
+
+import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.PLAY_STATUS;
 
 /**
- * Unknown device exception.
+ * Airplay play status command: Retrieve the current playback position.
+ * Result:
+ * - duration: duration in seconds
+ * - position: position in seconds
  */
-public class UnknownDeviceException extends Exception {
+public class PlayStatusCommand extends AbstractCommand {
 
     /**
-     * Instantiates a new UnknownDeviceException.
-     *
-     * @param deviceId device Id
+     * Instantiates a new play status command.
      */
-    public UnknownDeviceException(final String deviceId) {
-        super("Unknown device: " + deviceId);
+    public PlayStatusCommand() {
+        super(PLAY_STATUS);
     }
 }

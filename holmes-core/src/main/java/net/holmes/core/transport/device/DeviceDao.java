@@ -15,10 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.device.dao;
-
-import net.holmes.core.transport.device.exception.UnknownDeviceException;
-import net.holmes.core.transport.device.model.Device;
+package net.holmes.core.transport.device;
 
 import java.util.Collection;
 

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay.model;
+package net.holmes.core.transport.airplay.command;
 
 import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;

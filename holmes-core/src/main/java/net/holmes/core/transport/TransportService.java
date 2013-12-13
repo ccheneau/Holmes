@@ -17,8 +17,8 @@
 
 package net.holmes.core.transport;
 
-import net.holmes.core.transport.device.exception.UnknownDeviceException;
-import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.device.Device;
+import net.holmes.core.transport.device.UnknownDeviceException;
 
 import java.util.Collection;
 

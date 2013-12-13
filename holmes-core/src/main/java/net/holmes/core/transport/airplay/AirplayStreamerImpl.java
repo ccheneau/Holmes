@@ -18,7 +18,10 @@
 package net.holmes.core.transport.airplay;
 
 import com.google.common.eventbus.EventBus;
-import net.holmes.core.transport.airplay.model.*;
+import net.holmes.core.transport.airplay.command.PlayCommand;
+import net.holmes.core.transport.airplay.command.PlayStatusCommand;
+import net.holmes.core.transport.airplay.command.RateCommand;
+import net.holmes.core.transport.airplay.command.StopCommand;
 import net.holmes.core.transport.device.DeviceStreamer;
 
 import javax.inject.Inject;
