@@ -17,11 +17,13 @@
 
 package net.holmes.core.transport;
 
+import com.google.common.eventbus.Subscribe;
 import net.holmes.core.transport.airplay.model.AirplayDevice;
 import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.dao.DeviceDao;
 import net.holmes.core.transport.device.exception.UnknownDeviceException;
 import net.holmes.core.transport.device.model.Device;
+import net.holmes.core.transport.event.StreamingEvent;
 import net.holmes.core.transport.upnp.model.UpnpDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +106,26 @@ public class TransportServiceImpl implements TransportService {
     public void updateStatus(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).updateStatus(device);
+    }
+
+    /**
+     * Handle streaming event.
+     *
+     * @param streamingEvent streaming event
+     */
+    @Subscribe
+    public void handleStreamingEvent(final StreamingEvent streamingEvent) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("handle streaming event: {}", streamingEvent);
+        switch (streamingEvent.getType()) {
+            case PLAY:
+            case STOP:
+            case PAUSE:
+            case RESUME:
+            case STATUS:
+                break;
+            default:
+                break;
+        }
     }
 
     /**
