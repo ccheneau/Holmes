@@ -35,7 +35,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class MediaManagerTest {
+public class MediaServiceTest {
 
     @Inject
     private MediaService mediaService;
@@ -153,6 +153,14 @@ public class MediaManagerTest {
         result = mediaService.getChildNodes(new MediaService.ChildNodeRequest(result.getChildNodes().iterator().next()));
         assertNotNull(result.getChildNodes());
         assertFalse(result.getChildNodes().isEmpty());
+    }
+
+    @Test
+    public void testGetNodeUrl() {
+        AbstractNode node = mediaService.getNode(RootNode.PICTURE.getId());
+        String url = mediaService.getNodeUrl(node);
+        System.out.println(url);
+        assertNotNull(url);
     }
 
     @Test

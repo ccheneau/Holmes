@@ -36,13 +36,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.media.MediaService.ChildNodeRequest;
 import static net.holmes.core.media.MediaService.ChildNodeResult;
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
@@ -57,14 +54,11 @@ import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentDirectoryService.class);
     @Inject
-    private MediaService mediaService;
-    @Inject
     private Configuration configuration;
     @Inject
-    private TransportService transportService;
+    private MediaService mediaService;
     @Inject
-    @Named("localAddress")
-    private InetAddress localAddress;
+    private TransportService transportService;
 
     /**
      * Instantiates a new content directory service.
@@ -155,8 +149,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
-                // Build content url
-                String url = "http://" + localAddress.getHostName() + ":" + configuration.getHttpServerPort() + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
+                // Get node url
+                String url = mediaService.getNodeUrl(node);
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {

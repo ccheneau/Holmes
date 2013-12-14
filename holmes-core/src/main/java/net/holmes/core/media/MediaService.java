@@ -43,6 +43,13 @@ public interface MediaService {
     ChildNodeResult getChildNodes(ChildNodeRequest request);
 
     /**
+     * Get node URL.
+     * @param node node
+     * @return node URL
+     */
+    String getNodeUrl(AbstractNode node);
+
+    /**
      * Clean up cache
      */
     void cleanUpCache();

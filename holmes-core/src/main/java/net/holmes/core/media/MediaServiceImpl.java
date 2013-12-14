@@ -21,6 +21,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
+import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.common.mimetype.MimeTypeManager;
 import net.holmes.core.media.dao.MediaDao;
@@ -32,10 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.net.InetAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.media.model.RootNode.ROOT;
 
 /**
@@ -43,22 +47,28 @@ import static net.holmes.core.media.model.RootNode.ROOT;
  */
 public final class MediaServiceImpl implements MediaService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaServiceImpl.class);
+    private final Configuration configuration;
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
     private final MimeTypeManager mimeTypeManager;
+    private final InetAddress localAddress;
 
     /**
      * Instantiates a new media service implementation.
      *
+     * @param configuration   configuration
      * @param resourceBundle  resource bundle
      * @param mediaDao        media dao
      * @param mimeTypeManager mime type manager
      */
     @Inject
-    public MediaServiceImpl(final ResourceBundle resourceBundle, final MediaDao mediaDao, MimeTypeManager mimeTypeManager) {
+    public MediaServiceImpl(final Configuration configuration, final ResourceBundle resourceBundle, final MediaDao mediaDao,
+                            final MimeTypeManager mimeTypeManager, @Named("localAddress") final InetAddress localAddress) {
+        this.configuration = configuration;
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
         this.mimeTypeManager = mimeTypeManager;
+        this.localAddress = localAddress;
     }
 
     @Override
@@ -95,6 +105,13 @@ public final class MediaServiceImpl implements MediaService {
         // Filter child nodes according to available mime types
         Collection<AbstractNode> result = Collections2.filter(childNodes, new MimeTypeFilter(request.getAvailableMimeTypes()));
         return new ChildNodeResult(result, result.size());
+    }
+
+    @Override
+    public String getNodeUrl(AbstractNode node) {
+        return new StringBuilder().append("http://")
+                .append(localAddress.getHostAddress()).append(":").append(configuration.getHttpServerPort())
+                .append(HTTP_CONTENT_REQUEST_PATH).append("?id=").append(node.getId()).toString();
     }
 
     @Override
