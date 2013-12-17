@@ -42,7 +42,6 @@ public class SessionDaoImpl implements SessionDao {
         session.setContentUrl(contentUrl);
         session.setContentName(contentName);
         session.setStatus(WAITING);
-        session.setErrorMessage(null);
         session.setPosition(0l);
         session.setDuration(0l);
         sessions.put(deviceId, session);
@@ -52,7 +51,6 @@ public class SessionDaoImpl implements SessionDao {
     public void updateSessionStatus(final String deviceId, final SessionStatus status) throws UnknownSessionException {
         StreamingSession session = getSession(deviceId);
         session.setStatus(status);
-        session.setErrorMessage(null);
     }
 
     @Override
@@ -60,13 +58,6 @@ public class SessionDaoImpl implements SessionDao {
         StreamingSession session = getSession(deviceId);
         session.setPosition(position);
         session.setDuration(duration);
-        session.setErrorMessage(null);
-    }
-
-    @Override
-    public void updateErrorMessage(final String deviceId, final String errorMessage) throws UnknownSessionException {
-        getSession(deviceId).setErrorMessage(errorMessage);
-
     }
 
     @Override

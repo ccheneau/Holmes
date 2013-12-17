@@ -18,6 +18,7 @@
 package net.holmes.core.transport.airplay;
 
 import com.google.common.eventbus.EventBus;
+import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.transport.airplay.command.PlayCommand;
 import net.holmes.core.transport.airplay.command.PlayStatusCommand;
 import net.holmes.core.transport.airplay.command.RateCommand;
@@ -47,7 +48,7 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     }
 
     @Override
-    public void play(final AirplayDevice device, final String contentUrl) {
+    public void play(final AirplayDevice device, final String contentUrl, final AbstractNode node) {
         new AsyncHttpClient(new PlayCommand(contentUrl, 0d)) {
             @Override
             public void success(Map<String, String> contentParameters) {

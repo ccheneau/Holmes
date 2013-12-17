@@ -18,6 +18,7 @@
 package net.holmes.core.transport;
 
 import com.google.common.eventbus.Subscribe;
+import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.transport.airplay.AirplayDevice;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.DeviceDao;
@@ -96,10 +97,10 @@ public class TransportServiceImpl implements TransportService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void play(final String deviceId, final String contentUrl, final String contentName) throws UnknownDeviceException {
+    public void play(final String deviceId, final String contentUrl, final AbstractNode node) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
-        sessionDao.initSession(deviceId, contentUrl, contentName);
-        getStreamer(device).play(device, contentUrl);
+        sessionDao.initSession(deviceId, contentUrl, node.getName());
+        getStreamer(device).play(device, contentUrl, node);
     }
 
     @Override
@@ -159,7 +160,7 @@ public class TransportServiceImpl implements TransportService {
                         break;
                 }
             else
-                sessionDao.updateErrorMessage(event.getDeviceId(), event.getErrorMessage());
+                LOGGER.error("Device: {} - Error:{}", event.getDeviceId(), event.getErrorMessage());
 
         } catch (UnknownSessionException e) {
             LOGGER.error(e.getMessage());

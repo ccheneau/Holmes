@@ -17,6 +17,7 @@
 
 package net.holmes.core.transport;
 
+import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
 import net.holmes.core.transport.session.StreamingSession;
@@ -71,12 +72,12 @@ public interface TransportService {
     /**
      * Play content to device.
      *
-     * @param deviceId    device id
-     * @param contentUrl  content url
-     * @param contentName content name
+     * @param deviceId   device id
+     * @param contentUrl content url
+     * @param node       node
      * @throws UnknownDeviceException
      */
-    void play(String deviceId, String contentUrl, String contentName) throws UnknownDeviceException;
+    void play(String deviceId, String contentUrl, AbstractNode node) throws UnknownDeviceException;
 
     /**
      * Stop playback on device.

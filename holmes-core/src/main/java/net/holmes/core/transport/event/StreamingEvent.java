@@ -43,16 +43,16 @@ public final class StreamingEvent {
         this.deviceId = deviceId;
         this.success = true;
         this.errorMessage = null;
-        this.duration = null;
-        this.position = null;
+        this.duration = duration;
+        this.position = position;
     }
 
     /**
      * Instantiates a new Streaming error event.
      *
-     * @param type
-     * @param deviceId
-     * @param errorMessage
+     * @param type         streaming event type
+     * @param deviceId     device id
+     * @param errorMessage error message
      */
     public StreamingEvent(final StreamingEventType type, final String deviceId, final String errorMessage) {
         this.type = type;
@@ -103,6 +103,6 @@ public final class StreamingEvent {
      * Streaming event type.
      */
     public static enum StreamingEventType {
-        PLAY, STOP, PAUSE, RESUME, STATUS;
+        PLAY, STOP, PAUSE, RESUME, STATUS, UNKNOWN
     }
 }

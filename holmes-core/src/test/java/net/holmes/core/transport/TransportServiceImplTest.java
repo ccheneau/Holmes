@@ -17,6 +17,9 @@
 
 package net.holmes.core.transport;
 
+import net.holmes.core.common.mimetype.MimeType;
+import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.transport.airplay.AirplayDevice;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.DeviceDao;
@@ -26,6 +29,9 @@ import net.holmes.core.transport.session.SessionDao;
 import net.holmes.core.transport.session.UnknownSessionException;
 import net.holmes.core.transport.upnp.UpnpDevice;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 import static org.easymock.EasyMock.*;
 
@@ -157,29 +163,32 @@ public class TransportServiceImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testPlayOnUpnpDevice() throws UnknownDeviceException {
+    public void testPlayOnUpnpDevice() throws UnknownDeviceException, IOException {
         DeviceDao deviceDao = createMock(DeviceDao.class);
         SessionDao sessionDao = createMock(SessionDao.class);
         DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         TransportServiceImpl transportService = new TransportServiceImpl(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
+
         expect(deviceDao.getDevice("deviceId")).andReturn(new UpnpDevice("id", "name", "hostAddress", null, null));
         sessionDao.initSession("deviceId", "contentUrl", "contentName");
         expectLastCall();
-        upnpDeviceStreamer.play(isA(UpnpDevice.class), eq("contentUrl"));
+        upnpDeviceStreamer.play(isA(UpnpDevice.class), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall();
 
         replay(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
-        transportService.play("deviceId", "contentUrl", "contentName");
+        File file = File.createTempFile("contentNode", "avi");
+        file.deleteOnExit();
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
 
         verify(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testPlayOnAirplayDevice() throws UnknownDeviceException {
+    public void testPlayOnAirplayDevice() throws UnknownDeviceException, IOException {
         DeviceDao deviceDao = createMock(DeviceDao.class);
         SessionDao sessionDao = createMock(SessionDao.class);
         DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
@@ -189,18 +198,21 @@ public class TransportServiceImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", "hostAddress", 0));
         sessionDao.initSession("deviceId", "contentUrl", "contentName");
         expectLastCall();
-        airplayDeviceStreamer.play(isA(AirplayDevice.class), eq("contentUrl"));
+
+        airplayDeviceStreamer.play(isA(AirplayDevice.class), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall();
 
         replay(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
-        transportService.play("deviceId", "contentUrl", "contentName");
+        File file = File.createTempFile("contentNode", "avi");
+        file.deleteOnExit();
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
 
         verify(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testPlayOnFakeDevice() throws UnknownDeviceException {
+    public void testPlayOnFakeDevice() throws UnknownDeviceException, IOException {
         DeviceDao deviceDao = createMock(DeviceDao.class);
         SessionDao sessionDao = createMock(SessionDao.class);
         DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
@@ -213,7 +225,9 @@ public class TransportServiceImplTest {
 
         replay(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
-        transportService.play("deviceId", "contentUrl", "contentName");
+        File file = File.createTempFile("contentNode", "avi");
+        file.deleteOnExit();
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
 
         verify(deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }

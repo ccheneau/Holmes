@@ -19,20 +19,34 @@ package net.holmes.core.transport.upnp;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.transport.device.DeviceStreamer;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.*;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
+import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.PositionInfo;
+import org.fourthline.cling.support.model.Res;
+import org.fourthline.cling.support.model.item.Item;
+import org.fourthline.cling.support.model.item.Movie;
+import org.fourthline.cling.support.model.item.MusicTrack;
+import org.fourthline.cling.support.model.item.Photo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import static net.holmes.core.common.upnp.UpnpUtils.getUpnpMimeType;
 import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
 
 /**
  * Manage streaming on Upnp device.
  */
 public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpStreamerImpl.class);
+    private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
     private final ControlPoint controlPoint;
 
     /**
@@ -48,31 +62,36 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     }
 
     @Override
-    public void play(final UpnpDevice device, final String contentUrl) {
-        // Set content Url
-        controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl) {
-            @Override
-            public void success(ActionInvocation invocation) {
-                // Play content
-                controlPoint.execute(new Play(device.getAvTransportService()) {
-                    @Override
-                    public void success(ActionInvocation invocation) {
-                        sendSuccess(PLAY, device.getId());
-                    }
+    public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
+        try {
+            // Set content Url
+            controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl, getNodeMetadata(node, contentUrl)) {
+                @Override
+                public void success(ActionInvocation invocation) {
+                    // Play content
+                    controlPoint.execute(new Play(device.getAvTransportService()) {
+                        @Override
+                        public void success(ActionInvocation invocation) {
+                            sendSuccess(PLAY, device.getId());
+                        }
 
-                    @Override
-                    public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                        sendFailure(PLAY, device.getId(), defaultMsg);
-                    }
-                });
-            }
+                        @Override
+                        public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                            sendFailure(PLAY, device.getId(), defaultMsg);
+                        }
+                    });
+                }
 
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                sendFailure(PLAY, device.getId(), defaultMsg);
-            }
+                @Override
+                public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                    sendFailure(PLAY, device.getId(), defaultMsg);
+                }
 
-        });
+            });
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            sendFailure(PLAY, device.getId(), e.getMessage());
+        }
     }
 
     @Override
@@ -84,7 +103,7 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             }
 
             @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(STOP, device.getId(), defaultMsg);
             }
         });
@@ -130,9 +149,55 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             }
 
             @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(STATUS, device.getId(), defaultMsg);
             }
         });
+    }
+
+    /**
+     * get Node metadata
+     *
+     * @param node       node
+     * @param contentUrl content url
+     * @return DIDL metadata or "NOT_IMPLEMENTED"
+     * @throws Exception
+     */
+    private String getNodeMetadata(final AbstractNode node, final String contentUrl) throws Exception {
+        if (node instanceof ContentNode) return getContentNodeMetadata((ContentNode) node, contentUrl);
+        return NOT_IMPLEMENTED;
+    }
+
+    /**
+     * Build content node metadata.
+     *
+     * @param contentNode content node
+     * @param contentUrl  content url
+     */
+    private String getContentNodeMetadata(final ContentNode contentNode, final String contentUrl) throws Exception {
+        Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), contentUrl);
+        Item item = null;
+        switch (contentNode.getMimeType().getType()) {
+            case TYPE_VIDEO:
+                // Add video item
+                item = new Movie(contentNode.getId(), contentNode.getParentId(), contentNode.getName(), null, res);
+                break;
+            case TYPE_AUDIO:
+                // Add audio track item
+                item = new MusicTrack(contentNode.getId(), contentNode.getParentId(), contentNode.getName(), null, null, (String) null, res);
+                break;
+            case TYPE_IMAGE:
+                // Add image item
+                item = new Photo(contentNode.getId(), contentNode.getParentId(), contentNode.getName(), null, null, res);
+                break;
+            default:
+                break;
+        }
+        if (item != null) {
+            DIDLContent didl = new DIDLContent();
+            didl.addItem(item);
+            return new DIDLParser().generate(didl);
+        } else
+            return NOT_IMPLEMENTED;
     }
 }

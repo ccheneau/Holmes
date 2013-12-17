@@ -111,9 +111,9 @@ public final class UpnpServer implements Service {
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
             final String deviceDisplay = device.getDisplayString();
-            LOGGER.info("Remote device available: " + deviceDisplay);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Remote device available: " + deviceDisplay);
 
-            // Search device's connection manager.
+            // Get device's connection manager service and AvTransport service.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
             if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {

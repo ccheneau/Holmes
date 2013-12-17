@@ -26,7 +26,6 @@ public final class StreamingSession {
     private SessionStatus status;
     private String contentUrl;
     private String contentName;
-    private String errorMessage;
     private Long duration;
     private Long position;
 
@@ -54,14 +53,6 @@ public final class StreamingSession {
         this.contentName = contentName;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
     public Long getDuration() {
         return duration;
     }
@@ -84,7 +75,6 @@ public final class StreamingSession {
                 .addValue(status)
                 .addValue(contentUrl)
                 .addValue(contentName)
-                .addValue(errorMessage)
                 .addValue(duration)
                 .addValue(position)
                 .toString();

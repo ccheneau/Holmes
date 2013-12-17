@@ -197,5 +197,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(UtilHandler.class);
         bind(VideoFoldersHandler.class);
         bind(BackendExceptionMapper.class);
+        bind(StreamingHandler.class);
     }
 }

@@ -51,15 +51,6 @@ public interface SessionDao {
     void updateSessionPosition(String deviceId, Long position, Long duration) throws UnknownSessionException;
 
     /**
-     * Update error message.
-     *
-     * @param deviceId     device Id
-     * @param errorMessage error message
-     * @throws UnknownSessionException
-     */
-    void updateErrorMessage(String deviceId, String errorMessage) throws UnknownSessionException;
-
-    /**
      * Remove device.
      *
      * @param deviceId device Id

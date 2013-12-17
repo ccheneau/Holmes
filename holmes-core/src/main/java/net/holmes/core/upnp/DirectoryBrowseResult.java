@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 import static net.holmes.core.common.Constants.UPNP_DATE_FORMAT;
+import static net.holmes.core.common.upnp.UpnpUtils.getUpnpMimeType;
 
 /**
  * UPnP directory browse result.
@@ -201,16 +202,6 @@ final class DirectoryBrowseResult {
     public boolean acceptNode() {
         totalCount += 1;
         return maxResults == 0 || itemCount < maxResults && totalCount >= firstResult + 1;
-    }
-
-    /**
-     * Gets UPnP mime type.
-     *
-     * @param mimeType mime type
-     * @return UPnP mime type
-     */
-    private org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
-        return new org.seamless.util.MimeType(mimeType.getType().getValue(), mimeType.getSubType());
     }
 
     /**

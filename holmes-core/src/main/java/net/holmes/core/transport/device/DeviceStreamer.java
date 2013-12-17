@@ -18,6 +18,7 @@
 package net.holmes.core.transport.device;
 
 import com.google.common.eventbus.EventBus;
+import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.transport.event.StreamingEvent;
 import net.holmes.core.transport.event.StreamingEvent.StreamingEventType;
 
@@ -42,8 +43,9 @@ public abstract class DeviceStreamer<T extends Device> {
      *
      * @param device     device
      * @param contentUrl content url
+     * @param node       node
      */
-    public abstract void play(T device, String contentUrl);
+    public abstract void play(T device, String contentUrl, AbstractNode node);
 
     /**
      * Stop content playback.
