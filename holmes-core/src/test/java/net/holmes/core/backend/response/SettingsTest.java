@@ -20,7 +20,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         assertEquals(settings.getServerName(), "serverName");
     }
 
@@ -29,28 +29,9 @@ public class SettingsTest {
      */
     @Test
     public void testSetServerName() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         settings.setServerName("newServerName");
         assertEquals(settings.getServerName(), "newServerName");
-    }
-
-    /**
-     * Method: getHttpServerPort()
-     */
-    @Test
-    public void testGetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
-        assertTrue(settings.getHttpServerPort() == 999);
-    }
-
-    /**
-     * Method: setHttpServerPort(final Integer httpServerPort)
-     */
-    @Test
-    public void testSetHttpServerPort() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
-        settings.setHttpServerPort(1000);
-        assertTrue(settings.getHttpServerPort() == 1000);
     }
 
     /**
@@ -58,7 +39,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         assertTrue(settings.getPrependPodcastItem());
     }
 
@@ -67,7 +48,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         settings.setPrependPodcastItem(false);
         assertFalse(settings.getPrependPodcastItem());
     }
@@ -77,7 +58,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         assertTrue(settings.getEnableIcecastDirectory());
     }
 
@@ -86,7 +67,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", 999, true, true);
+        Settings settings = new Settings("serverName", true, true);
         settings.setEnableIcecastDirectory(false);
         assertFalse(settings.getEnableIcecastDirectory());
     }

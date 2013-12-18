@@ -83,19 +83,6 @@ public class XmlConfigurationTest {
     }
 
     @Test
-    public void testXmlConfigurationHttpServerPort() {
-        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
-            assertNotNull(configuration.getHttpServerPort());
-            configuration.setHttpServerPort(9999);
-            assertEquals(Integer.valueOf(9999), configuration.getHttpServerPort());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
     public void testXmlConfigurationUpnpServerName() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {

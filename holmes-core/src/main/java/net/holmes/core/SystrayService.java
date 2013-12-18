@@ -40,8 +40,7 @@ import java.util.ResourceBundle;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
-import static net.holmes.core.common.configuration.Parameter.ENABLE_SYSTRAY;
-import static net.holmes.core.common.configuration.Parameter.ICONS_IN_SYSTRAY_MENU;
+import static net.holmes.core.common.configuration.Parameter.*;
 
 /**
  * Manages system tray icon.
@@ -117,7 +116,7 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
-        final String holmesUrl = "http://localhost:" + configuration.getHttpServerPort() + "/";
+        final String holmesUrl = "http://localhost:" + configuration.getIntParameter(HTTP_SERVER_PORT) + "/";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();

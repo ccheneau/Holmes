@@ -48,6 +48,7 @@ import java.net.InetSocketAddress;
 
 import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
 import static io.netty.channel.ChannelOption.*;
+import static net.holmes.core.common.configuration.Parameter.HTTP_SERVER_PORT;
 import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
 
 /**
@@ -118,7 +119,7 @@ public final class HttpServer implements Service {
                 .childOption(SO_KEEPALIVE, true);
 
         // Bind and start server to accept incoming connections.
-        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getHttpServerPort());
+        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getIntParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
 
         // Register backend JAX-RS handlers declared in Guice injector .

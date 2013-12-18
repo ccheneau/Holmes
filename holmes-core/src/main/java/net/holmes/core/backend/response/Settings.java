@@ -23,7 +23,6 @@ package net.holmes.core.backend.response;
 public final class Settings {
 
     private String serverName;
-    private Integer httpServerPort;
     private Boolean prependPodcastItem;
     private Boolean enableIcecastDirectory;
 
@@ -37,13 +36,11 @@ public final class Settings {
      * Instantiates a new settings.
      *
      * @param serverName             server name
-     * @param httpServerPort         Http server port
      * @param prependPodcastItem     prepend pod-cast item
      * @param enableIcecastDirectory enable Icecast directory
      */
-    public Settings(final String serverName, final Integer httpServerPort, final Boolean prependPodcastItem, final Boolean enableIcecastDirectory) {
+    public Settings(final String serverName, final Boolean prependPodcastItem, final Boolean enableIcecastDirectory) {
         this.serverName = serverName;
-        this.httpServerPort = httpServerPort;
         this.prependPodcastItem = prependPodcastItem;
         this.enableIcecastDirectory = enableIcecastDirectory;
     }
@@ -54,14 +51,6 @@ public final class Settings {
 
     public void setServerName(final String serverName) {
         this.serverName = serverName;
-    }
-
-    public Integer getHttpServerPort() {
-        return httpServerPort;
-    }
-
-    public void setHttpServerPort(final Integer httpServerPort) {
-        this.httpServerPort = httpServerPort;
     }
 
     public Boolean getPrependPodcastItem() {

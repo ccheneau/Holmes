@@ -53,6 +53,7 @@ public final class XmlConfigurationImpl implements Configuration {
         this.xstream = new XStream(new DomDriver("UTF-8"));
         this.xstream.alias("config", XmlRootNode.class);
         this.xstream.alias("node", ConfigurationNode.class);
+        this.xstream.ignoreUnknownElements();
         loadConfig();
     }
 
@@ -112,16 +113,6 @@ public final class XmlConfigurationImpl implements Configuration {
     @Override
     public void setUpnpServerName(final String upnpServerName) {
         this.rootNode.setUpnpServerName(upnpServerName);
-    }
-
-    @Override
-    public Integer getHttpServerPort() {
-        return rootNode.getHttpServerPort();
-    }
-
-    @Override
-    public void setHttpServerPort(final Integer httpServerPort) {
-        this.rootNode.setHttpServerPort(httpServerPort);
     }
 
     @Override

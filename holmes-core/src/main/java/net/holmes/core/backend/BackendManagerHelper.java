@@ -21,7 +21,6 @@ import com.google.common.base.Strings;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.common.NodeFile;
-import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.ConfigurationNode;
 
 import java.util.List;
@@ -41,16 +40,6 @@ final class BackendManagerHelper {
      */
     public void validateServerName(final String serverName) {
         checkNonEmptyString(serverName, "backend.settings.server.name.error");
-    }
-
-    /**
-     * Validate HTTP server port.
-     *
-     * @param serverPort server port to validate
-     */
-    public void validateHttpServerPort(final Integer serverPort) {
-        if (serverPort == null || serverPort < Configuration.MIN_HTTP_SERVER_PORT || serverPort > Configuration.MAX_HTTP_SERVER_PORT)
-            throw new BackendException("backend.settings.http.port.error");
     }
 
     /**

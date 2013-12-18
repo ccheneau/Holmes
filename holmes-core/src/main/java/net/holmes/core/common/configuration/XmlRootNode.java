@@ -23,7 +23,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Properties;
 
-import static net.holmes.core.common.configuration.Configuration.*;
+import static net.holmes.core.common.configuration.Configuration.DEFAULT_UPNP_SERVER_NAME;
 
 /**
  * Xml root node.
@@ -31,7 +31,6 @@ import static net.holmes.core.common.configuration.Configuration.*;
 public final class XmlRootNode {
 
     private String upnpServerName;
-    private Integer httpServerPort;
     private List<ConfigurationNode> videoFolders;
     private List<ConfigurationNode> pictureFolders;
     private List<ConfigurationNode> audioFolders;
@@ -43,8 +42,6 @@ public final class XmlRootNode {
      */
     public void checkDefaultValues() {
         if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
-        if (this.httpServerPort == null || this.httpServerPort <= MIN_HTTP_SERVER_PORT)
-            this.httpServerPort = DEFAULT_HTTP_SERVER_PORT;
         if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
         if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
         if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
@@ -92,24 +89,6 @@ public final class XmlRootNode {
      */
     public void setUpnpServerName(final String upnpServerName) {
         this.upnpServerName = upnpServerName;
-    }
-
-    /**
-     * Gets the http server port.
-     *
-     * @return the http server port
-     */
-    public Integer getHttpServerPort() {
-        return this.httpServerPort;
-    }
-
-    /**
-     * Sets the http server port.
-     *
-     * @param httpServerPort the new http server port
-     */
-    public void setHttpServerPort(final Integer httpServerPort) {
-        this.httpServerPort = httpServerPort;
     }
 
     /**

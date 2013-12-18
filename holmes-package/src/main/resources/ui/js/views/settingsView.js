@@ -12,7 +12,6 @@ var Application = (function(application) {
 					settings : response,
 					title : $.i18n.prop("msg.settings.title"),
 					settingsServerName : $.i18n.prop("msg.settings.serverName"),
-					settingsServerPort : $.i18n.prop("msg.settings.httpServerPort"),
 					settingsPrependPodcastItem : $.i18n.prop("msg.settings.prependPodcastItem"),
 					settingsEnableIcecastDirectory : $.i18n.prop("msg.settings.enableIcecastDirectory"),
 					cancel : $.i18n.prop("msg.cancel"),
@@ -28,7 +27,6 @@ var Application = (function(application) {
 		onSettingsSave : function() {
 			new Application.Models.Settings().save({
 				"serverName" : $("#settingsServerName").val().trim(),
-				"httpServerPort" : $("#settingsHttpServerPort").val().trim(),
 				"prependPodcastItem" : $("#chkPrependPodcastItem").is(':checked') ? "true" : "false",
 				"enableIcecastDirectory" : $("#chkEnableIcecastDirectory").is(':checked') ? "true" : "false"
 			}, {

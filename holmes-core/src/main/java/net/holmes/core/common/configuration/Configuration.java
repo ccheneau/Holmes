@@ -28,7 +28,6 @@ import java.util.List;
 public interface Configuration {
 
     String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    int DEFAULT_HTTP_SERVER_PORT = 8085;
     int DEFAULT_UPNP_SERVICE_PORT = 5002;
     int MIN_HTTP_SERVER_PORT = 1024;
     int MAX_HTTP_SERVER_PORT = 9999;
@@ -53,20 +52,6 @@ public interface Configuration {
      * @param upnpServerName new UPnP server name
      */
     void setUpnpServerName(String upnpServerName);
-
-    /**
-     * Gets http server port.
-     *
-     * @return http server port
-     */
-    Integer getHttpServerPort();
-
-    /**
-     * Sets the http server port.
-     *
-     * @param httpServerPort new http server port
-     */
-    void setHttpServerPort(Integer httpServerPort);
 
     /**
      * Gets the folders.

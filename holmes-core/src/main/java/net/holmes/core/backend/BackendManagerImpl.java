@@ -142,7 +142,7 @@ public final class BackendManagerImpl implements BackendManager {
 
     @Override
     public Settings getSettings() {
-        return new Settings(configuration.getUpnpServerName(), configuration.getHttpServerPort(),
+        return new Settings(configuration.getUpnpServerName(),
                 configuration.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
                 configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
@@ -150,10 +150,8 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void saveSettings(final Settings settings) {
         helper.validateServerName(settings.getServerName());
-        helper.validateHttpServerPort(settings.getHttpServerPort());
 
         configuration.setUpnpServerName(settings.getServerName());
-        configuration.setHttpServerPort(settings.getHttpServerPort());
         configuration.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
         configuration.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {

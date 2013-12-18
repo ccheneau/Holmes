@@ -34,7 +34,6 @@ public class HttpServerTest {
         Configuration configuration = createMock(Configuration.class);
         HttpServer httpServer = new HttpServer(injector, configuration);
 
-        expect(configuration.getHttpServerPort()).andReturn(8080).atLeastOnce();
         expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
 
         replay(injector, configuration);

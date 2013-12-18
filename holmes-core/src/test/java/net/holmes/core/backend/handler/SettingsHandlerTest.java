@@ -30,7 +30,7 @@ public class SettingsHandlerTest {
     public void testGetSettings() {
         BackendManager backendManager = createMock(BackendManager.class);
 
-        expect(backendManager.getSettings()).andReturn(new Settings("serverName", 2000, true, true)).atLeastOnce();
+        expect(backendManager.getSettings()).andReturn(new Settings("serverName", true, true)).atLeastOnce();
 
         replay(backendManager);
         SettingsHandler settingsHandler = new SettingsHandler(backendManager);
@@ -41,7 +41,7 @@ public class SettingsHandlerTest {
     @Test
     public void testSaveSettings() {
         BackendManager backendManager = createMock(BackendManager.class);
-        Settings settings = new Settings("serverName", 2000, true, true);
+        Settings settings = new Settings("serverName", true, true);
 
         backendManager.saveSettings(settings);
         expectLastCall().atLeastOnce();

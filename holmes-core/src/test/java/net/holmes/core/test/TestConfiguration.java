@@ -39,7 +39,6 @@ public class TestConfiguration implements Configuration {
     private final List<ConfigurationNode> audioFolders;
     private final List<ConfigurationNode> podcasts;
     private String upnpServerName = DEFAULT_UPNP_SERVER_NAME;
-    private Integer httpServerPort = DEFAULT_HTTP_SERVER_PORT;
     private Map<Parameter, String> parameters;
 
     @Inject
@@ -84,16 +83,6 @@ public class TestConfiguration implements Configuration {
     @Override
     public void setUpnpServerName(String upnpServerName) {
         this.upnpServerName = upnpServerName;
-    }
-
-    @Override
-    public Integer getHttpServerPort() {
-        return httpServerPort;
-    }
-
-    @Override
-    public void setHttpServerPort(Integer httpServerPort) {
-        this.httpServerPort = httpServerPort;
     }
 
     @Override
