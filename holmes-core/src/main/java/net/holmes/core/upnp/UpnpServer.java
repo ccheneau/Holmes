@@ -120,7 +120,8 @@ public final class UpnpServer implements Service {
                 // Device host IP
                 final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
                 final String deviceId = device.getIdentity().getUdn().getIdentifierString();
-                LOGGER.info("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
+                if (LOGGER.isDebugEnabled())
+                    LOGGER.debug("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
 
                 // Get remote device protocol info
                 upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
@@ -137,7 +138,7 @@ public final class UpnpServer implements Service {
 
                     @Override
                     public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                        LOGGER.debug("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
+                        LOGGER.error("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
                     }
                 });
             }
