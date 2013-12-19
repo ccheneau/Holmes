@@ -42,6 +42,7 @@ import java.io.IOException;
 
 import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
+import static net.holmes.core.common.configuration.Parameter.UPNP_SERVER_NAME;
 import static net.holmes.core.common.configuration.Parameter.UPNP_SERVICE_PORT;
 
 /**
@@ -87,7 +88,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         DLNADoc dD1 = new DLNADoc("DMS", "1.50");
         DLNADoc dD2 = new DLNADoc("M-DMS", "1.50");
         DLNADoc[] dlnaDocs = new DLNADoc[]{dD1, dD2};
-        DeviceDetails details = new DeviceDetails(configuration.getUpnpServerName(), manufacturerDetails, modelDetails, dlnaDocs, null);
+        DeviceDetails details = new DeviceDetails(configuration.getParameter(UPNP_SERVER_NAME), manufacturerDetails, modelDetails, dlnaDocs, null);
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);

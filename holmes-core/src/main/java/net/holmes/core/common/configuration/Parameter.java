@@ -21,7 +21,7 @@ package net.holmes.core.common.configuration;
  * Configuration parameters.
  */
 public enum Parameter {
-
+    UPNP_SERVER_NAME("upnp_server_name", "Holmes media server"),
     HTTP_SERVER_PORT("http_server_port", "8085"),
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"),
     ENABLE_SYSTRAY("enable_systray", "true"),
@@ -31,7 +31,7 @@ public enum Parameter {
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"),
     PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"),
     CACHE_CLEAN_DELAY_MINUTES("cache_clean_delay_minutes", "30"),
-    UPNP_SERVICE_PORT("upnp_service_port", String.valueOf(Configuration.DEFAULT_UPNP_SERVICE_PORT)),
+    UPNP_SERVICE_PORT("upnp_service_port", "5002"),
     ICONS_IN_SYSTRAY_MENU("icons_in_systray_menu", "true"),
     ICECAST_YELLOW_PAGE_URL("icecast_yellow_page_url", "http://dir.xiph.org/yp.xml"),
     ICECAST_MAX_DOWNLOAD_RETRY("icecast_max_download_retry", "3"),

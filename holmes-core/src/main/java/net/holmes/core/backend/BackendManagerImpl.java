@@ -33,8 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.common.configuration.Parameter.ENABLE_ICECAST_DIRECTORY;
-import static net.holmes.core.common.configuration.Parameter.PREPEND_PODCAST_ENTRY_NAME;
+import static net.holmes.core.common.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
@@ -142,7 +141,7 @@ public final class BackendManagerImpl implements BackendManager {
 
     @Override
     public Settings getSettings() {
-        return new Settings(configuration.getUpnpServerName(),
+        return new Settings(configuration.getParameter(UPNP_SERVER_NAME),
                 configuration.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
                 configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
@@ -151,7 +150,7 @@ public final class BackendManagerImpl implements BackendManager {
     public void saveSettings(final Settings settings) {
         helper.validateServerName(settings.getServerName());
 
-        configuration.setUpnpServerName(settings.getServerName());
+        configuration.setParameter(UPNP_SERVER_NAME, settings.getServerName());
         configuration.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
         configuration.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {

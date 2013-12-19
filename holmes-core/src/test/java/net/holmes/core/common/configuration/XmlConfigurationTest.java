@@ -83,19 +83,6 @@ public class XmlConfigurationTest {
     }
 
     @Test
-    public void testXmlConfigurationUpnpServerName() {
-        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
-            assertNotNull(configuration.getUpnpServerName());
-            configuration.setUpnpServerName("testUpnpServerName");
-            assertEquals("testUpnpServerName", configuration.getUpnpServerName());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
     public void testXmlConfigurationParameter() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {

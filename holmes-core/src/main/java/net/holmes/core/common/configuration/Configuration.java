@@ -27,31 +27,12 @@ import java.util.List;
  */
 public interface Configuration {
 
-    String DEFAULT_UPNP_SERVER_NAME = "Holmes";
-    int DEFAULT_UPNP_SERVICE_PORT = 5002;
-    int MIN_HTTP_SERVER_PORT = 1024;
-    int MAX_HTTP_SERVER_PORT = 9999;
-
     /**
      * Save configuration.
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */
     void saveConfig() throws IOException;
-
-    /**
-     * Gets UPnP server name.
-     *
-     * @return UPnP server name
-     */
-    String getUpnpServerName();
-
-    /**
-     * Sets UPnP server name.
-     *
-     * @param upnpServerName new UPnP server name
-     */
-    void setUpnpServerName(String upnpServerName);
 
     /**
      * Gets the folders.
@@ -84,6 +65,14 @@ public interface Configuration {
      * @return parameter
      */
     String getParameter(Parameter parameter);
+
+    /**
+     * Sets parameter value.
+     *
+     * @param parameter parameter
+     * @param value     parameter value
+     */
+    void setParameter(Parameter parameter, String value);
 
     /**
      * Sets boolean parameter value.

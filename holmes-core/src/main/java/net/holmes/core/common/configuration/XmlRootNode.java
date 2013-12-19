@@ -17,31 +17,25 @@
 
 package net.holmes.core.common.configuration;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Properties;
 
-import static net.holmes.core.common.configuration.Configuration.DEFAULT_UPNP_SERVER_NAME;
-
 /**
  * Xml root node.
  */
 public final class XmlRootNode {
-
-    private String upnpServerName;
+    private Properties parameters;
     private List<ConfigurationNode> videoFolders;
     private List<ConfigurationNode> pictureFolders;
     private List<ConfigurationNode> audioFolders;
     private List<ConfigurationNode> podcasts;
-    private Properties parameters;
 
     /**
      * Check config default values.
      */
     public void checkDefaultValues() {
-        if (Strings.isNullOrEmpty(this.upnpServerName)) this.upnpServerName = DEFAULT_UPNP_SERVER_NAME;
         if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
         if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
         if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
@@ -71,24 +65,6 @@ public final class XmlRootNode {
         // Remove obsolete parameters
         for (String obsoleteParam : obsoleteParams)
             this.parameters.remove(obsoleteParam);
-    }
-
-    /**
-     * Gets the UPnP server name.
-     *
-     * @return the UPnP server name
-     */
-    public String getUpnpServerName() {
-        return this.upnpServerName;
-    }
-
-    /**
-     * Sets the UPnP server name.
-     *
-     * @param upnpServerName the new UPnP server name
-     */
-    public void setUpnpServerName(final String upnpServerName) {
-        this.upnpServerName = upnpServerName;
     }
 
     /**

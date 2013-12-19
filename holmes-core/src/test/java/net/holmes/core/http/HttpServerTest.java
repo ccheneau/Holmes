@@ -24,6 +24,7 @@ import com.google.inject.Key;
 import net.holmes.core.common.configuration.Configuration;
 import org.junit.Test;
 
+import static net.holmes.core.common.configuration.Parameter.HTTP_SERVER_PORT;
 import static org.easymock.EasyMock.*;
 
 public class HttpServerTest {
@@ -34,6 +35,7 @@ public class HttpServerTest {
         Configuration configuration = createMock(Configuration.class);
         HttpServer httpServer = new HttpServer(injector, configuration);
 
+        expect(configuration.getIntParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
         expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
 
         replay(injector, configuration);

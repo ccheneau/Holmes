@@ -38,7 +38,6 @@ public class TestConfiguration implements Configuration {
     private final List<ConfigurationNode> pictureFolders;
     private final List<ConfigurationNode> audioFolders;
     private final List<ConfigurationNode> podcasts;
-    private String upnpServerName = DEFAULT_UPNP_SERVER_NAME;
     private Map<Parameter, String> parameters;
 
     @Inject
@@ -59,8 +58,7 @@ public class TestConfiguration implements Configuration {
 
     @Override
     public void saveConfig() throws IOException {
-        if (upnpServerName.equals("IOException")) throw new IOException();
-
+        if (parameters.get(Parameter.UPNP_SERVER_NAME).equals("IOException")) throw new IOException();
     }
 
     private ConfigurationNode getTestContentFolder(String label, String path) {
@@ -73,16 +71,6 @@ public class TestConfiguration implements Configuration {
         }
 
         return contentFolder;
-    }
-
-    @Override
-    public String getUpnpServerName() {
-        return upnpServerName;
-    }
-
-    @Override
-    public void setUpnpServerName(String upnpServerName) {
-        this.upnpServerName = upnpServerName;
     }
 
     @Override
@@ -120,6 +108,11 @@ public class TestConfiguration implements Configuration {
     @Override
     public String getParameter(Parameter param) {
         return parameters.get(param);
+    }
+
+    @Override
+    public void setParameter(Parameter param, String value) {
+        parameters.put(param, value);
     }
 
     @Override

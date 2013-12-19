@@ -106,16 +106,6 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     @Override
-    public String getUpnpServerName() {
-        return this.rootNode.getUpnpServerName();
-    }
-
-    @Override
-    public void setUpnpServerName(final String upnpServerName) {
-        this.rootNode.setUpnpServerName(upnpServerName);
-    }
-
-    @Override
     public List<ConfigurationNode> getFolders(final RootNode folderRootNode) {
         List<ConfigurationNode> folders;
         switch (folderRootNode) {
@@ -151,6 +141,11 @@ public final class XmlConfigurationImpl implements Configuration {
     @Override
     public String getParameter(final Parameter parameter) {
         return this.rootNode.getParameter(parameter);
+    }
+
+    @Override
+    public void setParameter(Parameter parameter, String value) {
+        this.rootNode.setParameter(parameter, value);
     }
 
     @Override
