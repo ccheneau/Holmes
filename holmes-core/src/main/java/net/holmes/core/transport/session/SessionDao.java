@@ -17,6 +17,8 @@
 
 package net.holmes.core.transport.session;
 
+import java.util.Map;
+
 /**
  * Streaming session DAO.
  */
@@ -65,4 +67,11 @@ public interface SessionDao {
      * @throws UnknownSessionException
      */
     StreamingSession getSession(String deviceId) throws UnknownSessionException;
+
+    /**
+     * Get all streaming sessions.
+     *
+     * @return streaming sessions map
+     */
+    Map<String, StreamingSession> getSessions();
 }

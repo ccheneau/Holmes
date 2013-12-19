@@ -33,7 +33,7 @@ public class SessionDaoImpl implements SessionDao {
      * Instantiates a new streaming session DAO implementation.
      */
     public SessionDaoImpl() {
-        this.sessions = Maps.newHashMap();
+        this.sessions = Maps.newConcurrentMap();
     }
 
     @Override
@@ -70,5 +70,10 @@ public class SessionDaoImpl implements SessionDao {
         StreamingSession session = sessions.get(deviceId);
         if (session == null) throw new UnknownSessionException(deviceId);
         return session;
+    }
+
+    @Override
+    public Map<String, StreamingSession> getSessions() {
+        return sessions;
     }
 }

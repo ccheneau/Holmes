@@ -23,6 +23,8 @@ import net.holmes.core.media.model.RootNode;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
+import net.holmes.core.transport.session.StreamingSession;
+import net.holmes.core.transport.session.UnknownSessionException;
 import net.holmes.core.transport.upnp.UpnpDevice;
 
 import javax.inject.Inject;
@@ -139,11 +141,11 @@ public class StreamingHandler {
     public String status() {
         Device device = getDevice();
         try {
-            transportService.updateStatus(device.getId());
-        } catch (UnknownDeviceException e) {
+            StreamingSession session = transportService.getSession(device.getId());
+            return "Status device:[" + device.getId() + "]" + " session [" + session.toString() + "]";
+        } catch (UnknownSessionException e) {
             return e.getMessage();
         }
-        return "Status device:[" + device.getId() + "]";
     }
 
     /**

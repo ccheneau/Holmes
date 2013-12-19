@@ -18,6 +18,8 @@
 package net.holmes.core.transport;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.AbstractScheduledService;
+import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.transport.airplay.AirplayDevice;
 import net.holmes.core.transport.device.Device;
@@ -35,7 +37,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
+import java.util.Map;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static net.holmes.core.common.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static net.holmes.core.transport.session.SessionStatus.*;
 
 /**
@@ -58,13 +63,16 @@ public class TransportServiceImpl implements TransportService {
      * @param airplayStreamer airplay streamer
      */
     @Inject
-    public TransportServiceImpl(final DeviceDao deviceDao, final SessionDao sessionDao,
+    public TransportServiceImpl(final Configuration configuration, final DeviceDao deviceDao, final SessionDao sessionDao,
                                 @Named("upnp") final DeviceStreamer upnpStreamer,
                                 @Named("airplay") final DeviceStreamer airplayStreamer) {
         this.deviceDao = deviceDao;
         this.sessionDao = sessionDao;
         this.upnpStreamer = upnpStreamer;
         this.airplayStreamer = airplayStreamer;
+
+        //Start session status update task
+        new UpdateSessionStatusService(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
     }
 
     @Override
@@ -124,9 +132,8 @@ public class TransportServiceImpl implements TransportService {
         getStreamer(device).resume(device);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public void updateStatus(final String deviceId) throws UnknownDeviceException {
+    private void updateStatus(final String deviceId) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         getStreamer(device).updateStatus(device);
     }
@@ -179,5 +186,34 @@ public class TransportServiceImpl implements TransportService {
         else if (device instanceof AirplayDevice)
             return airplayStreamer;
         throw new IllegalArgumentException("Unknown device type " + device);
+    }
+
+    /**
+     * Scheduled task to update session status.
+     */
+    private class UpdateSessionStatusService extends AbstractScheduledService {
+        private final int updateStatusDelay;
+
+        /**
+         * Instantiates a new update session status service.
+         *
+         * @param updateStatusDelay update delay.
+         */
+        public UpdateSessionStatusService(final int updateStatusDelay) {
+            this.updateStatusDelay = updateStatusDelay;
+        }
+
+        @Override
+        protected void runOneIteration() throws Exception {
+            Map<String, StreamingSession> sessions = sessionDao.getSessions();
+            for (Map.Entry<String, StreamingSession> session : sessions.entrySet())
+                if (session.getValue().getStatus() == PLAYING)
+                    updateStatus(session.getKey());
+        }
+
+        @Override
+        protected Scheduler scheduler() {
+            return updateStatusDelay > 0 ? Scheduler.newFixedDelaySchedule(updateStatusDelay, updateStatusDelay, SECONDS) : null;
+        }
     }
 }

@@ -102,12 +102,4 @@ public interface TransportService {
      * @throws UnknownDeviceException
      */
     void resume(String deviceId) throws UnknownDeviceException;
-
-    /**
-     * Update status on device.
-     *
-     * @param deviceId device id
-     * @throws UnknownDeviceException
-     */
-    void updateStatus(String deviceId) throws UnknownDeviceException;
 }
