@@ -30,6 +30,7 @@ import net.holmes.core.transport.upnp.UpnpDevice;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
@@ -62,11 +63,11 @@ public class StreamingHandler {
      * @return status
      */
     @GET
-    @Path("/play")
+    @Path("/play/{index}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String play() {
+    public String play(@PathParam("index") int index) {
         Device device = getDevice();
-        AbstractNode videoNode = getVideoContentNode();
+        AbstractNode videoNode = getVideoContentNode(index);
         String url = mediaService.getNodeUrl(videoNode);
         try {
             transportService.play(device.getId(), url, videoNode);
@@ -166,9 +167,15 @@ public class StreamingHandler {
      *
      * @return video content node
      */
-    private AbstractNode getVideoContentNode() {
+    private AbstractNode getVideoContentNode(final int index) {
         AbstractNode node = mediaService.getNode(RootNode.VIDEO.getId());
         AbstractNode rootVideo = mediaService.getChildNodes(new ChildNodeRequest(node)).getChildNodes().iterator().next();
-        return mediaService.getChildNodes(new ChildNodeRequest(rootVideo)).getChildNodes().iterator().next();
+        Collection<AbstractNode> nodes = mediaService.getChildNodes(new ChildNodeRequest(rootVideo)).getChildNodes();
+        int i = 0;
+        for (AbstractNode childNode : nodes) {
+            if (i == index) return childNode;
+            i++;
+        }
+        return null;
     }
 }
