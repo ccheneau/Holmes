@@ -29,6 +29,7 @@ import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.*;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.DIDLContent;
+import org.fourthline.cling.support.model.MediaInfo;
 import org.fourthline.cling.support.model.PositionInfo;
 import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.item.Item;
@@ -39,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static net.holmes.core.common.upnp.UpnpUtils.getUpnpMimeType;
+import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType;
 import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
 
 /**
@@ -63,35 +65,37 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
 
     @Override
     public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
-        try {
-            // Set content Url
-            controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl, getNodeMetadata(node, contentUrl)) {
-                @Override
-                public void success(ActionInvocation invocation) {
-                    // Play content
-                    controlPoint.execute(new Play(device.getAvTransportService()) {
+        controlPoint.execute(new GetMediaInfo(device.getAvTransportService()) {
+
+            @Override
+            public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
+                String currentUrl = mediaInfo.getCurrentURI();
+                if (currentUrl == null)
+                    // No url set on device, set Url and play
+                    setUrlAndPlay(device, contentUrl, node);
+                else if (contentUrl.equals(currentUrl))
+                    // Current url already defined, play
+                    play(device, PLAY);
+                else
+                    // Another url is already set on device, stop then set Url and play
+                    controlPoint.execute(new Stop(device.getAvTransportService()) {
                         @Override
                         public void success(ActionInvocation invocation) {
-                            sendSuccess(PLAY, device.getId());
+                            setUrlAndPlay(device, contentUrl, node);
                         }
 
                         @Override
-                        public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                        public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                             sendFailure(PLAY, device.getId(), defaultMsg);
                         }
                     });
-                }
+            }
 
-                @Override
-                public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                    sendFailure(PLAY, device.getId(), defaultMsg);
-                }
-
-            });
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            sendFailure(PLAY, device.getId(), e.getMessage());
-        }
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                sendFailure(PLAY, device.getId(), defaultMsg);
+            }
+        });
     }
 
     @Override
@@ -127,17 +131,7 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void resume(final UpnpDevice device) {
         // Resume content playback
-        controlPoint.execute(new Play(device.getAvTransportService()) {
-            @Override
-            public void success(ActionInvocation invocation) {
-                sendSuccess(RESUME, device.getId());
-            }
-
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                sendFailure(RESUME, device.getId(), defaultMsg);
-            }
-        });
+        play(device, RESUME);
     }
 
     @Override
@@ -153,6 +147,42 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                 sendFailure(STATUS, device.getId(), defaultMsg);
             }
         });
+    }
+
+    private void play(final UpnpDevice device, final StreamingEventType eventType) {
+        controlPoint.execute(new Play(device.getAvTransportService()) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                sendSuccess(eventType, device.getId());
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                sendFailure(eventType, device.getId(), defaultMsg);
+            }
+        });
+    }
+
+    private void setUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
+        try {
+            // Set content Url
+            controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl, getNodeMetadata(node, contentUrl)) {
+                @Override
+                public void success(ActionInvocation invocation) {
+                    // Play content
+                    play(device, PLAY);
+                }
+
+                @Override
+                public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
+                    sendFailure(PLAY, device.getId(), defaultMsg);
+                }
+
+            });
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            sendFailure(PLAY, device.getId(), e.getMessage());
+        }
     }
 
     /**
@@ -193,11 +223,9 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             default:
                 break;
         }
-        if (item != null) {
-            DIDLContent didl = new DIDLContent();
-            didl.addItem(item);
-            return new DIDLParser().generate(didl);
-        } else
+        if (item != null)
+            return new DIDLParser().generate(new DIDLContent().addItem(item));
+        else
             return NOT_IMPLEMENTED;
     }
 }
