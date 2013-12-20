@@ -5,7 +5,7 @@
 	$.getTemplate = function(template) {
 		return $.ajax({
 			type : "GET",
-			url : "/templates/" + template,
+			url : "/admin/templates/" + template,
 			async : false
 		}).responseText;
 	};

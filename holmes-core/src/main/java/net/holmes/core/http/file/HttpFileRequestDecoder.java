@@ -17,6 +17,7 @@
 
 package net.holmes.core.http.file;
 
+import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -39,7 +40,8 @@ import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
  * Decode FullHttpRequest to HttpFileRequest
  */
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
-    private static final String DEFAULT_UI_PAGE = "index.html";
+    private static final String DEFAULT_WELCOME_FILE = "index.html";
+    private static final List<String> WELCOME_APPLICATIONS = Lists.newArrayList("", "/admin", "/play");
     private final MediaService mediaService;
     private final MimeTypeManager mimeTypeManager;
     private final String uiDirectory;
@@ -72,10 +74,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
                 }
             } else {
                 // Request for UI file is valid if requested file name has a correct mime type
-                String fileName = decoder.path().trim();
-                if ("/".equals(fileName))
-                    fileName += DEFAULT_UI_PAGE;
-
+                String fileName = getFileName(decoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(fileName);
                 if (mimeType != null)
                     fileRequest = new HttpFileRequest(request, new NodeFile(uiDirectory, fileName), mimeType);
@@ -90,5 +89,18 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             request.retain();
             out.add(request);
         }
+    }
+
+    /**
+     * Get file name from query.
+     *
+     * @param decoder query string decoder
+     * @return file name
+     */
+    private String getFileName(final QueryStringDecoder decoder) {
+        String fileName = decoder.path().trim();
+        if (fileName.endsWith("/")) fileName = fileName.substring(0, fileName.length() - 1);
+        if (WELCOME_APPLICATIONS.contains(fileName)) fileName += "/" + DEFAULT_WELCOME_FILE;
+        return fileName;
     }
 }

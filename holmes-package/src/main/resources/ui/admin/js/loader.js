@@ -1,39 +1,39 @@
 yepnope({
 	load : {
 		// lib
-		jquery : '/js/lib/jquery-1.10.2.min.js',
-		jqueryUI : '/js/lib/jquery-ui-1.10.0.custom.min.js',
-		bootstrap : '/js/lib/bootstrap.min.js',
-		jqueryI18n : '/js/lib/jquery.i18n.properties-min-1.0.9.js',
-		underscore : '/js/lib/underscore-min.js',
-		backbone : '/js/lib/backbone-min.js',
-		mustache : '/js/lib/mustache.js',
-		bootbox : '/js/lib/bootbox-4.1.0.min.js',
-		jstree : '/js/lib/jquery.jstree.js',
+		jquery : '/js/jquery-1.10.2.min.js',
+		jqueryUI : '/js/jquery-ui-1.10.0.custom.min.js',
+		bootstrap : '/js/bootstrap.min.js',
+		jqueryI18n : '/js/jquery.i18n.properties-min-1.0.9.js',
+		underscore : '/js/underscore-min.js',
+		backbone : '/js/backbone-min.js',
+		mustache : '/js/mustache.js',
+		bootbox : '/js/bootbox-4.1.0.min.js',
+		jstree : '/js/jquery.jstree.js',
 		
 		// plugins
-		folderSelectBox : '/js/plugins/folder-select-box.js',
-		message : '/js/plugins/jq-message.js',
-		template : '/js/plugins/jq-template.js',
-		logger : '/js/plugins/jq-logger.js',
+		folderSelectBox : '/admin/js/plugins/folder-select-box.js',
+		message : '/admin/js/plugins/jq-message.js',
+		template : '/admin/js/plugins/jq-template.js',
+		logger : '/admin/js/plugins/jq-logger.js',
 		
 		// application
-		application : '/js/application.js',
+		application : '/admin/js/application.js',
 
 		// models
-		videoFolder : '/js/models/videoFolder.js',
-		audioFolder : '/js/models/audioFolder.js',
-		pictureFolder : '/js/models/pictureFolder.js',
-		podcast : '/js/models/podcast.js',
-		settings : '/js/models/settings.js',
+		videoFolder : '/admin/js/models/videoFolder.js',
+		audioFolder : '/admin/js/models/audioFolder.js',
+		pictureFolder : '/admin/js/models/pictureFolder.js',
+		podcast : '/admin/js/models/podcast.js',
+		settings : '/admin/js/models/settings.js',
 
 		// view controllers
-		defaultView : '/js/views/defaultView.js',
-		settingsView : '/js/views/settingsView.js',
-		videoFolderListView : '/js/views/videoFolderListView.js',
-		audioFolderListView : '/js/views/audioFolderListView.js',
-		pictureFolderListView : '/js/views/pictureFolderListView.js',
-		podcastListView : '/js/views/podcastListView.js',
+		defaultView : '/admin/js/views/defaultView.js',
+		settingsView : '/admin/js/views/settingsView.js',
+		videoFolderListView : '/admin/js/views/videoFolderListView.js',
+		audioFolderListView : '/admin/js/views/audioFolderListView.js',
+		pictureFolderListView : '/admin/js/views/pictureFolderListView.js',
+		podcastListView : '/admin/js/views/podcastListView.js',
 	},
 	callback : {
 		"jquery" : function() {

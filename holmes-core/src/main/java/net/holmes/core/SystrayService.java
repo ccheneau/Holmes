@@ -116,7 +116,7 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
-        final String holmesUrl = "http://localhost:" + configuration.getIntParameter(HTTP_SERVER_PORT) + "/";
+        final String holmesAdminUrl = "http://localhost:" + configuration.getIntParameter(HTTP_SERVER_PORT) + "/admin";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
@@ -139,11 +139,11 @@ public final class SystrayService implements Service {
             }
         }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
 
-        // Holmes ui menu item
-        JMenuItem holmesUiItem = new SystrayMenuItem() {
+        // Holmes admin ui menu item
+        JMenuItem holmesAdminUiItem = new SystrayMenuItem() {
             @Override
             public void onClick() throws URISyntaxException, IOException {
-                Desktop.getDesktop().browse(new URI(holmesUrl));
+                Desktop.getDesktop().browse(new URI(holmesAdminUrl));
             }
         }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, UIManager.getFont(MENU_ITEM_BOLD_FONT));
 
@@ -164,7 +164,7 @@ public final class SystrayService implements Service {
         }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
 
         // Add items to popup menu
-        popupMenu.add(holmesUiItem);
+        popupMenu.add(holmesAdminUiItem);
         popupMenu.addSeparator();
         popupMenu.add(holmesSiteItem);
         popupMenu.add(holmesWikiItem);
