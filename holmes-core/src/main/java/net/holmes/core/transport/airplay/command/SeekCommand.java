@@ -17,13 +17,13 @@
 
 package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.SEEK;
-import static net.holmes.core.transport.airplay.command.AbstractCommand.UrlParameter.POSITION;
+import static net.holmes.core.transport.airplay.command.Command.CommandType.SEEK;
+import static net.holmes.core.transport.airplay.command.Command.UrlParameter.POSITION;
 
 /**
  * Airplay seek command: Seek at an arbitrary location in the video
  */
-public final class SeekCommand extends AbstractCommand {
+public abstract class SeekCommand extends Command {
     /**
      * Instantiates a new Airplay scrub command.
      *

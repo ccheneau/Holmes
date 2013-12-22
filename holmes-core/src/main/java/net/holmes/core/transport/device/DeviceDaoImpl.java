@@ -44,7 +44,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
     @Override
     public void removeDevice(final String deviceId) {
-        devices.remove(deviceId);
+        Device device = devices.get(deviceId);
+        if (device != null) {
+            device.close();
+            devices.remove(deviceId);
+        }
     }
 
     @Override
@@ -64,7 +68,7 @@ public class DeviceDaoImpl implements DeviceDao {
         return Collections2.filter(devices.values(), new Predicate<Device>() {
             @Override
             public boolean apply(Device input) {
-                return input.getHostAddress().equals(hostAddress);
+                return input.getInetAddress().getHostAddress().equals(hostAddress);
             }
         });
     }

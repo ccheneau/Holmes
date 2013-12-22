@@ -18,17 +18,12 @@
 package net.holmes.core.transport.airplay.command;
 
 import com.google.common.collect.Maps;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.util.CharsetUtil;
 
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.*;
-import static io.netty.handler.codec.http.HttpHeaders.Values.CLOSE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
+import static io.netty.handler.codec.http.HttpHeaders.Names.USER_AGENT;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpMethod.POST;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -36,18 +31,18 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 /**
  * Airplay command.
  */
-public abstract class AbstractCommand {
+public abstract class Command {
     private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
     private final CommandType type;
     private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
-    private final Map<PostParameter, String> postParameters = Maps.newHashMap();
+    private final Map<PostParameter, String> postParameters = Maps.newLinkedHashMap();
 
     /**
      * Instantiates a new Airplay command.
      *
      * @param type command type
      */
-    public AbstractCommand(final CommandType type) {
+    public Command(final CommandType type) {
         this.type = type;
     }
 
@@ -74,51 +69,70 @@ public abstract class AbstractCommand {
     /**
      * Get Http request.
      *
-     * @param deviceHost device host
-     * @param devicePort device port
      * @return Http request
      */
-    public HttpRequest getHttpRequest(final String deviceHost, final int devicePort) {
-        ByteBuf content;
-        int contentLength;
-        if (!postParameters.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (PostParameter param : postParameters.keySet()) {
-                sb.append(param.getValue()).append("=").append(postParameters.get(param)).append("\r\n");
-            }
-            content = Unpooled.copiedBuffer(sb.toString(), CharsetUtil.UTF_8);
-            contentLength = sb.length();
-        } else {
-            content = Unpooled.buffer(0);
-            contentLength = 0;
-        }
+    public String getRequest() {
+        StringBuilder sbCommand = new StringBuilder();
+        String requestContent = getRequestContent();
 
-        HttpRequest request = new DefaultFullHttpRequest(HTTP_1_1, type.getMethod(), getRequestUri(deviceHost, devicePort), content, false);
-        request.headers().set(USER_AGENT, AIRPLAY_USER_AGENT);
-        request.headers().set(CONTENT_LENGTH, contentLength);
-        request.headers().set(CONNECTION, CLOSE);
+        // Http command
+        sbCommand.append(type.getMethod()).append(" ").append(getRequestUrl()).append(" ").append(HTTP_1_1.text()).append("\n");
 
-        return request;
+        // Http headers
+        sbCommand.append(CONTENT_LENGTH).append(": ").append(requestContent == null ? 0 : requestContent.length()).append("\n");
+        sbCommand.append(USER_AGENT).append(": ").append(AIRPLAY_USER_AGENT).append("\n");
+
+        // Http content
+        if (requestContent != null) sbCommand.append("\n").append(requestContent);
+
+        return sbCommand.toString();
     }
 
     /**
-     * Get request Uri.
+     * Success callback.
      *
-     * @param deviceHost device host
-     * @param devicePort device port
-     * @return request Uri
+     * @param contentParameters content parameters map
      */
-    private String getRequestUri(final String deviceHost, final int devicePort) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("http://").append(deviceHost).append(":").append(devicePort).append("/").append(type.getValue());
+    public abstract void success(Map<String, String> contentParameters);
+
+    /**
+     * Failure callback.
+     *
+     * @param errorMessage error message
+     */
+    public abstract void failure(String errorMessage);
+
+    /**
+     * Get request Url.
+     *
+     * @return request Url
+     */
+    private String getRequestUrl() {
+        StringBuilder sbUrl = new StringBuilder();
+        sbUrl.append("/").append(type.getValue());
         if (!urlParameters.isEmpty()) {
-            sb.append("?");
-            for (UrlParameter param : urlParameters.keySet()) {
-                sb.append(param.getValue()).append("=").append(urlParameters.get(param)).append("&");
-            }
-            sb.deleteCharAt(sb.length() - 1);
+            sbUrl.append("?");
+            for (UrlParameter param : urlParameters.keySet())
+                sbUrl.append(param.getValue()).append("=").append(urlParameters.get(param)).append("&");
+            sbUrl.deleteCharAt(sbUrl.length() - 1);
         }
-        return sb.toString();
+        return sbUrl.toString();
+    }
+
+    /**
+     * Get request content.
+     *
+     * @return request content
+     */
+    private String getRequestContent() {
+        // Build Http content
+        if (!postParameters.isEmpty()) {
+            StringBuilder sbContent = new StringBuilder();
+            for (PostParameter param : postParameters.keySet()) {
+                sbContent.append(param.getValue()).append(": ").append(postParameters.get(param)).append("\n");
+            }
+            return sbContent.toString();
+        } else return null;
     }
 
     /**
@@ -130,11 +144,12 @@ public abstract class AbstractCommand {
         RATE("rate", POST),
         SEEK("scrub", POST),
         STOP("stop", POST);
+
         private final String value;
         private final HttpMethod method;
 
         /**
-         * Instantiates a new command type
+         * Instantiates a new command type.
          *
          * @param value value
          */

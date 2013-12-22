@@ -20,27 +20,50 @@ package net.holmes.core.transport.airplay;
 import com.google.common.base.Objects;
 import net.holmes.core.transport.device.Device;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+
 /**
  * Airplay streaming device.
  */
 public class AirplayDevice extends Device {
     private final int port;
+    private Socket socket = null;
 
     /**
      * Instantiates a new Airplay device
      *
      * @param id          device id
      * @param name        device name
-     * @param hostAddress device host
+     * @param address device host
      * @param port        device port
      */
-    public AirplayDevice(final String id, final String name, final String hostAddress, final int port) {
-        super(id, name, hostAddress);
+    public AirplayDevice(final String id, final String name, final InetAddress address, final int port) {
+        super(id, name, address);
         this.port = port;
     }
 
-    public int getPort() {
-        return port;
+    @Override
+    public void close() {
+        if (socket != null) try {
+            socket.close();
+        } catch (IOException e) {
+            // Nothing
+        }
+    }
+
+    /**
+     * Get device connection.
+     *
+     * @return device socket
+     * @throws IOException
+     */
+    public Socket getConnection() throws IOException {
+        if (socket == null || socket.isClosed())
+            socket = new Socket(getInetAddress(), port);
+
+        return socket;
     }
 
     @Override
@@ -48,7 +71,7 @@ public class AirplayDevice extends Device {
         return Objects.toStringHelper(this)
                 .addValue(id)
                 .addValue(name)
-                .addValue(hostAddress)
+                .addValue(inetAddress)
                 .addValue(port)
                 .toString();
     }

@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 import net.holmes.core.transport.device.Device;
 import org.fourthline.cling.model.meta.RemoteService;
 
+import java.net.InetAddress;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class UpnpDevice extends Device {
      * @param supportedMimeTypes list of supported mime types
      * @param avTransportService AV transport service
      */
-    public UpnpDevice(final String id, final String name, final String hostAddress, final List<String> supportedMimeTypes, final RemoteService avTransportService) {
+    public UpnpDevice(final String id, final String name, final InetAddress hostAddress, final List<String> supportedMimeTypes, final RemoteService avTransportService) {
         super(id, name, hostAddress);
         this.supportedMimeTypes = supportedMimeTypes;
         this.avTransportService = avTransportService;
@@ -59,10 +60,14 @@ public class UpnpDevice extends Device {
         return Objects.toStringHelper(this)
                 .addValue(id)
                 .addValue(name)
-                .addValue(hostAddress)
+                .addValue(inetAddress)
                 .addValue(supportedMimeTypes)
                 .addValue(avTransportService)
                 .toString();
     }
 
+    @Override
+    public void close() {
+        // Nothing
+    }
 }

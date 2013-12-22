@@ -17,14 +17,14 @@
 
 package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.PLAY;
-import static net.holmes.core.transport.airplay.command.AbstractCommand.PostParameter.CONTENT_LOCATION;
-import static net.holmes.core.transport.airplay.command.AbstractCommand.PostParameter.START_POSITION;
+import static net.holmes.core.transport.airplay.command.Command.CommandType.PLAY;
+import static net.holmes.core.transport.airplay.command.Command.PostParameter.CONTENT_LOCATION;
+import static net.holmes.core.transport.airplay.command.Command.PostParameter.START_POSITION;
 
 /**
  * Airplay play command: Start video playback
  */
-public final class PlayCommand extends AbstractCommand {
+public abstract class PlayCommand extends Command {
 
     /**
      * Instantiates a new Airplay play command.
@@ -35,6 +35,6 @@ public final class PlayCommand extends AbstractCommand {
     public PlayCommand(final String contentUrl, final Double startPosition) {
         super(PLAY);
         addPostParameter(CONTENT_LOCATION, contentUrl);
-        addPostParameter(START_POSITION, startPosition.toString());
+        addPostParameter(START_POSITION, String.format("%f", startPosition));
     }
 }

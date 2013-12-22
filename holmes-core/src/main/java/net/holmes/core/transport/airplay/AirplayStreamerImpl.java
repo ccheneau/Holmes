@@ -19,10 +19,7 @@ package net.holmes.core.transport.airplay;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.transport.airplay.command.PlayCommand;
-import net.holmes.core.transport.airplay.command.PlayStatusCommand;
-import net.holmes.core.transport.airplay.command.RateCommand;
-import net.holmes.core.transport.airplay.command.StopCommand;
+import net.holmes.core.transport.airplay.command.*;
 import net.holmes.core.transport.device.DeviceStreamer;
 
 import javax.inject.Inject;
@@ -36,6 +33,7 @@ import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.
 public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     private static final String CONTENT_PARAMETER_DURATION = "duration";
     private static final String CONTENT_PARAMETER_POSITION = "position";
+    private final ControlPoint controlPoint;
 
     /**
      * Instantiates a new Airplay streamer implementation.
@@ -45,71 +43,76 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     @Inject
     public AirplayStreamerImpl(final EventBus eventBus) {
         super(eventBus);
+        this.controlPoint = new ControlPoint();
     }
 
     @Override
     public void play(final AirplayDevice device, final String contentUrl, final AbstractNode node) {
-        new AsyncHttpClient(new PlayCommand(contentUrl, 0d)) {
+        Command command = new PlayCommand(contentUrl, 0d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PLAY, device.getId());
             }
 
             @Override
-            public void failure(Throwable throwable) {
-                sendFailure(PLAY, device.getId(), throwable.getMessage());
+            public void failure(String errorMessage) {
+                sendFailure(PLAY, device.getId(), errorMessage);
             }
-        }.run(device);
+        };
+        controlPoint.execute(device, command);
     }
 
     @Override
     public void stop(final AirplayDevice device) {
-        new AsyncHttpClient(new StopCommand()) {
+        Command command = new StopCommand() {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(STOP, device.getId());
             }
 
             @Override
-            public void failure(Throwable throwable) {
-                sendFailure(STOP, device.getId(), throwable.getMessage());
+            public void failure(String errorMessage) {
+                sendFailure(STOP, device.getId(), errorMessage);
             }
-        }.run(device);
+        };
+        controlPoint.execute(device, command);
     }
 
     @Override
     public void pause(final AirplayDevice device) {
-        new AsyncHttpClient(new RateCommand(0d)) {
+        Command command = new RateCommand(0d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PAUSE, device.getId());
             }
 
             @Override
-            public void failure(Throwable throwable) {
-                sendFailure(PAUSE, device.getId(), throwable.getMessage());
+            public void failure(String errorMessage) {
+                sendFailure(PAUSE, device.getId(), errorMessage);
             }
-        }.run(device);
+        };
+        controlPoint.execute(device, command);
     }
 
     @Override
     public void resume(final AirplayDevice device) {
-        new AsyncHttpClient(new RateCommand(1d)) {
+        Command command = new RateCommand(1d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(RESUME, device.getId());
             }
 
             @Override
-            public void failure(Throwable throwable) {
-                sendFailure(RESUME, device.getId(), throwable.getMessage());
+            public void failure(String errorMessage) {
+                sendFailure(RESUME, device.getId(), errorMessage);
             }
-        }.run(device);
+        };
+        controlPoint.execute(device, command);
     }
 
     @Override
     public void updateStatus(final AirplayDevice device) {
-        new AsyncHttpClient(new PlayStatusCommand()) {
+        Command command = new PlayStatusCommand() {
             @Override
             public void success(Map<String, String> contentParameters) {
                 Long duration = getContentParameterValue(CONTENT_PARAMETER_DURATION, contentParameters);
@@ -118,10 +121,11 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
             }
 
             @Override
-            public void failure(Throwable throwable) {
-                sendFailure(STATUS, device.getId(), throwable.getMessage());
+            public void failure(String errorMessage) {
+                sendFailure(STATUS, device.getId(), errorMessage);
             }
-        }.run(device);
+        };
+        controlPoint.execute(device, command);
     }
 
     /**

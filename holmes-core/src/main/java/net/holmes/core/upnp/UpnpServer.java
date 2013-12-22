@@ -40,6 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -117,30 +119,34 @@ public final class UpnpServer implements Service {
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
             if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
-                // Device host IP
-                final String deviceHost = device.getIdentity().getDescriptorURL().getHost();
-                final String deviceId = device.getIdentity().getUdn().getIdentifierString();
-                if (LOGGER.isDebugEnabled())
-                    LOGGER.debug("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
+                try {
+                    // Device host IP
+                    final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
+                    final String deviceId = device.getIdentity().getUdn().getIdentifierString();
+                    if (LOGGER.isDebugEnabled())
+                        LOGGER.debug("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
 
-                // Get remote device protocol info
-                upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
-                    @Override
-                    public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
-                        // Got protocol info, get available mime types
-                        List<String> mimeTypes = Lists.newArrayList();
-                        for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
-                            mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
+                    // Get remote device protocol info
+                    upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
+                        @Override
+                        public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
+                            // Got protocol info, get available mime types
+                            List<String> mimeTypes = Lists.newArrayList();
+                            for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+                                mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
+                            }
+                            // Add device
+                            transportService.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
                         }
-                        // Add device
-                        transportService.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
-                    }
 
-                    @Override
-                    public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                        LOGGER.error("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
-                    }
-                });
+                        @Override
+                        public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                            LOGGER.error("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
+                        }
+                    });
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

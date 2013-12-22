@@ -17,7 +17,7 @@
 
 package net.holmes.core.transport.airplay.command;
 
-import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandType.PLAY_STATUS;
+import static net.holmes.core.transport.airplay.command.Command.CommandType.PLAY_STATUS;
 
 /**
  * Airplay play status command: Retrieve the current playback position.
@@ -25,7 +25,7 @@ import static net.holmes.core.transport.airplay.command.AbstractCommand.CommandT
  * - duration: duration in seconds
  * - position: position in seconds
  */
-public class PlayStatusCommand extends AbstractCommand {
+public abstract class PlayStatusCommand extends Command {
 
     /**
      * Instantiates a new play status command.

@@ -17,25 +17,27 @@
 
 package net.holmes.core.transport.device;
 
+import java.net.InetAddress;
+
 /**
  * Streaming device
  */
 public abstract class Device {
     protected final String id;
     protected final String name;
-    protected final String hostAddress;
+    protected final InetAddress inetAddress;
 
     /**
      * Instantiates a new device
      *
      * @param id          device id
      * @param name        device name
-     * @param hostAddress device host
+     * @param inetAddress device inet address
      */
-    public Device(final String id, final String name, final String hostAddress) {
+    public Device(final String id, final String name, final InetAddress inetAddress) {
         this.id = id;
         this.name = name;
-        this.hostAddress = hostAddress;
+        this.inetAddress = inetAddress;
     }
 
     /**
@@ -61,7 +63,12 @@ public abstract class Device {
      *
      * @return device host address
      */
-    public String getHostAddress() {
-        return hostAddress;
+    public InetAddress getInetAddress() {
+        return inetAddress;
     }
+
+    /**
+     * Close device.
+     */
+    public abstract void close();
 }
