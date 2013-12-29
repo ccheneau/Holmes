@@ -125,8 +125,10 @@ public final class AirplayServer implements Service {
     private AirplayDevice buildDevice(ServiceInfo serviceInfo) {
         if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
-                if (!inet4Address.isLoopbackAddress())
+                if (!inet4Address.isLoopbackAddress()) {
+                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Build Airplay device for {}", serviceInfo.toString());
                     return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort());
+                }
         }
         return null;
     }
