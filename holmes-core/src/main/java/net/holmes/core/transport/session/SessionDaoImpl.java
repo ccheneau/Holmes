@@ -56,6 +56,12 @@ public class SessionDaoImpl implements SessionDao {
     @Override
     public void updateSessionPosition(final String deviceId, final Long position, final Long duration) throws UnknownSessionException {
         StreamingSession session = getSession(deviceId);
+
+        // If duration is already set and end of streaming is reached, update session's status
+        if (session.getDuration() > 0 && (position.equals(duration) || duration == 0))
+            session.setStatus(WAITING);
+
+        // Update position and duration
         session.setPosition(position);
         session.setDuration(duration);
     }
