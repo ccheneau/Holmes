@@ -33,6 +33,9 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  */
 public abstract class Command {
     private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
+    private static final String PARAMETER_SEPARATOR = ": ";
+    private static final String EOL = "\n";
+    private static final String SPACE = " ";
     private final CommandType type;
     private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
     private final Map<PostParameter, String> postParameters = Maps.newLinkedHashMap();
@@ -76,15 +79,16 @@ public abstract class Command {
         String requestContent = getRequestContent();
 
         // Http command
-        sbCommand.append(type.getMethod()).append(" ").append(getRequestUrl()).append(" ").append(HTTP_1_1.text()).append("\n");
+        sbCommand.append(type.getMethod()).append(SPACE).append(getRequestUrl()).append(SPACE).append(HTTP_1_1.text()).append(EOL);
 
         // Http headers
-        sbCommand.append(CONTENT_LENGTH).append(": ").append(requestContent == null ? 0 : requestContent.length()).append("\n");
-        sbCommand.append(USER_AGENT).append(": ").append(AIRPLAY_USER_AGENT).append("\n");
+        sbCommand.append(CONTENT_LENGTH).append(PARAMETER_SEPARATOR).append(requestContent == null ? 0 : requestContent.length()).append(EOL);
+        sbCommand.append(USER_AGENT).append(PARAMETER_SEPARATOR).append(AIRPLAY_USER_AGENT).append(EOL);
 
         // Http content
-        if (requestContent != null) sbCommand.append("\n").append(requestContent);
+        if (requestContent != null) sbCommand.append(EOL).append(requestContent);
 
+        sbCommand.append(EOL);
         return sbCommand.toString();
     }
 
@@ -129,7 +133,7 @@ public abstract class Command {
         if (!postParameters.isEmpty()) {
             StringBuilder sbContent = new StringBuilder();
             for (PostParameter param : postParameters.keySet()) {
-                sbContent.append(param.getValue()).append(": ").append(postParameters.get(param)).append("\n");
+                sbContent.append(param.getValue()).append(PARAMETER_SEPARATOR).append(postParameters.get(param)).append(EOL);
             }
             return sbContent.toString();
         } else return null;
