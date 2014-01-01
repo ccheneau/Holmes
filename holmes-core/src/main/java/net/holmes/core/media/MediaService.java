@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013  Cedric Cheneau
+ * Copyright (C) 2012-2014  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ public interface MediaService {
 
     /**
      * Get node URL.
+     *
      * @param node node
      * @return node URL
      */

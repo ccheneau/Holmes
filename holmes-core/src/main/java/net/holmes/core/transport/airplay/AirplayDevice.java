@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013  Cedric Cheneau
+ * Copyright (C) 2012-2014  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,10 +34,10 @@ public class AirplayDevice extends Device {
     /**
      * Instantiates a new Airplay device
      *
-     * @param id          device id
-     * @param name        device name
+     * @param id      device id
+     * @param name    device name
      * @param address device host
-     * @param port        device port
+     * @param port    device port
      */
     public AirplayDevice(final String id, final String name, final InetAddress address, final int port) {
         super(id, name, address);
