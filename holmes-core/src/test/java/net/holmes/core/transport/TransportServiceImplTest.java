@@ -26,6 +26,7 @@ import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.UnknownDeviceException;
+import net.holmes.core.transport.event.StreamingEvent;
 import net.holmes.core.transport.session.SessionDao;
 import net.holmes.core.transport.session.UnknownSessionException;
 import net.holmes.core.transport.upnp.UpnpDevice;
@@ -35,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 
 import static net.holmes.core.common.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
+import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
+import static net.holmes.core.transport.session.SessionStatus.*;
 import static org.easymock.EasyMock.*;
 
 public class TransportServiceImplTest {
@@ -441,6 +444,162 @@ public class TransportServiceImplTest {
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
         transportService.resume("deviceId");
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleErrorStreamingEvent() {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(STATUS, "deviceId", "errorMessage"));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleUnknownSessionStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionStatus("deviceId", PLAYING);
+        expectLastCall().andThrow(new UnknownSessionException("deviceId"));
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(PLAY, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleUnknownStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(UNKNOWN, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandlePlayStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionStatus("deviceId", PLAYING);
+        expectLastCall();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(PLAY, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleResumeStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionStatus("deviceId", PLAYING);
+        expectLastCall();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(RESUME, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleStopStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionStatus("deviceId", WAITING);
+        expectLastCall();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(STOP, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandlePauseStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionStatus("deviceId", PAUSED);
+        expectLastCall();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(PAUSE, "deviceId", 0l, 0l));
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testHandleStatusStreamingEvent() throws Exception {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        sessionDao.updateSessionPosition("deviceId", 0l, 0l);
+        expectLastCall();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        transportService.handleStreamingEvent(new StreamingEvent(STATUS, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
