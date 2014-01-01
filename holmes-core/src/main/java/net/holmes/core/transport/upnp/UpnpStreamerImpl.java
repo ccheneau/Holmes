@@ -157,7 +157,7 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                         controlPoint.execute(new GetPositionInfo(device.getAvTransportService()) {
                             @Override
                             public void received(ActionInvocation invocation, PositionInfo positionInfo) {
-                                sendSuccess(STATUS, device.getId(), positionInfo.getTrackElapsedSeconds(), positionInfo.getTrackDurationSeconds());
+                                sendSuccess(STATUS, device.getId(), positionInfo.getTrackDurationSeconds(), positionInfo.getTrackElapsedSeconds());
                             }
 
                             @Override
