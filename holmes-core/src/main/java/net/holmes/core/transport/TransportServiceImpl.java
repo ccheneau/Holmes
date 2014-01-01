@@ -132,12 +132,6 @@ public class TransportServiceImpl implements TransportService {
         getStreamer(device).resume(device);
     }
 
-    @SuppressWarnings("unchecked")
-    private void updateStatus(final String deviceId) throws UnknownDeviceException {
-        Device device = deviceDao.getDevice(deviceId);
-        getStreamer(device).updateStatus(device);
-    }
-
     /**
      * Handle streaming event.
      *
@@ -167,7 +161,7 @@ public class TransportServiceImpl implements TransportService {
                         break;
                 }
             else
-                LOGGER.error("Type: {} - Device: {} - Error:{}", event.getType(), event.getDeviceId(), event.getErrorMessage());
+                LOGGER.error("Type: {} - Device: {} - Error: {}", event.getType(), event.getDeviceId(), event.getErrorMessage());
 
         } catch (UnknownSessionException e) {
             LOGGER.error(e.getMessage());
@@ -204,11 +198,15 @@ public class TransportServiceImpl implements TransportService {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void runOneIteration() throws Exception {
             Map<String, StreamingSession> sessions = sessionDao.getSessions();
             for (Map.Entry<String, StreamingSession> session : sessions.entrySet())
-                if (session.getValue().getStatus() == PLAYING)
-                    updateStatus(session.getKey());
+                if (session.getValue().getStatus() == PLAYING) {
+                    // Update device status
+                    Device device = deviceDao.getDevice(session.getKey());
+                    getStreamer(device).updateStatus(device);
+                }
         }
 
         @Override
