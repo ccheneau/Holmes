@@ -58,7 +58,7 @@ public class SessionDaoImpl implements SessionDao {
         StreamingSession session = getSession(deviceId);
 
         // If duration is already set and end of streaming is reached, update session's status
-        if (session.getDuration() > 0 && (position.equals(duration) || duration == 0))
+        if (session.getDuration() > 0 && (position >= duration || duration == 0))
             session.setStatus(WAITING);
 
         // Update position and duration
