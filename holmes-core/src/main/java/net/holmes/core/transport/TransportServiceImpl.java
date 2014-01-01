@@ -167,7 +167,7 @@ public class TransportServiceImpl implements TransportService {
                         break;
                 }
             else
-                LOGGER.error("Device: {} - Error:{}", event.getDeviceId(), event.getErrorMessage());
+                LOGGER.error("Type: {} - Device: {} - Error:{}", event.getType(), event.getDeviceId(), event.getErrorMessage());
 
         } catch (UnknownSessionException e) {
             LOGGER.error(e.getMessage());
