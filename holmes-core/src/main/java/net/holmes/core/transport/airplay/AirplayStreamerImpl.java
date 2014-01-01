@@ -19,7 +19,10 @@ package net.holmes.core.transport.airplay;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.transport.airplay.command.*;
+import net.holmes.core.transport.airplay.command.PlayCommand;
+import net.holmes.core.transport.airplay.command.PlayStatusCommand;
+import net.holmes.core.transport.airplay.command.RateCommand;
+import net.holmes.core.transport.airplay.command.StopCommand;
 import net.holmes.core.transport.device.DeviceStreamer;
 
 import javax.inject.Inject;
@@ -48,7 +51,7 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
 
     @Override
     public void play(final AirplayDevice device, final String contentUrl, final AbstractNode node) {
-        Command command = new PlayCommand(contentUrl, 0d) {
+        controlPoint.execute(device, new PlayCommand(contentUrl, 0d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PLAY, device.getId());
@@ -58,13 +61,12 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
             public void failure(String errorMessage) {
                 sendFailure(PLAY, device.getId(), errorMessage);
             }
-        };
-        controlPoint.execute(device, command);
+        });
     }
 
     @Override
     public void stop(final AirplayDevice device) {
-        Command command = new StopCommand() {
+        controlPoint.execute(device, new StopCommand() {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(STOP, device.getId());
@@ -74,13 +76,12 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
             public void failure(String errorMessage) {
                 sendFailure(STOP, device.getId(), errorMessage);
             }
-        };
-        controlPoint.execute(device, command);
+        });
     }
 
     @Override
     public void pause(final AirplayDevice device) {
-        Command command = new RateCommand(0d) {
+        controlPoint.execute(device, new RateCommand(0d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PAUSE, device.getId());
@@ -90,13 +91,12 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
             public void failure(String errorMessage) {
                 sendFailure(PAUSE, device.getId(), errorMessage);
             }
-        };
-        controlPoint.execute(device, command);
+        });
     }
 
     @Override
     public void resume(final AirplayDevice device) {
-        Command command = new RateCommand(1d) {
+        controlPoint.execute(device, new RateCommand(1d) {
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(RESUME, device.getId());
@@ -106,26 +106,27 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
             public void failure(String errorMessage) {
                 sendFailure(RESUME, device.getId(), errorMessage);
             }
-        };
-        controlPoint.execute(device, command);
+        });
     }
 
     @Override
     public void updateStatus(final AirplayDevice device) {
-        Command command = new PlayStatusCommand() {
+        controlPoint.execute(device, new PlayStatusCommand() {
             @Override
             public void success(Map<String, String> contentParameters) {
                 Long duration = getContentParameterValue(CONTENT_PARAMETER_DURATION, contentParameters);
                 Long position = getContentParameterValue(CONTENT_PARAMETER_POSITION, contentParameters);
                 sendSuccess(STATUS, device.getId(), duration, position);
+
+                // If end of streaming is reached, send stop command
+                if (duration > 0 && position >= duration) stop(device);
             }
 
             @Override
             public void failure(String errorMessage) {
                 sendFailure(STATUS, device.getId(), errorMessage);
             }
-        };
-        controlPoint.execute(device, command);
+        });
     }
 
     /**
