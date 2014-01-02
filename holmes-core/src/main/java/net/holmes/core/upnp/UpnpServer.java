@@ -112,8 +112,8 @@ public final class UpnpServer implements Service {
 
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
-            final String deviceDisplay = device.getDisplayString();
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Remote device available: " + deviceDisplay);
+            final String deviceName = getDeviceName(device);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Remote device detected: {}", deviceName);
 
             // Get device's connection manager service and AvTransport service.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
@@ -124,7 +124,7 @@ public final class UpnpServer implements Service {
                     final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
                     final String deviceId = device.getIdentity().getUdn().getIdentifierString();
                     if (LOGGER.isDebugEnabled())
-                        LOGGER.debug("Get protocol info for {} : {} [{}]", deviceDisplay, deviceId, deviceHost);
+                        LOGGER.debug("Get protocol info for {} : {} [{}]", deviceId, deviceName, deviceHost);
 
                     // Get remote device protocol info
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
@@ -136,12 +136,12 @@ public final class UpnpServer implements Service {
                                 mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                             }
                             // Add device
-                            transportService.addDevice(new UpnpDevice(deviceId, deviceDisplay, deviceHost, mimeTypes, avTransportService));
+                            transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, mimeTypes, avTransportService));
                         }
 
                         @Override
                         public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                            LOGGER.error("Failed to get protocol info for {}: {}", deviceDisplay, defaultMsg);
+                            LOGGER.error("Failed to get protocol info for {}: {}", deviceName, defaultMsg);
                         }
                     });
                 } catch (UnknownHostException e) {
@@ -179,6 +179,19 @@ public final class UpnpServer implements Service {
         @Override
         public void afterShutdown() {
             // Ignore
+        }
+
+        /**
+         * Get Upnp device name
+         *
+         * @param device Upnp device
+         * @return Upnp device name
+         */
+        private String getDeviceName(final RemoteDevice device) {
+            if (device.getDetails() != null && device.getDetails().getManufacturerDetails() != null)
+                return device.getDetails().getManufacturerDetails().getManufacturer() + " " + device.getDetails().getFriendlyName();
+            else
+                return device.getDisplayString();
         }
     }
 }
