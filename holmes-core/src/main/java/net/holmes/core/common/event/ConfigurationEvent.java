@@ -71,9 +71,9 @@ public class ConfigurationEvent {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(type)
-                .addValue(node)
-                .addValue(rootNode)
+                .add("type", type)
+                .add("node", node)
+                .add("rootNode", rootNode)
                 .toString();
     }
 

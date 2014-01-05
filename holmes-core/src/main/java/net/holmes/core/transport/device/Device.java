@@ -25,19 +25,19 @@ import java.net.InetAddress;
 public abstract class Device {
     protected final String id;
     protected final String name;
-    protected final InetAddress inetAddress;
+    protected final InetAddress address;
 
     /**
      * Instantiates a new device
      *
      * @param id          device id
      * @param name        device name
-     * @param inetAddress device inet address
+     * @param address device inet address
      */
-    public Device(final String id, final String name, final InetAddress inetAddress) {
+    public Device(final String id, final String name, final InetAddress address) {
         this.id = id;
         this.name = name;
-        this.inetAddress = inetAddress;
+        this.address = address;
     }
 
     /**
@@ -63,8 +63,8 @@ public abstract class Device {
      *
      * @return device host address
      */
-    public InetAddress getInetAddress() {
-        return inetAddress;
+    public InetAddress getAddress() {
+        return address;
     }
 
     /**

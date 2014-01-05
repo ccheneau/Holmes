@@ -78,11 +78,11 @@ public class UpnpDevice extends Device {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(id)
-                .addValue(name)
-                .addValue(inetAddress)
-                .addValue(supportedMimeTypes)
-                .addValue(avTransportService)
+                .add("id", id)
+                .add("name", name)
+                .add("address", address)
+                .add("supportedMimeTypes", supportedMimeTypes)
+                .add("avTransportService", avTransportService)
                 .toString();
     }
 

@@ -199,8 +199,8 @@ public class ControlPoint {
         @Override
         public String toString() {
             return Objects.toStringHelper(this)
-                    .addValue(code)
-                    .addValue(headers)
+                    .add("code", code)
+                    .add("headers", headers)
                     .toString();
         }
     }

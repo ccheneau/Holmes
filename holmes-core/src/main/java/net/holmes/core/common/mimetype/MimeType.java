@@ -107,9 +107,9 @@ public final class MimeType {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(type)
-                .addValue(subType)
-                .addValue(mimeType)
+                .add("type", type)
+                .add("subType", subType)
+                .add("mimeType", mimeType)
                 .toString();
     }
 }

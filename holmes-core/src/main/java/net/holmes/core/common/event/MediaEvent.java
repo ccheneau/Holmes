@@ -49,8 +49,8 @@ public class MediaEvent {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(type)
-                .addValue(parameter)
+                .add("type", type)
+                .add("parameter", parameter)
                 .toString();
     }
 

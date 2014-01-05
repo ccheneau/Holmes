@@ -57,13 +57,13 @@ public final class PodcastNode extends AbstractNode {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(url)
-                .addValue(id)
-                .addValue(type)
-                .addValue(parentId)
-                .addValue(name)
-                .addValue(modifiedDate)
-                .addValue(iconUrl)
+                .add("url", url)
+                .add("id", id)
+                .add("type", type)
+                .add("parentId", parentId)
+                .add("name", name)
+                .add("modifiedDate", modifiedDate)
+                .add("iconUrl", iconUrl)
                 .toString();
     }
 }

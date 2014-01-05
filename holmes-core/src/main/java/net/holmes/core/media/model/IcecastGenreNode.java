@@ -57,13 +57,13 @@ public class IcecastGenreNode extends AbstractNode {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(genre)
-                .addValue(id)
-                .addValue(type)
-                .addValue(parentId)
-                .addValue(name)
-                .addValue(modifiedDate)
-                .addValue(iconUrl)
+                .add("genre", genre)
+                .add("id", id)
+                .add("type", type)
+                .add("parentId", parentId)
+                .add("name", name)
+                .add("modifiedDate", modifiedDate)
+                .add("iconUrl", iconUrl)
                 .toString();
     }
 }

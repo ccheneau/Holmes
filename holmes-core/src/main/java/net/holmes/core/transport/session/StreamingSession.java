@@ -72,11 +72,11 @@ public final class StreamingSession {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(status)
-                .addValue(contentUrl)
-                .addValue(contentName)
-                .addValue(duration)
-                .addValue(position)
+                .add("status", status)
+                .add("contentUrl", contentUrl)
+                .add("contentName", contentName)
+                .add("duration", duration)
+                .add("position", position)
                 .toString();
     }
 }

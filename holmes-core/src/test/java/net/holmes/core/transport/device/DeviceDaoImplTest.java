@@ -84,13 +84,13 @@ public class DeviceDaoImplTest {
     @Test
     public void testFindDevice() {
         Device device = createMock(Device.class);
-        InetAddress inetAddress = createMock(InetAddress.class);
+        InetAddress address = createMock(InetAddress.class);
 
         expect(device.getId()).andReturn("deviceId");
-        expect(device.getInetAddress()).andReturn(inetAddress);
-        expect(inetAddress.getHostAddress()).andReturn("localhost");
+        expect(device.getAddress()).andReturn(address);
+        expect(address.getHostAddress()).andReturn("localhost");
 
-        replay(device, inetAddress);
+        replay(device, address);
 
         DeviceDaoImpl deviceDao = new DeviceDaoImpl();
         deviceDao.addDevice(device);
@@ -98,7 +98,7 @@ public class DeviceDaoImplTest {
 
         assertEquals(1, devices.size());
 
-        verify(device, inetAddress);
+        verify(device, address);
     }
 }
 

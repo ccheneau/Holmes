@@ -106,12 +106,12 @@ public class MediaIndexElement implements Serializable {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(parentId)
-                .addValue(mediaType)
-                .addValue(mimeType)
-                .addValue(name)
-                .addValue(path)
-                .addValue(localPath)
+                .add("parentId", parentId)
+                .add("mediaType", mediaType)
+                .add("mimeType", mimeType)
+                .add("name", name)
+                .add("path", path)
+                .add("localPath", localPath)
                 .toString();
     }
 }

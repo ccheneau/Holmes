@@ -68,7 +68,7 @@ public class DeviceDaoImpl implements DeviceDao {
         return Collections2.filter(devices.values(), new Predicate<Device>() {
             @Override
             public boolean apply(Device input) {
-                return input.getInetAddress().getHostAddress().equals(hostAddress);
+                return input.getAddress().getHostAddress().equals(hostAddress);
             }
         });
     }

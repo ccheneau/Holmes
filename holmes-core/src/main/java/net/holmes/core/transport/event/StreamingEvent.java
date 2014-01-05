@@ -90,12 +90,12 @@ public final class StreamingEvent {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(type)
-                .addValue(deviceId)
-                .addValue(success)
-                .addValue(errorMessage)
-                .addValue(duration)
-                .addValue(position)
+                .add("type", type)
+                .add("deviceId", deviceId)
+                .add("success", success)
+                .add("errorMessage", errorMessage)
+                .add("duration", duration)
+                .add("position", position)
                 .toString();
     }
 

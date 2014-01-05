@@ -78,9 +78,9 @@ public final class ConfigurationNode {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(id)
-                .addValue(label)
-                .addValue(path)
+                .add("id", id)
+                .add("label", label)
+                .add("path", path)
                 .toString();
     }
 }

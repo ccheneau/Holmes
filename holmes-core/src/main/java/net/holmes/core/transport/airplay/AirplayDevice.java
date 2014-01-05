@@ -35,11 +35,11 @@ public class AirplayDevice extends Device {
     /**
      * Instantiates a new Airplay device
      *
-     * @param id                device id
-     * @param name              device name
-     * @param address           device host
-     * @param port              device port
-     * @param features          device features
+     * @param id       device id
+     * @param name     device name
+     * @param address  device host
+     * @param port     device port
+     * @param features device features
      */
     public AirplayDevice(final String id, final String name, final InetAddress address, final int port, final AirplayFeatures features) {
         super(id, name, address);
@@ -84,7 +84,7 @@ public class AirplayDevice extends Device {
      */
     public Socket getConnection() throws IOException {
         if (socket == null || socket.isClosed())
-            socket = new Socket(getInetAddress(), port);
+            socket = new Socket(getAddress(), port);
 
         return socket;
     }
@@ -92,11 +92,11 @@ public class AirplayDevice extends Device {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .addValue(id)
-                .addValue(name)
-                .addValue(inetAddress)
-                .addValue(port)
-                .addValue(features)
+                .add("id", id)
+                .add("name", name)
+                .add("address", address)
+                .add("port", port)
+                .add("features", features)
                 .toString();
     }
 }
