@@ -77,7 +77,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.addDevice(new AirplayDevice("id", "name", null, 0));
+        transportService.addDevice(new AirplayDevice("id", "name", null, 0, null));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -216,7 +216,7 @@ public class TransportServiceImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         Configuration configuration = createMock(Configuration.class);
 
-        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0));
+        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         sessionDao.initSession("deviceId", "contentUrl", "contentName");
         expectLastCall();
         expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
@@ -290,7 +290,7 @@ public class TransportServiceImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         Configuration configuration = createMock(Configuration.class);
 
-        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0));
+        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.stop(isA(AirplayDevice.class));
         expectLastCall();
         expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
@@ -353,7 +353,7 @@ public class TransportServiceImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         Configuration configuration = createMock(Configuration.class);
 
-        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0));
+        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.pause(isA(AirplayDevice.class));
         expectLastCall();
         expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
@@ -416,7 +416,7 @@ public class TransportServiceImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         Configuration configuration = createMock(Configuration.class);
 
-        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0));
+        expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.resume(isA(AirplayDevice.class));
         expectLastCall();
         expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
@@ -610,6 +610,26 @@ public class TransportServiceImplTest {
          */
         public FakeDevice() {
             super("id", "name", null);
+        }
+
+        @Override
+        public boolean isVideoSupported() {
+            return false;
+        }
+
+        @Override
+        public boolean isAudioSupported() {
+            return false;
+        }
+
+        @Override
+        public boolean isImageSupported() {
+            return false;
+        }
+
+        @Override
+        public boolean isSlideShowSupported() {
+            return false;
         }
 
         @Override

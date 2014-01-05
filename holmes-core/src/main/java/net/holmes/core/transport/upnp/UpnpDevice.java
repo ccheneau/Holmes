@@ -56,6 +56,26 @@ public class UpnpDevice extends Device {
     }
 
     @Override
+    public boolean isVideoSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean isAudioSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean isImageSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean isSlideShowSupported() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return Objects.toStringHelper(this)
                 .addValue(id)

@@ -21,6 +21,7 @@ import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.airplay.AirplayDevice;
+import net.holmes.core.transport.airplay.AirplayFeatures;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,7 @@ import static net.holmes.core.common.configuration.Parameter.ENABLE_AIRPLAY;
 public final class AirplayServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayServer.class);
     private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
+    private static final String FEATURES_PROPERTY = "features";
     private final Configuration configuration;
     private final InetAddress localAddress;
     private final TransportService transportService;
@@ -127,7 +129,8 @@ public final class AirplayServer implements Service {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress()) {
                     if (LOGGER.isDebugEnabled()) LOGGER.debug("Build Airplay device for {}", serviceInfo.toString());
-                    return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort());
+                    AirplayFeatures features = new AirplayFeatures(serviceInfo.getPropertyString(FEATURES_PROPERTY));
+                    return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort(), features);
                 }
         }
         return null;

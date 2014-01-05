@@ -68,6 +68,34 @@ public abstract class Device {
     }
 
     /**
+     * Check if video streaming is supported
+     *
+     * @return true if video streaming is supported
+     */
+    public abstract boolean isVideoSupported();
+
+    /**
+     * Check if audio streaming is supported
+     *
+     * @return true if audio streaming is supported
+     */
+    public abstract boolean isAudioSupported();
+
+    /**
+     * Check if image is supported is supported
+     *
+     * @return true if image is supported
+     */
+    public abstract boolean isImageSupported();
+
+    /**
+     * Check if image slide show is supported
+     *
+     * @return true if slide show is supported
+     */
+    public abstract boolean isSlideShowSupported();
+
+    /**
      * Close device.
      */
     public abstract void close();

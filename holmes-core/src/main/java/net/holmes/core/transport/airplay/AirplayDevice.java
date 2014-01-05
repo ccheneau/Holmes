@@ -29,19 +29,42 @@ import java.net.Socket;
  */
 public class AirplayDevice extends Device {
     private final int port;
+    private final AirplayFeatures features;
     private Socket socket = null;
 
     /**
      * Instantiates a new Airplay device
      *
-     * @param id      device id
-     * @param name    device name
-     * @param address device host
-     * @param port    device port
+     * @param id                device id
+     * @param name              device name
+     * @param address           device host
+     * @param port              device port
+     * @param features          device features
      */
-    public AirplayDevice(final String id, final String name, final InetAddress address, final int port) {
+    public AirplayDevice(final String id, final String name, final InetAddress address, final int port, final AirplayFeatures features) {
         super(id, name, address);
         this.port = port;
+        this.features = features;
+    }
+
+    @Override
+    public boolean isVideoSupported() {
+        return features.isVideoSupported();
+    }
+
+    @Override
+    public boolean isAudioSupported() {
+        return features.isAudioSupported();
+    }
+
+    @Override
+    public boolean isImageSupported() {
+        return features.isImageSupported();
+    }
+
+    @Override
+    public boolean isSlideShowSupported() {
+        return features.isSlideShowSupported();
     }
 
     @Override
@@ -73,6 +96,7 @@ public class AirplayDevice extends Device {
                 .addValue(name)
                 .addValue(inetAddress)
                 .addValue(port)
+                .addValue(features)
                 .toString();
     }
 }
