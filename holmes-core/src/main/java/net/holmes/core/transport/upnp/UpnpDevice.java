@@ -18,6 +18,7 @@
 package net.holmes.core.transport.upnp;
 
 import com.google.common.base.Objects;
+import net.holmes.core.common.mimetype.MimeType;
 import net.holmes.core.transport.device.Device;
 import org.fourthline.cling.model.meta.RemoteService;
 
@@ -31,6 +32,9 @@ public class UpnpDevice extends Device {
 
     private final List<String> supportedMimeTypes;
     private final RemoteService avTransportService;
+    private boolean videoSupported = false;
+    private boolean audioSupported = false;
+    private boolean imageSupported = false;
 
     /**
      * Instantiates a new Upnp device
@@ -45,6 +49,24 @@ public class UpnpDevice extends Device {
         super(id, name, hostAddress);
         this.supportedMimeTypes = supportedMimeTypes;
         this.avTransportService = avTransportService;
+        if (supportedMimeTypes != null) {
+            for (String supportedMimeType : supportedMimeTypes) {
+                MimeType mimeType = new MimeType(supportedMimeType);
+                switch (mimeType.getType()) {
+                    case TYPE_VIDEO:
+                        videoSupported = true;
+                        break;
+                    case TYPE_AUDIO:
+                        audioSupported = true;
+                        break;
+                    case TYPE_IMAGE:
+                        imageSupported = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     public List<String> getSupportedMimeTypes() {
@@ -57,22 +79,22 @@ public class UpnpDevice extends Device {
 
     @Override
     public boolean isVideoSupported() {
-        return true;
+        return videoSupported;
     }
 
     @Override
     public boolean isAudioSupported() {
-        return true;
+        return audioSupported;
     }
 
     @Override
     public boolean isImageSupported() {
-        return true;
+        return imageSupported;
     }
 
     @Override
     public boolean isSlideShowSupported() {
-        return true;
+        return imageSupported;
     }
 
     @Override
@@ -81,8 +103,11 @@ public class UpnpDevice extends Device {
                 .add("id", id)
                 .add("name", name)
                 .add("address", address)
-                .add("supportedMimeTypes", supportedMimeTypes)
+                .add("videoSupported", videoSupported)
+                .add("audioSupported", audioSupported)
+                .add("imageSupported", imageSupported)
                 .add("avTransportService", avTransportService)
+                .add("supportedMimeTypes", supportedMimeTypes)
                 .toString();
     }
 
