@@ -19,8 +19,7 @@ package net.holmes.core.transport.airplay;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AirplayDeviceTest {
 
@@ -28,6 +27,7 @@ public class AirplayDeviceTest {
     public void testAirplayDeviceNoFeatures() {
         AirplayFeatures features = new AirplayFeatures("0x000000");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertNotNull(device.toString());
         assertFalse(device.isVideoSupported());
         assertFalse(device.isAudioSupported());
         assertFalse(device.isImageSupported());
@@ -39,6 +39,7 @@ public class AirplayDeviceTest {
     public void testAirplayDeviceFullFeatures() {
         AirplayFeatures features = new AirplayFeatures("0xFFFFFF");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertNotNull(device.toString());
         assertTrue(device.isVideoSupported());
         assertTrue(device.isAudioSupported());
         assertTrue(device.isImageSupported());
@@ -50,6 +51,7 @@ public class AirplayDeviceTest {
     public void testAirplayDeviceNullFeatures() {
         AirplayFeatures features = new AirplayFeatures(null);
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertNotNull(device.toString());
         assertFalse(device.isVideoSupported());
         assertFalse(device.isAudioSupported());
         assertFalse(device.isImageSupported());
@@ -61,6 +63,7 @@ public class AirplayDeviceTest {
     public void testAirplayDeviceShortFeatures() {
         AirplayFeatures features = new AirplayFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertNotNull(device.toString());
         assertFalse(device.isVideoSupported());
         assertFalse(device.isAudioSupported());
         assertFalse(device.isImageSupported());
