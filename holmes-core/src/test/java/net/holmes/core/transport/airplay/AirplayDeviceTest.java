@@ -46,4 +46,25 @@ public class AirplayDeviceTest {
         device.close();
     }
 
+    @Test
+    public void testAirplayDeviceNullFeatures() {
+        AirplayFeatures features = new AirplayFeatures(null);
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertFalse(device.isVideoSupported());
+        assertFalse(device.isAudioSupported());
+        assertFalse(device.isImageSupported());
+        assertFalse(device.isSlideShowSupported());
+        device.close();
+    }
+
+    @Test
+    public void testAirplayDeviceShortFeatures() {
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        assertFalse(device.isVideoSupported());
+        assertFalse(device.isAudioSupported());
+        assertFalse(device.isImageSupported());
+        assertFalse(device.isSlideShowSupported());
+        device.close();
+    }
 }
