@@ -21,11 +21,11 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.RootNode;
 import net.holmes.core.transport.TransportService;
+import net.holmes.core.transport.airplay.device.AirplayDevice;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
 import net.holmes.core.transport.session.StreamingSession;
 import net.holmes.core.transport.session.UnknownSessionException;
-import net.holmes.core.transport.upnp.UpnpDevice;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -157,7 +157,7 @@ public class StreamingHandler {
     private Device getDevice() {
         Collection<Device> devices = transportService.getDevices();
         for (Device device : devices) {
-            if (device instanceof UpnpDevice) return device;
+            if (device instanceof AirplayDevice) return device;
         }
         return null;
     }

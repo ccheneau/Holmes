@@ -23,6 +23,8 @@ import net.holmes.core.transport.airplay.command.PlayCommand;
 import net.holmes.core.transport.airplay.command.PlayStatusCommand;
 import net.holmes.core.transport.airplay.command.RateCommand;
 import net.holmes.core.transport.airplay.command.StopCommand;
+import net.holmes.core.transport.airplay.controlpoint.ControlPoint;
+import net.holmes.core.transport.airplay.device.AirplayDevice;
 import net.holmes.core.transport.device.DeviceStreamer;
 
 import javax.inject.Inject;
@@ -44,9 +46,9 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
      * @param eventBus event bus
      */
     @Inject
-    public AirplayStreamerImpl(final EventBus eventBus) {
+    public AirplayStreamerImpl(final EventBus eventBus, final ControlPoint controlPoint) {
         super(eventBus);
-        this.controlPoint = new ControlPoint();
+        this.controlPoint = controlPoint;
     }
 
     @Override

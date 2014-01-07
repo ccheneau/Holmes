@@ -23,7 +23,7 @@ import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.transport.TransportService;
-import net.holmes.core.transport.upnp.UpnpDevice;
+import net.holmes.core.transport.upnp.device.UpnpDevice;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;

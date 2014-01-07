@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.transport.airplay;
+package net.holmes.core.transport.airplay.device;
 
 import com.google.common.base.Objects;
 

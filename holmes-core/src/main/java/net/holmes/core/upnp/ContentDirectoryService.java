@@ -24,7 +24,7 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.*;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.Device;
-import net.holmes.core.transport.upnp.UpnpDevice;
+import net.holmes.core.transport.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;

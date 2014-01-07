@@ -20,8 +20,8 @@ package net.holmes.core.airplay;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
 import net.holmes.core.transport.TransportService;
-import net.holmes.core.transport.airplay.AirplayDevice;
-import net.holmes.core.transport.airplay.AirplayFeatures;
+import net.holmes.core.transport.airplay.device.AirplayDevice;
+import net.holmes.core.transport.airplay.device.AirplayFeatures;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

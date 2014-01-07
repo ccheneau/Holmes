@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.transport.device.DeviceStreamer;
+import net.holmes.core.transport.upnp.device.UpnpDevice;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;
