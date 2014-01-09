@@ -47,56 +47,88 @@ public class AsyncControlPoint extends ControlPoint {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(final AirplayDevice device, final Command command) {
         executor.execute(new Runnable() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void run() {
                 try {
                     // Get device socket
                     Socket socket = device.getConnection();
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    // Send command
+                    sendCommand(socket, command);
 
-                    // Write request to socket
-                    out.write(command.getRequest());
-                    out.flush();
+                    // Read command response
+                    CommandResponse response = readCommandResponse(socket);
 
-                    // Read response
-                    List<String> responseLines = Lists.newArrayList();
-                    String line;
-                    while ((line = in.readLine().trim()).length() != 0)
-                        responseLines.add(line);
-
-                    // Decode http response
-                    DeviceResponse response = decodeResponse(responseLines);
-
-                    Map<String, String> contentParameters = null;
-                    int contentLength = response.getContentLength();
-                    if (contentLength > 0) {
-                        // Read response content
-                        StringBuilder sbContent = new StringBuilder(contentLength);
-                        char buffer[] = new char[1024];
-                        int read;
-                        int totalRead = 0;
-                        while (totalRead < contentLength && (read = in.read(buffer)) != -1) {
-                            totalRead += read;
-                            sbContent.append(buffer, 0, read);
-                        }
-                        if (CONTENT_TYPE_PARAMETERS.equals(response.getContentType()))
-                            // Decode content parameters
-                            contentParameters = decodeContentParameters(sbContent.toString());
-                    }
-
-                    if (response.getCode() == OK.code())
-                        command.success(contentParameters);
+                    if (response.getHttpResponse().getCode() == OK.code())
+                        command.success(response.getContentParameters());
                     else
-                        command.failure(response.getMessage());
+                        command.failure(response.getHttpResponse().getMessage());
 
                 } catch (IOException e) {
                     command.failure(e.getMessage());
                 }
             }
         });
+    }
+
+    /**
+     * Send command.
+     *
+     * @param socket  socket
+     * @param command command
+     * @throws IOException
+     */
+    private void sendCommand(final Socket socket, final Command command) throws IOException {
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+        // Write request to socket
+        out.write(command.getRequest());
+        out.flush();
+    }
+
+    /**
+     * Read command response.
+     *
+     * @param socket socket
+     * @return command response
+     * @throws IOException
+     */
+    private CommandResponse readCommandResponse(final Socket socket) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        // Read Http response
+        List<String> httpResponseLines = Lists.newArrayList();
+        String line;
+        while ((line = in.readLine().trim()).length() != 0)
+            httpResponseLines.add(line);
+
+        // Decode command http response
+        CommandHttpResponse response = decodeHttpResponse(httpResponseLines);
+
+        // Get content parameters
+        Map<String, String> contentParameters = null;
+        int contentLength = response.getContentLength();
+        if (contentLength > 0) {
+            // Read response content
+            StringBuilder sbContent = new StringBuilder(contentLength);
+            char buffer[] = new char[1024];
+            int read;
+            int totalRead = 0;
+            while (totalRead < contentLength && (read = in.read(buffer)) != -1) {
+                totalRead += read;
+                sbContent.append(buffer, 0, read);
+            }
+
+            // Decode content parameters
+            if (CONTENT_TYPE_PARAMETERS.equals(response.getContentType()))
+                contentParameters = decodeContentParameters(sbContent.toString());
+        }
+        return new CommandResponse(response, contentParameters);
     }
 }

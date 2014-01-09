@@ -30,27 +30,27 @@ import static org.junit.Assert.*;
 public class ControlPointTest {
 
     @Test
-    public void testDecodeResponse() {
+    public void testDecodeHttpResponse() {
         ControlPointTester controlPointTester = new ControlPointTester();
         List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK", "Content-Type: text/parameters", "Content-Length: 10");
-        ControlPoint.DeviceResponse deviceResponse = controlPointTester.testDecodeResponse(responseLines);
-        assertEquals(200, deviceResponse.getCode());
-        assertEquals("OK", deviceResponse.getMessage());
-        assertEquals(10, deviceResponse.getContentLength());
-        assertEquals("text/parameters", deviceResponse.getContentType());
-        assertNotNull(deviceResponse.toString());
+        ControlPoint.CommandHttpResponse httpResponse = controlPointTester.testHttpDecodeResponse(responseLines);
+        assertEquals(200, httpResponse.getCode());
+        assertEquals("OK", httpResponse.getMessage());
+        assertEquals(10, httpResponse.getContentLength());
+        assertEquals("text/parameters", httpResponse.getContentType());
+        assertNotNull(httpResponse.toString());
     }
 
     @Test
     public void testDecodeResponseNoHeaders() {
         ControlPointTester controlPointTester = new ControlPointTester();
         List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK");
-        ControlPoint.DeviceResponse deviceResponse = controlPointTester.testDecodeResponse(responseLines);
-        assertEquals(200, deviceResponse.getCode());
-        assertEquals("OK", deviceResponse.getMessage());
-        assertEquals(0, deviceResponse.getContentLength());
-        assertNull(deviceResponse.getContentType());
-        assertNotNull(deviceResponse.toString());
+        ControlPoint.CommandHttpResponse httpResponse = controlPointTester.testHttpDecodeResponse(responseLines);
+        assertEquals(200, httpResponse.getCode());
+        assertEquals("OK", httpResponse.getMessage());
+        assertEquals(0, httpResponse.getContentLength());
+        assertNull(httpResponse.getContentType());
+        assertNotNull(httpResponse.toString());
     }
 
     @Test
@@ -62,6 +62,20 @@ public class ControlPointTest {
         assertEquals("14.467000", parameters.get("position"));
     }
 
+    @Test
+    public void testCommandResponse() {
+        ControlPointTester controlPointTester = new ControlPointTester();
+        List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK", "Content-Type: text/parameters", "Content-Length: 10");
+        String content = "duration: 83.124794\nposition: 14.467000";
+        ControlPoint.CommandHttpResponse httpResponse = controlPointTester.testHttpDecodeResponse(responseLines);
+        Map<String, String> parameters = controlPointTester.testDecodeContentParameters(content);
+        ControlPoint.CommandResponse response = controlPointTester.testCommandResponse(httpResponse, parameters);
+        assertNotNull(response);
+        assertNotNull(response.toString());
+        assertEquals(2, response.getContentParameters().size());
+        assertEquals(200, response.getHttpResponse().getCode());
+    }
+
     private class ControlPointTester extends ControlPoint {
 
         @Override
@@ -69,12 +83,16 @@ public class ControlPointTest {
 
         }
 
-        public DeviceResponse testDecodeResponse(List<String> responseLines) {
-            return decodeResponse(responseLines);
+        public CommandHttpResponse testHttpDecodeResponse(List<String> responseLines) {
+            return decodeHttpResponse(responseLines);
         }
 
         public Map<String, String> testDecodeContentParameters(String content) {
             return decodeContentParameters(content);
+        }
+
+        public CommandResponse testCommandResponse(CommandHttpResponse httpResponse, Map<String, String> contentParameters) {
+            return new CommandResponse(httpResponse, contentParameters);
         }
     }
 }

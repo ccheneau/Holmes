@@ -48,12 +48,12 @@ public abstract class ControlPoint {
     public abstract void execute(final AirplayDevice device, final Command command);
 
     /**
-     * Decode device response.
+     * Decode Http response.
      *
      * @param responseLines response lines
-     * @return device response
+     * @return command Http response
      */
-    protected DeviceResponse decodeResponse(final List<String> responseLines) {
+    protected CommandHttpResponse decodeHttpResponse(final List<String> responseLines) {
         // Decode http response on first line
         Iterable<String> responseIt = Splitter.on(SPACE).split(responseLines.get(0));
         int code = Integer.valueOf(Iterables.get(responseIt, 1));
@@ -65,7 +65,7 @@ public abstract class ControlPoint {
             Iterable<String> it = Splitter.on(PARAMETER_SEPARATOR).trimResults().split(responseLines.get(i));
             headers.put(Iterables.get(it, 0), Iterables.getLast(it));
         }
-        return new DeviceResponse(code, message, headers);
+        return new CommandHttpResponse(code, message, headers);
     }
 
     /**
@@ -84,21 +84,21 @@ public abstract class ControlPoint {
     }
 
     /**
-     * Device response
+     * Command Http response
      */
-    protected class DeviceResponse {
+    protected class CommandHttpResponse {
         private final int code;
         private final String message;
         private final Map<String, String> headers;
 
         /**
-         * Instantiates a new device response.
+         * Instantiates a new command Http response.
          *
          * @param code    http response code
          * @param message message
          * @param headers http headers
          */
-        private DeviceResponse(int code, String message, Map<String, String> headers) {
+        private CommandHttpResponse(int code, String message, Map<String, String> headers) {
             this.code = code;
             this.message = message;
             this.headers = headers;
@@ -134,7 +134,43 @@ public abstract class ControlPoint {
         public String toString() {
             return Objects.toStringHelper(this)
                     .add("code", code)
+                    .add("message", message)
                     .add("headers", headers)
+                    .toString();
+        }
+    }
+
+    /**
+     * Command response.
+     */
+    protected class CommandResponse {
+        private final CommandHttpResponse httpResponse;
+        private final Map<String, String> contentParameters;
+
+        /**
+         * Instantiates a new command response.
+         *
+         * @param httpResponse      command Http response
+         * @param contentParameters content parameters
+         */
+        public CommandResponse(CommandHttpResponse httpResponse, Map<String, String> contentParameters) {
+            this.httpResponse = httpResponse;
+            this.contentParameters = contentParameters;
+        }
+
+        public CommandHttpResponse getHttpResponse() {
+            return httpResponse;
+        }
+
+        public Map<String, String> getContentParameters() {
+            return contentParameters;
+        }
+
+        @Override
+        public String toString() {
+            return Objects.toStringHelper(this)
+                    .add("httpResponse", httpResponse)
+                    .add("contentParameters", contentParameters)
                     .toString();
         }
     }
