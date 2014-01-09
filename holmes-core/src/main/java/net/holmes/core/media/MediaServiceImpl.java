@@ -110,9 +110,7 @@ public final class MediaServiceImpl implements MediaService {
 
     @Override
     public String getNodeUrl(AbstractNode node) {
-        return new StringBuilder().append("http://")
-                .append(localAddress.getHostAddress()).append(":").append(configuration.getIntParameter(HTTP_SERVER_PORT))
-                .append(HTTP_CONTENT_REQUEST_PATH).append("?id=").append(node.getId()).toString();
+        return "http://" + localAddress.getHostAddress() + ":" + configuration.getIntParameter(HTTP_SERVER_PORT) + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
     }
 
     @Override
