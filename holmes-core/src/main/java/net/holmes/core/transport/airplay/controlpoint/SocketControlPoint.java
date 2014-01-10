@@ -24,57 +24,39 @@ import net.holmes.core.transport.airplay.device.AirplayDevice;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 /**
- * Asynchronous Airplay control point
+ * Airplay socket control point
  */
-public class AsyncControlPoint extends ControlPoint {
-    private static final int EXECUTOR_POOL_SIZE = 4;
-    private final ExecutorService executor;
+public class SocketControlPoint implements ControlPoint {
+    private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
 
-    /**
-     * Instantiates a new asynchronous Airplay control point
-     */
-    public AsyncControlPoint() {
-        executor = Executors.newFixedThreadPool(EXECUTOR_POOL_SIZE);
+    @Override
+    public void execute(AirplayDevice device, Command command) {
+        runDeviceCommand(device, command);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void execute(final AirplayDevice device, final Command command) {
-        executor.execute(new Runnable() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void run() {
-                try {
-                    // Get device socket
-                    Socket socket = device.getConnection();
+    protected void runDeviceCommand(AirplayDevice device, Command command) {
+        try {
+            // Get device socket
+            Socket socket = device.getConnection();
 
-                    // Send command
-                    sendCommand(socket, command);
+            // Send command
+            sendCommand(socket, command);
 
-                    // Read command response
-                    CommandResponse response = readCommandResponse(socket);
+            // Read command response
+            CommandResponse response = readCommandResponse(socket);
 
-                    if (response.getHttpResponse().getCode() == OK.code())
-                        command.success(response.getContentParameters());
-                    else
-                        command.failure(response.getHttpResponse().getMessage());
+            if (response.getCode() == OK.code())
+                command.success(response.getContentParameters());
+            else
+                command.failure(response.getMessage());
 
-                } catch (IOException e) {
-                    command.failure(e.getMessage());
-                }
-            }
-        });
+        } catch (IOException e) {
+            command.failure(e.getMessage());
+        }
     }
 
     /**
@@ -82,9 +64,9 @@ public class AsyncControlPoint extends ControlPoint {
      *
      * @param socket  socket
      * @param command command
-     * @throws IOException
+     * @throws java.io.IOException
      */
-    private void sendCommand(final Socket socket, final Command command) throws IOException {
+    protected void sendCommand(final Socket socket, final Command command) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
         // Write request to socket
@@ -99,7 +81,8 @@ public class AsyncControlPoint extends ControlPoint {
      * @return command response
      * @throws IOException
      */
-    private CommandResponse readCommandResponse(final Socket socket) throws IOException {
+    protected CommandResponse readCommandResponse(final Socket socket) throws IOException {
+        CommandResponse response = new CommandResponse();
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         // Read Http response
@@ -109,10 +92,9 @@ public class AsyncControlPoint extends ControlPoint {
             httpResponseLines.add(line);
 
         // Decode command http response
-        CommandHttpResponse response = decodeHttpResponse(httpResponseLines);
+        response.decodeHttpResponse(httpResponseLines);
 
         // Get content parameters
-        Map<String, String> contentParameters = null;
         int contentLength = response.getContentLength();
         if (contentLength > 0) {
             // Read response content
@@ -127,8 +109,8 @@ public class AsyncControlPoint extends ControlPoint {
 
             // Decode content parameters
             if (CONTENT_TYPE_PARAMETERS.equals(response.getContentType()))
-                contentParameters = decodeContentParameters(sbContent.toString());
+                response.decodeContentParameters(sbContent.toString());
         }
-        return new CommandResponse(response, contentParameters);
+        return response;
     }
 }

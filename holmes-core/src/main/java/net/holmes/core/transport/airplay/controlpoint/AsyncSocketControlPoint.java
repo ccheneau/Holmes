@@ -20,16 +20,32 @@ package net.holmes.core.transport.airplay.controlpoint;
 import net.holmes.core.transport.airplay.command.Command;
 import net.holmes.core.transport.airplay.device.AirplayDevice;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
- * Airplay control point: execute command on device
+ * Asynchronous Airplay socket control point
  */
-public interface ControlPoint {
+public class AsyncSocketControlPoint extends SocketControlPoint {
+    private static final int EXECUTOR_POOL_SIZE = 4;
+
+    private final ExecutorService executor;
 
     /**
-     * Execute command on device;
-     *
-     * @param device  device
-     * @param command command to run
+     * Instantiates a new asynchronous Airplay control point
      */
-    void execute(final AirplayDevice device, final Command command);
+    public AsyncSocketControlPoint() {
+        super();
+        executor = Executors.newFixedThreadPool(EXECUTOR_POOL_SIZE);
+    }
+
+    @Override
+    public void execute(final AirplayDevice device, final Command command) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                runDeviceCommand(device, command);
+            }
+        });
+    }
 }

@@ -54,7 +54,7 @@ import net.holmes.core.scheduled.IcecastDownloadService;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.TransportServiceImpl;
 import net.holmes.core.transport.airplay.AirplayStreamerImpl;
-import net.holmes.core.transport.airplay.controlpoint.AsyncControlPoint;
+import net.holmes.core.transport.airplay.controlpoint.AsyncSocketControlPoint;
 import net.holmes.core.transport.airplay.controlpoint.ControlPoint;
 import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceDaoImpl;
@@ -188,7 +188,7 @@ final class HolmesServerModule extends AbstractModule {
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
         bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
-        bind(ControlPoint.class).to(AsyncControlPoint.class);
+        bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
         bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);
 
