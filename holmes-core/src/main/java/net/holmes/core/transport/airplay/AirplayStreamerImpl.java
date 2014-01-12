@@ -116,12 +116,14 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         controlPoint.execute(device, new PlayStatusCommand() {
             @Override
             public void success(Map<String, String> contentParameters) {
-                Long duration = getContentParameterValue(CONTENT_PARAMETER_DURATION, contentParameters);
-                Long position = getContentParameterValue(CONTENT_PARAMETER_POSITION, contentParameters);
-                sendSuccess(STATUS, device.getId(), duration, position);
+                if (contentParameters != null && !contentParameters.isEmpty()) {
+                    Long duration = getContentParameterValue(CONTENT_PARAMETER_DURATION, contentParameters);
+                    Long position = getContentParameterValue(CONTENT_PARAMETER_POSITION, contentParameters);
+                    sendSuccess(STATUS, device.getId(), duration, position);
 
-                // If end of streaming is reached, send stop command
-                if (duration > 0 && position >= duration) stop(device);
+                    // If end of streaming is reached, send stop command
+                    if (duration > 0 && position >= duration) stop(device);
+                }
             }
 
             @Override
@@ -139,9 +141,6 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
      * @return content parameter value
      */
     private Long getContentParameterValue(final String parameterName, final Map<String, String> contentParameters) {
-        if (contentParameters != null && contentParameters.containsKey(parameterName))
-            return Double.valueOf(contentParameters.get(parameterName)).longValue();
-        else
-            return 0l;
+        return contentParameters.containsKey(parameterName) ? Double.valueOf(contentParameters.get(parameterName)).longValue() : 0l;
     }
 }

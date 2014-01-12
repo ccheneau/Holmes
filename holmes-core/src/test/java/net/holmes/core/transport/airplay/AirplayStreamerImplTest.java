@@ -260,20 +260,10 @@ public class AirplayStreamerImplTest {
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
-        eventBus.post(capture(captureStreamingEvent));
-        expectLastCall().atLeastOnce();
-
-        expect(device.getId()).andReturn("id");
 
         replay(eventBus, device);
         AirplayStreamerImpl streamer = new AirplayStreamerImpl(eventBus, controlPoint);
         streamer.updateStatus(device);
-        assertEquals(STATUS, captureStreamingEvent.getValue().getType());
-        assertEquals("id", captureStreamingEvent.getValue().getDeviceId());
-        assertTrue(captureStreamingEvent.getValue().isSuccess());
-        assertEquals(0l, captureStreamingEvent.getValue().getDuration().longValue());
-        assertEquals(0l, captureStreamingEvent.getValue().getPosition().longValue());
         verify(eventBus, device);
     }
 
@@ -288,20 +278,10 @@ public class AirplayStreamerImplTest {
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
-        eventBus.post(capture(captureStreamingEvent));
-        expectLastCall().atLeastOnce();
-
-        expect(device.getId()).andReturn("id");
 
         replay(eventBus, device);
         AirplayStreamerImpl streamer = new AirplayStreamerImpl(eventBus, controlPoint);
         streamer.updateStatus(device);
-        assertEquals(STATUS, captureStreamingEvent.getValue().getType());
-        assertEquals("id", captureStreamingEvent.getValue().getDeviceId());
-        assertTrue(captureStreamingEvent.getValue().isSuccess());
-        assertEquals(0l, captureStreamingEvent.getValue().getDuration().longValue());
-        assertEquals(0l, captureStreamingEvent.getValue().getPosition().longValue());
         verify(eventBus, device);
     }
 
@@ -360,6 +340,35 @@ public class AirplayStreamerImplTest {
         AirplayStreamerImpl streamer = new AirplayStreamerImpl(eventBus, controlPoint);
         streamer.updateStatus(device);
         assertEquals(STOP, captureStreamingEvent.getValue().getType());
+        assertEquals("id", captureStreamingEvent.getValue().getDeviceId());
+        assertTrue(captureStreamingEvent.getValue().isSuccess());
+        verify(eventBus, device);
+    }
+
+    @Test
+    public void testUpdateStatusSuccessWithBadParameters() {
+        EventBus eventBus = createMock(EventBus.class);
+        ControlPoint controlPoint = new ControlPoint() {
+            @Override
+            public void execute(AirplayDevice device, Command command) {
+                assertNotNull(command.getRequest());
+                Map<String, String> parameters = Maps.newHashMap();
+                parameters.put("bad_duration", "60");
+                parameters.put("bad_position", "70");
+                command.success(parameters);
+            }
+        };
+        AirplayDevice device = createMock(AirplayDevice.class);
+        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        eventBus.post(capture(captureStreamingEvent));
+        expectLastCall().atLeastOnce();
+
+        expect(device.getId()).andReturn("id").atLeastOnce();
+
+        replay(eventBus, device);
+        AirplayStreamerImpl streamer = new AirplayStreamerImpl(eventBus, controlPoint);
+        streamer.updateStatus(device);
+        assertEquals(STATUS, captureStreamingEvent.getValue().getType());
         assertEquals("id", captureStreamingEvent.getValue().getDeviceId());
         assertTrue(captureStreamingEvent.getValue().isSuccess());
         verify(eventBus, device);

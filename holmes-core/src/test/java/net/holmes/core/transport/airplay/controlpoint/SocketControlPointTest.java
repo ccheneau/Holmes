@@ -48,16 +48,16 @@ public class SocketControlPointTest {
         Capture<byte[]> captureRequest = new Capture<>();
         Capture<Map<String, String>> captureContentParameters = new Capture<>();
 
-        expect(device.getConnection()).andReturn(socket);
-        expect(socket.getOutputStream()).andReturn(socketOutputStream);
-        expect(socket.getInputStream()).andReturn(socketInputStream);
-        expect(command.getRequest()).andReturn(request);
+        expect(device.getConnection()).andReturn(socket).atLeastOnce();
+        expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
+        expect(socket.getInputStream()).andReturn(socketInputStream).atLeastOnce();
+        expect(command.getRequest()).andReturn(request).atLeastOnce();
         socketOutputStream.write(capture(captureRequest), eq(0), eq(request.length()));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         socketOutputStream.flush();
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         command.success(capture(captureContentParameters));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
 
         replay(device, command, socket, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint();
@@ -88,16 +88,16 @@ public class SocketControlPointTest {
         Capture<byte[]> captureRequest = new Capture<>();
         Capture<Map<String, String>> captureContentParameters = new Capture<>();
 
-        expect(device.getConnection()).andReturn(socket);
-        expect(socket.getOutputStream()).andReturn(socketOutputStream);
-        expect(socket.getInputStream()).andReturn(socketInputStream);
-        expect(command.getRequest()).andReturn(request);
+        expect(device.getConnection()).andReturn(socket).atLeastOnce();
+        expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
+        expect(socket.getInputStream()).andReturn(socketInputStream).atLeastOnce();
+        expect(command.getRequest()).andReturn(request).atLeastOnce();
         socketOutputStream.write(capture(captureRequest), eq(0), eq(request.length()));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         socketOutputStream.flush();
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         command.success(capture(captureContentParameters));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
 
         replay(device, command, socket, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint();
@@ -128,16 +128,16 @@ public class SocketControlPointTest {
         Capture<byte[]> captureRequest = new Capture<>();
         Capture<Map<String, String>> captureContentParameters = new Capture<>();
 
-        expect(device.getConnection()).andReturn(socket);
-        expect(socket.getOutputStream()).andReturn(socketOutputStream);
-        expect(socket.getInputStream()).andReturn(socketInputStream);
-        expect(command.getRequest()).andReturn(request);
+        expect(device.getConnection()).andReturn(socket).atLeastOnce();
+        expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
+        expect(socket.getInputStream()).andReturn(socketInputStream).atLeastOnce();
+        expect(command.getRequest()).andReturn(request).atLeastOnce();
         socketOutputStream.write(capture(captureRequest), eq(0), eq(request.length()));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         socketOutputStream.flush();
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         command.success(capture(captureContentParameters));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
 
         replay(device, command, socket, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint();
@@ -163,16 +163,16 @@ public class SocketControlPointTest {
         Capture<byte[]> captureRequest = new Capture<>();
         Capture<String> captureMessage = new Capture<>();
 
-        expect(device.getConnection()).andReturn(socket);
-        expect(socket.getOutputStream()).andReturn(socketOutputStream);
-        expect(socket.getInputStream()).andReturn(socketInputStream);
-        expect(command.getRequest()).andReturn(request);
+        expect(device.getConnection()).andReturn(socket).atLeastOnce();
+        expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
+        expect(socket.getInputStream()).andReturn(socketInputStream).atLeastOnce();
+        expect(command.getRequest()).andReturn(request).atLeastOnce();
         socketOutputStream.write(capture(captureRequest), eq(0), eq(request.length()));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         socketOutputStream.flush();
-        expectLastCall();
+        expectLastCall().atLeastOnce();
         command.failure(capture(captureMessage));
-        expectLastCall();
+        expectLastCall().atLeastOnce();
 
         replay(device, command, socket, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint();
