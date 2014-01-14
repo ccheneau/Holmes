@@ -17,11 +17,12 @@
 
 package net.holmes.core.backend.handler;
 
+import com.google.common.collect.Lists;
+import net.holmes.core.backend.response.PlaybackDevice;
+import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.media.model.RootNode;
 import net.holmes.core.transport.TransportService;
-import net.holmes.core.transport.airplay.device.AirplayDevice;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
 import net.holmes.core.transport.session.StreamingSession;
@@ -33,9 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
-
-import static net.holmes.core.media.MediaService.ChildNodeRequest;
+import java.util.List;
 
 /**
  * Handler for streaming REST requests.
@@ -58,124 +57,105 @@ public class StreamingHandler {
     }
 
     /**
-     * Play video content.
+     * Get playback devices.
      *
-     * @return status
+     * @return playback device list
      */
     @GET
-    @Path("/play/{index}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String play(@PathParam("index") int index) {
-        Device device = getDevice();
-        AbstractNode videoNode = getVideoContentNode(index);
-        String url = mediaService.getNodeUrl(videoNode);
-        try {
-            transportService.play(device.getId(), url, videoNode);
-        } catch (UnknownDeviceException e) {
-            return e.getMessage();
+    @Path("/devices")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<PlaybackDevice> getDevices() {
+        List<PlaybackDevice> playbackDevices = Lists.newArrayList();
+        for (Device device : transportService.getDevices()) {
+            playbackDevices.add(new PlaybackDevice(device.getId(), device.getName(), device.isVideoSupported(), device.isAudioSupported(), device.isImageSupported(), device.isSlideShowSupported()));
         }
-        return "Play device:[" + device.getId() + "] Node type [" + videoNode.getType() + "] Node Url [" + url + "]";
+        return playbackDevices;
     }
 
     /**
-     * Pause video content playback.
+     * Play content.
      *
      * @return status
      */
     @GET
-    @Path("/pause")
+    @Path("/play/{deviceId}/{contentId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String pause() {
-        Device device = getDevice();
+    public String play(@PathParam("deviceId") String deviceId, @PathParam("contentId") String contentId) {
+        AbstractNode contentNode = mediaService.getNode(contentId);
+        String url = mediaService.getNodeUrl(contentNode);
         try {
-            transportService.pause(device.getId());
+            transportService.play(deviceId, url, contentNode);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
-        return "Pause device:[" + device.getId() + "]";
+        return null;
     }
 
     /**
-     * Stop video content play back.
+     * Pause content playback.
      *
      * @return status
      */
     @GET
-    @Path("/stop")
+    @Path("/pause/{deviceId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String stop() {
-        Device device = getDevice();
+    public String pause(@PathParam("deviceId") String deviceId) {
         try {
-            transportService.stop(device.getId());
+            transportService.pause(deviceId);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
-        return "Stop device:[" + device.getId() + "]";
+        return null;
     }
 
     /**
-     * Resume video content playback.
+     * Stop content play back.
      *
      * @return status
      */
     @GET
-    @Path("/resume")
+    @Path("/stop/{deviceId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String resume() {
-        Device device = getDevice();
+    public String stop(@PathParam("deviceId") String deviceId) {
         try {
-            transportService.resume(device.getId());
+            transportService.stop(deviceId);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
-        return "Resume device:[" + device.getId() + "]";
+        return null;
     }
 
     /**
-     * Update video content playback status.
+     * Resume content playback.
      *
      * @return status
      */
     @GET
-    @Path("/status")
+    @Path("/resume/{deviceId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String status() {
-        Device device = getDevice();
+    public String resume(@PathParam("deviceId") String deviceId) {
         try {
-            StreamingSession session = transportService.getSession(device.getId());
-            return "Status device:[" + device.getId() + "]" + " session [" + session.toString() + "]";
+            transportService.resume(deviceId);
+        } catch (UnknownDeviceException e) {
+            return e.getMessage();
+        }
+        return null;
+    }
+
+    /**
+     * Update content playback status.
+     *
+     * @return playback status
+     */
+    @GET
+    @Path("/status/{deviceId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PlaybackStatus status(@PathParam("deviceId") String deviceId) {
+        try {
+            StreamingSession session = transportService.getSession(deviceId);
+            return new PlaybackStatus(session.getContentName(), session.getDuration(), session.getPosition());
         } catch (UnknownSessionException e) {
-            return e.getMessage();
+            return new PlaybackStatus(e.getMessage());
         }
-    }
-
-    /**
-     * Get device.
-     *
-     * @return device
-     */
-    private Device getDevice() {
-        Collection<Device> devices = transportService.getDevices();
-        for (Device device : devices) {
-            if (device instanceof AirplayDevice) return device;
-        }
-        return null;
-    }
-
-    /**
-     * Get video content node.
-     *
-     * @return video content node
-     */
-    private AbstractNode getVideoContentNode(final int index) {
-        AbstractNode node = mediaService.getNode(RootNode.VIDEO.getId());
-        AbstractNode rootVideo = mediaService.getChildNodes(new ChildNodeRequest(node)).getChildNodes().iterator().next();
-        Collection<AbstractNode> nodes = mediaService.getChildNodes(new ChildNodeRequest(rootVideo)).getChildNodes();
-        int i = 0;
-        for (AbstractNode childNode : nodes) {
-            if (i == index) return childNode;
-            i++;
-        }
-        return null;
     }
 }
