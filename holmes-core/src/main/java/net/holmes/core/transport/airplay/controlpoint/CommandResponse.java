@@ -28,6 +28,8 @@ import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
@@ -37,8 +39,8 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
  */
 public class CommandResponse {
     private static final String EOL = "\n";
-    private static final String SPACE = " ";
     private static final char PARAMETER_SEPARATOR = ':';
+    private static final Pattern HTTP_RESPONSE_PATTERN = Pattern.compile("^(.*)\\s(\\d+)\\s(.*)$");
 
     private int code;
     private String message;
@@ -82,13 +84,11 @@ public class CommandResponse {
      */
     public void decodeHttpResponse(final List<String> responseLines) {
         // Decode http response on first line
-        Iterable<String> responseIt = Splitter.on(SPACE).split(responseLines.get(0));
-        code = Integer.valueOf(Iterables.get(responseIt, 1));
-        String responseMessage = "";
-        for (int i = 2; i < Iterables.size(responseIt); i++) {
-            responseMessage += Iterables.get(responseIt, i) + SPACE;
+        Matcher matcher = HTTP_RESPONSE_PATTERN.matcher(responseLines.get(0));
+        if (matcher.find()) {
+            code = Integer.valueOf(matcher.group(2));
+            message = matcher.group(3);
         }
-        message = responseMessage.trim();
 
         // Decode http headers on next lines
         for (int i = 1; i < responseLines.size(); i++) {

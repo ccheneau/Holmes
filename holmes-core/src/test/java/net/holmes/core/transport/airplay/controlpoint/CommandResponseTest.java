@@ -30,10 +30,10 @@ public class CommandResponseTest {
     @Test
     public void testDecodeHttpResponse() {
         CommandResponse response = new CommandResponse();
-        List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK", "Content-Type: text/parameters", "Content-Length: 10");
+        List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK TEST", "Content-Type: text/parameters", "Content-Length : 10");
         response.decodeHttpResponse(responseLines);
         assertEquals(200, response.getCode());
-        assertEquals("OK", response.getMessage());
+        assertEquals("OK TEST", response.getMessage());
         assertEquals(10, response.getContentLength());
         assertEquals("text/parameters", response.getContentType());
         assertNotNull(response.toString());
