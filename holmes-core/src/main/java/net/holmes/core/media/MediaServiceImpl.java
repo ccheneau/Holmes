@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.configuration.Parameter.HTTP_SERVER_PORT;
 import static net.holmes.core.media.model.RootNode.ROOT;
@@ -110,7 +111,8 @@ public final class MediaServiceImpl implements MediaService {
 
     @Override
     public String getNodeUrl(AbstractNode node) {
-        return "http://" + localAddress.getHostAddress() + ":" + configuration.getIntParameter(HTTP_SERVER_PORT) + HTTP_CONTENT_REQUEST_PATH + "?id=" + node.getId();
+        return "http://" + localAddress.getHostAddress() + ":" + configuration.getIntParameter(HTTP_SERVER_PORT) +
+                HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }
 
     @Override

@@ -34,6 +34,7 @@ import javax.inject.Named;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
+import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 
 /**
@@ -65,9 +66,9 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         HttpFileRequest fileRequest = null;
         if (request.getMethod().equals(GET)) {
             QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-            if (decoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && decoder.parameters().get("id") != null) {
+            if (decoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && decoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
                 // Request for a content file is valid if content is found in media index
-                AbstractNode node = mediaService.getNode(decoder.parameters().get("id").get(0));
+                AbstractNode node = mediaService.getNode(decoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node instanceof ContentNode) {
                     ContentNode contentNode = (ContentNode) node;
                     fileRequest = new HttpFileRequest(request, new NodeFile(contentNode.getPath()), contentNode.getMimeType());
