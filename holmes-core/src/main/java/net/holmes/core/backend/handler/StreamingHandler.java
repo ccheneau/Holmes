@@ -18,10 +18,14 @@
 package net.holmes.core.backend.handler;
 
 import com.google.common.collect.Lists;
+import net.holmes.core.backend.response.BrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
+import net.holmes.core.media.model.ContentNode;
+import net.holmes.core.media.model.FolderNode;
+import net.holmes.core.media.model.RootNode;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
@@ -35,6 +39,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+
+import static net.holmes.core.backend.response.BrowseResult.BrowseContent;
+import static net.holmes.core.backend.response.BrowseResult.BrowseFolder;
+import static net.holmes.core.media.MediaService.ChildNodeRequest;
+import static net.holmes.core.media.MediaService.ChildNodeResult;
 
 /**
  * Handler for streaming REST requests.
@@ -157,5 +166,42 @@ public class StreamingHandler {
         } catch (UnknownSessionException e) {
             return new PlaybackStatus(e.getMessage());
         }
+    }
+
+    /**
+     * Browse for contents and folders on device.
+     *
+     * @param deviceId device id
+     * @param nodeId   node id
+     * @return folders and contents on device
+     */
+    @GET
+    @Path("/browse/{deviceId}/{nodeId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public BrowseResult browse(@PathParam("deviceId") String deviceId, @PathParam("nodeId") String nodeId) {
+        BrowseResult result = new BrowseResult();
+        result.setParentNodeId(nodeId);
+        try {
+            // Get device
+            Device device = transportService.getDevice(deviceId);
+
+            // Get browse node
+            AbstractNode node = mediaService.getNode(nodeId);
+            if (node == null && device.isVideoSupported()) node = mediaService.getNode(RootNode.VIDEO.getId());
+
+            if (node != null) {
+                // Get child nodes
+                ChildNodeResult childNodesResult = mediaService.getChildNodes(new ChildNodeRequest(node, device.getSupportedMimeTypes()));
+                // Build browse result
+                for (AbstractNode abstractNode : childNodesResult.getChildNodes())
+                    if (abstractNode instanceof FolderNode)
+                        result.getFolders().add(new BrowseFolder(abstractNode.getId(), abstractNode.getName()));
+                    else if (abstractNode instanceof ContentNode)
+                        result.getContents().add(new BrowseContent(abstractNode.getId(), abstractNode.getName(), mediaService.getNodeUrl(abstractNode)));
+            }
+        } catch (UnknownDeviceException e) {
+            result.setErrorMessage("Unknown device");
+        }
+        return result;
     }
 }
