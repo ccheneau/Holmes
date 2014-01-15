@@ -188,8 +188,8 @@ public final class UpnpServer implements Service {
          * @return Upnp device name
          */
         private String getDeviceName(final RemoteDevice device) {
-            if (device.getDetails() != null && device.getDetails().getManufacturerDetails() != null)
-                return device.getDetails().getManufacturerDetails().getManufacturer() + " " + device.getDetails().getFriendlyName();
+            if (device.getDetails() != null)
+                return device.getDetails().getFriendlyName();
             else
                 return device.getDisplayString();
         }
