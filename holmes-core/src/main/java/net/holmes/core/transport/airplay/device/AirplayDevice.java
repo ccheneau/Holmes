@@ -42,7 +42,7 @@ public class AirplayDevice extends Device {
      * @param features device features
      */
     public AirplayDevice(final String id, final String name, final InetAddress address, final int port, final AirplayFeatures features) {
-        super(id, name, address);
+        super(id, name, address, null);
         this.port = port;
         this.features = features;
     }

@@ -30,7 +30,6 @@ import java.util.List;
  */
 public class UpnpDevice extends Device {
 
-    private final List<String> supportedMimeTypes;
     private final RemoteService avTransportService;
     private boolean videoSupported = false;
     private boolean audioSupported = false;
@@ -46,8 +45,7 @@ public class UpnpDevice extends Device {
      * @param avTransportService AV transport service
      */
     public UpnpDevice(final String id, final String name, final InetAddress hostAddress, final List<String> supportedMimeTypes, final RemoteService avTransportService) {
-        super(id, name, hostAddress);
-        this.supportedMimeTypes = supportedMimeTypes;
+        super(id, name, hostAddress, supportedMimeTypes);
         this.avTransportService = avTransportService;
         if (supportedMimeTypes != null) {
             for (String supportedMimeType : supportedMimeTypes) {
@@ -67,10 +65,6 @@ public class UpnpDevice extends Device {
                 }
             }
         }
-    }
-
-    public List<String> getSupportedMimeTypes() {
-        return supportedMimeTypes;
     }
 
     public RemoteService getAvTransportService() {
