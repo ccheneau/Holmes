@@ -99,6 +99,11 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
+    public Device getDevice(final String deviceId) throws UnknownDeviceException {
+        return deviceDao.getDevice(deviceId);
+    }
+
+    @Override
     public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
         return sessionDao.getSession(deviceId);
     }

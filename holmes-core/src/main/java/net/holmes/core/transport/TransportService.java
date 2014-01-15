@@ -51,7 +51,7 @@ public interface TransportService {
      * @param hostAddress host address
      * @return list of devices
      */
-    Collection<Device> findDevices(final String hostAddress);
+    Collection<Device> findDevices(String hostAddress);
 
     /**
      * Get all devices.
@@ -59,6 +59,16 @@ public interface TransportService {
      * @return list of all devices
      */
     Collection<Device> getDevices();
+
+
+    /**
+     * Get device.
+     *
+     * @param deviceId device id
+     * @return list of all devices
+     * @throws UnknownDeviceException
+     */
+    Device getDevice(String deviceId) throws UnknownDeviceException;
 
     /**
      * Get streaming session.

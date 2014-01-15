@@ -39,6 +39,7 @@ import static net.holmes.core.common.configuration.Parameter.STREAMING_STATUS_UP
 import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
 import static net.holmes.core.transport.session.SessionStatus.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertNull;
 
 public class TransportServiceImplTest {
 
@@ -138,6 +139,27 @@ public class TransportServiceImplTest {
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
         transportService.getDevices();
+
+        verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+    }
+
+    @Test
+    public void testGetDevice() throws UnknownDeviceException {
+        DeviceDao deviceDao = createMock(DeviceDao.class);
+        SessionDao sessionDao = createMock(SessionDao.class);
+        DeviceStreamer upnpDeviceStreamer = createMock(DeviceStreamer.class);
+        DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
+        Configuration configuration = createMock(Configuration.class);
+
+        expect(deviceDao.getDevice("deviceId")).andReturn(null);
+        expect(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+
+        replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+
+        TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
+        Device device = transportService.getDevice("deviceId");
+
+        assertNull(device);
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -609,7 +631,7 @@ public class TransportServiceImplTest {
          * Instantiates a new device
          */
         public FakeDevice() {
-            super("id", "name", null);
+            super("id", "name", null, null);
         }
 
         @Override
