@@ -56,16 +56,8 @@ public class BrowseResult {
         return folders;
     }
 
-    public void setFolders(List<BrowseFolder> folders) {
-        this.folders = folders;
-    }
-
     public List<BrowseContent> getContents() {
         return contents;
-    }
-
-    public void setContents(List<BrowseContent> contents) {
-        this.contents = contents;
     }
 
     /**
@@ -79,17 +71,6 @@ public class BrowseResult {
          * Instantiates a new browse folder.
          */
         public BrowseFolder() {
-        }
-
-        /**
-         * Instantiates a new browse folder.
-         *
-         * @param nodeId     node id
-         * @param folderName folder name
-         */
-        public BrowseFolder(final String nodeId, final String folderName) {
-            this.nodeId = nodeId;
-            this.folderName = folderName;
         }
 
         public String getNodeId() {
@@ -121,19 +102,6 @@ public class BrowseResult {
          * Instantiates a new browse content.
          */
         public BrowseContent() {
-        }
-
-        /**
-         * Instantiates a new browse content.
-         *
-         * @param nodeId      node id
-         * @param contentName content name
-         * @param contentUrl  content url
-         */
-        public BrowseContent(final String nodeId, final String contentName, final String contentUrl) {
-            this.nodeId = nodeId;
-            this.contentName = contentName;
-            this.contentUrl = contentUrl;
         }
 
         public String getNodeId() {

@@ -26,6 +26,7 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.media.model.FolderNode;
+import net.holmes.core.media.model.PodcastNode;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
@@ -297,7 +298,8 @@ public class StreamingHandlerTest {
         FolderNode node = new FolderNode("nodeId", "nodeParentId", "nodeName");
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), new MimeType("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
-        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode), 2);
+        PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
+        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode, podcastNode), 3);
 
         expect(transportService.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaService.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();
