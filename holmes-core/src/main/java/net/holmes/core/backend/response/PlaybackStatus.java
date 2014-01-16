@@ -32,29 +32,6 @@ public class PlaybackStatus {
     public PlaybackStatus() {
     }
 
-    /**
-     * Instantiates a new playback status
-     *
-     * @param contentName content name
-     * @param duration    content duration
-     * @param position    content position
-     */
-    public PlaybackStatus(String contentName, long duration, long position) {
-        this.contentName = contentName;
-        this.duration = duration;
-        this.position = position;
-        this.errorMessage = null;
-    }
-
-    /**
-     * Instantiates a new playback status
-     *
-     * @param errorMessage error message
-     */
-    public PlaybackStatus(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
     public String getContentName() {
         return contentName;
     }

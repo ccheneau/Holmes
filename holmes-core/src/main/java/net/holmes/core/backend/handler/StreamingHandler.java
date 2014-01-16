@@ -25,7 +25,6 @@ import net.holmes.core.media.MediaService;
 import net.holmes.core.media.model.AbstractNode;
 import net.holmes.core.media.model.ContentNode;
 import net.holmes.core.media.model.FolderNode;
-import net.holmes.core.media.model.RootNode;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.UnknownDeviceException;
@@ -44,6 +43,7 @@ import static net.holmes.core.backend.response.BrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.BrowseResult.BrowseFolder;
 import static net.holmes.core.media.MediaService.ChildNodeRequest;
 import static net.holmes.core.media.MediaService.ChildNodeResult;
+import static net.holmes.core.media.model.RootNode.VIDEO;
 
 /**
  * Handler for streaming REST requests.
@@ -75,16 +75,16 @@ public class StreamingHandler {
     @Produces(MediaType.APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         List<PlaybackDevice> playbackDevices = Lists.newArrayList();
-        for (Device device : transportService.getDevices()) {
-            playbackDevices.add(new PlaybackDevice(device.getId(), device.getName(), device.isVideoSupported(), device.isAudioSupported(), device.isImageSupported(), device.isSlideShowSupported()));
-        }
+        for (Device device : transportService.getDevices())
+            playbackDevices.add(buildPlaybackDevice(device));
+
         return playbackDevices;
     }
 
     /**
      * Play content.
      *
-     * @return status
+     * @return error message or null
      */
     @GET
     @Path("/play/{deviceId}/{contentId}")
@@ -103,7 +103,7 @@ public class StreamingHandler {
     /**
      * Pause content playback.
      *
-     * @return status
+     * @return error message or null
      */
     @GET
     @Path("/pause/{deviceId}")
@@ -120,7 +120,7 @@ public class StreamingHandler {
     /**
      * Stop content play back.
      *
-     * @return status
+     * @return error message or null
      */
     @GET
     @Path("/stop/{deviceId}")
@@ -137,7 +137,7 @@ public class StreamingHandler {
     /**
      * Resume content playback.
      *
-     * @return status
+     * @return error message or null
      */
     @GET
     @Path("/resume/{deviceId}")
@@ -160,12 +160,16 @@ public class StreamingHandler {
     @Path("/status/{deviceId}")
     @Produces(MediaType.APPLICATION_JSON)
     public PlaybackStatus status(@PathParam("deviceId") String deviceId) {
+        PlaybackStatus status = new PlaybackStatus();
         try {
             StreamingSession session = transportService.getSession(deviceId);
-            return new PlaybackStatus(session.getContentName(), session.getDuration(), session.getPosition());
+            status.setContentName(session.getContentName());
+            status.setDuration(session.getDuration());
+            status.setPosition(session.getPosition());
         } catch (UnknownSessionException e) {
-            return new PlaybackStatus(e.getMessage());
+            status.setErrorMessage(e.getMessage());
         }
+        return status;
     }
 
     /**
@@ -187,7 +191,7 @@ public class StreamingHandler {
 
             // Get browse node
             AbstractNode node = mediaService.getNode(nodeId);
-            if (node == null && device.isVideoSupported()) node = mediaService.getNode(RootNode.VIDEO.getId());
+            if (node == null && device.isVideoSupported()) node = mediaService.getNode(VIDEO.getId());
 
             if (node != null) {
                 // Get child nodes
@@ -195,13 +199,40 @@ public class StreamingHandler {
                 // Build browse result
                 for (AbstractNode abstractNode : childNodesResult.getChildNodes())
                     if (abstractNode instanceof FolderNode)
-                        result.getFolders().add(new BrowseFolder(abstractNode.getId(), abstractNode.getName()));
+                        result.getFolders().add(buildBrowseFolder(abstractNode));
                     else if (abstractNode instanceof ContentNode)
-                        result.getContents().add(new BrowseContent(abstractNode.getId(), abstractNode.getName(), mediaService.getNodeUrl(abstractNode)));
+                        result.getContents().add(buildBrowseContent(abstractNode));
+
             }
         } catch (UnknownDeviceException e) {
-            result.setErrorMessage("Unknown device");
+            result.setErrorMessage(e.getMessage());
         }
         return result;
+    }
+
+    private PlaybackDevice buildPlaybackDevice(final Device device) {
+        PlaybackDevice playbackDevice = new PlaybackDevice();
+        playbackDevice.setDeviceId(device.getId());
+        playbackDevice.setDeviceName(device.getName());
+        playbackDevice.setVideoSupported(device.isVideoSupported());
+        playbackDevice.setAudioSupported(device.isAudioSupported());
+        playbackDevice.setImageSupported(device.isImageSupported());
+        playbackDevice.setSlideShowSupported(device.isSlideShowSupported());
+        return playbackDevice;
+    }
+
+    private BrowseFolder buildBrowseFolder(final AbstractNode node) {
+        BrowseFolder browseFolder = new BrowseFolder();
+        browseFolder.setNodeId(node.getId());
+        browseFolder.setFolderName(node.getName());
+        return browseFolder;
+    }
+
+    private BrowseContent buildBrowseContent(final AbstractNode node) {
+        BrowseContent browseContent = new BrowseContent();
+        browseContent.setNodeId(node.getId());
+        browseContent.setContentName(node.getName());
+        browseContent.setContentUrl(mediaService.getNodeUrl(node));
+        return browseContent;
     }
 }

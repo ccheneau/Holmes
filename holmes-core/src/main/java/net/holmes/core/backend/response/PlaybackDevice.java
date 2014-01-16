@@ -35,25 +35,6 @@ public class PlaybackDevice {
     public PlaybackDevice() {
     }
 
-    /**
-     * Instantiates a new playback device.
-     *
-     * @param deviceId           device Id
-     * @param deviceName         device name
-     * @param videoSupported     is video supported
-     * @param audioSupported     is audio supported
-     * @param imageSupported     is image supported
-     * @param slideShowSupported is slide show supported
-     */
-    public PlaybackDevice(String deviceId, String deviceName, boolean videoSupported, boolean audioSupported, boolean imageSupported, boolean slideShowSupported) {
-        this.deviceId = deviceId;
-        this.deviceName = deviceName;
-        this.videoSupported = videoSupported;
-        this.audioSupported = audioSupported;
-        this.imageSupported = imageSupported;
-        this.slideShowSupported = slideShowSupported;
-    }
-
     public String getDeviceId() {
         return deviceId;
     }
