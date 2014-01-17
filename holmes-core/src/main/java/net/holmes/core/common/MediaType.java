@@ -28,6 +28,7 @@ public enum MediaType {
     TYPE_APPLICATION("application"),//
     TYPE_ICECAST_GENRE("icecast_genre"),//
     TYPE_RAW_URL("raw_url"), //
+    TYPE_ANY("*"), //
     TYPE_NONE("none");
 
     private final String value;
@@ -60,6 +61,6 @@ public enum MediaType {
         for (MediaType mediaType : MediaType.values())
             if (mediaType.value.equals(mediaTypeValue)) return mediaType;
 
-        return MediaType.TYPE_NONE;
+        return TYPE_NONE;
     }
 }

@@ -57,10 +57,20 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     }
 
     @Override
-    public boolean isMimeTypeCompliant(MimeType mimeType, List<String> availableMimeTypes) {
-        String aliasMimeType = mimeType != null ? (String) properties.get(mimeType.getMimeType()) : null;
-        return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType()) || availableMimeTypes == null || availableMimeTypes.isEmpty()
-                || availableMimeTypes.contains(mimeType.getMimeType())
-                || aliasMimeType != null && availableMimeTypes.contains(aliasMimeType);
+    public boolean isMimeTypeCompliant(final MimeType mimeType, final List<String> availableMimeTypes) {
+        MimeType aliasMimeType = getAliasMimeType(mimeType);
+        return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType())
+                || mimeType.isCompliant(availableMimeTypes)
+                || (aliasMimeType != null && aliasMimeType.isCompliant(availableMimeTypes));
+    }
+
+    /**
+     * Get alias mime type.
+     *
+     * @param mimeType mime type
+     * @return alias mime type or null
+     */
+    private MimeType getAliasMimeType(final MimeType mimeType) {
+        return mimeType == null || properties.getProperty(mimeType.getMimeType()) == null ? null : new MimeType(properties.getProperty(mimeType.getMimeType()));
     }
 }
