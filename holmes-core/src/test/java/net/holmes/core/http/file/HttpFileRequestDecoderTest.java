@@ -47,7 +47,7 @@ public class HttpFileRequestDecoderTest {
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
-        expect(mimeTypeManager.getMimeType("/index.html")).andReturn(new MimeType("text/html")).atLeastOnce();
+        expect(mimeTypeManager.getMimeType("/index.html")).andReturn(MimeType.valueOf("text/html")).atLeastOnce();
 
         replay(context, request, mediaService, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
@@ -71,7 +71,7 @@ public class HttpFileRequestDecoderTest {
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/").atLeastOnce();
-        expect(mimeTypeManager.getMimeType("/index.html")).andReturn(new MimeType("text/html")).atLeastOnce();
+        expect(mimeTypeManager.getMimeType("/index.html")).andReturn(MimeType.valueOf("text/html")).atLeastOnce();
 
         replay(context, request, mediaService, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));
@@ -131,7 +131,7 @@ public class HttpFileRequestDecoderTest {
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
-        expect(mediaService.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
+        expect(mediaService.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
 
         replay(context, request, mediaService, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaService, mimeTypeManager, System.getProperty("java.io.tmpdir"));

@@ -58,7 +58,7 @@ public class HttpFileRequestHandlerTest {
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest, channel);
         handler.channelRead0(context, request);
@@ -74,7 +74,7 @@ public class HttpFileRequestHandlerTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile("invalidFile"), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile("invalidFile"), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest);
         try {
@@ -108,7 +108,7 @@ public class HttpFileRequestHandlerTest {
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest, channel);
         handler.channelRead0(context, request);
@@ -130,7 +130,7 @@ public class HttpFileRequestHandlerTest {
 
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest);
         try {
@@ -155,7 +155,7 @@ public class HttpFileRequestHandlerTest {
 
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest);
         try {
@@ -184,7 +184,7 @@ public class HttpFileRequestHandlerTest {
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), new MimeType("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new NodeFile(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
 
         replay(context, httpRequest, channel);
         handler.channelRead0(context, request);

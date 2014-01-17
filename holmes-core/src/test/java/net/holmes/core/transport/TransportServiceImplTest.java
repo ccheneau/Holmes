@@ -224,7 +224,7 @@ public class TransportServiceImplTest {
         file.deleteOnExit();
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, MimeType.valueOf("video/avi")));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -252,7 +252,7 @@ public class TransportServiceImplTest {
         file.deleteOnExit();
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, MimeType.valueOf("video/avi")));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -276,7 +276,7 @@ public class TransportServiceImplTest {
         file.deleteOnExit();
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, new MimeType("video/avi")));
+        transportService.play("deviceId", "contentUrl", new ContentNode("contentNodeId", "parentNodeId", "contentName", file, MimeType.valueOf("video/avi")));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }

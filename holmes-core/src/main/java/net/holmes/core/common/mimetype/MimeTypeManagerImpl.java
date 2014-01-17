@@ -53,15 +53,24 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
         String ext = Files.getFileExtension(fileName).toLowerCase();
 
         // Get mime type
-        return properties.getProperty(ext) == null ? null : new MimeType(properties.getProperty(ext));
+        return properties.getProperty(ext) == null ? null : MimeType.valueOf(properties.getProperty(ext));
     }
 
     @Override
-    public boolean isMimeTypeCompliant(MimeType mimeType, List<String> availableMimeTypes) {
-        String aliasMimeType = (mimeType != null ? (String) properties.get(mimeType.getMimeType()) : null);
+    public boolean isMimeTypeCompliant(final MimeType mimeType, final List<String> availableMimeTypes) {
+        MimeType aliasMimeType = getAliasMimeType(mimeType);
         return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType())
-                || availableMimeTypes == null || availableMimeTypes.isEmpty()
-                || availableMimeTypes.contains(mimeType.getMimeType())
-                || (aliasMimeType != null && availableMimeTypes.contains(aliasMimeType));
+                || mimeType.isCompliant(availableMimeTypes)
+                || (aliasMimeType != null && aliasMimeType.isCompliant(availableMimeTypes));
+    }
+
+    /**
+     * Get alias mime type.
+     *
+     * @param mimeType mime type
+     * @return alias mime type or null
+     */
+    private MimeType getAliasMimeType(final MimeType mimeType) {
+        return mimeType == null || properties.getProperty(mimeType.getMimeType()) == null ? null : MimeType.valueOf(properties.getProperty(mimeType.getMimeType()));
     }
 }

@@ -80,7 +80,7 @@ public class StreamingHandlerTest {
         MediaService mediaService = createMock(MediaService.class);
         TransportService transportService = createMock(TransportService.class);
 
-        expect(mediaService.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
+        expect(mediaService.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
         expect(mediaService.getNodeUrl(isA(AbstractNode.class))).andReturn("contentUrl").atLeastOnce();
         transportService.play(eq("deviceId"), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall().atLeastOnce();
@@ -97,7 +97,7 @@ public class StreamingHandlerTest {
         MediaService mediaService = createMock(MediaService.class);
         TransportService transportService = createMock(TransportService.class);
 
-        expect(mediaService.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"))).atLeastOnce();
+        expect(mediaService.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
         expect(mediaService.getNodeUrl(isA(AbstractNode.class))).andReturn("contentUrl").atLeastOnce();
         transportService.play(eq("deviceId"), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall().andThrow(new UnknownDeviceException("deviceId")).atLeastOnce();
@@ -266,7 +266,7 @@ public class StreamingHandlerTest {
         Device device = createMock(Device.class);
 
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
-        ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), new MimeType("video/x-msvideo"));
+        ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
         ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode), 2);
 
@@ -296,7 +296,7 @@ public class StreamingHandlerTest {
         Device device = createMock(Device.class);
 
         FolderNode node = new FolderNode("nodeId", "nodeParentId", "nodeName");
-        ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), new MimeType("video/x-msvideo"));
+        ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
         ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode, podcastNode), 3);

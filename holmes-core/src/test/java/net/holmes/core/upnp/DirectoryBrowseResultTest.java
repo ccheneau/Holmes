@@ -50,7 +50,7 @@ public class DirectoryBrowseResultTest {
     public void testAddVideoItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("video/x-msvideo");
+        MimeType mimeType = MimeType.valueOf("video/x-msvideo");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -63,7 +63,7 @@ public class DirectoryBrowseResultTest {
     public void testAddAudioItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("audio/mpeg");
+        MimeType mimeType = MimeType.valueOf("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 
@@ -77,7 +77,7 @@ public class DirectoryBrowseResultTest {
     public void testAddImageItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("image/jpeg");
+        MimeType mimeType = MimeType.valueOf("image/jpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -90,7 +90,7 @@ public class DirectoryBrowseResultTest {
     public void testAddSubtitleItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("application/x-subrip");
+        MimeType mimeType = MimeType.valueOf("application/x-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -103,7 +103,7 @@ public class DirectoryBrowseResultTest {
     public void testAddBadApplicationItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "srt");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("application/bad-subrip");
+        MimeType mimeType = MimeType.valueOf("application/bad-subrip");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -116,7 +116,7 @@ public class DirectoryBrowseResultTest {
     public void testAddOggItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "ogg");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("application/ogg");
+        MimeType mimeType = MimeType.valueOf("application/ogg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -129,7 +129,7 @@ public class DirectoryBrowseResultTest {
     public void testAddBadItem() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("bad-type/bad-subtype");
+        MimeType mimeType = MimeType.valueOf("bad-type/bad-subtype");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
 
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
@@ -142,7 +142,7 @@ public class DirectoryBrowseResultTest {
     public void testBadAddItemIconUrl() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("audio/mpeg");
+        MimeType mimeType = MimeType.valueOf("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("\\bad_url");
 
@@ -161,7 +161,7 @@ public class DirectoryBrowseResultTest {
 
     @Test
     public void testAddPodcastItem() throws ContentDirectoryException {
-        MimeType mimeType = new MimeType("video/x-msvideo");
+        MimeType mimeType = MimeType.valueOf("video/x-msvideo");
         RawUrlNode node = new RawUrlNode(TYPE_PODCAST_ENTRY, "id", "parentId", "name", mimeType, "url", "duration");
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 1);
         directoryBrowseResult.addUrlItem("1", node, "name");
@@ -173,7 +173,7 @@ public class DirectoryBrowseResultTest {
     public void testFilterResult() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("audio/mpeg");
+        MimeType mimeType = MimeType.valueOf("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 
@@ -192,7 +192,7 @@ public class DirectoryBrowseResultTest {
     public void testFilterResultNoMaxResult() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
-        MimeType mimeType = new MimeType("audio/mpeg");
+        MimeType mimeType = MimeType.valueOf("audio/mpeg");
         ContentNode node = new ContentNode("id", "1", "name", file, mimeType);
         node.setIconUrl("http://google.com");
 

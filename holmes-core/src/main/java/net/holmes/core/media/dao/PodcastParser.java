@@ -53,7 +53,7 @@ abstract class PodcastParser {
                 for (SyndEntry rssEntry : rssEntries) {
                     if (rssEntry.getEnclosures() != null) {
                         for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                            MimeType mimeType = enclosure.getType() != null ? new MimeType(enclosure.getType()) : null;
+                            MimeType mimeType = enclosure.getType() != null ? MimeType.valueOf(enclosure.getType()) : null;
                             if (mimeType != null && mimeType.isMedia()) {
                                 // Add to media index
                                 String podcastEntryId = addMediaIndexElement(new MediaIndexElement(podcastId, TYPE_RAW_URL.getValue(), mimeType.getMimeType(), enclosure.getUrl(), rssEntry.getTitle(), false, false));

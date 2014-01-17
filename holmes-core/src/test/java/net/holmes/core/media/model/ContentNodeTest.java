@@ -50,7 +50,7 @@ public class ContentNodeTest {
      */
     @Test
     public void testGetMimeType() throws Exception {
-        MimeType mimeType = new MimeType("video/x-msvideo");
+        MimeType mimeType = MimeType.valueOf("video/x-msvideo");
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         ContentNode node = buildContentNode("", file);
@@ -121,7 +121,7 @@ public class ContentNodeTest {
     }
 
     private ContentNode buildContentNode(String suffix, File file) {
-        MimeType mimeType = new MimeType("video/x-msvideo");
+        MimeType mimeType = MimeType.valueOf("video/x-msvideo");
         return new ContentNode("id" + suffix, "parentId" + suffix, "name" + suffix, file, mimeType);
     }
 }

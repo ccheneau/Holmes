@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MimeTypeTest {
+public class MimeTypeManagerImplTest {
 
     /**
      * Test mime type.
@@ -71,21 +71,24 @@ public class MimeTypeTest {
     public void testIsCompliant() {
         MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
 
-        MimeType mimeType = new MimeType("video/avi");
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
-        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
+        MimeType mimeType = MimeType.valueOf("video/avi");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("video/avi")));
+        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("audio/mpeg")));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList()));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, null));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(null, null));
 
-        mimeType = new MimeType("video/x-msvideo");
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
-        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
+        mimeType = MimeType.valueOf("video/x-msvideo");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("video/avi")));
+        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("audio/mpeg")));
 
-        mimeType = new MimeType("");
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("video/avi")));
+        mimeType = MimeType.valueOf("");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("video/avi")));
 
-        mimeType = new MimeType("audio/mpeg");
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList("audio/mpeg")));
+        mimeType = MimeType.valueOf("audio/mpeg");
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("audio/mpeg")));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("audio/*")));
+        assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("video/*")));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.newArrayList("*/*")));
     }
 }

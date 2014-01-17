@@ -22,6 +22,10 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import net.holmes.core.common.MediaType;
 
+import java.util.List;
+
+import static net.holmes.core.common.MediaType.*;
+
 /**
  * Mime type.
  */
@@ -38,11 +42,20 @@ public final class MimeType {
      *
      * @param mimeType mime type
      */
-    public MimeType(final String mimeType) {
+    private MimeType(final String mimeType) {
         this.mimeType = mimeType;
         Iterable<String> iterable = Splitter.on('/').split(mimeType);
         this.type = MediaType.getByValue(Iterables.getFirst(iterable, ""));
         this.subType = Iterables.getLast(iterable, "");
+    }
+
+    /**
+     * Get mime type
+     * @param mimeType mime type string
+     * @return mime type
+     */
+    public static MimeType valueOf(final String mimeType) {
+        return new MimeType(mimeType);
     }
 
     /**
@@ -78,7 +91,7 @@ public final class MimeType {
      * @return true if mimeType is a media
      */
     public boolean isMedia() {
-        return MediaType.TYPE_AUDIO == type || MediaType.TYPE_IMAGE == type || MediaType.TYPE_VIDEO == type;
+        return TYPE_AUDIO == type || TYPE_IMAGE == type || TYPE_VIDEO == type || TYPE_ANY == type;
     }
 
     /**
@@ -87,7 +100,23 @@ public final class MimeType {
      * @return true if mimeType is a subtitle
      */
     public boolean isSubTitle() {
-        return MediaType.TYPE_APPLICATION == type && MimeType.SUB_TYPE_SUBTITLE.equals(subType);
+        return TYPE_APPLICATION == type && SUB_TYPE_SUBTITLE.equals(subType);
+    }
+
+    /**
+     * Check mime type is compliant with available mime types.
+     *
+     * @param availableMimeTypes available mime types
+     * @return true is mime type is compliant
+     */
+    public boolean isCompliant(final List<String> availableMimeTypes) {
+        if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType))
+            return true;
+        else
+            for (String availableMimeType : availableMimeTypes)
+                if (availableMimeType.equals("*/*") || availableMimeType.equals(type.getValue() + "/*"))
+                    return true;
+        return false;
     }
 
     @Override

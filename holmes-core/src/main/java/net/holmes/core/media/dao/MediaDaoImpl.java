@@ -103,7 +103,7 @@ public class MediaDaoImpl implements MediaDao {
                     break;
                 case TYPE_RAW_URL:
                     // Raw Url node
-                    node = new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), new MimeType(indexElement.getMimeType()), indexElement.getPath(), null);
+                    node = new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), MimeType.valueOf(indexElement.getMimeType()), indexElement.getPath(), null);
                     break;
                 default:
                     // File node
@@ -302,7 +302,7 @@ public class MediaDaoImpl implements MediaDao {
             // Add entry to media index
             String nodeId = mediaIndexManager.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), entry.getType(), entry.getUrl(), entry.getName(), false, false));
             // Add Raw Url to result
-            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, entry.getName(), new MimeType(entry.getType()), entry.getUrl(), null));
+            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, entry.getName(), MimeType.valueOf(entry.getType()), entry.getUrl(), null));
         }
         return result;
     }
