@@ -45,7 +45,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 /**
- * UPnP server main class.
+ * UPnP server.
  */
 public final class UpnpServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpnpServer.class);
