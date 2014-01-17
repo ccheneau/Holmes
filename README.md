@@ -17,7 +17,7 @@ See [Holmes wiki](https://github.com/ccheneau/Holmes/wiki) for more information
 
 ## License
  
-Copyright (C) 2012-2013  Cedric Cheneau
+Copyright (C) 2012-2014  Cedric Cheneau
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
