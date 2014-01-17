@@ -90,7 +90,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (remoteClientInfo.getConnection() != null) {
             for (Device device : transportService.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
                 if (device instanceof UpnpDevice)
-                    availableMimeTypes.addAll(((UpnpDevice) device).getSupportedMimeTypes());
+                    availableMimeTypes.addAll(device.getSupportedMimeTypes());
             }
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}", availableMimeTypes);
         }
