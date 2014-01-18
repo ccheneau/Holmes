@@ -56,7 +56,7 @@ public abstract class AbstractContentDirectoryService {
     @UpnpStateVariable(sendEvents = false)
     private final CSV<String> sortCapabilities;
     @UpnpStateVariable(sendEvents = true, defaultValue = "0", eventMaximumRateMilliseconds = 200)
-    private UnsignedIntegerFourBytes systemUpdateID = new UnsignedIntegerFourBytes(0);
+    private final UnsignedIntegerFourBytes systemUpdateID = new UnsignedIntegerFourBytes(0);
 
     protected AbstractContentDirectoryService(List<String> searchCapabilities, List<String> sortCapabilities) {
         this.searchCapabilities = new CSVString();

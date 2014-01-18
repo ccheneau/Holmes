@@ -44,8 +44,8 @@ public class CommandResponse {
 
     private int code;
     private String message;
-    private Map<String, String> httpHeaders = Maps.newHashMap();
-    private Map<String, String> contentParameters = Maps.newHashMap();
+    private final Map<String, String> httpHeaders = Maps.newHashMap();
+    private final Map<String, String> contentParameters = Maps.newHashMap();
 
     public int getCode() {
         return code;
