@@ -23,7 +23,6 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +35,6 @@ import static org.junit.Assert.fail;
 
 public class RomeTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RomeTest.class);
-
-    @Before
-    public void setUp() {
-    }
 
     /**
      * Test rome with cast coders rss.

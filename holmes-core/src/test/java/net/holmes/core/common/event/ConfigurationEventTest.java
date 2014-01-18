@@ -19,8 +19,6 @@ package net.holmes.core.common.event;
 
 import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.media.model.RootNode;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.ADD_FOLDER;
@@ -31,14 +29,6 @@ import static org.junit.Assert.assertNotNull;
  * ConfigurationEvent Tester.
  */
 public class ConfigurationEventTest {
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
 
     /**
      * Method: getType()

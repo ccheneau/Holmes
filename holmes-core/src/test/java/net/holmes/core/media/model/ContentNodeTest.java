@@ -19,8 +19,6 @@ package net.holmes.core.media.model;
 
 
 import net.holmes.core.common.mimetype.MimeType;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -36,14 +34,6 @@ public class ContentNodeTest {
 
     @Rule
     public TestName testName = new TestName();
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
 
     /**
      * Method: getMimeType()

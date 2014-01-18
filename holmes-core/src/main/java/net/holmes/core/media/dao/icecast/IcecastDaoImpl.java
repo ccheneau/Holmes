@@ -274,7 +274,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      * @param configurationEvent configuration event
      */
     @Subscribe
-    public void handleConfigEvent(final ConfigurationEvent configurationEvent) throws IOException {
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
                 icecastEnabled = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);

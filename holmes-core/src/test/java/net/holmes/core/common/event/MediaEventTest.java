@@ -17,8 +17,6 @@
 
 package net.holmes.core.common.event;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,14 +26,6 @@ import static org.junit.Assert.assertNotNull;
  * MediaEvent Tester.
  */
 public class MediaEventTest {
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
 
     /**
      * Method: getType()

@@ -27,8 +27,8 @@ public class IcecastGenre {
     /**
      * Instantiates a new Icecast genre
      *
-     * @param id
-     * @param name
+     * @param id Icecast genre id
+     * @param name Icecast genre name
      */
     public IcecastGenre(String id, String name) {
         this.id = id;

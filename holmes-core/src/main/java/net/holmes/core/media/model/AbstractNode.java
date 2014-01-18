@@ -118,9 +118,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         this.iconUrl = iconUrl;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     @Override
     public int compareTo(final AbstractNode o) {
         if (this.getType() == o.getType()) return this.name.compareTo(o.name);

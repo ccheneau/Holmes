@@ -18,8 +18,6 @@
 package net.holmes.core.media.model;
 
 import net.holmes.core.common.MediaType;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,14 +27,6 @@ import static org.junit.Assert.assertNotNull;
  * RootNode Tester.
  */
 public class RootNodeTest {
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
 
     /**
      * Method: getId()

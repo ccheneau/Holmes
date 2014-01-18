@@ -18,8 +18,6 @@
 package net.holmes.core.media.model;
 
 import net.holmes.core.common.mimetype.MimeType;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static net.holmes.core.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
@@ -29,14 +27,6 @@ import static org.junit.Assert.*;
  * PodcastEntryNode Tester.
  */
 public class PodcastEntryNodeTest {
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
 
     /**
      * Method: getMimeType()
