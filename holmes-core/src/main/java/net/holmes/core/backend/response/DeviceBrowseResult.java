@@ -22,9 +22,9 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
- * Streaming browse result
+ * Device browse result
  */
-public class BrowseResult {
+public class DeviceBrowseResult {
     private String parentNodeId;
     private String errorMessage;
     private final List<BrowseFolder> folders = Lists.newArrayList();
@@ -33,7 +33,7 @@ public class BrowseResult {
     /**
      * Instantiates a new browse result
      */
-    public BrowseResult() {
+    public DeviceBrowseResult() {
     }
 
     public String getParentNodeId() {

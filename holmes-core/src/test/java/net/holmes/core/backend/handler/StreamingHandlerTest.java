@@ -18,7 +18,7 @@
 package net.holmes.core.backend.handler;
 
 import com.google.common.collect.Lists;
-import net.holmes.core.backend.response.BrowseResult;
+import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.common.mimetype.MimeType;
@@ -37,8 +37,8 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 
-import static net.holmes.core.backend.response.BrowseResult.BrowseContent;
-import static net.holmes.core.backend.response.BrowseResult.BrowseFolder;
+import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
+import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
 import static net.holmes.core.media.MediaService.ChildNodeResult;
 import static net.holmes.core.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
@@ -252,7 +252,7 @@ public class StreamingHandlerTest {
 
         replay(mediaService, transportService, device);
         StreamingHandler streamingHandler = new StreamingHandler(mediaService, transportService);
-        BrowseResult result = streamingHandler.browse("deviceId", "0");
+        DeviceBrowseResult result = streamingHandler.browse("deviceId", "0");
         assertNotNull(result);
         assertEquals(result.getParentNodeId(), "0");
 
@@ -280,7 +280,7 @@ public class StreamingHandlerTest {
 
         replay(mediaService, transportService, device);
         StreamingHandler streamingHandler = new StreamingHandler(mediaService, transportService);
-        BrowseResult result = streamingHandler.browse("deviceId", "0");
+        DeviceBrowseResult result = streamingHandler.browse("deviceId", "0");
         assertNotNull(result);
         assertEquals(result.getParentNodeId(), "0");
         assertEquals(1, result.getContents().size());
@@ -309,7 +309,7 @@ public class StreamingHandlerTest {
 
         replay(mediaService, transportService, device);
         StreamingHandler streamingHandler = new StreamingHandler(mediaService, transportService);
-        BrowseResult result = streamingHandler.browse("deviceId", "nodeId");
+        DeviceBrowseResult result = streamingHandler.browse("deviceId", "nodeId");
         assertNotNull(result);
         assertEquals(result.getParentNodeId(), "nodeId");
         assertEquals(1, result.getContents().size());
@@ -334,7 +334,7 @@ public class StreamingHandlerTest {
 
         replay(mediaService, transportService, device);
         StreamingHandler streamingHandler = new StreamingHandler(mediaService, transportService);
-        BrowseResult result = streamingHandler.browse("deviceId", "0");
+        DeviceBrowseResult result = streamingHandler.browse("deviceId", "0");
         assertNotNull(result);
         assertEquals(result.getParentNodeId(), "0");
         assertTrue(result.getErrorMessage().contains("deviceId"));

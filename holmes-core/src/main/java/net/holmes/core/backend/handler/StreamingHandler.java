@@ -18,7 +18,7 @@
 package net.holmes.core.backend.handler;
 
 import com.google.common.collect.Lists;
-import net.holmes.core.backend.response.BrowseResult;
+import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.media.MediaService;
@@ -39,8 +39,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-import static net.holmes.core.backend.response.BrowseResult.BrowseContent;
-import static net.holmes.core.backend.response.BrowseResult.BrowseFolder;
+import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
+import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
 import static net.holmes.core.media.MediaService.ChildNodeRequest;
 import static net.holmes.core.media.MediaService.ChildNodeResult;
 import static net.holmes.core.media.model.RootNode.VIDEO;
@@ -182,8 +182,8 @@ public class StreamingHandler {
     @GET
     @Path("/browse/{deviceId}/{nodeId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public BrowseResult browse(@PathParam("deviceId") String deviceId, @PathParam("nodeId") String nodeId) {
-        BrowseResult result = new BrowseResult();
+    public DeviceBrowseResult browse(@PathParam("deviceId") String deviceId, @PathParam("nodeId") String nodeId) {
+        DeviceBrowseResult result = new DeviceBrowseResult();
         result.setParentNodeId(nodeId);
         try {
             // Get device
