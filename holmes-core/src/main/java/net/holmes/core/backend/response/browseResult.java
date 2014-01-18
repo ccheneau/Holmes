@@ -27,8 +27,8 @@ import java.util.List;
 public class BrowseResult {
     private String parentNodeId;
     private String errorMessage;
-    private List<BrowseFolder> folders = Lists.newArrayList();
-    private List<BrowseContent> contents = Lists.newArrayList();
+    private final List<BrowseFolder> folders = Lists.newArrayList();
+    private final List<BrowseContent> contents = Lists.newArrayList();
 
     /**
      * Instantiates a new browse result
