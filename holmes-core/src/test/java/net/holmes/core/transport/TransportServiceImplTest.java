@@ -26,7 +26,6 @@ import net.holmes.core.transport.device.Device;
 import net.holmes.core.transport.device.DeviceDao;
 import net.holmes.core.transport.device.DeviceStreamer;
 import net.holmes.core.transport.device.UnknownDeviceException;
-import net.holmes.core.transport.event.StreamingEvent;
 import net.holmes.core.transport.session.SessionDao;
 import net.holmes.core.transport.session.UnknownSessionException;
 import net.holmes.core.transport.upnp.device.UpnpDevice;
@@ -37,6 +36,8 @@ import java.io.IOException;
 
 import static net.holmes.core.common.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.*;
+import static net.holmes.core.transport.event.StreamingEvent.newErrorEvent;
+import static net.holmes.core.transport.event.StreamingEvent.newSuccessEvent;
 import static net.holmes.core.transport.session.SessionStatus.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNull;
@@ -483,7 +484,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(STATUS, "deviceId", "errorMessage"));
+        transportService.handleStreamingEvent(newErrorEvent(STATUS, "deviceId", "errorMessage"));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -503,7 +504,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(PLAY, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(PLAY, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -521,7 +522,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(UNKNOWN, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(UNKNOWN, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -541,7 +542,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(PLAY, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(PLAY, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -561,7 +562,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(RESUME, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(RESUME, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -581,7 +582,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(STOP, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(STOP, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -601,7 +602,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(PAUSE, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(PAUSE, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }
@@ -621,7 +622,7 @@ public class TransportServiceImplTest {
         replay(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
         TransportServiceImpl transportService = new TransportServiceImpl(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
-        transportService.handleStreamingEvent(new StreamingEvent(STATUS, "deviceId", 0l, 0l));
+        transportService.handleStreamingEvent(newSuccessEvent(STATUS, "deviceId", 0l, 0l));
 
         verify(configuration, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
     }

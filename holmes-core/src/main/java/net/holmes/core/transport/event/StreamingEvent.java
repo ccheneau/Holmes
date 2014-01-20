@@ -38,7 +38,7 @@ public final class StreamingEvent {
      * @param duration playback duration
      * @param position playback position
      */
-    public StreamingEvent(final StreamingEventType type, final String deviceId, final Long duration, final Long position) {
+    private StreamingEvent(final StreamingEventType type, final String deviceId, final Long duration, final Long position) {
         this.type = type;
         this.deviceId = deviceId;
         this.success = true;
@@ -54,13 +54,36 @@ public final class StreamingEvent {
      * @param deviceId     device id
      * @param errorMessage error message
      */
-    public StreamingEvent(final StreamingEventType type, final String deviceId, final String errorMessage) {
+    private StreamingEvent(final StreamingEventType type, final String deviceId, final String errorMessage) {
         this.type = type;
         this.deviceId = deviceId;
         this.success = false;
         this.errorMessage = errorMessage;
         this.duration = null;
         this.position = null;
+    }
+
+    /**
+     * Build a new Streaming success event.
+     *
+     * @param type     event type
+     * @param deviceId device id
+     * @param duration playback duration
+     * @param position playback position
+     */
+    public static StreamingEvent newSuccessEvent(final StreamingEventType type, final String deviceId, final Long duration, final Long position) {
+        return new StreamingEvent(type, deviceId, duration, position);
+    }
+
+    /**
+     * Build a new Streaming error event.
+     *
+     * @param type         streaming event type
+     * @param deviceId     device id
+     * @param errorMessage error message
+     */
+    public static StreamingEvent newErrorEvent(final StreamingEventType type, final String deviceId, final String errorMessage) {
+        return new StreamingEvent(type, deviceId, errorMessage);
     }
 
     public StreamingEventType getType() {
