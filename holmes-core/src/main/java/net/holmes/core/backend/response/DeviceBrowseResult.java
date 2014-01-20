@@ -30,12 +30,6 @@ public class DeviceBrowseResult {
     private final List<BrowseFolder> folders = Lists.newArrayList();
     private final List<BrowseContent> contents = Lists.newArrayList();
 
-    /**
-     * Instantiates a new browse result
-     */
-    public DeviceBrowseResult() {
-    }
-
     public String getParentNodeId() {
         return parentNodeId;
     }
@@ -67,12 +61,6 @@ public class DeviceBrowseResult {
         private String nodeId;
         private String folderName;
 
-        /**
-         * Instantiates a new browse folder.
-         */
-        public BrowseFolder() {
-        }
-
         public String getNodeId() {
             return nodeId;
         }
@@ -97,12 +85,6 @@ public class DeviceBrowseResult {
         private String nodeId;
         private String contentName;
         private String contentUrl;
-
-        /**
-         * Instantiates a new browse content.
-         */
-        public BrowseContent() {
-        }
 
         public String getNodeId() {
             return nodeId;
