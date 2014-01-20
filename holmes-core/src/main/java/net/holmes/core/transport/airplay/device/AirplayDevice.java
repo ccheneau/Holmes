@@ -28,6 +28,7 @@ import java.net.Socket;
  * Airplay streaming device.
  */
 public class AirplayDevice extends Device {
+    private final static String AIRPLAY_DEVICE_TYPE = "Airplay";
     private final int port;
     private final AirplayFeatures features;
     private Socket socket = null;
@@ -45,6 +46,11 @@ public class AirplayDevice extends Device {
         super(id, name, address, null);
         this.port = port;
         this.features = features;
+    }
+
+    @Override
+    public String getType() {
+        return AIRPLAY_DEVICE_TYPE;
     }
 
     @Override

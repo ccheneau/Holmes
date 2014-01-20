@@ -50,8 +50,8 @@ import static net.holmes.core.media.model.RootNode.VIDEO;
  */
 @Path("/backend/streaming")
 public class StreamingHandler {
-    final MediaService mediaService;
-    final TransportService transportService;
+    private final MediaService mediaService;
+    private final TransportService transportService;
 
     /**
      * Instantiates a new StreamingHandler.
@@ -214,6 +214,7 @@ public class StreamingHandler {
         PlaybackDevice playbackDevice = new PlaybackDevice();
         playbackDevice.setDeviceId(device.getId());
         playbackDevice.setDeviceName(device.getName());
+        playbackDevice.setDeviceType(device.getType());
         playbackDevice.setVideoSupported(device.isVideoSupported());
         playbackDevice.setAudioSupported(device.isAudioSupported());
         playbackDevice.setImageSupported(device.isImageSupported());

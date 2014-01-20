@@ -29,7 +29,7 @@ import java.util.List;
  * Upnp streaming device.
  */
 public class UpnpDevice extends Device {
-
+    private final static String UPNP_DEVICE_TYPE = "DLNA Upnp";
     private final RemoteService avTransportService;
     private boolean videoSupported = false;
     private boolean audioSupported = false;
@@ -74,6 +74,11 @@ public class UpnpDevice extends Device {
 
     public RemoteService getAvTransportService() {
         return avTransportService;
+    }
+
+    @Override
+    public String getType() {
+        return UPNP_DEVICE_TYPE;
     }
 
     @Override

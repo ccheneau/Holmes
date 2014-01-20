@@ -55,6 +55,7 @@ public class StreamingHandlerTest {
         expect(transportService.getDevices()).andReturn(Lists.<Device>newArrayList(device)).atLeastOnce();
         expect(device.getId()).andReturn("deviceId").atLeastOnce();
         expect(device.getName()).andReturn("deviceName").atLeastOnce();
+        expect(device.getType()).andReturn("deviceType").atLeastOnce();
         expect(device.isVideoSupported()).andReturn(true).atLeastOnce();
         expect(device.isAudioSupported()).andReturn(true).atLeastOnce();
         expect(device.isImageSupported()).andReturn(true).atLeastOnce();
@@ -68,6 +69,7 @@ public class StreamingHandlerTest {
         PlaybackDevice playbackDevice = devices.get(0);
         assertEquals("deviceId", playbackDevice.getDeviceId());
         assertEquals("deviceName", playbackDevice.getDeviceName());
+        assertEquals("deviceType", playbackDevice.getDeviceType());
         assertTrue(playbackDevice.isVideoSupported());
         assertTrue(playbackDevice.isAudioSupported());
         assertTrue(playbackDevice.isImageSupported());
@@ -341,5 +343,4 @@ public class StreamingHandlerTest {
 
         verify(mediaService, transportService, device);
     }
-
 }

@@ -24,16 +24,11 @@ public class PlaybackDevice {
 
     private String deviceId;
     private String deviceName;
+    private String deviceType;
     private boolean videoSupported;
     private boolean audioSupported;
     private boolean imageSupported;
     private boolean slideShowSupported;
-
-    /**
-     * Instantiates a new playback device.
-     */
-    public PlaybackDevice() {
-    }
 
     public String getDeviceId() {
         return deviceId;
@@ -45,6 +40,14 @@ public class PlaybackDevice {
 
     public String getDeviceName() {
         return deviceName;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public void setDeviceName(String deviceName) {

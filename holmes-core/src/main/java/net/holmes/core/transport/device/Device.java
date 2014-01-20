@@ -81,6 +81,13 @@ public abstract class Device {
     }
 
     /**
+     * Get device type.
+     *
+     * @return device type
+     */
+    public abstract String getType();
+
+    /**
      * Check if video streaming is supported
      *
      * @return true if video streaming is supported

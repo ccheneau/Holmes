@@ -635,6 +635,11 @@ public class TransportServiceImplTest {
         }
 
         @Override
+        public String getType() {
+            return "FakeDeviceType";
+        }
+
+        @Override
         public boolean isVideoSupported() {
             return false;
         }
