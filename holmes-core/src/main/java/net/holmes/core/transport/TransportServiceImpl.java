@@ -57,6 +57,7 @@ public class TransportServiceImpl implements TransportService {
     /**
      * Instantiates a new transport service implementation.
      *
+     * @param configuration   configuration
      * @param deviceDao       device DAO
      * @param sessionDao      session DAO
      * @param upnpStreamer    upnp streamer
