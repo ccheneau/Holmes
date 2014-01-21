@@ -145,7 +145,7 @@ public final class UpnpServer implements Service {
                         }
                     });
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }
@@ -157,7 +157,6 @@ public final class UpnpServer implements Service {
 
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
-            LOGGER.info("Remote device removed: " + device.getDisplayString());
             transportService.removeDevice(device.getIdentity().getUdn().getIdentifierString());
         }
 
