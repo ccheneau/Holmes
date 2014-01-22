@@ -42,8 +42,8 @@ import static net.holmes.core.common.configuration.Parameter.ENABLE_AIRPLAY;
  */
 public final class AirplayServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayServer.class);
-    private static final String AIR_PLAY_TCP = "_airplay._tcp.local.";
-    private static final String FEATURES_PROPERTY = "features";
+    private static final String AIRPLAY_TCP = "_airplay._tcp.local.";
+    private static final String AIRPLAY_FEATURES = "features";
     private final Configuration configuration;
     private final InetAddress localAddress;
     private final TransportService transportService;
@@ -72,14 +72,11 @@ public final class AirplayServer implements Service {
                 jmDNS = JmDNS.create(localAddress);
 
                 // Loop up for available devices
-                ServiceInfo[] devicesInfo = jmDNS.list(AIR_PLAY_TCP);
-                if (devicesInfo != null && devicesInfo.length > 0)
-                    for (ServiceInfo serviceInfo : devicesInfo) {
-                        transportService.addDevice(buildDevice(serviceInfo));
-                    }
+                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP))
+                    transportService.addDevice(buildDevice(serviceInfo));
 
                 // Add Listener to manager inbound and outbound devices
-                jmDNS.addServiceListener(AIR_PLAY_TCP, new ServiceListener() {
+                jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
 
                     @Override
                     public void serviceAdded(ServiceEvent event) {
@@ -129,7 +126,7 @@ public final class AirplayServer implements Service {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress()) {
                     if (LOGGER.isDebugEnabled()) LOGGER.debug("Build Airplay device for {}", serviceInfo.toString());
-                    AirplayFeatures features = new AirplayFeatures(serviceInfo.getPropertyString(FEATURES_PROPERTY));
+                    AirplayFeatures features = new AirplayFeatures(serviceInfo.getPropertyString(AIRPLAY_FEATURES));
                     return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort(), features);
                 }
         }

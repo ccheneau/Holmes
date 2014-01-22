@@ -42,6 +42,8 @@ import java.util.ResourceBundle;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.configuration.Parameter.HTTP_SERVER_PORT;
+import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
+import static net.holmes.core.media.model.RootNode.NONE;
 import static net.holmes.core.media.model.RootNode.ROOT;
 
 /**
@@ -77,7 +79,7 @@ public final class MediaServiceImpl implements MediaService {
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
         RootNode rootNode = RootNode.getById(nodeId);
-        if (rootNode != RootNode.NONE)
+        if (rootNode != NONE)
             // Root node
             node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
         else if (nodeId != null)
@@ -93,10 +95,10 @@ public final class MediaServiceImpl implements MediaService {
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
-            for (RootNode subRootNode : RootNode.values()) {
+            for (RootNode subRootNode : RootNode.values())
                 if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getSubRootChildNodes(subRootNode).isEmpty())
                     childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));
-            }
+
         } else if (rootNode.getParentId().equals(ROOT.getId()))
             // Get child nodes of sub root node
             childNodes = mediaDao.getSubRootChildNodes(rootNode);
@@ -106,7 +108,7 @@ public final class MediaServiceImpl implements MediaService {
 
         // Filter child nodes according to available mime types
         Collection<AbstractNode> result = Collections2.filter(childNodes, new MimeTypeFilter(request.getAvailableMimeTypes()));
-        return new ChildNodeResult(result, result.size());
+        return new ChildNodeResult(result);
     }
 
     @Override
@@ -121,6 +123,19 @@ public final class MediaServiceImpl implements MediaService {
     }
 
     /**
+     * Handle media event.
+     *
+     * @param mediaEvent media event
+     */
+    @Subscribe
+    public void handleMediaEvent(final MediaEvent mediaEvent) {
+        if (mediaEvent.getType() == SCAN_NODE)
+            scanNode(getNode(mediaEvent.getParameter()));
+        else
+            LOGGER.error("Unknown media event {}", mediaEvent);
+    }
+
+    /**
      * Scan a specific node and its children
      *
      * @param node node to scan
@@ -131,24 +146,6 @@ public final class MediaServiceImpl implements MediaService {
             if (result.getChildNodes() != null)
                 for (AbstractNode childNode : result.getChildNodes())
                     scanNode(childNode);
-        }
-    }
-
-    /**
-     * Handle media event.
-     *
-     * @param mediaEvent media event
-     */
-    @Subscribe
-    public void handleMediaEvent(final MediaEvent mediaEvent) {
-        switch (mediaEvent.getType()) {
-            case SCAN_NODE:
-                AbstractNode node = getNode(mediaEvent.getParameter());
-                if (node != null) scanNode(node);
-                break;
-            default:
-                LOGGER.error("Unknown event");
-                break;
         }
     }
 

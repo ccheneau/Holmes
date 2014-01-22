@@ -270,7 +270,7 @@ public class StreamingHandlerTest {
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
         ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
-        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode), 2);
+        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode));
 
         expect(transportService.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaService.getNode(eq("0"))).andReturn(null).atLeastOnce();
@@ -301,7 +301,7 @@ public class StreamingHandlerTest {
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
-        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode, podcastNode), 3);
+        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode, podcastNode));
 
         expect(transportService.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaService.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();

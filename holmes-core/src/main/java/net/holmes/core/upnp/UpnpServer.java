@@ -21,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.inject.Injector;
 import net.holmes.core.common.Service;
 import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.Parameter;
 import net.holmes.core.transport.TransportService;
 import net.holmes.core.transport.upnp.device.UpnpDevice;
 import org.fourthline.cling.UpnpService;
@@ -43,6 +42,8 @@ import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+
+import static net.holmes.core.common.configuration.Parameter.ENABLE_UPNP;
 
 /**
  * UPnP server.
@@ -72,7 +73,7 @@ public final class UpnpServer implements Service {
 
     @Override
     public void start() {
-        if (configuration.getBooleanParameter(Parameter.ENABLE_UPNP)) {
+        if (configuration.getBooleanParameter(ENABLE_UPNP)) {
             LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
 
@@ -107,36 +108,35 @@ public final class UpnpServer implements Service {
 
         @Override
         public void remoteDeviceDiscoveryFailed(Registry registry, RemoteDevice device, Exception ex) {
-            // Ignore
+            LOGGER.error("Remote device discovery failed:" + getDeviceName(device), ex);
         }
 
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
-            final String deviceName = getDeviceName(device);
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Remote device detected: {}", deviceName);
-
             // Get device's connection manager service and AvTransport service.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
+
             if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
                 try {
-                    // Device host IP
-                    final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
+                    // Device info
                     final String deviceId = device.getIdentity().getUdn().getIdentifierString();
+                    final String deviceName = getDeviceName(device);
+                    final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
                     if (LOGGER.isDebugEnabled())
-                        LOGGER.debug("Get protocol info for {} : {} [{}]", deviceId, deviceName, deviceHost);
+                        LOGGER.debug("Remote device added {} : {} [{}]", deviceId, deviceName, deviceHost);
 
-                    // Get remote device protocol info
+                    // Get protocol info on remote device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
-                            List<String> mimeTypes = Lists.newArrayList();
+                            List<String> availableMimeTypes = Lists.newArrayList();
                             for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
-                                mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
+                                availableMimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
                             }
                             // Add device
-                            transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, mimeTypes, avTransportService));
+                            transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
                         }
 
                         @Override

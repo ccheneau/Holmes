@@ -59,7 +59,6 @@ public interface MediaService {
      * Child node request.
      */
     final class ChildNodeRequest {
-
         private final AbstractNode parentNode;
         private final List<String> availableMimeTypes;
 
@@ -107,17 +106,14 @@ public interface MediaService {
      */
     final class ChildNodeResult {
         private final Collection<AbstractNode> childNodes;
-        private final int totalCount;
 
         /**
          * Instantiates a new child node result.
          *
          * @param childNodes child nodes
-         * @param totalCount total count
          */
-        public ChildNodeResult(Collection<AbstractNode> childNodes, int totalCount) {
+        public ChildNodeResult(Collection<AbstractNode> childNodes) {
             this.childNodes = childNodes;
-            this.totalCount = totalCount;
         }
 
         /**
@@ -135,7 +131,7 @@ public interface MediaService {
          * @return total count
          */
         public int getTotalCount() {
-            return totalCount;
+            return childNodes.size();
         }
     }
 }
