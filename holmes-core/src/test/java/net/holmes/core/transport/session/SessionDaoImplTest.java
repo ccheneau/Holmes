@@ -105,4 +105,26 @@ public class SessionDaoImplTest {
         assertTrue(session.getStatus() == WAITING);
     }
 
+    @Test
+    public void testUpdateSessionPositionEndOfStreaming3() throws UnknownSessionException {
+        SessionDaoImpl sessionDao = new SessionDaoImpl();
+        sessionDao.initSession("deviceId", "contentUrl", "contentName");
+        sessionDao.updateSessionPosition("deviceId", 1l, 2l);
+        sessionDao.updateSessionPosition("deviceId", -1l, 0l);
+        StreamingSession session = sessionDao.getSession("deviceId");
+        assertNotNull(session);
+        assertTrue(session.getStatus() == WAITING);
+    }
+
+    @Test
+    public void testUpdateSessionPositionEndOfStreaming4() throws UnknownSessionException {
+        SessionDaoImpl sessionDao = new SessionDaoImpl();
+        sessionDao.initSession("deviceId", "contentUrl", "contentName");
+        sessionDao.updateSessionPosition("deviceId", 1l, 2l);
+        sessionDao.updateSessionPosition("deviceId", 0l, 2l);
+        StreamingSession session = sessionDao.getSession("deviceId");
+        assertNotNull(session);
+        assertTrue(session.getStatus() == WAITING);
+    }
+
 }

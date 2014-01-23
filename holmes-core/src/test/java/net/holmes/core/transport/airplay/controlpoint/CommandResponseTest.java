@@ -52,6 +52,18 @@ public class CommandResponseTest {
     }
 
     @Test
+    public void testDecodeBadResponse() {
+        CommandResponse response = new CommandResponse();
+        List<String> responseLines = Lists.newArrayList("");
+        response.decodeHttpResponse(responseLines);
+        assertEquals(0, response.getCode());
+        assertNull(response.getMessage());
+        assertEquals(0, response.getContentLength());
+        assertNull(response.getContentType());
+        assertNotNull(response.toString());
+    }
+
+    @Test
     public void testDecodeContentParameters() {
         CommandResponse response = new CommandResponse();
         String content = "duration: 83.124794\nposition: 14.467000";
