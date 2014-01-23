@@ -28,6 +28,7 @@ public class AirplayDeviceTest {
         AirplayFeatures features = new AirplayFeatures("0x000000");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         assertNotNull(device.toString());
+        assertNotNull(device.getType());
         assertFalse(device.isVideoSupported());
         assertFalse(device.isAudioSupported());
         assertFalse(device.isImageSupported());

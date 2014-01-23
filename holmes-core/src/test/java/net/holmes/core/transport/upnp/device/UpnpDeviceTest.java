@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 public class UpnpDeviceTest {
 
     @Test
-    public void testEmptyDevice() {
+    public void testNoContentTypeDevice() {
         UpnpDevice device = new UpnpDevice("id", "name", null, null, null);
         device.close();
         assertEquals("id", device.getId());
@@ -42,10 +42,59 @@ public class UpnpDeviceTest {
     }
 
     @Test
-    public void testFullDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("video/avi", "audio/mp3", "image/jpeg", "application/x-subrip");
+    public void testVideoContentTypeDevice() {
+        List<String> supportedMimeTypes = Lists.newArrayList("video/avi");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
+        assertNotNull(device.getType());
+        assertTrue(device.isVideoSupported());
+        assertFalse(device.isAudioSupported());
+        assertFalse(device.isImageSupported());
+        assertFalse(device.isSlideShowSupported());
+    }
+
+    @Test
+    public void testAudioContentTypeDevice() {
+        List<String> supportedMimeTypes = Lists.newArrayList("audio/mp3");
+        UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
+        assertNotNull(device.getSupportedMimeTypes());
+        assertNotNull(device.getType());
+        assertFalse(device.isVideoSupported());
+        assertTrue(device.isAudioSupported());
+        assertFalse(device.isImageSupported());
+        assertFalse(device.isSlideShowSupported());
+    }
+
+    @Test
+    public void testImageContentTypeDevice() {
+        List<String> supportedMimeTypes = Lists.newArrayList("image/jpeg");
+        UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
+        assertNotNull(device.getSupportedMimeTypes());
+        assertNotNull(device.getType());
+        assertFalse(device.isVideoSupported());
+        assertFalse(device.isAudioSupported());
+        assertTrue(device.isImageSupported());
+        assertTrue(device.isSlideShowSupported());
+    }
+
+    @Test
+    public void testUnknownContentTypeDevice() {
+        List<String> supportedMimeTypes = Lists.newArrayList("application/x-subrip");
+        UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
+        assertNotNull(device.getSupportedMimeTypes());
+        assertNotNull(device.getType());
+        assertFalse(device.isVideoSupported());
+        assertFalse(device.isAudioSupported());
+        assertFalse(device.isImageSupported());
+        assertFalse(device.isSlideShowSupported());
+    }
+
+    @Test
+    public void testAllContentTypeDevice() {
+        List<String> supportedMimeTypes = Lists.newArrayList("*/*");
+        UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
+        assertNotNull(device.getSupportedMimeTypes());
+        assertNotNull(device.getType());
         assertTrue(device.isVideoSupported());
         assertTrue(device.isAudioSupported());
         assertTrue(device.isImageSupported());
