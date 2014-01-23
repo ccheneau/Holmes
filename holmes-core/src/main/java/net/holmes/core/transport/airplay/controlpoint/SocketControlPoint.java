@@ -34,11 +34,17 @@ public class SocketControlPoint implements ControlPoint {
     private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
 
     @Override
-    public void execute(AirplayDevice device, Command command) {
+    public void execute(final AirplayDevice device, final Command command) {
         runDeviceCommand(device, command);
     }
 
-    protected void runDeviceCommand(AirplayDevice device, Command command) {
+    /**
+     * Run command on device.
+     *
+     * @param device  Airplay device
+     * @param command command
+     */
+    protected void runDeviceCommand(final AirplayDevice device, final Command command) {
         try {
             // Get device socket
             Socket socket = device.getConnection();
@@ -48,7 +54,6 @@ public class SocketControlPoint implements ControlPoint {
 
             // Read command response
             CommandResponse response = readCommandResponse(socket);
-
             if (response.getCode() == OK.code())
                 command.success(response.getContentParameters());
             else
@@ -64,7 +69,7 @@ public class SocketControlPoint implements ControlPoint {
      *
      * @param socket  socket
      * @param command command
-     * @throws java.io.IOException
+     * @throws IOException
      */
     protected void sendCommand(final Socket socket, final Command command) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));

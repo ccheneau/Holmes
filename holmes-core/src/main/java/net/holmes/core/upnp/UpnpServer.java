@@ -117,7 +117,7 @@ public final class UpnpServer implements Service {
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
 
-            if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null) {
+            if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null)
                 try {
                     // Device info
                     final String deviceId = device.getIdentity().getUdn().getIdentifierString();
@@ -132,9 +132,9 @@ public final class UpnpServer implements Service {
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
                             List<String> availableMimeTypes = Lists.newArrayList();
-                            for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+                            for (ProtocolInfo protocolInfo : sinkProtocolInfo)
                                 availableMimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
-                            }
+
                             // Add device
                             transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
                         }
@@ -147,7 +147,6 @@ public final class UpnpServer implements Service {
                 } catch (UnknownHostException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
-            }
         }
 
         @Override

@@ -102,6 +102,7 @@ public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
 
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                // Failed to get media info
                 sendFailure(PLAY, device.getId(), defaultMsg);
             }
         });
