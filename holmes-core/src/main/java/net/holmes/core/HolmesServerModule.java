@@ -65,6 +65,7 @@ import net.holmes.core.transport.upnp.UpnpStreamerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
+import javax.net.SocketFactory;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,6 +87,7 @@ final class HolmesServerModule extends AbstractModule {
     private final String localHolmesDataDir = getLocalHolmesDataDir();
     private final String uiDirectory = getUiDirectory();
     private final InetAddress localAddress = getLocalAddress();
+    private final SocketFactory socketFactory = SocketFactory.getDefault();
 
     /**
      * Get local data directory where Holmes configuration and logs are saved.
@@ -151,6 +153,7 @@ final class HolmesServerModule extends AbstractModule {
         // Bind utils
         bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
+        bind(SocketFactory.class).toInstance(socketFactory);
 
         // Bind event bus
         bind(EventBus.class).toInstance(eventBus);

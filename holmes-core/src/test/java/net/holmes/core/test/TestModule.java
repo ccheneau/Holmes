@@ -57,6 +57,7 @@ import net.holmes.core.transport.upnp.UpnpStreamerImpl;
 import net.holmes.core.upnp.UpnpServer;
 import org.fourthline.cling.UpnpService;
 
+import javax.net.SocketFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
@@ -66,6 +67,7 @@ import static org.easymock.EasyMock.createMock;
 public class TestModule extends AbstractModule {
     private final EventBus eventBus = new EventBus("Holmes EventBus");
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
+    private final SocketFactory socketFactory = SocketFactory.getDefault();
 
     @Override
     protected void configure() {
@@ -73,6 +75,7 @@ public class TestModule extends AbstractModule {
 
         bind(Configuration.class).to(TestConfiguration.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
+        bind(SocketFactory.class).toInstance(socketFactory);
 
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);

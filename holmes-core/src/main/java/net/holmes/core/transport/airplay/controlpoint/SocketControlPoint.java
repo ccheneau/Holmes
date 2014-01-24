@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import net.holmes.core.transport.airplay.command.Command;
 import net.holmes.core.transport.airplay.device.AirplayDevice;
 
+import javax.net.SocketFactory;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -32,6 +33,16 @@ import static io.netty.handler.codec.http.HttpResponseStatus.OK;
  */
 public class SocketControlPoint implements ControlPoint {
     private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
+    private final SocketFactory socketFactory;
+
+    /**
+     * Instantiates a new socket control point.
+     *
+     * @param socketFactory socket factory
+     */
+    public SocketControlPoint(final SocketFactory socketFactory) {
+        this.socketFactory = socketFactory;
+    }
 
     @Override
     public void execute(final AirplayDevice device, final Command command) {
@@ -47,7 +58,7 @@ public class SocketControlPoint implements ControlPoint {
     protected void runDeviceCommand(final AirplayDevice device, final Command command) {
         try {
             // Get device socket
-            Socket socket = device.getConnection();
+            Socket socket = device.getConnection(socketFactory);
 
             // Send command
             sendCommand(socket, command);

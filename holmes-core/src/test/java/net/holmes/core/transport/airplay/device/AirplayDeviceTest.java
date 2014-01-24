@@ -19,6 +19,12 @@ package net.holmes.core.transport.airplay.device;
 
 import org.junit.Test;
 
+import javax.net.SocketFactory;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 public class AirplayDeviceTest {
@@ -71,4 +77,102 @@ public class AirplayDeviceTest {
         assertFalse(device.isSlideShowSupported());
         device.close();
     }
+
+    @Test
+    public void testGetConnection() throws IOException {
+        SocketFactory socketFactory = createMock(SocketFactory.class);
+        Socket socket = createMock(Socket.class);
+
+        expect(socketFactory.createSocket(isNull(InetAddress.class), anyInt())).andReturn(socket);
+
+        replay(socketFactory, socket);
+
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        Socket aSocket = device.getConnection(socketFactory);
+        assertNotNull(aSocket);
+
+        verify(socketFactory, socket);
+    }
+
+    @Test
+    public void testGetConnectionSocketOpen() throws IOException {
+        SocketFactory socketFactory = createMock(SocketFactory.class);
+        Socket socket = createMock(Socket.class);
+
+        expect(socketFactory.createSocket(isNull(InetAddress.class), anyInt())).andReturn(socket);
+        expect(socket.isClosed()).andReturn(false);
+
+        replay(socketFactory, socket);
+
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        Socket aSocket1 = device.getConnection(socketFactory);
+        Socket aSocket2 = device.getConnection(socketFactory);
+        assertNotNull(aSocket1);
+        assertNotNull(aSocket2);
+
+        verify(socketFactory, socket);
+    }
+
+    @Test
+    public void testGetConnectionSocketClosed() throws IOException {
+        SocketFactory socketFactory = createMock(SocketFactory.class);
+        Socket socket = createMock(Socket.class);
+
+        expect(socketFactory.createSocket(isNull(InetAddress.class), anyInt())).andReturn(socket).atLeastOnce();
+        expect(socket.isClosed()).andReturn(true);
+
+        replay(socketFactory, socket);
+
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        Socket aSocket1 = device.getConnection(socketFactory);
+        Socket aSocket2 = device.getConnection(socketFactory);
+        assertNotNull(aSocket1);
+        assertNotNull(aSocket2);
+
+        verify(socketFactory, socket);
+    }
+
+    @Test
+    public void testCloseDevice() throws IOException {
+        SocketFactory socketFactory = createMock(SocketFactory.class);
+        Socket socket = createMock(Socket.class);
+
+        expect(socketFactory.createSocket(isNull(InetAddress.class), anyInt())).andReturn(socket);
+        socket.close();
+        expectLastCall();
+
+        replay(socketFactory, socket);
+
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        Socket aSocket = device.getConnection(socketFactory);
+        device.close();
+        assertNotNull(aSocket);
+
+        verify(socketFactory, socket);
+    }
+
+    @Test
+    public void testCloseDeviceWithIOException() throws IOException {
+        SocketFactory socketFactory = createMock(SocketFactory.class);
+        Socket socket = createMock(Socket.class);
+
+        expect(socketFactory.createSocket(isNull(InetAddress.class), anyInt())).andReturn(socket);
+        socket.close();
+        expectLastCall().andThrow(new IOException());
+
+        replay(socketFactory, socket);
+
+        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
+        Socket aSocket = device.getConnection(socketFactory);
+        device.close();
+        assertNotNull(aSocket);
+
+        verify(socketFactory, socket);
+    }
+
 }

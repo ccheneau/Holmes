@@ -20,6 +20,7 @@ package net.holmes.core.transport.airplay.device;
 import com.google.common.base.Objects;
 import net.holmes.core.transport.device.Device;
 
+import javax.net.SocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -85,12 +86,13 @@ public class AirplayDevice extends Device {
     /**
      * Get device connection.
      *
+     * @param socketFactory socket factory
      * @return device socket
      * @throws IOException
      */
-    public Socket getConnection() throws IOException {
+    public Socket getConnection(final SocketFactory socketFactory) throws IOException {
         if (socket == null || socket.isClosed())
-            socket = new Socket(getAddress(), port);
+            socket = socketFactory.createSocket(getAddress(), port);
 
         return socket;
     }

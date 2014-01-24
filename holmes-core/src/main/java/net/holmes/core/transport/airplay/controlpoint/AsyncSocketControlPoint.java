@@ -20,6 +20,8 @@ package net.holmes.core.transport.airplay.controlpoint;
 import net.holmes.core.transport.airplay.command.Command;
 import net.holmes.core.transport.airplay.device.AirplayDevice;
 
+import javax.inject.Inject;
+import javax.net.SocketFactory;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,10 +34,13 @@ public class AsyncSocketControlPoint extends SocketControlPoint {
     private final ExecutorService executor;
 
     /**
-     * Instantiates a new asynchronous Airplay control point
+     * Instantiates a new asynchronous Airplay control point.
+     *
+     * @param socketFactory socket factory
      */
-    public AsyncSocketControlPoint() {
-        super();
+    @Inject
+    public AsyncSocketControlPoint(final SocketFactory socketFactory) {
+        super(socketFactory);
         executor = Executors.newFixedThreadPool(EXECUTOR_POOL_SIZE);
     }
 
