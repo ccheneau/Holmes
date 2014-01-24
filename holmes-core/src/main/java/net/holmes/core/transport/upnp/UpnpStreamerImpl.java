@@ -44,7 +44,7 @@ import static net.holmes.core.transport.event.StreamingEvent.StreamingEventType.
 /**
  * Manage streaming on Upnp device.
  */
-public class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
+public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpnpStreamerImpl.class);
     private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
     private final ControlPoint controlPoint;

@@ -37,7 +37,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 /**
  * Command response.
  */
-public class CommandResponse {
+public final class CommandResponse {
     private static final String EOL = "\n";
     private static final char PARAMETER_SEPARATOR = ':';
     private static final Pattern HTTP_RESPONSE_PATTERN = Pattern.compile("^(.*)\\s(\\d+)\\s(.*)$");

@@ -46,7 +46,7 @@ import static net.holmes.core.transport.session.SessionStatus.*;
 /**
  * Transport service implementation.
  */
-public class TransportServiceImpl implements TransportService {
+public final class TransportServiceImpl implements TransportService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportServiceImpl.class);
 
     private final DeviceDao deviceDao;

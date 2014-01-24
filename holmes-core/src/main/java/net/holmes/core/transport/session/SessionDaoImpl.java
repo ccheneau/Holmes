@@ -26,7 +26,7 @@ import static net.holmes.core.transport.session.SessionStatus.WAITING;
 /**
  * Streaming session DAO implementation.
  */
-public class SessionDaoImpl implements SessionDao {
+public final class SessionDaoImpl implements SessionDao {
     private final Map<String, StreamingSession> sessions;
 
     /**

@@ -24,7 +24,7 @@ import java.math.BigInteger;
 /**
  * Airplay device features
  */
-public class AirplayFeatures {
+public final class AirplayFeatures {
     private static final int VIDEO_SUPPORTED_INDEX = 0;
     private static final int AUDIO_SUPPORTED_INDEX = 9;
     private static final int IMAGE_SUPPORTED_INDEX = 1;

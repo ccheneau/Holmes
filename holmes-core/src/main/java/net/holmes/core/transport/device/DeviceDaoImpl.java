@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Device dao implementation.
  */
-public class DeviceDaoImpl implements DeviceDao {
+public final class DeviceDaoImpl implements DeviceDao {
     private final Map<String, Device> devices;
 
     /**
