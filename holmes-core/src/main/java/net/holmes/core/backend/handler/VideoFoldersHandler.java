@@ -22,9 +22,9 @@ import net.holmes.core.backend.response.ConfigurationFolder;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static net.holmes.core.media.model.RootNode.VIDEO;
 
 /**
@@ -51,7 +51,7 @@ public final class VideoFoldersHandler {
      * @return video folders
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getVideoFolders() {
         return backendManager.getFolders(VIDEO);
     }
@@ -64,7 +64,7 @@ public final class VideoFoldersHandler {
      */
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder getVideoFolder(@PathParam("id") final String id) {
         return backendManager.getFolder(id, VIDEO);
     }
@@ -76,8 +76,8 @@ public final class VideoFoldersHandler {
      * @return added video folder
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder addVideoFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, VIDEO);
         return folder;
@@ -92,8 +92,8 @@ public final class VideoFoldersHandler {
      */
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder editVideoFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, VIDEO);
         return folder;
@@ -107,8 +107,7 @@ public final class VideoFoldersHandler {
      */
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder removeVideoFolder(@PathParam("id") final String id) {
         backendManager.removeFolder(id, VIDEO);
         return new ConfigurationFolder(id, null, null);

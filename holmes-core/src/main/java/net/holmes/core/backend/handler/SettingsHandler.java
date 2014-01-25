@@ -22,7 +22,8 @@ import net.holmes.core.backend.response.Settings;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
  * Handler for settings REST requests.
@@ -48,7 +49,7 @@ public final class SettingsHandler {
      * @return settings
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Settings getSettings() {
         return backendManager.getSettings();
     }
@@ -59,8 +60,8 @@ public final class SettingsHandler {
      * @param settings settings to save
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Settings saveSettings(final Settings settings) {
         backendManager.saveSettings(settings);
         return settings;

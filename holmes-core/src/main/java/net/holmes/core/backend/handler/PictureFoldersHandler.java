@@ -22,9 +22,9 @@ import net.holmes.core.backend.response.ConfigurationFolder;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static net.holmes.core.media.model.RootNode.PICTURE;
 
 /**
@@ -51,7 +51,7 @@ public final class PictureFoldersHandler {
      * @return picture folders
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPictureFolders() {
         return backendManager.getFolders(PICTURE);
     }
@@ -64,7 +64,7 @@ public final class PictureFoldersHandler {
      */
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder getPictureFolder(@PathParam("id") final String id) {
         return backendManager.getFolder(id, PICTURE);
     }
@@ -76,8 +76,8 @@ public final class PictureFoldersHandler {
      * @return added picture folder
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder addPictureFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, PICTURE);
         return folder;
@@ -92,8 +92,8 @@ public final class PictureFoldersHandler {
      */
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder editPictureFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, PICTURE);
         return folder;
@@ -107,8 +107,7 @@ public final class PictureFoldersHandler {
      */
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder removePictureFolder(@PathParam("id") final String id) {
         backendManager.removeFolder(id, PICTURE);
         return new ConfigurationFolder(id, null, null);

@@ -22,9 +22,9 @@ import net.holmes.core.backend.response.ConfigurationFolder;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static net.holmes.core.media.model.RootNode.AUDIO;
 
 /**
@@ -51,7 +51,7 @@ public final class AudioFoldersHandler {
      * @return audio folders
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
         return backendManager.getFolders(AUDIO);
     }
@@ -64,7 +64,7 @@ public final class AudioFoldersHandler {
      */
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder getAudioFolder(@PathParam("id") final String id) {
         return backendManager.getFolder(id, AUDIO);
     }
@@ -76,8 +76,8 @@ public final class AudioFoldersHandler {
      * @return added audio folder
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder addAudioFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, AUDIO);
         return folder;
@@ -92,8 +92,8 @@ public final class AudioFoldersHandler {
      */
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder editAudioFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, AUDIO);
         return folder;
@@ -107,8 +107,7 @@ public final class AudioFoldersHandler {
      */
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ConfigurationFolder removeAudioFolder(@PathParam("id") final String id) {
         backendManager.removeFolder(id, AUDIO);
         return new ConfigurationFolder(id, null, null);

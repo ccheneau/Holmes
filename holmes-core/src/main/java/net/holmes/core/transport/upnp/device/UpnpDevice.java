@@ -49,8 +49,7 @@ public class UpnpDevice extends Device {
         this.avTransportService = avTransportService;
         if (supportedMimeTypes != null) {
             for (String supportedMimeType : supportedMimeTypes) {
-                MimeType mimeType = MimeType.valueOf(supportedMimeType);
-                switch (mimeType.getType()) {
+                switch (MimeType.valueOf(supportedMimeType).getType()) {
                     case TYPE_VIDEO:
                         videoSupported = true;
                         break;

@@ -36,9 +36,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
 import static net.holmes.core.media.MediaService.ChildNodeRequest;
@@ -72,7 +73,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/devices")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         List<PlaybackDevice> playbackDevices = Lists.newArrayList();
         for (Device device : transportService.getDevices())
@@ -88,7 +89,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/play/{deviceId}/{contentId}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String play(@PathParam("deviceId") String deviceId, @PathParam("contentId") String contentId) {
         AbstractNode contentNode = mediaService.getNode(contentId);
         String url = mediaService.getNodeUrl(contentNode);
@@ -107,7 +108,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/pause/{deviceId}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String pause(@PathParam("deviceId") String deviceId) {
         try {
             transportService.pause(deviceId);
@@ -124,7 +125,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/stop/{deviceId}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String stop(@PathParam("deviceId") String deviceId) {
         try {
             transportService.stop(deviceId);
@@ -141,7 +142,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/resume/{deviceId}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String resume(@PathParam("deviceId") String deviceId) {
         try {
             transportService.resume(deviceId);
@@ -158,7 +159,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/status/{deviceId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public PlaybackStatus status(@PathParam("deviceId") String deviceId) {
         PlaybackStatus status = new PlaybackStatus();
         try {
@@ -181,7 +182,7 @@ public class StreamingHandler {
      */
     @GET
     @Path("/browse/{deviceId}/{nodeId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public DeviceBrowseResult browse(@PathParam("deviceId") String deviceId, @PathParam("nodeId") String nodeId) {
         DeviceBrowseResult result = new DeviceBrowseResult();
         result.setParentNodeId(nodeId);

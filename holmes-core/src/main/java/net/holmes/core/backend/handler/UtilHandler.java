@@ -22,11 +22,12 @@ import com.google.common.collect.Maps;
 import net.holmes.core.common.NodeFile;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
@@ -45,7 +46,7 @@ public final class UtilHandler {
      */
     @GET
     @Path("/getVersion")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String getVersion() {
         String version = this.getClass().getPackage().getImplementationVersion();
         return version == null ? "alpha" : version;
@@ -59,25 +60,25 @@ public final class UtilHandler {
      */
     @POST
     @Path("/getChildFolders")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public Collection<Folder> getChildFolders(@FormParam("path") final String parentPath) {
         Collection<Folder> folders = Lists.newArrayList();
-
         if (parentPath == null || parentPath.equals("none")) {
-            // Add user home folder
+            // No parent path specified
+            // Add user home folder to response
             File userHomeDir = new File(USER_HOME.getValue());
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
-            // Add root folders
+            // Add server root folders to response
             File[] roots = File.listRoots();
             if (roots != null)
                 for (File root : roots)
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
         } else {
             // Get child folders
-            NodeFile directory = new NodeFile(parentPath);
-            if (directory.canRead())
-                for (File childDir : directory.listChildFiles(false))
+            NodeFile parentDirectory = new NodeFile(parentPath);
+            if (parentDirectory.canRead())
+                for (File childDir : parentDirectory.listChildFiles(false))
                     folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
         }
         return folders;
