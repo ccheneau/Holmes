@@ -140,6 +140,7 @@ var Application = (function(application) {
 			$('#audioDlg').modal('show');
 		},
 		hideDialog : function(){
+			$(".modal-backdrop").remove();
 			$('#audioDlg').modal('hide');
 		}
 	});

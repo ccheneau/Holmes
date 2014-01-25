@@ -131,6 +131,7 @@ var Application = (function(application) {
 			$('#podcastDlg').modal('show');
 		},
 		hideDialog : function(){
+			$(".modal-backdrop").remove();
 			$('#podcastDlg').modal('hide');
 		}
 	});
