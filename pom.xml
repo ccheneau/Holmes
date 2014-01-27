@@ -39,7 +39,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cling.version>2.0-alpha2</cling.version>
+        <cling.version>2.0-alpha3</cling.version>
         <easymock.version>3.2</easymock.version>
         <guava.version>16.0</guava.version>
         <guice.version>3.0</guice.version>
@@ -51,7 +51,7 @@
         <netty.version>4.0.15.Final</netty.version>
         <resteasy.version>3.0.6.Final</resteasy.version>
         <rome.version>1.0</rome.version>
-        <seamless.version>1.0-alpha2</seamless.version>
+        <seamless.version>1.0-alpha3</seamless.version>
         <slf4j.version>1.7.5</slf4j.version>
         <xstream.version>1.4.6</xstream.version>
     </properties>
