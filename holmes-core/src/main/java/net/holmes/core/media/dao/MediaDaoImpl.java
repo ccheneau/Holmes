@@ -265,27 +265,30 @@ public class MediaDaoImpl implements MediaDao {
             @Override
             public List<AbstractNode> call() throws IOException, FeedException {
                 // No entries in cache, read them from RSS feed
-
                 // First remove children from media index
                 mediaIndexManager.removeChildren(podcastId);
 
-                // Parse podcast
                 final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-                new PodcastParser() {
-                    @Override
-                    public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
-                        // Add element to media index
-                        return mediaIndexManager.add(mediaIndexElement);
-                    }
+                try {
+                    // Parse podcast
+                    new PodcastParser() {
+                        @Override
+                        public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
+                            // Add element to media index
+                            return mediaIndexManager.add(mediaIndexElement);
+                        }
 
-                    @Override
-                    public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
-                        // Add podcast entry node
-                        podcastEntryNodes.add(podcastEntryNode);
-                    }
-                }.parse(podcastUrl, podcastId);
-
-                return podcastEntryNodes;
+                        @Override
+                        public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
+                            // Add podcast entry node
+                            podcastEntryNodes.add(podcastEntryNode);
+                        }
+                    }.parse(podcastUrl, podcastId);
+                    return podcastEntryNodes;
+                } catch (Exception e) {
+                    LOGGER.error(e.getMessage(), e);
+                    throw e;
+                }
             }
         });
     }
