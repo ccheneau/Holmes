@@ -59,7 +59,7 @@ abstract class PodcastParser {
                                 String podcastEntryId = addMediaIndexElement(new MediaIndexElement(podcastId, TYPE_RAW_URL.getValue(), mimeType.getMimeType(), enclosure.getUrl(), rssEntry.getTitle(), false, false));
 
                                 // Build podcast entry node
-                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, podcastEntryId, podcastId, rssEntry.getTitle().trim(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
+                                RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, podcastEntryId, podcastId, rssEntry.getTitle(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
                                 podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
                                 podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
 
