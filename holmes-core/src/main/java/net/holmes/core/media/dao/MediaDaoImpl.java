@@ -269,26 +269,21 @@ public class MediaDaoImpl implements MediaDao {
                 mediaIndexManager.removeChildren(podcastId);
 
                 final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-                try {
-                    // Parse podcast
-                    new PodcastParser() {
-                        @Override
-                        public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
-                            // Add element to media index
-                            return mediaIndexManager.add(mediaIndexElement);
-                        }
+                // Parse podcast
+                new PodcastParser() {
+                    @Override
+                    public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
+                        // Add element to media index
+                        return mediaIndexManager.add(mediaIndexElement);
+                    }
 
-                        @Override
-                        public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
-                            // Add podcast entry node
-                            podcastEntryNodes.add(podcastEntryNode);
-                        }
-                    }.parse(podcastUrl, podcastId);
-                    return podcastEntryNodes;
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(), e);
-                    throw e;
-                }
+                    @Override
+                    public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
+                        // Add podcast entry node
+                        podcastEntryNodes.add(podcastEntryNode);
+                    }
+                }.parse(podcastUrl, podcastId);
+                return podcastEntryNodes;
             }
         });
     }
