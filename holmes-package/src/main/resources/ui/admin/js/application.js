@@ -10,7 +10,7 @@ var Application = (function() {
         // get Holmes version
         $.get('/backend/util/getVersion', function(response) {
             application.version = response;
-            $("#version").html($.i18n.prop("msg.toolbar.version") + "&nbsp;" + response);
+            $("#version").html(response);
         });
     };
     this._init();
