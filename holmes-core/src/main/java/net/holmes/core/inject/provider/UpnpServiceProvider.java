@@ -69,6 +69,9 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         this.configuration = configuration;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public UpnpService get() {

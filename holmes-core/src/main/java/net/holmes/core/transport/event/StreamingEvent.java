@@ -110,6 +110,9 @@ public final class StreamingEvent {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

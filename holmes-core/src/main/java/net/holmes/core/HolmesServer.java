@@ -66,6 +66,9 @@ public final class HolmesServer implements Service {
         this.localHolmesDataDir = localHolmesDataDir;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         if (lockInstance()) {
@@ -82,6 +85,9 @@ public final class HolmesServer implements Service {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         LOGGER.info("Stopping Holmes server");

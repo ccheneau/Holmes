@@ -63,6 +63,9 @@ public final class Bootstrap {
 
             // Add shutdown hook
             Runtime.getRuntime().addShutdownHook(new Thread() {
+                /**
+                 * {@inheritDoc}
+                 */
                 @Override
                 public void run() {
                     holmesServer.stop();

@@ -69,6 +69,9 @@ public final class StreamingSession {
         this.position = position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

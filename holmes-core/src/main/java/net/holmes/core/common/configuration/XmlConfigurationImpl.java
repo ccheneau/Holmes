@@ -97,6 +97,9 @@ public final class XmlConfigurationImpl implements Configuration {
         if (!configLoaded) saveConfig();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void saveConfig() throws IOException {
         try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
@@ -105,6 +108,9 @@ public final class XmlConfigurationImpl implements Configuration {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ConfigurationNode> getFolders(final RootNode folderRootNode) {
         List<ConfigurationNode> folders;
@@ -128,26 +134,41 @@ public final class XmlConfigurationImpl implements Configuration {
         return folders;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Boolean getBooleanParameter(final Parameter parameter) {
         return Boolean.valueOf(getParameter(parameter));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer getIntParameter(final Parameter parameter) {
         return Integer.valueOf(getParameter(parameter));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParameter(final Parameter parameter) {
         return this.rootNode.getParameter(parameter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setParameter(Parameter parameter, String value) {
         this.rootNode.setParameter(parameter, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBooleanParameter(final Parameter parameter, final Boolean value) {
         this.rootNode.setParameter(parameter, value.toString());

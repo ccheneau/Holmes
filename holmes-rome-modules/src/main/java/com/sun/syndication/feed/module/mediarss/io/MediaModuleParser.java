@@ -44,16 +44,16 @@ public class MediaModuleParser implements ModuleParser {
      */
     private static final Namespace NS = Namespace.getNamespace(MediaModule.URI);
 
-    /* (non-Javadoc)
-     * @see com.sun.syndication.io.ModuleParser#getNamespaceUri()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getNamespaceUri() {
         return MediaModule.URI;
     }
 
-    /* (non-Javadoc)
-     * @see com.sun.syndication.io.ModuleParser#parse(org.jdom.Element)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Module parse(final Element mmRoot) {

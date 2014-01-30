@@ -75,6 +75,9 @@ public final class MediaServiceImpl implements MediaService {
         this.localAddress = localAddress;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
@@ -88,6 +91,9 @@ public final class MediaServiceImpl implements MediaService {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChildNodeResult getChildNodes(final ChildNodeRequest request) {
         List<AbstractNode> childNodes;
@@ -111,12 +117,18 @@ public final class MediaServiceImpl implements MediaService {
         return new ChildNodeResult(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getNodeUrl(AbstractNode node) {
         return "http://" + localAddress.getHostAddress() + ":" + configuration.getIntParameter(HTTP_SERVER_PORT) +
                 HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void cleanUpCache() {
         mediaDao.cleanUpCache();
@@ -159,6 +171,9 @@ public final class MediaServiceImpl implements MediaService {
             this.availableMimeTypes = availableMimeTypes;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean apply(final AbstractNode node) {
             return !(node instanceof MimeTypeNode)

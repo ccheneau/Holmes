@@ -85,6 +85,9 @@ public class MediaDaoImpl implements MediaDao {
                 .build();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractNode getNode(String nodeId) {
         AbstractNode node = null;
@@ -115,6 +118,9 @@ public class MediaDaoImpl implements MediaDao {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AbstractNode> getChildNodes(String parentNodeId) {
         List<AbstractNode> childNodes = Lists.newArrayList();
@@ -151,6 +157,9 @@ public class MediaDaoImpl implements MediaDao {
         return childNodes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AbstractNode> getSubRootChildNodes(final RootNode rootNode) {
         List<AbstractNode> nodes = Lists.newArrayList();
@@ -193,6 +202,9 @@ public class MediaDaoImpl implements MediaDao {
         return nodes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void cleanUpCache() {
         podcastCache.cleanUp();
@@ -262,6 +274,9 @@ public class MediaDaoImpl implements MediaDao {
     @SuppressWarnings("unchecked")
     private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) throws ExecutionException {
         return podcastCache.get(podcastUrl, new Callable<List<AbstractNode>>() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public List<AbstractNode> call() throws IOException, FeedException {
                 // No entries in cache, read them from RSS feed
@@ -271,12 +286,18 @@ public class MediaDaoImpl implements MediaDao {
                 final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
                 // Parse podcast
                 new PodcastParser() {
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
                         // Add element to media index
                         return mediaIndexManager.add(mediaIndexElement);
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
                         // Add podcast entry node

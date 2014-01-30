@@ -76,12 +76,18 @@ public final class TransportServiceImpl implements TransportService {
         new UpdateSessionStatusService(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addDevice(final Device device) {
         LOGGER.info("Add device {}", device);
         deviceDao.addDevice(device);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeDevice(final String deviceId) {
         LOGGER.info("Remove device {}", deviceId);
@@ -89,26 +95,41 @@ public final class TransportServiceImpl implements TransportService {
         sessionDao.removeDevice(deviceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Device> findDevices(final String hostAddress) {
         return deviceDao.findDevices(hostAddress);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Device> getDevices() {
         return deviceDao.getDevices();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Device getDevice(final String deviceId) throws UnknownDeviceException {
         return deviceDao.getDevice(deviceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
         return sessionDao.getSession(deviceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void play(final String deviceId, final String contentUrl, final AbstractNode node) throws UnknownDeviceException {
@@ -117,6 +138,9 @@ public final class TransportServiceImpl implements TransportService {
         getStreamer(device).play(device, contentUrl, node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void stop(final String deviceId) throws UnknownDeviceException {
@@ -124,6 +148,9 @@ public final class TransportServiceImpl implements TransportService {
         getStreamer(device).stop(device);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void pause(final String deviceId) throws UnknownDeviceException {
@@ -131,6 +158,9 @@ public final class TransportServiceImpl implements TransportService {
         getStreamer(device).pause(device);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void resume(final String deviceId) throws UnknownDeviceException {
@@ -203,6 +233,9 @@ public final class TransportServiceImpl implements TransportService {
             this.updateStatusDelay = updateStatusDelay;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         @SuppressWarnings("unchecked")
         protected void runOneIteration() throws Exception {
@@ -215,6 +248,9 @@ public final class TransportServiceImpl implements TransportService {
                 }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected Scheduler scheduler() {
             return updateStatusDelay > 0 ? Scheduler.newFixedDelaySchedule(updateStatusDelay, updateStatusDelay, SECONDS) : null;

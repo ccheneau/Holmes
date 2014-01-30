@@ -69,6 +69,9 @@ public class TestModule extends AbstractModule {
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final SocketFactory socketFactory = SocketFactory.getDefault();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure() {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));

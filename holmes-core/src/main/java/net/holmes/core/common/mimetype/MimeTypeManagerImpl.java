@@ -47,6 +47,9 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MimeType getMimeType(final String fileName) {
         // Get file extension
@@ -56,6 +59,9 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
         return properties.getProperty(ext) == null ? null : MimeType.valueOf(properties.getProperty(ext));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isMimeTypeCompliant(final MimeType mimeType, final List<String> availableMimeTypes) {
         MimeType aliasMimeType = getAliasMimeType(mimeType);

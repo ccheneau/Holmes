@@ -51,6 +51,7 @@ public final class MimeType {
 
     /**
      * Get mime type
+     *
      * @param mimeType mime type string
      * @return mime type
      */
@@ -119,11 +120,17 @@ public final class MimeType {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(type, subType, mimeType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -133,6 +140,9 @@ public final class MimeType {
         return Objects.equal(this.type, other.type) && Objects.equal(this.subType, other.subType) && Objects.equal(this.mimeType, other.mimeType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

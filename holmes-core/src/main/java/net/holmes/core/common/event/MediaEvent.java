@@ -46,6 +46,9 @@ public class MediaEvent {
         return parameter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

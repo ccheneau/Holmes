@@ -38,6 +38,9 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
     @Inject
     private ResourceBundle resourceBundle;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Response toResponse(final BackendException e) {
         String entityMessage;

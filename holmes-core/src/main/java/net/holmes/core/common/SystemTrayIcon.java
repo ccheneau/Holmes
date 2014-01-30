@@ -38,15 +38,24 @@ public class SystemTrayIcon extends TrayIcon {
     }
 
     private static final PopupMenuListener POPUP_LISTENER = new PopupMenuListener() {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void popupMenuWillBecomeInvisible(final PopupMenuEvent event) {
             DIALOG.setVisible(false);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void popupMenuCanceled(final PopupMenuEvent event) {
             DIALOG.setVisible(false);

@@ -61,6 +61,9 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         this.uiDirectory = uiDirectory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void decode(ChannelHandlerContext context, FullHttpRequest request, List<Object> out) {
         HttpFileRequest fileRequest = null;

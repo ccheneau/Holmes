@@ -37,11 +37,17 @@ public final class DeviceDaoImpl implements DeviceDao {
         this.devices = Maps.newHashMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addDevice(final Device device) {
         devices.put(device.getId(), device);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeDevice(final String deviceId) {
         Device device = devices.get(deviceId);
@@ -51,6 +57,9 @@ public final class DeviceDaoImpl implements DeviceDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Device getDevice(final String deviceId) throws UnknownDeviceException {
         Device device = devices.get(deviceId);
@@ -58,14 +67,23 @@ public final class DeviceDaoImpl implements DeviceDao {
         return device;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Device> getDevices() {
         return devices.values();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Device> findDevices(final String hostAddress) {
         return Collections2.filter(devices.values(), new Predicate<Device>() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public boolean apply(Device input) {
                 return input.getAddress().getHostAddress().equals(hostAddress);

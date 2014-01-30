@@ -42,12 +42,18 @@ public class HolmesSchedulerService implements Service {
         this.icecastDownloadService = icecastDownloadService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         cacheCleanerService.startAsync();
         icecastDownloadService.startAsync();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         icecastDownloadService.stopAsync();

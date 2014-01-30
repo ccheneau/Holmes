@@ -57,11 +57,17 @@ public final class FolderNode extends AbstractNode {
         this(id, parentId, name, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -72,6 +78,9 @@ public final class FolderNode extends AbstractNode {
         return Objects.equal(this.path, other.path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

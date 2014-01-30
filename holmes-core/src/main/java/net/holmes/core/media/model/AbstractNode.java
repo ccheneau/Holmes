@@ -118,6 +118,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         this.iconUrl = iconUrl;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int compareTo(final AbstractNode o) {
         if (this.getType() == o.getType()) return this.name.compareTo(o.name);
@@ -125,11 +128,17 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         else return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -61,10 +61,16 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
         this.controlPoint = upnpService.getControlPoint();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
         // Get media info
         controlPoint.execute(new GetMediaInfo(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
                 String currentUrl = mediaInfo.getCurrentURI();
@@ -77,6 +83,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                 else
                     // Another Url is already set on device, get transport info
                     controlPoint.execute(new GetTransportInfo(device.getAvTransportService()) {
+                        /**
+                         * {@inheritDoc}
+                         */
                         @Override
                         public void received(ActionInvocation invocation, TransportInfo transportInfo) {
                             if (LOGGER.isDebugEnabled()) LOGGER.debug(transportInfo.getCurrentTransportState().name());
@@ -93,6 +102,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                             }
                         }
 
+                        /**
+                         * {@inheritDoc}
+                         */
                         @Override
                         public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                             sendFailure(PLAY, device.getId(), defaultMsg);
@@ -100,6 +112,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                     });
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 // Failed to get media info
@@ -108,15 +123,24 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop(final UpnpDevice device) {
         // Stop content playback
         controlPoint.execute(new Stop(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(ActionInvocation invocation) {
                 sendSuccess(STOP, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(STOP, device.getId(), defaultMsg);
@@ -124,15 +148,24 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void pause(final UpnpDevice device) {
         // Pause content playback
         controlPoint.execute(new Pause(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(ActionInvocation invocation) {
                 sendSuccess(PAUSE, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(PAUSE, device.getId(), defaultMsg);
@@ -140,16 +173,25 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resume(final UpnpDevice device) {
         // Resume content playback
         play(device, RESUME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateStatus(final UpnpDevice device) {
         // Get transport info
         controlPoint.execute(new GetTransportInfo(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void received(ActionInvocation invocation, TransportInfo transportInfo) {
                 switch (transportInfo.getCurrentTransportState()) {
@@ -157,11 +199,17 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                     case PAUSED_PLAYBACK:
                         // Content is currently playing on device, get position info
                         controlPoint.execute(new GetPositionInfo(device.getAvTransportService()) {
+                            /**
+                             * {@inheritDoc}
+                             */
                             @Override
                             public void received(ActionInvocation invocation, PositionInfo positionInfo) {
                                 sendSuccess(STATUS, device.getId(), positionInfo.getTrackDurationSeconds(), positionInfo.getTrackElapsedSeconds());
                             }
 
+                            /**
+                             * {@inheritDoc}
+                             */
                             @Override
                             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                                 sendFailure(STATUS, device.getId(), defaultMsg);
@@ -178,6 +226,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 sendFailure(STATUS, device.getId(), defaultMsg);
@@ -193,11 +244,17 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      */
     private void play(final UpnpDevice device, final StreamingEventType eventType) {
         controlPoint.execute(new Play(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(ActionInvocation invocation) {
                 sendSuccess(eventType, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(eventType, device.getId(), defaultMsg);
@@ -216,12 +273,18 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private void stopSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
         // Stop content playback
         controlPoint.execute(new Stop(device.getAvTransportService()) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(ActionInvocation invocation) {
                 // Set Url and play
                 setUrlAndPlay(device, contentUrl, node, eventType);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                 sendFailure(eventType, device.getId(), defaultMsg);
@@ -241,12 +304,18 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
         try {
             // Set content Url
             controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl, getNodeMetadata(node, contentUrl)) {
+                /**
+                 * {@inheritDoc}
+                 */
                 @Override
                 public void success(ActionInvocation invocation) {
                     // Play content
                     play(device, eventType);
                 }
 
+                /**
+                 * {@inheritDoc}
+                 */
                 @Override
                 public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
                     sendFailure(eventType, device.getId(), defaultMsg);

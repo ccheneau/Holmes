@@ -56,6 +56,9 @@ public class TestConfiguration implements Configuration {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void saveConfig() throws IOException {
         if (parameters.get(Parameter.UPNP_SERVER_NAME).equals("IOException")) throw new IOException();
@@ -73,6 +76,9 @@ public class TestConfiguration implements Configuration {
         return contentFolder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ConfigurationNode> getFolders(RootNode rootNode) {
         List<ConfigurationNode> folders = null;
@@ -95,26 +101,41 @@ public class TestConfiguration implements Configuration {
         return folders;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Boolean getBooleanParameter(Parameter param) {
         return Boolean.valueOf(parameters.get(param));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer getIntParameter(Parameter param) {
         return Integer.valueOf(parameters.get(param));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParameter(Parameter param) {
         return parameters.get(param);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setParameter(Parameter param, String value) {
         parameters.put(param, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBooleanParameter(Parameter param, Boolean value) {
         parameters.put(param, value.toString());

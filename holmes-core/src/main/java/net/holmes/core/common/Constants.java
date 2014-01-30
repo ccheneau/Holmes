@@ -43,6 +43,9 @@ public enum Constants {
         this.value = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

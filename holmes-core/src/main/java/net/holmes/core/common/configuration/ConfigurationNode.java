@@ -61,11 +61,17 @@ public final class ConfigurationNode {
         this.path = path;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, label, path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -75,6 +81,9 @@ public final class ConfigurationNode {
         return Objects.equal(this.id, other.id) && Objects.equal(this.label, other.label) && Objects.equal(this.path, other.path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

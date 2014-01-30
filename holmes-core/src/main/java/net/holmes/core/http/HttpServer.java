@@ -82,6 +82,9 @@ public final class HttpServer implements Service {
         this.deployment = new ResteasyDeployment();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         LOGGER.info("Starting HTTP server");
@@ -97,6 +100,9 @@ public final class HttpServer implements Service {
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
@@ -129,6 +135,9 @@ public final class HttpServer implements Service {
         LOGGER.info("HTTP server bound on {}", bindAddress);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         LOGGER.info("Stopping HTTP server");

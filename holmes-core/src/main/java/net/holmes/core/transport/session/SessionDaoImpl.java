@@ -36,6 +36,9 @@ public final class SessionDaoImpl implements SessionDao {
         this.sessions = Maps.newConcurrentMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initSession(final String deviceId, final String contentUrl, final String contentName) {
         StreamingSession session = new StreamingSession();
@@ -47,12 +50,18 @@ public final class SessionDaoImpl implements SessionDao {
         sessions.put(deviceId, session);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateSessionStatus(final String deviceId, final SessionStatus status) throws UnknownSessionException {
         StreamingSession session = getSession(deviceId);
         session.setStatus(status);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateSessionPosition(final String deviceId, final Long position, final Long duration) throws UnknownSessionException {
         StreamingSession session = getSession(deviceId);
@@ -66,11 +75,17 @@ public final class SessionDaoImpl implements SessionDao {
         session.setDuration(duration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeDevice(final String deviceId) {
         sessions.remove(deviceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
         StreamingSession session = sessions.get(deviceId);
@@ -78,6 +93,9 @@ public final class SessionDaoImpl implements SessionDao {
         return session;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, StreamingSession> getSessions() {
         return sessions;

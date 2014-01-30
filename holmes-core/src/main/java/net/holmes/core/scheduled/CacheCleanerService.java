@@ -48,12 +48,18 @@ public class CacheCleanerService extends AbstractScheduledService {
         this.cleanDelayMinutes = configuration.getIntParameter(CACHE_CLEAN_DELAY_MINUTES);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void runOneIteration() {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch cache cleaner");
         mediaService.cleanUpCache();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Scheduler scheduler() {
         return cleanDelayMinutes > 0 ? Scheduler.newFixedDelaySchedule(cleanDelayMinutes, cleanDelayMinutes, MINUTES) : null;

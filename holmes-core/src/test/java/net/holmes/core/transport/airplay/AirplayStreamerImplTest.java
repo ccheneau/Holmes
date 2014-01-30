@@ -39,6 +39,9 @@ public class AirplayStreamerImplTest {
     public void testPlaySuccess() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -66,6 +69,9 @@ public class AirplayStreamerImplTest {
     public void testPlayFailure() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -94,6 +100,9 @@ public class AirplayStreamerImplTest {
     public void testStopSuccess() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -120,6 +129,9 @@ public class AirplayStreamerImplTest {
     public void testStopFailure() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -147,6 +159,9 @@ public class AirplayStreamerImplTest {
     public void testPauseSuccess() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -173,6 +188,9 @@ public class AirplayStreamerImplTest {
     public void testPauseFailure() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -200,6 +218,9 @@ public class AirplayStreamerImplTest {
     public void testResumeSuccess() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -226,6 +247,9 @@ public class AirplayStreamerImplTest {
     public void testResumeFailure() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -253,6 +277,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusSuccessEmptyParameters() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -271,6 +298,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusSuccessNullParameters() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -289,6 +319,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusSuccessWithParameters() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -320,6 +353,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusSuccessWithStopParameters() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -349,6 +385,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusSuccessWithBadParameters() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -378,6 +417,9 @@ public class AirplayStreamerImplTest {
     public void testUpdateStatusFailure() {
         EventBus eventBus = createMock(EventBus.class);
         ControlPoint controlPoint = new ControlPoint() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void execute(AirplayDevice device, Command command) {
                 assertNotNull(command.getRequest());
@@ -400,5 +442,4 @@ public class AirplayStreamerImplTest {
         assertEquals("errorMessage", captureStreamingEvent.getValue().getErrorMessage());
         verify(eventBus, device);
     }
-
 }

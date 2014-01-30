@@ -55,11 +55,17 @@ public class Time implements Serializable {
         return milliseconds;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return new EqualsBean(this.getClass(), this).beanHashCode();

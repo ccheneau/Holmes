@@ -67,12 +67,18 @@ public final class SystrayService implements Service {
         this.localHolmesDataDir = localHolmesDataDir;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         // Add system tray icon
         if (configuration.getBooleanParameter(ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         // Nothing
@@ -125,6 +131,9 @@ public final class SystrayService implements Service {
 
         // Quit Holmes menu item
         JMenuItem quitItem = new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void onClick() {
                 System.exit(0);
@@ -133,6 +142,9 @@ public final class SystrayService implements Service {
 
         // Holmes logs menu item
         JMenuItem logsItem = new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void onClick() throws IOException {
                 Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
@@ -141,6 +153,9 @@ public final class SystrayService implements Service {
 
         // Holmes admin ui menu item
         JMenuItem holmesAdminUiItem = new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void onClick() throws URISyntaxException, IOException {
                 Desktop.getDesktop().browse(new URI(holmesAdminUrl));
@@ -149,6 +164,9 @@ public final class SystrayService implements Service {
 
         // Holmes site menu item
         JMenuItem holmesSiteItem = new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void onClick() throws URISyntaxException, IOException {
                 Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
@@ -157,6 +175,9 @@ public final class SystrayService implements Service {
 
         // Holmes wiki menu item
         JMenuItem holmesWikiItem = new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void onClick() throws URISyntaxException, IOException {
                 Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
@@ -209,6 +230,9 @@ public final class SystrayService implements Service {
             if (font != null) menuItem.setFont(font);
 
             menuItem.addActionListener(new ActionListener() {
+                /**
+                 * {@inheritDoc}
+                 */
                 @Override
                 public void actionPerformed(ActionEvent event) {
                     try {

@@ -82,11 +82,17 @@ public class MediaIndexElement implements Serializable {
         return locked;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(parentId, mediaType, mimeType, name, path, localPath, locked);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -102,6 +108,9 @@ public class MediaIndexElement implements Serializable {
                 && Objects.equal(this.locked, other.locked);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

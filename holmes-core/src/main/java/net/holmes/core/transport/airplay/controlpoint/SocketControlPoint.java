@@ -44,6 +44,9 @@ public class SocketControlPoint implements ControlPoint {
         this.socketFactory = socketFactory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(final AirplayDevice device, final Command command) {
         runDeviceCommand(device, command);

@@ -110,11 +110,17 @@ public class Metadata implements Cloneable, Serializable {
         return md;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return new EqualsBean(this.getClass(), this).beanHashCode();

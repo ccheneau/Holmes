@@ -54,11 +54,17 @@ public final class RawUrlNode extends MimeTypeNode {
         return duration;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url, duration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -69,6 +75,9 @@ public final class RawUrlNode extends MimeTypeNode {
         return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

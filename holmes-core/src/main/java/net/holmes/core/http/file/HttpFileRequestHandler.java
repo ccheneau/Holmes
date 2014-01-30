@@ -60,6 +60,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     public HttpFileRequestHandler() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
@@ -102,6 +105,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
         if (context.channel().isActive())

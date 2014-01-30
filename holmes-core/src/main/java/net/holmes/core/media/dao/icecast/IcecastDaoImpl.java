@@ -89,6 +89,9 @@ public final class IcecastDaoImpl implements IcecastDao {
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void checkYellowPage() {
         if (icecastEnabled) {
@@ -106,6 +109,9 @@ public final class IcecastDaoImpl implements IcecastDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isLoaded() {
         synchronized (directoryLock) {
@@ -113,6 +119,9 @@ public final class IcecastDaoImpl implements IcecastDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
@@ -123,6 +132,9 @@ public final class IcecastDaoImpl implements IcecastDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IcecastGenre> getGenres() {
         return genres;
@@ -303,6 +315,9 @@ public final class IcecastDaoImpl implements IcecastDao {
             this.genre = genre;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean apply(final IcecastEntry entry) {
             return entry != null && entry.getGenre().contains(genre);

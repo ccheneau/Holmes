@@ -51,14 +51,23 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         this.controlPoint = controlPoint;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void play(final AirplayDevice device, final String contentUrl, final AbstractNode node) {
         controlPoint.execute(device, new PlayCommand(contentUrl, 0d) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PLAY, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(PLAY, device.getId(), errorMessage);
@@ -66,14 +75,23 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop(final AirplayDevice device) {
         controlPoint.execute(device, new StopCommand() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(STOP, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(STOP, device.getId(), errorMessage);
@@ -81,14 +99,23 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void pause(final AirplayDevice device) {
         controlPoint.execute(device, new RateCommand(0d) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(PAUSE, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(PAUSE, device.getId(), errorMessage);
@@ -96,14 +123,23 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resume(final AirplayDevice device) {
         controlPoint.execute(device, new RateCommand(1d) {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 sendSuccess(RESUME, device.getId());
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(RESUME, device.getId(), errorMessage);
@@ -111,9 +147,15 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateStatus(final AirplayDevice device) {
         controlPoint.execute(device, new PlayStatusCommand() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 if (contentParameters != null && !contentParameters.isEmpty()) {
@@ -126,6 +168,9 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(STATUS, device.getId(), errorMessage);

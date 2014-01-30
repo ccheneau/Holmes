@@ -58,6 +58,9 @@ public final class BackendManagerImpl implements BackendManager {
         this.helper = new BackendManagerHelper();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
@@ -68,12 +71,18 @@ public final class BackendManagerImpl implements BackendManager {
         return folders;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
         ConfigurationNode node = helper.findConfigurationNode(id, configuration.getFolders(rootNode), rootNode == RootNode.PODCAST);
         return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
@@ -98,6 +107,9 @@ public final class BackendManagerImpl implements BackendManager {
         eventBus.post(new ConfigurationEvent(ADD_FOLDER, newNode, rootNode));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
@@ -122,6 +134,9 @@ public final class BackendManagerImpl implements BackendManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
@@ -139,6 +154,9 @@ public final class BackendManagerImpl implements BackendManager {
         eventBus.post(new ConfigurationEvent(DELETE_FOLDER, currentNode, rootNode));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Settings getSettings() {
         return new Settings(configuration.getParameter(UPNP_SERVER_NAME),
@@ -146,6 +164,9 @@ public final class BackendManagerImpl implements BackendManager {
                 configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void saveSettings(final Settings settings) {
         helper.validateServerName(settings.getServerName());

@@ -68,6 +68,9 @@ public class ConfigurationEvent {
         return rootNode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

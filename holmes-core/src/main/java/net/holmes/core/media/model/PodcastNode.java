@@ -39,11 +39,17 @@ public final class PodcastNode extends AbstractNode {
         this.url = url;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, url);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -54,6 +60,9 @@ public final class PodcastNode extends AbstractNode {
         return Objects.equal(this.url, other.url);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

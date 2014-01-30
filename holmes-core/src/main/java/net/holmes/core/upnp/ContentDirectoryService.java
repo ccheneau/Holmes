@@ -64,6 +64,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 Arrays.asList("dc:title", "dc:date")); // sort caps
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
                                final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
@@ -96,6 +99,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         return result.buildBrowseResult();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BrowseResult search(final String containerId, final String searchCriteria, final String filter, final long firstResult,
                                final long maxResults, final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {

@@ -45,6 +45,9 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         super(clazz, MediaModule.URI);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<?> getInterface() {
         return MediaModule.class;
@@ -69,11 +72,17 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         return metadata;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUri() {
         return MediaModule.URI;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
@@ -82,6 +91,9 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         return m;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyFrom(final Object obj) {
         MediaModule m = (MediaModule) obj;

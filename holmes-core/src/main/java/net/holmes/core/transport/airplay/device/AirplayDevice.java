@@ -49,31 +49,49 @@ public class AirplayDevice extends Device {
         this.features = features;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getType() {
         return AIRPLAY_DEVICE_TYPE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVideoSupported() {
         return features.isVideoSupported();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAudioSupported() {
         return features.isAudioSupported();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isImageSupported() {
         return features.isImageSupported();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSlideShowSupported() {
         return features.isSlideShowSupported();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() {
         if (socket != null) try {
@@ -97,6 +115,9 @@ public class AirplayDevice extends Device {
         return socket;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

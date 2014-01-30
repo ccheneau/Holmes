@@ -142,6 +142,9 @@ final class HolmesServerModule extends AbstractModule {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure() {
         // Bind constants

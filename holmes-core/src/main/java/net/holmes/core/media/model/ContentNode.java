@@ -64,11 +64,17 @@ public final class ContentNode extends MimeTypeNode {
         return path;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -79,6 +85,9 @@ public final class ContentNode extends MimeTypeNode {
         return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.size, other.size) && Objects.equal(this.path, other.path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

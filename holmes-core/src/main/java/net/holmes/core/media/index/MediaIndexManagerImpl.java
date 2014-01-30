@@ -50,11 +50,17 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement>create());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaIndexElement get(final String uuid) {
         return elements.get(uuid);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String add(final MediaIndexElement element) {
         String uuid = elements.inverse().get(element);
@@ -65,11 +71,17 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
         return uuid;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void put(final String uuid, final MediaIndexElement element) {
         if (elements.get(uuid) == null) elements.put(uuid, element);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void removeChildren(final String uuid) {
         MediaIndexElement elValue;
@@ -90,6 +102,9 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             elements.remove(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void clean() {
         String elId;

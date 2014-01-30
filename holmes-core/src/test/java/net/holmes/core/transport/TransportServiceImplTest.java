@@ -635,31 +635,49 @@ public class TransportServiceImplTest {
             super("id", "name", null, null);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String getType() {
             return "FakeDeviceType";
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isVideoSupported() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isAudioSupported() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isImageSupported() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isSlideShowSupported() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void close() {
             // Nothing

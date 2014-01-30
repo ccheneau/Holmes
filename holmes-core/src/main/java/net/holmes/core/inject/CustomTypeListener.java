@@ -42,6 +42,9 @@ public final class CustomTypeListener implements TypeListener {
         this.eventBus = eventBus;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
         // Register to event bus
@@ -67,6 +70,9 @@ public final class CustomTypeListener implements TypeListener {
             this.eventBus = eventBus;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void afterInjection(final T injectee) {
             eventBus.register(injectee);

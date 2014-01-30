@@ -46,11 +46,17 @@ public class IcecastDownloadService extends AbstractScheduledService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void runOneIteration() {
         icecastDao.checkYellowPage();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Scheduler scheduler() {
         return downloadDelayHours > 0 ? Scheduler.newFixedDelaySchedule(0, downloadDelayHours, HOURS) : null;

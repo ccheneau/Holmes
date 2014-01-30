@@ -63,6 +63,9 @@ public final class AirplayServer implements Service {
         this.transportService = transportService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         if (configuration.getBooleanParameter(ENABLE_AIRPLAY)) {
@@ -78,16 +81,25 @@ public final class AirplayServer implements Service {
                 // Add Listener to manager inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void serviceAdded(ServiceEvent event) {
                         // Nothing, waiting for service to be resolved with serviceResolved method
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void serviceRemoved(ServiceEvent event) {
                         transportService.removeDevice(event.getInfo().getKey());
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void serviceResolved(ServiceEvent event) {
                         transportService.addDevice(buildDevice(event.getInfo()));
@@ -101,6 +113,9 @@ public final class AirplayServer implements Service {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         if (jmDNS != null) {

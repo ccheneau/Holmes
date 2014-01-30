@@ -39,11 +39,17 @@ public class IcecastGenreNode extends AbstractNode {
         this.genre = genre;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, genre);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -54,6 +60,9 @@ public class IcecastGenreNode extends AbstractNode {
         return Objects.equal(this.genre, other.genre);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

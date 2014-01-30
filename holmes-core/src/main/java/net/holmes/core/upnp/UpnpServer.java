@@ -71,6 +71,9 @@ public final class UpnpServer implements Service {
         this.transportService = transportService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         if (configuration.getBooleanParameter(ENABLE_UPNP)) {
@@ -87,6 +90,9 @@ public final class UpnpServer implements Service {
         } else LOGGER.info("UPnP server is disabled");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         if (upnpService != null) {
@@ -100,17 +106,25 @@ public final class UpnpServer implements Service {
      * Upnp registry listener
      */
     private final class UpnpRegistryListener implements RegistryListener {
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
             // Ignore
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remoteDeviceDiscoveryFailed(Registry registry, RemoteDevice device, Exception ex) {
             LOGGER.error("Remote device discovery failed:" + getDeviceName(device), ex);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
             // Get device's connection manager service and AvTransport service.
@@ -128,6 +142,9 @@ public final class UpnpServer implements Service {
 
                     // Get protocol info on remote device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
+                        /**
+                         * {@inheritDoc}
+                         */
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
@@ -139,6 +156,9 @@ public final class UpnpServer implements Service {
                             transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
                         }
 
+                        /**
+                         * {@inheritDoc}
+                         */
                         @Override
                         public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                             LOGGER.error("Failed to get protocol info for {}: {}", deviceName, defaultMsg);
@@ -149,31 +169,49 @@ public final class UpnpServer implements Service {
                 }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
             // Ignore
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             transportService.removeDevice(device.getIdentity().getUdn().getIdentifierString());
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void localDeviceAdded(Registry registry, LocalDevice device) {
             // Ignore
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void localDeviceRemoved(Registry registry, LocalDevice device) {
             // Ignore
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void beforeShutdown(Registry registry) {
             // Ignore
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void afterShutdown() {
             // Ignore

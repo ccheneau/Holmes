@@ -76,6 +76,9 @@ public final class AirplayFeatures {
         return slideShowSupported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)

@@ -93,17 +93,26 @@ public class Thumbnail implements Cloneable, Serializable {
         return thumbWidth;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
         return new Thumbnail(this.thumbUrl, this.thumbWidth, this.thumbHeight, this.time);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         return new EqualsBean(this.getClass(), this).beanEquals(obj);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return new EqualsBean(this.getClass(), this).beanHashCode();

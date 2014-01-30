@@ -39,11 +39,17 @@ public class ITunesParser implements ModuleParser {
         ns = Namespace.getNamespace(AbstractITunesObject.URI);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getNamespaceUri() {
         return AbstractITunesObject.URI;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Module parse(final Element element) {
         AbstractITunesObject module = null;

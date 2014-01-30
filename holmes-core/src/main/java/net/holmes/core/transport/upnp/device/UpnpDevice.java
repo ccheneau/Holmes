@@ -75,31 +75,49 @@ public class UpnpDevice extends Device {
         return avTransportService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getType() {
         return UPNP_DEVICE_TYPE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVideoSupported() {
         return videoSupported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAudioSupported() {
         return audioSupported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isImageSupported() {
         return imageSupported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSlideShowSupported() {
         return imageSupported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -114,6 +132,9 @@ public class UpnpDevice extends Device {
                 .toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() {
         // Nothing
