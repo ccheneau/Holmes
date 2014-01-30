@@ -211,6 +211,12 @@ public class StreamingHandler {
         return result;
     }
 
+    /**
+     * Build playback device.
+     *
+     * @param device device
+     * @return playback device
+     */
     private PlaybackDevice buildPlaybackDevice(final Device device) {
         PlaybackDevice playbackDevice = new PlaybackDevice();
         playbackDevice.setDeviceId(device.getId());
@@ -223,6 +229,12 @@ public class StreamingHandler {
         return playbackDevice;
     }
 
+    /**
+     * Build browse folder.
+     *
+     * @param node node
+     * @return browse folder
+     */
     private BrowseFolder buildBrowseFolder(final AbstractNode node) {
         BrowseFolder browseFolder = new BrowseFolder();
         browseFolder.setNodeId(node.getId());
@@ -230,6 +242,12 @@ public class StreamingHandler {
         return browseFolder;
     }
 
+    /**
+     * Build browse content.
+     *
+     * @param node node
+     * @return browse content
+     */
     private BrowseContent buildBrowseContent(final AbstractNode node) {
         BrowseContent browseContent = new BrowseContent();
         browseContent.setNodeId(node.getId());

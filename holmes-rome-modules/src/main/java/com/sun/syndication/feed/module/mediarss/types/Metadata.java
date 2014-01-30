@@ -40,7 +40,6 @@ import java.io.Serializable;
  * @author cooper
  */
 public class Metadata implements Cloneable, Serializable {
-    private static final long serialVersionUID = 649350950456005250L;
 
     private Thumbnail[] thumbnail = new Thumbnail[0];
 

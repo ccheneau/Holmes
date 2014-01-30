@@ -107,12 +107,6 @@ public final class IcecastDaoImpl implements IcecastDao {
     }
 
     @Override
-    public boolean parseYellowPage() {
-        Path ypPath = getIcecastXmlFile();
-        return Files.exists(ypPath) && parseYellowPage(ypPath.toFile());
-    }
-
-    @Override
     public boolean isLoaded() {
         synchronized (directoryLock) {
             return icecastEnabled && directory != null && directory.getEntries().size() > 0;
@@ -132,6 +126,17 @@ public final class IcecastDaoImpl implements IcecastDao {
     @Override
     public List<IcecastGenre> getGenres() {
         return genres;
+    }
+
+    /**
+     * Parse yellow page.
+     *
+     * @return true on parsing success
+     */
+
+    private boolean parseYellowPage() {
+        Path ypPath = getIcecastXmlFile();
+        return Files.exists(ypPath) && parseYellowPage(ypPath.toFile());
     }
 
     /**

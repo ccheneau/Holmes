@@ -25,7 +25,6 @@ import java.io.Serializable;
  * Media index element.
  */
 public class MediaIndexElement implements Serializable {
-    private static final long serialVersionUID = -7736893745535506209L;
     private final String parentId;
     private final String mediaType;
     private final String mimeType;

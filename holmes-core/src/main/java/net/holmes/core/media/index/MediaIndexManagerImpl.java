@@ -71,11 +71,6 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
     }
 
     @Override
-    public void remove(final String uuid) {
-        if (elements.get(uuid) != null) elements.remove(uuid);
-    }
-
-    @Override
     public synchronized void removeChildren(final String uuid) {
         MediaIndexElement elValue;
         Collection<String> toRemove = Lists.newArrayList();
@@ -154,5 +149,14 @@ public class MediaIndexManagerImpl implements MediaIndexManager {
             default:
                 break;
         }
+    }
+
+    /**
+     * Remove media index element.
+     *
+     * @param uuid element uuid
+     */
+    private void remove(final String uuid) {
+        if (elements.get(uuid) != null) elements.remove(uuid);
     }
 }

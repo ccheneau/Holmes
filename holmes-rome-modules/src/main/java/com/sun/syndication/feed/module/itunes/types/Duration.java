@@ -33,10 +33,6 @@ import java.util.StringTokenizer;
 public final class Duration implements Serializable {
 
     /**
-     * The Constant serialVersionUID.
-     */
-    private static final long serialVersionUID = -1960363504597514365L;
-    /**
      * The Constant SECOND.
      */
     private static final long SECOND = 1000L;

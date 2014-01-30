@@ -37,7 +37,7 @@ public abstract class Device {
      * @param address            device inet address
      * @param supportedMimeTypes supported mime types
      */
-    public Device(final String id, final String name, final InetAddress address, final List<String> supportedMimeTypes) {
+    protected Device(final String id, final String name, final InetAddress address, final List<String> supportedMimeTypes) {
         this.id = id;
         this.name = name;
         this.address = address;

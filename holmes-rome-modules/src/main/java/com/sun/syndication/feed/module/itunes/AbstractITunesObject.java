@@ -25,8 +25,6 @@ package com.sun.syndication.feed.module.itunes;
  * @version $Revision: 1.4 $
  */
 public abstract class AbstractITunesObject implements ITunes, Cloneable {
-    private static final long serialVersionUID = -1507584666860485534L;
-
     /**
      * The URI that iTunes used for its custom tags.
      * <p>What is up with using a versioned DTD anyway?</p>\

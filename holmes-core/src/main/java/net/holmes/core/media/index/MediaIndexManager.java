@@ -47,13 +47,6 @@ public interface MediaIndexManager {
     void put(String uuid, MediaIndexElement element);
 
     /**
-     * Removes media index element.
-     *
-     * @param uuid element uuid
-     */
-    void remove(String uuid);
-
-    /**
      * Removes child media index elements.
      *
      * @param uuid parent element uuid

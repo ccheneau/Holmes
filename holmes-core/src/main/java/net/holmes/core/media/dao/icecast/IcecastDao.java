@@ -31,13 +31,6 @@ public interface IcecastDao {
     void checkYellowPage();
 
     /**
-     * Parse yellow page.
-     *
-     * @return true on parsing success
-     */
-    boolean parseYellowPage();
-
-    /**
      * Whether Icecast directory is loaded.
      *
      * @return true if Icecast directory is loaded

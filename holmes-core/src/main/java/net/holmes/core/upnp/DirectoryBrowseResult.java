@@ -38,6 +38,8 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 import static net.holmes.core.common.Constants.UPNP_DATE_FORMAT;
+import static net.holmes.core.common.mimetype.MimeType.SUB_TYPE_OGG;
+import static net.holmes.core.common.mimetype.MimeType.SUB_TYPE_SUBTITLE;
 import static net.holmes.core.common.upnp.UpnpUtils.getUpnpMimeType;
 
 /**
@@ -45,9 +47,11 @@ import static net.holmes.core.common.upnp.UpnpUtils.getUpnpMimeType;
  */
 final class DirectoryBrowseResult {
     private static final DIDLObject.Class CONTAINER_CLASS = new DIDLObject.Class("object.container");
+
     private final DIDLContent didl;
     private final long firstResult;
     private final long maxResults;
+
     private long itemCount;
     private long totalCount;
 
@@ -91,7 +95,7 @@ final class DirectoryBrowseResult {
     }
 
     /**
-     * build browse result.
+     * Build browse result.
      *
      * @return browse result
      * @throws ContentDirectoryException
@@ -105,7 +109,7 @@ final class DirectoryBrowseResult {
     }
 
     /**
-     * Adds item to result.
+     * Add item to result.
      *
      * @param parentNodeId parent node id
      * @param contentNode  content node
@@ -114,12 +118,11 @@ final class DirectoryBrowseResult {
      */
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws ContentDirectoryException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
-
         addDidlItem(parentNodeId, contentNode, contentNode.getName(), contentNode.getMimeType(), res);
     }
 
     /**
-     * Adds raw Url item to result.
+     * Add raw Url item to result.
      *
      * @param parentNodeId parent node id
      * @param rawUrlNode   Url node
@@ -160,10 +163,10 @@ final class DirectoryBrowseResult {
                 item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
             case TYPE_APPLICATION:
-                if (MimeType.SUB_TYPE_SUBTITLE.equals(mimeType.getSubType()))
+                if (SUB_TYPE_SUBTITLE.equals(mimeType.getSubType()))
                     // Add subtitle item
                     item = new TextItem(node.getId(), parentNodeId, name, null, res);
-                else if (MimeType.SUB_TYPE_OGG.equals(mimeType.getSubType()))
+                else if (SUB_TYPE_OGG.equals(mimeType.getSubType()))
                     // Add OGG item
                     item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
                 break;
@@ -173,12 +176,12 @@ final class DirectoryBrowseResult {
         if (item != null) {
             setDidlMetadata(item, node);
             didl.addItem(item);
-            itemCount += 1;
+            itemCount++;
         }
     }
 
     /**
-     * Adds container to result.
+     * Add container to result.
      *
      * @param parentNodeId parent node id
      * @param node         container node
@@ -191,21 +194,21 @@ final class DirectoryBrowseResult {
         setDidlMetadata(container, node);
 
         didl.addContainer(container);
-        itemCount += 1;
+        itemCount++;
     }
 
     /**
-     * Checks if node can be added to result according to pagination parameters.
+     * Check if node can be added to result according to pagination parameters.
      *
      * @return true, if successful
      */
     public boolean acceptNode() {
-        totalCount += 1;
+        totalCount++;
         return maxResults == 0 || itemCount < maxResults && totalCount >= firstResult + 1;
     }
 
     /**
-     * Sets the didl metadata.
+     * Set the didl metadata.
      *
      * @param didlObject didl object
      * @param node       node
@@ -214,6 +217,7 @@ final class DirectoryBrowseResult {
     private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws ContentDirectoryException {
         if (node.getModifiedDate() != null)
             didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT.toString()).format(node.getModifiedDate())));
+
         if (node.getIconUrl() != null)
             try {
                 didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));

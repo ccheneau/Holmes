@@ -32,13 +32,10 @@ import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.SortCriterion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static net.holmes.core.media.MediaService.ChildNodeRequest;
 import static net.holmes.core.media.MediaService.ChildNodeResult;
@@ -52,7 +49,6 @@ import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
  * UPnP Content directory service.
  */
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ContentDirectoryService.class);
     @Inject
     private Configuration configuration;
     @Inject
@@ -71,35 +67,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
                                final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("browse  " + browseFlag + " objectId=" + objectID + " firstResult=" + firstResult
-                    + " nbResults=" + maxResults);
-            LOGGER.debug("filter: {}", filter);
-            LOGGER.debug("User agent: {}", remoteClientInfo.getRequestUserAgent());
-            if (remoteClientInfo.getConnection() != null)
-                LOGGER.debug("Remote Address: {}", remoteClientInfo.getRemoteAddress());
-            if (remoteClientInfo.getRequestHeaders() != null) {
-                for (Map.Entry<String, List<String>> stringListEntry : remoteClientInfo.getRequestHeaders().entrySet()) {
-                    LOGGER.debug("Header: {} => {}", stringListEntry.getKey(), stringListEntry.getValue());
-                }
-            }
-        }
-
         // Get available mime types
         List<String> availableMimeTypes = Lists.newArrayList();
-        if (remoteClientInfo.getConnection() != null) {
-            for (Device device : transportService.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
+        if (remoteClientInfo.getConnection() != null)
+            for (Device device : transportService.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress()))
                 if (device instanceof UpnpDevice)
                     availableMimeTypes.addAll(device.getSupportedMimeTypes());
-            }
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Available mime types: {}", availableMimeTypes);
-        }
 
         // Get browse node
         AbstractNode browseNode = mediaService.getNode(objectID);
-        if (browseNode == null) {
+        if (browseNode == null)
             throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
-        }
 
         DirectoryBrowseResult result;
         if (DIRECT_CHILDREN == browseFlag) {
@@ -112,17 +90,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             result = new DirectoryBrowseResult(0, 1);
             // Get node
             addNode(browseNode.getParentId(), browseNode, result, 0, availableMimeTypes);
-        } else {
+        } else
             result = new DirectoryBrowseResult(0, 1);
-        }
 
-        BrowseResult br = result.buildBrowseResult();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("itemCount:{}", result.getItemCount());
-            LOGGER.debug("totalCount:{}", result.getTotalCount());
-            LOGGER.debug(br.getResult());
-        }
-        return br;
+        return result.buildBrowseResult();
     }
 
     @Override
@@ -147,7 +118,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @throws ContentDirectoryException
      */
     private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
-        if (result.acceptNode()) {
+        if (result.acceptNode())
             if (node instanceof ContentNode) {
                 // Get node url
                 String url = mediaService.getNodeUrl(node);
@@ -162,19 +133,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
             } else if (node instanceof RawUrlNode) {
+                // Add raw URL to result
                 RawUrlNode rawUrlNode = (RawUrlNode) node;
                 String entryName = node.getName();
-
                 if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY)
-                    //  Format podcast entry name
+                    // Format podcast entry name
                     entryName = formatPodcastEntryName(result.getResultCount(), totalCount, node.getName());
 
                 result.addUrlItem(nodeId, rawUrlNode, entryName);
-            } else if (node instanceof IcecastGenreNode) {
+            } else if (node instanceof IcecastGenreNode)
                 // Add Icecast genre to result
                 result.addContainer(nodeId, node, 1);
-            }
-        }
     }
 
     /**
@@ -188,9 +157,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configuration.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME)) {
+        if (configuration.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME))
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
-        } else return title;
+        else return title;
     }
 }

@@ -26,7 +26,6 @@ import com.sun.syndication.feed.module.mediarss.types.Metadata;
  * @author cooper
  */
 public class MediaModuleImpl extends ModuleImpl implements MediaModule {
-    private static final long serialVersionUID = 1506805082848531979L;
 
     private Metadata metadata;
 
@@ -42,7 +41,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      *
      * @param clazz the clazz
      */
-    MediaModuleImpl(final Class<?> clazz) {
+    private MediaModuleImpl(final Class<?> clazz) {
         super(clazz, MediaModule.URI);
     }
 

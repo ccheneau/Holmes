@@ -26,7 +26,6 @@ import com.sun.syndication.feed.module.itunes.types.Duration;
  * @version $Revision: 1.2 $
  */
 public class EntryInformationImpl extends AbstractITunesObject implements EntryInformation {
-    private static final long serialVersionUID = -4189984062914642656L;
 
     private Duration duration;
 

@@ -58,14 +58,6 @@ public class MediaIndexManagerTest {
     }
 
     @Test
-    public void testRemoveFromMediaIndex() {
-        String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
-        assertNotNull(mediaIndexManager.get(uuid1));
-        mediaIndexManager.remove(uuid1);
-        assertNull(mediaIndexManager.get(uuid1));
-    }
-
-    @Test
     public void testRemoveChildrenMediaIndex() {
         String uuid1 = mediaIndexManager.add(new MediaIndexElement("parentId", "mediaType", "mimeType", "path", "name", true, false));
         assertNotNull(mediaIndexManager.get(uuid1));

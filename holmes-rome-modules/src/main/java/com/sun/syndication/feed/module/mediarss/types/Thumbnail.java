@@ -37,8 +37,6 @@ import java.net.URI;
  * It is an optional attribute.</p>
  */
 public class Thumbnail implements Cloneable, Serializable {
-    private static final long serialVersionUID = 2035345549055202026L;
-
     private final Integer thumbHeight;
     private final Integer thumbWidth;
     private final Time time;
