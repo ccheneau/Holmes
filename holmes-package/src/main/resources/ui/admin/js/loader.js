@@ -1,8 +1,8 @@
 yepnope({
 	load : {
 		// lib
-		jquery : '/js/jquery-1.10.2.min.js',
-		jqueryUI : '/js/jquery-ui-1.10.0.custom.min.js',
+		jquery : '/js/jquery-2.1.0.min.js',
+		jqueryUI : '/js/jquery-ui-1.10.4.custom.min.js',
 		bootstrap : '/js/bootstrap.min.js',
 		jqueryI18n : '/js/jquery.i18n.properties-min-1.0.9.js',
 		underscore : '/js/underscore-min.js',
