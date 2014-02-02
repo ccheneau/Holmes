@@ -15,7 +15,7 @@ yepnope({
 		folderSelectBox : '/admin/js/plugins/folder-select-box.js',
 		message : '/admin/js/plugins/jq-message.js',
 		template : '/admin/js/plugins/jq-template.js',
-		logger : '/admin/js/plugins/jq-logger.js',
+		logger : '/js/plugins/jq-logger.js',
 		
 		// application
 		application : '/admin/js/application.js',
@@ -59,7 +59,7 @@ yepnope({
 		},
 		"folderSelectBox" : function() {
 			folderSelectBox.init('/backend/util/getChildFolders',
-					$.i18n.prop("msg.select.folder.title"), $.i18n.prop("msg.cancel"), $.i18n.prop("msg.ok"));
+					$.i18n.prop("msg.admin.select.folder.title"), $.i18n.prop("msg.admin.cancel"), $.i18n.prop("msg.admin.ok"));
 		}
 	},
 	complete : function() {

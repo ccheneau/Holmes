@@ -12,15 +12,15 @@ var Application = (function(application) {
 		render : function() {
 			var renderedContent = Mustache.to_html(this.template, {
 				folders : this.collection.toJSON(),
-				title : $.i18n.prop("msg.picture.list.title"),
-				description : $.i18n.prop("msg.picture.list.description"),
-				nameLabel : $.i18n.prop("msg.name"),
-				pathLabel : $.i18n.prop("msg.path"),
-				addLabel : $.i18n.prop("msg.add"),
-				editLabel : $.i18n.prop("msg.edit"),
-				removeLabel : $.i18n.prop("msg.remove"),
-				saveLabel : $.i18n.prop("msg.save"),
-				cancelLabel : $.i18n.prop("msg.cancel"),
+				title : $.i18n.prop("msg.admin.picture.list.title"),
+				description : $.i18n.prop("msg.admin.picture.list.description"),
+				nameLabel : $.i18n.prop("msg.admin.name"),
+				pathLabel : $.i18n.prop("msg.admin.path"),
+				addLabel : $.i18n.prop("msg.admin.add"),
+				editLabel : $.i18n.prop("msg.admin.edit"),
+				removeLabel : $.i18n.prop("msg.admin.remove"),
+				saveLabel : $.i18n.prop("msg.admin.save"),
+				cancelLabel : $.i18n.prop("msg.admin.cancel"),
 				browsable : true,
 				dialogId : "pictureDlg",
 				removeTarget : "pictureFolderRemove",
@@ -43,7 +43,7 @@ var Application = (function(application) {
 		// open add picture folder dialog
 		onPictureDlgAddOpen : function() {
 			// initialize dialog 
-			$("#pictureDlgHeader").html($.i18n.prop("msg.picture.add.title"));
+			$("#pictureDlgHeader").html($.i18n.prop("msg.admin.picture.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
@@ -59,7 +59,7 @@ var Application = (function(application) {
 			pictureFolder.fetch({
 				success : function(model) {
 					// initialize dialog
-					$("#pictureDlgHeader").html($.i18n.prop("msg.picture.update.title"));
+					$("#pictureDlgHeader").html($.i18n.prop("msg.admin.picture.update.title"));
 					$("#folderId").val(model.get('id'));
 					$("#folderName").val(model.get('name'));
 					$("#folderPath").val(model.get('path'));
@@ -118,7 +118,7 @@ var Application = (function(application) {
 		onPictureFolderRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.picture.remove.confirm"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.admin.picture.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var pictureFolder = new Application.Models.PictureFolder({id : folderId});

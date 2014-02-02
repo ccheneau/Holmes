@@ -10,12 +10,12 @@ var Application = (function(application) {
 			$.getJSON(this.url, function(response) {
 				var renderedContent = Mustache.to_html(that.template, {
 					settings : response,
-					title : $.i18n.prop("msg.settings.title"),
-					settingsServerName : $.i18n.prop("msg.settings.serverName"),
-					settingsPrependPodcastItem : $.i18n.prop("msg.settings.prependPodcastItem"),
-					settingsEnableIcecastDirectory : $.i18n.prop("msg.settings.enableIcecastDirectory"),
-					cancel : $.i18n.prop("msg.cancel"),
-					save : $.i18n.prop("msg.save")
+					title : $.i18n.prop("msg.admin.settings.title"),
+					settingsServerName : $.i18n.prop("msg.admin.settings.serverName"),
+					settingsPrependPodcastItem : $.i18n.prop("msg.admin.settings.prependPodcastItem"),
+					settingsEnableIcecastDirectory : $.i18n.prop("msg.admin.settings.enableIcecastDirectory"),
+					cancel : $.i18n.prop("msg.admin.cancel"),
+					save : $.i18n.prop("msg.admin.save")
 				});
 				that.$el.html(renderedContent);
 			});
@@ -32,7 +32,7 @@ var Application = (function(application) {
 			}, {
 				success : function() {
 					$("#messagebox").message({
-						text : $.i18n.prop("msg.settings.saved"),
+						text : $.i18n.prop("msg.admin.settings.saved"),
 						type : "success"
 					});
 				},

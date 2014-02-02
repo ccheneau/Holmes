@@ -12,15 +12,15 @@ var Application = (function(application) {
 		render : function() {
 			var renderedContent = Mustache.to_html(this.template, {
 				folders : this.collection.toJSON(),
-				title : $.i18n.prop("msg.video.list.title"),
-				description : $.i18n.prop("msg.video.list.description"),
-				nameLabel : $.i18n.prop("msg.name"),
-				pathLabel : $.i18n.prop("msg.path"),
-				addLabel : $.i18n.prop("msg.add"),
-				editLabel : $.i18n.prop("msg.edit"),
-				removeLabel : $.i18n.prop("msg.remove"),
-				saveLabel : $.i18n.prop("msg.save"),
-				cancelLabel : $.i18n.prop("msg.cancel"),
+				title : $.i18n.prop("msg.admin.video.list.title"),
+				description : $.i18n.prop("msg.admin.video.list.description"),
+				nameLabel : $.i18n.prop("msg.admin.name"),
+				pathLabel : $.i18n.prop("msg.admin.path"),
+				addLabel : $.i18n.prop("msg.admin.add"),
+				editLabel : $.i18n.prop("msg.admin.edit"),
+				removeLabel : $.i18n.prop("msg.admin.remove"),
+				saveLabel : $.i18n.prop("msg.admin.save"),
+				cancelLabel : $.i18n.prop("msg.admin.cancel"),
 				browsable : true,
 				dialogId : "videoDlg",
 				removeTarget : "videoFolderRemove",
@@ -43,7 +43,7 @@ var Application = (function(application) {
 		// open add video folder dialog
 		onVideoDlgAddOpen : function() {
 			// initialize dialog 
-			$("#videoDlgHeader").html($.i18n.prop("msg.video.add.title"));
+			$("#videoDlgHeader").html($.i18n.prop("msg.admin.video.add.title"));
 			$("#folderId").val("");
 			$("#folderName").val("");
 			$("#folderPath").val("");
@@ -59,7 +59,7 @@ var Application = (function(application) {
 			videoFolder.fetch({
 				success : function(result) {
 					// initialize dialog
-					$("#videoDlgHeader").html($.i18n.prop("msg.video.update.title"));
+					$("#videoDlgHeader").html($.i18n.prop("msg.admin.video.update.title"));
 					$("#folderId").val(result.get('id'));
 					$("#folderName").val(result.get('name'));
 					$("#folderPath").val(result.get('path'));
@@ -118,7 +118,7 @@ var Application = (function(application) {
 		onVideoFolderRemove : function(event){
 			var that = this;
 			// confirm dialog
-			bootbox.confirm($.i18n.prop("msg.video.remove.confirm"),function(result) {
+			bootbox.confirm($.i18n.prop("msg.admin.video.remove.confirm"),function(result) {
 				if (result == true) {
 					var folderId = $(event.currentTarget).data('id');
 					var videoFolder = new Application.Models.VideoFolder({id : folderId});

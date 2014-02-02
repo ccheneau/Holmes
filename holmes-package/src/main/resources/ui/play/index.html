@@ -17,14 +17,56 @@
   -->
 <html>
 <head>
+    <title>Holmes media server</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="-1"/>
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="/play/css/holmes-play.css" rel="stylesheet"/>
+    <script src="/js/yepnope.1.5.4-min.js" type="text/javascript"></script>
+    <script src="/play/js/loader.js" type="text/javascript"></script>
 </head>
+
 <body>
-<h1>Basic application for streaming testing purpose</h1>
-<a href="/backend/streaming/play/0" target="play_status">Play0</a><br/>
-<a href="/backend/streaming/play/1" target="play_status">Play1</a><br/>
-<a href="/backend/streaming/pause" target="play_status">Pause</a><br/>
-<a href="/backend/streaming/stop" target="play_status">Stop</a><br/>
-<a href="/backend/streaming/resume" target="play_status">Resume</a><br/>
-<a href="/backend/streaming/status" target="play_status">Status</a><br/>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="navbar-brand pull-left">Holmes&nbsp;media&nbsp;server</div>
+            </div>
+            <div class="col-lg-4">
+                <div class="navbar-brand">Play</div>
+            </div>
+            <div class="col-lg-4">
+                <p class="navbar-text pull-right" id="version"></p>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#nowPlaying" class="i18n" data-msg="msg.play.now.playing" data-toggle="tab">Now
+                    playing</a></li>
+                <li><a href="#library" class="i18n" data-msg="msg.play.library" data-toggle="tab">Library</a></li>
+                <li><a href="#devices" class="i18n" data-msg="msg.play.devices" data-toggle="tab">Devices</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="nowPlaying">
+                    Now playing
+                </div>
+                <div class="tab-pane" id="library">
+                    Lib
+                </div>
+                <div class="tab-pane" id="devices">
+                    Devices
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
