@@ -44,6 +44,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import static net.holmes.core.common.configuration.Parameter.ENABLE_UPNP;
+import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 
 /**
  * UPnP server.
@@ -150,7 +151,8 @@ public final class UpnpServer implements Service {
                             // Got protocol info, get available mime types
                             List<String> availableMimeTypes = Lists.newArrayList();
                             for (ProtocolInfo protocolInfo : sinkProtocolInfo)
-                                availableMimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
+                                if (protocolInfo.getProtocol() == HTTP_GET && !availableMimeTypes.contains(protocolInfo.getContentFormat()))
+                                    availableMimeTypes.add(protocolInfo.getContentFormat());
 
                             // Add device
                             transportService.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
