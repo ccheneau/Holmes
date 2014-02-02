@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.util.List;
 
+import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
+
 /**
  * UPnP server main class.
  */
@@ -126,7 +128,8 @@ public final class UpnpServer implements Service {
                             // Got protocol info, add available mime types to Upnp device metadata
                             List<String> mimeTypes = Lists.newArrayList();
                             for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
-                                mimeTypes.add(protocolInfo.getContentFormatMimeType().toString());
+                                if (protocolInfo.getProtocol() == HTTP_GET && !mimeTypes.contains(protocolInfo.getContentFormat()))
+                                    mimeTypes.add(protocolInfo.getContentFormat());
                             }
                             upnpDeviceMetadata.addDevice(deviceHost, mimeTypes);
                         }
