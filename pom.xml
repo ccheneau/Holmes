@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.holmes</groupId>
     <artifactId>holmes-parent</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <packaging>pom</packaging>
     <name>Holmes Parent</name>
     <description>Holmes Parent</description>
