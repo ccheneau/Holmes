@@ -65,9 +65,9 @@ public final class BackendManagerImpl implements BackendManager {
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
-        for (ConfigurationNode node : configNodes) {
+        for (ConfigurationNode node : configNodes)
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
-        }
+
         return folders;
     }
 

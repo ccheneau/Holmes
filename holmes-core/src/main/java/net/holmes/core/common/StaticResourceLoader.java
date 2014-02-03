@@ -28,6 +28,7 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
  * Loader for Holmes static resources
  */
 public final class StaticResourceLoader {
+    private static final String RESOURCE_PATH = "resources";
 
     private StaticResourceLoader() {
     }
@@ -41,7 +42,7 @@ public final class StaticResourceLoader {
      * @throws IOException if resource is not found
      */
     public static byte[] getData(final StaticResourceDir resourceDir, final String fileName) throws IOException {
-        Path resourcePath = Paths.get(HOLMES_HOME.getValue(), "resources", resourceDir.getValue(), fileName);
+        Path resourcePath = Paths.get(HOLMES_HOME.getValue(), RESOURCE_PATH, resourceDir.getValue(), fileName);
         return Files.readAllBytes(resourcePath);
     }
 

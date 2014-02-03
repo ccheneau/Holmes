@@ -51,17 +51,16 @@ public final class XmlRootNode {
         List<String> availableParams = Lists.newArrayList();
         for (Parameter param : Parameter.values()) {
             availableParams.add(param.getName());
-            if (this.parameters.getProperty(param.getName()) == null) {
+            if (this.parameters.getProperty(param.getName()) == null)
                 this.parameters.put(param.getName(), param.getDefaultValue());
-            }
         }
+
         // Check obsolete parameters
         List<String> obsoleteParams = Lists.newArrayList();
-        for (Object paramKey : this.parameters.keySet()) {
-            if (!availableParams.contains(paramKey.toString())) {
+        for (Object paramKey : this.parameters.keySet())
+            if (!availableParams.contains(paramKey.toString()))
                 obsoleteParams.add(paramKey.toString());
-            }
-        }
+
         // Remove obsolete parameters
         for (String obsoleteParam : obsoleteParams)
             this.parameters.remove(obsoleteParam);
