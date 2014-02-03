@@ -37,9 +37,6 @@ yepnope({
 	},
 	callback : {
 		"jquery" : function() {
-		    $('#easter').click(function() {
-		    	$('body').attr('class','roll');
-		    });
 		    $.ajaxSetup({ cache: false });
 		},
 		"jqueryI18n" : function() {

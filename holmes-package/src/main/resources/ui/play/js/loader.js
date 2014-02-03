@@ -32,10 +32,5 @@ yepnope({
 				}
 			});
 		}
-	},
-	complete : function() {
-		$.logger('Launching Holmes Play UI ...');
-
-		$.logger('Holmes Play UI launched');
 	}
 });
