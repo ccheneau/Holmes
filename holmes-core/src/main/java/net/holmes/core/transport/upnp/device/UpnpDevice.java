@@ -47,8 +47,8 @@ public class UpnpDevice extends Device {
     public UpnpDevice(final String id, final String name, final InetAddress hostAddress, final List<String> supportedMimeTypes, final RemoteService avTransportService) {
         super(id, name, hostAddress, supportedMimeTypes);
         this.avTransportService = avTransportService;
-        if (supportedMimeTypes != null) {
-            for (String supportedMimeType : supportedMimeTypes) {
+        if (supportedMimeTypes != null)
+            for (String supportedMimeType : supportedMimeTypes)
                 switch (MimeType.valueOf(supportedMimeType).getType()) {
                     case TYPE_VIDEO:
                         videoSupported = true;
@@ -67,8 +67,6 @@ public class UpnpDevice extends Device {
                     default:
                         break;
                 }
-            }
-        }
     }
 
     public RemoteService getAvTransportService() {
