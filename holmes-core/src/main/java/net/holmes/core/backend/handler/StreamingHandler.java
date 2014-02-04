@@ -21,15 +21,15 @@ import com.google.common.collect.Lists;
 import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.media.model.AbstractNode;
-import net.holmes.core.media.model.ContentNode;
-import net.holmes.core.media.model.FolderNode;
-import net.holmes.core.transport.TransportService;
-import net.holmes.core.transport.device.Device;
-import net.holmes.core.transport.device.UnknownDeviceException;
-import net.holmes.core.transport.session.StreamingSession;
-import net.holmes.core.transport.session.UnknownSessionException;
+import net.holmes.core.manager.media.MediaManager;
+import net.holmes.core.manager.media.model.AbstractNode;
+import net.holmes.core.manager.media.model.ContentNode;
+import net.holmes.core.manager.media.model.FolderNode;
+import net.holmes.core.manager.streaming.StreamingManager;
+import net.holmes.core.manager.streaming.device.Device;
+import net.holmes.core.manager.streaming.device.UnknownDeviceException;
+import net.holmes.core.manager.streaming.session.StreamingSession;
+import net.holmes.core.manager.streaming.session.UnknownSessionException;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -42,28 +42,28 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
-import static net.holmes.core.media.MediaService.ChildNodeRequest;
-import static net.holmes.core.media.MediaService.ChildNodeResult;
-import static net.holmes.core.media.model.RootNode.VIDEO;
+import static net.holmes.core.manager.media.MediaManager.ChildNodeRequest;
+import static net.holmes.core.manager.media.MediaManager.ChildNodeResult;
+import static net.holmes.core.manager.media.model.RootNode.VIDEO;
 
 /**
  * Handler for streaming REST requests.
  */
 @Path("/backend/streaming")
 public class StreamingHandler {
-    private final MediaService mediaService;
-    private final TransportService transportService;
+    private final MediaManager mediaManager;
+    private final StreamingManager streamingManager;
 
     /**
      * Instantiates a new StreamingHandler.
      *
-     * @param mediaService     media service
-     * @param transportService transport service
+     * @param mediaManager     media manager
+     * @param streamingManager streaming manager
      */
     @Inject
-    public StreamingHandler(final MediaService mediaService, final TransportService transportService) {
-        this.mediaService = mediaService;
-        this.transportService = transportService;
+    public StreamingHandler(final MediaManager mediaManager, final StreamingManager streamingManager) {
+        this.mediaManager = mediaManager;
+        this.streamingManager = streamingManager;
     }
 
     /**
@@ -76,7 +76,7 @@ public class StreamingHandler {
     @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         List<PlaybackDevice> playbackDevices = Lists.newArrayList();
-        for (Device device : transportService.getDevices())
+        for (Device device : streamingManager.getDevices())
             playbackDevices.add(buildPlaybackDevice(device));
 
         return playbackDevices;
@@ -91,10 +91,10 @@ public class StreamingHandler {
     @Path("/play/{deviceId}/{contentId}")
     @Produces(TEXT_PLAIN)
     public String play(@PathParam("deviceId") String deviceId, @PathParam("contentId") String contentId) {
-        AbstractNode contentNode = mediaService.getNode(contentId);
-        String url = mediaService.getNodeUrl(contentNode);
+        AbstractNode contentNode = mediaManager.getNode(contentId);
+        String url = mediaManager.getNodeUrl(contentNode);
         try {
-            transportService.play(deviceId, url, contentNode);
+            streamingManager.play(deviceId, url, contentNode);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
@@ -111,7 +111,7 @@ public class StreamingHandler {
     @Produces(TEXT_PLAIN)
     public String pause(@PathParam("deviceId") String deviceId) {
         try {
-            transportService.pause(deviceId);
+            streamingManager.pause(deviceId);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
@@ -128,7 +128,7 @@ public class StreamingHandler {
     @Produces(TEXT_PLAIN)
     public String stop(@PathParam("deviceId") String deviceId) {
         try {
-            transportService.stop(deviceId);
+            streamingManager.stop(deviceId);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
@@ -145,7 +145,7 @@ public class StreamingHandler {
     @Produces(TEXT_PLAIN)
     public String resume(@PathParam("deviceId") String deviceId) {
         try {
-            transportService.resume(deviceId);
+            streamingManager.resume(deviceId);
         } catch (UnknownDeviceException e) {
             return e.getMessage();
         }
@@ -163,7 +163,7 @@ public class StreamingHandler {
     public PlaybackStatus status(@PathParam("deviceId") String deviceId) {
         PlaybackStatus status = new PlaybackStatus();
         try {
-            StreamingSession session = transportService.getSession(deviceId);
+            StreamingSession session = streamingManager.getSession(deviceId);
             status.setContentName(session.getContentName());
             status.setDuration(session.getDuration());
             status.setPosition(session.getPosition());
@@ -188,15 +188,15 @@ public class StreamingHandler {
         result.setParentNodeId(nodeId);
         try {
             // Get device
-            Device device = transportService.getDevice(deviceId);
+            Device device = streamingManager.getDevice(deviceId);
 
             // Get browse node
-            AbstractNode node = mediaService.getNode(nodeId);
-            if (node == null && device.isVideoSupported()) node = mediaService.getNode(VIDEO.getId());
+            AbstractNode node = mediaManager.getNode(nodeId);
+            if (node == null && device.isVideoSupported()) node = mediaManager.getNode(VIDEO.getId());
 
             if (node != null) {
                 // Get child nodes
-                ChildNodeResult childNodesResult = mediaService.getChildNodes(new ChildNodeRequest(node, device.getSupportedMimeTypes()));
+                ChildNodeResult childNodesResult = mediaManager.getChildNodes(new ChildNodeRequest(node, device.getSupportedMimeTypes()));
                 // Build browse result
                 for (AbstractNode abstractNode : childNodesResult.getChildNodes())
                     if (abstractNode instanceof FolderNode)
@@ -252,7 +252,7 @@ public class StreamingHandler {
         BrowseContent browseContent = new BrowseContent();
         browseContent.setNodeId(node.getId());
         browseContent.setContentName(node.getName());
-        browseContent.setContentUrl(mediaService.getNodeUrl(node));
+        browseContent.setContentUrl(mediaManager.getNodeUrl(node));
         return browseContent;
     }
 }

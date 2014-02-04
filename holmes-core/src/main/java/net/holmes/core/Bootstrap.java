@@ -19,7 +19,8 @@ package net.holmes.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.common.Service;
+import net.holmes.core.service.HolmesServer;
+import net.holmes.core.service.Service;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -56,7 +57,7 @@ public final class Bootstrap {
         // Create Guice injector
         Injector injector = Guice.createInjector(new HolmesServerModule());
 
-        // Start Holmes server
+        // Start Holmes service
         try {
             final Service holmesServer = injector.getInstance(HolmesServer.class);
             holmesServer.start();

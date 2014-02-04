@@ -22,7 +22,7 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import org.junit.Test;
 
-import static net.holmes.core.media.model.RootNode.VIDEO;
+import static net.holmes.core.manager.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

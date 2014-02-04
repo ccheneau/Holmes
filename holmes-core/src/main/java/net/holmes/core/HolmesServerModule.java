@@ -25,44 +25,45 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
-import net.holmes.core.airplay.AirplayServer;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
 import net.holmes.core.backend.handler.*;
-import net.holmes.core.common.Service;
-import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.XmlConfigurationImpl;
-import net.holmes.core.common.mimetype.MimeTypeManager;
-import net.holmes.core.common.mimetype.MimeTypeManagerImpl;
-import net.holmes.core.http.HttpServer;
-import net.holmes.core.http.file.HttpFileRequestDecoder;
-import net.holmes.core.http.file.HttpFileRequestHandler;
-import net.holmes.core.inject.CustomTypeListener;
-import net.holmes.core.inject.provider.UpnpServiceProvider;
-import net.holmes.core.media.MediaService;
-import net.holmes.core.media.MediaServiceImpl;
-import net.holmes.core.media.dao.MediaDao;
-import net.holmes.core.media.dao.MediaDaoImpl;
-import net.holmes.core.media.dao.icecast.IcecastDao;
-import net.holmes.core.media.dao.icecast.IcecastDaoImpl;
-import net.holmes.core.media.index.MediaIndexManager;
-import net.holmes.core.media.index.MediaIndexManagerImpl;
-import net.holmes.core.scheduled.CacheCleanerService;
-import net.holmes.core.scheduled.HolmesSchedulerService;
-import net.holmes.core.scheduled.IcecastDownloadService;
-import net.holmes.core.transport.TransportService;
-import net.holmes.core.transport.TransportServiceImpl;
-import net.holmes.core.transport.airplay.AirplayStreamerImpl;
-import net.holmes.core.transport.airplay.controlpoint.AsyncSocketControlPoint;
-import net.holmes.core.transport.airplay.controlpoint.ControlPoint;
-import net.holmes.core.transport.device.DeviceDao;
-import net.holmes.core.transport.device.DeviceDaoImpl;
-import net.holmes.core.transport.device.DeviceStreamer;
-import net.holmes.core.transport.session.SessionDao;
-import net.holmes.core.transport.session.SessionDaoImpl;
-import net.holmes.core.transport.upnp.UpnpStreamerImpl;
-import net.holmes.core.upnp.UpnpServer;
+import net.holmes.core.common.CustomTypeListener;
+import net.holmes.core.manager.configuration.Configuration;
+import net.holmes.core.manager.configuration.XmlConfigurationImpl;
+import net.holmes.core.manager.media.MediaManager;
+import net.holmes.core.manager.media.MediaManagerImpl;
+import net.holmes.core.manager.media.dao.MediaDao;
+import net.holmes.core.manager.media.dao.MediaDaoImpl;
+import net.holmes.core.manager.media.dao.icecast.IcecastDao;
+import net.holmes.core.manager.media.dao.icecast.IcecastDaoImpl;
+import net.holmes.core.manager.media.dao.index.MediaIndexDao;
+import net.holmes.core.manager.media.dao.index.MediaIndexDaoImpl;
+import net.holmes.core.manager.mimetype.MimeTypeManager;
+import net.holmes.core.manager.mimetype.MimeTypeManagerImpl;
+import net.holmes.core.manager.streaming.StreamingManager;
+import net.holmes.core.manager.streaming.StreamingManagerImpl;
+import net.holmes.core.manager.streaming.airplay.AirplayStreamerImpl;
+import net.holmes.core.manager.streaming.airplay.controlpoint.AsyncSocketControlPoint;
+import net.holmes.core.manager.streaming.airplay.controlpoint.ControlPoint;
+import net.holmes.core.manager.streaming.device.DeviceDao;
+import net.holmes.core.manager.streaming.device.DeviceDaoImpl;
+import net.holmes.core.manager.streaming.device.DeviceStreamer;
+import net.holmes.core.manager.streaming.session.SessionDao;
+import net.holmes.core.manager.streaming.session.SessionDaoImpl;
+import net.holmes.core.manager.streaming.upnp.UpnpStreamerImpl;
+import net.holmes.core.service.Service;
+import net.holmes.core.service.airplay.AirplayServer;
+import net.holmes.core.service.http.HttpServer;
+import net.holmes.core.service.http.file.HttpFileRequestDecoder;
+import net.holmes.core.service.http.file.HttpFileRequestHandler;
+import net.holmes.core.service.scheduled.CacheCleanerService;
+import net.holmes.core.service.scheduled.HolmesSchedulerService;
+import net.holmes.core.service.scheduled.IcecastDownloadService;
+import net.holmes.core.service.systray.SystrayService;
+import net.holmes.core.service.upnp.UpnpServer;
+import net.holmes.core.service.upnp.UpnpServiceProvider;
 import org.fourthline.cling.UpnpService;
 
 import javax.net.SocketFactory;
@@ -154,7 +155,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(localAddress);
 
         // Bind utils
-        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);
         bind(SocketFactory.class).toInstance(socketFactory);
 
@@ -162,16 +162,11 @@ final class HolmesServerModule extends AbstractModule {
         bind(EventBus.class).toInstance(eventBus);
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
 
-        // Bind media service
+        // Bind managers
+        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
-        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
-        bind(MediaIndexManager.class).to(MediaIndexManagerImpl.class).in(Singleton.class);
-        bind(MediaService.class).to(MediaServiceImpl.class).in(Singleton.class);
-
-        // Bind scheduled services
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+        bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
 
         // Bind services
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
@@ -179,6 +174,17 @@ final class HolmesServerModule extends AbstractModule {
         bind(Service.class).annotatedWith(Names.named("airplay")).to(AirplayServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
+
+        // Bind DAO
+        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
+        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
+        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
+        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
+        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
+
+        // Bind scheduled services
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
 
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
@@ -190,13 +196,10 @@ final class HolmesServerModule extends AbstractModule {
         bind(HttpFileRequestDecoder.class);
         bind(HttpFileRequestHandler.class);
 
-        // Bind streaming and device manager
-        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
-        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
+        // Bind streaming utils
         bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
         bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
-        bind(TransportService.class).to(TransportServiceImpl.class).in(Singleton.class);
 
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);

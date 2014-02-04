@@ -20,10 +20,10 @@ package net.holmes.core.test;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
-import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.ConfigurationNode;
-import net.holmes.core.common.configuration.Parameter;
-import net.holmes.core.media.model.RootNode;
+import net.holmes.core.manager.configuration.Configuration;
+import net.holmes.core.manager.configuration.ConfigurationNode;
+import net.holmes.core.manager.configuration.Parameter;
+import net.holmes.core.manager.media.model.RootNode;
 
 import javax.inject.Inject;
 import java.io.File;

@@ -22,10 +22,10 @@ import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.common.configuration.Configuration;
-import net.holmes.core.common.configuration.ConfigurationNode;
 import net.holmes.core.common.event.ConfigurationEvent;
-import net.holmes.core.media.model.RootNode;
+import net.holmes.core.manager.configuration.Configuration;
+import net.holmes.core.manager.configuration.ConfigurationNode;
+import net.holmes.core.manager.media.model.RootNode;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -33,8 +33,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.common.UniqueId.newUniqueId;
-import static net.holmes.core.common.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
+import static net.holmes.core.manager.configuration.Parameter.*;
 
 /**
  * Backend manager implementation.

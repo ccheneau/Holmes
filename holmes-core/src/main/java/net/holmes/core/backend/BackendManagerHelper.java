@@ -21,7 +21,7 @@ import com.google.common.base.Strings;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.common.NodeFile;
-import net.holmes.core.common.configuration.ConfigurationNode;
+import net.holmes.core.manager.configuration.ConfigurationNode;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -34,9 +34,9 @@ final class BackendManagerHelper {
     private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 
     /**
-     * Validate server name.
+     * Validate service name.
      *
-     * @param serverName server name to validate
+     * @param serverName service name to validate
      */
     public void validateServerName(final String serverName) {
         checkNonEmptyString(serverName, "backend.settings.server.name.error");

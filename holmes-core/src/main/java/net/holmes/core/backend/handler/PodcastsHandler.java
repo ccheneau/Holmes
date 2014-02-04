@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static net.holmes.core.media.model.RootNode.PODCAST;
+import static net.holmes.core.manager.media.model.RootNode.PODCAST;
 
 /**
  * Handler for podcast REST requests.

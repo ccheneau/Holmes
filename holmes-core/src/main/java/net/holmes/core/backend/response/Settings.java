@@ -35,7 +35,7 @@ public final class Settings {
     /**
      * Instantiates a new settings.
      *
-     * @param serverName             server name
+     * @param serverName             service name
      * @param prependPodcastItem     prepend pod-cast item
      * @param enableIcecastDirectory enable Icecast directory
      */

@@ -18,10 +18,10 @@
 package net.holmes.core.common.event;
 
 import com.google.common.base.Objects;
-import net.holmes.core.common.configuration.ConfigurationNode;
-import net.holmes.core.media.model.RootNode;
+import net.holmes.core.manager.configuration.ConfigurationNode;
+import net.holmes.core.manager.media.model.RootNode;
 
-import static net.holmes.core.media.model.RootNode.NONE;
+import static net.holmes.core.manager.media.model.RootNode.NONE;
 
 /**
  * Configuration event.

@@ -69,7 +69,7 @@ public final class UtilHandler {
             File userHomeDir = new File(USER_HOME.getValue());
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
-            // Add server root folders to response
+            // Add service root folders to response
             File[] roots = File.listRoots();
             if (roots != null)
                 for (File root : roots)
