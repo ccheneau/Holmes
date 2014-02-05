@@ -64,9 +64,9 @@ public final class XmlConfigurationImpl implements Configuration {
      */
     private Path getConfigFile() {
         Path confPath = Paths.get(localHolmesDataDir, CONF_DIR);
-        if (Files.isDirectory(confPath) || confPath.toFile().mkdirs()) {
+        if (Files.isDirectory(confPath) || confPath.toFile().mkdirs())
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
-        }
+
         throw new RuntimeException("Failed to create " + confPath);
 
     }
@@ -80,7 +80,7 @@ public final class XmlConfigurationImpl implements Configuration {
         boolean configLoaded = false;
 
         Path confFile = getConfigFile();
-        if (Files.isReadable(confFile)) {
+        if (Files.isReadable(confFile))
             try (InputStream in = new FileInputStream(confFile.toFile())) {
                 // Load configuration from XML
                 rootNode = (XmlRootNode) xstream.fromXML(in);
@@ -88,7 +88,7 @@ public final class XmlConfigurationImpl implements Configuration {
             } catch (FileNotFoundException e) {
                 //Ignore
             }
-        }
+
         if (rootNode == null) rootNode = new XmlRootNode();
         rootNode.checkDefaultValues();
         rootNode.checkParameters();
