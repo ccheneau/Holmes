@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.upnp;
+package net.holmes.core.business.upnp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

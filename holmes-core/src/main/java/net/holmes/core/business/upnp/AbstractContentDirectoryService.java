@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.upnp;
+package net.holmes.core.business.upnp;
 
 import org.fourthline.cling.binding.annotations.*;
 import org.fourthline.cling.model.profile.RemoteClientInfo;

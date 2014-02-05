@@ -19,6 +19,7 @@ package net.holmes.core.service.upnp;
 
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.upnp.ContentDirectoryService;
 import net.holmes.core.common.StaticResourceLoader;
 import org.fourthline.cling.DefaultUpnpServiceConfiguration;
 import org.fourthline.cling.UpnpService;
