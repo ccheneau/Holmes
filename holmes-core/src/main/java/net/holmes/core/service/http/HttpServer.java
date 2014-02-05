@@ -106,31 +106,33 @@ public final class HttpServer implements Service {
                     @Override
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
-                        pipeline.addLast("decoder", new HttpRequestDecoder(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE, MAX_CHUNK_SIZE, false))
-                                .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))
-                                .addLast("encoder", new HttpResponseEncoder())
-                                .addLast("chunkedWriter", new ChunkedWriteHandler())
-                                        // Add HTTP file request handlers
-                                .addLast("httpFileRequestDecoder", injector.getInstance(HttpFileRequestDecoder.class))
-                                .addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class))
-                                        // Add RestEasy handlers
-                                .addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP))
-                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))
-                                .addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
+                        // Add default handlers
+                        pipeline.addLast("decoder", new HttpRequestDecoder(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE, MAX_CHUNK_SIZE, false));
+                        pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
+                        pipeline.addLast("encoder", new HttpResponseEncoder());
+                        pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
 
+                        // Add HTTP file request handlers
+                        pipeline.addLast("httpFileRequestDecoder", injector.getInstance(HttpFileRequestDecoder.class));
+                        pipeline.addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class));
+
+                        // Add RestEasy handlers
+                        pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP));
+                        pipeline.addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher));
+                        pipeline.addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
                     }
                 })
                 .option(SO_BACKLOG, BACKLOG)
                 .childOption(ALLOCATOR, DEFAULT)
                 .childOption(SO_KEEPALIVE, true);
 
+        // Register backend JAX-RS handlers declared in Guice injector
+        ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
+        processor.processInjector(injector);
+
         // Bind and start service to accept incoming connections.
         InetSocketAddress bindAddress = new InetSocketAddress(configuration.getIntParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
-
-        // Register backend JAX-RS handlers declared in Guice injector .
-        ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
-        processor.processInjector(injector);
 
         LOGGER.info("HTTP service bound on {}", bindAddress);
     }
