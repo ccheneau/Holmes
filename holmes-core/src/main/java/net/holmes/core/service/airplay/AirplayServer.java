@@ -17,10 +17,10 @@
 
 package net.holmes.core.service.airplay;
 
-import net.holmes.core.manager.configuration.Configuration;
-import net.holmes.core.manager.streaming.StreamingManager;
-import net.holmes.core.manager.streaming.airplay.device.AirplayDevice;
-import net.holmes.core.manager.streaming.airplay.device.AirplayFeatures;
+import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.streaming.StreamingManager;
+import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
+import net.holmes.core.business.streaming.airplay.device.AirplayFeatures;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
-import static net.holmes.core.manager.configuration.Parameter.ENABLE_AIRPLAY;
+import static net.holmes.core.business.configuration.Parameter.ENABLE_AIRPLAY;
 
 /**
  * Airplay service
@@ -78,7 +78,7 @@ public final class AirplayServer implements Service {
                 for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP))
                     streamingManager.addDevice(buildDevice(serviceInfo));
 
-                // Add Listener to manager inbound and outbound devices
+                // Add Listener to business inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
 
                     /**

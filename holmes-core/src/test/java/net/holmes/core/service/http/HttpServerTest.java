@@ -21,10 +21,10 @@ import com.google.common.collect.Maps;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import net.holmes.core.manager.configuration.Configuration;
+import net.holmes.core.business.configuration.Configuration;
 import org.junit.Test;
 
-import static net.holmes.core.manager.configuration.Parameter.HTTP_SERVER_PORT;
+import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
 import static org.easymock.EasyMock.*;
 
 public class HttpServerTest {

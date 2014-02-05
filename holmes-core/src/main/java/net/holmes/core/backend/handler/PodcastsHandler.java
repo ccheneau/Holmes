@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static net.holmes.core.manager.media.model.RootNode.PODCAST;
+import static net.holmes.core.business.media.model.RootNode.PODCAST;
 
 /**
  * Handler for podcast REST requests.
@@ -38,7 +38,7 @@ public final class PodcastsHandler {
     /**
      * Instantiates a new podcasts handler.
      *
-     * @param backendManager backend manager
+     * @param backendManager backend business
      */
     @Inject
     public PodcastsHandler(final BackendManager backendManager) {

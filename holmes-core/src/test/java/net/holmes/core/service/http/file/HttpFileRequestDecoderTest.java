@@ -20,10 +20,10 @@ package net.holmes.core.service.http.file;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
+import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.manager.media.MediaManager;
-import net.holmes.core.manager.media.model.ContentNode;
-import net.holmes.core.manager.mimetype.MimeTypeManager;
 import org.junit.Test;
 
 import java.io.File;

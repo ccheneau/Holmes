@@ -17,8 +17,8 @@
 
 package net.holmes.core.common.event;
 
-import net.holmes.core.manager.configuration.ConfigurationNode;
-import net.holmes.core.manager.media.model.RootNode;
+import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.media.model.RootNode;
 import org.junit.Test;
 
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.ADD_FOLDER;

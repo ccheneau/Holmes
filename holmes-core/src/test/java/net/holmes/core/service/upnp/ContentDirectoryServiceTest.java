@@ -19,8 +19,8 @@ package net.holmes.core.service.upnp;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.manager.media.MediaManager;
-import net.holmes.core.manager.media.model.AbstractNode;
+import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.test.TestModule;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
@@ -29,7 +29,7 @@ import org.fourthline.cling.support.model.BrowseResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import static net.holmes.core.manager.media.model.RootNode.*;
+import static net.holmes.core.business.media.model.RootNode.*;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
 import static org.junit.Assert.*;

@@ -19,7 +19,7 @@ package net.holmes.core.backend;
 
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.manager.media.model.RootNode;
+import net.holmes.core.business.media.model.RootNode;
 
 import java.util.Collection;
 

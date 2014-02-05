@@ -22,7 +22,7 @@ import com.google.inject.Injector;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.manager.media.model.RootNode;
+import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.test.TestModule;
 import org.junit.Before;
 import org.junit.Test;

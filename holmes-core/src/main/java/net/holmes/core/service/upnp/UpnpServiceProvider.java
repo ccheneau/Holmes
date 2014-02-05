@@ -18,8 +18,8 @@
 package net.holmes.core.service.upnp;
 
 import com.google.inject.Injector;
+import net.holmes.core.business.configuration.Configuration;
 import net.holmes.core.common.StaticResourceLoader;
-import net.holmes.core.manager.configuration.Configuration;
 import org.fourthline.cling.DefaultUpnpServiceConfiguration;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceConfiguration;
@@ -39,10 +39,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.io.IOException;
 
+import static net.holmes.core.business.configuration.Parameter.UPNP_SERVER_NAME;
+import static net.holmes.core.business.configuration.Parameter.UPNP_SERVICE_PORT;
 import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
-import static net.holmes.core.manager.configuration.Parameter.UPNP_SERVER_NAME;
-import static net.holmes.core.manager.configuration.Parameter.UPNP_SERVICE_PORT;
 
 /**
  * Guice provider for UPnP service.
@@ -97,7 +97,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
         injector.injectMembers(contentDirectoryService.getManager().getImplementation());
 
-        // Connection manager service
+        // Connection business service
         LocalService<ConnectionManagerService> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
         connectionManagerService.setManager(new DefaultServiceManager<>(connectionManagerService, ConnectionManagerService.class));
 

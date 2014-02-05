@@ -19,9 +19,9 @@ package net.holmes.core.service.upnp;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
-import net.holmes.core.manager.configuration.Configuration;
-import net.holmes.core.manager.streaming.StreamingManager;
-import net.holmes.core.manager.streaming.upnp.device.UpnpDevice;
+import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.streaming.StreamingManager;
+import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.service.Service;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -43,7 +43,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import static net.holmes.core.manager.configuration.Parameter.ENABLE_UPNP;
+import static net.holmes.core.business.configuration.Parameter.ENABLE_UPNP;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 
 /**
@@ -128,7 +128,7 @@ public final class UpnpServer implements Service {
          */
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
-            // Get device's connection manager service and AvTransport service.
+            // Get device's connection business service and AvTransport service.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
 

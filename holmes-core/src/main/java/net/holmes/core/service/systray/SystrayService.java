@@ -17,8 +17,8 @@
 
 package net.holmes.core.service.systray;
 
+import net.holmes.core.business.configuration.Configuration;
 import net.holmes.core.common.StaticResourceLoader;
-import net.holmes.core.manager.configuration.Configuration;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +36,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
-import static net.holmes.core.manager.configuration.Parameter.*;
 
 /**
  * Manages system tray icon.
@@ -84,7 +84,7 @@ public final class SystrayService implements Service {
     }
 
     /**
-     * Initializes UI manager.
+     * Initializes UI business.
      *
      * @return true on success
      */

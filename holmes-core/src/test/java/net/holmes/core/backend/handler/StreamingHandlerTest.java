@@ -21,17 +21,17 @@ import com.google.common.collect.Lists;
 import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
+import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.PodcastNode;
+import net.holmes.core.business.streaming.StreamingManager;
+import net.holmes.core.business.streaming.device.Device;
+import net.holmes.core.business.streaming.device.UnknownDeviceException;
+import net.holmes.core.business.streaming.session.StreamingSession;
+import net.holmes.core.business.streaming.session.UnknownSessionException;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.manager.media.MediaManager;
-import net.holmes.core.manager.media.model.AbstractNode;
-import net.holmes.core.manager.media.model.ContentNode;
-import net.holmes.core.manager.media.model.FolderNode;
-import net.holmes.core.manager.media.model.PodcastNode;
-import net.holmes.core.manager.streaming.StreamingManager;
-import net.holmes.core.manager.streaming.device.Device;
-import net.holmes.core.manager.streaming.device.UnknownDeviceException;
-import net.holmes.core.manager.streaming.session.StreamingSession;
-import net.holmes.core.manager.streaming.session.UnknownSessionException;
 import org.junit.Test;
 
 import java.io.File;
@@ -39,8 +39,8 @@ import java.util.List;
 
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
-import static net.holmes.core.manager.media.MediaManager.ChildNodeResult;
-import static net.holmes.core.manager.media.model.RootNode.VIDEO;
+import static net.holmes.core.business.media.MediaManager.ChildNodeResult;
+import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 

@@ -29,7 +29,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import net.holmes.core.manager.configuration.Configuration;
+import net.holmes.core.business.configuration.Configuration;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.http.file.HttpFileRequestDecoder;
 import net.holmes.core.service.http.file.HttpFileRequestHandler;
@@ -48,7 +48,7 @@ import java.net.InetSocketAddress;
 
 import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
 import static io.netty.channel.ChannelOption.*;
-import static net.holmes.core.manager.configuration.Parameter.HTTP_SERVER_PORT;
+import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
 import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
 
 /**

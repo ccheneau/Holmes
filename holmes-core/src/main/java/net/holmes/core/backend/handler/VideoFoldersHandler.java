@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static net.holmes.core.manager.media.model.RootNode.VIDEO;
+import static net.holmes.core.business.media.model.RootNode.VIDEO;
 
 /**
  * Handler for video folders REST requests.
@@ -38,7 +38,7 @@ public final class VideoFoldersHandler {
     /**
      * Instantiates a new video folders handler.
      *
-     * @param backendManager backend manager
+     * @param backendManager backend business
      */
     @Inject
     public VideoFoldersHandler(final BackendManager backendManager) {

@@ -18,13 +18,13 @@
 package net.holmes.core.service.scheduled;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.core.manager.configuration.Configuration;
-import net.holmes.core.manager.media.dao.icecast.IcecastDao;
+import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.media.dao.icecast.IcecastDao;
 
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.HOURS;
-import static net.holmes.core.manager.configuration.Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
+import static net.holmes.core.business.configuration.Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
 
 /**
  * Icecast directory download service.

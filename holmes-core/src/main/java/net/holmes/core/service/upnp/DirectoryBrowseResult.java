@@ -17,10 +17,10 @@
 
 package net.holmes.core.service.upnp;
 
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.manager.media.model.AbstractNode;
-import net.holmes.core.manager.media.model.ContentNode;
-import net.holmes.core.manager.media.model.RawUrlNode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;

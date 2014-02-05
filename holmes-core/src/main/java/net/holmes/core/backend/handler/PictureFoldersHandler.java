@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static net.holmes.core.manager.media.model.RootNode.PICTURE;
+import static net.holmes.core.business.media.model.RootNode.PICTURE;
 
 /**
  * Handler for picture folders REST requests.
@@ -38,7 +38,7 @@ public final class PictureFoldersHandler {
     /**
      * Instantiates a new picture folders handler.
      *
-     * @param backendManager backend manager
+     * @param backendManager backend business
      */
     @Inject
     public PictureFoldersHandler(final BackendManager backendManager) {

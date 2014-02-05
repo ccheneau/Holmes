@@ -20,14 +20,14 @@ package net.holmes.core.backend;
 import com.google.common.base.Strings;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
+import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.common.NodeFile;
-import net.holmes.core.manager.configuration.ConfigurationNode;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Backend manager utils.
+ * Backend business utils.
  */
 final class BackendManagerHelper {
 

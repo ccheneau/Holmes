@@ -22,12 +22,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.MimeType;
 import net.holmes.core.common.NodeFile;
-import net.holmes.core.manager.media.MediaManager;
-import net.holmes.core.manager.media.model.AbstractNode;
-import net.holmes.core.manager.media.model.ContentNode;
-import net.holmes.core.manager.mimetype.MimeTypeManager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,8 +50,8 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
     /**
      * Instantiates a new HTTP file request decoder.
      *
-     * @param mediaManager    media manager
-     * @param mimeTypeManager mime type manager
+     * @param mediaManager    media business
+     * @param mimeTypeManager mime type business
      * @param uiDirectory     UI base directory
      */
     @Inject

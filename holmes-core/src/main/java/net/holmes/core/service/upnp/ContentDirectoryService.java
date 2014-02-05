@@ -18,13 +18,13 @@
 package net.holmes.core.service.upnp;
 
 import com.google.common.collect.Lists;
-import net.holmes.core.manager.configuration.Configuration;
-import net.holmes.core.manager.configuration.Parameter;
-import net.holmes.core.manager.media.MediaManager;
-import net.holmes.core.manager.media.model.*;
-import net.holmes.core.manager.streaming.StreamingManager;
-import net.holmes.core.manager.streaming.device.Device;
-import net.holmes.core.manager.streaming.upnp.device.UpnpDevice;
+import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.Parameter;
+import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.streaming.StreamingManager;
+import net.holmes.core.business.streaming.device.Device;
+import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
@@ -37,9 +37,9 @@ import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.holmes.core.manager.media.MediaManager.ChildNodeRequest;
-import static net.holmes.core.manager.media.MediaManager.ChildNodeResult;
-import static net.holmes.core.manager.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.MediaManager.ChildNodeRequest;
+import static net.holmes.core.business.media.MediaManager.ChildNodeResult;
+import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
