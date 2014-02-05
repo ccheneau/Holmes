@@ -277,13 +277,13 @@ public final class IcecastDaoImpl implements IcecastDao {
     private void loadDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
-            LOGGER.info("Icecast directory contains {} entries", this.directory != null ? this.directory.getEntries().size() : 0);
+            if (directory != null)
+                LOGGER.info("Icecast directory contains {} entries", this.directory.getEntries().size());
         }
 
         // Remove previous Icecast elements from media index
-        for (IcecastGenre genre : genres) {
+        for (IcecastGenre genre : genres)
             mediaIndexDao.removeChildren(genre.getId());
-        }
     }
 
     /**
@@ -299,10 +299,9 @@ public final class IcecastDaoImpl implements IcecastDao {
                 if (icecastEnabled) {
                     // Download and parse Yellow page if it is not already loaded
                     if (!isLoaded()) checkYellowPage();
-                } else {
+                } else
                     // Reset directory
                     loadDirectory(null);
-                }
             }
     }
 
