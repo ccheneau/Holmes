@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media.dao.icecast;
 
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import org.junit.Test;
 
@@ -38,12 +38,12 @@ public class IcecastDaoImplTest {
         URL ypUrl = this.getClass().getResource("/Icecast.xml");
 
         String localHolmesDataDir = System.getProperty("java.io.tmpdir");
-        Configuration configuration = createMock(Configuration.class);
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
-        expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
-        expect(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
+        expect(configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         mediaIndexDao.removeChildren("IceCastGenre_genre1");
         expectLastCall().atLeastOnce();
@@ -51,9 +51,9 @@ public class IcecastDaoImplTest {
         mediaIndexDao.removeChildren("IceCastGenre_genre2");
         expectLastCall().atLeastOnce();
 
-        replay(configuration, mediaIndexDao);
+        replay(configurationDao, mediaIndexDao);
         try {
-            IcecastDaoImpl icecastDao = new IcecastDaoImpl(configuration, localHolmesDataDir, mediaIndexDao);
+            IcecastDaoImpl icecastDao = new IcecastDaoImpl(configurationDao, localHolmesDataDir, mediaIndexDao);
 
             icecastDao.parseYellowPage(new File(ypUrl.toURI()));
             IcecastDirectory directory = icecastDao.getDirectory();
@@ -69,22 +69,22 @@ public class IcecastDaoImplTest {
             assertNotNull(entries);
             assertEquals(0, entries.size());
         } finally {
-            verify(configuration, mediaIndexDao);
+            verify(configurationDao, mediaIndexDao);
         }
     }
 
     @Test
     public void testGetGenres() {
         String localHolmesDataDir = System.getProperty("java.io.tmpdir");
-        Configuration configuration = createMock(Configuration.class);
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configuration.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
-        expect(configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
-        expect(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
+        expect(configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
-        replay(configuration, mediaIndexDao);
-        IcecastDaoImpl icecastDao = new IcecastDaoImpl(configuration, localHolmesDataDir, mediaIndexDao);
+        replay(configurationDao, mediaIndexDao);
+        IcecastDaoImpl icecastDao = new IcecastDaoImpl(configurationDao, localHolmesDataDir, mediaIndexDao);
         try {
             List<IcecastGenre> genres = icecastDao.getGenres();
             assertNotNull(genres);
@@ -93,7 +93,7 @@ public class IcecastDaoImplTest {
                 assertTrue(genre.getName().equals("genre1") || genre.getName().equals("genre2"));
             }
         } finally {
-            verify(configuration, mediaIndexDao);
+            verify(configurationDao, mediaIndexDao);
         }
     }
 }

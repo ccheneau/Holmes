@@ -50,8 +50,8 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
     /**
      * Instantiates a new HTTP file request decoder.
      *
-     * @param mediaManager    media business
-     * @param mimeTypeManager mime type business
+     * @param mediaManager    media manager
+     * @param mimeTypeManager mime type manager
      * @param uiDirectory     UI base directory
      */
     @Inject

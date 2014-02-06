@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Holmes configuration.
+ * Holmes configuration dao.
  */
-public interface Configuration {
+public interface ConfigurationDao {
 
     /**
      * Save configuration.

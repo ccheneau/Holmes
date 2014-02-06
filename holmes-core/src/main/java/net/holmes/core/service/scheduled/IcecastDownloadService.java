@@ -18,7 +18,7 @@
 package net.holmes.core.service.scheduled;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
 
 import javax.inject.Inject;
@@ -36,13 +36,13 @@ public class IcecastDownloadService extends AbstractScheduledService {
     /**
      * Instantiates a new Icecast directory download service.
      *
-     * @param icecastDao    Icecast DAO
-     * @param configuration configuration
+     * @param icecastDao       Icecast dao
+     * @param configurationDao configuration dDao
      */
     @Inject
-    public IcecastDownloadService(final IcecastDao icecastDao, final Configuration configuration) {
+    public IcecastDownloadService(final IcecastDao icecastDao, final ConfigurationDao configurationDao) {
         this.icecastDao = icecastDao;
-        this.downloadDelayHours = configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS);
+        this.downloadDelayHours = configurationDao.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS);
 
     }
 

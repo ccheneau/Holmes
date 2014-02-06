@@ -21,7 +21,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.FolderNode;
@@ -47,11 +47,11 @@ import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
 
 /**
- * Media service implementation.
+ * Media manager implementation.
  */
 public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
     private final MimeTypeManager mimeTypeManager;
@@ -60,15 +60,15 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Instantiates a new media service implementation.
      *
-     * @param configuration   configuration
-     * @param resourceBundle  resource bundle
-     * @param mediaDao        media dao
-     * @param mimeTypeManager mime type business
+     * @param configurationDao configuration dao
+     * @param resourceBundle   resource bundle
+     * @param mediaDao         media dao
+     * @param mimeTypeManager  mime type manager
      */
     @Inject
-    public MediaManagerImpl(final Configuration configuration, final ResourceBundle resourceBundle, final MediaDao mediaDao,
+    public MediaManagerImpl(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, final MediaDao mediaDao,
                             final MimeTypeManager mimeTypeManager, @Named("localAddress") final InetAddress localAddress) {
-        this.configuration = configuration;
+        this.configurationDao = configurationDao;
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
         this.mimeTypeManager = mimeTypeManager;
@@ -122,7 +122,7 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Override
     public String getNodeUrl(AbstractNode node) {
-        return "http://" + localAddress.getHostAddress() + ":" + configuration.getIntParameter(HTTP_SERVER_PORT) +
+        return "http://" + localAddress.getHostAddress() + ":" + configurationDao.getIntParameter(HTTP_SERVER_PORT) +
                 HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }
 

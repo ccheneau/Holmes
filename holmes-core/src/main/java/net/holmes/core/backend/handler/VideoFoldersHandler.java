@@ -38,7 +38,7 @@ public final class VideoFoldersHandler {
     /**
      * Instantiates a new video folders handler.
      *
-     * @param backendManager backend business
+     * @param backendManager backend manager
      */
     @Inject
     public VideoFoldersHandler(final BackendManager backendManager) {

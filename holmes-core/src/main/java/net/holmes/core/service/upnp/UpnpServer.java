@@ -19,7 +19,7 @@ package net.holmes.core.service.upnp;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.service.Service;
@@ -54,7 +54,7 @@ public final class UpnpServer implements Service {
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
     private final Injector injector;
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final StreamingManager streamingManager;
     private UpnpService upnpService = null;
 
@@ -62,13 +62,13 @@ public final class UpnpServer implements Service {
      * Instantiates a new UPnP service.
      *
      * @param injector         Guice injector
-     * @param configuration    configuration
+     * @param configurationDao configuration dao
      * @param streamingManager transport service
      */
     @Inject
-    public UpnpServer(final Injector injector, final Configuration configuration, final StreamingManager streamingManager) {
+    public UpnpServer(final Injector injector, final ConfigurationDao configurationDao, final StreamingManager streamingManager) {
         this.injector = injector;
-        this.configuration = configuration;
+        this.configurationDao = configurationDao;
         this.streamingManager = streamingManager;
     }
 
@@ -77,7 +77,7 @@ public final class UpnpServer implements Service {
      */
     @Override
     public void start() {
-        if (configuration.getBooleanParameter(ENABLE_UPNP)) {
+        if (configurationDao.getBooleanParameter(ENABLE_UPNP)) {
             LOGGER.info("Starting UPnP service");
             upnpService = injector.getInstance(UpnpService.class);
 
@@ -128,7 +128,7 @@ public final class UpnpServer implements Service {
          */
         @Override
         public void remoteDeviceAdded(final Registry registry, final RemoteDevice device) {
-            // Get device's connection business service and AvTransport service.
+            // Get device's connection manager service and AvTransport service.
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
 

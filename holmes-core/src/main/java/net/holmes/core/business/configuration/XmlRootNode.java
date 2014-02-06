@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Xml root node.
+ * Xml root node: result of Xml configuration deserialization
  */
 public final class XmlRootNode {
     private Properties parameters;
@@ -51,6 +51,7 @@ public final class XmlRootNode {
         List<String> availableParams = Lists.newArrayList();
         for (Parameter param : Parameter.values()) {
             availableParams.add(param.getName());
+            // If a parameter is not present in configuration, add parameter with default value
             if (this.parameters.getProperty(param.getName()) == null)
                 this.parameters.put(param.getName(), param.getDefaultValue());
         }

@@ -27,7 +27,7 @@ import com.google.common.eventbus.Subscribe;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.Xpp3Driver;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     private static final String ICECAST_FILE_NAME = "icecast.xml";
     private static final String DATA_DIR = "data";
     private static final String ICECAST_GENRE_ID_ROOT = "IceCastGenre_";
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final String localHolmesDataDir;
     private final MediaIndexDao mediaIndexDao;
     private final List<IcecastGenre> genres;
@@ -73,19 +73,19 @@ public final class IcecastDaoImpl implements IcecastDao {
     /**
      * Instantiates a new Icecast Dao implementation.
      *
-     * @param configuration      configuration
+     * @param configurationDao   configuration dao
      * @param localHolmesDataDir local Holmes data directory
      * @param mediaIndexDao      media index dao
      */
     @Inject
-    public IcecastDaoImpl(final Configuration configuration, @Named("localHolmesDataDir") final String localHolmesDataDir, final MediaIndexDao mediaIndexDao) {
-        this.configuration = configuration;
+    public IcecastDaoImpl(final ConfigurationDao configurationDao, @Named("localHolmesDataDir") final String localHolmesDataDir, final MediaIndexDao mediaIndexDao) {
+        this.configurationDao = configurationDao;
         this.localHolmesDataDir = localHolmesDataDir;
         this.mediaIndexDao = mediaIndexDao;
-        this.icecastEnabled = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
-        List<String> genreList = Splitter.on(",").splitToList(configuration.getParameter(ICECAST_GENRE_LIST));
+        this.icecastEnabled = configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+        List<String> genreList = Splitter.on(",").splitToList(configurationDao.getParameter(ICECAST_GENRE_LIST));
         this.genres = Lists.newArrayListWithCapacity(genreList.size());
-        this.maxDownloadRetry = max(configuration.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
+        this.maxDownloadRetry = max(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
         for (String genre : genreList)
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
     }
@@ -192,7 +192,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private boolean downloadYellowPage() throws IOException {
         LOGGER.info("Downloading Icecast Yellow page");
-        URL icecastYellowPage = new URL(configuration.getParameter(ICECAST_YELLOW_PAGE_URL));
+        URL icecastYellowPage = new URL(configurationDao.getParameter(ICECAST_YELLOW_PAGE_URL));
         File tempFile = getIcecastXmlTempFile().toFile();
         try (ReadableByteChannel in = Channels.newChannel(icecastYellowPage.openStream());
              FileOutputStream out = new FileOutputStream(tempFile)) {
@@ -215,7 +215,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private boolean needsYellowPageDownload() throws IOException {
         Calendar cal = Calendar.getInstance();
-        cal.add(HOUR, -(configuration.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
+        cal.add(HOUR, -(configurationDao.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
 
         Path xmlFile = getIcecastXmlFile();
         return !Files.exists(xmlFile) || Files.getLastModifiedTime(xmlFile).toMillis() < cal.getTimeInMillis();
@@ -295,7 +295,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
-                icecastEnabled = configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+                icecastEnabled = configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
                 if (icecastEnabled) {
                     // Download and parse Yellow page if it is not already loaded
                     if (!isLoaded()) checkYellowPage();

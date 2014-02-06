@@ -18,7 +18,7 @@
 package net.holmes.core.business.media.dao.index;
 
 /**
- * Media index business.
+ * Media index dao.
  */
 public interface MediaIndexDao {
 

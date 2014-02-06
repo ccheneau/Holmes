@@ -57,8 +57,8 @@ public class StreamingHandler {
     /**
      * Instantiates a new StreamingHandler.
      *
-     * @param mediaManager     media business
-     * @param streamingManager streaming business
+     * @param mediaManager     media manager
+     * @param streamingManager streaming manager
      */
     @Inject
     public StreamingHandler(final MediaManager mediaManager, final StreamingManager streamingManager) {

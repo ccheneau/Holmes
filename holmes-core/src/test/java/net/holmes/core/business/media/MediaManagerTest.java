@@ -19,7 +19,7 @@ package net.holmes.core.business.media;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.FolderNode;
 import net.holmes.core.business.media.model.RootNode;
@@ -41,7 +41,7 @@ public class MediaManagerTest {
     private MediaManager mediaManager;
 
     @Inject
-    private Configuration configuration;
+    private ConfigurationDao configurationDao;
 
     @Before
     public void setUp() {

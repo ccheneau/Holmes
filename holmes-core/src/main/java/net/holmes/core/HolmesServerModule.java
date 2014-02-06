@@ -29,8 +29,8 @@ import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
 import net.holmes.core.backend.handler.*;
-import net.holmes.core.business.configuration.Configuration;
-import net.holmes.core.business.configuration.XmlConfigurationImpl;
+import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.XmlConfigurationDaoImpl;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaManagerImpl;
 import net.holmes.core.business.media.dao.MediaDao;
@@ -163,7 +163,6 @@ final class HolmesServerModule extends AbstractModule {
         bindListener(Matchers.any(), new CustomTypeListener(eventBus));
 
         // Bind managers
-        bind(Configuration.class).to(XmlConfigurationImpl.class).in(Singleton.class);
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
@@ -175,7 +174,8 @@ final class HolmesServerModule extends AbstractModule {
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
-        // Bind DAO
+        // Bind dao
+        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
         bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
         bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);

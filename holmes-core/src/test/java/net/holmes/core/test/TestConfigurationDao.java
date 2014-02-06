@@ -20,7 +20,7 @@ package net.holmes.core.test;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.configuration.Parameter;
 import net.holmes.core.business.media.model.RootNode;
@@ -32,7 +32,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class TestConfiguration implements Configuration {
+public class TestConfigurationDao implements ConfigurationDao {
 
     private final List<ConfigurationNode> videoFolders;
     private final List<ConfigurationNode> pictureFolders;
@@ -41,7 +41,7 @@ public class TestConfiguration implements Configuration {
     private Map<Parameter, String> parameters;
 
     @Inject
-    public TestConfiguration(final XStream xStream) {
+    public TestConfigurationDao(final XStream xStream) {
         videoFolders = Lists.newArrayList();
         videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = Lists.newArrayList();

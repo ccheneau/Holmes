@@ -23,7 +23,7 @@ import net.holmes.core.business.media.model.RootNode;
 import java.util.List;
 
 /**
- * Media DAO.
+ * Media dao.
  */
 public interface MediaDao {
     /**

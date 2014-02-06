@@ -19,7 +19,7 @@ package net.holmes.core.business.streaming;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.Device;
@@ -44,7 +44,7 @@ import static net.holmes.core.business.configuration.Parameter.STREAMING_STATUS_
 import static net.holmes.core.business.streaming.session.SessionStatus.*;
 
 /**
- * Transport service implementation.
+ * Streaming manager implementation.
  */
 public final class StreamingManagerImpl implements StreamingManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(StreamingManagerImpl.class);
@@ -55,16 +55,16 @@ public final class StreamingManagerImpl implements StreamingManager {
     private final DeviceStreamer airplayStreamer;
 
     /**
-     * Instantiates a new transport service implementation.
+     * Instantiates a new streaming manager implementation.
      *
-     * @param configuration   configuration
-     * @param deviceDao       device DAO
-     * @param sessionDao      session DAO
-     * @param upnpStreamer    upnp streamer
-     * @param airplayStreamer airplay streamer
+     * @param configurationDao configuration dao
+     * @param deviceDao        device dao
+     * @param sessionDao       session dao
+     * @param upnpStreamer     upnp streamer
+     * @param airplayStreamer  airplay streamer
      */
     @Inject
-    public StreamingManagerImpl(final Configuration configuration, final DeviceDao deviceDao, final SessionDao sessionDao,
+    public StreamingManagerImpl(final ConfigurationDao configurationDao, final DeviceDao deviceDao, final SessionDao sessionDao,
                                 @Named("upnp") final DeviceStreamer upnpStreamer,
                                 @Named("airplay") final DeviceStreamer airplayStreamer) {
         this.deviceDao = deviceDao;
@@ -73,7 +73,7 @@ public final class StreamingManagerImpl implements StreamingManager {
         this.airplayStreamer = airplayStreamer;
 
         //Start session status update task
-        new UpdateSessionStatusService(configuration.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
+        new UpdateSessionStatusService(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
     }
 
     /**

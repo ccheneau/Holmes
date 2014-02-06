@@ -18,7 +18,7 @@
 package net.holmes.core.service.upnp;
 
 import com.google.inject.Injector;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.upnp.ContentDirectoryService;
 import net.holmes.core.common.StaticResourceLoader;
 import org.fourthline.cling.DefaultUpnpServiceConfiguration;
@@ -55,18 +55,18 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     private static final int ICON_DEPTH = 8;
     private static final String ICON_MIME_TYPE = "image/png";
     private final Injector injector;
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
 
     /**
      * Instantiates a new upnp service provider.
      *
-     * @param injector      Guice injector
-     * @param configuration configuration
+     * @param injector         Guice injector
+     * @param configurationDao configuration dao
      */
     @Inject
-    public UpnpServiceProvider(final Injector injector, final Configuration configuration) {
+    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao) {
         this.injector = injector;
-        this.configuration = configuration;
+        this.configurationDao = configurationDao;
     }
 
     /**
@@ -76,7 +76,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     @Override
     public UpnpService get() {
         // Create Upnp service
-        UpnpServiceConfiguration upnpConfiguration = new DefaultUpnpServiceConfiguration(configuration.getIntParameter(UPNP_SERVICE_PORT));
+        UpnpServiceConfiguration upnpConfiguration = new DefaultUpnpServiceConfiguration(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
         UpnpService upnpService = new UpnpServiceImpl(upnpConfiguration);
 
         // Device identity
@@ -91,7 +91,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         DLNADoc dD1 = new DLNADoc("DMS", "1.50");
         DLNADoc dD2 = new DLNADoc("M-DMS", "1.50");
         DLNADoc[] dlnaDocs = new DLNADoc[]{dD1, dD2};
-        DeviceDetails details = new DeviceDetails(configuration.getParameter(UPNP_SERVER_NAME), manufacturerDetails, modelDetails, dlnaDocs, null);
+        DeviceDetails details = new DeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), manufacturerDetails, modelDetails, dlnaDocs, null);
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);

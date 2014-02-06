@@ -29,7 +29,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.http.file.HttpFileRequestDecoder;
 import net.holmes.core.service.http.file.HttpFileRequestHandler;
@@ -62,7 +62,7 @@ public final class HttpServer implements Service {
     private static final int MAX_CHUNK_SIZE = 8192;
     private static final int BACKLOG = 128;
     private final Injector injector;
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workerGroup;
     private final ResteasyDeployment deployment;
@@ -70,13 +70,13 @@ public final class HttpServer implements Service {
     /**
      * Instantiates a new http service.
      *
-     * @param injector      injector
-     * @param configuration configuration
+     * @param injector         injector
+     * @param configurationDao configuration dao
      */
     @Inject
-    public HttpServer(final Injector injector, final Configuration configuration) {
+    public HttpServer(final Injector injector, final ConfigurationDao configurationDao) {
         this.injector = injector;
-        this.configuration = configuration;
+        this.configurationDao = configurationDao;
         this.bossGroup = new NioEventLoopGroup();
         this.workerGroup = new NioEventLoopGroup();
         this.deployment = new ResteasyDeployment();
@@ -131,7 +131,7 @@ public final class HttpServer implements Service {
         processor.processInjector(injector);
 
         // Bind and start service to accept incoming connections.
-        InetSocketAddress bindAddress = new InetSocketAddress(configuration.getIntParameter(HTTP_SERVER_PORT));
+        InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getIntParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
 
         LOGGER.info("HTTP service bound on {}", bindAddress);

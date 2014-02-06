@@ -22,7 +22,7 @@ import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
@@ -37,23 +37,23 @@ import static net.holmes.core.common.UniqueId.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**
- * Backend business implementation.
+ * Backend manager implementation.
  */
 public final class BackendManagerImpl implements BackendManager {
 
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final EventBus eventBus;
     private final BackendManagerHelper helper;
 
     /**
-     * Instantiates a new backend business implementation.
+     * Instantiates a new backend manager implementation.
      *
-     * @param configuration configuration
-     * @param eventBus      event bus
+     * @param configurationDao configuration dao
+     * @param eventBus         event bus
      */
     @Inject
-    public BackendManagerImpl(final Configuration configuration, final EventBus eventBus) {
-        this.configuration = configuration;
+    public BackendManagerImpl(final ConfigurationDao configurationDao, final EventBus eventBus) {
+        this.configurationDao = configurationDao;
         this.eventBus = eventBus;
         this.helper = new BackendManagerHelper();
     }
@@ -63,7 +63,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        List<ConfigurationNode> configNodes = configurationDao.getFolders(rootNode);
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
         for (ConfigurationNode node : configNodes)
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
@@ -76,7 +76,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
-        ConfigurationNode node = helper.findConfigurationNode(id, configuration.getFolders(rootNode), rootNode == RootNode.PODCAST);
+        ConfigurationNode node = helper.findConfigurationNode(id, configurationDao.getFolders(rootNode), rootNode == RootNode.PODCAST);
         return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
     }
 
@@ -85,7 +85,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        List<ConfigurationNode> configNodes = configurationDao.getFolders(rootNode);
 
         // Validate
         if (rootNode == RootNode.PODCAST) helper.validatePodcast(folder, configNodes, null);
@@ -98,7 +98,7 @@ public final class BackendManagerImpl implements BackendManager {
         ConfigurationNode newNode = new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath());
         configNodes.add(newNode);
         try {
-            configuration.saveConfig();
+            configurationDao.saveConfig();
         } catch (IOException e) {
             throw new BackendException(e);
         }
@@ -112,7 +112,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        List<ConfigurationNode> configNodes = configurationDao.getFolders(rootNode);
         boolean podcast = rootNode == RootNode.PODCAST;
 
         // Check folder
@@ -125,7 +125,7 @@ public final class BackendManagerImpl implements BackendManager {
             currentNode.setLabel(folder.getName());
             currentNode.setPath(folder.getPath());
             try {
-                configuration.saveConfig();
+                configurationDao.saveConfig();
             } catch (IOException e) {
                 throw new BackendException(e);
             }
@@ -139,14 +139,14 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configuration.getFolders(rootNode);
+        List<ConfigurationNode> configNodes = configurationDao.getFolders(rootNode);
         ConfigurationNode currentNode = helper.findConfigurationNode(id, configNodes, rootNode == RootNode.PODCAST);
 
         // Remove node
         configNodes.remove(currentNode);
         try {
             // Save config
-            configuration.saveConfig();
+            configurationDao.saveConfig();
         } catch (IOException e) {
             throw new BackendException(e);
         }
@@ -159,9 +159,9 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Settings getSettings() {
-        return new Settings(configuration.getParameter(UPNP_SERVER_NAME),
-                configuration.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
-                configuration.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
+        return new Settings(configurationDao.getParameter(UPNP_SERVER_NAME),
+                configurationDao.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
+                configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
     }
 
     /**
@@ -171,12 +171,12 @@ public final class BackendManagerImpl implements BackendManager {
     public void saveSettings(final Settings settings) {
         helper.validateServerName(settings.getServerName());
 
-        configuration.setParameter(UPNP_SERVER_NAME, settings.getServerName());
-        configuration.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
-        configuration.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
+        configurationDao.setParameter(UPNP_SERVER_NAME, settings.getServerName());
+        configurationDao.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
+        configurationDao.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
         try {
             // save settings
-            configuration.saveConfig();
+            configurationDao.saveConfig();
         } catch (IOException e) {
             throw new BackendException(e);
         }

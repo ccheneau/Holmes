@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Mime type business implementation.
+ * Mime type manager implementation.
  */
 public final class MimeTypeManagerImpl implements MimeTypeManager {
     private final Properties properties;
 
     /**
-     * Instantiates a new mime type business implementation.
+     * Instantiates a new mime type manager implementation.
      */
     @Inject
     public MimeTypeManagerImpl(@Named("mimeTypePath") final String mimeTypePath) {

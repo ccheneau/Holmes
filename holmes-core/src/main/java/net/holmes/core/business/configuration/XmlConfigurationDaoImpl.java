@@ -31,9 +31,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * XML configuration implementation.
+ * XML configuration dao implementation.
  */
-public final class XmlConfigurationImpl implements Configuration {
+public final class XmlConfigurationDaoImpl implements ConfigurationDao {
 
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_DIR = "conf";
@@ -48,19 +48,25 @@ public final class XmlConfigurationImpl implements Configuration {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @Inject
-    public XmlConfigurationImpl(@Named("localHolmesDataDir") final String localHolmesDataDir) throws IOException {
+    public XmlConfigurationDaoImpl(@Named("localHolmesDataDir") final String localHolmesDataDir) throws IOException {
         this.localHolmesDataDir = localHolmesDataDir;
+
+        // Instantiates a new XStream
         this.xstream = new XStream(new DomDriver("UTF-8"));
+
+        // Define XStream aliases
         this.xstream.alias("config", XmlRootNode.class);
         this.xstream.alias("node", ConfigurationNode.class);
         this.xstream.ignoreUnknownElements();
+
+        // Load configuration
         loadConfig();
     }
 
     /**
-     * Get Holmes configuration file.
+     * Get Holmes configuration file path.
      *
-     * @return configuration file
+     * @return configuration file path
      */
     private Path getConfigFile() {
         Path confPath = Paths.get(localHolmesDataDir, CONF_DIR);
@@ -72,7 +78,7 @@ public final class XmlConfigurationImpl implements Configuration {
     }
 
     /**
-     * Load configuration.
+     * Load configuration from Xml file.
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */

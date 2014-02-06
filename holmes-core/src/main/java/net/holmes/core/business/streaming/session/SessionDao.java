@@ -20,7 +20,7 @@ package net.holmes.core.business.streaming.session;
 import java.util.Map;
 
 /**
- * Streaming session DAO.
+ * Streaming session dao.
  */
 public interface SessionDao {
 

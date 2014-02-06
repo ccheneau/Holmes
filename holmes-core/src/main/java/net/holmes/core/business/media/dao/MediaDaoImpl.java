@@ -21,7 +21,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import com.sun.syndication.io.FeedException;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.configuration.Parameter;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
@@ -54,34 +54,34 @@ import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 
 /**
- * Media DAO implementation.
+ * Media dao implementation.
  */
 public class MediaDaoImpl implements MediaDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaDaoImpl.class);
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;
     private final IcecastDao icecastDao;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     /**
-     * Instantiates a new media DAO implementation.
+     * Instantiates a new media dao implementation.
      *
-     * @param configuration   configuration
-     * @param mimeTypeManager mime type business
+     * @param configurationDao   configuration dao
+     * @param mimeTypeManager mime type manager
      * @param mediaIndexDao   media index dao
      * @param icecastDao      Icecast dao
      */
     @Inject
-    public MediaDaoImpl(final Configuration configuration, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao,
+    public MediaDaoImpl(final ConfigurationDao configurationDao, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao,
                         final IcecastDao icecastDao) {
-        this.configuration = configuration;
+        this.configurationDao = configurationDao;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexDao = mediaIndexDao;
         this.icecastDao = icecastDao;
         this.podcastCache = CacheBuilder.newBuilder()
-                .maximumSize(configuration.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS))
-                .expireAfterWrite(configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
+                .maximumSize(configurationDao.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS))
+                .expireAfterWrite(configurationDao.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
                 .build();
     }
 
@@ -166,7 +166,7 @@ public class MediaDaoImpl implements MediaDao {
         switch (rootNode) {
             case PODCAST:
                 // Add podcast nodes stored in configuration
-                for (ConfigurationNode configNode : configuration.getFolders(rootNode)) {
+                for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
                     // Add node to mediaIndex
                     mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                     // Add child node
@@ -188,7 +188,7 @@ public class MediaDaoImpl implements MediaDao {
                 break;
             default:
                 // Add folder nodes stored in configuration
-                for (ConfigurationNode configNode : configuration.getFolders(rootNode)) {
+                for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
                     NodeFile file = new NodeFile(configNode.getPath());
                     if (file.isValidDirectory()) {
                         // Add node to mediaIndex

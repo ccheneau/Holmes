@@ -17,7 +17,7 @@
 
 package net.holmes.core.service.airplay;
 
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.airplay.device.AirplayFeatures;
@@ -44,7 +44,7 @@ public final class AirplayServer implements Service {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirplayServer.class);
     private static final String AIRPLAY_TCP = "_airplay._tcp.local.";
     private static final String AIRPLAY_FEATURES = "features";
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final InetAddress localAddress;
     private final StreamingManager streamingManager;
     private JmDNS jmDNS = null;
@@ -52,13 +52,13 @@ public final class AirplayServer implements Service {
     /**
      * Instantiates a new Airplay service.
      *
-     * @param configuration    configuration
+     * @param configurationDao    configuration dao
      * @param localAddress     local address
      * @param streamingManager transport service
      */
     @Inject
-    public AirplayServer(final Configuration configuration, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
-        this.configuration = configuration;
+    public AirplayServer(final ConfigurationDao configurationDao, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
+        this.configurationDao = configurationDao;
         this.localAddress = localAddress;
         this.streamingManager = streamingManager;
     }
@@ -68,7 +68,7 @@ public final class AirplayServer implements Service {
      */
     @Override
     public void start() {
-        if (configuration.getBooleanParameter(ENABLE_AIRPLAY)) {
+        if (configurationDao.getBooleanParameter(ENABLE_AIRPLAY)) {
             LOGGER.info("Starting Airplay service");
             try {
                 // Create JmDNS
@@ -78,7 +78,7 @@ public final class AirplayServer implements Service {
                 for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP))
                     streamingManager.addDevice(buildDevice(serviceInfo));
 
-                // Add Listener to business inbound and outbound devices
+                // Add Listener to manage inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
 
                     /**

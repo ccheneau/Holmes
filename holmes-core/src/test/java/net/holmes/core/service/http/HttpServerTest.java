@@ -21,7 +21,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import org.junit.Test;
 
 import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
@@ -32,15 +32,15 @@ public class HttpServerTest {
     @Test
     public void testHttpServer() {
         Injector injector = createMock(Injector.class);
-        Configuration configuration = createMock(Configuration.class);
-        HttpServer httpServer = new HttpServer(injector, configuration);
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        HttpServer httpServer = new HttpServer(injector, configurationDao);
 
-        expect(configuration.getIntParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
+        expect(configurationDao.getIntParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
         expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
 
-        replay(injector, configuration);
+        replay(injector, configurationDao);
         httpServer.start();
         httpServer.stop();
-        verify(injector, configuration);
+        verify(injector, configurationDao);
     }
 }

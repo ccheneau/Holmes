@@ -22,7 +22,7 @@ import net.holmes.core.common.MimeType;
 import java.util.List;
 
 /**
- * Mime type business.
+ * Mime type manager.
  */
 public interface MimeTypeManager {
 

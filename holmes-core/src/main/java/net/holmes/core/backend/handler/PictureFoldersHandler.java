@@ -38,7 +38,7 @@ public final class PictureFoldersHandler {
     /**
      * Instantiates a new picture folders handler.
      *
-     * @param backendManager backend business
+     * @param backendManager backend manager
      */
     @Inject
     public PictureFoldersHandler(final BackendManager backendManager) {

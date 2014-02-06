@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Backend business utils.
+ * Backend manager utils.
  */
 final class BackendManagerHelper {
 

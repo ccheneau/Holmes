@@ -37,14 +37,14 @@ import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.UniqueId.newUniqueId;
 
 /**
- * Media index business implementation.
+ * Media index dao implementation.
  */
 public class MediaIndexDaoImpl implements MediaIndexDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaIndexDaoImpl.class);
     private final BiMap<String, MediaIndexElement> elements;
 
     /**
-     * Instantiates a new media index business implementation.
+     * Instantiates a new media index dao implementation.
      */
     public MediaIndexDaoImpl() {
         this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement>create());

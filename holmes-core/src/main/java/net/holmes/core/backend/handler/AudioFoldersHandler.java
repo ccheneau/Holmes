@@ -38,7 +38,7 @@ public final class AudioFoldersHandler {
     /**
      * Instantiates a new audio folders handler.
      *
-     * @param backendManager backend business
+     * @param backendManager backend manager
      */
     @Inject
     public AudioFoldersHandler(final BackendManager backendManager) {

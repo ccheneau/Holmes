@@ -17,7 +17,7 @@
 
 package net.holmes.core.service.systray;
 
-import net.holmes.core.business.configuration.Configuration;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.common.StaticResourceLoader;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
@@ -48,20 +48,20 @@ public final class SystrayService implements Service {
     private static final String MENU_ITEM_FONT = "MenuItem.font";
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
     private static final Logger LOGGER = LoggerFactory.getLogger(SystrayService.class);
-    private final Configuration configuration;
+    private final ConfigurationDao configurationDao;
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
 
     /**
      * Instantiates a new systray service.
      *
-     * @param configuration      configuration
+     * @param configurationDao   configuration dao
      * @param resourceBundle     resource bundle
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public SystrayService(final Configuration configuration, final ResourceBundle resourceBundle, @Named("localHolmesDataDir") String localHolmesDataDir) {
-        this.configuration = configuration;
+    public SystrayService(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, @Named("localHolmesDataDir") String localHolmesDataDir) {
+        this.configurationDao = configurationDao;
         this.resourceBundle = resourceBundle;
         this.localHolmesDataDir = localHolmesDataDir;
     }
@@ -72,7 +72,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configuration.getBooleanParameter(ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
+        if (configurationDao.getBooleanParameter(ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class SystrayService implements Service {
     }
 
     /**
-     * Initializes UI business.
+     * Initializes UI manager.
      *
      * @return true on success
      */
@@ -121,12 +121,12 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = SystemTray.getSystemTray();
-        final String holmesAdminUrl = "http://localhost:" + configuration.getIntParameter(HTTP_SERVER_PORT) + "/admin";
+        final String holmesAdminUrl = "http://localhost:" + configurationDao.getIntParameter(HTTP_SERVER_PORT) + "/admin";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
-        boolean showMenuIcon = configuration.getBooleanParameter(ICONS_IN_SYSTRAY_MENU);
+        boolean showMenuIcon = configurationDao.getBooleanParameter(ICONS_IN_SYSTRAY_MENU);
 
         // Quit Holmes menu item
         JMenuItem quitItem = new SystrayMenuItem() {

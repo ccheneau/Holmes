@@ -25,13 +25,13 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
-public class XmlConfigurationTest {
+public class XmlConfigurationDaoImplTest {
 
     @Test
     public void testXmlConfiguration() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -46,7 +46,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationEmpty() {
         String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -61,7 +61,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationNull() {
         String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             assertNotNull(configuration.getFolders(RootNode.AUDIO));
             assertNotNull(configuration.getFolders(RootNode.VIDEO));
             assertNotNull(configuration.getFolders(RootNode.PICTURE));
@@ -76,7 +76,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationWithBadPath() {
         String configDir = "///bbb";
         try {
-            new XmlConfigurationImpl(configDir);
+            new XmlConfigurationDaoImpl(configDir);
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -86,7 +86,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationParameter() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             assertTrue(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
             configuration.setBooleanParameter(Parameter.ENABLE_SYSTRAY, false);
             assertFalse(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
@@ -99,7 +99,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationIntParameter() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             assertEquals(Integer.valueOf(2), configuration.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS));
         } catch (IOException e) {
             fail(e.getMessage());
@@ -110,7 +110,7 @@ public class XmlConfigurationTest {
     public void testXmlConfigurationSaveConfig() {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
-            XmlConfigurationImpl configuration = new XmlConfigurationImpl(configDir);
+            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
             configuration.saveConfig();
         } catch (IOException e) {
             fail(e.getMessage());

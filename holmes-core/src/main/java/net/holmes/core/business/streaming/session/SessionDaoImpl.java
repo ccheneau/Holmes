@@ -24,13 +24,13 @@ import java.util.Map;
 import static net.holmes.core.business.streaming.session.SessionStatus.WAITING;
 
 /**
- * Streaming session DAO implementation.
+ * Streaming session dao implementation.
  */
 public final class SessionDaoImpl implements SessionDao {
     private final Map<String, StreamingSession> sessions;
 
     /**
-     * Instantiates a new streaming session DAO implementation.
+     * Instantiates a new streaming session dao implementation.
      */
     public SessionDaoImpl() {
         this.sessions = Maps.newConcurrentMap();
