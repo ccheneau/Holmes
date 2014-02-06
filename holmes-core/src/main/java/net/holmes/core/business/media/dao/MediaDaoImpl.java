@@ -67,10 +67,10 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Instantiates a new media dao implementation.
      *
-     * @param configurationDao   configuration dao
-     * @param mimeTypeManager mime type manager
-     * @param mediaIndexDao   media index dao
-     * @param icecastDao      Icecast dao
+     * @param configurationDao configuration dao
+     * @param mimeTypeManager  mime type manager
+     * @param mediaIndexDao    media index dao
+     * @param icecastDao       Icecast dao
      */
     @Inject
     public MediaDaoImpl(final ConfigurationDao configurationDao, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao,

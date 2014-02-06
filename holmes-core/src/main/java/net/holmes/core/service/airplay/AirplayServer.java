@@ -52,7 +52,7 @@ public final class AirplayServer implements Service {
     /**
      * Instantiates a new Airplay service.
      *
-     * @param configurationDao    configuration dao
+     * @param configurationDao configuration dao
      * @param localAddress     local address
      * @param streamingManager transport service
      */
