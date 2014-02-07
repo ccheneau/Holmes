@@ -47,12 +47,12 @@
         <javax.inject.version>1</javax.inject.version>
         <jmdns.version>3.4.1</jmdns.version>
         <junit.version>4.11</junit.version>
-        <log4j.version>1.2.17</log4j.version>
+        <logback.version>1.1.1</logback.version>
         <netty.version>4.0.15.Final</netty.version>
         <resteasy.version>3.0.6.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha3</seamless.version>
-        <slf4j.version>1.7.5</slf4j.version>
+        <slf4j.version>1.7.6</slf4j.version>
         <xstream.version>1.4.6</xstream.version>
     </properties>
 
@@ -173,36 +173,17 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>runtime</scope>
-            </dependency>
 
-            <!-- log4j -->
+            <!-- logback -->
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.jms</groupId>
-                        <artifactId>jms</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.mail</groupId>
-                        <artifactId>mail</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.jdmk</groupId>
-                        <artifactId>jmxtools</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.jmx</groupId>
-                        <artifactId>jmxri</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
             </dependency>
 
             <!-- xstream -->

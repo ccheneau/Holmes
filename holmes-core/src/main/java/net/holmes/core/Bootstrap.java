@@ -17,13 +17,13 @@
 
 package net.holmes.core;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.service.HolmesServer;
 import net.holmes.core.service.Service;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
@@ -36,8 +36,6 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
  * Bootstrap for Holmes - main class.
  */
 public final class Bootstrap {
-
-    private static final long LOG4J_WATCH_DELAY = 10000L;
 
     /**
      * Instantiates a new bootstrap.
@@ -85,14 +83,22 @@ public final class Bootstrap {
      * @param debug activates debug mode
      */
     private static void loadLogging(final boolean debug) {
-        // Load log4j configuration
-        Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", "log4j.xml");
+        // Define logback configuration file name
+        String logbackFileName = "logback.xml";
+        if (debug) logbackFileName = "logback-debug.xml";
+
+        // Load logback configuration
+        Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", logbackFileName);
         if (Files.exists(logFilePath))
-            if (debug) {
-                DOMConfigurator.configure(logFilePath.toString());
-                LogManager.getLoggerRepository().setThreshold(Level.DEBUG);
-            } else
-                DOMConfigurator.configureAndWatch(logFilePath.toString(), LOG4J_WATCH_DELAY);
+            try {
+                LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+                context.reset();
+                JoranConfigurator configurator = new JoranConfigurator();
+                configurator.setContext(context);
+                configurator.doConfigure(logFilePath.toFile());
+            } catch (JoranException e) {
+                throw new RuntimeException(e);
+            }
         else
             throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
     }
