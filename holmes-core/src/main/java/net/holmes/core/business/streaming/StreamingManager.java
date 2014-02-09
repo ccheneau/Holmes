@@ -26,7 +26,7 @@ import net.holmes.core.business.streaming.session.UnknownSessionException;
 import java.util.Collection;
 
 /**
- * Transport service.
+ * Streaming manager.
  */
 public interface StreamingManager {
 

@@ -55,7 +55,7 @@ public final class Bootstrap {
         // Create Guice injector
         Injector injector = Guice.createInjector(new HolmesServerModule());
 
-        // Start Holmes service
+        // Start Holmes server
         try {
             final Service holmesServer = injector.getInstance(HolmesServer.class);
             holmesServer.start();

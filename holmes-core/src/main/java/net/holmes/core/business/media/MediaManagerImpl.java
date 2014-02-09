@@ -58,7 +58,7 @@ public final class MediaManagerImpl implements MediaManager {
     private final InetAddress localAddress;
 
     /**
-     * Instantiates a new media service implementation.
+     * Instantiates a new media manager implementation.
      *
      * @param configurationDao configuration dao
      * @param resourceBundle   resource bundle

@@ -59,11 +59,11 @@ public final class UpnpServer implements Service {
     private UpnpService upnpService = null;
 
     /**
-     * Instantiates a new UPnP service.
+     * Instantiates a new UPnP server.
      *
      * @param injector         Guice injector
      * @param configurationDao configuration dao
-     * @param streamingManager transport service
+     * @param streamingManager streaming manager
      */
     @Inject
     public UpnpServer(final Injector injector, final ConfigurationDao configurationDao, final StreamingManager streamingManager) {
@@ -78,7 +78,7 @@ public final class UpnpServer implements Service {
     @Override
     public void start() {
         if (configurationDao.getBooleanParameter(ENABLE_UPNP)) {
-            LOGGER.info("Starting UPnP service");
+            LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
 
             // Add registry listener
@@ -87,8 +87,8 @@ public final class UpnpServer implements Service {
             // Search for UPnp devices
             upnpService.getControlPoint().search();
 
-            LOGGER.info("UPnP service started");
-        } else LOGGER.info("UPnP service is disabled");
+            LOGGER.info("UPnP server started");
+        } else LOGGER.info("UPnP server is disabled");
     }
 
     /**
@@ -97,9 +97,9 @@ public final class UpnpServer implements Service {
     @Override
     public void stop() {
         if (upnpService != null) {
-            LOGGER.info("Stopping UPnP service");
+            LOGGER.info("Stopping UPnP server");
             upnpService.shutdown();
-            LOGGER.info("UPnP service stopped");
+            LOGGER.info("UPnP server stopped");
         }
     }
 

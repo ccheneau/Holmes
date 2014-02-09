@@ -36,7 +36,7 @@ public enum Parameter {
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"),
     PREPEND_PODCAST_ENTRY_NAME("prepend_podcast_entry_name", "false"),
     STREAMING_STATUS_UPDATE_DELAY_SECONDS("streaming_status_update_delay_seconds", "3"),
-    UPNP_SERVER_NAME("upnp_server_name", "Holmes media service"),
+    UPNP_SERVER_NAME("upnp_server_name", "Holmes media server"),
     UPNP_SERVICE_PORT("upnp_service_port", "5002");
 
     private final String name;

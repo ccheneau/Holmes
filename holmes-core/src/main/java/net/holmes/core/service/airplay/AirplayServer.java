@@ -50,11 +50,11 @@ public final class AirplayServer implements Service {
     private JmDNS jmDNS = null;
 
     /**
-     * Instantiates a new Airplay service.
+     * Instantiates a new Airplay server.
      *
      * @param configurationDao configuration dao
      * @param localAddress     local address
-     * @param streamingManager transport service
+     * @param streamingManager streaming manager
      */
     @Inject
     public AirplayServer(final ConfigurationDao configurationDao, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
@@ -69,7 +69,7 @@ public final class AirplayServer implements Service {
     @Override
     public void start() {
         if (configurationDao.getBooleanParameter(ENABLE_AIRPLAY)) {
-            LOGGER.info("Starting Airplay service");
+            LOGGER.info("Starting Airplay server");
             try {
                 // Create JmDNS
                 jmDNS = JmDNS.create(localAddress);
@@ -109,7 +109,7 @@ public final class AirplayServer implements Service {
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }
-            LOGGER.info("Airplay service started");
+            LOGGER.info("Airplay server started");
         }
     }
 
@@ -119,10 +119,10 @@ public final class AirplayServer implements Service {
     @Override
     public void stop() {
         if (jmDNS != null) {
-            LOGGER.info("Stopping Airplay service");
+            LOGGER.info("Stopping Airplay server");
             try {
                 jmDNS.close();
-                LOGGER.info("Airplay service stopped");
+                LOGGER.info("Airplay server stopped");
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }

@@ -45,10 +45,10 @@ public final class HolmesServer implements Service {
     private FileLock fileLock = null;
 
     /**
-     * Instantiates a new holmes service.
+     * Instantiates a new holmes server.
      *
-     * @param httpServer         Http service
-     * @param upnpServer         UPnP service
+     * @param httpServer         Http server
+     * @param upnpServer         UPnP server
      * @param systray            Systray
      * @param scheduler          Scheduler
      * @param localHolmesDataDir local Holmes data directory
@@ -71,16 +71,16 @@ public final class HolmesServer implements Service {
     @Override
     public void start() {
         if (lockInstance()) {
-            LOGGER.info("Starting Holmes service");
+            LOGGER.info("Starting Holmes server");
 
-            // Start Holmes service
+            // Start Holmes server
             httpServer.start();
             upnpServer.start();
             airplayServer.start();
             systray.start();
             scheduler.start();
 
-            LOGGER.info("Holmes service started");
+            LOGGER.info("Holmes server started");
         }
     }
 
@@ -89,18 +89,18 @@ public final class HolmesServer implements Service {
      */
     @Override
     public void stop() {
-        LOGGER.info("Stopping Holmes service");
+        LOGGER.info("Stopping Holmes server");
         // Remove lock
         unlockInstance();
 
-        // Stop Holmes service
+        // Stop Holmes server
         scheduler.stop();
         systray.stop();
         airplayServer.stop();
         upnpServer.stop();
         httpServer.stop();
 
-        LOGGER.info("Holmes service stopped");
+        LOGGER.info("Holmes server stopped");
     }
 
     /**
@@ -125,7 +125,7 @@ public final class HolmesServer implements Service {
                 randomAccessFile = new RandomAccessFile(new File(localHolmesDataDir, LOCK_FILE_NAME), "rw");
                 fileLock = randomAccessFile.getChannel().tryLock();
                 if (fileLock == null)
-                    throw new RuntimeException("Holmes service is already running");
+                    throw new RuntimeException("Holmes server is already running");
                 return true;
             }
         } catch (IOException e) {

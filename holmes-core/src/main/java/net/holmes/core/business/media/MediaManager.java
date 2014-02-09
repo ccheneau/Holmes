@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Media service.
+ * Media manager.
  */
 public interface MediaManager {
     /**

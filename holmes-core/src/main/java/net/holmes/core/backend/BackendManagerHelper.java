@@ -34,9 +34,9 @@ final class BackendManagerHelper {
     private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 
     /**
-     * Validate service name.
+     * Validate server name.
      *
-     * @param serverName service name to validate
+     * @param serverName server name to validate
      */
     public void validateServerName(final String serverName) {
         checkNonEmptyString(serverName, "backend.settings.server.name.error");

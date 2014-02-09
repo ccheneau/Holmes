@@ -68,7 +68,7 @@ public final class HttpServer implements Service {
     private final ResteasyDeployment deployment;
 
     /**
-     * Instantiates a new http service.
+     * Instantiates a new http server.
      *
      * @param injector         injector
      * @param configurationDao configuration dao
@@ -87,7 +87,7 @@ public final class HttpServer implements Service {
      */
     @Override
     public void start() {
-        LOGGER.info("Starting HTTP service");
+        LOGGER.info("Starting HTTP server");
 
         // Start RestEasy deployment
         deployment.start();
@@ -95,7 +95,7 @@ public final class HttpServer implements Service {
         // Create a RestEasy request dispatcher
         final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher) deployment.getDispatcher(), deployment.getProviderFactory(), null);
 
-        // Configure the service.
+        // Configure the server.
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -130,11 +130,11 @@ public final class HttpServer implements Service {
         ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
         processor.processInjector(injector);
 
-        // Bind and start service to accept incoming connections.
+        // Bind and start server to accept incoming connections.
         InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getIntParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
 
-        LOGGER.info("HTTP service bound on {}", bindAddress);
+        LOGGER.info("HTTP server bound on {}", bindAddress);
     }
 
     /**
@@ -142,13 +142,13 @@ public final class HttpServer implements Service {
      */
     @Override
     public void stop() {
-        LOGGER.info("Stopping HTTP service");
+        LOGGER.info("Stopping HTTP server");
 
-        // Stop the service
+        // Stop the server
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
         deployment.stop();
 
-        LOGGER.info("HTTP service stopped");
+        LOGGER.info("HTTP server stopped");
     }
 }
