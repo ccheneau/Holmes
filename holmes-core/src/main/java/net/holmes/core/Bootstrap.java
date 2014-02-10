@@ -25,6 +25,7 @@ import com.google.inject.Injector;
 import net.holmes.core.service.HolmesServer;
 import net.holmes.core.service.Service;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,22 +85,25 @@ public final class Bootstrap {
      */
     private static void loadLogging(final boolean debug) {
         // Define logback configuration file name
-        String logbackFileName = "logback.xml";
-        if (debug) logbackFileName = "logback-debug.xml";
+        String logbackFileName = debug ? "logback-debug.xml" : "logback.xml";
 
-        // Load logback configuration
         Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", logbackFileName);
-        if (Files.exists(logFilePath))
+        if (Files.exists(logFilePath)) {
             try {
+                // Load logback configuration
                 LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
                 context.reset();
                 JoranConfigurator configurator = new JoranConfigurator();
                 configurator.setContext(context);
                 configurator.doConfigure(logFilePath.toFile());
+
+                // Install java.util.logging bridge
+                SLF4JBridgeHandler.removeHandlersForRootLogger();
+                SLF4JBridgeHandler.install();
             } catch (JoranException e) {
                 throw new RuntimeException(e);
             }
-        else
+        } else
             throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
     }
 }
