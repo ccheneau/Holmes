@@ -9,7 +9,7 @@
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>[%-5level] - %d{HH:mm:ss.SSS} [%logger{35}] - %msg%n</Pattern>
+            <Pattern>[%-5level] - %d{HH:mm:ss.SSS} [%logger{35}:%L] - %msg%n</Pattern>
         </layout>
     </appender>
 
@@ -28,4 +28,5 @@
     <root level="INFO">
         <appender-ref ref="FILE"/>
     </root>
+
 </configuration>
