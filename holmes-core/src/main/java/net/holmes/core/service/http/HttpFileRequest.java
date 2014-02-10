@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.http.file;
+package net.holmes.core.service.http;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import net.holmes.core.common.MimeType;

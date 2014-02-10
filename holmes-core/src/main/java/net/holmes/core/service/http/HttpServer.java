@@ -31,8 +31,6 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.service.Service;
-import net.holmes.core.service.http.file.HttpFileRequestDecoder;
-import net.holmes.core.service.http.file.HttpFileRequestHandler;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.guice.ModuleProcessor;
 import org.jboss.resteasy.plugins.server.netty.RequestDispatcher;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.http.file;
+package net.holmes.core.service.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

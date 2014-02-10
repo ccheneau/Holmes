@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.http.file;
+package net.holmes.core.service.http;
 
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
