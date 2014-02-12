@@ -26,7 +26,9 @@ import com.sun.syndication.feed.module.Module;
  * @version $Revision: 1.3 $
  */
 public interface ITunes extends Module {
-
-    String URI = AbstractITunesObject.URI;
-
+    /**
+     * The URI that iTunes used for its custom tags.
+     * <p>What is up with using a versioned DTD anyway?</p>\
+     */
+    String URI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 }

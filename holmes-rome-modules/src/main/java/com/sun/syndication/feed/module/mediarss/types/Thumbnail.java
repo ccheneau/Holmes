@@ -17,8 +17,6 @@
 
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-
 import java.io.Serializable;
 import java.net.URI;
 
@@ -37,42 +35,15 @@ import java.net.URI;
  * It is an optional attribute.</p>
  */
 public class Thumbnail implements Cloneable, Serializable {
-    private final Integer thumbHeight;
-    private final Integer thumbWidth;
-    private final Time time;
     private final URI thumbUrl;
 
     /**
      * Creates a new thumbnail
      *
-     * @param url    URL to thumbnail
-     * @param width  width in pixels
-     * @param height height in pixels
-     * @param time   Time code representing the thumbnails position in a source.
+     * @param url URL to thumbnail
      */
-    public Thumbnail(final URI url, final Integer width, final Integer height, final Time time) {
+    public Thumbnail(final URI url) {
         this.thumbUrl = url;
-        this.thumbHeight = height;
-        this.thumbWidth = width;
-        this.time = time;
-    }
-
-    /**
-     * Returns the thumbHeight.
-     *
-     * @return Returns the thumbHeight.
-     */
-    public Integer getHeight() {
-        return thumbHeight;
-    }
-
-    /**
-     * returns the time that the thumbnail was captured from its source
-     *
-     * @return returns the time that the thumbnail was captured from its source
-     */
-    public Time getTime() {
-        return time;
     }
 
     /**
@@ -85,36 +56,11 @@ public class Thumbnail implements Cloneable, Serializable {
     }
 
     /**
-     * Returns width.
-     *
-     * @return Returns the thumbWidth.
-     */
-    public Integer getWidth() {
-        return thumbWidth;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        return new Thumbnail(this.thumbUrl, this.thumbWidth, this.thumbHeight, this.time);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return new EqualsBean(this.getClass(), this).beanEquals(obj);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new EqualsBean(this.getClass(), this).beanHashCode();
+        return new Thumbnail(this.thumbUrl);
     }
 }

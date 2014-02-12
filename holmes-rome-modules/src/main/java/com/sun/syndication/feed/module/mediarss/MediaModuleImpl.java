@@ -42,7 +42,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * @param clazz the clazz
      */
     private MediaModuleImpl(final Class<?> clazz) {
-        super(clazz, MediaModule.URI);
+        super(clazz, URI);
     }
 
     /**
@@ -77,7 +77,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      */
     @Override
     public String getUri() {
-        return MediaModule.URI;
+        return URI;
     }
 
     /**

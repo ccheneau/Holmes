@@ -22,7 +22,6 @@ import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
-import com.sun.syndication.feed.module.mediarss.types.Time;
 import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,28 +68,20 @@ public class MediaModuleParser implements ModuleParser {
      * @return metadata
      */
     private Metadata parseMetadata(final Element element) {
-        Metadata md = new Metadata();
+        Metadata metadata = new Metadata();
 
         // thumbnails
         List<?> thumbnails = element.getChildren("thumbnail", NS);
-        List<Thumbnail> tbnValues = new ArrayList<>();
-        for (int i = 0; thumbnails != null && i < thumbnails.size(); i++) {
+        for (Object thumbnail : thumbnails) {
             try {
-                Element thumb = (Element) thumbnails.get(i);
-                if (thumb.getValue().startsWith("http"))
-                    tbnValues.add(new Thumbnail(new URI(thumb.getValue()), null, null, null));
-                else {
-                    Time t = (thumb.getAttributeValue("time") == null) ? null : new Time(thumb.getAttributeValue("time"));
-                    Integer width = (thumb.getAttributeValue("width") == null) ? null : Integer.valueOf(thumb.getAttributeValue("width"));
-                    Integer height = (thumb.getAttributeValue("height") == null) ? null : Integer.valueOf(thumb.getAttributeValue("height"));
-                    tbnValues.add(new Thumbnail(new URI(thumb.getAttributeValue("url")), width, height, t));
-                }
-            } catch (URISyntaxException | NumberFormatException ex) {
+                Element thumb = (Element) thumbnail;
+                if (thumb.getValue().toLowerCase().startsWith("http"))
+                    metadata.addThumbnail(new Thumbnail(new URI(thumb.getValue())));
+            } catch (URISyntaxException ex) {
                 LOGGER.warn("Exception parsing thumbnail tag.", ex);
             }
         }
-        md.setThumbnail(tbnValues.toArray(new Thumbnail[tbnValues.size()]));
 
-        return md;
+        return metadata;
     }
 }

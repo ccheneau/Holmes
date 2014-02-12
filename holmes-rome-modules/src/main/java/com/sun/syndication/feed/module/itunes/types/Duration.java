@@ -17,11 +17,12 @@
 
 package com.sun.syndication.feed.module.itunes.types;
 
-import com.sun.syndication.io.impl.NumberParser;
-
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
+
+import static com.sun.syndication.io.impl.NumberParser.parseFloat;
+import static com.sun.syndication.io.impl.NumberParser.parseLong;
 
 /**
  * An encapsulation of the duration of a podcast. This will serialize (via .toString())
@@ -79,14 +80,14 @@ public final class Duration implements Serializable {
         StringTokenizer tok = new StringTokenizer(duration, ":");
         switch (tok.countTokens()) {
             case 1:
-                this.milliseconds = (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
+                this.milliseconds = (long) (parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             case 2:
-                this.milliseconds = NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
+                this.milliseconds = parseLong(tok.nextToken(), 0L) * MINUTE + (long) (parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             case 3:
-                this.milliseconds = NumberParser.parseLong(tok.nextToken(), 0L) * HOUR + NumberParser.parseLong(tok.nextToken(), 0L) * MINUTE
-                        + (long) (NumberParser.parseFloat(tok.nextToken(), 0f) * SECOND);
+                this.milliseconds = parseLong(tok.nextToken(), 0L) * HOUR + parseLong(tok.nextToken(), 0L) * MINUTE
+                        + (long) (parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             default:
                 throw new RuntimeException("Illegal time value: " + duration);
@@ -145,5 +146,4 @@ public final class Duration implements Serializable {
             seconds = (float) time / (float) SECOND;
         }
     }
-
 }

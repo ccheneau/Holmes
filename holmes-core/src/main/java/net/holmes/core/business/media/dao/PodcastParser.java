@@ -109,9 +109,8 @@ abstract class PodcastParser {
      */
     private String getIconUrl(SyndEntry rssEntry) {
         MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MediaModule.URI));
-        return mediaInfo != null && mediaInfo.getMetadata() != null && mediaInfo.getMetadata().getThumbnail() != null &&
-                mediaInfo.getMetadata().getThumbnail().length > 0 ?
-                mediaInfo.getMetadata().getThumbnail()[0].getUrl().toString() : null;
+        return mediaInfo != null && mediaInfo.getMetadata() != null && !mediaInfo.getMetadata().getThumbnails().isEmpty() ?
+                mediaInfo.getMetadata().getThumbnails().get(0).getUrl().toString() : null;
     }
 
     /**

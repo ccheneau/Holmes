@@ -25,11 +25,6 @@ package com.sun.syndication.feed.module.itunes;
  * @version $Revision: 1.4 $
  */
 public abstract class AbstractITunesObject implements ITunes, Cloneable {
-    /**
-     * The URI that iTunes used for its custom tags.
-     * <p>What is up with using a versioned DTD anyway?</p>\
-     */
-    public static final String URI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 
     /**
      * Defined by the ROME module API

@@ -17,9 +17,9 @@
 
 package com.sun.syndication.feed.module.mediarss.types;
 
-import com.sun.syndication.feed.impl.EqualsBean;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Optional Elements.
@@ -41,13 +41,15 @@ import java.io.Serializable;
  */
 public class Metadata implements Cloneable, Serializable {
 
-    private Thumbnail[] thumbnail = new Thumbnail[0];
+    private final List<Thumbnail> thumbnails;
 
     /**
      * Creates a new instance of Metadata
      */
     public Metadata() {
+        thumbnails = new ArrayList<>();
     }
+
 
     /**
      * <strong>&lt;media:thumbnail&gt;</strong></p>
@@ -66,8 +68,8 @@ public class Metadata implements Cloneable, Serializable {
      *
      * @param thumbnail thumbnails for the image
      */
-    public void setThumbnail(final Thumbnail[] thumbnail) {
-        this.thumbnail = thumbnail == null ? new Thumbnail[0] : thumbnail;
+    public void addThumbnail(final Thumbnail thumbnail) {
+        this.thumbnails.add(thumbnail);
     }
 
     /**
@@ -87,8 +89,8 @@ public class Metadata implements Cloneable, Serializable {
      *
      * @return Thumbnails for the image
      */
-    public Thumbnail[] getThumbnail() {
-        return thumbnail;
+    public List<Thumbnail> getThumbnails() {
+        return thumbnails;
     }
 
     /**
@@ -105,24 +107,9 @@ public class Metadata implements Cloneable, Serializable {
     public Object clone() throws CloneNotSupportedException {
         super.clone();
         Metadata md = new Metadata();
-        md.setThumbnail(getThumbnail());
+        for (Thumbnail thumbnail : thumbnails)
+            md.addThumbnail(thumbnail);
 
         return md;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return new EqualsBean(this.getClass(), this).beanEquals(obj);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new EqualsBean(this.getClass(), this).beanHashCode();
     }
 }
