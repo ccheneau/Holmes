@@ -31,7 +31,7 @@ public enum SystemProperty {
      *
      * @param name name
      */
-    SystemProperty(final String name) {
+    private SystemProperty(final String name) {
         this.name = name;
     }
 

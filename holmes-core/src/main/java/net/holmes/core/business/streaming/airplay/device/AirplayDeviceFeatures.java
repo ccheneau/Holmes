@@ -24,7 +24,7 @@ import java.math.BigInteger;
 /**
  * Airplay device features
  */
-public final class AirplayFeatures {
+public final class AirplayDeviceFeatures {
     private static final int VIDEO_SUPPORTED_INDEX = 0;
     private static final int AUDIO_SUPPORTED_INDEX = 9;
     private static final int IMAGE_SUPPORTED_INDEX = 1;
@@ -35,11 +35,11 @@ public final class AirplayFeatures {
     private boolean slideShowSupported = false;
 
     /**
-     * Instantiates a new Airplay features
+     * Instantiates a new Airplay device features
      *
      * @param features features
      */
-    public AirplayFeatures(final String features) {
+    public AirplayDeviceFeatures(final String features) {
         if (features != null) {
             String featuresBit = new BigInteger(features.replace("0x", ""), 16).toString(2);
             videoSupported = getBitValue(featuresBit, VIDEO_SUPPORTED_INDEX);

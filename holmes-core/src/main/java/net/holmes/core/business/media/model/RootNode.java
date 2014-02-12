@@ -25,13 +25,14 @@ import static net.holmes.core.common.MediaType.*;
  * Root node.
  */
 public enum RootNode {
-    ROOT("0", "-1", false, null), //
-    VIDEO("1_VIDEOS", ROOT.getId(), true, TYPE_VIDEO), //
-    PICTURE("2_PICTURES", ROOT.getId(), true, TYPE_IMAGE), //
-    AUDIO("3_AUDIOS", ROOT.getId(), true, TYPE_AUDIO), //
-    PODCAST("4_PODCASTS", ROOT.getId(), false, TYPE_PODCAST), //
-    ICECAST("5_ICECAST", ROOT.getId(), false, TYPE_ICECAST_GENRE), //
+    ROOT("0", "-1", false, null),
+    VIDEO("1_VIDEOS", ROOT.getId(), true, TYPE_VIDEO),
+    PICTURE("2_PICTURES", ROOT.getId(), true, TYPE_IMAGE),
+    AUDIO("3_AUDIOS", ROOT.getId(), true, TYPE_AUDIO),
+    PODCAST("4_PODCASTS", ROOT.getId(), false, TYPE_PODCAST),
+    ICECAST("5_ICECAST", ROOT.getId(), false, TYPE_ICECAST_GENRE),
     NONE("ROOT_NODE_NONE", "", false, TYPE_NONE);
+
     private final String id;
     private final String parentId;
     private final MediaType mediaType;

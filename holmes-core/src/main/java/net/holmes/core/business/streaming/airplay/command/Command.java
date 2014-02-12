@@ -36,9 +36,10 @@ public abstract class Command {
     private static final String PARAMETER_SEPARATOR = ": ";
     private static final String EOL = "\n";
     private static final String SPACE = " ";
+
     private final CommandType type;
-    private final Map<UrlParameter, String> urlParameters = Maps.newHashMap();
-    private final Map<PostParameter, String> postParameters = Maps.newLinkedHashMap();
+    private final Map<UrlParameter, String> urlParameters;
+    private final Map<PostParameter, String> postParameters;
 
     /**
      * Instantiates a new Airplay command.
@@ -47,6 +48,8 @@ public abstract class Command {
      */
     public Command(final CommandType type) {
         this.type = type;
+        this.urlParameters = Maps.newHashMap();
+        this.postParameters = Maps.newLinkedHashMap();
     }
 
     /**

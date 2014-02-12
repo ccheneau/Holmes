@@ -30,7 +30,6 @@ import java.lang.reflect.Method;
  * Guice type listener for event bus registration.
  */
 public final class CustomTypeListener implements TypeListener {
-
     private final EventBus eventBus;
 
     /**

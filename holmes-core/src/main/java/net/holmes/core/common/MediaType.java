@@ -38,7 +38,7 @@ public enum MediaType {
      *
      * @param value value
      */
-    MediaType(final String value) {
+    private MediaType(final String value) {
         this.value = value;
     }
 

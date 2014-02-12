@@ -31,7 +31,7 @@ import java.net.Socket;
 public class AirplayDevice extends Device {
     private final static String AIRPLAY_DEVICE_TYPE = "Airplay";
     private final int port;
-    private final AirplayFeatures features;
+    private final AirplayDeviceFeatures features;
     private Socket socket = null;
 
     /**
@@ -43,7 +43,7 @@ public class AirplayDevice extends Device {
      * @param port     device port
      * @param features device features
      */
-    public AirplayDevice(final String id, final String name, final InetAddress address, final int port, final AirplayFeatures features) {
+    public AirplayDevice(final String id, final String name, final InetAddress address, final int port, final AirplayDeviceFeatures features) {
         super(id, name, address, null);
         this.port = port;
         this.features = features;

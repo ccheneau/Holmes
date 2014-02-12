@@ -31,7 +31,7 @@ public class AirplayDeviceTest {
 
     @Test
     public void testAirplayDeviceNoFeatures() {
-        AirplayFeatures features = new AirplayFeatures("0x000000");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0x000000");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         assertNotNull(device.toString());
         assertNotNull(device.getType());
@@ -44,7 +44,7 @@ public class AirplayDeviceTest {
 
     @Test
     public void testAirplayDeviceFullFeatures() {
-        AirplayFeatures features = new AirplayFeatures("0xFFFFFF");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0xFFFFFF");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         assertNotNull(device.toString());
         assertTrue(device.isVideoSupported());
@@ -56,7 +56,7 @@ public class AirplayDeviceTest {
 
     @Test
     public void testAirplayDeviceNullFeatures() {
-        AirplayFeatures features = new AirplayFeatures(null);
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures(null);
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         assertNotNull(device.toString());
         assertFalse(device.isVideoSupported());
@@ -68,7 +68,7 @@ public class AirplayDeviceTest {
 
     @Test
     public void testAirplayDeviceShortFeatures() {
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         assertNotNull(device.toString());
         assertFalse(device.isVideoSupported());
@@ -87,7 +87,7 @@ public class AirplayDeviceTest {
 
         replay(socketFactory, socket);
 
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         Socket aSocket = device.getConnection(socketFactory);
         assertNotNull(aSocket);
@@ -105,7 +105,7 @@ public class AirplayDeviceTest {
 
         replay(socketFactory, socket);
 
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         Socket aSocket1 = device.getConnection(socketFactory);
         Socket aSocket2 = device.getConnection(socketFactory);
@@ -125,7 +125,7 @@ public class AirplayDeviceTest {
 
         replay(socketFactory, socket);
 
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         Socket aSocket1 = device.getConnection(socketFactory);
         Socket aSocket2 = device.getConnection(socketFactory);
@@ -146,7 +146,7 @@ public class AirplayDeviceTest {
 
         replay(socketFactory, socket);
 
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         Socket aSocket = device.getConnection(socketFactory);
         device.close();
@@ -166,7 +166,7 @@ public class AirplayDeviceTest {
 
         replay(socketFactory, socket);
 
-        AirplayFeatures features = new AirplayFeatures("0");
+        AirplayDeviceFeatures features = new AirplayDeviceFeatures("0");
         AirplayDevice device = new AirplayDevice("id", "name", null, 8080, features);
         Socket aSocket = device.getConnection(socketFactory);
         device.close();

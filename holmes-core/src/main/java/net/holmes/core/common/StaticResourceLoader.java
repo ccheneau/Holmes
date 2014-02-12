@@ -60,7 +60,7 @@ public final class StaticResourceLoader {
          *
          * @param value value
          */
-        StaticResourceDir(final String value) {
+        private StaticResourceDir(final String value) {
             this.value = value;
         }
 

@@ -20,7 +20,7 @@ package net.holmes.core.service.airplay;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
-import net.holmes.core.business.streaming.airplay.device.AirplayFeatures;
+import net.holmes.core.business.streaming.airplay.device.AirplayDeviceFeatures;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,7 +141,7 @@ public final class AirplayServer implements Service {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
                 if (!inet4Address.isLoopbackAddress()) {
                     if (LOGGER.isDebugEnabled()) LOGGER.debug("Build Airplay device for {}", serviceInfo.toString());
-                    AirplayFeatures features = new AirplayFeatures(serviceInfo.getPropertyString(AIRPLAY_FEATURES));
+                    AirplayDeviceFeatures features = new AirplayDeviceFeatures(serviceInfo.getPropertyString(AIRPLAY_FEATURES));
                     return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort(), features);
                 }
         }

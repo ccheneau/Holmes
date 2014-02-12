@@ -20,7 +20,7 @@ package net.holmes.core.common;
 /**
  * Upnp utils.
  */
-public class UpnpUtils {
+public final class UpnpUtils {
 
     private UpnpUtils() {
     }
