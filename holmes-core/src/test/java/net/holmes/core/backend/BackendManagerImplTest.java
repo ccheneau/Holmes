@@ -17,30 +17,28 @@
 
 package net.holmes.core.backend;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.model.RootNode;
-import net.holmes.core.test.TestModule;
+import net.holmes.core.test.TestConfigurationDao;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class BackendManagerTest {
+public class BackendManagerImplTest {
 
-    @Inject
     private BackendManager backendManager;
 
     @Before
     public void setUp() {
-        Injector injector = Guice.createInjector(new TestModule());
-        injector.injectMembers(this);
+        ConfigurationDao configurationDao = new TestConfigurationDao();
+        EventBus eventBus = new EventBus("Holmes EventBus");
+        backendManager = new BackendManagerImpl(configurationDao, eventBus);
     }
 
     @Test
@@ -153,12 +151,39 @@ public class BackendManagerTest {
     }
 
     @Test
-    public void testEditFolder() {
-        // test nominal edit folder
-        backendManager.editFolder("audiosTest", new ConfigurationFolder("audiosTest", "editedAudiosTest", System.getProperty("java.io.tmpdir")), RootNode.AUDIO);
+    public void testEditFolderName() {
+        ConfigurationFolder oldFolder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        backendManager.editFolder("audiosTest", new ConfigurationFolder(oldFolder.getId(), "editedAudiosTest", oldFolder.getPath()), RootNode.AUDIO);
         ConfigurationFolder folder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
         assertEquals(folder.getName(), "editedAudiosTest");
-        assertEquals(folder.getPath(), System.getProperty("java.io.tmpdir"));
+        assertEquals(folder.getPath(), oldFolder.getPath());
+    }
+
+    @Test
+    public void testEditFolderPath() {
+        ConfigurationFolder oldFolder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        backendManager.editFolder("audiosTest", new ConfigurationFolder(oldFolder.getId(), oldFolder.getName(), System.getProperty("user.home")), RootNode.AUDIO);
+        ConfigurationFolder folder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        assertEquals(folder.getName(), oldFolder.getName());
+        assertEquals(folder.getPath(), System.getProperty("user.home"));
+    }
+
+    @Test
+    public void testEditFolderNameAndPath() {
+        ConfigurationFolder oldFolder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        backendManager.editFolder("audiosTest", new ConfigurationFolder(oldFolder.getId(), "editedAudiosTest", System.getProperty("user.home")), RootNode.AUDIO);
+        ConfigurationFolder folder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        assertEquals(folder.getName(), "editedAudiosTest");
+        assertEquals(folder.getPath(), System.getProperty("user.home"));
+    }
+
+    @Test
+    public void testEditFolderNoChanges() {
+        ConfigurationFolder oldFolder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        backendManager.editFolder("audiosTest", new ConfigurationFolder(oldFolder.getId(), oldFolder.getName(), oldFolder.getPath()), RootNode.AUDIO);
+        ConfigurationFolder folder = backendManager.getFolder("audiosTest", RootNode.AUDIO);
+        assertEquals(folder.getName(), oldFolder.getName());
+        assertEquals(folder.getPath(), oldFolder.getPath());
     }
 
     @Test

@@ -19,7 +19,6 @@ package net.holmes.core.test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.thoughtworks.xstream.XStream;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.configuration.Parameter;
@@ -41,7 +40,7 @@ public class TestConfigurationDao implements ConfigurationDao {
     private Map<Parameter, String> parameters;
 
     @Inject
-    public TestConfigurationDao(final XStream xStream) {
+    public TestConfigurationDao() {
         videoFolders = Lists.newArrayList();
         videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = Lists.newArrayList();
