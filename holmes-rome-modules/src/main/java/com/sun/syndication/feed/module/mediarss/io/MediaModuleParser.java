@@ -18,7 +18,6 @@
 package com.sun.syndication.feed.module.mediarss.io;
 
 import com.sun.syndication.feed.module.Module;
-import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
@@ -32,6 +31,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static com.sun.syndication.feed.module.mediarss.MediaModule.URI;
+import static org.jdom.Namespace.getNamespace;
+
 /**
  * @author Nathanial X. Freitas
  */
@@ -40,25 +42,24 @@ public class MediaModuleParser implements ModuleParser {
     /**
      * Namespace instance for this URI.
      */
-    private static final Namespace NS = Namespace.getNamespace(MediaModule.URI);
+    private static final Namespace NS = getNamespace(URI);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String getNamespaceUri() {
-        return MediaModule.URI;
+        return URI;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Module parse(final Element mmRoot) {
-        MediaModuleImpl mod = new MediaModuleImpl();
-        mod.setMetadata(parseMetadata(mmRoot));
-
-        return mod;
+    public Module parse(final Element element) {
+        MediaModuleImpl mediaModule = new MediaModuleImpl();
+        mediaModule.setMetadata(parseMetadata(element));
+        return mediaModule;
     }
 
     /**

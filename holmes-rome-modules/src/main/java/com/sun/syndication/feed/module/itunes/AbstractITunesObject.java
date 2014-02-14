@@ -51,7 +51,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      */
     @Override
     public String getUri() {
-        return AbstractITunesObject.URI;
+        return URI;
     }
 
     /**
