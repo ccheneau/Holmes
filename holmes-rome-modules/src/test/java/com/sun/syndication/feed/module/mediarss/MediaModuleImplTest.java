@@ -16,6 +16,7 @@
  */
 package com.sun.syndication.feed.module.mediarss;
 
+import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -26,5 +27,13 @@ public class MediaModuleImplTest {
     public void testMediaModuleImpl() {
         MediaModuleImpl mediaModule = new MediaModuleImpl();
         assertNotNull(mediaModule.getInterface());
+    }
+
+    @Test
+    public void testCopyFrom() {
+        MediaModuleImpl mediaModule1 = new MediaModuleImpl();
+        mediaModule1.setMetadata(new Metadata());
+        MediaModuleImpl mediaModule2 = new MediaModuleImpl();
+        mediaModule2.copyFrom(mediaModule1);
     }
 }
