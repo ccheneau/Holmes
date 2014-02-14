@@ -86,9 +86,9 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        MediaModuleImpl m = new MediaModuleImpl();
-        m.setMetadata((Metadata) metadata.clone());
-        return m;
+        MediaModuleImpl mediaModule = new MediaModuleImpl();
+        mediaModule.setMetadata((Metadata) metadata.clone());
+        return mediaModule;
     }
 
     /**
@@ -96,9 +96,9 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      */
     @Override
     public void copyFrom(final Object obj) {
-        MediaModule m = (MediaModule) obj;
+        MediaModule mediaModule = (MediaModule) obj;
         try {
-            this.metadata = (Metadata) m.getMetadata().clone();
+            this.metadata = (Metadata) mediaModule.getMetadata().clone();
         } catch (CloneNotSupportedException e) {
             this.metadata = null;
         }
