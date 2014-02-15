@@ -114,10 +114,9 @@ final class HolmesServerModule extends AbstractModule {
     @VisibleForTesting
     static String getUiDirectory() {
         Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
-        if (!Files.exists(uiPath)) {
-            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue()
-                    + "] system property");
-        }
+        if (!Files.exists(uiPath))
+            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+
         return uiPath.toString();
     }
 

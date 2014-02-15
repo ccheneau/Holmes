@@ -39,5 +39,4 @@ public class BackendException extends RuntimeException {
     public BackendException(final String message) {
         super(message);
     }
-
 }

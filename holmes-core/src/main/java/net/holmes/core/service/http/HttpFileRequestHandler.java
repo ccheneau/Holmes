@@ -20,7 +20,6 @@ package net.holmes.core.service.http;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
@@ -36,6 +35,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.netty.channel.ChannelFutureListener.CLOSE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
 import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
@@ -43,6 +43,7 @@ import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
 import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 
 /**
@@ -86,11 +87,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         context.write(new ChunkedFile(randomFile, startOffset, fileLength - startOffset, CHUNK_SIZE));
 
         // Write the end marker
-        ChannelFuture lastContentFuture = context.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+        ChannelFuture lastContentFuture = context.writeAndFlush(EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not when the whole content is written out.
         if (!keepAlive)
-            lastContentFuture.addListener(ChannelFutureListener.CLOSE);
+            lastContentFuture.addListener(CLOSE);
 
     }
 
@@ -206,6 +207,6 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         // Close the connection as soon as the error message is sent.
-        context.channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        context.channel().writeAndFlush(response).addListener(CLOSE);
     }
 }

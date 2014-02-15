@@ -20,8 +20,6 @@ package net.holmes.core.service.scheduled;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.MediaManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -32,7 +30,6 @@ import static net.holmes.core.business.configuration.Parameter.CACHE_CLEAN_DELAY
  * Scheduled service used to clean caches.
  */
 public class CacheCleanerService extends AbstractScheduledService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CacheCleanerService.class);
     private final MediaManager mediaManager;
     private final int cleanDelayMinutes;
 
@@ -53,7 +50,6 @@ public class CacheCleanerService extends AbstractScheduledService {
      */
     @Override
     protected void runOneIteration() {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Launch cache cleaner");
         mediaManager.cleanUpCache();
     }
 

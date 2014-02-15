@@ -43,16 +43,16 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
      */
     @Override
     public Response toResponse(final BackendException e) {
-        String entityMessage;
+        String message;
         try {
-            entityMessage = resourceBundle.getString(e.getMessage());
+            message = resourceBundle.getString(e.getMessage());
         } catch (MissingResourceException ex) {
-            entityMessage = e.getMessage();
+            message = e.getMessage();
         }
 
         return Response.status(BAD_REQUEST)//
                 .type(TEXT_PLAIN) //
-                .entity(entityMessage).build();
+                .entity(message).build();
     }
 
     @VisibleForTesting

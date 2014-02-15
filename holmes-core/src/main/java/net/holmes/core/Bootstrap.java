@@ -85,17 +85,15 @@ public final class Bootstrap {
      */
     private static void loadLogging(final boolean debug) {
         // Define logback configuration file name
-        String logbackFileName = debug ? "logback-debug.xml" : "logback.xml";
-
-        Path logFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", logbackFileName);
-        if (Files.exists(logFilePath)) {
+        Path logbackFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", debug ? "logback-debug.xml" : "logback.xml");
+        if (Files.exists(logbackFilePath))
             try {
                 // Load logback configuration
                 LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
                 context.reset();
                 JoranConfigurator configurator = new JoranConfigurator();
                 configurator.setContext(context);
-                configurator.doConfigure(logFilePath.toFile());
+                configurator.doConfigure(logbackFilePath.toFile());
 
                 // Install java.util.logging bridge
                 SLF4JBridgeHandler.removeHandlersForRootLogger();
@@ -103,7 +101,7 @@ public final class Bootstrap {
             } catch (JoranException e) {
                 throw new RuntimeException(e);
             }
-        } else
-            throw new RuntimeException(logFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+        else
+            throw new RuntimeException(logbackFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
     }
 }

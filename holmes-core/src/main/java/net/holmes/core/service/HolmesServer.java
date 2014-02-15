@@ -124,8 +124,7 @@ public final class HolmesServer implements Service {
                 // Create lock file
                 randomAccessFile = new RandomAccessFile(new File(localHolmesDataDir, LOCK_FILE_NAME), "rw");
                 fileLock = randomAccessFile.getChannel().tryLock();
-                if (fileLock == null)
-                    throw new RuntimeException("Holmes server is already running");
+                if (fileLock == null) throw new RuntimeException("Holmes server is already running");
                 return true;
             }
         } catch (IOException e) {

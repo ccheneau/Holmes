@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static java.awt.Font.BOLD;
 import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
@@ -96,7 +97,7 @@ public final class SystrayService implements Service {
             // Add bold font for systray menu item
             Font menuItemFont = UIManager.getFont(MENU_ITEM_FONT);
             if (menuItemFont != null)
-                UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), Font.BOLD, menuItemFont.getSize()));
+                UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), BOLD, menuItemFont.getSize()));
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             result = false;
