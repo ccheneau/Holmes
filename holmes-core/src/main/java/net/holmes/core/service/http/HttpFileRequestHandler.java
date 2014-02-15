@@ -55,12 +55,6 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final int CHUNK_SIZE = 8192;
 
     /**
-     * Instantiates a new Http file request handler.
-     */
-    public HttpFileRequestHandler() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,15 +74,10 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Build response
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
 
-        // Add http headers
-        response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
+        // Add http headers to response
         addContentHeaders(response, fileLength - startOffset, request.getMimeType());
         addDateHeader(response, file);
-
-        // Keep alive header
-        boolean keepAlive = isKeepAlive(request.getHttpRequest());
-        if (keepAlive)
-            response.headers().set(CONNECTION, KEEP_ALIVE);
+        boolean keepAlive = addKeepAliveHeader(response, request.getHttpRequest());
 
         // Write the response
         context.write(response);
@@ -111,10 +100,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
         if (context.channel().isActive())
-            if (cause instanceof HttpFileRequestException) {
-                HttpFileRequestException httpFileRequestException = (HttpFileRequestException) cause;
-                sendError(context, httpFileRequestException.getMessage(), httpFileRequestException.getStatus());
-            } else
+            if (cause instanceof HttpFileRequestException)
+                sendError(context, cause.getMessage(), ((HttpFileRequestException) cause).getStatus());
+            else
                 sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
     }
 
@@ -129,13 +117,20 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private HttpResponse buildHttpResponse(final long startOffset, final long fileLength) throws HttpFileRequestException {
         HttpResponse response;
         if (startOffset == 0) {
+            // Instantiates a new response
             response = new DefaultHttpResponse(HTTP_1_1, OK);
             response.headers().set(ACCEPT_RANGES, BYTES);
         } else if (startOffset < fileLength) {
+            // Instantiates a new response with content range
             response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
             response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else
+            // Start offset is not correct
             throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+
+        // Add server header
+        response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
+
         return response;
     }
 
@@ -181,6 +176,20 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
         response.headers().set(DATE, dateFormatter.format(file.lastModified()));
+    }
+
+    /**
+     * Add keep alive header
+     *
+     * @param response HTTP response
+     * @param request  HTTP request
+     * @return true if keep alive is requested
+     */
+    private boolean addKeepAliveHeader(final HttpResponse response, final HttpMessage request) {
+        boolean keepAlive = isKeepAlive(request);
+        if (keepAlive) response.headers().set(CONNECTION, KEEP_ALIVE);
+
+        return keepAlive;
     }
 
     /**
