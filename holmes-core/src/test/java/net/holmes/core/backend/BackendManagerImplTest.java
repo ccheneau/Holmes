@@ -27,6 +27,8 @@ import net.holmes.core.test.TestConfigurationDao;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -39,6 +41,8 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         EventBus eventBus = new EventBus("Holmes EventBus");
         backendManager = new BackendManagerImpl(configurationDao, eventBus);
+        File userHome = new File(System.getProperty("user.home"));
+        if (userHome.mkdirs()) userHome.deleteOnExit();
     }
 
     @Test
