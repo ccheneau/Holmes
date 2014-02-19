@@ -42,7 +42,7 @@ public class BackendManagerImplTest {
         EventBus eventBus = new EventBus("Holmes EventBus");
         backendManager = new BackendManagerImpl(configurationDao, eventBus);
         File userHome = new File(System.getProperty("user.home"));
-        if (userHome.mkdirs()) userHome.deleteOnExit();
+        if (!userHome.exists() && userHome.mkdirs()) userHome.deleteOnExit();
     }
 
     @Test
