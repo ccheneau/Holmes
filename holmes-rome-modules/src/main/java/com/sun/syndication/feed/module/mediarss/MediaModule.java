@@ -38,4 +38,18 @@ public interface MediaModule extends Module {
      * @return Returns Metadata associated with the feed.
      */
     Metadata getMetadata();
+
+    /**
+     * Add Metadata to the feed.
+     *
+     * @param metadata metadata
+     */
+    void setMetadata(Metadata metadata);
+
+    /**
+     * Get Thumbnail URL string.
+     *
+     * @return Thumbnail URL string.
+     */
+    String getThumbnailUrl();
 }

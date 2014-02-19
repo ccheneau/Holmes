@@ -18,6 +18,7 @@
 package com.sun.syndication.feed.module.mediarss.io;
 
 import com.sun.syndication.feed.module.Module;
+import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.module.mediarss.MediaModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
 import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
@@ -57,7 +58,7 @@ public class MediaModuleParser implements ModuleParser {
      */
     @Override
     public Module parse(final Element element) {
-        MediaModuleImpl mediaModule = new MediaModuleImpl();
+        MediaModule mediaModule = new MediaModuleImpl();
         mediaModule.setMetadata(parseMetadata(element));
         return mediaModule;
     }

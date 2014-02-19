@@ -18,10 +18,12 @@
 package com.sun.syndication.feed.module.itunes.types;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
 import static com.sun.syndication.io.impl.NumberParser.parseFloat;
 import static com.sun.syndication.io.impl.NumberParser.parseLong;
+import static java.text.NumberFormat.getNumberInstance;
 
 /**
  * An encapsulation of the duration of a podcast. This will serialize (via .toString())
@@ -44,6 +46,17 @@ public final class Duration implements Serializable {
      * The Constant HOUR.
      */
     private static final long HOUR = MINUTE * 60L;
+    /**
+     * The Constant NUM_FORMAT.
+     */
+    private static final NumberFormat NUM_FORMAT = getNumberInstance();
+
+    static {
+        NUM_FORMAT.setMinimumFractionDigits(0);
+        NUM_FORMAT.setMaximumFractionDigits(0);
+        NUM_FORMAT.setMinimumIntegerDigits(2);
+        NUM_FORMAT.setGroupingUsed(false);
+    }
 
     /**
      * The milliseconds.
@@ -89,5 +102,48 @@ public final class Duration implements Serializable {
      */
     public long getMilliseconds() {
         return milliseconds;
+    }
+
+    /**
+     * Returns a String representation in the formation HH:MM:SS.
+     *
+     * @return Returns a String representation in the formation HH:MM:SS
+     */
+    @Override
+    public String toString() {
+        Time time = new Time(this);
+        return NUM_FORMAT.format(time.hours) + ":" + NUM_FORMAT.format(time.minutes) + ":" + NUM_FORMAT.format(Math.round(time.seconds));
+    }
+
+    /**
+     * The Class Time.
+     */
+    private static class Time {
+        /**
+         * Constructor.
+         *
+         * @param duration the duration
+         */
+        public Time(final Duration duration) {
+            long time = duration.getMilliseconds();
+            hours = (int) (time / HOUR);
+            time = time - hours * HOUR;
+            minutes = (int) (time / MINUTE);
+            time = time - minutes * MINUTE;
+            seconds = (float) time / (float) SECOND;
+        }
+
+        /**
+         * The hours.
+         */
+        private final int hours;
+        /**
+         * The minutes.
+         */
+        private final int minutes;
+        /**
+         * The seconds.
+         */
+        private final float seconds;
     }
 }

@@ -17,9 +17,13 @@
 package com.sun.syndication.feed.module.mediarss;
 
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
+import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.junit.Assert.*;
 
 public class MediaModuleImplTest {
 
@@ -36,4 +40,18 @@ public class MediaModuleImplTest {
         MediaModuleImpl mediaModule2 = new MediaModuleImpl();
         mediaModule2.copyFrom(mediaModule1);
     }
+
+    @Test
+    public void testGetThumbnailUrl() throws URISyntaxException {
+        MediaModuleImpl mediaModule = new MediaModuleImpl();
+        assertNull(mediaModule.getThumbnailUrl());
+
+        Metadata metadata = new Metadata();
+        mediaModule.setMetadata(metadata);
+        assertNull(mediaModule.getThumbnailUrl());
+
+        metadata.addThumbnail(new Thumbnail(new URI("http://thumbnail.jpg")));
+        assertEquals("http://thumbnail.jpg", mediaModule.getThumbnailUrl());
+    }
+
 }

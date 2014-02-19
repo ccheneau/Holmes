@@ -16,9 +16,10 @@
  */
 package com.sun.syndication.feed.module.itunes;
 
+import com.sun.syndication.feed.module.itunes.types.Duration;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class EntryInformationImplTest {
 
@@ -26,5 +27,17 @@ public class EntryInformationImplTest {
     public void testEntryInformationImpl() {
         EntryInformationImpl entryInformation = new EntryInformationImpl();
         assertNotNull(entryInformation.getInterface());
+        assertNull(entryInformation.getDurationString());
     }
+
+    @Test
+    public void testGetDuration() {
+        EntryInformationImpl entryInformation = new EntryInformationImpl();
+        entryInformation.setDuration(new Duration(3600000));
+        assertEquals("01:00:00", entryInformation.getDurationString());
+        EntryInformationImpl entryInformation2 = new EntryInformationImpl();
+        entryInformation2.copyFrom(entryInformation);
+        assertEquals("01:00:00", entryInformation2.getDurationString());
+    }
+
 }

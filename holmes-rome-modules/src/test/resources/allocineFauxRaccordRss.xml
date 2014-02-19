@@ -83,6 +83,7 @@
                     url="http://h.fr.mediaplayer.allocine.fr/nmedia/18/73/95/29/19367747_faux_raccord_batman_begins_darkknight_m_004.mp4"
                     type="video/x-m4v" length="12000"/>
             <feedburner:origLink>http://www.allocine.fr/videos_allocineshow_player?callocineshow=18739529&amp;cmedia=19367747</feedburner:origLink>
+            <itunes:author>Jane Doe</itunes:author>
         </item>
         <item>
             <title>Faux Raccord N°65 - "Spider-Man"</title>

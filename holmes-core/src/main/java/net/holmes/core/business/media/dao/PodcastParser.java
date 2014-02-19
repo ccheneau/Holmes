@@ -53,6 +53,7 @@ abstract class PodcastParser {
             // Get RSS feed entries
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
             for (SyndEntry rssEntry : rssEntries) {
+                // Get RSS entry enclosures
                 for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
                     MimeType mimeType = enclosure.getType() != null ? MimeType.valueOf(enclosure.getType()) : null;
                     if (mimeType != null && mimeType.isMedia()) {
@@ -69,7 +70,7 @@ abstract class PodcastParser {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException | FeedException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
         }
@@ -98,7 +99,7 @@ abstract class PodcastParser {
      */
     private String getDuration(SyndEntry rssEntry) {
         EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
-        return itunesInfo != null && itunesInfo.getDuration() != null ? itunesInfo.getDuration().toString() : null;
+        return itunesInfo != null ? itunesInfo.getDurationString() : null;
     }
 
     /**
@@ -109,8 +110,7 @@ abstract class PodcastParser {
      */
     private String getIconUrl(SyndEntry rssEntry) {
         MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MediaModule.URI));
-        return mediaInfo != null && mediaInfo.getMetadata() != null && !mediaInfo.getMetadata().getThumbnails().isEmpty() ?
-                mediaInfo.getMetadata().getThumbnails().get(0).getUrl().toString() : null;
+        return mediaInfo != null ? mediaInfo.getThumbnailUrl() : null;
     }
 
     /**

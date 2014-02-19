@@ -37,17 +37,17 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
     }
 
     /**
-     * Returns the Duration object for this Item
+     * {@inheritDoc}
      *
-     * @return Returns the Duration object for this Item
+     * @return Returns the Duration string for this Item
      */
     @Override
-    public Duration getDuration() {
-        return duration;
+    public String getDurationString() {
+        return duration != null ? duration.toString() : null;
     }
 
     /**
-     * Sets the Duration object for this Item
+     * {@inheritDoc}
      *
      * @param duration Sets the Duration object for this Item
      */
@@ -57,22 +57,22 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
     }
 
     /**
-     * Defined by the ROME module API.
+     * {@inheritDoc}
      *
      * @param obj Object to copy from
      */
     @Override
     public void copyFrom(final Object obj) {
         EntryInformationImpl info = (EntryInformationImpl) obj;
-        if (info.getDuration() != null)
-            this.setDuration(new Duration(info.getDuration().getMilliseconds()));
+        if (info.duration != null)
+            this.setDuration(new Duration(info.duration.getMilliseconds()));
 
     }
 
     /**
-     * Required by the ROME API.
+     * {@inheritDoc}
      *
-     * @return A clone of this module object
+     * @return
      * @throws CloneNotSupportedException
      */
     @Override

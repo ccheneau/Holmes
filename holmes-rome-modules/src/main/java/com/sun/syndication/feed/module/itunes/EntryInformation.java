@@ -28,11 +28,11 @@ import com.sun.syndication.feed.module.itunes.types.Duration;
 public interface EntryInformation extends ITunes {
 
     /**
-     * Returns the Duration object for this Item
+     * Returns the Duration string for this Item
      *
-     * @return Returns the Duration object for this Item
+     * @return Returns the Duration string for this Item
      */
-    Duration getDuration();
+    String getDurationString();
 
     /**
      * Sets the Duration object for this Item

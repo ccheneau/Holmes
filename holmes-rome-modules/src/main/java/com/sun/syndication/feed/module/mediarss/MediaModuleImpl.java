@@ -33,16 +33,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * Creates a new instance of MediaModuleImpl
      */
     public MediaModuleImpl() {
-        this(MediaModule.class);
-    }
-
-    /**
-     * constructor that passes values up to ModuleImpl.
-     *
-     * @param clazz the clazz
-     */
-    private MediaModuleImpl(final Class<?> clazz) {
-        super(clazz, URI);
+        super(MediaModule.class, URI);
     }
 
     /**
@@ -54,22 +45,28 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     }
 
     /**
-     * Metadata for a feed.
-     *
-     * @param metadata Metadata for a feed.
+     * {@inheritDoc}
      */
+    @Override
     public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
     }
 
     /**
-     * Metadata for a feed.
-     *
-     * @return Metadata for a feed.
+     * {@inheritDoc}
      */
     @Override
     public Metadata getMetadata() {
         return metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getThumbnailUrl() {
+        return metadata != null && !metadata.getThumbnails().isEmpty() ?
+                metadata.getThumbnails().get(0).getUrl().toString() : null;
     }
 
     /**
@@ -86,7 +83,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        MediaModuleImpl mediaModule = new MediaModuleImpl();
+        MediaModule mediaModule = new MediaModuleImpl();
         mediaModule.setMetadata((Metadata) metadata.clone());
         return mediaModule;
     }
