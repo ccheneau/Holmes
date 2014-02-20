@@ -18,10 +18,8 @@
 package net.holmes.core.service.systray;
 
 import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.common.StaticResourceLoader;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,19 +34,28 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static java.awt.Desktop.getDesktop;
+import static java.awt.Desktop.isDesktopSupported;
 import static java.awt.Font.BOLD;
+import static java.awt.SystemTray.getSystemTray;
+import static java.awt.SystemTray.isSupported;
+import static java.awt.Toolkit.getDefaultToolkit;
+import static javax.swing.UIManager.getFont;
 import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
+import static net.holmes.core.common.StaticResourceLoader.getData;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Manages system tray icon.
  */
 public final class SystrayService implements Service {
+    private static final Logger LOGGER = getLogger(SystrayService.class);
     private static final String MENU_ITEM_FONT = "MenuItem.font";
     private static final String MENU_ITEM_BOLD_FONT = "MenuItem.bold.font";
-    private static final Logger LOGGER = LoggerFactory.getLogger(SystrayService.class);
+
     private final ConfigurationDao configurationDao;
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
@@ -95,7 +102,7 @@ public final class SystrayService implements Service {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
             // Add bold font for systray menu item
-            Font menuItemFont = UIManager.getFont(MENU_ITEM_FONT);
+            Font menuItemFont = getFont(MENU_ITEM_FONT);
             if (menuItemFont != null)
                 UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), BOLD, menuItemFont.getSize()));
 
@@ -110,18 +117,18 @@ public final class SystrayService implements Service {
      */
     private void initSystemTrayMenu() {
         // Check the SystemTray is supported
-        if (!SystemTray.isSupported() || !Desktop.isDesktopSupported()) return;
+        if (!isSupported() || !isDesktopSupported()) return;
 
         // Initialize systray icon
         Image image;
         try {
-            image = Toolkit.getDefaultToolkit().createImage(StaticResourceLoader.getData(SYSTRAY, "logo.png"));
+            image = getDefaultToolkit().createImage(getData(SYSTRAY, "logo.png"));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return;
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
-        final SystemTray systemTray = SystemTray.getSystemTray();
+        final SystemTray systemTray = getSystemTray();
         final String holmesAdminUrl = "http://localhost:" + configurationDao.getIntParameter(HTTP_SERVER_PORT) + "/admin";
 
         // Create a popup menu
@@ -147,7 +154,7 @@ public final class SystrayService implements Service {
              */
             @Override
             public void onClick() throws IOException {
-                Desktop.getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
+                getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
             }
         }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
 
@@ -158,9 +165,9 @@ public final class SystrayService implements Service {
              */
             @Override
             public void onClick() throws URISyntaxException, IOException {
-                Desktop.getDesktop().browse(new URI(holmesAdminUrl));
+                getDesktop().browse(new URI(holmesAdminUrl));
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, UIManager.getFont(MENU_ITEM_BOLD_FONT));
+        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, getFont(MENU_ITEM_BOLD_FONT));
 
         // Holmes site menu item
         JMenuItem holmesSiteItem = new SystrayMenuItem() {
@@ -169,7 +176,7 @@ public final class SystrayService implements Service {
              */
             @Override
             public void onClick() throws URISyntaxException, IOException {
-                Desktop.getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
+                getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
             }
         }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon, null);
 
@@ -180,7 +187,7 @@ public final class SystrayService implements Service {
              */
             @Override
             public void onClick() throws URISyntaxException, IOException {
-                Desktop.getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
+                getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
             }
         }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
 
@@ -221,7 +228,7 @@ public final class SystrayService implements Service {
             Icon icon = null;
             if (showIcon)
                 try {
-                    icon = new ImageIcon(StaticResourceLoader.getData(SYSTRAY, iconPath));
+                    icon = new ImageIcon(getData(SYSTRAY, iconPath));
                 } catch (IOException e) {
                     LOGGER.error(e.getMessage(), e);
                 }

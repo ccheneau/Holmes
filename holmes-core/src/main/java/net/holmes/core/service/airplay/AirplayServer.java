@@ -23,7 +23,6 @@ import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.airplay.device.AirplayDeviceFeatures;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,17 +35,20 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 
 import static net.holmes.core.business.configuration.Parameter.ENABLE_AIRPLAY;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Airplay service
  */
 public final class AirplayServer implements Service {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AirplayServer.class);
+    private static final Logger LOGGER = getLogger(AirplayServer.class);
     private static final String AIRPLAY_TCP = "_airplay._tcp.local.";
     private static final String AIRPLAY_FEATURES = "features";
+
     private final ConfigurationDao configurationDao;
     private final InetAddress localAddress;
     private final StreamingManager streamingManager;
+
     private JmDNS jmDNS = null;
 
     /**

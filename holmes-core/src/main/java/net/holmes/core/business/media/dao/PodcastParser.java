@@ -29,7 +29,6 @@ import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,12 +36,13 @@ import java.util.List;
 
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Podcast parser.
  */
 abstract class PodcastParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PodcastParser.class);
+    private static final Logger LOGGER = getLogger(PodcastParser.class);
 
     /**
      * Parse podcast

@@ -26,7 +26,6 @@ import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,12 +33,13 @@ import java.util.List;
 
 import static com.sun.syndication.feed.module.mediarss.MediaModule.URI;
 import static org.jdom.Namespace.getNamespace;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Nathanial X. Freitas
  */
 public class MediaModuleParser implements ModuleParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MediaModuleParser.class);
+    private static final Logger LOGGER = getLogger(MediaModuleParser.class);
     /**
      * Namespace instance for this URI.
      */

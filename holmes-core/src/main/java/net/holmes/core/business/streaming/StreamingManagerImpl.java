@@ -32,7 +32,6 @@ import net.holmes.core.business.streaming.session.StreamingSession;
 import net.holmes.core.business.streaming.session.UnknownSessionException;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,12 +41,13 @@ import java.util.Map;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.holmes.core.business.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static net.holmes.core.business.streaming.session.SessionStatus.*;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Streaming manager implementation.
  */
 public final class StreamingManagerImpl implements StreamingManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StreamingManagerImpl.class);
+    private static final Logger LOGGER = getLogger(StreamingManagerImpl.class);
 
     private final DeviceDao deviceDao;
     private final SessionDao sessionDao;

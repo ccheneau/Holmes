@@ -20,7 +20,6 @@ package net.holmes.core.service;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,18 +28,22 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Holmes service main class.
  */
 public final class HolmesServer implements Service {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HolmesServer.class);
+    private static final Logger LOGGER = getLogger(HolmesServer.class);
     private static final String LOCK_FILE_NAME = "holmes.lock";
+
     private final Service httpServer;
     private final Service upnpServer;
     private final Service airplayServer;
     private final Service systray;
     private final Service scheduler;
     private final String localHolmesDataDir;
+
     private RandomAccessFile randomAccessFile = null;
     private FileLock fileLock = null;
 

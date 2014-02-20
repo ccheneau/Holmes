@@ -39,7 +39,6 @@ import org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder;
 import org.jboss.resteasy.plugins.server.netty.RestEasyHttpResponseEncoder;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.InetSocketAddress;
@@ -48,17 +47,19 @@ import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
 import static io.netty.channel.ChannelOption.*;
 import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
 import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * HTTP service main class.
  */
 public final class HttpServer implements Service {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServer.class);
+    private static final Logger LOGGER = getLogger(HttpServer.class);
     private static final int MAX_CONTENT_LENGTH = 65536;
     private static final int MAX_INITIAL_LINE_LENGTH = 4096;
     private static final int MAX_HEADER_SIZE = 8192;
     private static final int MAX_CHUNK_SIZE = 8192;
     private static final int BACKLOG = 128;
+
     private final Injector injector;
     private final ConfigurationDao configurationDao;
     private final EventLoopGroup bossGroup;

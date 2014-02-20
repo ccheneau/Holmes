@@ -25,16 +25,16 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class RomeTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RomeTest.class);
+    private static final Logger LOGGER = getLogger(RomeTest.class);
 
     /**
      * Test rome with cast coders rss.

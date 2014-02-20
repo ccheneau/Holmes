@@ -30,7 +30,6 @@ import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.event.MediaEvent;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,12 +44,13 @@ import static net.holmes.core.business.media.model.RootNode.ROOT;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Media manager implementation.
  */
 public final class MediaManagerImpl implements MediaManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MediaManagerImpl.class);
+    private static final Logger LOGGER = getLogger(MediaManagerImpl.class);
     private final ConfigurationDao configurationDao;
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;

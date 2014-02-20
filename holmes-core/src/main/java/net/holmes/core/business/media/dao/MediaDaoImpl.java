@@ -35,7 +35,6 @@ import net.holmes.core.common.MediaType;
 import net.holmes.core.common.MimeType;
 import net.holmes.core.common.NodeFile;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -52,12 +51,13 @@ import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UN
 import static net.holmes.core.business.media.model.RootNode.ICECAST;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Media dao implementation.
  */
 public class MediaDaoImpl implements MediaDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MediaDaoImpl.class);
+    private static final Logger LOGGER = getLogger(MediaDaoImpl.class);
     private final ConfigurationDao configurationDao;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;

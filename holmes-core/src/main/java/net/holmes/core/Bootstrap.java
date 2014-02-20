@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Bootstrap for Holmes - main class.
@@ -72,7 +73,7 @@ public final class Bootstrap {
                 }
             });
         } catch (RuntimeException e) {
-            LoggerFactory.getLogger(Bootstrap.class).error(e.getMessage(), e);
+            getLogger(Bootstrap.class).error(e.getMessage(), e);
             System.exit(1);
         }
 

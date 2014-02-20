@@ -31,7 +31,6 @@ import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -51,22 +50,26 @@ import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.SAVE_SETTINGS;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Icecast Dao implementation.
  */
 public final class IcecastDaoImpl implements IcecastDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IcecastDaoImpl.class);
+    private static final Logger LOGGER = getLogger(IcecastDaoImpl.class);
     private static final String ICECAST_FILE_NAME = "icecast.xml";
     private static final String DATA_DIR = "data";
     private static final String ICECAST_GENRE_ID_ROOT = "IceCastGenre_";
+
     private final ConfigurationDao configurationDao;
     private final String localHolmesDataDir;
     private final MediaIndexDao mediaIndexDao;
     private final List<IcecastGenre> genres;
     private final int maxDownloadRetry;
+
     private final Object directoryLock = new Object();
     private final Object settingsLock = new Object();
+
     private boolean icecastEnabled;
     private IcecastDirectory directory;
 

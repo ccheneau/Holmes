@@ -36,7 +36,6 @@ import org.fourthline.cling.support.connectionmanager.callback.GetProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfos;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.InetAddress;
@@ -45,17 +44,20 @@ import java.util.List;
 
 import static net.holmes.core.business.configuration.Parameter.ENABLE_UPNP;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * UPnP service.
  */
 public final class UpnpServer implements Service {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpServer.class);
+    private static final Logger LOGGER = getLogger(UpnpServer.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
+
     private final Injector injector;
     private final ConfigurationDao configurationDao;
     private final StreamingManager streamingManager;
+
     private UpnpService upnpService = null;
 
     /**

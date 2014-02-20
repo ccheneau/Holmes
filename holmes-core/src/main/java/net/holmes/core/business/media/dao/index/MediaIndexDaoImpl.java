@@ -26,7 +26,6 @@ import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collection;
@@ -35,12 +34,14 @@ import java.util.Map.Entry;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.UniqueId.newUniqueId;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Media index dao implementation.
  */
 public class MediaIndexDaoImpl implements MediaIndexDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MediaIndexDaoImpl.class);
+    private static final Logger LOGGER = getLogger(MediaIndexDaoImpl.class);
+
     private final BiMap<String, MediaIndexElement> elements;
 
     /**
