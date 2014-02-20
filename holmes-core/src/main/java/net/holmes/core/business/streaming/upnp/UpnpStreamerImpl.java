@@ -35,17 +35,17 @@ import org.fourthline.cling.support.model.item.Movie;
 import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
 import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Manage streaming on Upnp device.
  */
 public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UpnpStreamerImpl.class);
+    private static final Logger LOGGER = getLogger(UpnpStreamerImpl.class);
     private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
     private final ControlPoint controlPoint;
 
