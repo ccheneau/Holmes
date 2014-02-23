@@ -48,7 +48,7 @@ import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.session.SessionDao;
 import net.holmes.core.business.streaming.session.SessionDaoImpl;
 import net.holmes.core.business.streaming.upnp.UpnpStreamerImpl;
-import net.holmes.core.common.CustomTypeListener;
+import net.holmes.core.common.EventBusListener;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.http.HttpServer;
 import net.holmes.core.service.scheduled.CacheCleanerService;
@@ -74,7 +74,7 @@ public class TestModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bindListener(Matchers.any(), new CustomTypeListener(eventBus));
+        bindListener(Matchers.any(), new EventBusListener(eventBus));
 
         bind(ConfigurationDao.class).to(TestConfigurationDao.class).in(Singleton.class);
         bind(ResourceBundle.class).toInstance(resourceBundle);

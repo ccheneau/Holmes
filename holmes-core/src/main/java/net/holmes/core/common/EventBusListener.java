@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 /**
  * Guice type listener for event bus registration.
  */
-public final class CustomTypeListener implements TypeListener {
+public final class EventBusListener implements TypeListener {
     private final EventBus eventBus;
 
     /**
@@ -37,7 +37,7 @@ public final class CustomTypeListener implements TypeListener {
      *
      * @param eventBus event bus
      */
-    public CustomTypeListener(final EventBus eventBus) {
+    public EventBusListener(final EventBus eventBus) {
         this.eventBus = eventBus;
     }
 

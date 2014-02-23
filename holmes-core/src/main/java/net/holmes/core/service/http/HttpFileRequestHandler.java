@@ -62,8 +62,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
         NodeFile file = request.getNodeFile();
-        if (!file.isValidFile())
-            throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
+        if (!file.isValidFile()) throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
 
         // Get file descriptor
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
@@ -90,8 +89,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         ChannelFuture lastContentFuture = context.writeAndFlush(EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not when the whole content is written out.
-        if (!keepAlive)
-            lastContentFuture.addListener(CLOSE);
+        if (!keepAlive) lastContentFuture.addListener(CLOSE);
 
     }
 

@@ -52,7 +52,7 @@ import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.session.SessionDao;
 import net.holmes.core.business.streaming.session.SessionDaoImpl;
 import net.holmes.core.business.streaming.upnp.UpnpStreamerImpl;
-import net.holmes.core.common.CustomTypeListener;
+import net.holmes.core.common.EventBusListener;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.airplay.AirplayServer;
 import net.holmes.core.service.http.HttpFileRequestDecoder;
@@ -159,7 +159,7 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind event bus
         bind(EventBus.class).toInstance(eventBus);
-        bindListener(Matchers.any(), new CustomTypeListener(eventBus));
+        bindListener(Matchers.any(), new EventBusListener(eventBus));
 
         // Bind managers
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
