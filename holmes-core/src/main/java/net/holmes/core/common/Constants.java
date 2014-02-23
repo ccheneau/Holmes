@@ -26,7 +26,6 @@ public enum Constants {
     HOLMES_UPNP_SERVER_NAME("Holmes media Server"),
     HOLMES_UPNP_SHORT_NAME("Holmes media Server"),
     HOLMES_UPNP_DESCRIPTION("UPnP Content Directory 1.0 Compliant Media Server"),
-    HOLMES_UPNP_MODEL_NUMBER("0.7.0"),
     HOLMES_HTTP_SERVER_NAME("Holmes HTTP Server"),
     UPNP_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ"),
     HTTP_CONTENT_REQUEST_PATH("/content"),

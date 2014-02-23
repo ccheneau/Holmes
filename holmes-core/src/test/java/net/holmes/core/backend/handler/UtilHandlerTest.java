@@ -29,21 +29,21 @@ public class UtilHandlerTest {
 
     @Test
     public void testGetVersion() {
-        UtilHandler utilHandler = new UtilHandler();
+        UtilHandler utilHandler = new UtilHandler("version");
         assertNotNull(utilHandler.getVersion());
-        assertEquals(utilHandler.getVersion(), "alpha");
+        assertEquals(utilHandler.getVersion(), "version");
     }
 
     @Test
     public void testGetChildFolders() {
-        UtilHandler utilHandler = new UtilHandler();
+        UtilHandler utilHandler = new UtilHandler("version");
         Collection<UtilHandler.Folder> folders = utilHandler.getChildFolders("/");
         assertNotNull(folders);
     }
 
     @Test
     public void testGetChildFoldersNull() {
-        UtilHandler utilHandler = new UtilHandler();
+        UtilHandler utilHandler = new UtilHandler("version");
         Collection<UtilHandler.Folder> folders = utilHandler.getChildFolders(null);
         assertNotNull(folders);
     }

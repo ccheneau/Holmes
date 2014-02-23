@@ -35,6 +35,7 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import java.io.IOException;
 
@@ -56,17 +57,20 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     private static final String ICON_MIME_TYPE = "image/png";
     private final Injector injector;
     private final ConfigurationDao configurationDao;
+    private final String version;
 
     /**
      * Instantiates a new upnp service provider.
      *
      * @param injector         Guice injector
      * @param configurationDao configuration dao
+     * @param version          Holmes version
      */
     @Inject
-    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao) {
+    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao, @Named("version") final String version) {
         this.injector = injector;
         this.configurationDao = configurationDao;
+        this.version = version;
     }
 
     /**
@@ -86,7 +90,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         DeviceType type = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
 
         // Device details
-        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), HOLMES_UPNP_MODEL_NUMBER.toString(), HOLMES_SITE_URL.toString());
+        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
         ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
         DLNADoc[] dlnaDocs = new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5), new DLNADoc("M-DMS", DLNADoc.Version.V1_5)};
         DeviceDetails details = new DeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), manufacturerDetails, modelDetails, dlnaDocs, null);

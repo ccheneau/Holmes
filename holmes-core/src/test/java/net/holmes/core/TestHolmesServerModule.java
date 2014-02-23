@@ -23,11 +23,8 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.io.File;
-import java.io.IOException;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
-import static net.holmes.core.common.SystemProperty.USER_HOME;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class TestHolmesServerModule {
@@ -36,62 +33,17 @@ public class TestHolmesServerModule {
     public TestName testName = new TestName();
 
     @Test
-    public void testGetUiDirectory() {
-        File uiPath = new File(HOLMES_HOME.getValue(), "ui");
-        uiPath.mkdirs();
-        try {
-            String uiDir = HolmesServerModule.getUiDirectory();
-            assertNotNull(uiDir);
-            assertEquals(uiDir, uiPath.getAbsolutePath());
-        } finally {
-            uiPath.delete();
-        }
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testGetBadUiDirectory() {
-        HolmesServerModule.getUiDirectory();
-    }
-
-    @Test
     public void testGetLocalIPV4() {
         assertNotNull(HolmesServerModule.getLocalAddress());
     }
 
     @Test
-    public void testGetLocalHolmesDataDir() {
-        File userHome = new File(USER_HOME.getValue());
-        try {
-            HolmesServerModule.getLocalHolmesDataDir();
-        } finally {
-            userHome.delete();
-        }
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testGetBadLocalHolmesDataDir() throws IOException {
-        String userHome = USER_HOME.getValue();
-        File file = File.createTempFile(testName.getMethodName(), "something");
-        file.deleteOnExit();
-
-        System.setProperty(USER_HOME.getName(), file.getAbsolutePath());
-        try {
-            HolmesServerModule.getLocalHolmesDataDir();
-        } finally {
-            System.setProperty(USER_HOME.getName(), userHome);
-        }
-    }
-
-    @Test
     public void testHolmesServerModule() {
         File uiPath = new File(HOLMES_HOME.getValue(), "ui");
-        uiPath.mkdirs();
-        try {
-            HolmesServerModule module = new HolmesServerModule();
-            assertNotNull(module);
-            assertNotNull(Guice.createInjector(module));
-        } finally {
-            uiPath.delete();
-        }
+        if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
+
+        HolmesServerModule module = new HolmesServerModule();
+        assertNotNull(module);
+        assertNotNull(Guice.createInjector(module));
     }
 }

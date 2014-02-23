@@ -89,6 +89,15 @@ final class HolmesServerModule extends AbstractModule {
     private final String uiDirectory = getUiDirectory();
     private final InetAddress localAddress = getLocalAddress();
     private final SocketFactory socketFactory = SocketFactory.getDefault();
+    private final String holmesVersion;
+
+    /**
+     * Instantiates a new Holmes server module
+     */
+    public HolmesServerModule() {
+        String implementationVersion = this.getClass().getPackage().getImplementationVersion();
+        this.holmesVersion = implementationVersion != null ? implementationVersion : "alpha";
+    }
 
     /**
      * Get local data directory where Holmes configuration and logs are saved.
@@ -96,8 +105,7 @@ final class HolmesServerModule extends AbstractModule {
      *
      * @return local user data dir
      */
-    @VisibleForTesting
-    static String getLocalHolmesDataDir() {
+    private static String getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
         Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
         if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
@@ -111,8 +119,7 @@ final class HolmesServerModule extends AbstractModule {
      *
      * @return UI directory
      */
-    @VisibleForTesting
-    static String getUiDirectory() {
+    private static String getUiDirectory() {
         Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
         if (!Files.exists(uiPath))
             throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
@@ -151,6 +158,7 @@ final class HolmesServerModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
+        bindConstant().annotatedWith(Names.named("version")).to(holmesVersion);
         bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(localAddress);
 
         // Bind utils

@@ -21,6 +21,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.common.NodeFile;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.*;
 import java.io.File;
 import java.util.Collection;
@@ -36,6 +38,18 @@ import static net.holmes.core.common.SystemProperty.USER_HOME;
 @Path("/backend/util")
 public final class UtilHandler {
 
+    private final String version;
+
+    /**
+     * Instantiates a new util handler.
+     *
+     * @param version holmes version
+     */
+    @Inject
+    public UtilHandler(@Named("version") final String version) {
+        this.version = version;
+    }
+
     /**
      * Get Holmes version.
      *
@@ -45,8 +59,7 @@ public final class UtilHandler {
     @Path("/getVersion")
     @Produces(TEXT_PLAIN)
     public String getVersion() {
-        String version = this.getClass().getPackage().getImplementationVersion();
-        return version == null ? "alpha" : version;
+        return version;
     }
 
     /**
