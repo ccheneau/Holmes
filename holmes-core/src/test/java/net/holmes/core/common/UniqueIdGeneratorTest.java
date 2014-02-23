@@ -17,22 +17,13 @@
 
 package net.holmes.core.common;
 
-import java.util.UUID;
+import org.junit.Assert;
+import org.junit.Test;
 
-/**
- * Utility class to generate an unique ID
- */
-public final class UniqueId {
+public class UniqueIdGeneratorTest {
 
-    private UniqueId() {
-    }
-
-    /**
-     * Generate a new unique ID
-     *
-     * @return unique ID
-     */
-    public static String newUniqueId() {
-        return String.valueOf(UUID.randomUUID().getMostSignificantBits());
+    @Test
+    public void tesNewUniqueId() {
+        Assert.assertNotEquals(UniqueIdGenerator.newUniqueId(), UniqueIdGenerator.newUniqueId());
     }
 }

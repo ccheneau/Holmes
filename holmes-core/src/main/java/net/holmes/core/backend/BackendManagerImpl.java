@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.business.configuration.Parameter.*;
-import static net.holmes.core.common.UniqueId.newUniqueId;
+import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
 /**

@@ -33,7 +33,7 @@ import java.util.Map.Entry;
 
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
-import static net.holmes.core.common.UniqueId.newUniqueId;
+import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
