@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.upnp;
+package net.holmes.core.service.upnp.directory;
 
 import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
