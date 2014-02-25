@@ -79,7 +79,7 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
- * Guice module.
+ * Holmes Guice module.
  */
 final class HolmesServerModule extends AbstractModule {
 
@@ -100,8 +100,8 @@ final class HolmesServerModule extends AbstractModule {
     }
 
     /**
-     * Get local data directory where Holmes configuration and logs are saved.
-     * This directory is stored in user home directory.
+     * Get local data directory where Holmes configuration and logs are stored.
+     * This directory is a user home sub directory.
      *
      * @return local user data dir
      */
@@ -128,7 +128,7 @@ final class HolmesServerModule extends AbstractModule {
     }
 
     /**
-     * Get local IPv4 address (InetAddress.getLocalHost().getHostAddress() does not work on Linux).
+     * Get local IPv4 address (InetAddress.getLocalHost() does not work on Linux).
      *
      * @return local IPv4 address
      */
@@ -169,7 +169,15 @@ final class HolmesServerModule extends AbstractModule {
         bind(EventBus.class).toInstance(eventBus);
         bindListener(Matchers.any(), new EventBusListener(eventBus));
 
-        // Bind managers
+        // Bind dao
+        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
+        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
+        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
+        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
+        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
+        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
+
+        // Bind business managers
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
@@ -180,14 +188,6 @@ final class HolmesServerModule extends AbstractModule {
         bind(Service.class).annotatedWith(Names.named("airplay")).to(AirplayServer.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
-
-        // Bind dao
-        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
-        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
-        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
-        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
-        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
@@ -205,8 +205,8 @@ final class HolmesServerModule extends AbstractModule {
 
         // Bind streaming utils
         bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
-        bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
         bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
+        bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
 
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);
