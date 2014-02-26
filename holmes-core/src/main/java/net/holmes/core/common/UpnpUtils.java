@@ -17,10 +17,29 @@
 
 package net.holmes.core.common;
 
+import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
+import org.fourthline.cling.model.DefaultServiceManager;
+import org.fourthline.cling.model.meta.*;
+import org.fourthline.cling.model.types.DLNADoc;
+import org.fourthline.cling.model.types.DeviceType;
+import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
+import org.slf4j.Logger;
+
+import java.io.IOException;
+
+import static net.holmes.core.common.Constants.*;
+import static net.holmes.core.common.StaticResourceLoader.getUpnpLargeIcon;
+import static net.holmes.core.common.StaticResourceLoader.getUpnpSmallIcon;
+import static org.fourthline.cling.model.types.UDN.uniqueSystemIdentifier;
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Upnp utils.
  */
 public final class UpnpUtils {
+    private static final Logger LOGGER = getLogger(UpnpUtils.class);
+    public static final DeviceType DEVICE_TYPE = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
+    public static final DeviceIdentity DEVICE_IDENTITY = new DeviceIdentity(uniqueSystemIdentifier(HOLMES_UPNP_SERVER_NAME.toString()));
 
     private UpnpUtils() {
     }
@@ -34,4 +53,43 @@ public final class UpnpUtils {
     public static org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
         return new org.seamless.util.MimeType(mimeType.getType().getValue(), mimeType.getSubType());
     }
+
+    /**
+     * Get connection manager service.
+     *
+     * @return connection manager service
+     */
+    @SuppressWarnings("unchecked")
+    public static LocalService<ConnectionManagerService> getConnectionManagerService() {
+        LocalService<ConnectionManagerService> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
+        connectionManagerService.setManager(new DefaultServiceManager<>(connectionManagerService, ConnectionManagerService.class));
+        return connectionManagerService;
+    }
+
+    /**
+     * Get device details.
+     *
+     * @return device details
+     */
+    public static DeviceDetails getDeviceDetails(final String serverName, final String version) {
+        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
+        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
+        DLNADoc[] dlnaDocs = new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5), new DLNADoc("M-DMS", DLNADoc.Version.V1_5)};
+        return new DeviceDetails(serverName, manufacturerDetails, modelDetails, dlnaDocs, null);
+    }
+
+    /**
+     * Get icons.
+     *
+     * @return icons or null
+     */
+    public static Icon[] getIcons() {
+        try {
+            return new Icon[]{getUpnpLargeIcon(), getUpnpSmallIcon()};
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
 }

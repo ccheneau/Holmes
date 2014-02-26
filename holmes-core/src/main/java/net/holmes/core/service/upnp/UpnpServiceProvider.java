@@ -27,34 +27,22 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.ValidationException;
-import org.fourthline.cling.model.meta.*;
-import org.fourthline.cling.model.types.DLNADoc;
-import org.fourthline.cling.model.types.DeviceType;
-import org.fourthline.cling.model.types.UDN;
-import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
-import org.slf4j.Logger;
+import org.fourthline.cling.model.meta.DeviceDetails;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.LocalService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
-import java.io.IOException;
 
 import static net.holmes.core.business.configuration.Parameter.UPNP_SERVER_NAME;
 import static net.holmes.core.business.configuration.Parameter.UPNP_SERVICE_PORT;
-import static net.holmes.core.common.Constants.*;
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
-import static net.holmes.core.common.StaticResourceLoader.getData;
-import static org.slf4j.LoggerFactory.getLogger;
+import static net.holmes.core.common.UpnpUtils.*;
 
 /**
  * Guice provider for UPnP service.
  */
 public class UpnpServiceProvider implements Provider<UpnpService> {
-    private static final Logger LOGGER = getLogger(UpnpServiceProvider.class);
-    private static final int LARGE_ICON_SIZE = 120;
-    private static final int SMALL_ICON_SIZE = 32;
-    private static final int ICON_DEPTH = 8;
-    private static final String ICON_MIME_TYPE = "image/png";
     private final Injector injector;
     private final ConfigurationDao configurationDao;
     private final String version;
@@ -76,50 +64,27 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public UpnpService get() {
         // Create Upnp service
         UpnpServiceConfiguration upnpConfiguration = new DefaultUpnpServiceConfiguration(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
         UpnpService upnpService = new UpnpServiceImpl(upnpConfiguration);
-
-        // Device identity
-        DeviceIdentity identity = new DeviceIdentity(UDN.uniqueSystemIdentifier(HOLMES_UPNP_SERVER_NAME.toString()));
-
-        // Device type
-        DeviceType type = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
-
-        // Device details
-        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
-        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
-        DLNADoc[] dlnaDocs = new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5), new DLNADoc("M-DMS", DLNADoc.Version.V1_5)};
-        DeviceDetails details = new DeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), manufacturerDetails, modelDetails, dlnaDocs, null);
 
         // Content directory service
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
         contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
         injector.injectMembers(contentDirectoryService.getManager().getImplementation());
 
-        // Connection manager service
-        LocalService<ConnectionManagerService> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
-        connectionManagerService.setManager(new DefaultServiceManager<>(connectionManagerService, ConnectionManagerService.class));
-
-        Icon[] icons = null;
-        try {
-            // Set icons
-            Icon largeIcon = new Icon(ICON_MIME_TYPE, LARGE_ICON_SIZE, LARGE_ICON_SIZE, ICON_DEPTH, "upnp-icon-256.png", getData(UPNP, "icon-256.png"));
-            Icon smallIcon = new Icon(ICON_MIME_TYPE, SMALL_ICON_SIZE, SMALL_ICON_SIZE, ICON_DEPTH, "upnp-icon-32.png", getData(UPNP, "icon-32.png"));
-            icons = new Icon[]{largeIcon, smallIcon};
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        // Device details
+        DeviceDetails deviceDetails = getDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);
 
         try {
             // Create local services
-            LocalService<?>[] localServices = new LocalService[]{contentDirectoryService, connectionManagerService};
+            LocalService<?>[] localServices = new LocalService[]{contentDirectoryService, getConnectionManagerService()};
 
-            // Add local device to UPnP registry
-            upnpService.getRegistry().addDevice(new LocalDevice(identity, type, details, icons, localServices));
+            // Add local device to UPnP service registry
+            upnpService.getRegistry().addDevice(new LocalDevice(DEVICE_IDENTITY, DEVICE_TYPE, deviceDetails, getIcons(), localServices));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }

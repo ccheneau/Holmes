@@ -17,48 +17,46 @@
 
 package net.holmes.core.common;
 
+import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.Icon;
+import org.fourthline.cling.model.meta.LocalService;
+import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Tests for ResourceLoader
- */
-public class StaticResourceLoaderTest {
+public class UpnpUtilsTest {
 
     @Test
     public void testTestPrivateConstructor() throws Exception {
-        Constructor<StaticResourceLoader> cnt = StaticResourceLoader.class.getDeclaredConstructor();
+        Constructor<UpnpUtils> cnt = UpnpUtils.class.getDeclaredConstructor();
         cnt.setAccessible(true);
         cnt.newInstance();
     }
 
     @Test
-    public void testGetData() throws IOException {
-        byte[] data = StaticResourceLoader.getData(UPNP, "icon-32.png");
-        assertNotNull(data);
-    }
-
-    @Test(expected = IOException.class)
-    public void testGetBadData() throws IOException {
-        StaticResourceLoader.getData(SYSTRAY, "bad_resource.png");
+    public void testGetUpnpMimeType() {
+        org.seamless.util.MimeType mimeType = UpnpUtils.getUpnpMimeType(MimeType.valueOf("image/png"));
+        assertNotNull(mimeType);
     }
 
     @Test
-    public void testGetUpnpLargeIcon() throws IOException {
-        Icon icon = StaticResourceLoader.getUpnpLargeIcon();
-        assertNotNull(icon);
+    public void testGetConnectionManagerService() {
+        LocalService<ConnectionManagerService> connectionManagerService = UpnpUtils.getConnectionManagerService();
+        assertNotNull(connectionManagerService);
     }
 
     @Test
-    public void testGetUpnpSmallIcon() throws IOException {
-        Icon icon = StaticResourceLoader.getUpnpSmallIcon();
-        assertNotNull(icon);
+    public void testGetDeviceDetails() {
+        DeviceDetails deviceDetails = UpnpUtils.getDeviceDetails("serverName", "1.0");
+        assertNotNull(deviceDetails);
+    }
+
+    @Test
+    public void testGetIcons() {
+        Icon[] icons = UpnpUtils.getIcons();
+        assertNotNull(icons);
     }
 }

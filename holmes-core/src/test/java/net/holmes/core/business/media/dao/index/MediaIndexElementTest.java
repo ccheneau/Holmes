@@ -35,6 +35,7 @@ public class MediaIndexElementTest {
         MediaIndexElement element8 = new MediaIndexElement("parentId", "mediaType", "mimeType1", "path", "name", false, false);
         assertTrue(element1.isLocalPath());
         assertTrue(element1.isLocked());
+        assertNotNull(element1.getMimeType());
         assertEquals(element1, element1);
         assertEquals(element1, element2);
         assertNotEquals(element1, null);

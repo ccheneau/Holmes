@@ -15,24 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common;
+package net.holmes.core.business.media.dao.index;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 
-public class UniqueIdGeneratorTest {
+public class MediaIndexElementFactoryTest {
 
     @Test
     public void testTestPrivateConstructor() throws Exception {
-        Constructor<UniqueIdGenerator> cnt = UniqueIdGenerator.class.getDeclaredConstructor();
+        Constructor<MediaIndexElementFactory> cnt = MediaIndexElementFactory.class.getDeclaredConstructor();
         cnt.setAccessible(true);
         cnt.newInstance();
-    }
-
-    @Test
-    public void tesNewUniqueId() {
-        Assert.assertNotEquals(UniqueIdGenerator.newUniqueId(), UniqueIdGenerator.newUniqueId());
     }
 }
