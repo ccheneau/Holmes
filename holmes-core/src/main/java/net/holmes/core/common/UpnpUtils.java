@@ -17,6 +17,9 @@
 
 package net.holmes.core.common;
 
+import org.fourthline.cling.DefaultUpnpServiceConfiguration;
+import org.fourthline.cling.UpnpService;
+import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.meta.*;
@@ -52,6 +55,16 @@ public final class UpnpUtils {
      */
     public static org.seamless.util.MimeType getUpnpMimeType(final MimeType mimeType) {
         return new org.seamless.util.MimeType(mimeType.getType().getValue(), mimeType.getSubType());
+    }
+
+    /**
+     * Get Upnp service.
+     *
+     * @param upnpPort UPnP port
+     * @return Upnp service
+     */
+    public static UpnpService getUpnpService(final int upnpPort) {
+        return new UpnpServiceImpl(new DefaultUpnpServiceConfiguration(upnpPort));
     }
 
     /**

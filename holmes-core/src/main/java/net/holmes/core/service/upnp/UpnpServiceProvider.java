@@ -20,10 +20,7 @@ package net.holmes.core.service.upnp;
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.service.upnp.directory.ContentDirectoryService;
-import org.fourthline.cling.DefaultUpnpServiceConfiguration;
 import org.fourthline.cling.UpnpService;
-import org.fourthline.cling.UpnpServiceConfiguration;
-import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.ValidationException;
@@ -43,6 +40,7 @@ import static net.holmes.core.common.UpnpUtils.*;
  * Guice provider for UPnP service.
  */
 public class UpnpServiceProvider implements Provider<UpnpService> {
+
     private final Injector injector;
     private final ConfigurationDao configurationDao;
     private final String version;
@@ -65,29 +63,35 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public UpnpService get() {
-        // Create Upnp service
-        UpnpServiceConfiguration upnpConfiguration = new DefaultUpnpServiceConfiguration(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
-        UpnpService upnpService = new UpnpServiceImpl(upnpConfiguration);
-
-        // Content directory service
-        LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
-        contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
-        injector.injectMembers(contentDirectoryService.getManager().getImplementation());
+        // Upnp service
+        UpnpService upnpService = getUpnpService(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
 
         // Device details
         DeviceDetails deviceDetails = getDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);
 
-        try {
-            // Create local services
-            LocalService<?>[] localServices = new LocalService[]{contentDirectoryService, getConnectionManagerService()};
+        // Create local services
+        LocalService<?>[] localServices = new LocalService[]{getContentDirectoryService(), getConnectionManagerService()};
 
+        try {
             // Add local device to UPnP service registry
             upnpService.getRegistry().addDevice(new LocalDevice(DEVICE_IDENTITY, DEVICE_TYPE, deviceDetails, getIcons(), localServices));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }
         return upnpService;
+    }
+
+    /**
+     * Get content directory service.
+     *
+     * @return content directory service
+     */
+    @SuppressWarnings("unchecked")
+    private LocalService<ContentDirectoryService> getContentDirectoryService() {
+        LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
+        contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
+        injector.injectMembers(contentDirectoryService.getManager().getImplementation());
+        return contentDirectoryService;
     }
 }

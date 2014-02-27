@@ -17,6 +17,7 @@
 
 package net.holmes.core.common;
 
+import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.Icon;
 import org.fourthline.cling.model.meta.LocalService;
@@ -34,6 +35,12 @@ public class UpnpUtilsTest {
         Constructor<UpnpUtils> cnt = UpnpUtils.class.getDeclaredConstructor();
         cnt.setAccessible(true);
         cnt.newInstance();
+    }
+
+    @Test
+    public void testGetUpnpService() {
+        UpnpService upnpService = UpnpUtils.getUpnpService(5002);
+        assertNotNull(upnpService);
     }
 
     @Test
