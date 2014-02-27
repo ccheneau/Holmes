@@ -71,10 +71,10 @@ import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
+import static java.util.Collections.list;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
@@ -135,10 +135,8 @@ final class HolmesServerModule extends AbstractModule {
     @VisibleForTesting
     static InetAddress getLocalAddress() {
         try {
-            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
-                NetworkInterface networkInterface = interfaces.nextElement();
-                for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses.hasMoreElements(); ) {
-                    InetAddress inetAddress = inetAddresses.nextElement();
+            for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
+                for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
                     if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
                         return inetAddress;
                 }
