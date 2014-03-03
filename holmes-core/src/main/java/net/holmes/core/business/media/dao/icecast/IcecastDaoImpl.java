@@ -19,7 +19,6 @@ package net.holmes.core.business.media.dao.icecast;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -85,8 +84,8 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.configurationDao = configurationDao;
         this.localHolmesDataDir = localHolmesDataDir;
         this.mediaIndexDao = mediaIndexDao;
-        this.icecastEnabled = configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
-        List<String> genreList = Splitter.on(",").splitToList(configurationDao.getParameter(ICECAST_GENRE_LIST));
+        this.icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
+        List<String> genreList = configurationDao.getListParameter(ICECAST_GENRE_LIST);
         this.genres = Lists.newArrayListWithCapacity(genreList.size());
         this.maxDownloadRetry = max(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
         for (String genre : genreList)
@@ -298,7 +297,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
-                icecastEnabled = configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY);
+                icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
                 if (icecastEnabled) {
                     // Download and parse Yellow page if it is not already loaded
                     if (!isLoaded()) checkYellowPage();

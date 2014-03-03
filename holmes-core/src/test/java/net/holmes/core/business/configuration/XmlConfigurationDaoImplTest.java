@@ -87,9 +87,9 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
             XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertTrue(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
-            configuration.setBooleanParameter(Parameter.ENABLE_SYSTRAY, false);
-            assertFalse(configuration.getBooleanParameter(Parameter.ENABLE_SYSTRAY));
+            assertTrue(configuration.getBooleanParameter(Parameter.SYSTRAY_ENABLE));
+            configuration.setBooleanParameter(Parameter.SYSTRAY_ENABLE, false);
+            assertFalse(configuration.getBooleanParameter(Parameter.SYSTRAY_ENABLE));
         } catch (IOException e) {
             fail(e.getMessage());
         }

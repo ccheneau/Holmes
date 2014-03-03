@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.configuration;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -162,6 +163,14 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     @Override
     public String getParameter(final Parameter parameter) {
         return this.rootNode.getParameter(parameter);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getListParameter(Parameter parameter) {
+        return Splitter.on(",").splitToList(this.rootNode.getParameter(parameter));
     }
 
     /**

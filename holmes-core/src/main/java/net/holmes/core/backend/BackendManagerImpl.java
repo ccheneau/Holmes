@@ -160,8 +160,8 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Settings getSettings() {
         return new Settings(configurationDao.getParameter(UPNP_SERVER_NAME),
-                configurationDao.getBooleanParameter(PREPEND_PODCAST_ENTRY_NAME),
-                configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY));
+                configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME),
+                configurationDao.getBooleanParameter(ICECAST_ENABLE));
     }
 
     /**
@@ -172,8 +172,8 @@ public final class BackendManagerImpl implements BackendManager {
         helper.validateServerName(settings.getServerName());
 
         configurationDao.setParameter(UPNP_SERVER_NAME, settings.getServerName());
-        configurationDao.setBooleanParameter(PREPEND_PODCAST_ENTRY_NAME, settings.getPrependPodcastItem());
-        configurationDao.setBooleanParameter(ENABLE_ICECAST_DIRECTORY, settings.getEnableIcecastDirectory());
+        configurationDao.setBooleanParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
+        configurationDao.setBooleanParameter(ICECAST_ENABLE, settings.getEnableIcecastDirectory());
         try {
             // save settings
             configurationDao.saveConfig();

@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.media.dao.icecast;
 
+import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import org.junit.Test;
@@ -41,8 +42,8 @@ public class IcecastDaoImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
-        expect(configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
         expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         mediaIndexDao.removeChildren("IceCastGenre_genre1");
@@ -79,8 +80,8 @@ public class IcecastDaoImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn("genre1,genre2").atLeastOnce();
-        expect(configurationDao.getBooleanParameter(ENABLE_ICECAST_DIRECTORY)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
         expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         replay(configurationDao, mediaIndexDao);

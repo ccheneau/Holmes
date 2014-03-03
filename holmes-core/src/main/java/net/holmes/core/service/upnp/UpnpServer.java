@@ -42,7 +42,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import static net.holmes.core.business.configuration.Parameter.ENABLE_UPNP;
+import static net.holmes.core.business.configuration.Parameter.UPNP_ENABLE;
+import static net.holmes.core.common.UpnpUtils.getDeviceName;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -79,7 +80,7 @@ public final class UpnpServer implements Service {
      */
     @Override
     public void start() {
-        if (configurationDao.getBooleanParameter(ENABLE_UPNP)) {
+        if (configurationDao.getBooleanParameter(UPNP_ENABLE)) {
             LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
 
@@ -219,19 +220,6 @@ public final class UpnpServer implements Service {
         @Override
         public void afterShutdown() {
             // Ignore
-        }
-
-        /**
-         * Get Upnp device name
-         *
-         * @param device Upnp device
-         * @return Upnp device name
-         */
-        private String getDeviceName(final RemoteDevice device) {
-            if (device.getDetails() != null)
-                return device.getDetails().getFriendlyName();
-            else
-                return device.getDisplayString();
         }
     }
 }

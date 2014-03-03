@@ -19,7 +19,6 @@ package net.holmes.core.service.upnp.directory;
 
 import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.Parameter;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.streaming.StreamingManager;
@@ -37,9 +36,12 @@ import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.business.configuration.Parameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.business.media.MediaManager.ChildNodeRequest;
 import static net.holmes.core.business.media.MediaManager.ChildNodeResult;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
@@ -76,6 +78,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress()))
                 if (device instanceof UpnpDevice)
                     availableMimeTypes.addAll(device.getSupportedMimeTypes());
+
+        // Add subtitle
+        if (!availableMimeTypes.isEmpty() && configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE))
+            availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
 
         // Get browse node
         AbstractNode browseNode = mediaManager.getNode(objectID);
@@ -163,7 +169,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configurationDao.getBooleanParameter(Parameter.PREPEND_PODCAST_ENTRY_NAME))
+        if (configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME))
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
         else return title;

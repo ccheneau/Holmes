@@ -57,6 +57,17 @@ public final class UpnpUtils {
         return new org.seamless.util.MimeType(mimeType.getType().getValue(), mimeType.getSubType());
     }
 
+
+    /**
+     * Get Upnp device name
+     *
+     * @param device Upnp device
+     * @return Upnp device name
+     */
+    public static String getDeviceName(final RemoteDevice device) {
+        return device.getDetails() != null ? device.getDetails().getFriendlyName() : device.getDisplayString();
+    }
+
     /**
      * Get Upnp service.
      *

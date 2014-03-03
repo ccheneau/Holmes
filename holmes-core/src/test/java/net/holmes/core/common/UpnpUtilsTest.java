@@ -21,11 +21,14 @@ import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.Icon;
 import org.fourthline.cling.model.meta.LocalService;
+import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class UpnpUtilsTest {
@@ -65,5 +68,32 @@ public class UpnpUtilsTest {
     public void testGetIcons() {
         Icon[] icons = UpnpUtils.getIcons();
         assertNotNull(icons);
+    }
+
+    @Test
+    public void testGetDeviceNameNoDetails() {
+        RemoteDevice device = createMock(RemoteDevice.class);
+
+        expect(device.getDetails()).andReturn(null);
+        expect(device.getDisplayString()).andReturn("Device Name");
+
+        replay(device);
+        String deviceName = UpnpUtils.getDeviceName(device);
+        assertEquals("Device Name", deviceName);
+        verify(device);
+    }
+
+    @Test
+    public void testGetDeviceNameWithDetails() {
+        RemoteDevice device = createMock(RemoteDevice.class);
+        DeviceDetails details = createMock(DeviceDetails.class);
+
+        expect(device.getDetails()).andReturn(details).atLeastOnce();
+        expect(details.getFriendlyName()).andReturn("Device Friendly Name");
+
+        replay(device, details);
+        String deviceName = UpnpUtils.getDeviceName(device);
+        assertEquals("Device Friendly Name", deviceName);
+        verify(device, details);
     }
 }

@@ -17,6 +17,7 @@
 
 package net.holmes.core.test;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.ConfigurationDao;
@@ -122,6 +123,14 @@ public class TestConfigurationDao implements ConfigurationDao {
     @Override
     public String getParameter(Parameter param) {
         return parameters.get(param);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getListParameter(Parameter param) {
+        return Splitter.on(",").splitToList(parameters.get(param));
     }
 
     /**

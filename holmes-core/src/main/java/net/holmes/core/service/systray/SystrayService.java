@@ -80,7 +80,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configurationDao.getBooleanParameter(ENABLE_SYSTRAY) && initUIManager()) initSystemTrayMenu();
+        if (configurationDao.getBooleanParameter(SYSTRAY_ENABLE) && initUIManager()) initSystemTrayMenu();
     }
 
     /**
@@ -134,7 +134,7 @@ public final class SystrayService implements Service {
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
-        boolean showMenuIcon = configurationDao.getBooleanParameter(ICONS_IN_SYSTRAY_MENU);
+        boolean showMenuIcon = configurationDao.getBooleanParameter(SYSTRAY_ICONS_IN_MENU);
 
         // Quit Holmes menu item
         JMenuItem quitItem = new SystrayMenuItem() {

@@ -31,15 +31,18 @@ import org.fourthline.cling.support.model.DIDLObject.Property.DC;
 import org.fourthline.cling.support.model.DIDLObject.Property.UPNP;
 import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.container.Container;
-import org.fourthline.cling.support.model.item.*;
+import org.fourthline.cling.support.model.item.Item;
+import org.fourthline.cling.support.model.item.Movie;
+import org.fourthline.cling.support.model.item.MusicTrack;
+import org.fourthline.cling.support.model.item.Photo;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
 import static net.holmes.core.common.Constants.UPNP_DATE_FORMAT;
-import static net.holmes.core.common.MimeType.SUB_TYPE_OGG;
-import static net.holmes.core.common.MimeType.SUB_TYPE_SUBTITLE;
+import static net.holmes.core.common.MimeType.MIME_TYPE_OGG;
+import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
 
 /**
@@ -162,15 +165,13 @@ final class DirectoryBrowseResult {
                 // Add image item
                 item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
-            case TYPE_APPLICATION:
-                if (SUB_TYPE_SUBTITLE.equals(mimeType.getSubType()))
+            default:
+                if (mimeType.equals(MIME_TYPE_SUBTITLE))
                     // Add subtitle item
-                    item = new TextItem(node.getId(), parentNodeId, name, null, res);
-                else if (SUB_TYPE_OGG.equals(mimeType.getSubType()))
+                    item = new Movie(node.getId(), parentNodeId, name, null, res);
+                else if (mimeType.equals(MIME_TYPE_OGG))
                     // Add OGG item
                     item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
-                break;
-            default:
                 break;
         }
         if (item != null) {

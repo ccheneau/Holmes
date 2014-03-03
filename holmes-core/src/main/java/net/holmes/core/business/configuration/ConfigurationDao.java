@@ -67,6 +67,14 @@ public interface ConfigurationDao {
     String getParameter(Parameter parameter);
 
     /**
+     * Gets the parameter list.
+     *
+     * @param parameter parameter
+     * @return parameter list
+     */
+    List<String> getListParameter(Parameter parameter);
+
+    /**
      * Sets parameter value.
      *
      * @param parameter parameter
