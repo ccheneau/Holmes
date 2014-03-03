@@ -136,7 +136,7 @@ public final class MimeType {
         if (obj == null || getClass() != obj.getClass()) return false;
 
         final MimeType other = (MimeType) obj;
-        return Objects.equal(this.type, other.type) && Objects.equal(this.subType, other.subType) && Objects.equal(this.mimeType, other.mimeType);
+        return Objects.equal(this.mimeType, other.mimeType);
     }
 
     /**
