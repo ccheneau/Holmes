@@ -159,7 +159,6 @@ public class MediaManagerTest {
     public void testGetNodeUrl() {
         AbstractNode node = mediaManager.getNode(RootNode.PICTURE.getId());
         String url = mediaManager.getNodeUrl(node);
-        System.out.println(url);
         assertNotNull(url);
     }
 
