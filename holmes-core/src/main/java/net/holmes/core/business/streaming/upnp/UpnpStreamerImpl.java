@@ -88,7 +88,6 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                          */
                         @Override
                         public void received(ActionInvocation invocation, TransportInfo transportInfo) {
-                            if (LOGGER.isDebugEnabled()) LOGGER.debug(transportInfo.getCurrentTransportState().name());
                             switch (transportInfo.getCurrentTransportState()) {
                                 case PLAYING:
                                 case PAUSED_PLAYBACK:
