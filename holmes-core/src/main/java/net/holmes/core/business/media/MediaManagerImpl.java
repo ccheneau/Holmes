@@ -39,8 +39,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
-import static net.holmes.core.business.media.model.RootNode.NONE;
-import static net.holmes.core.business.media.model.RootNode.ROOT;
+import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
@@ -81,9 +80,9 @@ public final class MediaManagerImpl implements MediaManager {
     @Override
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
-        RootNode rootNode = RootNode.getById(nodeId);
+        RootNode rootNode = getById(nodeId);
         if (rootNode != NONE)
-            // Root node
+            // Get Root node
             node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
         else if (nodeId != null)
             node = mediaDao.getNode(nodeId);
@@ -97,7 +96,7 @@ public final class MediaManagerImpl implements MediaManager {
     @Override
     public ChildNodeResult getChildNodes(final ChildNodeRequest request) {
         List<AbstractNode> childNodes;
-        RootNode rootNode = RootNode.getById(request.getParentNode().getId());
+        RootNode rootNode = getById(request.getParentNode().getId());
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
@@ -164,10 +163,15 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Filter nodes according to available mime types.
      */
-    private final class MimeTypeFilter implements Predicate<AbstractNode> {
+    private class MimeTypeFilter implements Predicate<AbstractNode> {
         private final List<String> availableMimeTypes;
 
-        MimeTypeFilter(final List<String> availableMimeTypes) {
+        /**
+         * Instantiates a new mime type filter.
+         *
+         * @param availableMimeTypes available mime types
+         */
+        public MimeTypeFilter(final List<String> availableMimeTypes) {
             this.availableMimeTypes = availableMimeTypes;
         }
 
