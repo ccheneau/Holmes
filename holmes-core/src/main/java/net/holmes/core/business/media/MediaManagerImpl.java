@@ -112,7 +112,17 @@ public final class MediaManagerImpl implements MediaManager {
             childNodes = mediaDao.getChildNodes(request.getParentNode().getId());
 
         // Filter child nodes according to available mime types
-        Collection<AbstractNode> result = Collections2.filter(childNodes, new MimeTypeFilter(request.getAvailableMimeTypes()));
+        Collection<AbstractNode> result = Collections2.filter(childNodes, new Predicate<AbstractNode>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean apply(AbstractNode node) {
+                return !(node instanceof MimeTypeNode)
+                        || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
+
+            }
+        });
         return new ChildNodeResult(result);
     }
 
@@ -157,31 +167,6 @@ public final class MediaManagerImpl implements MediaManager {
             if (result.getChildNodes() != null)
                 for (AbstractNode childNode : result.getChildNodes())
                     scanNode(childNode);
-        }
-    }
-
-    /**
-     * Filter nodes according to available mime types.
-     */
-    private class MimeTypeFilter implements Predicate<AbstractNode> {
-        private final List<String> availableMimeTypes;
-
-        /**
-         * Instantiates a new mime type filter.
-         *
-         * @param availableMimeTypes available mime types
-         */
-        public MimeTypeFilter(final List<String> availableMimeTypes) {
-            this.availableMimeTypes = availableMimeTypes;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean apply(final AbstractNode node) {
-            return !(node instanceof MimeTypeNode)
-                    || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), availableMimeTypes);
         }
     }
 }
