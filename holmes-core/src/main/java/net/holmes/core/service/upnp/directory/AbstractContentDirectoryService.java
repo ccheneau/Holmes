@@ -22,13 +22,14 @@ import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.csv.CSV;
 import org.fourthline.cling.model.types.csv.CSVString;
-import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 import org.fourthline.cling.support.model.SortCriterion;
 
 import java.util.List;
+
+import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA;
 
 /**
  * Simple ContentDirectory service skeleton.
@@ -97,28 +98,8 @@ public abstract class AbstractContentDirectoryService {
             @UpnpInputArgument(name = "SortCriteria") String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
 
-        SortCriterion[] orderByCriteria;
-        try {
-            orderByCriteria = SortCriterion.valueOf(orderBy);
-        } catch (Exception e) {
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA.getCode(), e.getMessage(), e);
-        }
-
-        return browse(objectId, BrowseFlag.valueOrNullOf(browseFlag), filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria, remoteClientInfo);
+        return browse(objectId, BrowseFlag.valueOrNullOf(browseFlag), filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
     }
-
-    /**
-     * Implement this method to implement browsing of your content.
-     * <p>
-     * This is a required action defined by <em>ContentDirectory:1</em>.
-     * </p>
-     * <p>
-     * You should wrap any exception into a {@link ContentDirectoryException}, so a property
-     * error message can be returned to control points.
-     * </p>
-     */
-    public abstract BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults,
-                                        SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 
     /**
      * Search for content.
@@ -138,19 +119,40 @@ public abstract class AbstractContentDirectoryService {
             @UpnpInputArgument(name = "SortCriteria") String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
 
-        SortCriterion[] orderByCriteria;
-        try {
-            orderByCriteria = SortCriterion.valueOf(orderBy);
-        } catch (Exception e) {
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA.getCode(), e.getMessage(), e);
-        }
-
-        return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), orderByCriteria, remoteClientInfo);
+        return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
     }
+
+    /**
+     * Implement this method to implement browsing of your content.
+     * <p>
+     * This is a required action defined by <em>ContentDirectory:1</em>.
+     * </p>
+     * <p>
+     * You should wrap any exception into a {@link ContentDirectoryException}, so a property
+     * error message can be returned to control points.
+     * </p>
+     */
+    public abstract BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults,
+                                        SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 
     /**
      * Implement this method to implement searching of your content.
      */
     public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
                                         long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
+
+    /**
+     * Get sort criteria
+     *
+     * @param orderBy order by string
+     * @return sort criteria
+     * @throws ContentDirectoryException
+     */
+    private SortCriterion[] getSortCriteria(String orderBy) throws ContentDirectoryException {
+        try {
+            return SortCriterion.valueOf(orderBy);
+        } catch (Exception e) {
+            throw new ContentDirectoryException(UNSUPPORTED_SORT_CRITERIA.getCode(), e.getMessage(), e);
+        }
+    }
 }
