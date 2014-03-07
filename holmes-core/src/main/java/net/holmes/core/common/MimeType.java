@@ -124,7 +124,7 @@ public final class MimeType {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, subType, mimeType);
+        return Objects.hashCode(mimeType);
     }
 
     /**
