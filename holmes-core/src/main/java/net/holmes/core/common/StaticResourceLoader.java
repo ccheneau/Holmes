@@ -20,11 +20,9 @@ package net.holmes.core.common;
 import org.fourthline.cling.model.meta.Icon;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
+import static java.nio.file.Files.readAllBytes;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 
 /**
@@ -49,8 +47,7 @@ public final class StaticResourceLoader {
      * @throws IOException if resource is not found
      */
     public static byte[] getData(final StaticResourceDir resourceDir, final String fileName) throws IOException {
-        Path resourcePath = Paths.get(HOLMES_HOME.getValue(), RESOURCE_PATH, resourceDir.getValue(), fileName);
-        return Files.readAllBytes(resourcePath);
+        return readAllBytes(Paths.get(HOLMES_HOME.getValue(), RESOURCE_PATH, resourceDir.getValue(), fileName));
     }
 
     /**
@@ -60,7 +57,7 @@ public final class StaticResourceLoader {
      * @throws IOException
      */
     public static Icon getUpnpLargeIcon() throws IOException {
-        return new Icon(ICON_MIME_TYPE, LARGE_ICON_SIZE, LARGE_ICON_SIZE, ICON_DEPTH, "upnp-icon-256.png", getData(UPNP, "icon-256.png"));
+        return new Icon(ICON_MIME_TYPE, LARGE_ICON_SIZE, LARGE_ICON_SIZE, ICON_DEPTH, "upnp-icon-256.png", getData(StaticResourceDir.UPNP, "icon-256.png"));
     }
 
     /**
@@ -70,7 +67,7 @@ public final class StaticResourceLoader {
      * @throws IOException
      */
     public static Icon getUpnpSmallIcon() throws IOException {
-        return new Icon(ICON_MIME_TYPE, SMALL_ICON_SIZE, SMALL_ICON_SIZE, ICON_DEPTH, "upnp-icon-32.png", getData(UPNP, "icon-32.png"));
+        return new Icon(ICON_MIME_TYPE, SMALL_ICON_SIZE, SMALL_ICON_SIZE, ICON_DEPTH, "upnp-icon-32.png", getData(StaticResourceDir.UPNP, "icon-32.png"));
     }
 
     /**
