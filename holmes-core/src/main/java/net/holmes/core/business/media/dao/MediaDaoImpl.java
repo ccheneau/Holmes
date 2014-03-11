@@ -190,12 +190,10 @@ public class MediaDaoImpl implements MediaDao {
                 // Add folder nodes stored in configuration
                 for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
                     NodeFile file = new NodeFile(configNode.getPath());
-                    if (file.isValidDirectory()) {
-                        // Add node to mediaIndex
-                        mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
-                        // Add child node
-                        nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
-                    }
+                    // Add node to mediaIndex
+                    mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
+                    // Add child node
+                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
                 }
                 break;
         }
