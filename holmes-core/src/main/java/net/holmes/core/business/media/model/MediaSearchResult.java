@@ -15,42 +15,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.media;
+package net.holmes.core.business.media.model;
 
-import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.media.model.MediaSearchRequest;
-import net.holmes.core.business.media.model.MediaSearchResult;
+import java.util.Collection;
 
 /**
- * Media manager.
+ * Result a search media via media search request
  */
-public interface MediaManager {
-    /**
-     * Get node.
-     *
-     * @param nodeId node id
-     * @return node
-     */
-    AbstractNode getNode(String nodeId);
+public final class MediaSearchResult {
+    private final Collection<AbstractNode> childNodes;
 
     /**
-     * Get node URL.
+     * Instantiates a new media search result.
      *
-     * @param node node
-     * @return node URL
+     * @param childNodes child nodes
      */
-    String getNodeUrl(AbstractNode node);
+    public MediaSearchResult(Collection<AbstractNode> childNodes) {
+        this.childNodes = childNodes;
+    }
 
     /**
-     * Search child nodes.
+     * Get child nodes.
      *
-     * @param request media search request
-     * @return media search result
+     * @return child nodes
      */
-    MediaSearchResult searchChildNodes(MediaSearchRequest request);
+    public Collection<AbstractNode> getChildNodes() {
+        return childNodes;
+    }
 
     /**
-     * Clean up cache
+     * Get total count.
+     *
+     * @return total count
      */
-    void cleanUpCache();
+    public int getTotalCount() {
+        return childNodes.size();
+    }
 }

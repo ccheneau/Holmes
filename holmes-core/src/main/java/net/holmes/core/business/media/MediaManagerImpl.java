@@ -23,10 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.MediaDao;
-import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.media.model.FolderNode;
-import net.holmes.core.business.media.model.MimeTypeNode;
-import net.holmes.core.business.media.model.RootNode;
+import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.event.MediaEvent;
 import org.slf4j.Logger;
@@ -94,7 +91,16 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public ChildNodeResult getChildNodes(final ChildNodeRequest request) {
+    public String getNodeUrl(AbstractNode node) {
+        return "http://" + localAddress.getHostAddress() + ":" + configurationDao.getIntParameter(HTTP_SERVER_PORT) +
+                HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MediaSearchResult searchChildNodes(final MediaSearchRequest request) {
         List<AbstractNode> childNodes;
         RootNode rootNode = getById(request.getParentNode().getId());
         if (rootNode == ROOT) {
@@ -123,16 +129,7 @@ public final class MediaManagerImpl implements MediaManager {
 
             }
         });
-        return new ChildNodeResult(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getNodeUrl(AbstractNode node) {
-        return "http://" + localAddress.getHostAddress() + ":" + configurationDao.getIntParameter(HTTP_SERVER_PORT) +
-                HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
+        return new MediaSearchResult(result);
     }
 
     /**
@@ -163,7 +160,7 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
-            ChildNodeResult result = getChildNodes(new ChildNodeRequest(node));
+            MediaSearchResult result = searchChildNodes(new MediaSearchRequest(node));
             if (result.getChildNodes() != null)
                 for (AbstractNode childNode : result.getChildNodes())
                     scanNode(childNode);

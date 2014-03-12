@@ -22,10 +22,7 @@ import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.business.media.MediaManager;
-import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.media.model.ContentNode;
-import net.holmes.core.business.media.model.FolderNode;
-import net.holmes.core.business.media.model.PodcastNode;
+import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
@@ -39,7 +36,6 @@ import java.util.List;
 
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
-import static net.holmes.core.business.media.MediaManager.ChildNodeResult;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -52,7 +48,7 @@ public class StreamingHandlerTest {
         StreamingManager streamingManager = createMock(StreamingManager.class);
         Device device = createMock(Device.class);
 
-        expect(streamingManager.getDevices()).andReturn(Lists.<Device>newArrayList(device)).atLeastOnce();
+        expect(streamingManager.getDevices()).andReturn(Lists.newArrayList(device)).atLeastOnce();
         expect(device.getId()).andReturn("deviceId").atLeastOnce();
         expect(device.getName()).andReturn("deviceName").atLeastOnce();
         expect(device.getType()).andReturn("deviceType").atLeastOnce();
@@ -270,12 +266,12 @@ public class StreamingHandlerTest {
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
         ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
-        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode));
+        MediaSearchResult searchResult = new MediaSearchResult(Lists.newArrayList(contentNode, folderNode));
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("0"))).andReturn(null).atLeastOnce();
         expect(mediaManager.getNode(eq(VIDEO.getId()))).andReturn(videoRootNode).atLeastOnce();
-        expect(mediaManager.getChildNodes(isA(MediaManager.ChildNodeRequest.class))).andReturn(childNodeResult).atLeastOnce();
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(searchResult).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("nodeUrl").atLeastOnce();
         expect(device.isVideoSupported()).andReturn(true).atLeastOnce();
         expect(device.getSupportedMimeTypes()).andReturn(null).atLeastOnce();
@@ -301,11 +297,11 @@ public class StreamingHandlerTest {
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
-        ChildNodeResult childNodeResult = new ChildNodeResult(Lists.newArrayList(contentNode, folderNode, podcastNode));
+        MediaSearchResult searchResult = new MediaSearchResult(Lists.newArrayList(contentNode, folderNode, podcastNode));
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();
-        expect(mediaManager.getChildNodes(isA(MediaManager.ChildNodeRequest.class))).andReturn(childNodeResult).atLeastOnce();
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(searchResult).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("nodeUrl").atLeastOnce();
         expect(device.getSupportedMimeTypes()).andReturn(null).atLeastOnce();
 

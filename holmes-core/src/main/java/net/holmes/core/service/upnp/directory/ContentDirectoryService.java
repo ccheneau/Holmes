@@ -38,8 +38,6 @@ import java.util.List;
 
 import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
 import static net.holmes.core.business.configuration.Parameter.UPNP_ADD_SUBTITLE;
-import static net.holmes.core.business.media.MediaManager.ChildNodeRequest;
-import static net.holmes.core.business.media.MediaManager.ChildNodeResult;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
@@ -92,9 +90,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(browseNode, availableMimeTypes));
-            for (AbstractNode childNode : childNodeResult.getChildNodes())
-                addNode(objectID, childNode, result, childNodeResult.getTotalCount(), availableMimeTypes);
+            MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
+            for (AbstractNode childNode : searchResult.getChildNodes())
+                addNode(objectID, childNode, result, searchResult.getTotalCount(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
@@ -138,9 +136,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, url);
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                ChildNodeResult childNodeResult = mediaManager.getChildNodes(new ChildNodeRequest(node, availableMimeTypes));
+                MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
                 // Add container to result
-                result.addContainer(nodeId, node, childNodeResult.getTotalCount());
+                result.addContainer(nodeId, node, searchResult.getTotalCount());
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
