@@ -161,9 +161,8 @@ public final class MediaManagerImpl implements MediaManager {
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
             MediaSearchResult result = searchChildNodes(new MediaSearchRequest(node));
-            if (result.getChildNodes() != null)
-                for (AbstractNode childNode : result.getChildNodes())
-                    scanNode(childNode);
+            for (AbstractNode childNode : result.getChildNodes())
+                scanNode(childNode);
         }
     }
 }
