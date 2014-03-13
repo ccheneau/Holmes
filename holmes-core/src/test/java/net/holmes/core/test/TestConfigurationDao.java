@@ -96,6 +96,7 @@ public class TestConfigurationDao implements ConfigurationDao {
                 folders = this.videoFolders;
                 break;
             default:
+                folders = Lists.newArrayList();
                 break;
         }
         return folders;
