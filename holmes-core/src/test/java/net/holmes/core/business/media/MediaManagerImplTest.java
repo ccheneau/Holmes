@@ -242,6 +242,7 @@ public class MediaManagerImplTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSearchChildNodesOfFolder() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");

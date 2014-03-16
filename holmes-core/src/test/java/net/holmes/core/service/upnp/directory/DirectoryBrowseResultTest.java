@@ -199,9 +199,12 @@ public class DirectoryBrowseResultTest {
         DirectoryBrowseResult directoryBrowseResult = new DirectoryBrowseResult(0, 0);
         assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 1);
+        assertEquals(directoryBrowseResult.getResultCount(), 0);
         directoryBrowseResult.addItem("1", node, "http://google.com");
         assertEquals(directoryBrowseResult.getItemCount(), 1);
+        assertEquals(directoryBrowseResult.getResultCount(), 1);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
+        assertNotNull(directoryBrowseResult.buildBrowseResult());
 
         assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 2);

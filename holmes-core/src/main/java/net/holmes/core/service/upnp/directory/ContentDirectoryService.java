@@ -17,6 +17,7 @@
 
 package net.holmes.core.service.upnp.directory;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.MediaManager;
@@ -70,6 +71,11 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     @Override
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final String filter, final long firstResult, final long maxResults,
                                final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
+        // Get browse node
+        AbstractNode browseNode = mediaManager.getNode(objectID);
+        if (browseNode == null)
+            throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
+
         // Get available mime types
         List<String> availableMimeTypes = Lists.newArrayList();
         if (remoteClientInfo.getConnection() != null)
@@ -81,11 +87,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (!availableMimeTypes.isEmpty() && configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE))
             availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
 
-        // Get browse node
-        AbstractNode browseNode = mediaManager.getNode(objectID);
-        if (browseNode == null)
-            throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
-
+        // Build browse result
         DirectoryBrowseResult result;
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
@@ -130,10 +132,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
         if (result.acceptNode())
             if (node instanceof ContentNode) {
-                // Get node url
-                String url = mediaManager.getNodeUrl(node);
                 // Add item to result
-                result.addItem(nodeId, (ContentNode) node, url);
+                result.addItem(nodeId, (ContentNode) node, mediaManager.getNodeUrl(node));
             } else if (node instanceof FolderNode) {
                 // Get child counts
                 MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
@@ -171,5 +171,20 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
         else return title;
+    }
+
+    @VisibleForTesting
+    void setConfigurationDao(ConfigurationDao configurationDao) {
+        this.configurationDao = configurationDao;
+    }
+
+    @VisibleForTesting
+    void setMediaManager(MediaManager mediaManager) {
+        this.mediaManager = mediaManager;
+    }
+
+    @VisibleForTesting
+    void setStreamingManager(StreamingManager streamingManager) {
+        this.streamingManager = streamingManager;
     }
 }
