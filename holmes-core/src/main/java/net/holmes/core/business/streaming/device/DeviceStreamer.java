@@ -19,10 +19,8 @@ package net.holmes.core.business.streaming.device;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.streaming.event.StreamingEvent;
 import net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
-
-import static net.holmes.core.business.streaming.event.StreamingEvent.newErrorEvent;
-import static net.holmes.core.business.streaming.event.StreamingEvent.newSuccessEvent;
 
 
 /**
@@ -85,7 +83,7 @@ public abstract class DeviceStreamer<T extends Device> {
      * @param errorMessage error message
      */
     protected void sendFailure(final StreamingEventType type, final String deviceId, final String errorMessage) {
-        eventBus.post(newErrorEvent(type, deviceId, errorMessage));
+        eventBus.post(new StreamingEvent(type, deviceId, errorMessage));
     }
 
     /**
@@ -95,7 +93,7 @@ public abstract class DeviceStreamer<T extends Device> {
      * @param deviceId device id
      */
     protected void sendSuccess(final StreamingEventType type, final String deviceId) {
-        eventBus.post(newSuccessEvent(type, deviceId, null, null));
+        eventBus.post(new StreamingEvent(type, deviceId, null, null));
     }
 
     /**
@@ -107,7 +105,7 @@ public abstract class DeviceStreamer<T extends Device> {
      * @param position playback position
      */
     protected void sendSuccess(final StreamingEventType type, final String deviceId, final Long duration, final Long position) {
-        eventBus.post(newSuccessEvent(type, deviceId, duration, position));
+        eventBus.post(new StreamingEvent(type, deviceId, duration, position));
     }
 
 }
