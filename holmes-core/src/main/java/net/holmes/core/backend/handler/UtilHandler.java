@@ -19,10 +19,11 @@ package net.holmes.core.backend.handler;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.holmes.core.business.version.ReleaseInfo;
+import net.holmes.core.business.version.VersionManager;
 import net.holmes.core.common.NodeFile;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.*;
 import java.io.File;
 import java.util.Collection;
@@ -38,20 +39,20 @@ import static net.holmes.core.common.SystemProperty.USER_HOME;
 @Path("/backend/util")
 public final class UtilHandler {
 
-    private final String version;
+    private final VersionManager versionManager;
 
     /**
      * Instantiates a new util handler.
      *
-     * @param version holmes version
+     * @param versionManager holmes version manager
      */
     @Inject
-    public UtilHandler(@Named("version") final String version) {
-        this.version = version;
+    public UtilHandler(final VersionManager versionManager) {
+        this.versionManager = versionManager;
     }
 
     /**
-     * Get Holmes version.
+     * Get current Holmes version.
      *
      * @return version
      */
@@ -59,7 +60,20 @@ public final class UtilHandler {
     @Path("/getVersion")
     @Produces(TEXT_PLAIN)
     public String getVersion() {
-        return version;
+        String currentVersion = versionManager.getCurrentVersion();
+        return currentVersion != null ? currentVersion : "alpha";
+    }
+
+    /**
+     * Get Holmes release info.
+     *
+     * @return release info
+     */
+    @GET
+    @Path("/getReleaseInfo")
+    @Produces(APPLICATION_JSON)
+    public ReleaseInfo getReleaseInfo() {
+        return versionManager.getReleaseInfo();
     }
 
     /**

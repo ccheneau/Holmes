@@ -27,6 +27,7 @@ public enum Constants {
     HOLMES_UPNP_SHORT_NAME("Holmes media Server"),
     HOLMES_UPNP_DESCRIPTION("UPnP Content Directory 1.0 Compliant Media Server"),
     HOLMES_HTTP_SERVER_NAME("Holmes HTTP Server"),
+    HOLMES_GITHUB_RELEASE_API_URL("https://api.github.com/repos/ccheneau/Holmes/releases"),
     UPNP_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ"),
     HTTP_CONTENT_REQUEST_PATH("/content"),
     HTTP_CONTENT_ID("id");

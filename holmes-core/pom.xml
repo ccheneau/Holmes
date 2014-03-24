@@ -70,7 +70,6 @@
             <artifactId>jul-to-slf4j</artifactId>
         </dependency>
 
-
         <!-- logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -186,6 +185,12 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
+        </dependency>
+
+        <!-- gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
 
         <!-- junit -->

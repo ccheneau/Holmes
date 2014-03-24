@@ -32,6 +32,7 @@ public enum Parameter {
     PODCAST_CACHE_EXPIRE_HOURS("podcast_cache_expire_hours", "2"),
     PODCAST_CACHE_MAX_ELEMENTS("podcast_cache_max_elements", "50"),
     PODCAST_PREPEND_ENTRY_NAME("podcast_prepend_entry_name", "true"),
+    RELEASE_CHECK_DELAY_HOURS("release_check_delay_hours", "30"),
     STREAMING_STATUS_UPDATE_DELAY_SECONDS("streaming_status_update_delay_seconds", "3"),
     SYSTRAY_ENABLE("enable_systray", "true"),
     SYSTRAY_ICONS_IN_MENU("icons_in_systray_menu", "true"),

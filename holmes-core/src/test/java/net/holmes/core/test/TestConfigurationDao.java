@@ -42,12 +42,9 @@ public class TestConfigurationDao implements ConfigurationDao {
 
     @Inject
     public TestConfigurationDao() {
-        videoFolders = Lists.newArrayList();
-        videoFolders.add(getTestContentFolder("videosTest", "/videosTest/"));
-        audioFolders = Lists.newArrayList();
-        audioFolders.add(getTestContentFolder("audiosTest", "/audiosTest/"));
-        pictureFolders = Lists.newArrayList();
-        pictureFolders.add(getTestContentFolder("imagesTest", "/imagesTest/"));
+        videoFolders = Lists.newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
+        audioFolders = Lists.newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
+        pictureFolders = Lists.newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
         podcasts = Lists.newArrayList();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
         parameters = Maps.newHashMap();
@@ -81,7 +78,7 @@ public class TestConfigurationDao implements ConfigurationDao {
      */
     @Override
     public List<ConfigurationNode> getFolders(RootNode rootNode) {
-        List<ConfigurationNode> folders = null;
+        List<ConfigurationNode> folders;
         switch (rootNode) {
             case AUDIO:
                 folders = this.audioFolders;

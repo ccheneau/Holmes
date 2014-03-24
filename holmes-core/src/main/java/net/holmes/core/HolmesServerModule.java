@@ -52,6 +52,10 @@ import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.session.SessionDao;
 import net.holmes.core.business.streaming.session.SessionDaoImpl;
 import net.holmes.core.business.streaming.upnp.UpnpStreamerImpl;
+import net.holmes.core.business.version.VersionManager;
+import net.holmes.core.business.version.VersionManagerImpl;
+import net.holmes.core.business.version.release.ReleaseDao;
+import net.holmes.core.business.version.release.ReleaseDaoImpl;
 import net.holmes.core.common.EventBusListener;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.airplay.AirplayServer;
@@ -61,6 +65,7 @@ import net.holmes.core.service.http.HttpServer;
 import net.holmes.core.service.scheduled.CacheCleanerService;
 import net.holmes.core.service.scheduled.HolmesSchedulerService;
 import net.holmes.core.service.scheduled.IcecastDownloadService;
+import net.holmes.core.service.scheduled.ReleaseCheckService;
 import net.holmes.core.service.systray.SystrayService;
 import net.holmes.core.service.upnp.UpnpServer;
 import net.holmes.core.service.upnp.UpnpServiceProvider;
@@ -89,15 +94,6 @@ final class HolmesServerModule extends AbstractModule {
     private final String uiDirectory = getUiDirectory();
     private final InetAddress localAddress = getLocalAddress();
     private final SocketFactory socketFactory = SocketFactory.getDefault();
-    private final String holmesVersion;
-
-    /**
-     * Instantiates a new Holmes server module
-     */
-    public HolmesServerModule() {
-        String implementationVersion = this.getClass().getPackage().getImplementationVersion();
-        this.holmesVersion = implementationVersion != null ? implementationVersion : "alpha";
-    }
 
     /**
      * Get local data directory where Holmes configuration and logs are stored.
@@ -156,7 +152,6 @@ final class HolmesServerModule extends AbstractModule {
         bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
-        bindConstant().annotatedWith(Names.named("version")).to(holmesVersion);
         bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(localAddress);
 
         // Bind utils
@@ -174,11 +169,13 @@ final class HolmesServerModule extends AbstractModule {
         bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
         bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
+        bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
 
         // Bind business managers
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
+        bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
 
         // Bind services
         bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
@@ -190,6 +187,7 @@ final class HolmesServerModule extends AbstractModule {
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
         bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
+        bind(AbstractScheduledService.class).annotatedWith(Names.named("release")).to(ReleaseCheckService.class);
 
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);

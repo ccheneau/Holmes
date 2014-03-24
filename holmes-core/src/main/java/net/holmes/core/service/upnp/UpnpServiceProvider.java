@@ -19,6 +19,7 @@ package net.holmes.core.service.upnp;
 
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.version.VersionManager;
 import net.holmes.core.service.upnp.directory.ContentDirectoryService;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -29,7 +30,6 @@ import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.LocalService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 
 import static net.holmes.core.business.configuration.Parameter.UPNP_SERVER_NAME;
@@ -50,13 +50,13 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
      *
      * @param injector         Guice injector
      * @param configurationDao configuration dao
-     * @param version          Holmes version
+     * @param versionManager   Holmes version manager
      */
     @Inject
-    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao, @Named("version") final String version) {
+    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao, final VersionManager versionManager) {
         this.injector = injector;
         this.configurationDao = configurationDao;
-        this.version = version;
+        this.version = versionManager.getCurrentVersion();
     }
 
     /**
