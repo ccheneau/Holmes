@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static net.holmes.core.business.configuration.Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
 
 /**
- * Icecast directory download service.
+ * Scheduled service used to download new Icecast directory.
  */
 public class IcecastDownloadService extends AbstractScheduledService {
     private final IcecastDao icecastDao;
