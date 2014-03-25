@@ -29,3 +29,7 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
     padding-left: 5px !important;
     height: 32px;
 }
+
+.releaseMessage{
+    margin-top : 30px;
+}

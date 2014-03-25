@@ -1,6 +1,7 @@
 var Application = (function() {
 	var application = {};
     application.version = "";
+    application.releaseInfo = "";
 	application.Models = {};
 	application.Collections = {};
 	application.Views = {};
@@ -11,6 +12,10 @@ var Application = (function() {
         $.get('/backend/util/getVersion', function(response) {
             application.version = response;
             $("#version").html(response);
+        });
+        // get Holmes release info
+        $.get('/backend/util/getReleaseInfo', function(response) {
+            application.releaseInfo = response;
         });
     };
     this._init();
