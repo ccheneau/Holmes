@@ -41,9 +41,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cling.version>2.0-alpha3</cling.version>
         <easymock.version>3.2</easymock.version>
-        <gson.version>2.2.4</gson.version>
         <guava.version>16.0.1</guava.version>
         <guice.version>3.0</guice.version>
+        <jackson.version>2.2.3</jackson.version>
         <javassist.version>3.18.1-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>
         <jmdns.version>3.4.1</jmdns.version>
@@ -166,6 +166,7 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- slf4j -->
@@ -197,13 +198,6 @@
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
                 <version>${xstream.version}</version>
-            </dependency>
-
-            <!-- gson -->
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
             </dependency>
 
             <!-- inject -->
@@ -291,8 +285,31 @@
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jackson-provider</artifactId>
+                <artifactId>resteasy-jackson2-provider</artifactId>
                 <version>${resteasy.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.version}</version>
                 <scope>runtime</scope>
             </dependency>
 

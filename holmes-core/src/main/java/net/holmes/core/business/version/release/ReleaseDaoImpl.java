@@ -17,14 +17,13 @@
 
 package net.holmes.core.business.version.release;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -40,10 +39,7 @@ public class ReleaseDaoImpl implements ReleaseDao {
      * Default constructor.
      */
     public ReleaseDaoImpl() {
-        latestRelease = new Release();
-        latestRelease.setDraft(false);
-        latestRelease.setName("");
-        latestRelease.setUrl("");
+        latestRelease = new Release("", "", false);
     }
 
     /**
@@ -52,21 +48,9 @@ public class ReleaseDaoImpl implements ReleaseDao {
     @Override
     public void updateRelease(final String releaseApiUrl) {
         try {
-            // Connection  to Github release API
-            URLConnection con = new URL(releaseApiUrl).openConnection();
-
-            // Read json content
-            StringBuilder json = new StringBuilder();
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                String line = in.readLine();
-                while (line != null) {
-                    json.append(line);
-                    line = in.readLine();
-                }
-            }
-
-            // Parse json content
-            Release[] releases = new Gson().fromJson(json.toString(), Release[].class);
+            // Parse json content from URL
+            List<Release> releases = new ObjectMapper().readValue(new URL(releaseApiUrl), new TypeReference<List<Release>>() {
+            });
 
             // Get latest available release
             for (Release release : releases) {

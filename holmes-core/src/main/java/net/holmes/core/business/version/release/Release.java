@@ -17,17 +17,38 @@
 
 package net.holmes.core.business.version.release;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents a Github release of Holmes
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Release {
     private String name;
-    @SerializedName("html_url")
+    @JsonProperty("html_url")
     private String url;
     private boolean draft;
+
+    /**
+     * Default constructor
+     */
+    public Release() {
+    }
+
+    /**
+     * Instantiates a new Release
+     *
+     * @param name  release name
+     * @param url   release URL
+     * @param draft whether release is a draft
+     */
+    public Release(String name, String url, boolean draft) {
+        this.name = name;
+        this.url = url;
+        this.draft = draft;
+    }
 
     public String getName() {
         return name;
