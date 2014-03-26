@@ -17,6 +17,7 @@
 
 package net.holmes.core.service;
 
+import com.google.common.eventbus.DeadEvent;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
@@ -60,5 +61,20 @@ public class HolmesServerTest {
             holmesServer.stop();
             verify(service);
         }
+    }
+
+    @Test
+    public void tesHandleDeadEvent() {
+        Service service = createMock(Service.class);
+        DeadEvent deadEvent = createMock(DeadEvent.class);
+
+        expect(deadEvent.getEvent()).andReturn("");
+
+        replay(service, deadEvent);
+
+        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        holmesServer.handleDeadEvent(deadEvent);
+
+        verify(service, deadEvent);
     }
 }
