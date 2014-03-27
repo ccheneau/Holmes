@@ -50,7 +50,7 @@ public class ReleaseCheckService extends AbstractScheduledService {
      * {@inheritDoc}
      */
     @Override
-    protected void runOneIteration() throws Exception {
+    protected void runOneIteration() {
         versionManager.updateReleaseInfo();
     }
 
