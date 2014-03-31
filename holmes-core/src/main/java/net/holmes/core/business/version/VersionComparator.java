@@ -60,5 +60,4 @@ public class VersionComparator implements Comparator<String> {
         }
         return versionNumber;
     }
-
 }
