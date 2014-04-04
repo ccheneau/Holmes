@@ -53,7 +53,7 @@
         <resteasy.version>3.0.6.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha3</seamless.version>
-        <slf4j.version>1.7.6</slf4j.version>
+        <slf4j.version>1.7.7</slf4j.version>
         <xstream.version>1.4.7</xstream.version>
     </properties>
 
@@ -74,7 +74,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
+                    <version>2.17</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
