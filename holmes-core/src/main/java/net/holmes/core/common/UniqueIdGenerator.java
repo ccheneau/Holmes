@@ -24,7 +24,11 @@ import java.util.UUID;
  */
 public final class UniqueIdGenerator {
 
+    /**
+     * Private constructor
+     */
     private UniqueIdGenerator() {
+        // Nothing
     }
 
     /**

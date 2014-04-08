@@ -29,9 +29,9 @@ import static net.holmes.core.common.MediaType.*;
  * Mime type.
  */
 public final class MimeType {
-
     public static final MimeType MIME_TYPE_SUBTITLE = new MimeType("application/x-subrip");
     public static final MimeType MIME_TYPE_OGG = new MimeType("application/ogg");
+    
     private final MediaType type;
     private final String subType;
     private final String mimeType;

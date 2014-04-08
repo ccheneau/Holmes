@@ -21,7 +21,7 @@ package net.holmes.core.common;
  * Java system properties used by Holmes.
  */
 public enum SystemProperty {
-    HOLMES_HOME("net.holmes.home"), //
+    HOLMES_HOME("net.holmes.home"),
     USER_HOME("user.home");
 
     private final String name;

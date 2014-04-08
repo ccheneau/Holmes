@@ -65,13 +65,13 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     @Override
     public UpnpService get() {
         // Upnp service
-        UpnpService upnpService = getUpnpService(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
+        UpnpService upnpService = buildUpnpService(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
 
         // Device details
-        DeviceDetails deviceDetails = getDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);
+        DeviceDetails deviceDetails = buildDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);
 
         // Create local services
-        LocalService<?>[] localServices = new LocalService[]{getContentDirectoryService(), getConnectionManagerService()};
+        LocalService<?>[] localServices = new LocalService[]{buildContentDirectoryService(), buildConnectionManagerService()};
 
         try {
             // Add local device to UPnP service registry
@@ -83,12 +83,12 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     }
 
     /**
-     * Get content directory service.
+     * Build a new content directory service.
      *
      * @return content directory service
      */
     @SuppressWarnings("unchecked")
-    private LocalService<ContentDirectoryService> getContentDirectoryService() {
+    private LocalService<ContentDirectoryService> buildContentDirectoryService() {
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
         contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
         injector.injectMembers(contentDirectoryService.getManager().getImplementation());

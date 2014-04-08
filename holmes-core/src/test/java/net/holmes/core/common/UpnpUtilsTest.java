@@ -42,7 +42,7 @@ public class UpnpUtilsTest {
 
     @Test
     public void testGetUpnpService() {
-        UpnpService upnpService = UpnpUtils.getUpnpService(5002);
+        UpnpService upnpService = UpnpUtils.buildUpnpService(5002);
         assertNotNull(upnpService);
     }
 
@@ -54,13 +54,13 @@ public class UpnpUtilsTest {
 
     @Test
     public void testGetConnectionManagerService() {
-        LocalService<ConnectionManagerService> connectionManagerService = UpnpUtils.getConnectionManagerService();
+        LocalService<ConnectionManagerService> connectionManagerService = UpnpUtils.buildConnectionManagerService();
         assertNotNull(connectionManagerService);
     }
 
     @Test
     public void testGetDeviceDetails() {
-        DeviceDetails deviceDetails = UpnpUtils.getDeviceDetails("serverName", "1.0");
+        DeviceDetails deviceDetails = UpnpUtils.buildDeviceDetails("serverName", "1.0");
         assertNotNull(deviceDetails);
     }
 

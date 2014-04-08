@@ -27,7 +27,7 @@ import com.google.inject.spi.TypeListener;
 import java.lang.reflect.Method;
 
 /**
- * Guice type listener for event bus registration.
+ * Guice type listener: automatically register class to eventBus when a method is annotated with @Subscribe
  */
 public final class EventBusListener implements TypeListener {
     private final EventBus eventBus;

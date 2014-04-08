@@ -44,7 +44,11 @@ public final class UpnpUtils {
     public static final DeviceType DEVICE_TYPE = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
     public static final DeviceIdentity DEVICE_IDENTITY = new DeviceIdentity(uniqueSystemIdentifier(HOLMES_UPNP_SERVER_NAME.toString()));
 
+    /**
+     * Private constructor
+     */
     private UpnpUtils() {
+        // Nothing
     }
 
     /**
@@ -59,7 +63,7 @@ public final class UpnpUtils {
 
 
     /**
-     * Get Upnp device name
+     * Get Upnp device name associated to RemoteDevice
      *
      * @param device Upnp device
      * @return Upnp device name
@@ -69,33 +73,33 @@ public final class UpnpUtils {
     }
 
     /**
-     * Get Upnp service.
+     * Build a new Upnp service.
      *
      * @param upnpPort UPnP port
      * @return Upnp service
      */
-    public static UpnpService getUpnpService(final int upnpPort) {
+    public static UpnpService buildUpnpService(final int upnpPort) {
         return new UpnpServiceImpl(new DefaultUpnpServiceConfiguration(upnpPort));
     }
 
     /**
-     * Get connection manager service.
+     * Build a new connection manager service.
      *
      * @return connection manager service
      */
     @SuppressWarnings("unchecked")
-    public static LocalService<ConnectionManagerService> getConnectionManagerService() {
+    public static LocalService<ConnectionManagerService> buildConnectionManagerService() {
         LocalService<ConnectionManagerService> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerService.class);
         connectionManagerService.setManager(new DefaultServiceManager<>(connectionManagerService, ConnectionManagerService.class));
         return connectionManagerService;
     }
 
     /**
-     * Get device details.
+     * !build a new device details.
      *
      * @return device details
      */
-    public static DeviceDetails getDeviceDetails(final String serverName, final String version) {
+    public static DeviceDetails buildDeviceDetails(final String serverName, final String version) {
         ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
         ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
         DLNADoc[] dlnaDocs = new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5), new DLNADoc("M-DMS", DLNADoc.Version.V1_5)};
@@ -103,7 +107,7 @@ public final class UpnpUtils {
     }
 
     /**
-     * Get icons.
+     * Get UPnp icons.
      *
      * @return icons or null
      */

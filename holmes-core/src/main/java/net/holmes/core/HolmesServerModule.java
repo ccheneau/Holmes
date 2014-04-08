@@ -24,7 +24,6 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
-import com.google.inject.name.Names;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.BackendManagerImpl;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
@@ -79,6 +78,7 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
+import static com.google.inject.name.Names.named;
 import static java.util.Collections.list;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
@@ -87,7 +87,6 @@ import static net.holmes.core.common.SystemProperty.USER_HOME;
  * Holmes Guice module.
  */
 final class HolmesServerModule extends AbstractModule {
-
     private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
@@ -149,10 +148,10 @@ final class HolmesServerModule extends AbstractModule {
     @Override
     protected void configure() {
         // Bind constants
-        bindConstant().annotatedWith(Names.named("localHolmesDataDir")).to(localHolmesDataDir);
-        bindConstant().annotatedWith(Names.named("mimeTypePath")).to("/mimetypes.properties");
-        bindConstant().annotatedWith(Names.named("uiDirectory")).to(uiDirectory);
-        bind(InetAddress.class).annotatedWith(Names.named("localAddress")).toInstance(localAddress);
+        bindConstant().annotatedWith(named("localHolmesDataDir")).to(localHolmesDataDir);
+        bindConstant().annotatedWith(named("mimeTypePath")).to("/mimetypes.properties");
+        bindConstant().annotatedWith(named("uiDirectory")).to(uiDirectory);
+        bind(InetAddress.class).annotatedWith(named("localAddress")).toInstance(localAddress);
 
         // Bind utils
         bind(ResourceBundle.class).toInstance(resourceBundle);
@@ -178,16 +177,16 @@ final class HolmesServerModule extends AbstractModule {
         bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
 
         // Bind services
-        bind(Service.class).annotatedWith(Names.named("http")).to(HttpServer.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(Names.named("upnp")).to(UpnpServer.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(Names.named("airplay")).to(AirplayServer.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(Names.named("systray")).to(SystrayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(Names.named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("http")).to(HttpServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("upnp")).to(UpnpServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("airplay")).to(AirplayServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
         // Bind scheduled services
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("cacheCleaner")).to(CacheCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("icecast")).to(IcecastDownloadService.class);
-        bind(AbstractScheduledService.class).annotatedWith(Names.named("release")).to(ReleaseCheckService.class);
+        bind(AbstractScheduledService.class).annotatedWith(named("cacheCleaner")).to(CacheCleanerService.class);
+        bind(AbstractScheduledService.class).annotatedWith(named("icecast")).to(IcecastDownloadService.class);
+        bind(AbstractScheduledService.class).annotatedWith(named("release")).to(ReleaseCheckService.class);
 
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
@@ -200,8 +199,8 @@ final class HolmesServerModule extends AbstractModule {
         bind(HttpFileRequestHandler.class);
 
         // Bind streaming utils
-        bind(DeviceStreamer.class).annotatedWith(Names.named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
-        bind(DeviceStreamer.class).annotatedWith(Names.named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
         bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
 
         // Bind Rest handlers
