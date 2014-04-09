@@ -43,14 +43,14 @@
         <easymock.version>3.2</easymock.version>
         <guava.version>16.0.1</guava.version>
         <guice.version>3.0</guice.version>
-        <jackson.version>2.2.3</jackson.version>
+        <jackson.version>2.3.2</jackson.version>
         <javassist.version>3.18.1-GA</javassist.version>
         <javax.inject.version>1</javax.inject.version>
         <jmdns.version>3.4.1</jmdns.version>
         <junit.version>4.11</junit.version>
         <logback.version>1.1.2</logback.version>
         <netty.version>4.0.18.Final</netty.version>
-        <resteasy.version>3.0.6.Final</resteasy.version>
+        <resteasy.version>3.0.8.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha3</seamless.version>
         <slf4j.version>1.7.7</slf4j.version>
