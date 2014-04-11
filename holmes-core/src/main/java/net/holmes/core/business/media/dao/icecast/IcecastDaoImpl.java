@@ -85,9 +85,10 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.localHolmesDataDir = localHolmesDataDir;
         this.mediaIndexDao = mediaIndexDao;
         this.icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
+        this.maxDownloadRetry = max(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
+
         List<String> genreList = configurationDao.getListParameter(ICECAST_GENRE_LIST);
         this.genres = Lists.newArrayListWithCapacity(genreList.size());
-        this.maxDownloadRetry = max(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
         for (String genre : genreList)
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
     }
@@ -116,16 +117,6 @@ public final class IcecastDaoImpl implements IcecastDao {
      * {@inheritDoc}
      */
     @Override
-    public boolean isLoaded() {
-        synchronized (directoryLock) {
-            return icecastEnabled && directory != null && directory.getEntries().size() > 0;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
             if (directory != null && directory.getEntries() != null)
@@ -140,7 +131,37 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     @Override
     public List<IcecastGenre> getGenres() {
-        return genres;
+        return isLoaded() ? genres : Lists.<IcecastGenre>newArrayList();
+    }
+
+    /**
+     * Configuration settings have changed, check for download Icecast Yellow page.
+     *
+     * @param configurationEvent configuration event
+     */
+    @Subscribe
+    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
+        if (configurationEvent.getType() == SAVE_SETTINGS)
+            synchronized (settingsLock) {
+                icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
+                if (icecastEnabled) {
+                    // Download and parse Yellow page if not already loaded
+                    if (!isLoaded()) checkYellowPage();
+                } else
+                    // Reset directory
+                    loadDirectory(null);
+            }
+    }
+
+    /**
+     * Whether Icecast directory is loaded.
+     *
+     * @return true if Icecast directory is loaded
+     */
+    private boolean isLoaded() {
+        synchronized (directoryLock) {
+            return icecastEnabled && directory != null && directory.getEntries().size() > 0;
+        }
     }
 
     /**
@@ -204,9 +225,12 @@ public final class IcecastDaoImpl implements IcecastDao {
 
             LOGGER.info("Icecast Yellow page downloaded");
         }
-        // Rename temp file once download is complete
         Path xmlFile = getIcecastXmlFile();
+
+        // Delete previous XML file
         Files.deleteIfExists(xmlFile);
+
+        // Rename temp file once download is complete
         return tempFile.renameTo(xmlFile.toFile());
     }
 
@@ -276,7 +300,13 @@ public final class IcecastDaoImpl implements IcecastDao {
         return directory;
     }
 
-    private void loadDirectory(IcecastDirectory directory) {
+    /**
+     * Load Icecast directory
+     *
+     * @param directory IceCast directory
+     */
+    @VisibleForTesting
+    void loadDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
             if (directory != null)
@@ -286,25 +316,6 @@ public final class IcecastDaoImpl implements IcecastDao {
         // Remove previous Icecast elements from media index
         for (IcecastGenre genre : genres)
             mediaIndexDao.removeChildren(genre.getId());
-    }
-
-    /**
-     * Configuration settings have changed, check for download Icecast Yellow page.
-     *
-     * @param configurationEvent configuration event
-     */
-    @Subscribe
-    public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
-        if (configurationEvent.getType() == SAVE_SETTINGS)
-            synchronized (settingsLock) {
-                icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
-                if (icecastEnabled) {
-                    // Download and parse Yellow page if it is not already loaded
-                    if (!isLoaded()) checkYellowPage();
-                } else
-                    // Reset directory
-                    loadDirectory(null);
-            }
     }
 
     /**

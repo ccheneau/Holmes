@@ -457,7 +457,6 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        expect(icecastDao.isLoaded()).andReturn(true);
         expect(icecastDao.getGenres()).andReturn(Lists.newArrayList(new IcecastGenre("genreId", "genreName")));
         mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
         expectLastCall().atLeastOnce();
@@ -471,24 +470,6 @@ public class MediaDaoImplTest {
         verify(mimeTypeManager, mediaIndexDao, icecastDao);
     }
 
-
-    @Test
-    public void testGetSubRootChildNodesOfIcecastNotLoaded() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
-
-        expect(icecastDao.isLoaded()).andReturn(false);
-
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
-
-        List<AbstractNode> result = mediaDao.getSubRootChildNodes(ICECAST);
-        assertNotNull(result);
-
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
-    }
 
     @Test
     public void testGetSubRootChildNodesOfVideo() {

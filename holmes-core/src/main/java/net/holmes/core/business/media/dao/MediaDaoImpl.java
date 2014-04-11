@@ -124,9 +124,12 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public List<AbstractNode> getChildNodes(String parentNodeId) {
         List<AbstractNode> childNodes = Lists.newArrayList();
+
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(parentNodeId);
         if (indexElement != null) {
+
+            // Get media type
             MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
             switch (mediaType) {
                 case TYPE_PODCAST:
@@ -174,16 +177,14 @@ public class MediaDaoImpl implements MediaDao {
                 }
                 break;
             case ICECAST:
-                if (icecastDao.isLoaded()) {
-                    // Add Icecast genre from Icecast dao
-                    for (IcecastGenre genre : icecastDao.getGenres()) {
-                        // Upper case genre's first letter
-                        String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
-                        // Add Icecast genre to media index
-                        mediaIndexDao.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
-                        // Add child node
-                        nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
-                    }
+                // Add Icecast genre from Icecast dao
+                for (IcecastGenre genre : icecastDao.getGenres()) {
+                    // Upper case genre's first letter
+                    String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
+                    // Add Icecast genre to media index
+                    mediaIndexDao.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
+                    // Add child node
+                    nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
                 }
                 break;
             default:
@@ -271,40 +272,7 @@ public class MediaDaoImpl implements MediaDao {
      */
     @SuppressWarnings("unchecked")
     private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) throws ExecutionException {
-        return podcastCache.get(podcastUrl, new Callable<List<AbstractNode>>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public List<AbstractNode> call() throws IOException, FeedException {
-                // No entries in cache, read them from RSS feed
-                // First remove children from media index
-                mediaIndexDao.removeChildren(podcastId);
-
-                final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-                // Parse podcast
-                new PodcastParser() {
-                    /**
-                     * {@inheritDoc}
-                     */
-                    @Override
-                    public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
-                        // Add element to media index
-                        return mediaIndexDao.add(mediaIndexElement);
-                    }
-
-                    /**
-                     * {@inheritDoc}
-                     */
-                    @Override
-                    public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
-                        // Add podcast entry node
-                        podcastEntryNodes.add(podcastEntryNode);
-                    }
-                }.parse(podcastUrl, podcastId);
-                return podcastEntryNodes;
-            }
-        });
+        return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastId, podcastUrl));
     }
 
     /**
@@ -336,5 +304,57 @@ public class MediaDaoImpl implements MediaDao {
     private ContentNode buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         // Check mime type
         return mimeType.getType() == mediaType || mimeType.isSubTitle() ? new ContentNode(nodeId, parentId, file.getName(), file, mimeType) : null;
+    }
+
+    /**
+     * Podcast cache callable
+     */
+    private class PodcastCacheCallable implements Callable<List<AbstractNode>> {
+        private final String podcastId;
+        private final String podcastUrl;
+
+        /**
+         * Instantiates a new podcast cache callable.
+         *
+         * @param podcastId  podcast id
+         * @param podcastUrl podcast url
+         */
+        PodcastCacheCallable(final String podcastId, final String podcastUrl) {
+            this.podcastId = podcastId;
+            this.podcastUrl = podcastUrl;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<AbstractNode> call() throws IOException, FeedException {
+            // No entries in cache, read them from RSS feed
+            // First remove children from media index
+            mediaIndexDao.removeChildren(podcastId);
+
+            final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
+            // Parse podcast
+            new PodcastParser() {
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
+                    // Add element to media index
+                    return mediaIndexDao.add(mediaIndexElement);
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
+                    // Add podcast entry node
+                    podcastEntryNodes.add(podcastEntryNode);
+                }
+            }.parse(podcastUrl, podcastId);
+            return podcastEntryNodes;
+        }
     }
 }

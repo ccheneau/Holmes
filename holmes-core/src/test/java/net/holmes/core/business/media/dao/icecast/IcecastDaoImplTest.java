@@ -18,6 +18,7 @@
 package net.holmes.core.business.media.dao.icecast;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import org.junit.Test;
@@ -79,14 +80,19 @@ public class IcecastDaoImplTest {
         String localHolmesDataDir = System.getProperty("java.io.tmpdir");
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
+        IcecastDirectory directory = createMock(IcecastDirectory.class);
 
         expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
         expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
         expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(directory.getEntries()).andReturn(Sets.newHashSet(new IcecastEntry("name", "url", "type", "genre"))).atLeastOnce();
+        mediaIndexDao.removeChildren(isA(String.class));
+        expectLastCall().atLeastOnce();
 
-        replay(configurationDao, mediaIndexDao);
+        replay(configurationDao, mediaIndexDao, directory);
         IcecastDaoImpl icecastDao = new IcecastDaoImpl(configurationDao, localHolmesDataDir, mediaIndexDao);
         try {
+            icecastDao.loadDirectory(directory);
             List<IcecastGenre> genres = icecastDao.getGenres();
             assertNotNull(genres);
             assertEquals(2, genres.size());
@@ -94,7 +100,35 @@ public class IcecastDaoImplTest {
                 assertTrue(genre.getName().equals("genre1") || genre.getName().equals("genre2"));
             }
         } finally {
+            verify(configurationDao, mediaIndexDao, directory);
+        }
+    }
+
+    @Test
+    public void testGetGenresDirectoryNotLoaded() {
+        String localHolmesDataDir = System.getProperty("java.io.tmpdir");
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
+
+        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        mediaIndexDao.removeChildren(isA(String.class));
+        expectLastCall().atLeastOnce();
+
+        replay(configurationDao, mediaIndexDao);
+        IcecastDaoImpl icecastDao = new IcecastDaoImpl(configurationDao, localHolmesDataDir, mediaIndexDao);
+        try {
+            icecastDao.loadDirectory(null);
+            List<IcecastGenre> genres = icecastDao.getGenres();
+            assertNotNull(genres);
+            assertEquals(0, genres.size());
+            for (IcecastGenre genre : genres) {
+                assertTrue(genre.getName().equals("genre1") || genre.getName().equals("genre2"));
+            }
+        } finally {
             verify(configurationDao, mediaIndexDao);
         }
     }
+
 }
