@@ -20,6 +20,7 @@ package net.holmes.core.service.upnp.directory;
 import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.MediaSearchRequest;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
@@ -90,7 +91,7 @@ public class ContentDirectoryServiceTest {
         expect(upnpDevice.getSupportedMimeTypes()).andReturn(Lists.newArrayList("video/avi"));
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
-        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(new MediaSearchResult(rootChildren));
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
 
         replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice);
 
@@ -115,7 +116,7 @@ public class ContentDirectoryServiceTest {
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
-        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(new MediaSearchResult(rootChildren));
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
 
         replay(mediaManager, streamingManager, remoteClientInfo);
 
@@ -200,7 +201,7 @@ public class ContentDirectoryServiceTest {
         children.add(dummyNode);
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id6", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id7", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(new MediaSearchResult(children)).atLeastOnce();
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
 
         replay(mediaManager, streamingManager, remoteClientInfo, dummyNode);
 

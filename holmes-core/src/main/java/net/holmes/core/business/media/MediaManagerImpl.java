@@ -23,7 +23,10 @@ import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.MediaDao;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MimeTypeNode;
+import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.event.MediaEvent;
 import org.slf4j.Logger;
@@ -100,7 +103,7 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public MediaSearchResult searchChildNodes(final MediaSearchRequest request) {
+    public Collection<AbstractNode> searchChildNodes(final MediaSearchRequest request) {
         List<AbstractNode> childNodes;
         RootNode rootNode = getById(request.getParentNode().getId());
         if (rootNode == ROOT) {
@@ -118,7 +121,7 @@ public final class MediaManagerImpl implements MediaManager {
             childNodes = mediaDao.getChildNodes(request.getParentNode().getId());
 
         // Filter child nodes according to available mime types
-        Collection<AbstractNode> result = Collections2.filter(childNodes, new Predicate<AbstractNode>() {
+        return Collections2.filter(childNodes, new Predicate<AbstractNode>() {
             /**
              * {@inheritDoc}
              */
@@ -129,7 +132,6 @@ public final class MediaManagerImpl implements MediaManager {
 
             }
         });
-        return new MediaSearchResult(result);
     }
 
     /**
@@ -160,8 +162,8 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
-            MediaSearchResult result = searchChildNodes(new MediaSearchRequest(node));
-            for (AbstractNode childNode : result.getChildNodes())
+            Collection<AbstractNode> result = searchChildNodes(new MediaSearchRequest(node));
+            for (AbstractNode childNode : result)
                 scanNode(childNode);
         }
     }

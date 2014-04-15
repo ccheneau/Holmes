@@ -84,13 +84,13 @@ public final class FolderNode extends AbstractNode {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                .add("path", path)
                 .add("id", id)
                 .add("type", type)
                 .add("parentId", parentId)
                 .add("name", name)
                 .add("modifiedDate", modifiedDate)
                 .add("iconUrl", iconUrl)
+                .add("path", path)
                 .toString();
     }
 }

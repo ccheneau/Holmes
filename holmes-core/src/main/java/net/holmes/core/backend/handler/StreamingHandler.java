@@ -22,7 +22,10 @@ import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.business.media.MediaManager;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.MediaSearchRequest;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
@@ -34,6 +37,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import java.util.Collection;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -192,9 +196,9 @@ public class StreamingHandler {
 
             if (node != null) {
                 // Get child nodes
-                MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
+                Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
                 // Build browse result
-                for (AbstractNode abstractNode : searchResult.getChildNodes())
+                for (AbstractNode abstractNode : searchResult)
                     if (abstractNode instanceof FolderNode)
                         result.getFolders().add(buildBrowseFolder(abstractNode));
                     else if (abstractNode instanceof ContentNode)

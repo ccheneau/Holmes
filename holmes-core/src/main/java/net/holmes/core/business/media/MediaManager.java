@@ -18,8 +18,8 @@
 package net.holmes.core.business.media;
 
 import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.media.model.MediaSearchRequest;
-import net.holmes.core.business.media.model.MediaSearchResult;
+
+import java.util.Collection;
 
 /**
  * Media manager.
@@ -47,7 +47,7 @@ public interface MediaManager {
      * @param request media search request
      * @return media search result
      */
-    MediaSearchResult searchChildNodes(MediaSearchRequest request);
+    Collection<AbstractNode> searchChildNodes(MediaSearchRequest request);
 
     /**
      * Clean up cache

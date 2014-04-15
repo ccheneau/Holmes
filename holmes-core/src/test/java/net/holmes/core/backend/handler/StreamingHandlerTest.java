@@ -22,7 +22,11 @@ import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.business.media.MediaManager;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.MediaSearchRequest;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.PodcastNode;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
@@ -32,6 +36,7 @@ import net.holmes.core.common.MimeType;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
@@ -266,7 +271,7 @@ public class StreamingHandlerTest {
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
         ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
-        MediaSearchResult searchResult = new MediaSearchResult(Lists.newArrayList(contentNode, folderNode));
+        Collection<AbstractNode> searchResult = Lists.newArrayList(contentNode, folderNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("0"))).andReturn(null).atLeastOnce();
@@ -297,7 +302,7 @@ public class StreamingHandlerTest {
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
-        MediaSearchResult searchResult = new MediaSearchResult(Lists.newArrayList(contentNode, folderNode, podcastNode));
+        Collection<AbstractNode> searchResult = Lists.newArrayList(contentNode, folderNode, podcastNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();

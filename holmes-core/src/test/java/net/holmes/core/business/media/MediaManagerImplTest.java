@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -209,11 +210,10 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(ROOT.getId(), ROOT.getParentId(), ROOT.getBundleKey()));
-        MediaSearchResult result = mediaManager.searchChildNodes(request);
+        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
-        assertNotNull(result.getChildNodes());
-        assertFalse(result.getChildNodes().isEmpty());
+        assertFalse(result.isEmpty());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }
@@ -232,11 +232,10 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getBundleKey()), Lists.newArrayList("video/avi"));
-        MediaSearchResult result = mediaManager.searchChildNodes(request);
+        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
-        assertNotNull(result.getChildNodes());
-        assertFalse(result.getChildNodes().isEmpty());
+        assertFalse(result.isEmpty());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }
@@ -265,12 +264,11 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode("folderId", "folderParentId", "folderName"), Lists.newArrayList("video/avi"));
-        MediaSearchResult result = mediaManager.searchChildNodes(request);
+        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
-        assertNotNull(result.getChildNodes());
-        assertFalse(result.getChildNodes().isEmpty());
-        assertEquals(2, result.getTotalCount());
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }

@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.media.model;
+package net.holmes.core.business.media;
+
+import net.holmes.core.business.media.model.AbstractNode;
 
 import java.util.List;
 

@@ -24,12 +24,12 @@ import com.google.common.base.Objects;
  */
 public abstract class AbstractNode implements Comparable<AbstractNode> {
 
-    final String id;
-    final String parentId;
-    final String name;
-    final NodeType type;
-    Long modifiedDate;
-    String iconUrl;
+    protected final String id;
+    protected final String parentId;
+    protected final String name;
+    protected final NodeType type;
+    protected Long modifiedDate;
+    protected String iconUrl;
 
     /**
      * Instantiates a new abstract node.

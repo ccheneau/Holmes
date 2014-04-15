@@ -21,6 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.MediaManager;
+import net.holmes.core.business.media.MediaSearchRequest;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
@@ -35,6 +36,7 @@ import org.fourthline.cling.support.model.SortCriterion;
 
 import javax.inject.Inject;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
@@ -92,9 +94,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
-            for (AbstractNode childNode : searchResult.getChildNodes())
-                addNode(objectID, childNode, result, searchResult.getTotalCount(), availableMimeTypes);
+            Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
+            for (AbstractNode childNode : searchResult)
+                addNode(objectID, childNode, result, searchResult.size(), availableMimeTypes);
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
@@ -136,9 +138,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 result.addItem(nodeId, (ContentNode) node, mediaManager.getNodeUrl(node));
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                MediaSearchResult searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
+                Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
                 // Add container to result
-                result.addContainer(nodeId, node, searchResult.getTotalCount());
+                result.addContainer(nodeId, node, searchResult.size());
             } else if (node instanceof PodcastNode) {
                 // Add podcast to result
                 result.addContainer(nodeId, node, 1);
