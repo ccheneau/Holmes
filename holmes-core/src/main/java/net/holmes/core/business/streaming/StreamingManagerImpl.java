@@ -90,9 +90,10 @@ public final class StreamingManagerImpl implements StreamingManager {
      */
     @Override
     public void removeDevice(final String deviceId) {
-        LOGGER.info("Remove device {}", deviceId);
-        deviceDao.removeDevice(deviceId);
-        sessionDao.removeDevice(deviceId);
+        if (deviceDao.removeDevice(deviceId)) {
+            LOGGER.info("Remove device {}", deviceId);
+            sessionDao.removeDevice(deviceId);
+        }
     }
 
     /**

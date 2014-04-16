@@ -23,8 +23,7 @@ import java.net.InetAddress;
 import java.util.Collection;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class DeviceDaoImplTest {
 
@@ -56,7 +55,8 @@ public class DeviceDaoImplTest {
 
         DeviceDaoImpl deviceDao = new DeviceDaoImpl();
         deviceDao.addDevice(device);
-        deviceDao.removeDevice("deviceId");
+        boolean removed = deviceDao.removeDevice("deviceId");
+        assertTrue(removed);
         assertEquals(0, deviceDao.getDevices().size());
 
         verify(device);
@@ -69,7 +69,8 @@ public class DeviceDaoImplTest {
         replay(device);
 
         DeviceDaoImpl deviceDao = new DeviceDaoImpl();
-        deviceDao.removeDevice("deviceId");
+        boolean removed = deviceDao.removeDevice("deviceId");
+        assertFalse(removed);
         assertEquals(0, deviceDao.getDevices().size());
 
         verify(device);

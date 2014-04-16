@@ -49,12 +49,14 @@ public final class DeviceDaoImpl implements DeviceDao {
      * {@inheritDoc}
      */
     @Override
-    public void removeDevice(final String deviceId) {
+    public boolean removeDevice(final String deviceId) {
         Device device = devices.get(deviceId);
         if (device != null) {
             device.close();
             devices.remove(deviceId);
+            return true;
         }
+        return false;
     }
 
     /**

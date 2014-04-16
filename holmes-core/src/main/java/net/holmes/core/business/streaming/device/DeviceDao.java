@@ -36,8 +36,9 @@ public interface DeviceDao {
      * Remove device.
      *
      * @param deviceId device to remove
+     * @return true if device was removed
      */
-    void removeDevice(String deviceId);
+    boolean removeDevice(String deviceId);
 
     /**
      * Get device.
