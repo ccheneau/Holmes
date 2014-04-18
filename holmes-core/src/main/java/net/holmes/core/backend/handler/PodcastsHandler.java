@@ -31,9 +31,7 @@ import static net.holmes.core.business.media.model.RootNode.PODCAST;
  * Handler for podcast REST requests.
  */
 @Path("/backend/podcasts")
-public final class PodcastsHandler {
-
-    private final BackendManager backendManager;
+public final class PodcastsHandler extends AbstractFolderHandler {
 
     /**
      * Instantiates a new podcasts handler.
@@ -42,7 +40,7 @@ public final class PodcastsHandler {
      */
     @Inject
     public PodcastsHandler(final BackendManager backendManager) {
-        this.backendManager = backendManager;
+        super(backendManager, PODCAST);
     }
 
     /**
@@ -53,7 +51,7 @@ public final class PodcastsHandler {
     @GET
     @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getPodcasts() {
-        return backendManager.getFolders(PODCAST);
+        return getFolders();
     }
 
     /**
@@ -66,7 +64,7 @@ public final class PodcastsHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder getPodcast(@PathParam("id") final String id) {
-        return backendManager.getFolder(id, PODCAST);
+        return getFolder(id);
     }
 
     /**
@@ -79,8 +77,7 @@ public final class PodcastsHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder addPodcast(final ConfigurationFolder folder) {
-        backendManager.addFolder(folder, PODCAST);
-        return folder;
+        return addFolder(folder);
     }
 
     /**
@@ -95,8 +92,7 @@ public final class PodcastsHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder editPodcast(@PathParam("id") final String id, final ConfigurationFolder folder) {
-        backendManager.editFolder(id, folder, PODCAST);
-        return folder;
+        return editFolder(id, folder);
     }
 
     /**
@@ -109,7 +105,6 @@ public final class PodcastsHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder removePodcast(@PathParam("id") final String id) {
-        backendManager.removeFolder(id, PODCAST);
-        return new ConfigurationFolder(id, null, null);
+        return removeFolder(id);
     }
 }

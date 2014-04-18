@@ -31,9 +31,7 @@ import static net.holmes.core.business.media.model.RootNode.AUDIO;
  * Handler for audio folders REST requests.
  */
 @Path("/backend/audioFolders")
-public final class AudioFoldersHandler {
-
-    private final BackendManager backendManager;
+public final class AudioFoldersHandler extends AbstractFolderHandler {
 
     /**
      * Instantiates a new audio folders handler.
@@ -42,7 +40,7 @@ public final class AudioFoldersHandler {
      */
     @Inject
     public AudioFoldersHandler(final BackendManager backendManager) {
-        this.backendManager = backendManager;
+        super(backendManager, AUDIO);
     }
 
     /**
@@ -53,7 +51,7 @@ public final class AudioFoldersHandler {
     @GET
     @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getAudioFolders() {
-        return backendManager.getFolders(AUDIO);
+        return getFolders();
     }
 
     /**
@@ -66,7 +64,7 @@ public final class AudioFoldersHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder getAudioFolder(@PathParam("id") final String id) {
-        return backendManager.getFolder(id, AUDIO);
+        return getFolder(id);
     }
 
     /**
@@ -79,8 +77,7 @@ public final class AudioFoldersHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder addAudioFolder(final ConfigurationFolder folder) {
-        backendManager.addFolder(folder, AUDIO);
-        return folder;
+        return addFolder(folder);
     }
 
     /**
@@ -95,8 +92,7 @@ public final class AudioFoldersHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder editAudioFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
-        backendManager.editFolder(id, folder, AUDIO);
-        return folder;
+        return editFolder(id, folder);
     }
 
     /**
@@ -109,7 +105,6 @@ public final class AudioFoldersHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder removeAudioFolder(@PathParam("id") final String id) {
-        backendManager.removeFolder(id, AUDIO);
-        return new ConfigurationFolder(id, null, null);
+        return removeFolder(id);
     }
 }

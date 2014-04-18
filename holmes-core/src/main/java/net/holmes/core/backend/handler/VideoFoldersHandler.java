@@ -31,9 +31,7 @@ import static net.holmes.core.business.media.model.RootNode.VIDEO;
  * Handler for video folders REST requests.
  */
 @Path("/backend/videoFolders")
-public final class VideoFoldersHandler {
-
-    private final BackendManager backendManager;
+public final class VideoFoldersHandler extends AbstractFolderHandler {
 
     /**
      * Instantiates a new video folders handler.
@@ -42,7 +40,7 @@ public final class VideoFoldersHandler {
      */
     @Inject
     public VideoFoldersHandler(final BackendManager backendManager) {
-        this.backendManager = backendManager;
+        super(backendManager, VIDEO);
     }
 
     /**
@@ -53,7 +51,7 @@ public final class VideoFoldersHandler {
     @GET
     @Produces(APPLICATION_JSON)
     public Collection<ConfigurationFolder> getVideoFolders() {
-        return backendManager.getFolders(VIDEO);
+        return getFolders();
     }
 
     /**
@@ -66,7 +64,7 @@ public final class VideoFoldersHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder getVideoFolder(@PathParam("id") final String id) {
-        return backendManager.getFolder(id, VIDEO);
+        return getFolder(id);
     }
 
     /**
@@ -79,8 +77,7 @@ public final class VideoFoldersHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder addVideoFolder(final ConfigurationFolder folder) {
-        backendManager.addFolder(folder, VIDEO);
-        return folder;
+        return addFolder(folder);
     }
 
     /**
@@ -95,8 +92,7 @@ public final class VideoFoldersHandler {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder editVideoFolder(@PathParam("id") final String id, final ConfigurationFolder folder) {
-        backendManager.editFolder(id, folder, VIDEO);
-        return folder;
+        return editFolder(id, folder);
     }
 
     /**
@@ -109,7 +105,6 @@ public final class VideoFoldersHandler {
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public ConfigurationFolder removeVideoFolder(@PathParam("id") final String id) {
-        backendManager.removeFolder(id, VIDEO);
-        return new ConfigurationFolder(id, null, null);
+        return removeFolder(id);
     }
 }
