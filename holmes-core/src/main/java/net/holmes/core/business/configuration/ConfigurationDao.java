@@ -35,12 +35,12 @@ public interface ConfigurationDao {
     void saveConfig() throws IOException;
 
     /**
-     * Gets the folders.
+     * Gets the configuration nodes.
      *
-     * @param folderRootNode folder root node
-     * @return folders
+     * @param rootNode root node
+     * @return configuration nodes
      */
-    List<ConfigurationNode> getFolders(RootNode folderRootNode);
+    List<ConfigurationNode> getNodes(RootNode rootNode);
 
     /**
      * Gets the boolean parameter.

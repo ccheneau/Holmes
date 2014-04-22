@@ -276,7 +276,7 @@ public class MediaManagerImplTest {
     public List<AbstractNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
         // Add folder nodes stored in configuration
         List<AbstractNode> nodes = Lists.newArrayList();
-        for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
+        for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
             nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
         }
         return nodes;

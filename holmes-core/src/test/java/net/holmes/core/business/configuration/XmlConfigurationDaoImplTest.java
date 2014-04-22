@@ -32,11 +32,11 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         try {
             XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getFolders(RootNode.AUDIO));
-            assertNotNull(configuration.getFolders(RootNode.VIDEO));
-            assertNotNull(configuration.getFolders(RootNode.PICTURE));
-            assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
+            assertNotNull(configuration.getNodes(RootNode.AUDIO));
+            assertNotNull(configuration.getNodes(RootNode.VIDEO));
+            assertNotNull(configuration.getNodes(RootNode.PICTURE));
+            assertNotNull(configuration.getNodes(RootNode.PODCAST));
+            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -47,11 +47,11 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
         try {
             XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getFolders(RootNode.AUDIO));
-            assertNotNull(configuration.getFolders(RootNode.VIDEO));
-            assertNotNull(configuration.getFolders(RootNode.PICTURE));
-            assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
+            assertNotNull(configuration.getNodes(RootNode.AUDIO));
+            assertNotNull(configuration.getNodes(RootNode.VIDEO));
+            assertNotNull(configuration.getNodes(RootNode.PICTURE));
+            assertNotNull(configuration.getNodes(RootNode.PODCAST));
+            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -62,11 +62,11 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
         try {
             XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getFolders(RootNode.AUDIO));
-            assertNotNull(configuration.getFolders(RootNode.VIDEO));
-            assertNotNull(configuration.getFolders(RootNode.PICTURE));
-            assertNotNull(configuration.getFolders(RootNode.PODCAST));
-            assertTrue(configuration.getFolders(RootNode.ROOT).isEmpty());
+            assertNotNull(configuration.getNodes(RootNode.AUDIO));
+            assertNotNull(configuration.getNodes(RootNode.VIDEO));
+            assertNotNull(configuration.getNodes(RootNode.PICTURE));
+            assertNotNull(configuration.getNodes(RootNode.PODCAST));
+            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
         } catch (IOException e) {
             fail(e.getMessage());
         }

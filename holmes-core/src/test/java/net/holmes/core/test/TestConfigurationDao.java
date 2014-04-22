@@ -77,7 +77,7 @@ public class TestConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ConfigurationNode> getFolders(RootNode rootNode) {
+    public List<ConfigurationNode> getNodes(RootNode rootNode) {
         List<ConfigurationNode> folders;
         switch (rootNode) {
             case AUDIO:

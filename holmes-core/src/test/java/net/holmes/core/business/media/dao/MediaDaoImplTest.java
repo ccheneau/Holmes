@@ -148,7 +148,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoNode.getPath(), "name", VIDEO.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
@@ -170,7 +170,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoNode.getPath(), null, VIDEO.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
@@ -192,7 +192,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFilePath = Paths.get(videoNode.getPath(), "video.avi");
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoFilePath.toFile().getPath(), videoFilePath.toFile().getName(), VIDEO.isLocalPath(), true);
@@ -216,7 +216,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFilePath = Paths.get(videoNode.getPath(), "video.avi");
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoFilePath.toFile().getPath(), videoFilePath.toFile().getName(), VIDEO.isLocalPath(), true);
@@ -257,7 +257,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode podcastNode = configurationDao.getFolders(PODCAST).get(0);
+        ConfigurationNode podcastNode = configurationDao.getNodes(PODCAST).get(0);
         MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, podcastNode.getPath(), podcastNode.getLabel(), PODCAST.isLocalPath(), true);
 
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(podcastElement);
@@ -343,7 +343,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "subFolder");
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoFolderPath.toFile().getPath(), videoFolderPath.toFile().getName(), VIDEO.isLocalPath(), true);
@@ -370,7 +370,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "video.avi");
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoFolderPath.toFile().getPath(), videoFolderPath.toFile().getName(), VIDEO.isLocalPath(), true);
@@ -393,7 +393,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        ConfigurationNode videoNode = configurationDao.getFolders(VIDEO).get(0);
+        ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "subFolder");
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_AUDIO.getValue(), "video/avi", videoFolderPath.toFile().getPath(), videoFolderPath.toFile().getName(), VIDEO.isLocalPath(), true);

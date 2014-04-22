@@ -119,26 +119,26 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ConfigurationNode> getFolders(final RootNode folderRootNode) {
-        List<ConfigurationNode> folders;
-        switch (folderRootNode) {
+    public List<ConfigurationNode> getNodes(final RootNode rootNode) {
+        List<ConfigurationNode> nodes;
+        switch (rootNode) {
             case AUDIO:
-                folders = this.rootNode.getAudioFolders();
+                nodes = this.rootNode.getAudioFolders();
                 break;
             case PICTURE:
-                folders = this.rootNode.getPictureFolders();
+                nodes = this.rootNode.getPictureFolders();
                 break;
             case PODCAST:
-                folders = this.rootNode.getPodcasts();
+                nodes = this.rootNode.getPodcasts();
                 break;
             case VIDEO:
-                folders = this.rootNode.getVideoFolders();
+                nodes = this.rootNode.getVideoFolders();
                 break;
             default:
-                folders = Lists.newArrayList();
+                nodes = Lists.newArrayList();
                 break;
         }
-        return folders;
+        return nodes;
     }
 
     /**

@@ -169,7 +169,7 @@ public class MediaDaoImpl implements MediaDao {
         switch (rootNode) {
             case PODCAST:
                 // Add podcast nodes stored in configuration
-                for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
+                for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
                     // Add node to mediaIndex
                     mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                     // Add child node
@@ -189,7 +189,7 @@ public class MediaDaoImpl implements MediaDao {
                 break;
             default:
                 // Add folder nodes stored in configuration
-                for (ConfigurationNode configNode : configurationDao.getFolders(rootNode)) {
+                for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
                     NodeFile file = new NodeFile(configNode.getPath());
                     // Add node to mediaIndex
                     mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
