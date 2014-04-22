@@ -51,9 +51,7 @@ public class ConfigurationEvent {
      * @param type event type
      */
     public ConfigurationEvent(final EventType type) {
-        this.type = type;
-        this.node = null;
-        this.rootNode = NONE;
+        this(type, null, NONE);
     }
 
     public EventType getType() {
