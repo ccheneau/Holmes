@@ -190,11 +190,10 @@ public class MediaDaoImpl implements MediaDao {
             default:
                 // Add folder nodes stored in configuration
                 for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
-                    NodeFile file = new NodeFile(configNode.getPath());
                     // Add node to mediaIndex
                     mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                     // Add child node
-                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), file));
+                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new NodeFile(configNode.getPath())));
                 }
                 break;
         }
@@ -317,7 +316,7 @@ public class MediaDaoImpl implements MediaDao {
          * Instantiates a new podcast cache callable.
          *
          * @param podcastId  podcast id
-         * @param podcastUrl podcast url
+         * @param podcastUrl podcast URL
          */
         PodcastCacheCallable(final String podcastId, final String podcastUrl) {
             this.podcastId = podcastId;
@@ -333,9 +332,8 @@ public class MediaDaoImpl implements MediaDao {
             // First remove children from media index
             mediaIndexDao.removeChildren(podcastId);
 
-            final List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
-            // Parse podcast
-            new PodcastParser() {
+            // Then parse podcast
+            return new PodcastParser() {
                 /**
                  * {@inheritDoc}
                  */
@@ -344,17 +342,7 @@ public class MediaDaoImpl implements MediaDao {
                     // Add element to media index
                     return mediaIndexDao.add(mediaIndexElement);
                 }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void addPodcastEntryNode(RawUrlNode podcastEntryNode) {
-                    // Add podcast entry node
-                    podcastEntryNodes.add(podcastEntryNode);
-                }
             }.parse(podcastUrl, podcastId);
-            return podcastEntryNodes;
         }
     }
 }

@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.media.dao;
 
+import com.google.common.collect.Lists;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
@@ -26,6 +27,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
+import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
 
@@ -41,10 +43,17 @@ import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
  */
 abstract class PodcastParser {
     /**
-     * Parse podcast
+     * Parse podcast.
+     *
+     * @param podcastUrl podcast URL
+     * @param podcastId  podcast id
+     * @return list of podcast entry nodes
+     * @throws IOException
+     * @throws FeedException
      */
     @SuppressWarnings("unchecked")
-    public void parse(String podcastUrl, String podcastId) throws IOException, FeedException {
+    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws IOException, FeedException {
+        List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
@@ -62,11 +71,12 @@ abstract class PodcastParser {
                         podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
 
                         // Add podcast entry node
-                        addPodcastEntryNode(podcastEntryNode);
+                        podcastEntryNodes.add(podcastEntryNode);
                     }
                 }
             }
         }
+        return podcastEntryNodes;
     }
 
     /**
@@ -76,13 +86,6 @@ abstract class PodcastParser {
      * @return index element id
      */
     public abstract String addMediaIndexElement(final MediaIndexElement mediaIndexElement);
-
-    /**
-     * Add podcast entry node.
-     *
-     * @param podcastEntryNode new podcast entry node
-     */
-    public abstract void addPodcastEntryNode(final RawUrlNode podcastEntryNode);
 
     /**
      * Get RSS entry duration.
