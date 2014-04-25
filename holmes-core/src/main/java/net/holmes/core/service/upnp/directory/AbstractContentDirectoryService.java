@@ -29,6 +29,7 @@ import org.fourthline.cling.support.model.SortCriterion;
 
 import java.util.List;
 
+import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA;
 
 /**
@@ -118,8 +119,11 @@ public abstract class AbstractContentDirectoryService {
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
             @UpnpInputArgument(name = "SortCriteria") String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
-
-        return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
+        try {
+            return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
+        } catch (Exception e) {
+            throw new ContentDirectoryException(ACTION_FAILED.getCode(), e.getMessage(), e);
+        }
     }
 
     /**
@@ -139,7 +143,7 @@ public abstract class AbstractContentDirectoryService {
      * Implement this method to implement searching of your content.
      */
     public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
-                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
+                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws Exception;
 
     /**
      * Get sort criteria

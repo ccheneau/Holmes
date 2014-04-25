@@ -26,7 +26,6 @@ import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.test.TestConfigurationDao;
 import org.fourthline.cling.model.message.Connection;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -42,6 +41,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
+import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.business.configuration.Parameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
@@ -62,7 +63,7 @@ public class ContentDirectoryServiceTest {
     }
 
     @Test
-    public void testSearch() throws ContentDirectoryException {
+    public void testSearch() throws Exception {
         ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
         BrowseResult result = contentDirectoryService.search("0", "", "", 0l, 1l, SortCriterion.valueOf("+name"), null);
         assertNotNull(result);
@@ -70,7 +71,7 @@ public class ContentDirectoryServiceTest {
 
     @Test
     public void testBrowseMetadata() throws ContentDirectoryException {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
         RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
@@ -92,18 +93,53 @@ public class ContentDirectoryServiceTest {
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
+        expect(configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE)).andReturn(true);
 
-        replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice);
+        replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
 
         BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
         assertNotNull(result);
 
-        verify(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice);
+        verify(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
+    }
+
+    @Test
+    public void testBrowseMetadataNoSubtitle() throws ContentDirectoryException {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        MediaManager mediaManager = createMock(MediaManager.class);
+        StreamingManager streamingManager = createMock(StreamingManager.class);
+        RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
+        Connection connection = createMock(Connection.class);
+        InetAddress inetAddress = createMock(InetAddress.class);
+        UpnpDevice upnpDevice = createMock(UpnpDevice.class);
+        AirplayDevice airplayDevice = createMock(AirplayDevice.class);
+
+        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
+        contentDirectoryService.setConfigurationDao(configurationDao);
+        contentDirectoryService.setMediaManager(mediaManager);
+        contentDirectoryService.setStreamingManager(streamingManager);
+
+        expect(remoteClientInfo.getConnection()).andReturn(connection);
+        expect(remoteClientInfo.getRemoteAddress()).andReturn(inetAddress);
+        expect(inetAddress.getHostAddress()).andReturn("localhost");
+        expect(streamingManager.findDevices(eq("localhost"))).andReturn(Lists.newArrayList(upnpDevice, airplayDevice));
+        expect(upnpDevice.getSupportedMimeTypes()).andReturn(Lists.newArrayList("video/avi"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
+        expect(configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE)).andReturn(false);
+
+        replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
+
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+        assertNotNull(result);
+
+        verify(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
     }
 
     @Test
     public void testBrowseMetadataBadClientInfo() throws ContentDirectoryException {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
         RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
@@ -118,17 +154,17 @@ public class ContentDirectoryServiceTest {
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
 
-        replay(mediaManager, streamingManager, remoteClientInfo);
+        replay(mediaManager, streamingManager, remoteClientInfo, configurationDao);
 
         BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
         assertNotNull(result);
 
-        verify(mediaManager, streamingManager, remoteClientInfo);
+        verify(mediaManager, streamingManager, remoteClientInfo, configurationDao);
     }
 
     @Test(expected = ContentDirectoryException.class)
     public void testBrowseUnknownNode() throws ContentDirectoryException {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
         RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
@@ -140,19 +176,19 @@ public class ContentDirectoryServiceTest {
 
         expect(mediaManager.getNode(eq("0"))).andReturn(null);
 
-        replay(mediaManager, streamingManager, remoteClientInfo);
+        replay(mediaManager, streamingManager, remoteClientInfo, configurationDao);
 
         try {
             BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
             assertNotNull(result);
         } finally {
-            verify(mediaManager, streamingManager, remoteClientInfo);
+            verify(mediaManager, streamingManager, remoteClientInfo, configurationDao);
         }
     }
 
     @Test
     public void testBrowseNoBrowseFlag() throws ContentDirectoryException {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
         RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
@@ -165,17 +201,17 @@ public class ContentDirectoryServiceTest {
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
 
-        replay(mediaManager, streamingManager, remoteClientInfo);
+        replay(mediaManager, streamingManager, remoteClientInfo, configurationDao);
 
         BrowseResult result = contentDirectoryService.browse("0", null, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
         assertNotNull(result);
 
-        verify(mediaManager, streamingManager, remoteClientInfo);
+        verify(mediaManager, streamingManager, remoteClientInfo, configurationDao);
     }
 
     @Test
     public void testBrowseDirectChildren() throws ContentDirectoryException, IOException {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
         RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
@@ -188,6 +224,7 @@ public class ContentDirectoryServiceTest {
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("url");
+        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         List<AbstractNode> children = Lists.newArrayList();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
@@ -203,12 +240,71 @@ public class ContentDirectoryServiceTest {
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id7", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
 
-        replay(mediaManager, streamingManager, remoteClientInfo, dummyNode);
+        replay(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationDao);
 
         BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
         assertNotNull(result);
 
-        verify(mediaManager, streamingManager, remoteClientInfo, dummyNode);
+        verify(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationDao);
+    }
+
+    @Test
+    public void testBrowseDirectChildrenWithManyPodcast() throws ContentDirectoryException, IOException {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        MediaManager mediaManager = createMock(MediaManager.class);
+        StreamingManager streamingManager = createMock(StreamingManager.class);
+        RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
+
+        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
+        contentDirectoryService.setConfigurationDao(configurationDao);
+        contentDirectoryService.setMediaManager(mediaManager);
+        contentDirectoryService.setStreamingManager(streamingManager);
+
+        expect(remoteClientInfo.getConnection()).andReturn(null);
+        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
+
+        MimeType mimeType = MimeType.valueOf("video/avi");
+        List<AbstractNode> children = Lists.newArrayList();
+        for (int i = 0; i <= 101; i++) {
+            children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id" + i, "parentId", "name", mimeType, "url", "duration"));
+        }
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
+
+        replay(mediaManager, streamingManager, remoteClientInfo, configurationDao);
+
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
+        assertNotNull(result);
+
+        verify(mediaManager, streamingManager, remoteClientInfo, configurationDao);
+    }
+
+    @Test
+    public void testBrowseDirectChildrenNoPodcastPrependEntryName() throws ContentDirectoryException, IOException {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        MediaManager mediaManager = createMock(MediaManager.class);
+        StreamingManager streamingManager = createMock(StreamingManager.class);
+        RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
+
+        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
+        contentDirectoryService.setConfigurationDao(configurationDao);
+        contentDirectoryService.setMediaManager(mediaManager);
+        contentDirectoryService.setStreamingManager(streamingManager);
+
+        expect(remoteClientInfo.getConnection()).andReturn(null);
+        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
+
+        List<AbstractNode> children = Lists.newArrayList();
+        children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
+        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
+
+        replay(mediaManager, streamingManager, remoteClientInfo, configurationDao);
+
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
+        assertNotNull(result);
+
+        verify(mediaManager, streamingManager, remoteClientInfo, configurationDao);
     }
 
 }

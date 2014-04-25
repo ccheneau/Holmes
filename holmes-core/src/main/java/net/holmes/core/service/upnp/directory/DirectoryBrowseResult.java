@@ -97,12 +97,13 @@ final class DirectoryBrowseResult {
     /**
      * Build browse result.
      *
+     * @param didlParser DIDL parser
      * @return browse result
      * @throws ContentDirectoryException
      */
-    public BrowseResult buildBrowseResult() throws ContentDirectoryException {
+    public BrowseResult buildBrowseResult(DIDLParser didlParser) throws ContentDirectoryException {
         try {
-            return new BrowseResult(new DIDLParser().generate(didl), itemCount, totalCount);
+            return new BrowseResult(didlParser.generate(didl), itemCount, totalCount);
         } catch (Exception e) {
             throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
         }

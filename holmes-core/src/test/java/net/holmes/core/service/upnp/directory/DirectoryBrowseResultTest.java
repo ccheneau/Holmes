@@ -22,6 +22,7 @@ import net.holmes.core.business.media.model.FolderNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
+import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -188,6 +189,11 @@ public class DirectoryBrowseResultTest {
         assertEquals(directoryBrowseResult.getTotalCount(), 2);
     }
 
+    @Test(expected = ContentDirectoryException.class)
+    public void testBuildResultWithNoParser() throws ContentDirectoryException {
+        new DirectoryBrowseResult(0, 0).buildBrowseResult(null);
+    }
+
     @Test
     public void testFilterResultNoMaxResult() throws IOException, ContentDirectoryException {
         File file = File.createTempFile(testName.getMethodName(), "avi");
@@ -204,7 +210,7 @@ public class DirectoryBrowseResultTest {
         assertEquals(directoryBrowseResult.getItemCount(), 1);
         assertEquals(directoryBrowseResult.getResultCount(), 1);
         assertEquals(directoryBrowseResult.getDidl().getCount(), 1);
-        assertNotNull(directoryBrowseResult.buildBrowseResult());
+        assertNotNull(directoryBrowseResult.buildBrowseResult(new DIDLParser()));
 
         assertTrue(directoryBrowseResult.acceptNode());
         assertEquals(directoryBrowseResult.getTotalCount(), 2);
