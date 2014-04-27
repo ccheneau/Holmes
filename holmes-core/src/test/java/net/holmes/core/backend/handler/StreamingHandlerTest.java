@@ -211,10 +211,7 @@ public class StreamingHandlerTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
 
-        StreamingSession session = new StreamingSession();
-        session.setContentName("contentName");
-        session.setDuration(1l);
-        session.setPosition(0l);
+        StreamingSession session = new StreamingSession("contentName", "contentUrl");
         expect(streamingManager.getSession(eq("deviceId"))).andReturn(session).atLeastOnce();
 
         replay(mediaManager, streamingManager);

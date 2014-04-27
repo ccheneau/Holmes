@@ -23,11 +23,22 @@ import com.google.common.base.Objects;
  * Streaming session
  */
 public final class StreamingSession {
-    private SessionStatus status;
-    private String contentUrl;
-    private String contentName;
-    private Long duration;
-    private Long position;
+    private final String contentName;
+    private final String contentUrl;
+    private SessionStatus status = SessionStatus.WAITING;
+    private Long duration = 0l;
+    private Long position = 0l;
+
+    /**
+     * Instantiates a new streaming session
+     *
+     * @param contentName content name
+     * @param contentUrl  content URL
+     */
+    public StreamingSession(final String contentName, final String contentUrl) {
+        this.contentName = contentName;
+        this.contentUrl = contentUrl;
+    }
 
     public SessionStatus getStatus() {
         return status;
@@ -41,16 +52,8 @@ public final class StreamingSession {
         return contentUrl;
     }
 
-    public void setContentUrl(String contentUrl) {
-        this.contentUrl = contentUrl;
-    }
-
     public String getContentName() {
         return contentName;
-    }
-
-    public void setContentName(String contentName) {
-        this.contentName = contentName;
     }
 
     public Long getDuration() {

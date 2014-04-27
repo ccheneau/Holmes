@@ -21,7 +21,6 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-import static net.holmes.core.business.streaming.session.SessionStatus.WAITING;
 
 /**
  * Streaming session dao implementation.
@@ -41,13 +40,7 @@ public final class SessionDaoImpl implements SessionDao {
      */
     @Override
     public void initSession(final String deviceId, final String contentUrl, final String contentName) {
-        StreamingSession session = new StreamingSession();
-        session.setContentUrl(contentUrl);
-        session.setContentName(contentName);
-        session.setStatus(WAITING);
-        session.setPosition(0l);
-        session.setDuration(0l);
-        sessions.put(deviceId, session);
+        sessions.put(deviceId, new StreamingSession(contentName, contentUrl));
     }
 
     /**
@@ -68,7 +61,7 @@ public final class SessionDaoImpl implements SessionDao {
 
         // If duration is already set and end of streaming is reached, update session's status
         if (session.getDuration() > 0 && (position >= duration || duration == 0))
-            session.setStatus(WAITING);
+            session.setStatus(SessionStatus.WAITING);
 
         // Update position and duration
         session.setPosition(position);
