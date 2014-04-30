@@ -107,11 +107,11 @@ public final class AirplayServer implements Service {
                         streamingManager.addDevice(buildDevice(event.getInfo()));
                     }
                 });
+                LOGGER.info("Airplay server started");
 
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }
-            LOGGER.info("Airplay server started");
         }
     }
 

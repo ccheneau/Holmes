@@ -141,11 +141,14 @@ public final class HttpServer implements Service {
      */
     @Override
     public void stop() {
+        // Stop HTTP server
         LOGGER.info("Stopping HTTP server");
 
-        // Stop the server
+        // Stop Netty event executors
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
+
+        // Stop resteasy
         deployment.stop();
 
         LOGGER.info("HTTP server stopped");
