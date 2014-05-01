@@ -23,7 +23,7 @@ import net.holmes.core.common.MimeType;
 import org.fourthline.cling.model.meta.RemoteService;
 
 import java.net.InetAddress;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Upnp streaming device.
@@ -44,7 +44,7 @@ public class UpnpDevice extends Device {
      * @param supportedMimeTypes list of supported mime types
      * @param avTransportService AV transport service
      */
-    public UpnpDevice(final String id, final String name, final InetAddress hostAddress, final List<String> supportedMimeTypes, final RemoteService avTransportService) {
+    public UpnpDevice(final String id, final String name, final InetAddress hostAddress, final Collection<String> supportedMimeTypes, final RemoteService avTransportService) {
         super(id, name, hostAddress, supportedMimeTypes);
         this.avTransportService = avTransportService;
         if (supportedMimeTypes != null)

@@ -17,7 +17,7 @@
 
 package net.holmes.core.service.upnp;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
+import java.util.Set;
 
 import static net.holmes.core.business.configuration.Parameter.UPNP_ENABLE;
 import static net.holmes.core.common.UpnpUtils.getDeviceName;
@@ -152,9 +152,9 @@ public final class UpnpServer implements Service {
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
-                            List<String> availableMimeTypes = Lists.newArrayList();
+                            Set<String> availableMimeTypes = Sets.newHashSet();
                             for (ProtocolInfo protocolInfo : sinkProtocolInfo)
-                                if (protocolInfo.getProtocol() == HTTP_GET && !availableMimeTypes.contains(protocolInfo.getContentFormat()))
+                                if (protocolInfo.getProtocol() == HTTP_GET)
                                     availableMimeTypes.add(protocolInfo.getContentFormat());
 
                             // Add device

@@ -19,7 +19,7 @@ package net.holmes.core.business.mimetype;
 
 import net.holmes.core.common.MimeType;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Mime type manager.
@@ -41,5 +41,5 @@ public interface MimeTypeManager {
      * @param availableMimeTypes list of available mime types
      * @return true if mime type is compliant
      */
-    boolean isMimeTypeCompliant(MimeType mimeType, List<String> availableMimeTypes);
+    boolean isMimeTypeCompliant(MimeType mimeType, Collection<String> availableMimeTypes);
 }

@@ -21,7 +21,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 
-import java.util.List;
+import java.util.Collection;
 
 import static net.holmes.core.common.MediaType.*;
 
@@ -31,7 +31,7 @@ import static net.holmes.core.common.MediaType.*;
 public final class MimeType {
     public static final MimeType MIME_TYPE_SUBTITLE = new MimeType("application/x-subrip");
     public static final MimeType MIME_TYPE_OGG = new MimeType("application/ogg");
-    
+
     private final MediaType type;
     private final String subType;
     private final String mimeType;
@@ -109,7 +109,7 @@ public final class MimeType {
      * @param availableMimeTypes available mime types
      * @return true is mime type is compliant
      */
-    public boolean isCompliant(final List<String> availableMimeTypes) {
+    public boolean isCompliant(final Collection<String> availableMimeTypes) {
         if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType))
             return true;
         else

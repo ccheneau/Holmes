@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Collection;
 import java.util.Properties;
 
 /**
@@ -64,7 +64,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
      * {@inheritDoc}
      */
     @Override
-    public boolean isMimeTypeCompliant(final MimeType mimeType, final List<String> availableMimeTypes) {
+    public boolean isMimeTypeCompliant(final MimeType mimeType, final Collection<String> availableMimeTypes) {
         MimeType aliasMimeType = getAliasMimeType(mimeType);
         return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType())
                 || mimeType.isCompliant(availableMimeTypes)

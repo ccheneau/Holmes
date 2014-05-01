@@ -18,7 +18,7 @@
 package net.holmes.core.business.streaming.device;
 
 import java.net.InetAddress;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Streaming device
@@ -27,7 +27,7 @@ public abstract class Device {
     protected final String id;
     protected final String name;
     protected final InetAddress address;
-    protected final List<String> supportedMimeTypes;
+    protected final Collection<String> supportedMimeTypes;
 
     /**
      * Instantiates a new device
@@ -37,7 +37,7 @@ public abstract class Device {
      * @param address            device inet address
      * @param supportedMimeTypes supported mime types
      */
-    protected Device(final String id, final String name, final InetAddress address, final List<String> supportedMimeTypes) {
+    protected Device(final String id, final String name, final InetAddress address, final Collection<String> supportedMimeTypes) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -76,7 +76,7 @@ public abstract class Device {
      *
      * @return list of supported mime type
      */
-    public List<String> getSupportedMimeTypes() {
+    public Collection<String> getSupportedMimeTypes() {
         return supportedMimeTypes;
     }
 
