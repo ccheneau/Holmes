@@ -59,6 +59,7 @@ public final class HttpServer implements Service {
     private static final int MAX_HEADER_SIZE = 8192;
     private static final int MAX_CHUNK_SIZE = 8192;
     private static final int BACKLOG = 128;
+    private static final String RESTEASY_MAPPING_PREFIX = "/";
 
     private final Injector injector;
     private final ConfigurationDao configurationDao;
@@ -106,19 +107,19 @@ public final class HttpServer implements Service {
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();
                         // Add default handlers
-                        pipeline.addLast("decoder", new HttpRequestDecoder(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE, MAX_CHUNK_SIZE, false));
-                        pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
-                        pipeline.addLast("encoder", new HttpResponseEncoder());
-                        pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
+                        pipeline.addLast("decoder", new HttpRequestDecoder(MAX_INITIAL_LINE_LENGTH, MAX_HEADER_SIZE, MAX_CHUNK_SIZE, false))
+                                .addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH))
+                                .addLast("encoder", new HttpResponseEncoder())
+                                .addLast("chunkedWriter", new ChunkedWriteHandler());
 
                         // Add HTTP file request handlers
-                        pipeline.addLast("httpFileRequestDecoder", injector.getInstance(HttpFileRequestDecoder.class));
-                        pipeline.addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class));
+                        pipeline.addLast("httpFileRequestDecoder", injector.getInstance(HttpFileRequestDecoder.class))
+                                .addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class));
 
                         // Add RestEasy handlers
-                        pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), "", HTTP));
-                        pipeline.addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher));
-                        pipeline.addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
+                        pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), RESTEASY_MAPPING_PREFIX, HTTP))
+                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))
+                                .addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
                     }
                 })
                 .option(SO_BACKLOG, BACKLOG)
