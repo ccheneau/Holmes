@@ -33,7 +33,6 @@ import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.MediaType;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.common.NodeFile;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -50,6 +49,7 @@ import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_IC
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
 import static net.holmes.core.business.media.model.RootNode.ICECAST;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
+import static net.holmes.core.common.FileUtils.*;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -149,9 +149,7 @@ public class MediaDaoImpl implements MediaDao {
                     break;
                 default:
                     // Get folder child nodes
-                    NodeFile node = new NodeFile(indexElement.getPath());
-                    if (node.isValidDirectory())
-                        childNodes.addAll(getFolderChildNodes(parentNodeId, node, mediaType));
+                    childNodes.addAll(getFolderChildNodes(parentNodeId, indexElement.getPath(), mediaType));
                     break;
             }
         } else
@@ -193,7 +191,7 @@ public class MediaDaoImpl implements MediaDao {
                     // Add node to mediaIndex
                     mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                     // Add child node
-                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new NodeFile(configNode.getPath())));
+                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
                 }
                 break;
         }
@@ -219,13 +217,13 @@ public class MediaDaoImpl implements MediaDao {
      */
     private AbstractNode getFileNode(String nodeId, MediaIndexElement indexElement, MediaType mediaType) {
         AbstractNode node = null;
-        NodeFile nodeFile = new NodeFile(indexElement.getPath());
-        if (nodeFile.isValidFile()) {
+        File nodeFile = new File(indexElement.getPath());
+        if (isValidFile(nodeFile)) {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
             if (mimeType != null)
                 node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
-        } else if (nodeFile.isValidDirectory()) {
+        } else if (isValidDirectory(nodeFile)) {
             // Folder node
             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
             node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
@@ -236,14 +234,14 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Get children of a folder node.
      *
-     * @param parentId  parent node id
-     * @param folder    folder
-     * @param mediaType media type
+     * @param parentId   parent node id
+     * @param folderPath folder path
+     * @param mediaType  media type
      * @return folder child nodes matching media type
      */
-    private List<AbstractNode> getFolderChildNodes(final String parentId, final NodeFile folder, final MediaType mediaType) {
+    private List<AbstractNode> getFolderChildNodes(final String parentId, final String folderPath, final MediaType mediaType) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        for (File file : folder.listChildFiles(true)) {
+        for (File file : listChildren(folderPath, true)) {
             // Add node to mediaIndex
             if (file.isDirectory()) {
                 // Add folder node

@@ -26,7 +26,6 @@ import net.holmes.core.backend.response.Settings;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
-import net.holmes.core.common.NodeFile;
 import net.holmes.core.common.event.ConfigurationEvent;
 
 import javax.inject.Inject;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static net.holmes.core.business.configuration.Parameter.*;
+import static net.holmes.core.common.FileUtils.isValidDirectory;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 
@@ -199,7 +199,7 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(folder.getPath(), "backend.folder.path.error");
 
         // Check folder path exists
-        if (!(new NodeFile(folder.getPath()).isValidDirectory()))
+        if (!isValidDirectory(folder.getPath()))
             throw new BackendException("backend.folder.path.unknown.error");
 
         // Check for duplication

@@ -26,8 +26,8 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.common.NodeFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
@@ -45,6 +45,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
+import static net.holmes.core.common.FileUtils.isValidFile;
 
 /**
  * Http file request handler.
@@ -61,8 +62,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     @Override
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
-        NodeFile file = request.getNodeFile();
-        if (!file.isValidFile()) throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
+        File file = request.getFile();
+        if (!isValidFile(file)) throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
 
         // Get file descriptor
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
@@ -170,7 +171,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      *
      * @param response HTTP response
      */
-    private void addDateHeader(final HttpResponse response, final NodeFile file) {
+    private void addDateHeader(final HttpResponse response, final File file) {
         // Add date header
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));

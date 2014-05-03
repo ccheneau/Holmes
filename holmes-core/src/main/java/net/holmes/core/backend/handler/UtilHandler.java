@@ -21,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.version.ReleaseInfo;
 import net.holmes.core.business.version.VersionManager;
-import net.holmes.core.common.NodeFile;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -31,6 +30,7 @@ import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static net.holmes.core.common.FileUtils.listChildren;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
@@ -100,10 +100,8 @@ public final class UtilHandler {
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
         } else {
             // Get child folders
-            NodeFile parentDirectory = new NodeFile(parentPath);
-            if (parentDirectory.canRead())
-                for (File childDir : parentDirectory.listChildFiles(false))
-                    folders.add(new Folder(childDir.getName(), childDir.getAbsolutePath()));
+            for (File child : listChildren(parentPath, false))
+                folders.add(new Folder(child.getName(), child.getAbsolutePath()));
         }
         return folders;
     }
