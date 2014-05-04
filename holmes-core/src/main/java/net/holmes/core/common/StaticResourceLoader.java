@@ -35,6 +35,9 @@ public final class StaticResourceLoader {
     private static final int ICON_DEPTH = 8;
     private static final String ICON_MIME_TYPE = "image/png";
 
+    /**
+     * Private constructor
+     */
     private StaticResourceLoader() {
     }
 
@@ -74,9 +77,9 @@ public final class StaticResourceLoader {
      * Static resources directory.
      */
     public enum StaticResourceDir {
-
         UPNP("upnp"), //
         SYSTRAY("systray");
+
         private final String value;
 
         /**
