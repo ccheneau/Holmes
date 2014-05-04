@@ -25,12 +25,16 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.common.MimeType;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,6 +48,7 @@ import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
+import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_CACHE_SECOND;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 import static net.holmes.core.common.FileUtils.isValidFile;
 
@@ -55,6 +60,17 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
     private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
     private static final int CHUNK_SIZE = 8192;
+    private final int httpCacheSecond;
+
+    /**
+     * Instantiates a new Http file request handler.
+     *
+     * @param configurationDao configuration DAO
+     */
+    @Inject
+    public HttpFileRequestHandler(ConfigurationDao configurationDao) {
+        httpCacheSecond = configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND);
+    }
 
     /**
      * {@inheritDoc}
@@ -77,7 +93,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
 
         // Add http headers to response
         addContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        addDateHeader(response, file);
+        addDateHeader(response, file, request.isStaticFile());
         boolean keepAlive = addKeepAliveHeader(response, request.getHttpRequest());
 
         // Write the response
@@ -169,13 +185,25 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     /**
      * Add date header.
      *
-     * @param response HTTP response
+     * @param response   HTTP response
+     * @param file       requested file
+     * @param staticFile whether file is a static resource
      */
-    private void addDateHeader(final HttpResponse response, final File file) {
-        // Add date header
+    private void addDateHeader(final HttpResponse response, final File file, final boolean staticFile) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
-        response.headers().set(DATE, dateFormatter.format(file.lastModified()));
+        Calendar time = Calendar.getInstance();
+
+        // Add date header
+        response.headers().set(DATE, dateFormatter.format(time.getTime()));
+        response.headers().set(LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
+
+        // Add cache header for static resources
+        if (staticFile && httpCacheSecond > 0) {
+            time.add(Calendar.SECOND, httpCacheSecond);
+            response.headers().set(EXPIRES, dateFormatter.format(time.getTime()));
+            response.headers().set(CACHE_CONTROL, "private, max-age=" + httpCacheSecond);
+        }
     }
 
     /**

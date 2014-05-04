@@ -29,6 +29,7 @@ public final class HttpFileRequest {
     private final FullHttpRequest httpRequest;
     private final File file;
     private final MimeType mimeType;
+    private final boolean staticFile;
 
     /**
      * Instantiates a new HttpFileRequest.
@@ -36,11 +37,13 @@ public final class HttpFileRequest {
      * @param httpRequest HTTP request
      * @param file        file
      * @param mimeType    mime type
+     * @param staticFile  request for a static file
      */
-    public HttpFileRequest(final FullHttpRequest httpRequest, final File file, final MimeType mimeType) {
+    public HttpFileRequest(final FullHttpRequest httpRequest, final File file, final MimeType mimeType, final boolean staticFile) {
         this.httpRequest = httpRequest;
         this.file = file;
         this.mimeType = mimeType;
+        this.staticFile = staticFile;
     }
 
     public File getFile() {
@@ -53,5 +56,9 @@ public final class HttpFileRequest {
 
     public FullHttpRequest getHttpRequest() {
         return httpRequest;
+    }
+
+    public boolean isStaticFile() {
+        return staticFile;
     }
 }

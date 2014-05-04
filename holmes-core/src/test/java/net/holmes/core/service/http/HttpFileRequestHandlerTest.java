@@ -22,6 +22,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultChannelPromise;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
+import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.common.MimeType;
 import org.junit.Test;
 
@@ -34,58 +35,91 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.CLOSE;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_CACHE_SECOND;
 import static org.easymock.EasyMock.*;
 
 public class HttpFileRequestHandlerTest {
 
     @Test
     public void testFileRequestHandler() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         File indexHtml = File.createTempFile("index", ".html");
         indexHtml.deleteOnExit();
 
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HOST, "localhost");
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
         expect(httpRequest.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), false);
 
-        replay(context, httpRequest, channel);
+        replay(context, httpRequest, channel, configurationDao);
+        HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
         handler.channelRead0(context, request);
-        verify(context, httpRequest, channel);
+        verify(context, httpRequest, channel, configurationDao);
+    }
+
+    @Test
+    public void testFileRequestHandlerNoCache() throws Exception {
+        File indexHtml = File.createTempFile("index", ".html");
+        indexHtml.deleteOnExit();
+
+        HttpHeaders headers = new DefaultHttpHeaders();
+        headers.add(HOST, "localhost");
+
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
+        FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
+        Channel channel = createMock(Channel.class);
+
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(0);
+        expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
+        expect(httpRequest.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
+        expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+        expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
+
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), true);
+
+        replay(context, httpRequest, channel, configurationDao);
+        HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
+        handler.channelRead0(context, request);
+        verify(context, httpRequest, channel, configurationDao);
     }
 
     @Test(expected = HttpFileRequestException.class)
     public void testFileRequestHandlerInvalidFile() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HOST, "localhost");
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File("invalidFile"), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File("invalidFile"), MimeType.valueOf("text/html"), false);
 
-        replay(context, httpRequest);
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
+
+        replay(context, httpRequest, configurationDao);
         try {
+            HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
             handler.channelRead0(context, request);
         } finally {
-            verify(context, httpRequest);
+            verify(context, httpRequest, configurationDao);
         }
     }
 
     @Test
     public void testFileRequestHandlerWithOffset() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         File indexHtml = File.createTempFile("index", ".html");
         FileWriter fw = new FileWriter(indexHtml);
         BufferedWriter bw = new BufferedWriter(fw);
@@ -97,26 +131,28 @@ public class HttpFileRequestHandlerTest {
         headers.add(HOST, "localhost");
         headers.add(RANGE, "bytes=5-");
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
         expect(httpRequest.getProtocolVersion()).andReturn(HTTP_1_1).atLeastOnce();
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), false);
 
-        replay(context, httpRequest, channel);
+        replay(context, httpRequest, channel, configurationDao);
+        HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
         handler.channelRead0(context, request);
-        verify(context, httpRequest, channel);
+        verify(context, httpRequest, channel, configurationDao);
     }
 
     @Test(expected = HttpFileRequestException.class)
     public void testFileRequestHandlerWithEmptyOffset() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         File indexHtml = File.createTempFile("index", ".html");
         indexHtml.deleteOnExit();
 
@@ -124,24 +160,26 @@ public class HttpFileRequestHandlerTest {
         headers.add(HOST, "localhost");
         headers.add(RANGE, "");
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), true);
 
-        replay(context, httpRequest);
+        replay(context, httpRequest, configurationDao);
         try {
+            HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
             handler.channelRead0(context, request);
         } finally {
-            verify(context, httpRequest);
+            verify(context, httpRequest, configurationDao);
         }
     }
 
     @Test(expected = HttpFileRequestException.class)
     public void testFileRequestHandlerWithBadOffset() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         File indexHtml = File.createTempFile("index", ".html");
         indexHtml.deleteOnExit();
 
@@ -149,24 +187,26 @@ public class HttpFileRequestHandlerTest {
         headers.add(HOST, "localhost");
         headers.add(RANGE, "bytes=5-");
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), true);
 
-        replay(context, httpRequest);
+        replay(context, httpRequest, configurationDao);
         try {
+            HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
             handler.channelRead0(context, request);
         } finally {
-            verify(context, httpRequest);
+            verify(context, httpRequest, configurationDao);
         }
     }
 
     @Test
     public void testFileRequestHandlerWithoutKeepAlive() throws Exception {
-        HttpFileRequestHandler handler = new HttpFileRequestHandler();
         File indexHtml = File.createTempFile("index", ".html");
         indexHtml.deleteOnExit();
 
@@ -174,57 +214,66 @@ public class HttpFileRequestHandlerTest {
         headers.add(HOST, "localhost");
         headers.add(CONNECTION, CLOSE);
 
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         FullHttpRequest httpRequest = createMock(FullHttpRequest.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(httpRequest.headers()).andReturn(headers).atLeastOnce();
         expect(context.write(isA(HttpResponse.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.write(isA(ChunkedFile.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
         expect(context.writeAndFlush(isA(LastHttpContent.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
 
-        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"));
+        HttpFileRequest request = new HttpFileRequest(httpRequest, new File(indexHtml.getAbsolutePath()), MimeType.valueOf("text/html"), true);
 
-        replay(context, httpRequest, channel);
+        replay(context, httpRequest, channel, configurationDao);
+        HttpFileRequestHandler handler = new HttpFileRequestHandler(configurationDao);
         handler.channelRead0(context, request);
-        verify(context, httpRequest, channel);
+        verify(context, httpRequest, channel, configurationDao);
     }
 
     @Test
     public void testExceptionCaughtHttpRequestException() throws Exception {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(context.channel()).andReturn(channel).atLeastOnce();
         expect(channel.isActive()).andReturn(true).atLeastOnce();
         expect(channel.writeAndFlush(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        replay(context, channel);
-        new HttpFileRequestHandler().exceptionCaught(context, new HttpFileRequestException("message", NOT_FOUND));
-        verify(context, channel);
+        replay(context, channel, configurationDao);
+        new HttpFileRequestHandler(configurationDao).exceptionCaught(context, new HttpFileRequestException("message", NOT_FOUND));
+        verify(context, channel, configurationDao);
     }
 
     @Test
     public void testExceptionCaughtIoException() throws Exception {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(context.channel()).andReturn(channel).atLeastOnce();
         expect(channel.isActive()).andReturn(true).atLeastOnce();
         expect(channel.writeAndFlush(isA(Object.class))).andReturn(new DefaultChannelPromise(channel)).atLeastOnce();
-        replay(context, channel);
-        new HttpFileRequestHandler().exceptionCaught(context, new IOException());
-        verify(context, channel);
+        replay(context, channel, configurationDao);
+        new HttpFileRequestHandler(configurationDao).exceptionCaught(context, new IOException());
+        verify(context, channel, configurationDao);
     }
 
     @Test
     public void testExceptionCaughtHttpRequestChannelInactive() throws Exception {
+        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         Channel channel = createMock(Channel.class);
 
+        expect(configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND)).andReturn(60);
         expect(context.channel()).andReturn(channel).atLeastOnce();
         expect(channel.isActive()).andReturn(false).atLeastOnce();
-        replay(context, channel);
-        new HttpFileRequestHandler().exceptionCaught(context, new HttpFileRequestException("message", NOT_FOUND));
-        verify(context, channel);
+        replay(context, channel, configurationDao);
+        new HttpFileRequestHandler(configurationDao).exceptionCaught(context, new HttpFileRequestException("message", NOT_FOUND));
+        verify(context, channel, configurationDao);
     }
 }

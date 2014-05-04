@@ -24,6 +24,7 @@ public enum Parameter {
     AIRPLAY_STREAMING_ENABLE("enable_airplay_streaming", "true"),
     CACHE_CLEAN_DELAY_MINUTES("cache_clean_delay_minutes", "30"),
     HTTP_SERVER_PORT("http_server_port", "8085"),
+    HTTP_SERVER_CACHE_SECOND("http_server_cache_second", "60"),
     ICECAST_ENABLE("enable_icecast_directory", "true"),
     ICECAST_GENRE_LIST("icecast_genre_list", "70s,80s,90s,adult,alternative,ambient,anime,bass,best,blues,chill,christian,classic,classical,club,college,community,contemporary,country,dance,deep,disco,dj,downtempo,drum,dubstep,eclectic,electro,folk,fun,funk,game,gospel,hip hop,hiphop,hit,house,indie,instrumental,international,jazz,jpop,jrock,latin,live,lounge,metal,minecraft,minimal,misc,mix,mixed,music,musique,news,oldies,pop,progressive,promodj,punk,radio,rap,reggae,religious,rnb,rock,salsa,scanner,smooth,soul,sport,sports,talk,techno,top,trance,urban,various,webradio,world"),
     ICECAST_MAX_DOWNLOAD_RETRY("icecast_max_download_retry", "3"),

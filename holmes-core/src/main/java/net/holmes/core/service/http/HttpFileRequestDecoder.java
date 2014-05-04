@@ -74,14 +74,14 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
                 AbstractNode node = mediaManager.getNode(decoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node instanceof ContentNode) {
                     ContentNode contentNode = (ContentNode) node;
-                    fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType());
+                    fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType(), false);
                 }
             } else {
-                // Request for UI file is valid if requested file name has a correct mime type
+                // Request for UI static file is valid if requested file name has a correct mime type
                 String fileName = getFileName(decoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(fileName);
                 if (mimeType != null)
-                    fileRequest = new HttpFileRequest(request, new File(uiDirectory, fileName), mimeType);
+                    fileRequest = new HttpFileRequest(request, new File(uiDirectory, fileName), mimeType, true);
             }
         }
 
