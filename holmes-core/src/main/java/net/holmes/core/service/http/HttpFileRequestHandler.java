@@ -48,9 +48,9 @@ import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
-import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_CACHE_SECOND;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 import static net.holmes.core.common.FileUtils.isValidFile;
+import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 
 /**
  * Http file request handler.
@@ -69,7 +69,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      */
     @Inject
     public HttpFileRequestHandler(ConfigurationDao configurationDao) {
-        httpCacheSecond = configurationDao.getIntParameter(HTTP_SERVER_CACHE_SECOND);
+        httpCacheSecond = configurationDao.getParameter(HTTP_SERVER_CACHE_SECOND);
     }
 
     /**

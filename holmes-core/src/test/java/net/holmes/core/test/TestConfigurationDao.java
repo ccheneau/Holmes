@@ -17,13 +17,12 @@
 
 package net.holmes.core.test;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.configuration.Parameter;
 import net.holmes.core.business.media.model.RootNode;
+import net.holmes.core.common.parameter.ConfigurationParameter;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -38,9 +37,10 @@ public class TestConfigurationDao implements ConfigurationDao {
     private final List<ConfigurationNode> pictureFolders;
     private final List<ConfigurationNode> audioFolders;
     private final List<ConfigurationNode> podcasts;
-    private Map<Parameter, String> parameters;
+    private Map<String, String> parameters;
 
     @Inject
+    @SuppressWarnings("unchecked")
     public TestConfigurationDao() {
         videoFolders = Lists.newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = Lists.newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
@@ -48,8 +48,8 @@ public class TestConfigurationDao implements ConfigurationDao {
         podcasts = Lists.newArrayList();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
         parameters = Maps.newHashMap();
-        for (Parameter parameter : Parameter.values()) {
-            parameters.put(parameter, parameter.getDefaultValue());
+        for (ConfigurationParameter parameter : ConfigurationParameter.PARAMETERS) {
+            parameters.put(parameter.getName(), parameter.format(parameter.getDefaultValue()));
         }
     }
 
@@ -58,7 +58,7 @@ public class TestConfigurationDao implements ConfigurationDao {
      */
     @Override
     public void saveConfig() throws IOException {
-        if (parameters.get(Parameter.UPNP_SERVER_NAME).equals("IOException")) throw new IOException();
+        // Nothing
     }
 
     private ConfigurationNode getTestContentFolder(String label, String path) {
@@ -103,47 +103,15 @@ public class TestConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public Boolean getBooleanParameter(Parameter param) {
-        return Boolean.valueOf(parameters.get(param));
+    public <T> T getParameter(ConfigurationParameter<T> parameter) {
+        return parameter.parse(parameters.get(parameter.getName()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Integer getIntParameter(Parameter param) {
-        return Integer.valueOf(parameters.get(param));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getParameter(Parameter param) {
-        return parameters.get(param);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getListParameter(Parameter param) {
-        return Splitter.on(",").splitToList(parameters.get(param));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setParameter(Parameter param, String value) {
-        parameters.put(param, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBooleanParameter(Parameter param, Boolean value) {
-        parameters.put(param, value.toString());
+    public <T> void setParameter(ConfigurationParameter<T> parameter, T value) {
+        parameters.put(parameter.getName(), parameter.format(value));
     }
 }

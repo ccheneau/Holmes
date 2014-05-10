@@ -41,11 +41,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
-import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
-import static net.holmes.core.business.configuration.Parameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
+import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 
@@ -93,7 +93,7 @@ public class ContentDirectoryServiceTest {
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
-        expect(configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE)).andReturn(true);
+        expect(configurationDao.getParameter(UPNP_ADD_SUBTITLE)).andReturn(true);
 
         replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
 
@@ -127,7 +127,7 @@ public class ContentDirectoryServiceTest {
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
-        expect(configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE)).andReturn(false);
+        expect(configurationDao.getParameter(UPNP_ADD_SUBTITLE)).andReturn(false);
 
         replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationDao);
 
@@ -224,7 +224,7 @@ public class ContentDirectoryServiceTest {
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("url");
-        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         List<AbstractNode> children = Lists.newArrayList();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
@@ -262,7 +262,7 @@ public class ContentDirectoryServiceTest {
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
-        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         MimeType mimeType = MimeType.valueOf("video/avi");
         List<AbstractNode> children = Lists.newArrayList();
@@ -293,7 +293,7 @@ public class ContentDirectoryServiceTest {
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
-        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
+        expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
 
         List<AbstractNode> children = Lists.newArrayList();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));

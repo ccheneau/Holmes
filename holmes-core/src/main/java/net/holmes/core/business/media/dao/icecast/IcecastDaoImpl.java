@@ -47,8 +47,8 @@ import java.util.Set;
 
 import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
-import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.SAVE_SETTINGS;
+import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -84,10 +84,10 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.configurationDao = configurationDao;
         this.localHolmesDataDir = localHolmesDataDir;
         this.mediaIndexDao = mediaIndexDao;
-        this.icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
-        this.maxDownloadRetry = max(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
+        this.icecastEnabled = configurationDao.getParameter(ICECAST_ENABLE);
+        this.maxDownloadRetry = max(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
 
-        List<String> genreList = configurationDao.getListParameter(ICECAST_GENRE_LIST);
+        List<String> genreList = configurationDao.getParameter(ICECAST_GENRE_LIST);
         this.genres = Lists.newArrayListWithCapacity(genreList.size());
         for (String genre : genreList)
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
@@ -143,7 +143,7 @@ public final class IcecastDaoImpl implements IcecastDao {
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
         if (configurationEvent.getType() == SAVE_SETTINGS)
             synchronized (settingsLock) {
-                icecastEnabled = configurationDao.getBooleanParameter(ICECAST_ENABLE);
+                icecastEnabled = configurationDao.getParameter(ICECAST_ENABLE);
                 if (icecastEnabled) {
                     // Download and parse Yellow page if not already loaded
                     if (!isLoaded()) checkYellowPage();
@@ -241,7 +241,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private boolean needsYellowPageDownload() throws IOException {
         Calendar cal = Calendar.getInstance();
-        cal.add(HOUR, -(configurationDao.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
+        cal.add(HOUR, -(configurationDao.getParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS)));
 
         Path xmlFile = getIcecastXmlFile();
         return !Files.exists(xmlFile) || Files.getLastModifiedTime(xmlFile).toMillis() < cal.getTimeInMillis();

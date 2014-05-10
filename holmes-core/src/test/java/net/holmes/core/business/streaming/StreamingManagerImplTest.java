@@ -35,9 +35,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static net.holmes.core.business.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
 import static net.holmes.core.business.streaming.session.SessionStatus.*;
+import static net.holmes.core.common.parameter.ConfigurationParameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNull;
 
@@ -53,7 +53,7 @@ public class StreamingManagerImplTest {
 
         deviceDao.addDevice(isA(UpnpDevice.class));
         expectLastCall().atLeastOnce();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -73,7 +73,7 @@ public class StreamingManagerImplTest {
 
         deviceDao.addDevice(isA(AirplayDevice.class));
         expectLastCall().atLeastOnce();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -94,7 +94,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.removeDevice("deviceId")).andReturn(true);
         sessionDao.removeDevice("deviceId");
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -113,7 +113,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.removeDevice("deviceId")).andReturn(false);
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -132,7 +132,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.findDevices("hostAddress")).andReturn(null);
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -151,7 +151,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.getDevices()).andReturn(null);
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -170,7 +170,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.getDevice("deviceId")).andReturn(null);
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -191,7 +191,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(sessionDao.getSession("deviceId")).andReturn(null);
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -210,7 +210,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(sessionDao.getSession("deviceId")).andThrow(new UnknownSessionException("deviceId"));
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -234,7 +234,7 @@ public class StreamingManagerImplTest {
         expectLastCall();
         upnpDeviceStreamer.play(isA(UpnpDevice.class), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -259,7 +259,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         sessionDao.initSession("deviceId", "contentUrl", "contentName");
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         airplayDeviceStreamer.play(isA(AirplayDevice.class), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall();
@@ -286,7 +286,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new FakeDevice());
         sessionDao.initSession("deviceId", "contentUrl", "contentName");
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -311,7 +311,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new UpnpDevice("id", "name", null, null, null));
         upnpDeviceStreamer.stop(isA(UpnpDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -333,7 +333,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.stop(isA(AirplayDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -352,7 +352,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.getDevice("deviceId")).andReturn(new FakeDevice());
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -374,7 +374,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new UpnpDevice("id", "name", null, null, null));
         upnpDeviceStreamer.pause(isA(UpnpDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -396,7 +396,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.pause(isA(AirplayDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -415,7 +415,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.getDevice("deviceId")).andReturn(new FakeDevice());
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -437,7 +437,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new UpnpDevice("id", "name", null, null, null));
         upnpDeviceStreamer.resume(isA(UpnpDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -459,7 +459,7 @@ public class StreamingManagerImplTest {
         expect(deviceDao.getDevice("deviceId")).andReturn(new AirplayDevice("id", "name", null, 0, null));
         airplayDeviceStreamer.resume(isA(AirplayDevice.class));
         expectLastCall();
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -478,7 +478,7 @@ public class StreamingManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(deviceDao.getDevice("deviceId")).andReturn(new FakeDevice());
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -496,7 +496,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -514,7 +514,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionStatus("deviceId", PLAYING);
         expectLastCall().andThrow(new UnknownSessionException("deviceId"));
 
@@ -534,7 +534,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
 
         replay(configurationDao, deviceDao, sessionDao, upnpDeviceStreamer, airplayDeviceStreamer);
 
@@ -552,7 +552,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionStatus("deviceId", PLAYING);
         expectLastCall();
 
@@ -572,7 +572,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionStatus("deviceId", PLAYING);
         expectLastCall();
 
@@ -592,7 +592,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionStatus("deviceId", WAITING);
         expectLastCall();
 
@@ -612,7 +612,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionStatus("deviceId", PAUSED);
         expectLastCall();
 
@@ -632,7 +632,7 @@ public class StreamingManagerImplTest {
         DeviceStreamer airplayDeviceStreamer = createMock(DeviceStreamer.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
+        expect(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).andReturn(0).atLeastOnce();
         sessionDao.updateSessionPosition("deviceId", 0l, 0l);
         expectLastCall();
 

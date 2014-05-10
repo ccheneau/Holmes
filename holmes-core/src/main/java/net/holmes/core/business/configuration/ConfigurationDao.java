@@ -18,6 +18,7 @@
 package net.holmes.core.business.configuration;
 
 import net.holmes.core.business.media.model.RootNode;
+import net.holmes.core.common.parameter.ConfigurationParameter;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,36 +44,12 @@ public interface ConfigurationDao {
     List<ConfigurationNode> getNodes(RootNode rootNode);
 
     /**
-     * Gets the boolean parameter.
+     * Get parameter value.
      *
      * @param parameter parameter
-     * @return boolean parameter
+     * @return parameter value
      */
-    Boolean getBooleanParameter(Parameter parameter);
-
-    /**
-     * Gets the int parameter.
-     *
-     * @param parameter parameter
-     * @return int parameter
-     */
-    Integer getIntParameter(Parameter parameter);
-
-    /**
-     * Gets the parameter.
-     *
-     * @param parameter parameter
-     * @return parameter
-     */
-    String getParameter(Parameter parameter);
-
-    /**
-     * Gets the parameter list.
-     *
-     * @param parameter parameter
-     * @return parameter list
-     */
-    List<String> getListParameter(Parameter parameter);
+    <T> T getParameter(final ConfigurationParameter<T> parameter);
 
     /**
      * Sets parameter value.
@@ -80,13 +57,5 @@ public interface ConfigurationDao {
      * @param parameter parameter
      * @param value     parameter value
      */
-    void setParameter(Parameter parameter, String value);
-
-    /**
-     * Sets boolean parameter value.
-     *
-     * @param parameter parameter
-     * @param value     parameter value
-     */
-    void setBooleanParameter(Parameter parameter, Boolean value);
+    <T> void setParameter(final ConfigurationParameter<T> parameter, T value);
 }

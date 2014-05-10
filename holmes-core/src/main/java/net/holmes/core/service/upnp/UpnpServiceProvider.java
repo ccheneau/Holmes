@@ -32,9 +32,9 @@ import org.fourthline.cling.model.meta.LocalService;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import static net.holmes.core.business.configuration.Parameter.UPNP_SERVER_NAME;
-import static net.holmes.core.business.configuration.Parameter.UPNP_SERVICE_PORT;
 import static net.holmes.core.common.UpnpUtils.*;
+import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_SERVER_NAME;
+import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_SERVICE_PORT;
 
 /**
  * Guice provider for UPnP service.
@@ -65,7 +65,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     @Override
     public UpnpService get() {
         // Upnp service
-        UpnpService upnpService = buildUpnpService(configurationDao.getIntParameter(UPNP_SERVICE_PORT));
+        UpnpService upnpService = buildUpnpService(configurationDao.getParameter(UPNP_SERVICE_PORT));
 
         // Device details
         DeviceDetails deviceDetails = buildDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);

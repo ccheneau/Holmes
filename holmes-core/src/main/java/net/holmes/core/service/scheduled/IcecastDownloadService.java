@@ -24,7 +24,7 @@ import net.holmes.core.business.media.dao.icecast.IcecastDao;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.HOURS;
-import static net.holmes.core.business.configuration.Parameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
+import static net.holmes.core.common.parameter.ConfigurationParameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
 
 /**
  * Scheduled service used to download new Icecast directory.
@@ -42,7 +42,7 @@ public class IcecastDownloadService extends AbstractScheduledService {
     @Inject
     public IcecastDownloadService(final IcecastDao icecastDao, final ConfigurationDao configurationDao) {
         this.icecastDao = icecastDao;
-        this.downloadDelayHours = configurationDao.getIntParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS);
+        this.downloadDelayHours = configurationDao.getParameter(ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS);
 
     }
 

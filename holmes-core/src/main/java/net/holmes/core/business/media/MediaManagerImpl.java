@@ -38,11 +38,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
+import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_PORT;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -50,11 +50,11 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = getLogger(MediaManagerImpl.class);
-    private final ConfigurationDao configurationDao;
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
     private final MimeTypeManager mimeTypeManager;
     private final InetAddress localAddress;
+    private final Integer httpServerPort;
 
     /**
      * Instantiates a new media manager implementation.
@@ -67,11 +67,11 @@ public final class MediaManagerImpl implements MediaManager {
     @Inject
     public MediaManagerImpl(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, final MediaDao mediaDao,
                             final MimeTypeManager mimeTypeManager, @Named("localAddress") final InetAddress localAddress) {
-        this.configurationDao = configurationDao;
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
         this.mimeTypeManager = mimeTypeManager;
         this.localAddress = localAddress;
+        this.httpServerPort = configurationDao.getParameter(HTTP_SERVER_PORT);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Override
     public String getNodeUrl(AbstractNode node) {
-        return "http://" + localAddress.getHostAddress() + ":" + configurationDao.getIntParameter(HTTP_SERVER_PORT) +
+        return "http://" + localAddress.getHostAddress() + ":" + httpServerPort +
                 HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }
 

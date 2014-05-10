@@ -45,7 +45,7 @@ import java.net.InetSocketAddress;
 
 import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
 import static io.netty.channel.ChannelOption.*;
-import static net.holmes.core.business.configuration.Parameter.HTTP_SERVER_PORT;
+import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_PORT;
 import static org.jboss.resteasy.plugins.server.netty.RestEasyHttpRequestDecoder.Protocol.HTTP;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -131,7 +131,7 @@ public final class HttpServer implements Service {
         processor.processInjector(injector);
 
         // Bind and start server to accept incoming connections.
-        InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getIntParameter(HTTP_SERVER_PORT));
+        InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
 
         LOGGER.info("HTTP server bound on {}", bindAddress);

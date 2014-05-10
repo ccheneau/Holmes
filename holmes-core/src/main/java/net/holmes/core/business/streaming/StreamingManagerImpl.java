@@ -39,8 +39,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.holmes.core.business.configuration.Parameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static net.holmes.core.business.streaming.session.SessionStatus.*;
+import static net.holmes.core.common.parameter.ConfigurationParameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -72,8 +72,8 @@ public final class StreamingManagerImpl implements StreamingManager {
         this.upnpStreamer = upnpStreamer;
         this.airplayStreamer = airplayStreamer;
 
-        //Start session status update task
-        new UpdateSessionStatusService(configurationDao.getIntParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
+        // Start session status update task
+        new UpdateSessionStatusService(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
     }
 
     /**

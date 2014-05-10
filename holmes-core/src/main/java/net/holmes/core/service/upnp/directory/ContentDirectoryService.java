@@ -39,10 +39,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.business.configuration.Parameter.PODCAST_PREPEND_ENTRY_NAME;
-import static net.holmes.core.business.configuration.Parameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
+import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
@@ -85,7 +85,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                     availableMimeTypes.addAll(device.getSupportedMimeTypes());
 
         // Add subtitle
-        if (!availableMimeTypes.isEmpty() && configurationDao.getBooleanParameter(UPNP_ADD_SUBTITLE))
+        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE))
             availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
 
         // Build browse result
@@ -164,7 +164,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME))
+        if (configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME))
             if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
             else return String.format("%02d - %s", count + 1, title);
         else return title;

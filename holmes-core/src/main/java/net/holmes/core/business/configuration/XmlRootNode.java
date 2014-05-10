@@ -18,6 +18,7 @@
 package net.holmes.core.business.configuration;
 
 import com.google.common.collect.Lists;
+import net.holmes.core.common.parameter.ConfigurationParameter;
 
 import java.util.List;
 import java.util.Properties;
@@ -46,14 +47,15 @@ public final class XmlRootNode {
     /**
      * Check configuration parameters.
      */
+    @SuppressWarnings("unchecked")
     public void checkParameters() {
         // Check new parameters
         List<String> availableParams = Lists.newArrayList();
-        for (Parameter param : Parameter.values()) {
+        for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
             availableParams.add(param.getName());
             // If a parameter is not present in configuration, add parameter with default value
             if (this.parameters.getProperty(param.getName()) == null)
-                this.parameters.put(param.getName(), param.getDefaultValue());
+                this.parameters.put(param.getName(), param.format(param.getDefaultValue()));
         }
 
         // Check obsolete parameters
@@ -104,14 +106,13 @@ public final class XmlRootNode {
     }
 
     /**
-     * Gets parameter value.
+     * Get parameter value.
      *
-     * @param parameter parameter
-     * @return int parameter value
+     * @param parameter parameter name
+     * @return parameter value
      */
-    public String getParameter(final Parameter parameter) {
-        String value = (String) this.parameters.get(parameter.getName());
-        return value == null ? parameter.getDefaultValue() : value;
+    public String getParameter(final String parameter) {
+        return (String) this.parameters.get(parameter);
     }
 
     /**
@@ -120,7 +121,7 @@ public final class XmlRootNode {
      * @param parameter parameter
      * @param value     parameter value
      */
-    public void setParameter(final Parameter parameter, final String value) {
-        this.parameters.setProperty(parameter.getName(), value);
+    public void setParameter(final String parameter, final String value) {
+        this.parameters.setProperty(parameter, value);
     }
 }

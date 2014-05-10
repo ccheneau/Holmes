@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
-import static net.holmes.core.business.configuration.Parameter.AIRPLAY_STREAMING_ENABLE;
+import static net.holmes.core.common.parameter.ConfigurationParameter.AIRPLAY_STREAMING_ENABLE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -70,7 +70,7 @@ public final class AirplayServer implements Service {
      */
     @Override
     public void start() {
-        if (configurationDao.getBooleanParameter(AIRPLAY_STREAMING_ENABLE)) {
+        if (configurationDao.getParameter(AIRPLAY_STREAMING_ENABLE)) {
             LOGGER.info("Starting Airplay server");
             try {
                 // Create JmDNS

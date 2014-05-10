@@ -25,7 +25,7 @@ import org.junit.Test;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.holmes.core.business.configuration.Parameter.CACHE_CLEAN_DELAY_MINUTES;
+import static net.holmes.core.common.parameter.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 
@@ -36,7 +36,7 @@ public class CacheCleanerServiceTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(CACHE_CLEAN_DELAY_MINUTES)).andReturn(1);
+        expect(configurationDao.getParameter(CACHE_CLEAN_DELAY_MINUTES)).andReturn(1);
         mediaManager.cleanUpCache();
         expectLastCall();
 
@@ -64,7 +64,7 @@ public class CacheCleanerServiceTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getIntParameter(CACHE_CLEAN_DELAY_MINUTES)).andReturn(0);
+        expect(configurationDao.getParameter(CACHE_CLEAN_DELAY_MINUTES)).andReturn(0);
 
         replay(mediaManager, configurationDao);
 

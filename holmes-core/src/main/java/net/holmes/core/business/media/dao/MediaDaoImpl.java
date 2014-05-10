@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import com.sun.syndication.io.FeedException;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.configuration.Parameter;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
 import net.holmes.core.business.media.dao.icecast.IcecastEntry;
 import net.holmes.core.business.media.dao.icecast.IcecastGenre;
@@ -51,6 +50,8 @@ import static net.holmes.core.business.media.model.RootNode.ICECAST;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.FileUtils.*;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
+import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_CACHE_EXPIRE_HOURS;
+import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_CACHE_MAX_ELEMENTS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -80,8 +81,8 @@ public class MediaDaoImpl implements MediaDao {
         this.mediaIndexDao = mediaIndexDao;
         this.icecastDao = icecastDao;
         this.podcastCache = CacheBuilder.newBuilder()
-                .maximumSize(configurationDao.getIntParameter(Parameter.PODCAST_CACHE_MAX_ELEMENTS))
-                .expireAfterWrite(configurationDao.getIntParameter(Parameter.PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
+                .maximumSize(configurationDao.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
+                .expireAfterWrite(configurationDao.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
                 .build();
     }
 

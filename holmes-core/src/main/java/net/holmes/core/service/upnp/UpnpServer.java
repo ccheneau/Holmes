@@ -22,6 +22,7 @@ import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
+import net.holmes.core.common.parameter.ConfigurationParameter;
 import net.holmes.core.service.Service;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -42,7 +43,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Set;
 
-import static net.holmes.core.business.configuration.Parameter.UPNP_ENABLE;
 import static net.holmes.core.common.UpnpUtils.getDeviceName;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -80,7 +80,7 @@ public final class UpnpServer implements Service {
      */
     @Override
     public void start() {
-        if (configurationDao.getBooleanParameter(UPNP_ENABLE)) {
+        if (configurationDao.getParameter(ConfigurationParameter.UPNP_SERVER_ENABLE)) {
             LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
 

@@ -41,11 +41,11 @@ import static java.awt.SystemTray.getSystemTray;
 import static java.awt.SystemTray.isSupported;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.UIManager.getFont;
-import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
 import static net.holmes.core.common.StaticResourceLoader.getData;
+import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -80,7 +80,7 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configurationDao.getBooleanParameter(SYSTRAY_ENABLE) && initUIManager()) initSystemTrayMenu();
+        if (configurationDao.getParameter(SYSTRAY_ENABLE) && initUIManager()) initSystemTrayMenu();
     }
 
     /**
@@ -129,12 +129,12 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = getSystemTray();
-        final String holmesAdminUrl = "http://localhost:" + configurationDao.getIntParameter(HTTP_SERVER_PORT) + "/admin";
+        final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
-        boolean showMenuIcon = configurationDao.getBooleanParameter(SYSTRAY_ICONS_IN_MENU);
+        boolean showMenuIcon = configurationDao.getParameter(SYSTRAY_ICONS_IN_MENU);
 
         // Quit Holmes menu item
         JMenuItem quitItem = new SystrayMenuItem() {

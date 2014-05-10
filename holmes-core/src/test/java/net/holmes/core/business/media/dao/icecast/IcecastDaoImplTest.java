@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.business.configuration.Parameter.*;
+import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -43,9 +43,9 @@ public class IcecastDaoImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
-        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
-        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
 
         mediaIndexDao.removeChildren("IceCastGenre_genre1");
         expectLastCall().atLeastOnce();
@@ -82,9 +82,9 @@ public class IcecastDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDirectory directory = createMock(IcecastDirectory.class);
 
-        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
-        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
-        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
         expect(directory.getEntries()).andReturn(Sets.newHashSet(new IcecastEntry("name", "url", "type", "genre"))).atLeastOnce();
         mediaIndexDao.removeChildren(isA(String.class));
         expectLastCall().atLeastOnce();
@@ -110,9 +110,9 @@ public class IcecastDaoImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
 
-        expect(configurationDao.getListParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
-        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
-        expect(configurationDao.getIntParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn(Lists.newArrayList("genre1", "genre2")).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
+        expect(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
         mediaIndexDao.removeChildren(isA(String.class));
         expectLastCall().atLeastOnce();
 

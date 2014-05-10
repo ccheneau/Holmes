@@ -24,7 +24,7 @@ import net.holmes.core.business.version.VersionManager;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.HOURS;
-import static net.holmes.core.business.configuration.Parameter.RELEASE_CHECK_DELAY_HOURS;
+import static net.holmes.core.common.parameter.ConfigurationParameter.RELEASE_CHECK_DELAY_HOURS;
 
 /**
  * Scheduled service used to check for new Holmes releases.
@@ -43,7 +43,7 @@ public class ReleaseCheckService extends AbstractScheduledService {
     @Inject
     public ReleaseCheckService(final VersionManager versionManager, final ConfigurationDao configurationDao) {
         this.versionManager = versionManager;
-        this.checkDelayHours = configurationDao.getIntParameter(RELEASE_CHECK_DELAY_HOURS);
+        this.checkDelayHours = configurationDao.getParameter(RELEASE_CHECK_DELAY_HOURS);
     }
 
     /**

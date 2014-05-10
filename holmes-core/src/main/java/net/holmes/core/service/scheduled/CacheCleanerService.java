@@ -24,7 +24,7 @@ import net.holmes.core.business.media.MediaManager;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static net.holmes.core.business.configuration.Parameter.CACHE_CLEAN_DELAY_MINUTES;
+import static net.holmes.core.common.parameter.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
 
 /**
  * Scheduled service used to clean caches.
@@ -42,7 +42,7 @@ public class CacheCleanerService extends AbstractScheduledService {
     @Inject
     public CacheCleanerService(final MediaManager mediaManager, final ConfigurationDao configurationDao) {
         this.mediaManager = mediaManager;
-        this.cleanDelayMinutes = configurationDao.getIntParameter(CACHE_CLEAN_DELAY_MINUTES);
+        this.cleanDelayMinutes = configurationDao.getParameter(CACHE_CLEAN_DELAY_MINUTES);
     }
 
     /**

@@ -34,10 +34,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
+import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 
 /**
  * Backend manager implementation.
@@ -162,8 +162,8 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Settings getSettings() {
         return new Settings(configurationDao.getParameter(UPNP_SERVER_NAME),
-                configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME),
-                configurationDao.getBooleanParameter(ICECAST_ENABLE));
+                configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME),
+                configurationDao.getParameter(ICECAST_ENABLE));
     }
 
     /**
@@ -174,8 +174,8 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(settings.getServerName(), "backend.settings.server.name.error");
 
         configurationDao.setParameter(UPNP_SERVER_NAME, settings.getServerName());
-        configurationDao.setBooleanParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
-        configurationDao.setBooleanParameter(ICECAST_ENABLE, settings.getEnableIcecastDirectory());
+        configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
+        configurationDao.setParameter(ICECAST_ENABLE, settings.getEnableIcecastDirectory());
         try {
             // save settings
             configurationDao.saveConfig();

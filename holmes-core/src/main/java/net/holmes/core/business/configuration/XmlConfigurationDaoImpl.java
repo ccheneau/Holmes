@@ -17,11 +17,11 @@
 
 package net.holmes.core.business.configuration;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.media.model.RootNode;
+import net.holmes.core.common.parameter.ConfigurationParameter;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -75,7 +75,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
 
         throw new RuntimeException("Failed to create " + confPath);
-
     }
 
     /**
@@ -145,47 +144,18 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public Boolean getBooleanParameter(final Parameter parameter) {
-        return Boolean.valueOf(getParameter(parameter));
+    public <T> T getParameter(final ConfigurationParameter<T> parameter) {
+        String value = this.rootNode.getParameter(parameter.getName());
+        if (value != null)
+            return parameter.parse(value);
+        return parameter.getDefaultValue();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Integer getIntParameter(final Parameter parameter) {
-        return Integer.valueOf(getParameter(parameter));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getParameter(final Parameter parameter) {
-        return this.rootNode.getParameter(parameter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getListParameter(Parameter parameter) {
-        return Splitter.on(",").splitToList(this.rootNode.getParameter(parameter));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setParameter(Parameter parameter, String value) {
-        this.rootNode.setParameter(parameter, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBooleanParameter(final Parameter parameter, final Boolean value) {
-        this.rootNode.setParameter(parameter, value.toString());
+    public <T> void setParameter(final ConfigurationParameter<T> parameter, T value) {
+        this.rootNode.setParameter(parameter.getName(), parameter.format(value));
     }
 }

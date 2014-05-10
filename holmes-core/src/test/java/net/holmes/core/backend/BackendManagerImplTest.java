@@ -30,9 +30,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Collection;
 
-import static net.holmes.core.business.configuration.Parameter.*;
 import static net.holmes.core.business.media.model.RootNode.AUDIO;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
+import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -591,8 +591,8 @@ public class BackendManagerImplTest {
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationDao.getParameter(UPNP_SERVER_NAME)).andReturn("serverName");
-        expect(configurationDao.getBooleanParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true);
-        expect(configurationDao.getBooleanParameter(ICECAST_ENABLE)).andReturn(false);
+        expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true);
+        expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(false);
 
         replay(configurationDao, eventBus);
 
@@ -612,9 +612,9 @@ public class BackendManagerImplTest {
 
         configurationDao.setParameter(UPNP_SERVER_NAME, "holmes");
         expectLastCall();
-        configurationDao.setBooleanParameter(PODCAST_PREPEND_ENTRY_NAME, true);
+        configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
         expectLastCall();
-        configurationDao.setBooleanParameter(ICECAST_ENABLE, true);
+        configurationDao.setParameter(ICECAST_ENABLE, true);
         expectLastCall();
         configurationDao.saveConfig();
         expectLastCall();
@@ -653,9 +653,9 @@ public class BackendManagerImplTest {
 
         configurationDao.setParameter(UPNP_SERVER_NAME, "holmes");
         expectLastCall();
-        configurationDao.setBooleanParameter(PODCAST_PREPEND_ENTRY_NAME, true);
+        configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
         expectLastCall();
-        configurationDao.setBooleanParameter(ICECAST_ENABLE, true);
+        configurationDao.setParameter(ICECAST_ENABLE, true);
         expectLastCall();
         configurationDao.saveConfig();
         expectLastCall().andThrow(new IOException());
