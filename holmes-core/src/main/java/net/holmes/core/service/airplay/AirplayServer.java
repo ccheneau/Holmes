@@ -76,7 +76,7 @@ public final class AirplayServer implements Service {
                 // Create JmDNS
                 jmDNS = JmDNS.create(localAddress);
 
-                // Loop up for available devices
+                // Look up for available devices
                 for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP))
                     streamingManager.addDevice(buildDevice(serviceInfo));
 
