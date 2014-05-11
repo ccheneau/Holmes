@@ -39,12 +39,4 @@ public class ConfigurationBooleanParameter extends ConfigurationParameter<Boolea
     public Boolean parse(String stringValue) {
         return Boolean.valueOf(stringValue);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String format(Boolean value) {
-        return value.toString();
-    }
 }

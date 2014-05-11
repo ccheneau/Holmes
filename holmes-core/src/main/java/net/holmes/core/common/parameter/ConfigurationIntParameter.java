@@ -39,12 +39,4 @@ public class ConfigurationIntParameter extends ConfigurationParameter<Integer> {
     public Integer parse(String stringValue) {
         return Integer.valueOf(stringValue);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String format(Integer value) {
-        return value.toString();
-    }
 }

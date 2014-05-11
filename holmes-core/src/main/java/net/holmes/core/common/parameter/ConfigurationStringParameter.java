@@ -39,12 +39,4 @@ public class ConfigurationStringParameter extends ConfigurationParameter<String>
     public String parse(String stringValue) {
         return stringValue;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String format(String value) {
-        return value;
-    }
 }

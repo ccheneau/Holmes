@@ -184,7 +184,9 @@ public abstract class ConfigurationParameter<T> {
      * @param value value to format
      * @return String value
      */
-    public abstract String format(T value);
+    public String format(T value) {
+        return value.toString();
+    }
 
     /**
      * Get default value
