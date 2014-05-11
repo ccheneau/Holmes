@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * XML configuration dao implementation.
@@ -157,5 +158,108 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     @Override
     public <T> void setParameter(final ConfigurationParameter<T> parameter, T value) {
         this.rootNode.setParameter(parameter.getName(), parameter.format(value));
+    }
+
+    /**
+     * Xml root node: result of Xml configuration deserialization
+     */
+    private class XmlRootNode {
+        private Properties parameters;
+        private List<ConfigurationNode> videoFolders;
+        private List<ConfigurationNode> pictureFolders;
+        private List<ConfigurationNode> audioFolders;
+        private List<ConfigurationNode> podcasts;
+
+        /**
+         * Check config default values.
+         */
+        public void checkDefaultValues() {
+            if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
+            if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
+            if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
+            if (this.podcasts == null) this.podcasts = Lists.newLinkedList();
+            if (this.parameters == null) this.parameters = new Properties();
+        }
+
+        /**
+         * Check configuration parameters.
+         */
+        @SuppressWarnings("unchecked")
+        public void checkParameters() {
+            // Check new parameters
+            List<String> availableParams = Lists.newArrayList();
+            for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
+                availableParams.add(param.getName());
+                // If a parameter is not present in configuration, add parameter with default value
+                if (this.parameters.getProperty(param.getName()) == null)
+                    this.parameters.put(param.getName(), param.format(param.getDefaultValue()));
+            }
+
+            // Check obsolete parameters
+            List<String> obsoleteParams = Lists.newArrayList();
+            for (Object paramKey : this.parameters.keySet())
+                if (!availableParams.contains(paramKey.toString()))
+                    obsoleteParams.add(paramKey.toString());
+
+            // Remove obsolete parameters
+            for (String obsoleteParam : obsoleteParams)
+                this.parameters.remove(obsoleteParam);
+        }
+
+        /**
+         * Gets the video folders.
+         *
+         * @return the video folders
+         */
+        public List<ConfigurationNode> getVideoFolders() {
+            return this.videoFolders;
+        }
+
+        /**
+         * Gets the podcasts.
+         *
+         * @return the podcasts
+         */
+        public List<ConfigurationNode> getPodcasts() {
+            return this.podcasts;
+        }
+
+        /**
+         * Gets the audio folders.
+         *
+         * @return the audio folders
+         */
+        public List<ConfigurationNode> getAudioFolders() {
+            return this.audioFolders;
+        }
+
+        /**
+         * Gets the picture folders.
+         *
+         * @return the picture folders
+         */
+        public List<ConfigurationNode> getPictureFolders() {
+            return this.pictureFolders;
+        }
+
+        /**
+         * Get parameter value.
+         *
+         * @param parameter parameter name
+         * @return parameter value
+         */
+        public String getParameter(final String parameter) {
+            return (String) this.parameters.get(parameter);
+        }
+
+        /**
+         * Sets the parameter.
+         *
+         * @param parameter parameter
+         * @param value     parameter value
+         */
+        public void setParameter(final String parameter, final String value) {
+            this.parameters.setProperty(parameter, value);
+        }
     }
 }
