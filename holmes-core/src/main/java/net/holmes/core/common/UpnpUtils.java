@@ -73,6 +73,16 @@ public final class UpnpUtils {
     }
 
     /**
+     * Get Upnp device ID associated to RemoteDevice
+     *
+     * @param device Upnp device
+     * @return Upnp device ID
+     */
+    public static String getDeviceId(final RemoteDevice device) {
+        return device.getIdentity().getUdn().getIdentifierString();
+    }
+
+    /**
      * Build a new Upnp service.
      *
      * @param upnpPort UPnP port

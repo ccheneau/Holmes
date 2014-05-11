@@ -18,10 +18,8 @@
 package net.holmes.core.common;
 
 import org.fourthline.cling.UpnpService;
-import org.fourthline.cling.model.meta.DeviceDetails;
-import org.fourthline.cling.model.meta.Icon;
-import org.fourthline.cling.model.meta.LocalService;
-import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.meta.*;
+import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.junit.Test;
 
@@ -95,5 +93,21 @@ public class UpnpUtilsTest {
         String deviceName = UpnpUtils.getDeviceName(device);
         assertEquals("Device Friendly Name", deviceName);
         verify(device, details);
+    }
+
+    @Test
+    public void testGetDeviceId() {
+        RemoteDevice device = createMock(RemoteDevice.class);
+        RemoteDeviceIdentity deviceIdentity = createMock(RemoteDeviceIdentity.class);
+        UDN udn = createMock(UDN.class);
+
+        expect(device.getIdentity()).andReturn(deviceIdentity);
+        expect(deviceIdentity.getUdn()).andReturn(udn);
+        expect(udn.getIdentifierString()).andReturn("UDN identifier string");
+
+        replay(device, deviceIdentity, udn);
+        String deviceId = UpnpUtils.getDeviceId(device);
+        assertEquals("UDN identifier string", deviceId);
+        verify(device, deviceIdentity, udn);
     }
 }

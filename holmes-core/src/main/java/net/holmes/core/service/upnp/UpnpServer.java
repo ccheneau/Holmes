@@ -22,7 +22,6 @@ import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
-import net.holmes.core.common.parameter.ConfigurationParameter;
 import net.holmes.core.service.Service;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -43,7 +42,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Set;
 
+import static net.holmes.core.common.UpnpUtils.getDeviceId;
 import static net.holmes.core.common.UpnpUtils.getDeviceName;
+import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_SERVER_ENABLE;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -80,14 +81,14 @@ public final class UpnpServer implements Service {
      */
     @Override
     public void start() {
-        if (configurationDao.getParameter(ConfigurationParameter.UPNP_SERVER_ENABLE)) {
+        if (configurationDao.getParameter(UPNP_SERVER_ENABLE)) {
             LOGGER.info("Starting UPnP server");
             upnpService = injector.getInstance(UpnpService.class);
 
-            // Add registry listener
+            // Add UPnP registry listener
             upnpService.getRegistry().addListener(new UpnpRegistryListener());
 
-            // Search for UPnp devices
+            // Search for UPnpP devices
             upnpService.getControlPoint().search();
 
             LOGGER.info("UPnP server started");
@@ -135,16 +136,16 @@ public final class UpnpServer implements Service {
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
 
-            if (connectionService != null && avTransportService != null && device.getIdentity() != null && device.getIdentity().getDescriptorURL() != null)
+            if (connectionService != null && avTransportService != null)
                 try {
                     // Device info
-                    final String deviceId = device.getIdentity().getUdn().getIdentifierString();
+                    final String deviceId = getDeviceId(device);
                     final String deviceName = getDeviceName(device);
                     final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
                     if (LOGGER.isDebugEnabled())
                         LOGGER.debug("Remote device added {} : {} [{}]", deviceId, deviceName, deviceHost);
 
-                    // Get protocol info on remote device
+                    // Get protocol info on remote UPnP device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
                         /**
                          * {@inheritDoc}
@@ -187,7 +188,7 @@ public final class UpnpServer implements Service {
          */
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
-            streamingManager.removeDevice(device.getIdentity().getUdn().getIdentifierString());
+            streamingManager.removeDevice(getDeviceId(device));
         }
 
         /**
