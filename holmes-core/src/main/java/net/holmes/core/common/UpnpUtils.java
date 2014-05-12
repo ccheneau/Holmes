@@ -110,8 +110,8 @@ public final class UpnpUtils {
      * @return device details
      */
     public static DeviceDetails buildDeviceDetails(final String serverName, final String version) {
-        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
-        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SHORT_NAME.toString(), HOLMES_SITE_URL.toString());
+        ModelDetails modelDetails = new ModelDetails(HOLMES_UPNP_SERVER_NAME.toString(), HOLMES_UPNP_DESCRIPTION.toString(), version, HOLMES_SITE_URL.toString());
+        ManufacturerDetails manufacturerDetails = new ManufacturerDetails(HOLMES_UPNP_SERVER_NAME.toString(), HOLMES_SITE_URL.toString());
         DLNADoc[] dlnaDocs = new DLNADoc[]{new DLNADoc("DMS", DLNADoc.Version.V1_5), new DLNADoc("M-DMS", DLNADoc.Version.V1_5)};
         return new DeviceDetails(serverName, manufacturerDetails, modelDetails, dlnaDocs, null);
     }

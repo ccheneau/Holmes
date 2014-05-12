@@ -24,20 +24,21 @@ public enum Constants {
     HOLMES_SITE_URL("http://ccheneau.github.io/Holmes/"),
     HOLMES_WIKI_URL("https://github.com/ccheneau/Holmes/wiki"),
     HOLMES_UPNP_SERVER_NAME("Holmes media Server"),
-    HOLMES_UPNP_SHORT_NAME("Holmes media Server"),
     HOLMES_UPNP_DESCRIPTION("UPnP Content Directory 1.0 Compliant Media Server"),
     HOLMES_HTTP_SERVER_NAME("Holmes HTTP Server"),
     HOLMES_GITHUB_RELEASE_API_URL("https://api.github.com/repos/ccheneau/Holmes/releases"),
-    UPNP_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ"),
     HTTP_CONTENT_REQUEST_PATH("/content"),
     HTTP_CONTENT_ID("id");
 
+    /**
+     * Constant value.
+     */
     private final String value;
 
     /**
-     * New constant.
+     * Instantiates a new constant.
      *
-     * @param value value
+     * @param value constant value
      */
     private Constants(final String value) {
         this.value = value;

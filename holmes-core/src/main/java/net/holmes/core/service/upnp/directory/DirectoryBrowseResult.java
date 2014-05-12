@@ -37,7 +37,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
-import static net.holmes.core.common.Constants.UPNP_DATE_FORMAT;
 import static net.holmes.core.common.MimeType.MIME_TYPE_OGG;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
@@ -46,6 +45,7 @@ import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
  * UPnP directory browse result.
  */
 final class DirectoryBrowseResult {
+    private static final String UPNP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     private static final DIDLObject.Class CONTAINER_CLASS = new DIDLObject.Class("object.container");
 
     private final DIDLContent didl;
@@ -215,7 +215,7 @@ final class DirectoryBrowseResult {
      */
     private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws ContentDirectoryException {
         if (node.getModifiedDate() != null)
-            didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT.toString()).format(node.getModifiedDate())));
+            didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
 
         if (node.getIconUrl() != null)
             try {
