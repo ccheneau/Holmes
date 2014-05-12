@@ -34,10 +34,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 
 /**
  * Backend manager implementation.

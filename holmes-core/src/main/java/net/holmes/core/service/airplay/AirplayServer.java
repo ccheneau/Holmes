@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
-import static net.holmes.core.common.parameter.ConfigurationParameter.AIRPLAY_STREAMING_ENABLE;
+import static net.holmes.core.common.ConfigurationParameter.AIRPLAY_STREAMING_ENABLE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

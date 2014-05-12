@@ -48,10 +48,10 @@ import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_IC
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
 import static net.holmes.core.business.media.model.RootNode.ICECAST;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
+import static net.holmes.core.common.ConfigurationParameter.PODCAST_CACHE_EXPIRE_HOURS;
+import static net.holmes.core.common.ConfigurationParameter.PODCAST_CACHE_MAX_ELEMENTS;
 import static net.holmes.core.common.FileUtils.*;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
-import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_CACHE_EXPIRE_HOURS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_CACHE_MAX_ELEMENTS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

@@ -47,8 +47,8 @@ import java.util.Set;
 
 import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.SAVE_SETTINGS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

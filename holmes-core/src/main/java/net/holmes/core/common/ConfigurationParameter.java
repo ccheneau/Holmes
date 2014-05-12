@@ -15,7 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common.parameter;
+package net.holmes.core.common;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+
+import java.util.List;
 
 /**
  * Configuration parameters
@@ -195,6 +200,111 @@ public abstract class ConfigurationParameter<T> {
      */
     public T getDefaultValue() {
         return defaultValue;
+    }
+
+    /**
+     * String implementation for configuration parameter.
+     */
+    public static final class ConfigurationStringParameter extends ConfigurationParameter<String> {
+
+        /**
+         * Instantiates a new String configuration parameter.
+         *
+         * @param name         parameter name
+         * @param defaultValue default value
+         */
+        ConfigurationStringParameter(String name, String defaultValue) {
+            super(name, defaultValue);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String parse(String stringValue) {
+            return stringValue;
+        }
+    }
+
+    /**
+     * Boolean implementation for configuration parameter.
+     */
+    public static final class ConfigurationBooleanParameter extends ConfigurationParameter<Boolean> {
+
+        /**
+         * Instantiates a new Boolean configuration parameter.
+         *
+         * @param name         parameter name
+         * @param defaultValue default value
+         */
+        ConfigurationBooleanParameter(String name, Boolean defaultValue) {
+            super(name, defaultValue);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Boolean parse(String stringValue) {
+            return Boolean.valueOf(stringValue);
+        }
+    }
+
+    /**
+     * Integer implementation for configuration parameter.
+     */
+    public static final class ConfigurationIntParameter extends ConfigurationParameter<Integer> {
+
+        /**
+         * Instantiates a new Integer configuration parameter.
+         *
+         * @param name         parameter name
+         * @param defaultValue default value
+         */
+        ConfigurationIntParameter(String name, Integer defaultValue) {
+            super(name, defaultValue);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Integer parse(String stringValue) {
+            return Integer.valueOf(stringValue);
+        }
+    }
+
+    /**
+     * String list implementation for configuration parameter.
+     */
+    public static final class ConfigurationListParameter extends ConfigurationParameter<List<String>> {
+        private static final char SEPARATOR = ',';
+
+        /**
+         * Instantiates a new String list configuration parameter.
+         *
+         * @param name         parameter name
+         * @param defaultValue default value
+         */
+        ConfigurationListParameter(String name, String defaultValue) {
+            super(name, Splitter.on(SEPARATOR).splitToList(defaultValue));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<String> parse(String stringValue) {
+            return Splitter.on(SEPARATOR).splitToList(stringValue);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String format(List<String> value) {
+            return Joiner.on(SEPARATOR).join(value);
+        }
     }
 }
 

@@ -48,9 +48,9 @@ import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
+import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 import static net.holmes.core.common.FileUtils.isValidFile;
-import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 
 /**
  * Http file request handler.
@@ -91,7 +91,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Build response
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
 
-        // Add http headers to response
+        // Add HTTP headers to response
         addContentHeaders(response, fileLength - startOffset, request.getMimeType());
         addDateHeader(response, file, request.isStaticFile());
         boolean keepAlive = addKeepAliveHeader(response, request.getHttpRequest());
@@ -123,11 +123,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     }
 
     /**
-     * Build Http response.
+     * Build HTTP response.
      *
      * @param startOffset start offset
      * @param fileLength  file length
-     * @return Http response
+     * @return HTTP response
      * @throws HttpFileRequestException
      */
     private HttpResponse buildHttpResponse(final long startOffset, final long fileLength) throws HttpFileRequestException {

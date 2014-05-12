@@ -24,7 +24,7 @@ import net.holmes.core.business.media.dao.icecast.IcecastDao;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.HOURS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
+import static net.holmes.core.common.ConfigurationParameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
 
 /**
  * Scheduled service used to download new Icecast directory.

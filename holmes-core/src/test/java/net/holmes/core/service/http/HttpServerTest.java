@@ -24,7 +24,7 @@ import com.google.inject.Key;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import org.junit.Test;
 
-import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_PORT;
+import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static org.easymock.EasyMock.*;
 
 public class HttpServerTest {

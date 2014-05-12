@@ -44,8 +44,8 @@ import java.util.List;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_ICECAST_ENTRY;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
-import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
-import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_ADD_SUBTITLE;
+import static net.holmes.core.common.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 

@@ -24,7 +24,7 @@ import net.holmes.core.business.media.MediaManager;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static net.holmes.core.common.parameter.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
+import static net.holmes.core.common.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
 
 /**
  * Scheduled service used to clean caches.

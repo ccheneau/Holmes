@@ -40,7 +40,7 @@ import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.holmes.core.business.streaming.session.SessionStatus.*;
-import static net.holmes.core.common.parameter.ConfigurationParameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
+import static net.holmes.core.common.ConfigurationParameter.STREAMING_STATUS_UPDATE_DELAY_SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

@@ -18,7 +18,7 @@
 package net.holmes.core.business.configuration;
 
 import net.holmes.core.business.media.model.RootNode;
-import net.holmes.core.common.parameter.ConfigurationParameter;
+import net.holmes.core.common.ConfigurationParameter;
 
 import java.io.IOException;
 import java.util.List;

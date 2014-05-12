@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.junit.Assert.*;
 
 public class XmlConfigurationDaoImplTest {

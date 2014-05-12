@@ -35,7 +35,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.CLOSE;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
-import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
+import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 import static org.easymock.EasyMock.*;
 
 public class HttpFileRequestHandlerTest {

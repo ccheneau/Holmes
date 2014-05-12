@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 

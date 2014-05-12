@@ -24,7 +24,7 @@ import org.junit.Test;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
+import static net.holmes.core.common.ConfigurationParameter.ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 

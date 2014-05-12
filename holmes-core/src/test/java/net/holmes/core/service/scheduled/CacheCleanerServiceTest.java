@@ -25,7 +25,7 @@ import org.junit.Test;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
+import static net.holmes.core.common.ConfigurationParameter.CACHE_CLEAN_DELAY_MINUTES;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 

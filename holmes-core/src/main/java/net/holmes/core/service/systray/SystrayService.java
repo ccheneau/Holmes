@@ -41,11 +41,11 @@ import static java.awt.SystemTray.getSystemTray;
 import static java.awt.SystemTray.isSupported;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.UIManager.getFont;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.Constants.HOLMES_SITE_URL;
 import static net.holmes.core.common.Constants.HOLMES_WIKI_URL;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
 import static net.holmes.core.common.StaticResourceLoader.getData;
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

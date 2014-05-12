@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.media.model.RootNode;
-import net.holmes.core.common.parameter.ConfigurationParameter;
+import net.holmes.core.common.ConfigurationParameter;
 
 import javax.inject.Inject;
 import javax.inject.Named;

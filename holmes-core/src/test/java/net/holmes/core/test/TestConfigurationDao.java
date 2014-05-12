@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
-import net.holmes.core.common.parameter.ConfigurationParameter;
+import net.holmes.core.common.ConfigurationParameter;
 
 import javax.inject.Inject;
 import java.io.File;

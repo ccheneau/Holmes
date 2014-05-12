@@ -24,7 +24,7 @@ import net.holmes.core.business.version.VersionManager;
 import javax.inject.Inject;
 
 import static java.util.concurrent.TimeUnit.HOURS;
-import static net.holmes.core.common.parameter.ConfigurationParameter.RELEASE_CHECK_DELAY_HOURS;
+import static net.holmes.core.common.ConfigurationParameter.RELEASE_CHECK_DELAY_HOURS;
 
 /**
  * Scheduled service used to check for new Holmes releases.

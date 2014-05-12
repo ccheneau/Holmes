@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static net.holmes.core.business.media.model.RootNode.*;
+import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
 import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
-import static net.holmes.core.common.parameter.ConfigurationParameter.HTTP_SERVER_PORT;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

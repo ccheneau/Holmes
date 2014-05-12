@@ -40,9 +40,9 @@ import java.util.Collection;
 import java.util.List;
 
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.common.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
-import static net.holmes.core.common.parameter.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
-import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;

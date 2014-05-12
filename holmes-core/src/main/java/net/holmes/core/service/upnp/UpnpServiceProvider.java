@@ -32,9 +32,9 @@ import org.fourthline.cling.model.meta.LocalService;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_NAME;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVICE_PORT;
 import static net.holmes.core.common.UpnpUtils.*;
-import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_SERVER_NAME;
-import static net.holmes.core.common.parameter.ConfigurationParameter.UPNP_SERVICE_PORT;
 
 /**
  * Guice provider for UPnP service.

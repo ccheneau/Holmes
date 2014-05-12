@@ -32,7 +32,7 @@ import java.util.Collection;
 
 import static net.holmes.core.business.media.model.RootNode.AUDIO;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
-import static net.holmes.core.common.parameter.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
