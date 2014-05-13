@@ -105,7 +105,7 @@ public final class UpnpUtils {
     }
 
     /**
-     * !build a new device details.
+     * Build a new device details.
      *
      * @return device details
      */
