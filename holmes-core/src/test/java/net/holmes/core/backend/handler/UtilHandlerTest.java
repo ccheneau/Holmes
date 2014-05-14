@@ -64,7 +64,7 @@ public class UtilHandlerTest {
     public void testGetReleaseInfo() {
         VersionManager versionManager = createMock(VersionManager.class);
 
-        expect(versionManager.getReleaseInfo()).andReturn(new ReleaseInfo("name", true, "url"));
+        expect(versionManager.getRemoteReleaseInfo()).andReturn(new ReleaseInfo("name", true, "url"));
         replay(versionManager);
 
         UtilHandler utilHandler = new UtilHandler(versionManager);

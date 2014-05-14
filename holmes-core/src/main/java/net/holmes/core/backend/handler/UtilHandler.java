@@ -73,7 +73,7 @@ public final class UtilHandler {
     @Path("/getReleaseInfo")
     @Produces(APPLICATION_JSON)
     public ReleaseInfo getReleaseInfo() {
-        return versionManager.getReleaseInfo();
+        return versionManager.getRemoteReleaseInfo();
     }
 
     /**

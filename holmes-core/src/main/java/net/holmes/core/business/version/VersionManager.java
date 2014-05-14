@@ -13,14 +13,14 @@ public interface VersionManager {
     String getCurrentVersion();
 
     /**
-     * Get Holmes release info.
+     * Get Holmes release info on GitHub.
      *
      * @return release info
      */
-    ReleaseInfo getReleaseInfo();
+    ReleaseInfo getRemoteReleaseInfo();
 
     /**
-     * Updates release information.
+     * Updates release information from GitHub.
      */
-    void updateReleaseInfo();
+    void updateRemoteReleaseInfo();
 }

@@ -71,7 +71,10 @@ import net.holmes.core.service.upnp.UpnpServiceProvider;
 import org.fourthline.cling.UpnpService;
 
 import javax.net.SocketFactory;
-import java.net.*;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -209,7 +212,7 @@ public final class HolmesServerModule extends AbstractModule {
                 }
             }
             return InetAddress.getLocalHost();
-        } catch (SocketException | UnknownHostException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

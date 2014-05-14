@@ -51,7 +51,7 @@ public class ReleaseCheckService extends AbstractScheduledService {
      */
     @Override
     protected void runOneIteration() {
-        versionManager.updateReleaseInfo();
+        versionManager.updateRemoteReleaseInfo();
     }
 
     /**

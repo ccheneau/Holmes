@@ -27,7 +27,7 @@ import static net.holmes.core.common.Constants.HOLMES_GITHUB_RELEASE_API_URL;
 /**
  * Holmes version manager implementation
  */
-public class VersionManagerImpl implements VersionManager {
+public final class VersionManagerImpl implements VersionManager {
     private final ReleaseDao releaseDao;
     private final String currentVersion;
 
@@ -54,7 +54,7 @@ public class VersionManagerImpl implements VersionManager {
      * {@inheritDoc}
      */
     @Override
-    public ReleaseInfo getReleaseInfo() {
+    public ReleaseInfo getRemoteReleaseInfo() {
         Release latestRelease = releaseDao.getLatestRelease();
         boolean needsUpdate = new VersionComparator().compare(currentVersion, latestRelease.getName()) == -1;
         return new ReleaseInfo(latestRelease.getName(), needsUpdate, latestRelease.getUrl());
@@ -64,7 +64,7 @@ public class VersionManagerImpl implements VersionManager {
      * {@inheritDoc}
      */
     @Override
-    public void updateReleaseInfo() {
+    public void updateRemoteReleaseInfo() {
         releaseDao.updateRelease(HOLMES_GITHUB_RELEASE_API_URL.toString());
     }
 }

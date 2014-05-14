@@ -38,7 +38,7 @@ public class VersionManagerImplTest {
     }
 
     @Test
-    public void testGetReleaseInfo() {
+    public void testGetRemoteReleaseInfo() {
         ReleaseDao releaseDao = createMock(ReleaseDao.class);
 
         Release release = new Release();
@@ -51,7 +51,7 @@ public class VersionManagerImplTest {
         replay(releaseDao);
 
         VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao);
-        ReleaseInfo releaseInfo = versionManager.getReleaseInfo();
+        ReleaseInfo releaseInfo = versionManager.getRemoteReleaseInfo();
         assertNotNull(releaseInfo);
         assertNotNull(releaseInfo.getName());
         assertNotNull(releaseInfo.getUrl());
@@ -61,7 +61,7 @@ public class VersionManagerImplTest {
     }
 
     @Test
-    public void testUpdateReleaseInfo() {
+    public void testUpdateRemoteReleaseInfo() {
         ReleaseDao releaseDao = createMock(ReleaseDao.class);
 
         releaseDao.updateRelease(isA(String.class));
@@ -70,7 +70,7 @@ public class VersionManagerImplTest {
         replay(releaseDao);
 
         VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao);
-        versionManager.updateReleaseInfo();
+        versionManager.updateRemoteReleaseInfo();
 
         verify(releaseDao);
     }

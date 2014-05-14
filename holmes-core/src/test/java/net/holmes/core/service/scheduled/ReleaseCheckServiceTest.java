@@ -36,7 +36,7 @@ public class ReleaseCheckServiceTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(configurationDao.getParameter(RELEASE_CHECK_DELAY_HOURS)).andReturn(1);
-        versionManager.updateReleaseInfo();
+        versionManager.updateRemoteReleaseInfo();
         expectLastCall().atLeastOnce();
 
         replay(versionManager, configurationDao);

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * Holmes version comparator
  */
-public class VersionComparator implements Comparator<String> {
+public final class VersionComparator implements Comparator<String> {
     private static final Pattern VERSION_PATTERN = Pattern.compile("^\\D*(\\d+)\\.?(\\d+)?\\.?(\\d+)?\\.?(\\d+)?$");
     private static final int MAX_VERSION_ITEM_NUMBER = 100;
 

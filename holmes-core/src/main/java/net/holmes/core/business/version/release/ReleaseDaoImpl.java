@@ -30,7 +30,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Release DAO implementation
  */
-public class ReleaseDaoImpl implements ReleaseDao {
+public final class ReleaseDaoImpl implements ReleaseDao {
     private static final Logger LOGGER = getLogger(ReleaseDaoImpl.class);
 
     private volatile Release latestRelease;

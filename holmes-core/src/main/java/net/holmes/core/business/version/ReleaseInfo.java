@@ -20,7 +20,7 @@ package net.holmes.core.business.version;
 /**
  * Release info
  */
-public class ReleaseInfo {
+public final class ReleaseInfo {
     private final String name;
     private final boolean needsUpdate;
     private final String url;
