@@ -76,71 +76,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
 
 import static com.google.inject.name.Names.named;
 import static java.util.Collections.list;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
  * Holmes Guice module.
  */
-final class HolmesServerModule extends AbstractModule {
-    private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", Executors.newCachedThreadPool());
+public final class HolmesServerModule extends AbstractModule {
+    private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
     private final String localHolmesDataDir = getLocalHolmesDataDir();
     private final String uiDirectory = getUiDirectory();
     private final InetAddress localAddress = getLocalAddress();
     private final SocketFactory socketFactory = SocketFactory.getDefault();
-
-    /**
-     * Get local data directory where Holmes configuration and logs are stored.
-     * This directory is a user home sub directory.
-     *
-     * @return local user data dir
-     */
-    private static String getLocalHolmesDataDir() {
-        // Check directory and create it if it does not exist
-        Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
-        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
-            return holmesDataPath.toString();
-
-        throw new RuntimeException("Failed to create " + holmesDataPath);
-    }
-
-    /**
-     * Get UI base directory.
-     *
-     * @return UI directory
-     */
-    private static String getUiDirectory() {
-        Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
-        if (!Files.exists(uiPath))
-            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
-
-        return uiPath.toString();
-    }
-
-    /**
-     * Get local IPv4 address (InetAddress.getLocalHost() does not work on Linux).
-     *
-     * @return local IPv4 address
-     */
-    @VisibleForTesting
-    static InetAddress getLocalAddress() {
-        try {
-            for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
-                for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
-                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
-                        return inetAddress;
-                }
-            }
-            return InetAddress.getLocalHost();
-        } catch (SocketException | UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -212,5 +164,53 @@ final class HolmesServerModule extends AbstractModule {
         bind(VideoFoldersHandler.class);
         bind(BackendExceptionMapper.class);
         bind(StreamingHandler.class);
+    }
+
+    /**
+     * Get local data directory where Holmes configuration and logs are stored.
+     * This directory is a user home sub directory.
+     *
+     * @return local user data dir
+     */
+    private static String getLocalHolmesDataDir() {
+        // Check directory and create it if it does not exist
+        Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
+        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
+            return holmesDataPath.toString();
+
+        throw new RuntimeException("Failed to create " + holmesDataPath);
+    }
+
+    /**
+     * Get UI base directory.
+     *
+     * @return UI directory
+     */
+    private static String getUiDirectory() {
+        Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
+        if (!Files.exists(uiPath))
+            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+
+        return uiPath.toString();
+    }
+
+    /**
+     * Get local IPv4 address (InetAddress.getLocalHost() does not work on Linux).
+     *
+     * @return local IPv4 address
+     */
+    @VisibleForTesting
+    static InetAddress getLocalAddress() {
+        try {
+            for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
+                for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
+                        return inetAddress;
+                }
+            }
+            return InetAddress.getLocalHost();
+        } catch (SocketException | UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
