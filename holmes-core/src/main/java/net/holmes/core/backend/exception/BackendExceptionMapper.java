@@ -50,8 +50,8 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
             message = e.getMessage();
         }
 
-        return Response.status(BAD_REQUEST)//
-                .type(TEXT_PLAIN) //
+        return Response.status(BAD_REQUEST)
+                .type(TEXT_PLAIN)
                 .entity(message).build();
     }
 

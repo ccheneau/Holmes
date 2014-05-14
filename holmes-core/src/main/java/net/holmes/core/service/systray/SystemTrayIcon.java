@@ -43,6 +43,7 @@ public class SystemTrayIcon extends TrayIcon {
          */
         @Override
         public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
+            // Nothing
         }
 
         /**

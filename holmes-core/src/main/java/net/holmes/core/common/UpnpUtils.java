@@ -26,7 +26,6 @@ import org.fourthline.cling.model.meta.*;
 import org.fourthline.cling.model.types.DLNADoc;
 import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 
@@ -34,13 +33,11 @@ import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.StaticResourceLoader.getUpnpLargeIcon;
 import static net.holmes.core.common.StaticResourceLoader.getUpnpSmallIcon;
 import static org.fourthline.cling.model.types.UDN.uniqueSystemIdentifier;
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Upnp utils.
  */
 public final class UpnpUtils {
-    private static final Logger LOGGER = getLogger(UpnpUtils.class);
     public static final DeviceType DEVICE_TYPE = DeviceType.valueOf("urn:schemas-upnp-org:device:MediaServer:1");
     public static final DeviceIdentity DEVICE_IDENTITY = new DeviceIdentity(uniqueSystemIdentifier(HOLMES_UPNP_SERVER_NAME.toString()));
 
@@ -120,14 +117,10 @@ public final class UpnpUtils {
      * Get UPnp icons.
      *
      * @return icons or null
+     * @throws java.io.IOException
      */
-    public static Icon[] getIcons() {
-        try {
-            return new Icon[]{getUpnpLargeIcon(), getUpnpSmallIcon()};
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
+    public static Icon[] getIcons() throws IOException {
+        return new Icon[]{getUpnpLargeIcon(), getUpnpSmallIcon()};
     }
 
 }

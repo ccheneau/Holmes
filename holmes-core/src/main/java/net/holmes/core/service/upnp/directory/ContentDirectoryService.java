@@ -62,8 +62,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * Instantiates a new content directory service.
      */
     public ContentDirectoryService() {
-        super(Arrays.asList("dc:title"), // search caps
-                Arrays.asList("dc:title", "dc:date")); // sort caps
+        // search caps, sort caps
+        super(Arrays.asList("dc:title"), Arrays.asList("dc:title", "dc:date"));
     }
 
     /**

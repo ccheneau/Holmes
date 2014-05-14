@@ -31,6 +31,7 @@ import org.fourthline.cling.model.meta.LocalService;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import java.io.IOException;
 
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_NAME;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVICE_PORT;
@@ -76,7 +77,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
         try {
             // Add local device to UPnP service registry
             upnpService.getRegistry().addDevice(new LocalDevice(DEVICE_IDENTITY, DEVICE_TYPE, deviceDetails, getIcons(), localServices));
-        } catch (ValidationException e) {
+        } catch (ValidationException | IOException e) {
             throw new RuntimeException(e);
         }
         return upnpService;

@@ -160,7 +160,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private boolean isLoaded() {
         synchronized (directoryLock) {
-            return icecastEnabled && directory != null && directory.getEntries().size() > 0;
+            return icecastEnabled && directory != null && !directory.getEntries().isEmpty();
         }
     }
 

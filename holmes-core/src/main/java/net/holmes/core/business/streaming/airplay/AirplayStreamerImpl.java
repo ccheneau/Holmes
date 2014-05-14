@@ -186,6 +186,6 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
      * @return content parameter value
      */
     private Long getContentParameterValue(final String parameterName, final Map<String, String> contentParameters) {
-        return contentParameters.containsKey(parameterName) ? Double.valueOf(contentParameters.get(parameterName)).longValue() : 0l;
+        return contentParameters.containsKey(parameterName) ? Double.valueOf(contentParameters.get(parameterName)).longValue() : 0L;
     }
 }

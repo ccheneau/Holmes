@@ -29,7 +29,7 @@ import java.net.Socket;
  * Airplay streaming device.
  */
 public class AirplayDevice extends Device {
-    private final static String AIRPLAY_DEVICE_TYPE = "Airplay";
+    private static final String AIRPLAY_DEVICE_TYPE = "Airplay";
     private final int port;
     private final AirplayDeviceFeatures features;
     private Socket socket = null;

@@ -33,7 +33,6 @@ import static java.text.NumberFormat.getNumberInstance;
  * @version $Revision: 1.7 $
  */
 public final class Duration implements Serializable {
-
     /**
      * The Constant SECOND.
      */
@@ -120,6 +119,19 @@ public final class Duration implements Serializable {
      */
     private static class Time {
         /**
+         * The hours.
+         */
+        private final int hours;
+        /**
+         * The minutes.
+         */
+        private final int minutes;
+        /**
+         * The seconds.
+         */
+        private final float seconds;
+
+        /**
          * Constructor.
          *
          * @param duration the duration
@@ -132,18 +144,5 @@ public final class Duration implements Serializable {
             time = time - minutes * MINUTE;
             seconds = (float) time / (float) SECOND;
         }
-
-        /**
-         * The hours.
-         */
-        private final int hours;
-        /**
-         * The minutes.
-         */
-        private final int minutes;
-        /**
-         * The seconds.
-         */
-        private final float seconds;
     }
 }

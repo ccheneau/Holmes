@@ -23,6 +23,7 @@ import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import static org.easymock.EasyMock.*;
@@ -63,7 +64,7 @@ public class UpnpUtilsTest {
     }
 
     @Test
-    public void testGetIcons() {
+    public void testGetIcons() throws IOException {
         Icon[] icons = UpnpUtils.getIcons();
         assertNotNull(icons);
     }

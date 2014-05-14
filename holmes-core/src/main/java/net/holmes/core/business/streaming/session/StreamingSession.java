@@ -26,8 +26,8 @@ public final class StreamingSession {
     private final String contentName;
     private final String contentUrl;
     private SessionStatus status = SessionStatus.WAITING;
-    private Long duration = 0l;
-    private Long position = 0l;
+    private Long duration = 0L;
+    private Long position = 0L;
 
     /**
      * Instantiates a new streaming session

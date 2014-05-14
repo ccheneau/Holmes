@@ -152,12 +152,12 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      * Node type.
      */
     public enum NodeType {
-        TYPE_FOLDER, //
-        TYPE_CONTENT, //
-        TYPE_PODCAST, //
-        TYPE_PODCAST_ENTRY, //
-        TYPE_ICECAST_GENRE, //
-        TYPE_ICECAST_ENTRY, //
+        TYPE_FOLDER,
+        TYPE_CONTENT,
+        TYPE_PODCAST,
+        TYPE_PODCAST_ENTRY,
+        TYPE_ICECAST_GENRE,
+        TYPE_ICECAST_ENTRY,
         TYPE_UNKNOWN
     }
 }

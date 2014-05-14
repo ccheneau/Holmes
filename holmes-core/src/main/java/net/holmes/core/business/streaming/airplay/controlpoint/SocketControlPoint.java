@@ -27,6 +27,7 @@ import java.net.Socket;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Airplay socket control point
@@ -86,7 +87,7 @@ public class SocketControlPoint implements ControlPoint {
      * @throws IOException
      */
     protected void sendCommand(final Socket socket, final Command command) throws IOException {
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
 
         // Write request to socket
         out.write(command.getRequest());
@@ -102,13 +103,15 @@ public class SocketControlPoint implements ControlPoint {
      */
     protected CommandResponse readCommandResponse(final Socket socket) throws IOException {
         CommandResponse response = new CommandResponse();
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
 
         // Read Http response
         List<String> httpResponseLines = Lists.newArrayList();
-        String line;
-        while ((line = in.readLine().trim()).length() != 0)
+        String line = in.readLine();
+        while (line != null && line.trim().length() != 0) {
             httpResponseLines.add(line);
+            line = in.readLine();
+        }
 
         // Decode command http response
         response.decodeHttpResponse(httpResponseLines);
@@ -118,7 +121,7 @@ public class SocketControlPoint implements ControlPoint {
         if (contentLength > 0) {
             // Read response content
             StringBuilder sbContent = new StringBuilder(contentLength);
-            char buffer[] = new char[1024];
+            char[] buffer = new char[1024];
             int read;
             int totalRead = 0;
             while (totalRead < contentLength && (read = in.read(buffer)) != -1) {

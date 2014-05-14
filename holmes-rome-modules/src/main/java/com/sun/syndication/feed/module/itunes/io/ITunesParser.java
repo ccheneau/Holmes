@@ -54,7 +54,7 @@ public class ITunesParser implements ModuleParser {
     public Module parse(final Element element) {
         AbstractITunesObject module = null;
 
-        if (element.getName().equals("item")) {
+        if ("item".equals(element.getName())) {
             EntryInformationImpl entryInfo = new EntryInformationImpl();
             module = entryInfo;
 

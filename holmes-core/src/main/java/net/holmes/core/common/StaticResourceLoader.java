@@ -77,7 +77,7 @@ public final class StaticResourceLoader {
      * Static resources directory.
      */
     public enum StaticResourceDir {
-        UPNP("upnp"), //
+        UPNP("upnp"),
         SYSTRAY("systray");
 
         private final String value;

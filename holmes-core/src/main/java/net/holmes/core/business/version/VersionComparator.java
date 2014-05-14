@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.version;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
 /**
  * Holmes version comparator
  */
-public final class VersionComparator implements Comparator<String> {
+public final class VersionComparator implements Comparator<String>, Serializable {
     private static final Pattern VERSION_PATTERN = Pattern.compile("^\\D*(\\d+)\\.?(\\d+)?\\.?(\\d+)?\\.?(\\d+)?$");
     private static final int MAX_VERSION_ITEM_NUMBER = 100;
 

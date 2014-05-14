@@ -87,7 +87,7 @@ public final class UtilHandler {
     @Produces(APPLICATION_JSON)
     public Collection<Folder> getChildFolders(@FormParam("path") final String parentPath) {
         Collection<Folder> folders = Lists.newArrayList();
-        if (parentPath == null || parentPath.equals("none")) {
+        if (parentPath == null || "none".equals(parentPath)) {
             // No parent path specified
             // Add user home folder to response
             File userHomeDir = new File(USER_HOME.getValue());

@@ -114,7 +114,7 @@ public final class MimeType {
             return true;
         else
             for (String availableMimeType : availableMimeTypes)
-                if (availableMimeType.equals("*/*") || availableMimeType.equals(type.getValue() + "/*"))
+                if ("*/*".equals(availableMimeType) || availableMimeType.equals(type.getValue() + "/*"))
                     return true;
         return false;
     }
