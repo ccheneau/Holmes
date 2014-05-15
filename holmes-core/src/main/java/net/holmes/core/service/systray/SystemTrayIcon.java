@@ -100,7 +100,9 @@ public class SystemTrayIcon extends TrayIcon {
      * @param popupMenu popup menu
      */
     public void setPopupMenu(final JPopupMenu popupMenu) {
-        if (this.popupMenu != null) this.popupMenu.removePopupMenuListener(POPUP_LISTENER);
+        if (this.popupMenu != null) {
+            this.popupMenu.removePopupMenuListener(POPUP_LISTENER);
+        }
 
         if (popupMenu != null) {
             this.popupMenu = popupMenu;

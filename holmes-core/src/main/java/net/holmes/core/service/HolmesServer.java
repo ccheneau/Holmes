@@ -127,7 +127,9 @@ public final class HolmesServer implements Service {
                 // Create lock file
                 randomAccessFile = new RandomAccessFile(new File(localHolmesDataDir, LOCK_FILE_NAME), "rw");
                 fileLock = randomAccessFile.getChannel().tryLock();
-                if (fileLock == null) throw new RuntimeException("Holmes server is already running");
+                if (fileLock == null) {
+                    throw new RuntimeException("Holmes server is already running");
+                }
                 return true;
             }
         } catch (IOException e) {
@@ -146,8 +148,9 @@ public final class HolmesServer implements Service {
             try {
                 fileLock.release();
                 randomAccessFile.close();
-                if (lockFile.exists() && !lockFile.delete())
+                if (lockFile.exists() && !lockFile.delete()) {
                     LOGGER.error("Unable to remove lock file: {}", lockFile.getPath());
+                }
             } catch (IOException e) {
                 LOGGER.error("Unable to unlock file: {} {}", lockFile.getPath(), e.getMessage());
             }

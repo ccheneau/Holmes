@@ -163,8 +163,10 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
                     Long position = getContentParameterValue(CONTENT_PARAMETER_POSITION, contentParameters);
                     sendSuccess(STATUS, device.getId(), duration, position);
 
-                    // If end of streaming is reached, send stop command
-                    if (duration > 0 && position >= duration) stop(device);
+                    if (duration > 0 && position >= duration) {
+                        // If end of streaming is reached, send stop command
+                        stop(device);
+                    }
                 }
             }
 

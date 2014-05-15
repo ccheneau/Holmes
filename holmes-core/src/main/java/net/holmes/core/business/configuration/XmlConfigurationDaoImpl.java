@@ -72,8 +72,9 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      */
     private Path getConfigFile() {
         Path confPath = Paths.get(localHolmesDataDir, CONF_DIR);
-        if (Files.isDirectory(confPath) || confPath.toFile().mkdirs())
+        if (Files.isDirectory(confPath) || confPath.toFile().mkdirs()) {
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
+        }
 
         throw new RuntimeException("Failed to create " + confPath);
     }
@@ -87,7 +88,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
         boolean configLoaded = false;
 
         Path confFile = getConfigFile();
-        if (Files.isReadable(confFile))
+        if (Files.isReadable(confFile)) {
             try (InputStream in = new FileInputStream(confFile.toFile())) {
                 // Load configuration from XML
                 rootNode = (XmlRootNode) xstream.fromXML(in);
@@ -95,13 +96,18 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             } catch (FileNotFoundException e) {
                 //Ignore
             }
+        }
 
-        if (rootNode == null) rootNode = new XmlRootNode();
+        if (rootNode == null) {
+            rootNode = new XmlRootNode();
+        }
         rootNode.checkDefaultValues();
         rootNode.checkParameters();
 
         // Save default config if nothing is loaded
-        if (!configLoaded) saveConfig();
+        if (!configLoaded) {
+            saveConfig();
+        }
     }
 
     /**
@@ -147,9 +153,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     @Override
     public <T> T getParameter(final ConfigurationParameter<T> parameter) {
         String value = this.rootNode.getParameter(parameter.getName());
-        if (value != null)
-            return parameter.parse(value);
-        return parameter.getDefaultValue();
+        return value != null ? parameter.parse(value) : parameter.getDefaultValue();
     }
 
     /**
@@ -174,11 +178,21 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
          * Check config default values.
          */
         public void checkDefaultValues() {
-            if (this.videoFolders == null) this.videoFolders = Lists.newLinkedList();
-            if (this.audioFolders == null) this.audioFolders = Lists.newLinkedList();
-            if (this.pictureFolders == null) this.pictureFolders = Lists.newLinkedList();
-            if (this.podcasts == null) this.podcasts = Lists.newLinkedList();
-            if (this.parameters == null) this.parameters = new Properties();
+            if (this.videoFolders == null) {
+                this.videoFolders = Lists.newLinkedList();
+            }
+            if (this.audioFolders == null) {
+                this.audioFolders = Lists.newLinkedList();
+            }
+            if (this.pictureFolders == null) {
+                this.pictureFolders = Lists.newLinkedList();
+            }
+            if (this.podcasts == null) {
+                this.podcasts = Lists.newLinkedList();
+            }
+            if (this.parameters == null) {
+                this.parameters = new Properties();
+            }
         }
 
         /**
@@ -191,19 +205,23 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
                 availableParams.add(param.getName());
                 // If a parameter is not present in configuration, add parameter with default value
-                if (this.parameters.getProperty(param.getName()) == null)
+                if (this.parameters.getProperty(param.getName()) == null) {
                     this.parameters.put(param.getName(), param.format(param.getDefaultValue()));
+                }
             }
 
             // Check obsolete parameters
             List<String> obsoleteParams = Lists.newArrayList();
-            for (Object paramKey : this.parameters.keySet())
-                if (!availableParams.contains(paramKey.toString()))
+            for (Object paramKey : this.parameters.keySet()) {
+                if (!availableParams.contains(paramKey.toString())) {
                     obsoleteParams.add(paramKey.toString());
+                }
+            }
 
             // Remove obsolete parameters
-            for (String obsoleteParam : obsoleteParams)
+            for (String obsoleteParam : obsoleteParams) {
                 this.parameters.remove(obsoleteParam);
+            }
         }
 
         /**

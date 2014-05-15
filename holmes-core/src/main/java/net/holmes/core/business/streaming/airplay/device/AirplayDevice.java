@@ -94,10 +94,12 @@ public class AirplayDevice extends Device {
      */
     @Override
     public void close() {
-        if (socket != null) try {
-            socket.close();
-        } catch (IOException e) {
-            // Nothing
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // Nothing
+            }
         }
     }
 
@@ -109,8 +111,9 @@ public class AirplayDevice extends Device {
      * @throws IOException
      */
     public Socket getConnection(final SocketFactory socketFactory) throws IOException {
-        if (socket == null || socket.isClosed())
+        if (socket == null || socket.isClosed()) {
             socket = socketFactory.createSocket(getAddress(), port);
+        }
 
         return socket;
     }

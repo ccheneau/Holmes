@@ -20,7 +20,6 @@ package net.holmes.core.business.media.dao;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.sun.syndication.io.FeedException;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
@@ -36,7 +35,6 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -114,8 +112,9 @@ public class MediaDaoImpl implements MediaDao {
                     node = getFileNode(nodeId, indexElement, mediaType);
                     break;
             }
-        } else
+        } else {
             LOGGER.warn("[getNode] {} not found in media index", nodeId);
+        }
         return node;
     }
 
@@ -129,17 +128,12 @@ public class MediaDaoImpl implements MediaDao {
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(parentNodeId);
         if (indexElement != null) {
-
             // Get media type
             MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
             switch (mediaType) {
                 case TYPE_PODCAST:
                     // Get podcast entries
-                    try {
                         childNodes.addAll(getPodcastEntries(parentNodeId, indexElement.getPath()));
-                    } catch (ExecutionException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
                     break;
                 case TYPE_ICECAST_GENRE:
                     // Get Icecast entries
@@ -153,8 +147,9 @@ public class MediaDaoImpl implements MediaDao {
                     childNodes.addAll(getFolderChildNodes(parentNodeId, indexElement.getPath(), mediaType));
                     break;
             }
-        } else
+        } else {
             LOGGER.error("[getChildNodes] {} node not found in media index", parentNodeId);
+        }
 
         return childNodes;
     }
@@ -222,8 +217,9 @@ public class MediaDaoImpl implements MediaDao {
         if (isValidFile(nodeFile)) {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
-            if (mimeType != null)
+            if (mimeType != null) {
                 node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
+            }
         } else if (isValidDirectory(nodeFile)) {
             // Folder node
             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
@@ -254,7 +250,9 @@ public class MediaDaoImpl implements MediaDao {
                     // Add file node
                     String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true, false));
                     AbstractNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName()));
-                    if (node != null) nodes.add(node);
+                    if (node != null) {
+                        nodes.add(node);
+                    }
                 }
             }
         }
@@ -269,8 +267,13 @@ public class MediaDaoImpl implements MediaDao {
      * @return entries parsed from pod-cast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) throws ExecutionException {
-        return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastId, podcastUrl));
+    private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) {
+        try {
+            return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastId, podcastUrl));
+        } catch (ExecutionException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return Lists.newArrayListWithCapacity(0);
     }
 
     /**
@@ -326,7 +329,7 @@ public class MediaDaoImpl implements MediaDao {
          * {@inheritDoc}
          */
         @Override
-        public List<AbstractNode> call() throws IOException, FeedException {
+        public List<AbstractNode> call() throws Exception {
             // No entries in cache, read them from RSS feed
             // First remove children from media index
             mediaIndexDao.removeChildren(podcastId);

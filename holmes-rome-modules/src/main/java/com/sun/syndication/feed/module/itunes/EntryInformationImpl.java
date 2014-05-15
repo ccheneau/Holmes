@@ -64,9 +64,9 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
     @Override
     public void copyFrom(final Object obj) {
         EntryInformationImpl info = (EntryInformationImpl) obj;
-        if (info.duration != null)
+        if (info.duration != null) {
             this.setDuration(new Duration(info.duration.getMilliseconds()));
-
+        }
     }
 
     /**

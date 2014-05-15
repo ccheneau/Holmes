@@ -60,8 +60,11 @@ public enum RootNode {
      * @return the root node or RootNode.NONE
      */
     public static RootNode getById(final String id) {
-        for (RootNode rootNode : RootNode.values())
-            if (rootNode.id.equals(id)) return rootNode;
+        for (RootNode rootNode : RootNode.values()) {
+            if (rootNode.id.equals(id)) {
+                return rootNode;
+            }
+        }
 
         return NONE;
     }

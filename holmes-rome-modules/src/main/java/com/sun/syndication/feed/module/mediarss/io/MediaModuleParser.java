@@ -74,14 +74,16 @@ public class MediaModuleParser implements ModuleParser {
 
         // thumbnails
         List<?> thumbnails = element.getChildren("thumbnail", NS);
-        for (Object thumbnail : thumbnails)
+        for (Object thumbnail : thumbnails) {
             try {
                 Element thumb = (Element) thumbnail;
-                if (thumb.getValue().toLowerCase().startsWith("http"))
+                if (thumb.getValue().toLowerCase().startsWith("http")) {
                     metadata.addThumbnail(new Thumbnail(new URI(thumb.getValue())));
+                }
             } catch (URISyntaxException ex) {
                 LOGGER.warn("Exception parsing thumbnail tag.", ex);
             }
+        }
 
         return metadata;
     }

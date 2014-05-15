@@ -52,9 +52,15 @@ public class IcecastGenreNode extends AbstractNode {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
 
         final IcecastGenreNode other = (IcecastGenreNode) obj;
         return Objects.equal(this.genre, other.genre);

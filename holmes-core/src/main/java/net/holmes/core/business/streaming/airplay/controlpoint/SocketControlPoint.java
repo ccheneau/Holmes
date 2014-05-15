@@ -69,10 +69,11 @@ public class SocketControlPoint implements ControlPoint {
 
             // Read command response
             CommandResponse response = readCommandResponse(socket);
-            if (response.getCode() == OK.code())
+            if (response.getCode() == OK.code()) {
                 command.success(response.getContentParameters());
-            else
+            } else {
                 command.failure(response.getMessage());
+            }
 
         } catch (IOException e) {
             command.failure(e.getMessage());
@@ -130,8 +131,9 @@ public class SocketControlPoint implements ControlPoint {
             }
 
             // Decode content parameters
-            if (CONTENT_TYPE_PARAMETERS.equals(response.getContentType()))
+            if (CONTENT_TYPE_PARAMETERS.equals(response.getContentType())) {
                 response.decodeContentParameters(sbContent.toString());
+            }
         }
         return response;
     }

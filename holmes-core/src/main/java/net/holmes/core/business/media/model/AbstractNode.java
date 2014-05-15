@@ -123,9 +123,13 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      */
     @Override
     public int compareTo(final AbstractNode o) {
-        if (this.getType() == o.getType()) return this.name.compareTo(o.name);
-        else if (this.getType() == NodeType.TYPE_FOLDER) return -1;
-        else return 1;
+        if (this.getType() == o.getType()) {
+            return this.name.compareTo(o.name);
+        } else if (this.getType() == NodeType.TYPE_FOLDER) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     /**
@@ -141,11 +145,20 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
 
         final AbstractNode other = (AbstractNode) obj;
-        return Objects.equal(this.id, other.id) && Objects.equal(this.parentId, other.parentId) && Objects.equal(this.name, other.name) && Objects.equal(this.type, other.type) && Objects.equal(this.modifiedDate, other.modifiedDate) && Objects.equal(this.iconUrl, other.iconUrl);
+        return Objects.equal(this.id, other.id)
+                && Objects.equal(this.parentId, other.parentId)
+                && Objects.equal(this.name, other.name)
+                && Objects.equal(this.type, other.type)
+                && Objects.equal(this.modifiedDate, other.modifiedDate)
+                && Objects.equal(this.iconUrl, other.iconUrl);
     }
 
     /**

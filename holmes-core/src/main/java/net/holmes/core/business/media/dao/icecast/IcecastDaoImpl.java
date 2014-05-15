@@ -89,8 +89,9 @@ public final class IcecastDaoImpl implements IcecastDao {
 
         List<String> genreList = configurationDao.getParameter(ICECAST_GENRE_LIST);
         this.genres = Lists.newArrayListWithCapacity(genreList.size());
-        for (String genre : genreList)
+        for (String genre : genreList) {
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
+        }
     }
 
     /**
@@ -102,7 +103,9 @@ public final class IcecastDaoImpl implements IcecastDao {
             boolean result = false;
             int retry = 0;
             while (!result && retry < maxDownloadRetry) {
-                if (LOGGER.isDebugEnabled()) LOGGER.debug("checkYellowPage {} / {}", retry + 1, maxDownloadRetry);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("checkYellowPage {} / {}", retry + 1, maxDownloadRetry);
+                }
                 try {
                     result = (!needsYellowPageDownload() || downloadYellowPage()) && parseYellowPage();
                 } catch (IOException e) {
@@ -119,8 +122,9 @@ public final class IcecastDaoImpl implements IcecastDao {
     @Override
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
-            if (directory != null && directory.getEntries() != null)
+            if (directory != null && directory.getEntries() != null) {
                 return Collections2.filter(directory.getEntries(), new IcecastEntryGenreFilter(genre));
+            }
 
             return Lists.newArrayList();
         }
@@ -141,16 +145,20 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     @Subscribe
     public void handleConfigEvent(final ConfigurationEvent configurationEvent) {
-        if (configurationEvent.getType() == SAVE_SETTINGS)
+        if (configurationEvent.getType() == SAVE_SETTINGS) {
             synchronized (settingsLock) {
                 icecastEnabled = configurationDao.getParameter(ICECAST_ENABLE);
                 if (icecastEnabled) {
                     // Download and parse Yellow page if not already loaded
-                    if (!isLoaded()) checkYellowPage();
-                } else
+                    if (!isLoaded()) {
+                        checkYellowPage();
+                    }
+                } else {
                     // Reset directory
                     loadDirectory(null);
+                }
             }
+        }
     }
 
     /**
@@ -182,8 +190,9 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     private Path getDataPath() {
         Path dataPath = Paths.get(localHolmesDataDir, DATA_DIR);
-        if (Files.isDirectory(dataPath) || dataPath.toFile().mkdirs())
+        if (Files.isDirectory(dataPath) || dataPath.toFile().mkdirs()) {
             return dataPath;
+        }
 
         throw new RuntimeException("Failed to create " + dataPath);
 
@@ -250,7 +259,9 @@ public final class IcecastDaoImpl implements IcecastDao {
 
     @VisibleForTesting
     boolean parseYellowPage(final File ypFile) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("parse Yellow page");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("parse Yellow page");
+        }
         boolean result = true;
 
         // Configure XStream
@@ -267,32 +278,51 @@ public final class IcecastDaoImpl implements IcecastDao {
         try (InputStream in = new FileInputStream(ypFile);
              ObjectInputStream ois = xstream.createObjectInputStream(in)) {
 
-            Set<IcecastEntry> entries = Sets.newHashSet();
-            try {
-                Object object = ois.readObject();
-                while (object != null) {
-                    if (object instanceof IcecastEntry)
-                        entries.add((IcecastEntry) object);
+            Set<IcecastEntry> entries = getIcecastEntries(ois);
 
-                    object = ois.readObject();
-                }
-            } catch (EOFException e) {
-                // End of file reached. Ignore
-            }
             // Set new Icecast directory
-            if (!entries.isEmpty())
+            if (!entries.isEmpty()) {
                 loadDirectory(new IcecastDirectory(entries));
+            }
 
         } catch (IOException | XStreamException | ClassNotFoundException e) {
-            if (LOGGER.isDebugEnabled()) LOGGER.debug(e.getMessage(), e);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug(e.getMessage(), e);
+            }
             result = false;
         }
 
         // Remove Yellow page on error
-        if (!result && ypFile.delete())
+        if (!result && ypFile.delete()) {
             LOGGER.error("Failed to parse Icecast directory. Remove file {}", ypFile.getAbsolutePath());
+        }
 
         return result;
+    }
+
+    /**
+     * Get Icecast entries.
+     *
+     * @param ois object input stream
+     * @return Icecast entries
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private Set<IcecastEntry> getIcecastEntries(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        Set<IcecastEntry> entries = Sets.newHashSet();
+        try {
+            Object object = ois.readObject();
+            while (object != null) {
+                if (object instanceof IcecastEntry) {
+                    entries.add((IcecastEntry) object);
+                }
+
+                object = ois.readObject();
+            }
+        } catch (EOFException e) {
+            // End of file reached. Ignore
+        }
+        return entries;
     }
 
     @VisibleForTesting
@@ -309,13 +339,15 @@ public final class IcecastDaoImpl implements IcecastDao {
     void loadDirectory(IcecastDirectory directory) {
         synchronized (directoryLock) {
             this.directory = directory;
-            if (directory != null)
+            if (directory != null) {
                 LOGGER.info("Icecast directory contains {} entries", this.directory.getEntries().size());
+            }
         }
 
         // Remove previous Icecast elements from media index
-        for (IcecastGenre genre : genres)
+        for (IcecastGenre genre : genres) {
             mediaIndexDao.removeChildren(genre.getId());
+        }
     }
 
     /**

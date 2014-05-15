@@ -59,8 +59,9 @@ public class ITunesParser implements ModuleParser {
             module = entryInfo;
 
             Element duration = element.getChild("duration", ns);
-            if (duration != null)
+            if (duration != null) {
                 entryInfo.setDuration(new Duration(duration.getValue().trim()));
+            }
         }
         return module;
     }

@@ -107,9 +107,9 @@ public class Metadata implements Cloneable, Serializable {
     public Object clone() throws CloneNotSupportedException {
         super.clone();
         Metadata md = new Metadata();
-        for (Thumbnail thumbnail : thumbnails)
+        for (Thumbnail thumbnail : thumbnails) {
             md.addThumbnail(thumbnail);
-
+        }
         return md;
     }
 }

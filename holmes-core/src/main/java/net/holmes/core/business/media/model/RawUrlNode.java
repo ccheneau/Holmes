@@ -67,9 +67,15 @@ public final class RawUrlNode extends MimeTypeNode {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
 
         final RawUrlNode other = (RawUrlNode) obj;
         return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);

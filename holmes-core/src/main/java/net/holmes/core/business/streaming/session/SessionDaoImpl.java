@@ -60,8 +60,9 @@ public final class SessionDaoImpl implements SessionDao {
         StreamingSession session = getSession(deviceId);
 
         // If duration is already set and end of streaming is reached, update session's status
-        if (session.getDuration() > 0 && (position >= duration || duration == 0))
+        if (session.getDuration() > 0 && (position >= duration || duration == 0)) {
             session.setStatus(SessionStatus.WAITING);
+        }
 
         // Update position and duration
         session.setPosition(position);
@@ -82,7 +83,9 @@ public final class SessionDaoImpl implements SessionDao {
     @Override
     public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
         StreamingSession session = sessions.get(deviceId);
-        if (session == null) throw new UnknownSessionException(deviceId);
+        if (session == null) {
+            throw new UnknownSessionException(deviceId);
+        }
         return session;
     }
 

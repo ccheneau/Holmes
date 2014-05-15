@@ -176,9 +176,11 @@ public final class StreamingManagerImpl implements StreamingManager {
      */
     @Subscribe
     public void handleStreamingEvent(final StreamingEvent event) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("handle streaming event: {}", event);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("handle streaming event: {}", event);
+        }
         try {
-            if (event.isSuccess())
+            if (event.isSuccess()) {
                 // Update streaming session
                 switch (event.getType()) {
                     case PLAY:
@@ -197,8 +199,9 @@ public final class StreamingManagerImpl implements StreamingManager {
                     default:
                         break;
                 }
-            else
+            } else {
                 LOGGER.error("Type: {} - Device: {} - Error: {}", event.getType(), event.getDeviceId(), event.getErrorMessage());
+            }
 
         } catch (UnknownSessionException e) {
             LOGGER.error(e.getMessage());
@@ -212,10 +215,11 @@ public final class StreamingManagerImpl implements StreamingManager {
      * @return streamer
      */
     private DeviceStreamer getStreamer(final Device device) {
-        if (device instanceof UpnpDevice)
+        if (device instanceof UpnpDevice) {
             return upnpStreamer;
-        else if (device instanceof AirplayDevice)
+        } else if (device instanceof AirplayDevice) {
             return airplayStreamer;
+        }
         throw new IllegalArgumentException("Unknown device type " + device);
     }
 
@@ -241,12 +245,13 @@ public final class StreamingManagerImpl implements StreamingManager {
         @SuppressWarnings("unchecked")
         protected void runOneIteration() throws Exception {
             Map<String, StreamingSession> sessions = sessionDao.getSessions();
-            for (Map.Entry<String, StreamingSession> session : sessions.entrySet())
+            for (Map.Entry<String, StreamingSession> session : sessions.entrySet()) {
                 if (session.getValue().getStatus() == PLAYING) {
                     // Update device status
                     Device device = deviceDao.getDevice(session.getKey());
                     getStreamer(device).updateStatus(device);
                 }
+            }
         }
 
         /**

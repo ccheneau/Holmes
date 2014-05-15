@@ -47,11 +47,12 @@ public final class EventBusListener implements TypeListener {
     @Override
     public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
         // Register to event bus
-        for (Method method : type.getRawType().getMethods())
+        for (Method method : type.getRawType().getMethods()) {
             if (method.isAnnotationPresent(Subscribe.class)) {
                 encounter.register(new EventBusRegisterListener<T>(eventBus));
                 break;
             }
+        }
     }
 
     /**

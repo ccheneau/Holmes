@@ -81,11 +81,12 @@ public final class MediaManagerImpl implements MediaManager {
     public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
         RootNode rootNode = getById(nodeId);
-        if (rootNode != NONE)
+        if (rootNode != NONE) {
             // Get Root node
             node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
-        else if (nodeId != null)
+        } else if (nodeId != null) {
             node = mediaDao.getNode(nodeId);
+        }
 
         return node;
     }
@@ -109,16 +110,18 @@ public final class MediaManagerImpl implements MediaManager {
         if (rootNode == ROOT) {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
-            for (RootNode subRootNode : RootNode.values())
-                if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getSubRootChildNodes(subRootNode).isEmpty())
+            for (RootNode subRootNode : RootNode.values()) {
+                if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getSubRootChildNodes(subRootNode).isEmpty()) {
                     childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));
-
-        } else if (rootNode.getParentId().equals(ROOT.getId()))
+                }
+            }
+        } else if (rootNode.getParentId().equals(ROOT.getId())) {
             // Get child nodes of sub root node
             childNodes = mediaDao.getSubRootChildNodes(rootNode);
-        else
+        } else {
             // Get child nodes
             childNodes = mediaDao.getChildNodes(request.getParentNode().getId());
+        }
 
         // Filter child nodes according to available mime types
         return Collections2.filter(childNodes, new Predicate<AbstractNode>() {
@@ -149,10 +152,11 @@ public final class MediaManagerImpl implements MediaManager {
      */
     @Subscribe
     public void handleMediaEvent(final MediaEvent mediaEvent) {
-        if (mediaEvent.getType() == SCAN_NODE)
+        if (mediaEvent.getType() == SCAN_NODE) {
             scanNode(getNode(mediaEvent.getParameter()));
-        else
+        } else {
             LOGGER.error("Unknown media event {}", mediaEvent);
+        }
     }
 
     /**
@@ -163,8 +167,9 @@ public final class MediaManagerImpl implements MediaManager {
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
             Collection<AbstractNode> result = searchChildNodes(new MediaSearchRequest(node));
-            for (AbstractNode childNode : result)
+            for (AbstractNode childNode : result) {
                 scanNode(childNode);
+            }
         }
     }
 }

@@ -73,16 +73,15 @@ public final class FileUtils {
     public static List<File> listChildren(String parentPath, boolean includeFiles) {
         List<File> fileList = Lists.newArrayList();
         File parent = new File(parentPath);
-        if (isValidDirectory(parent)) {
-            File[] files = parent.listFiles();
-            if (files != null)
-                for (File child : files)
-                    if (child.canRead() && !child.isHidden())
-                        if (includeFiles && child.isFile())
-                            fileList.add(child);
-                        else if (child.isDirectory() && child.listFiles() != null)
-                            fileList.add(child);
-
+        File[] files;
+        if (isValidDirectory(parent) && (files = parent.listFiles()) != null) {
+            for (File child : files) {
+                if (includeFiles && isValidFile(child)) {
+                    fileList.add(child);
+                } else if (isValidDirectory(child) && child.listFiles() != null) {
+                    fileList.add(child);
+                }
+            }
         }
         return fileList;
     }

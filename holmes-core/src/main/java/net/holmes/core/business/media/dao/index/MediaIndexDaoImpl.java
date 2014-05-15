@@ -77,7 +77,9 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
      */
     @Override
     public void put(final String uuid, final MediaIndexElement element) {
-        if (elements.get(uuid) == null) elements.put(uuid, element);
+        if (elements.get(uuid) == null) {
+            elements.put(uuid, element);
+        }
     }
 
     /**
@@ -99,8 +101,9 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
         }
 
         // Remove elements
-        for (String id : toRemove)
+        for (String id : toRemove) {
             elements.remove(id);
+        }
     }
 
     /**
@@ -153,14 +156,18 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
             case UPDATE_FOLDER:
                 // Remove node and child nodes from mediaIndex
                 remove(configNode.getId());
-                if (rootNode != PODCAST) removeChildren(configNode.getId());
+                if (rootNode != PODCAST) {
+                    removeChildren(configNode.getId());
+                }
                 // Add node to mediaIndex
                 put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case DELETE_FOLDER:
                 // Remove node and child nodes from mediaIndex
                 remove(configNode.getId());
-                if (rootNode != PODCAST) removeChildren(configNode.getId());
+                if (rootNode != PODCAST) {
+                    removeChildren(configNode.getId());
+                }
                 break;
             default:
                 break;
@@ -173,6 +180,8 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
      * @param uuid element uuid
      */
     private void remove(final String uuid) {
-        if (elements.get(uuid) != null) elements.remove(uuid);
+        if (elements.get(uuid) != null) {
+            elements.remove(uuid);
+        }
     }
 }

@@ -37,7 +37,9 @@ public final class VersionComparator implements Comparator<String>, Serializable
         Integer versionNumber1 = convertVersion(version1);
         Integer versionNumber2 = convertVersion(version2);
 
-        if (versionNumber2 == null || versionNumber1 == null) return 0;
+        if (versionNumber2 == null || versionNumber1 == null) {
+            return 0;
+        }
 
         return versionNumber1.compareTo(versionNumber2);
     }
@@ -53,10 +55,24 @@ public final class VersionComparator implements Comparator<String>, Serializable
         if (version != null) {
             Matcher matcher = VERSION_PATTERN.matcher(version);
             if (matcher.matches()) {
-                versionNumber = 0;
-                for (int i = 1; i <= matcher.groupCount(); i++)
-                    if (matcher.group(i) != null)
-                        versionNumber += Double.valueOf(Math.pow(MAX_VERSION_ITEM_NUMBER, matcher.groupCount() - i) * Integer.valueOf(matcher.group(i))).intValue();
+                versionNumber = getVersionNumber(matcher);
+            }
+        }
+        return versionNumber;
+    }
+
+    /**
+     * Get version number.
+     *
+     * @param matcher version pattern matcher
+     * @return version number
+     */
+    private Integer getVersionNumber(Matcher matcher) {
+        Integer versionNumber;
+        versionNumber = 0;
+        for (int i = 1; i <= matcher.groupCount(); i++) {
+            if (matcher.group(i) != null) {
+                versionNumber += Double.valueOf(Math.pow(MAX_VERSION_ITEM_NUMBER, matcher.groupCount() - i) * Integer.valueOf(matcher.group(i))).intValue();
             }
         }
         return versionNumber;

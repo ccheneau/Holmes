@@ -74,13 +74,13 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             @Override
             public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
                 String currentUrl = mediaInfo.getCurrentURI();
-                if (currentUrl == null)
+                if (currentUrl == null) {
                     // No url set on device, set Url and play
                     setUrlAndPlay(device, contentUrl, node, PLAY);
-                else if (contentUrl.equals(currentUrl))
+                } else if (contentUrl.equals(currentUrl)) {
                     // Current Url already defined, play
                     play(device, PLAY);
-                else
+                } else {
                     // Another Url is already set on device, get transport info
                     controlPoint.execute(new GetTransportInfo(device.getAvTransportService()) {
                         /**
@@ -109,6 +109,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                             sendFailure(PLAY, device.getId(), defaultMsg);
                         }
                     });
+                }
             }
 
             /**
@@ -336,10 +337,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @throws Exception
      */
     private String getNodeMetadata(final AbstractNode node, final String contentUrl) throws Exception {
-        if (node instanceof ContentNode)
-            return getContentNodeMetadata((ContentNode) node, contentUrl);
-
-        return NOT_IMPLEMENTED;
+        return node instanceof ContentNode ? getContentNodeMetadata((ContentNode) node, contentUrl) : NOT_IMPLEMENTED;
     }
 
     /**
@@ -367,9 +365,6 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             default:
                 break;
         }
-        if (item != null)
-            return new DIDLParser().generate(new DIDLContent().addItem(item));
-        else
-            return NOT_IMPLEMENTED;
+        return item != null ? new DIDLParser().generate(new DIDLContent().addItem(item)) : NOT_IMPLEMENTED;
     }
 }

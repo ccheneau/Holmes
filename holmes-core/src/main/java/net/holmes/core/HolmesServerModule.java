@@ -178,8 +178,9 @@ public final class HolmesServerModule extends AbstractModule {
     private static String getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
         Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
-        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs())
+        if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs()) {
             return holmesDataPath.toString();
+        }
 
         throw new RuntimeException("Failed to create " + holmesDataPath);
     }
@@ -191,8 +192,9 @@ public final class HolmesServerModule extends AbstractModule {
      */
     private static String getUiDirectory() {
         Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
-        if (!Files.exists(uiPath))
+        if (!Files.exists(uiPath)) {
             throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+        }
 
         return uiPath.toString();
     }
@@ -207,8 +209,9 @@ public final class HolmesServerModule extends AbstractModule {
         try {
             for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
                 for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
-                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress())
+                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
                         return inetAddress;
+                    }
                 }
             }
             return InetAddress.getLocalHost();

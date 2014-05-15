@@ -40,7 +40,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * {@inheritDoc}
      */
     @Override
-    public Class<?> getInterface() {
+    public Class<MediaModule> getInterface() {
         return MediaModule.class;
     }
 

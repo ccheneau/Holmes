@@ -80,15 +80,16 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
                 // Request for UI static file is valid if requested file name has a correct mime type
                 String fileName = getFileName(decoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(fileName);
-                if (mimeType != null)
+                if (mimeType != null) {
                     fileRequest = new HttpFileRequest(request, new File(uiDirectory, fileName), mimeType, true);
+                }
             }
         }
 
-        if (fileRequest != null)
+        if (fileRequest != null) {
             // Add file request to message list
             out.add(fileRequest);
-        else {
+        } else {
             // Forward request to pipeline
             request.retain();
             out.add(request);
@@ -103,8 +104,13 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
      */
     private String getFileName(final QueryStringDecoder decoder) {
         String fileName = decoder.path().trim();
-        if (fileName.endsWith("/")) fileName = fileName.substring(0, fileName.length() - 1);
-        if (WELCOME_APPLICATIONS.contains(fileName)) fileName += "/" + DEFAULT_WELCOME_FILE;
+        if (fileName.endsWith("/")) {
+            // Remove trailing '/'
+            fileName = fileName.substring(0, fileName.length() - 1);
+        }
+        if (WELCOME_APPLICATIONS.contains(fileName)) {
+            fileName += "/" + DEFAULT_WELCOME_FILE;
+        }
         return fileName;
     }
 }

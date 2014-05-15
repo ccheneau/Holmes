@@ -80,7 +80,9 @@ public final class SystrayService implements Service {
     @Override
     public void start() {
         // Add system tray icon
-        if (configurationDao.getParameter(SYSTRAY_ENABLE) && initUIManager()) initSystemTrayMenu();
+        if (configurationDao.getParameter(SYSTRAY_ENABLE) && initUIManager()) {
+            initSystemTrayMenu();
+        }
     }
 
     /**
@@ -103,8 +105,9 @@ public final class SystrayService implements Service {
 
             // Add bold font for systray menu item
             Font menuItemFont = getFont(MENU_ITEM_FONT);
-            if (menuItemFont != null)
+            if (menuItemFont != null) {
                 UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), BOLD, menuItemFont.getSize()));
+            }
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             result = false;
@@ -117,7 +120,9 @@ public final class SystrayService implements Service {
      */
     private void initSystemTrayMenu() {
         // Check the SystemTray is supported
-        if (!isSupported() || !isDesktopSupported()) return;
+        if (!isSupported() || !isDesktopSupported()) {
+            return;
+        }
 
         // Initialize systray icon
         Image image;
@@ -226,15 +231,18 @@ public final class SystrayService implements Service {
          */
         public JMenuItem getMenuItem(final String text, final String iconPath, final boolean showIcon, final Font font) {
             Icon icon = null;
-            if (showIcon)
+            if (showIcon) {
                 try {
                     icon = new ImageIcon(getData(SYSTRAY, iconPath));
                 } catch (IOException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
+            }
 
             JMenuItem menuItem = new JMenuItem(text, icon);
-            if (font != null) menuItem.setFont(font);
+            if (font != null) {
+                menuItem.setFont(font);
+            }
 
             menuItem.addActionListener(new ActionListener() {
                 /**
@@ -244,7 +252,7 @@ public final class SystrayService implements Service {
                 public void actionPerformed(ActionEvent event) {
                     try {
                         onClick();
-                    } catch (URISyntaxException | IOException e) {
+                    } catch (Exception e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
@@ -255,9 +263,8 @@ public final class SystrayService implements Service {
         /**
          * Fires onClick event.
          *
-         * @throws URISyntaxException
-         * @throws IOException
+         * @throws Exception
          */
-        public abstract void onClick() throws URISyntaxException, IOException;
+        public abstract void onClick() throws Exception;
     }
 }

@@ -67,8 +67,9 @@ public final class BackendManagerImpl implements BackendManager {
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
         Collection<ConfigurationFolder> folders = Lists.newArrayList();
-        for (ConfigurationNode node : configNodes)
+        for (ConfigurationNode node : configNodes) {
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
+        }
 
         return folders;
     }
@@ -90,8 +91,11 @@ public final class BackendManagerImpl implements BackendManager {
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
 
         // Validate
-        if (rootNode == RootNode.PODCAST) validatePodcast(folder, configNodes, null);
-        else validateFolder(folder, configNodes, null);
+        if (rootNode == RootNode.PODCAST) {
+            validatePodcast(folder, configNodes, null);
+        } else {
+            validateFolder(folder, configNodes, null);
+        }
 
         // Set new folder id
         folder.setId(newUniqueId());
@@ -118,8 +122,11 @@ public final class BackendManagerImpl implements BackendManager {
         boolean podcast = rootNode == RootNode.PODCAST;
 
         // Check folder
-        if (podcast) validatePodcast(folder, configNodes, id);
-        else validateFolder(folder, configNodes, id);
+        if (podcast) {
+            validatePodcast(folder, configNodes, id);
+        } else {
+            validateFolder(folder, configNodes, id);
+        }
 
         // Save config if name or path has changed
         ConfigurationNode currentNode = findConfigurationNode(id, configNodes, podcast);
@@ -199,8 +206,9 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(folder.getPath(), "backend.folder.path.error");
 
         // Check folder path exists
-        if (!isValidDirectory(folder.getPath()))
+        if (!isValidDirectory(folder.getPath())) {
             throw new BackendException("backend.folder.path.unknown.error");
+        }
 
         // Check for duplication
         checkDuplicatedConfigurationFolder(folder, configNodes, excludedId, "backend.folder.already.exist.error");
@@ -219,8 +227,9 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(podcast.getPath(), "backend.podcast.url.error");
 
         // Check podcast URL is correct
-        if (!URL_PATTERN.matcher(podcast.getPath()).matches())
+        if (!URL_PATTERN.matcher(podcast.getPath()).matches()) {
             throw new BackendException("backend.podcast.url.malformed.error");
+        }
 
         // Check for duplication
         checkDuplicatedConfigurationFolder(podcast, configNodes, excludedId, "backend.podcast.already.exist.error");
@@ -235,8 +244,11 @@ public final class BackendManagerImpl implements BackendManager {
      * @return configuration node
      */
     private ConfigurationNode findConfigurationNode(String id, List<ConfigurationNode> configNodes, boolean podcast) {
-        for (ConfigurationNode node : configNodes)
-            if (node.getId().equals(id)) return node;
+        for (ConfigurationNode node : configNodes) {
+            if (node.getId().equals(id)) {
+                return node;
+            }
+        }
 
         throw new BackendException(podcast ? "backend.podcast.unknown.error" : "backend.folder.unknown.error");
     }
@@ -248,7 +260,9 @@ public final class BackendManagerImpl implements BackendManager {
      * @param errorMessage error message
      */
     private void checkNonEmpty(String toCheck, String errorMessage) {
-        if (Strings.isNullOrEmpty(toCheck)) throw new BackendException(errorMessage);
+        if (Strings.isNullOrEmpty(toCheck)) {
+            throw new BackendException(errorMessage);
+        }
     }
 
     /**
@@ -261,9 +275,12 @@ public final class BackendManagerImpl implements BackendManager {
      */
     private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final String errorMessage) {
         for (ConfigurationNode node : configNodes) {
-            if (excludedId != null && excludedId.equals(node.getId())) continue;
-            if (node.getLabel().equals(folder.getName()) || node.getPath().equals(folder.getPath()))
+            if (excludedId != null && excludedId.equals(node.getId())) {
+                continue;
+            }
+            if (node.getLabel().equals(folder.getName()) || node.getPath().equals(folder.getPath())) {
                 throw new BackendException(errorMessage);
+            }
         }
     }
 }

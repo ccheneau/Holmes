@@ -164,12 +164,13 @@ final class DirectoryBrowseResult {
                 item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
             default:
-                if (mimeType.equals(MIME_TYPE_SUBTITLE))
+                if (mimeType.equals(MIME_TYPE_SUBTITLE)) {
                     // Add subtitle item
                     item = new TextItem(node.getId(), parentNodeId, name, null, res);
-                else if (mimeType.equals(MIME_TYPE_OGG))
+                } else if (mimeType.equals(MIME_TYPE_OGG)) {
                     // Add OGG item
                     item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
+                }
                 break;
         }
         if (item != null) {
@@ -214,14 +215,16 @@ final class DirectoryBrowseResult {
      * @throws ContentDirectoryException
      */
     private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws ContentDirectoryException {
-        if (node.getModifiedDate() != null)
+        if (node.getModifiedDate() != null) {
             didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
+        }
 
-        if (node.getIconUrl() != null)
+        if (node.getIconUrl() != null) {
             try {
                 didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
             } catch (URISyntaxException e) {
                 throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
             }
+        }
     }
 }

@@ -77,8 +77,9 @@ public final class AirplayServer implements Service {
                 jmDNS = JmDNS.create(localAddress);
 
                 // Look up for available devices
-                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP))
+                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP)) {
                     streamingManager.addDevice(buildDevice(serviceInfo));
+                }
 
                 // Add Listener to manage inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
@@ -139,12 +140,14 @@ public final class AirplayServer implements Service {
      * @return Airplay device
      */
     private AirplayDevice buildDevice(ServiceInfo serviceInfo) {
-        if (serviceInfo != null && serviceInfo.getInet4Addresses() != null)
-            for (Inet4Address inet4Address : serviceInfo.getInet4Addresses())
+        if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
+            for (Inet4Address inet4Address : serviceInfo.getInet4Addresses()) {
                 if (!inet4Address.isLoopbackAddress()) {
                     AirplayDeviceFeatures features = new AirplayDeviceFeatures(serviceInfo.getPropertyString(AIRPLAY_FEATURES));
                     return new AirplayDevice(serviceInfo.getKey(), serviceInfo.getName(), inet4Address, serviceInfo.getPort(), features);
                 }
+            }
+        }
         return null;
     }
 }

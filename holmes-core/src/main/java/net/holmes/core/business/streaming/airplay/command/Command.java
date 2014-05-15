@@ -89,7 +89,9 @@ public abstract class Command {
         sbCommand.append(USER_AGENT).append(PARAMETER_SEPARATOR).append(AIRPLAY_USER_AGENT).append(EOL);
 
         // Http content
-        if (requestContent != null) sbCommand.append(EOL).append(requestContent);
+        if (requestContent != null) {
+            sbCommand.append(EOL).append(requestContent);
+        }
 
         sbCommand.append(EOL);
         return sbCommand.toString();
@@ -119,8 +121,9 @@ public abstract class Command {
         sbUrl.append("/").append(type.getValue());
         if (!urlParameters.isEmpty()) {
             sbUrl.append("?");
-            for (UrlParameter param : urlParameters.keySet())
+            for (UrlParameter param : urlParameters.keySet()) {
                 sbUrl.append(param.getValue()).append("=").append(urlParameters.get(param)).append("&");
+            }
             sbUrl.deleteCharAt(sbUrl.length() - 1);
         }
         return sbUrl.toString();
@@ -139,7 +142,9 @@ public abstract class Command {
                 sbContent.append(param.getValue()).append(PARAMETER_SEPARATOR).append(postParameters.get(param)).append(EOL);
             }
             return sbContent.toString();
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     /**

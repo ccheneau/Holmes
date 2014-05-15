@@ -65,7 +65,9 @@ public final class DeviceDaoImpl implements DeviceDao {
     @Override
     public Device getDevice(final String deviceId) throws UnknownDeviceException {
         Device device = devices.get(deviceId);
-        if (device == null) throw new UnknownDeviceException(deviceId);
+        if (device == null) {
+            throw new UnknownDeviceException(deviceId);
+        }
         return device;
     }
 

@@ -92,7 +92,9 @@ public final class UpnpServer implements Service {
             upnpService.getControlPoint().search();
 
             LOGGER.info("UPnP server started");
-        } else LOGGER.info("UPnP server is disabled");
+        } else {
+            LOGGER.info("UPnP server is disabled");
+        }
     }
 
     /**
@@ -136,14 +138,15 @@ public final class UpnpServer implements Service {
             RemoteService connectionService = device.findService(CONNECTION_MANAGER_SERVICE_TYPE);
             final RemoteService avTransportService = device.findService(AV_TRANSPORT_SERVICE_TYPE);
 
-            if (connectionService != null && avTransportService != null)
+            if (connectionService != null && avTransportService != null) {
                 try {
                     // Device info
                     final String deviceId = getDeviceId(device);
                     final String deviceName = getDeviceName(device);
                     final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
-                    if (LOGGER.isDebugEnabled())
+                    if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Remote device added {} : {} [{}]", deviceId, deviceName, deviceHost);
+                    }
 
                     // Get protocol info on remote UPnP device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
@@ -154,9 +157,11 @@ public final class UpnpServer implements Service {
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
                             Set<String> availableMimeTypes = Sets.newHashSet();
-                            for (ProtocolInfo protocolInfo : sinkProtocolInfo)
-                                if (protocolInfo.getProtocol() == HTTP_GET)
+                            for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+                                if (protocolInfo.getProtocol() == HTTP_GET) {
                                     availableMimeTypes.add(protocolInfo.getContentFormat());
+                                }
+                            }
 
                             // Add device
                             streamingManager.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
@@ -173,6 +178,7 @@ public final class UpnpServer implements Service {
                 } catch (UnknownHostException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
+            }
         }
 
         /**

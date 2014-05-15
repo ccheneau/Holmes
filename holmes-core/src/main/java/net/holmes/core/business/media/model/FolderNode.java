@@ -70,9 +70,15 @@ public final class FolderNode extends AbstractNode {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
 
         final FolderNode other = (FolderNode) obj;
         return Objects.equal(this.path, other.path);

@@ -40,8 +40,8 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @return Class of the Interface for this module.
      */
     @Override
-    public Class<?> getInterface() {
-        return getClass();
+    public Class<AbstractITunesObject> getInterface() {
+        return AbstractITunesObject.class;
     }
 
     /**

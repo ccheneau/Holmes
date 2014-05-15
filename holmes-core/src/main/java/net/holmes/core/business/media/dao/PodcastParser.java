@@ -23,7 +23,6 @@ import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
@@ -31,7 +30,6 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -48,11 +46,10 @@ abstract class PodcastParser {
      * @param podcastUrl podcast URL
      * @param podcastId  podcast id
      * @return list of podcast entry nodes
-     * @throws IOException
-     * @throws FeedException
+     * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws IOException, FeedException {
+    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws Exception {
         List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
@@ -60,23 +57,35 @@ abstract class PodcastParser {
             for (SyndEntry rssEntry : rssEntries) {
                 // Get RSS entry enclosures
                 for (SyndEnclosure enclosure : (List<SyndEnclosure>) rssEntry.getEnclosures()) {
-                    MimeType mimeType = enclosure.getType() != null ? MimeType.valueOf(enclosure.getType()) : null;
-                    if (mimeType != null && mimeType.isMedia()) {
-                        // Add to media index
-                        String podcastEntryId = addMediaIndexElement(new MediaIndexElement(podcastId, TYPE_RAW_URL.getValue(), mimeType.getMimeType(), enclosure.getUrl(), rssEntry.getTitle(), false, false));
-
-                        // Build podcast entry node
-                        RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, podcastEntryId, podcastId, rssEntry.getTitle(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
-                        podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
-                        podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
-
-                        // Add podcast entry node
-                        podcastEntryNodes.add(podcastEntryNode);
-                    }
+                    addPodcastEntry(podcastId, podcastEntryNodes, rssEntry, enclosure);
                 }
             }
         }
         return podcastEntryNodes;
+    }
+
+    /**
+     * Add Podcast entry.
+     *
+     * @param podcastId         podcast id
+     * @param podcastEntryNodes list of podcast entries
+     * @param rssEntry          RSS entry
+     * @param enclosure         RSS enclosure
+     */
+    private void addPodcastEntry(String podcastId, List<AbstractNode> podcastEntryNodes, SyndEntry rssEntry, SyndEnclosure enclosure) {
+        MimeType mimeType = enclosure.getType() != null ? MimeType.valueOf(enclosure.getType()) : null;
+        if (mimeType != null && mimeType.isMedia()) {
+            // Add to media index
+            String podcastEntryId = addMediaIndexElement(new MediaIndexElement(podcastId, TYPE_RAW_URL.getValue(), mimeType.getMimeType(), enclosure.getUrl(), rssEntry.getTitle(), false, false));
+
+            // Build podcast entry node
+            RawUrlNode podcastEntryNode = new RawUrlNode(TYPE_PODCAST_ENTRY, podcastEntryId, podcastId, rssEntry.getTitle(), mimeType, enclosure.getUrl(), getDuration(rssEntry));
+            podcastEntryNode.setIconUrl(getIconUrl(rssEntry));
+            podcastEntryNode.setModifiedDate(getPublishedDate(rssEntry));
+
+            // Add podcast entry node
+            podcastEntryNodes.add(podcastEntryNode);
+        }
     }
 
     /**

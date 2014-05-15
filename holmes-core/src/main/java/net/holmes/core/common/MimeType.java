@@ -110,12 +110,15 @@ public final class MimeType {
      * @return true is mime type is compliant
      */
     public boolean isCompliant(final Collection<String> availableMimeTypes) {
-        if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType))
+        if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType)) {
             return true;
-        else
-            for (String availableMimeType : availableMimeTypes)
-                if ("*/*".equals(availableMimeType) || availableMimeType.equals(type.getValue() + "/*"))
+        } else {
+            for (String availableMimeType : availableMimeTypes) {
+                if ("*/*".equals(availableMimeType) || availableMimeType.equals(type.getValue() + "/*")) {
                     return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -132,8 +135,12 @@ public final class MimeType {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
 
         final MimeType other = (MimeType) obj;
         return Objects.equal(this.mimeType, other.mimeType);

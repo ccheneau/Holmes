@@ -32,7 +32,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Bootstrap for Holmes - main class.
@@ -58,25 +57,19 @@ public final class Bootstrap {
         Injector injector = Guice.createInjector(new HolmesServerModule());
 
         // Start Holmes server
-        try {
-            final Service holmesServer = injector.getInstance(HolmesServer.class);
-            holmesServer.start();
+        final Service holmesServer = injector.getInstance(HolmesServer.class);
+        holmesServer.start();
 
-            // Add shutdown hook
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void run() {
-                    holmesServer.stop();
-                }
-            });
-        } catch (RuntimeException e) {
-            getLogger(Bootstrap.class).error(e.getMessage(), e);
-            System.exit(1);
-        }
-
+        // Add shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void run() {
+                holmesServer.stop();
+            }
+        });
     }
 
     /**
@@ -87,7 +80,7 @@ public final class Bootstrap {
     private static void loadLogging(final boolean debug) {
         // Define logback configuration file name
         Path logbackFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", debug ? "logback-debug.xml" : "logback.xml");
-        if (Files.exists(logbackFilePath))
+        if (Files.exists(logbackFilePath)) {
             try {
                 // Load logback configuration
                 LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -102,7 +95,8 @@ public final class Bootstrap {
             } catch (JoranException e) {
                 throw new RuntimeException(e);
             }
-        else
+        } else {
             throw new RuntimeException(logbackFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+        }
     }
 }

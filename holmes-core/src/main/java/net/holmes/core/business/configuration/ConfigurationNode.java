@@ -74,8 +74,12 @@ public final class ConfigurationNode {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
 
         final ConfigurationNode other = (ConfigurationNode) obj;
         return Objects.equal(this.id, other.id) && Objects.equal(this.label, other.label) && Objects.equal(this.path, other.path);

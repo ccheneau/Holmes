@@ -79,7 +79,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     protected void channelRead0(final ChannelHandlerContext context, final HttpFileRequest request) throws HttpFileRequestException, IOException {
         // Check file
         File file = request.getFile();
-        if (!isValidFile(file)) throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
+        if (!isValidFile(file)) {
+            throw new HttpFileRequestException(file.getPath(), NOT_FOUND);
+        }
 
         // Get file descriptor
         RandomAccessFile randomFile = new RandomAccessFile(file, "r");
@@ -106,7 +108,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         ChannelFuture lastContentFuture = context.writeAndFlush(EMPTY_LAST_CONTENT);
 
         // Decide whether to close the connection or not when the whole content is written out.
-        if (!keepAlive) lastContentFuture.addListener(CLOSE);
+        if (!keepAlive) {
+            lastContentFuture.addListener(CLOSE);
+        }
 
     }
 
@@ -115,11 +119,13 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      */
     @Override
     public void exceptionCaught(final ChannelHandlerContext context, final Throwable cause) {
-        if (context.channel().isActive())
-            if (cause instanceof HttpFileRequestException)
+        if (context.channel().isActive()) {
+            if (cause instanceof HttpFileRequestException) {
                 sendError(context, cause.getMessage(), ((HttpFileRequestException) cause).getStatus());
-            else
+            } else {
                 sendError(context, cause.getMessage(), INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 
     /**
@@ -140,9 +146,10 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
             // Instantiates a new response with content range
             response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
             response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
-        } else
+        } else {
             // Start offset is not correct
             throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+        }
 
         // Add server header
         response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
@@ -162,10 +169,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         String range = httpRequest.headers().get(RANGE);
         if (range != null) {
             Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
-            if (matcher.find())
+            if (matcher.find()) {
                 startOffset = Long.parseLong(matcher.group(1));
-            else
+            } else {
                 throw new HttpFileRequestException(range, REQUESTED_RANGE_NOT_SATISFIABLE);
+            }
         }
         return startOffset;
     }
@@ -215,7 +223,9 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      */
     private boolean addKeepAliveHeader(final HttpResponse response, final HttpMessage request) {
         boolean keepAlive = isKeepAlive(request);
-        if (keepAlive) response.headers().set(CONNECTION, KEEP_ALIVE);
+        if (keepAlive) {
+            response.headers().set(CONNECTION, KEEP_ALIVE);
+        }
 
         return keepAlive;
     }

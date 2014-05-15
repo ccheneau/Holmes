@@ -74,19 +74,24 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                                final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         // Get browse node
         AbstractNode browseNode = mediaManager.getNode(objectID);
-        if (browseNode == null)
+        if (browseNode == null) {
             throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
+        }
 
         // Get available mime types
         List<String> availableMimeTypes = Lists.newArrayList();
-        if (remoteClientInfo.getConnection() != null)
-            for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress()))
-                if (device instanceof UpnpDevice)
+        if (remoteClientInfo.getConnection() != null) {
+            for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
+                if (device instanceof UpnpDevice) {
                     availableMimeTypes.addAll(device.getSupportedMimeTypes());
+                }
+            }
+        }
 
         // Add subtitle
-        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE))
+        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE)) {
             availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
+        }
 
         // Build browse result
         DirectoryBrowseResult result;
@@ -94,14 +99,16 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
             Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
-            for (AbstractNode childNode : searchResult)
+            for (AbstractNode childNode : searchResult) {
                 addNode(objectID, childNode, result, searchResult.size(), availableMimeTypes);
+            }
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
             addNode(browseNode.getParentId(), browseNode, result, 0, availableMimeTypes);
-        } else
+        } else {
             result = new DirectoryBrowseResult(0, 1);
+        }
 
         return result.buildBrowseResult(new DIDLParser());
     }
@@ -127,7 +134,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @throws ContentDirectoryException
      */
     private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
-        if (result.acceptNode())
+        if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, mediaManager.getNodeUrl(node));
@@ -143,14 +150,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 // Add raw URL to result
                 RawUrlNode rawUrlNode = (RawUrlNode) node;
                 String entryName = node.getName();
-                if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY)
+                if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY) {
                     // Format podcast entry name
                     entryName = formatPodcastEntryName(result.getResultCount(), totalCount, node.getName());
+                }
 
                 result.addUrlItem(nodeId, rawUrlNode, entryName);
-            } else if (node instanceof IcecastGenreNode)
+            } else if (node instanceof IcecastGenreNode) {
                 // Add Icecast genre to result
                 result.addContainer(nodeId, node, 1);
+            }
+        }
     }
 
     /**
@@ -164,10 +174,15 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME))
-            if (totalCount > 99) return String.format("%03d - %s", count + 1, title);
-            else return String.format("%02d - %s", count + 1, title);
-        else return title;
+        if (configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)) {
+            if (totalCount > 99) {
+                return String.format("%03d - %s", count + 1, title);
+            } else {
+                return String.format("%02d - %s", count + 1, title);
+            }
+        } else {
+            return title;
+        }
     }
 
     @VisibleForTesting

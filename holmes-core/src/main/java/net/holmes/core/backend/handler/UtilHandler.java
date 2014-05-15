@@ -95,13 +95,16 @@ public final class UtilHandler {
 
             // Add server root folders to response
             File[] roots = File.listRoots();
-            if (roots != null)
-                for (File root : roots)
+            if (roots != null) {
+                for (File root : roots) {
                     folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
+                }
+            }
         } else {
             // Get child folders
-            for (File child : listChildren(parentPath, false))
+            for (File child : listChildren(parentPath, false)) {
                 folders.add(new Folder(child.getName(), child.getAbsolutePath()));
+            }
         }
         return folders;
     }

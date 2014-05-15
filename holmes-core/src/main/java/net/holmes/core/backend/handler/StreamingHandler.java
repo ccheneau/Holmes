@@ -76,8 +76,9 @@ public class StreamingHandler {
     @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         List<PlaybackDevice> playbackDevices = Lists.newArrayList();
-        for (Device device : streamingManager.getDevices())
+        for (Device device : streamingManager.getDevices()) {
             playbackDevices.add(buildPlaybackDevice(device));
+        }
 
         return playbackDevices;
     }
@@ -192,17 +193,21 @@ public class StreamingHandler {
 
             // Get browse node
             AbstractNode node = mediaManager.getNode(nodeId);
-            if (node == null && device.isVideoSupported()) node = mediaManager.getNode(VIDEO.getId());
+            if (node == null && device.isVideoSupported()) {
+                node = mediaManager.getNode(VIDEO.getId());
+            }
 
             if (node != null) {
                 // Get child nodes
                 Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
                 // Build browse result
-                for (AbstractNode abstractNode : searchResult)
-                    if (abstractNode instanceof FolderNode)
+                for (AbstractNode abstractNode : searchResult) {
+                    if (abstractNode instanceof FolderNode) {
                         result.getFolders().add(buildBrowseFolder(abstractNode));
-                    else if (abstractNode instanceof ContentNode)
+                    } else if (abstractNode instanceof ContentNode) {
                         result.getContents().add(buildBrowseContent(abstractNode));
+                    }
+                }
 
             }
         } catch (UnknownDeviceException e) {
