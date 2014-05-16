@@ -29,6 +29,7 @@ import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.common.event.ConfigurationEvent;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -194,7 +195,7 @@ public final class IcecastDaoImpl implements IcecastDao {
             return dataPath;
         }
 
-        throw new RuntimeException("Failed to create " + dataPath);
+        throw new HolmesRuntimeException("Failed to create " + dataPath);
 
     }
 

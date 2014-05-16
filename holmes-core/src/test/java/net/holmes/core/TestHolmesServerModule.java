@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import java.io.File;
+import java.io.IOException;
 
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static org.junit.Assert.assertNotNull;
@@ -33,7 +34,7 @@ public class TestHolmesServerModule {
     public TestName testName = new TestName();
 
     @Test
-    public void testGetLocalIPV4() {
+    public void testGetLocalIPV4() throws IOException {
         assertNotNull(HolmesServerModule.getLocalAddress());
     }
 

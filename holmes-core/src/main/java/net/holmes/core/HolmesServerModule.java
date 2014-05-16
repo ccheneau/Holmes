@@ -56,6 +56,7 @@ import net.holmes.core.business.version.VersionManagerImpl;
 import net.holmes.core.business.version.release.ReleaseDao;
 import net.holmes.core.business.version.release.ReleaseDaoImpl;
 import net.holmes.core.common.EventBusListener;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.airplay.AirplayServer;
 import net.holmes.core.service.http.HttpFileRequestDecoder;
@@ -90,12 +91,28 @@ import static net.holmes.core.common.SystemProperty.USER_HOME;
  * Holmes Guice module.
  */
 public final class HolmesServerModule extends AbstractModule {
-    private final EventBus eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
-    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
-    private final String localHolmesDataDir = getLocalHolmesDataDir();
-    private final String uiDirectory = getUiDirectory();
-    private final InetAddress localAddress = getLocalAddress();
-    private final SocketFactory socketFactory = SocketFactory.getDefault();
+    private final EventBus eventBus;
+    private final ResourceBundle resourceBundle;
+    private final String localHolmesDataDir;
+    private final String uiDirectory;
+    private final InetAddress localAddress;
+    private final SocketFactory socketFactory;
+
+    /**
+     * Default constructor.
+     */
+    public HolmesServerModule() {
+        eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
+        resourceBundle = ResourceBundle.getBundle("message");
+        localHolmesDataDir = getLocalHolmesDataDir();
+        uiDirectory = getUiDirectory();
+        socketFactory = SocketFactory.getDefault();
+        try {
+            localAddress = getLocalAddress();
+        } catch (IOException e) {
+            throw new HolmesRuntimeException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -182,7 +199,7 @@ public final class HolmesServerModule extends AbstractModule {
             return holmesDataPath.toString();
         }
 
-        throw new RuntimeException("Failed to create " + holmesDataPath);
+        throw new HolmesRuntimeException("Failed to create " + holmesDataPath);
     }
 
     /**
@@ -193,7 +210,7 @@ public final class HolmesServerModule extends AbstractModule {
     private static String getUiDirectory() {
         Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
         if (!Files.exists(uiPath)) {
-            throw new RuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+            throw new HolmesRuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
         }
 
         return uiPath.toString();
@@ -205,18 +222,14 @@ public final class HolmesServerModule extends AbstractModule {
      * @return local IPv4 address
      */
     @VisibleForTesting
-    static InetAddress getLocalAddress() {
-        try {
-            for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
-                for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
-                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
-                        return inetAddress;
-                    }
+    static InetAddress getLocalAddress() throws IOException {
+        for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
+            for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
+                if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                    return inetAddress;
                 }
             }
-            return InetAddress.getLocalHost();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+        return InetAddress.getLocalHost();
     }
 }

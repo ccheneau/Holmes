@@ -22,6 +22,7 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.HolmesServer;
 import net.holmes.core.service.Service;
 import org.slf4j.LoggerFactory;
@@ -93,10 +94,10 @@ public final class Bootstrap {
                 SLF4JBridgeHandler.removeHandlersForRootLogger();
                 SLF4JBridgeHandler.install();
             } catch (JoranException e) {
-                throw new RuntimeException(e);
+                throw new HolmesRuntimeException(e);
             }
         } else {
-            throw new RuntimeException(logbackFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
+            throw new HolmesRuntimeException(logbackFilePath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
         }
     }
 }

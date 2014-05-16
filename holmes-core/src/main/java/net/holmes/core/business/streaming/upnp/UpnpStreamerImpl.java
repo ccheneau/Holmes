@@ -23,6 +23,7 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
+import net.holmes.core.common.exception.HolmesException;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -334,10 +335,14 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param node       node
      * @param contentUrl content Url
      * @return DIDL metadata or "NOT_IMPLEMENTED"
-     * @throws Exception
+     * @throws HolmesException
      */
-    private String getNodeMetadata(final AbstractNode node, final String contentUrl) throws Exception {
-        return node instanceof ContentNode ? getContentNodeMetadata((ContentNode) node, contentUrl) : NOT_IMPLEMENTED;
+    private String getNodeMetadata(final AbstractNode node, final String contentUrl) throws HolmesException {
+        try {
+            return node instanceof ContentNode ? getContentNodeMetadata((ContentNode) node, contentUrl) : NOT_IMPLEMENTED;
+        } catch (Exception e) {
+            throw new HolmesException(e);
+        }
     }
 
     /**
@@ -345,8 +350,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      *
      * @param contentNode content node
      * @param contentUrl  content Url
+     * @throws HolmesException
      */
-    private String getContentNodeMetadata(final ContentNode contentNode, final String contentUrl) throws Exception {
+    private String getContentNodeMetadata(final ContentNode contentNode, final String contentUrl) throws HolmesException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), contentUrl);
         Item item = null;
         switch (contentNode.getMimeType().getType()) {
@@ -365,6 +371,10 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
             default:
                 break;
         }
-        return item != null ? new DIDLParser().generate(new DIDLContent().addItem(item)) : NOT_IMPLEMENTED;
+        try {
+            return item != null ? new DIDLParser().generate(new DIDLContent().addItem(item)) : NOT_IMPLEMENTED;
+        } catch (Exception e) {
+            throw new HolmesException(e);
+        }
     }
 }

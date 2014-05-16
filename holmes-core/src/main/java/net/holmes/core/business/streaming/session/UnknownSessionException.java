@@ -17,10 +17,12 @@
 
 package net.holmes.core.business.streaming.session;
 
+import net.holmes.core.common.exception.HolmesException;
+
 /**
  * Unknown streaming session exception
  */
-public class UnknownSessionException extends Exception {
+public class UnknownSessionException extends HolmesException {
 
     /**
      * Instantiates a new unknown streaming session exception.

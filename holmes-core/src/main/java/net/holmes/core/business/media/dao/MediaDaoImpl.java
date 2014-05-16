@@ -31,6 +31,7 @@ import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.MediaType;
 import net.holmes.core.common.MimeType;
+import net.holmes.core.common.exception.HolmesException;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -133,7 +134,7 @@ public class MediaDaoImpl implements MediaDao {
             switch (mediaType) {
                 case TYPE_PODCAST:
                     // Get podcast entries
-                        childNodes.addAll(getPodcastEntries(parentNodeId, indexElement.getPath()));
+                    childNodes.addAll(getPodcastEntries(parentNodeId, indexElement.getPath()));
                     break;
                 case TYPE_ICECAST_GENRE:
                     // Get Icecast entries
@@ -245,15 +246,8 @@ public class MediaDaoImpl implements MediaDao {
                 String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), null, file.getAbsolutePath(), null, true, false));
                 nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
             } else {
-                MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
-                if (mimeType != null) {
-                    // Add file node
-                    String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true, false));
-                    AbstractNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeTypeManager.getMimeType(file.getName()));
-                    if (node != null) {
-                        nodes.add(node);
-                    }
-                }
+                // Add content node
+                addContentNode(nodes, parentId, file, mediaType);
             }
         }
         return nodes;
@@ -294,6 +288,26 @@ public class MediaDaoImpl implements MediaDao {
     }
 
     /**
+     * Add content node to node list.
+     *
+     * @param nodes     node list
+     * @param parentId  parent id
+     * @param file      file
+     * @param mediaType media type
+     */
+    private void addContentNode(final List<AbstractNode> nodes, final String parentId, final File file, final MediaType mediaType) {
+        MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
+        if (mimeType != null) {
+            // Add file node
+            String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true, false));
+            ContentNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeType);
+            if (node != null) {
+                nodes.add(node);
+            }
+        }
+    }
+
+    /**
      * Build content node.
      *
      * @param nodeId    node id
@@ -329,7 +343,7 @@ public class MediaDaoImpl implements MediaDao {
          * {@inheritDoc}
          */
         @Override
-        public List<AbstractNode> call() throws Exception {
+        public List<AbstractNode> call() throws HolmesException {
             // No entries in cache, read them from RSS feed
             // First remove children from media index
             mediaIndexDao.removeChildren(podcastId);

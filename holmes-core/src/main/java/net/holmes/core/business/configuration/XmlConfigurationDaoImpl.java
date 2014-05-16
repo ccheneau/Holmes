@@ -22,6 +22,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
+import net.holmes.core.common.exception.HolmesRuntimeException;
+import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,10 +34,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * XML configuration dao implementation.
  */
 public final class XmlConfigurationDaoImpl implements ConfigurationDao {
+    private static final Logger LOGGER = getLogger(XmlConfigurationDaoImpl.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_DIR = "conf";
@@ -76,7 +81,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             return Paths.get(confPath.toString(), CONF_FILE_NAME);
         }
 
-        throw new RuntimeException("Failed to create " + confPath);
+        throw new HolmesRuntimeException("Failed to create " + confPath);
     }
 
     /**
@@ -94,7 +99,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
                 rootNode = (XmlRootNode) xstream.fromXML(in);
                 configLoaded = true;
             } catch (FileNotFoundException e) {
-                //Ignore
+                LOGGER.error(e.getMessage(), e);
             }
         }
 

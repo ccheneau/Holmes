@@ -19,20 +19,24 @@ package net.holmes.core.business.media.dao;
 
 import com.google.common.collect.Lists;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
-import com.sun.syndication.feed.module.itunes.ITunes;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
+import net.holmes.core.common.exception.HolmesException;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import static com.sun.syndication.feed.module.RssModule.ITUNES_URI;
+import static com.sun.syndication.feed.module.RssModule.MEDIA_RSS_URI;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 
@@ -46,10 +50,10 @@ abstract class PodcastParser {
      * @param podcastUrl podcast URL
      * @param podcastId  podcast id
      * @return list of podcast entry nodes
-     * @throws Exception
+     * @throws HolmesException
      */
     @SuppressWarnings("unchecked")
-    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws Exception {
+    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws HolmesException {
         List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
@@ -60,6 +64,8 @@ abstract class PodcastParser {
                     addPodcastEntry(podcastId, podcastEntryNodes, rssEntry, enclosure);
                 }
             }
+        } catch (IOException | FeedException e) {
+            throw new HolmesException(e);
         }
         return podcastEntryNodes;
     }
@@ -103,7 +109,7 @@ abstract class PodcastParser {
      * @return duration
      */
     private String getDuration(SyndEntry rssEntry) {
-        EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITunes.URI));
+        EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITUNES_URI));
         return itunesInfo != null ? itunesInfo.getDurationString() : null;
     }
 
@@ -114,7 +120,7 @@ abstract class PodcastParser {
      * @return icon Url
      */
     private String getIconUrl(SyndEntry rssEntry) {
-        MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MediaModule.URI));
+        MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MEDIA_RSS_URI));
         return mediaInfo != null ? mediaInfo.getThumbnailUrl() : null;
     }
 

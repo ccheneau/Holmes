@@ -40,9 +40,9 @@ public class DurationTest {
         assertEquals(3600000, duration.getMilliseconds());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testDurationDay() {
-        new Duration("01:00:00:00");
+        Duration duration = new Duration("01:00:00:00");
+        assertEquals(0, duration.getMilliseconds());
     }
-
 }

@@ -90,7 +90,7 @@ public final class Duration implements Serializable {
                         + (long) (parseFloat(tok.nextToken(), 0f) * SECOND);
                 break;
             default:
-                throw new RuntimeException("Illegal time value: " + duration);
+                this.milliseconds = 0;
         }
     }
 

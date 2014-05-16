@@ -17,6 +17,8 @@
 
 package com.sun.syndication.feed.module.itunes;
 
+import static com.sun.syndication.feed.module.RssModule.ITUNES_URI;
+
 /**
  * This is an abstract object that implements the attributes common across Feeds
  * or Items in an iTunes compatible RSS feed.
@@ -51,7 +53,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      */
     @Override
     public String getUri() {
-        return URI;
+        return ITUNES_URI;
     }
 
     /**
@@ -61,7 +63,5 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @throws CloneNotSupportedException
      */
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+    public abstract Object clone() throws CloneNotSupportedException;
 }

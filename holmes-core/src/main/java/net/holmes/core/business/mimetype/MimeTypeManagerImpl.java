@@ -20,6 +20,7 @@ package net.holmes.core.business.mimetype;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import net.holmes.core.common.MimeType;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,7 +45,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
         try (InputStream in = this.getClass().getResourceAsStream(mimeTypePath)) {
             properties.load(in);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new HolmesRuntimeException(e);
         }
     }
 

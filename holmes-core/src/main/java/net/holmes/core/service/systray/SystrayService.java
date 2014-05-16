@@ -18,6 +18,7 @@
 package net.holmes.core.service.systray;
 
 import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.common.exception.HolmesException;
 import net.holmes.core.service.Service;
 import org.slf4j.Logger;
 
@@ -110,6 +111,7 @@ public final class SystrayService implements Service {
             }
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            LOGGER.error(e.getMessage(), e);
             result = false;
         }
         return result;
@@ -134,76 +136,20 @@ public final class SystrayService implements Service {
         }
         final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
         final SystemTray systemTray = getSystemTray();
-        final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
         boolean showMenuIcon = configurationDao.getParameter(SYSTRAY_ICONS_IN_MENU);
 
-        // Quit Holmes menu item
-        JMenuItem quitItem = new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick() {
-                System.exit(0);
-            }
-        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon, null);
-
-        // Holmes logs menu item
-        JMenuItem logsItem = new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick() throws IOException {
-                getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
-            }
-        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
-
-        // Holmes admin ui menu item
-        JMenuItem holmesAdminUiItem = new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick() throws URISyntaxException, IOException {
-                getDesktop().browse(new URI(holmesAdminUrl));
-            }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, getFont(MENU_ITEM_BOLD_FONT));
-
-        // Holmes site menu item
-        JMenuItem holmesSiteItem = new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick() throws URISyntaxException, IOException {
-                getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
-            }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon, null);
-
-        // Holmes wiki menu item
-        JMenuItem holmesWikiItem = new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick() throws URISyntaxException, IOException {
-                getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
-            }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
-
         // Add items to popup menu
-        popupMenu.add(holmesAdminUiItem);
+        popupMenu.add(buildUIMenuItem(showMenuIcon));
         popupMenu.addSeparator();
-        popupMenu.add(holmesSiteItem);
-        popupMenu.add(holmesWikiItem);
-        popupMenu.add(logsItem);
+        popupMenu.add(buildSiteMenuItem(showMenuIcon));
+        popupMenu.add(buildWikiMenuItem(showMenuIcon));
+        popupMenu.add(buildLogsMenuItem(showMenuIcon));
         popupMenu.addSeparator();
-        popupMenu.add(quitItem);
+        popupMenu.add(buildQuitMenuItem(showMenuIcon));
 
         // Add tray icon
         holmesTrayIcon.setImageAutoSize(true);
@@ -213,6 +159,114 @@ public final class SystrayService implements Service {
         } catch (AWTException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Build Holmes wiki menu item.
+     *
+     * @param showMenuIcon   whether to show icon
+     * @return Holmes wiki menu item
+     */
+    private JMenuItem buildWikiMenuItem(boolean showMenuIcon) {
+        // Holmes wiki menu item
+        return new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onClick() throws HolmesException {
+                try {
+                    getDesktop().browse(new URI(HOLMES_WIKI_URL.toString()));
+                } catch (URISyntaxException | IOException e) {
+                    throw new HolmesException(e);
+                }
+            }
+        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
+    }
+
+    /**
+     * Build Holmes site menu item.
+     *
+     * @param showMenuIcon whether to show icon
+     * @return Holmes site menu item
+     */
+    private JMenuItem buildSiteMenuItem(boolean showMenuIcon) {
+        return new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onClick() throws HolmesException {
+                try {
+                    getDesktop().browse(new URI(HOLMES_SITE_URL.toString()));
+                } catch (URISyntaxException | IOException e) {
+                    throw new HolmesException(e);
+                }
+            }
+        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon, null);
+    }
+
+    /**
+     * Build Holmes UI menu item.
+     *
+     * @param showMenuIcon whether to show icon
+     * @return Holmes UI menu item
+     */
+    private JMenuItem buildUIMenuItem(boolean showMenuIcon) {
+        final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
+        return new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onClick() throws HolmesException {
+                try {
+                    getDesktop().browse(new URI(holmesAdminUrl));
+                } catch (URISyntaxException | IOException e) {
+                    throw new HolmesException(e);
+                }
+            }
+        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, getFont(MENU_ITEM_BOLD_FONT));
+    }
+
+    /**
+     * Build Holmes logs menu item.
+     *
+     * @param showMenuIcon whether to show icon
+     * @return Holmes logs menu item
+     */
+    private JMenuItem buildLogsMenuItem(boolean showMenuIcon) {
+        return new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onClick() throws HolmesException {
+                try {
+                    getDesktop().open(Paths.get(localHolmesDataDir, "log", "holmes.log").toFile());
+                } catch (IOException e) {
+                    throw new HolmesException(e);
+                }
+            }
+        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
+    }
+
+    /**
+     * Build Holmes quit menu item.
+     *
+     * @param showMenuIcon whether to show icon
+     * @return Holmes quit menu item
+     */
+    private JMenuItem buildQuitMenuItem(boolean showMenuIcon) {
+        return new SystrayMenuItem() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onClick() {
+                System.exit(0);
+            }
+        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon, null);
     }
 
     /**
@@ -252,7 +306,7 @@ public final class SystrayService implements Service {
                 public void actionPerformed(ActionEvent event) {
                     try {
                         onClick();
-                    } catch (Exception e) {
+                    } catch (HolmesException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
@@ -263,8 +317,8 @@ public final class SystrayService implements Service {
         /**
          * Fires onClick event.
          *
-         * @throws Exception
+         * @throws HolmesException
          */
-        public abstract void onClick() throws Exception;
+        public abstract void onClick() throws HolmesException;
     }
 }

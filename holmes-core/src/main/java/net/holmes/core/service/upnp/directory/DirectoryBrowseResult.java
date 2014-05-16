@@ -21,7 +21,6 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.common.MimeType;
-import org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.BrowseResult;
@@ -40,6 +39,7 @@ import java.text.SimpleDateFormat;
 import static net.holmes.core.common.MimeType.MIME_TYPE_OGG;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
+import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.CANNOT_PROCESS;
 
 /**
  * UPnP directory browse result.
@@ -105,7 +105,7 @@ final class DirectoryBrowseResult {
         try {
             return new BrowseResult(didlParser.generate(didl), itemCount, totalCount);
         } catch (Exception e) {
-            throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
+            throw new ContentDirectoryException(CANNOT_PROCESS.getCode(), e.getMessage(), e);
         }
     }
 
@@ -223,7 +223,7 @@ final class DirectoryBrowseResult {
             try {
                 didlObject.replaceFirstProperty(new UPNP.ICON(new URI(node.getIconUrl())));
             } catch (URISyntaxException e) {
-                throw new ContentDirectoryException(ContentDirectoryErrorCode.CANNOT_PROCESS.getCode(), e.getMessage(), e);
+                throw new ContentDirectoryException(CANNOT_PROCESS.getCode(), e.getMessage(), e);
             }
         }
     }

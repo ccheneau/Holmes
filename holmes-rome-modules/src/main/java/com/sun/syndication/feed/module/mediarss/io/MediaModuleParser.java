@@ -31,7 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static com.sun.syndication.feed.module.mediarss.MediaModule.URI;
+import static com.sun.syndication.feed.module.RssModule.MEDIA_RSS_URI;
 import static org.jdom.Namespace.getNamespace;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -43,14 +43,14 @@ public class MediaModuleParser implements ModuleParser {
     /**
      * Namespace instance for this URI.
      */
-    private static final Namespace NS = getNamespace(URI);
+    private static final Namespace NS = getNamespace(MEDIA_RSS_URI);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String getNamespaceUri() {
-        return URI;
+        return MEDIA_RSS_URI;
     }
 
     /**

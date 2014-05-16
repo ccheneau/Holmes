@@ -17,10 +17,12 @@
 
 package net.holmes.core.business.streaming.device;
 
+import net.holmes.core.common.exception.HolmesException;
+
 /**
  * Unknown device exception.
  */
-public class UnknownDeviceException extends Exception {
+public class UnknownDeviceException extends HolmesException {
 
     /**
      * Instantiates a new UnknownDeviceException.

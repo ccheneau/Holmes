@@ -62,7 +62,7 @@ public class AbstractContentDirectoryServiceTest {
         }
 
         @Override
-        public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws Exception {
+        public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
             return null;
         }
     }

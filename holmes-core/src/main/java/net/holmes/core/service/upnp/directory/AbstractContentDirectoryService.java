@@ -143,7 +143,7 @@ public abstract class AbstractContentDirectoryService {
      * Implement this method to implement searching of your content.
      */
     public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
-                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws Exception;
+                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 
     /**
      * Get sort criteria

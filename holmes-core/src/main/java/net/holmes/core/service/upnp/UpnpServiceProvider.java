@@ -20,6 +20,7 @@ package net.holmes.core.service.upnp;
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.version.VersionManager;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.upnp.directory.ContentDirectoryService;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
@@ -78,7 +79,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
             // Add local device to UPnP service registry
             upnpService.getRegistry().addDevice(new LocalDevice(DEVICE_IDENTITY, DEVICE_TYPE, deviceDetails, getIcons(), localServices));
         } catch (ValidationException | IOException e) {
-            throw new RuntimeException(e);
+            throw new HolmesRuntimeException(e);
         }
         return upnpService;
     }

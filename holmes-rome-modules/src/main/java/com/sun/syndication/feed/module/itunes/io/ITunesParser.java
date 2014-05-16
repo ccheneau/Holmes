@@ -25,6 +25,8 @@ import com.sun.syndication.io.ModuleParser;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
+import static com.sun.syndication.feed.module.RssModule.ITUNES_URI;
+
 /**
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.10 $
@@ -36,7 +38,7 @@ public class ITunesParser implements ModuleParser {
      * Creates a new instance of ITunesParser
      */
     public ITunesParser() {
-        ns = Namespace.getNamespace(AbstractITunesObject.URI);
+        ns = Namespace.getNamespace(ITUNES_URI);
     }
 
     /**
@@ -44,7 +46,7 @@ public class ITunesParser implements ModuleParser {
      */
     @Override
     public String getNamespaceUri() {
-        return AbstractITunesObject.URI;
+        return ITUNES_URI;
     }
 
     /**

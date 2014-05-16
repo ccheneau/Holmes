@@ -19,6 +19,10 @@ package com.sun.syndication.feed.module.mediarss;
 
 import com.sun.syndication.feed.module.ModuleImpl;
 import com.sun.syndication.feed.module.mediarss.types.Metadata;
+import org.slf4j.Logger;
+
+import static com.sun.syndication.feed.module.RssModule.MEDIA_RSS_URI;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * This class represents feed/channel level elements for MediaRSS
@@ -26,6 +30,7 @@ import com.sun.syndication.feed.module.mediarss.types.Metadata;
  * @author cooper
  */
 public class MediaModuleImpl extends ModuleImpl implements MediaModule {
+    private static final Logger LOGGER = getLogger(MediaModuleImpl.class);
 
     private Metadata metadata;
 
@@ -33,7 +38,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      * Creates a new instance of MediaModuleImpl
      */
     public MediaModuleImpl() {
-        super(MediaModule.class, URI);
+        super(MediaModule.class, MEDIA_RSS_URI);
     }
 
     /**
@@ -74,7 +79,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
      */
     @Override
     public String getUri() {
-        return URI;
+        return MEDIA_RSS_URI;
     }
 
     /**
@@ -97,6 +102,7 @@ public class MediaModuleImpl extends ModuleImpl implements MediaModule {
         try {
             this.metadata = (Metadata) mediaModule.getMetadata().clone();
         } catch (CloneNotSupportedException e) {
+            LOGGER.error(e.getMessage(), e);
             this.metadata = null;
         }
     }

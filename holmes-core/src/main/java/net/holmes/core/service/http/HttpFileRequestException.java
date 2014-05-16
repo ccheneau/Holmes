@@ -18,11 +18,12 @@
 package net.holmes.core.service.http;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
+import net.holmes.core.common.exception.HolmesException;
 
 /**
  * Http file request exception.
  */
-public final class HttpFileRequestException extends Exception {
+public final class HttpFileRequestException extends HolmesException {
     private final transient HttpResponseStatus status;
 
     /**

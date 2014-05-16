@@ -20,6 +20,7 @@ package net.holmes.core.business.streaming.airplay.command;
 import com.google.common.collect.Maps;
 import io.netty.handler.codec.http.HttpMethod;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
@@ -95,6 +96,15 @@ public abstract class Command {
 
         sbCommand.append(EOL);
         return sbCommand.toString();
+    }
+
+    /**
+     * Failure callback.
+     *
+     * @param exception IOException
+     */
+    public void failure(IOException exception) {
+        failure(exception.getMessage());
     }
 
     /**

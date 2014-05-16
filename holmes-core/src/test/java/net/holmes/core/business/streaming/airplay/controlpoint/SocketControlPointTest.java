@@ -198,7 +198,7 @@ public class SocketControlPointTest {
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
 
-        Capture<String> captureMessage = new Capture<>();
+        Capture<IOException> captureMessage = new Capture<>();
 
         expect(device.getConnection(isA(SocketFactory.class))).andThrow(new IOException("IOException message"));
         command.failure(capture(captureMessage));
@@ -208,7 +208,7 @@ public class SocketControlPointTest {
         SocketControlPoint controlPoint = new SocketControlPoint(socketFactory);
         controlPoint.execute(device, command);
 
-        assertEquals("IOException message", captureMessage.getValue());
+        assertEquals("IOException message", captureMessage.getValue().getMessage());
 
         verify(device, command, socket, socketFactory, socketOutputStream);
     }

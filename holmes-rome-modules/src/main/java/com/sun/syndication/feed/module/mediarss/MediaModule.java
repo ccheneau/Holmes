@@ -29,9 +29,6 @@ import com.sun.syndication.feed.module.mediarss.types.Metadata;
  * @author Nathanial X. Freitas
  */
 public interface MediaModule extends Module {
-    //the URI of the MediaRSS specification as hosted by yahoo
-    String URI = "http://search.yahoo.com/mrss/";
-
     /**
      * Returns Metadata associated with the feed.
      *

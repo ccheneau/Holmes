@@ -156,12 +156,7 @@ public final class UpnpServer implements Service {
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
-                            Set<String> availableMimeTypes = Sets.newHashSet();
-                            for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
-                                if (protocolInfo.getProtocol() == HTTP_GET) {
-                                    availableMimeTypes.add(protocolInfo.getContentFormat());
-                                }
-                            }
+                            Set<String> availableMimeTypes = getAvailableMimeTypes(sinkProtocolInfo);
 
                             // Add device
                             streamingManager.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
@@ -228,5 +223,21 @@ public final class UpnpServer implements Service {
         public void afterShutdown() {
             // Ignore
         }
+    }
+
+    /**
+     * Get available Mime types.
+     *
+     * @param sinkProtocolInfo UPnP protocol info
+     * @return available Mime types
+     */
+    private Set<String> getAvailableMimeTypes(ProtocolInfos sinkProtocolInfo) {
+        Set<String> availableMimeTypes = Sets.newHashSet();
+        for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+            if (protocolInfo.getProtocol() == HTTP_GET) {
+                availableMimeTypes.add(protocolInfo.getContentFormat());
+            }
+        }
+        return availableMimeTypes;
     }
 }

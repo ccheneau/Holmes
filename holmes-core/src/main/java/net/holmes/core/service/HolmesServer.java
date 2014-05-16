@@ -19,6 +19,7 @@ package net.holmes.core.service;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -128,12 +129,12 @@ public final class HolmesServer implements Service {
                 randomAccessFile = new RandomAccessFile(new File(localHolmesDataDir, LOCK_FILE_NAME), "rw");
                 fileLock = randomAccessFile.getChannel().tryLock();
                 if (fileLock == null) {
-                    throw new RuntimeException("Holmes server is already running");
+                    throw new HolmesRuntimeException("Holmes server is already running");
                 }
                 return true;
             }
         } catch (IOException e) {
-            LOGGER.error("Unable to create and/or lock file: {}", e.getMessage());
+            LOGGER.error("Unable to create and/or lock file: " + e.getMessage(), e);
         }
         return false;
     }
@@ -152,7 +153,7 @@ public final class HolmesServer implements Service {
                     LOGGER.error("Unable to remove lock file: {}", lockFile.getPath());
                 }
             } catch (IOException e) {
-                LOGGER.error("Unable to unlock file: {} {}", lockFile.getPath(), e.getMessage());
+                LOGGER.error("Unable to unlock file: " + lockFile.getPath() + " " + e.getMessage(), e);
             }
         }
     }

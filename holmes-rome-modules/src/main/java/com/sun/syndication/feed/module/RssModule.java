@@ -15,15 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.sun.syndication.feed.module.itunes;
-
-import com.sun.syndication.feed.module.Module;
+package com.sun.syndication.feed.module;
 
 /**
- * This interface contains the methods common to all iTunes module points.
- *
- * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
- * @version $Revision: 1.3 $
+ * RSS module constants
  */
-public interface ITunes extends Module {
+public final class RssModule {
+    /**
+     * The URI that iTunes used for its custom tags.
+     */
+    public static final String ITUNES_URI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+
+    /**
+     * The URI of the MediaRSS specification as hosted by yahoo
+     */
+    public static final String MEDIA_RSS_URI = "http://search.yahoo.com/mrss/";
+
+    /**
+     * Private constructor
+     */
+    private RssModule() {
+    }
 }

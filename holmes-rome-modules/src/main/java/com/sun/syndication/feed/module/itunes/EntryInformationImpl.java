@@ -77,7 +77,6 @@ public class EntryInformationImpl extends AbstractITunesObject implements EntryI
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-        super.clone();
         EntryInformationImpl info = new EntryInformationImpl();
         info.copyFrom(this);
 

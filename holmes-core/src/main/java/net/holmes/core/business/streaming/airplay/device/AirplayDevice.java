@@ -19,16 +19,21 @@ package net.holmes.core.business.streaming.airplay.device;
 
 import com.google.common.base.Objects;
 import net.holmes.core.business.streaming.device.Device;
+import org.slf4j.Logger;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Airplay streaming device.
  */
 public class AirplayDevice extends Device {
+    private static final Logger LOGGER = getLogger(AirplayDevice.class);
+
     private static final String AIRPLAY_DEVICE_TYPE = "Airplay";
     private final int port;
     private final AirplayDeviceFeatures features;
@@ -98,7 +103,7 @@ public class AirplayDevice extends Device {
             try {
                 socket.close();
             } catch (IOException e) {
-                // Nothing
+                LOGGER.error(e.getMessage(), e);
             }
         }
     }

@@ -31,6 +31,7 @@ import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
 import net.holmes.core.business.streaming.session.StreamingSession;
 import net.holmes.core.business.streaming.session.UnknownSessionException;
+import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -45,12 +46,15 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
 import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Handler for streaming REST requests.
  */
 @Path("/backend/streaming")
 public class StreamingHandler {
+    private static final Logger LOGGER = getLogger(StreamingHandler.class);
+
     private final MediaManager mediaManager;
     private final StreamingManager streamingManager;
 
@@ -97,6 +101,7 @@ public class StreamingHandler {
         try {
             streamingManager.play(deviceId, url, contentNode);
         } catch (UnknownDeviceException e) {
+            LOGGER.error(e.getMessage(), e);
             return e.getMessage();
         }
         return null;
@@ -114,6 +119,7 @@ public class StreamingHandler {
         try {
             streamingManager.pause(deviceId);
         } catch (UnknownDeviceException e) {
+            LOGGER.error(e.getMessage(), e);
             return e.getMessage();
         }
         return null;
@@ -131,6 +137,7 @@ public class StreamingHandler {
         try {
             streamingManager.stop(deviceId);
         } catch (UnknownDeviceException e) {
+            LOGGER.error(e.getMessage(), e);
             return e.getMessage();
         }
         return null;
@@ -148,6 +155,7 @@ public class StreamingHandler {
         try {
             streamingManager.resume(deviceId);
         } catch (UnknownDeviceException e) {
+            LOGGER.error(e.getMessage(), e);
             return e.getMessage();
         }
         return null;
@@ -169,6 +177,7 @@ public class StreamingHandler {
             status.setDuration(session.getDuration());
             status.setPosition(session.getPosition());
         } catch (UnknownSessionException e) {
+            LOGGER.error(e.getMessage(), e);
             status.setErrorMessage(e.getMessage());
         }
         return status;
@@ -198,22 +207,34 @@ public class StreamingHandler {
             }
 
             if (node != null) {
-                // Get child nodes
-                Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
-                // Build browse result
-                for (AbstractNode abstractNode : searchResult) {
-                    if (abstractNode instanceof FolderNode) {
-                        result.getFolders().add(buildBrowseFolder(abstractNode));
-                    } else if (abstractNode instanceof ContentNode) {
-                        result.getContents().add(buildBrowseContent(abstractNode));
-                    }
-                }
+                addBrowseResult(result, device, node);
 
             }
         } catch (UnknownDeviceException e) {
+            LOGGER.error(e.getMessage(), e);
             result.setErrorMessage(e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * Add folders and contents to browse result.
+     *
+     * @param result browse result
+     * @param device device
+     * @param node   node
+     */
+    private void addBrowseResult(DeviceBrowseResult result, Device device, AbstractNode node) {
+        // Get child nodes
+        Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
+        // Build browse result
+        for (AbstractNode abstractNode : searchResult) {
+            if (abstractNode instanceof FolderNode) {
+                result.getFolders().add(buildBrowseFolder(abstractNode));
+            } else if (abstractNode instanceof ContentNode) {
+                result.getContents().add(buildBrowseContent(abstractNode));
+            }
+        }
     }
 
     /**

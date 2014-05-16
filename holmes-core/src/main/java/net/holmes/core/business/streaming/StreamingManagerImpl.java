@@ -204,7 +204,7 @@ public final class StreamingManagerImpl implements StreamingManager {
             }
 
         } catch (UnknownSessionException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

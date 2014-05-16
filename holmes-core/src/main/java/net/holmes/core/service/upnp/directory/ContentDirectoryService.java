@@ -43,6 +43,7 @@ import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PO
 import static net.holmes.core.common.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
+import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
 import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
@@ -118,9 +119,13 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     @Override
     public BrowseResult search(final String containerId, final String searchCriteria, final String filter, final long firstResult,
-                               final long maxResults, final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws Exception {
+                               final long maxResults, final SortCriterion[] orderBy, final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         // Search is not implemented, return empty result
-        return new BrowseResult(new DIDLParser().generate(new DIDLContent()), 0, 0);
+        try {
+            return new BrowseResult(new DIDLParser().generate(new DIDLContent()), 0, 0);
+        } catch (Exception e) {
+            throw new ContentDirectoryException(ACTION_FAILED.getCode(), e.getMessage(), e);
+        }
     }
 
     /**

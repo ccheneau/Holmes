@@ -76,7 +76,7 @@ public class SocketControlPoint implements ControlPoint {
             }
 
         } catch (IOException e) {
-            command.failure(e.getMessage());
+            command.failure(e);
         }
     }
 
