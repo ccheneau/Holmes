@@ -137,6 +137,14 @@
             <id>coverage</id>
             <build>
                 <plugins>
+                    <!-- Ignore test failure -->
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <testFailureIgnore>true</testFailureIgnore>
+                        </configuration>
+                    </plugin>
+                    <!-- Configure JaCoCo coverage -->
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
