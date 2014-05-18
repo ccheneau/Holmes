@@ -157,8 +157,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
                 && Objects.equal(this.parentId, other.parentId)
                 && Objects.equal(this.name, other.name)
                 && Objects.equal(this.type, other.type)
-                && Objects.equal(this.modifiedDate, other.modifiedDate)
-                && Objects.equal(this.iconUrl, other.iconUrl);
+                && Objects.equal(this.modifiedDate, other.modifiedDate);
     }
 
     /**

@@ -150,9 +150,6 @@ public final class UpnpServer implements Service {
 
                     // Get protocol info on remote UPnP device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
-                        /**
-                         * {@inheritDoc}
-                         */
                         @Override
                         public void received(ActionInvocation actionInvocation, ProtocolInfos sinkProtocolInfo, ProtocolInfos sourceProtocolInfo) {
                             // Got protocol info, get available mime types
@@ -162,9 +159,6 @@ public final class UpnpServer implements Service {
                             streamingManager.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
                         }
 
-                        /**
-                         * {@inheritDoc}
-                         */
                         @Override
                         public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                             LOGGER.error("Failed to get protocol info for {}: {}", deviceName, defaultMsg);

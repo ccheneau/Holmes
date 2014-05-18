@@ -126,21 +126,19 @@ public final class SystrayService implements Service {
             return;
         }
 
-        // Initialize systray icon
-        Image image;
+        // Initialize systray image
+        Image sysTrayImage;
         try {
-            image = getDefaultToolkit().createImage(getData(SYSTRAY, "logo.png"));
+            sysTrayImage = getDefaultToolkit().createImage(getData(SYSTRAY, "logo.png"));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return;
         }
-        final SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(image, resourceBundle.getString("systray.title"));
-        final SystemTray systemTray = getSystemTray();
+
+        boolean showMenuIcon = configurationDao.getParameter(SYSTRAY_ICONS_IN_MENU);
 
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
-
-        boolean showMenuIcon = configurationDao.getParameter(SYSTRAY_ICONS_IN_MENU);
 
         // Add items to popup menu
         popupMenu.add(buildUIMenuItem(showMenuIcon));
@@ -152,10 +150,11 @@ public final class SystrayService implements Service {
         popupMenu.add(buildQuitMenuItem(showMenuIcon));
 
         // Add tray icon
+        SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(sysTrayImage, resourceBundle.getString("systray.title"));
         holmesTrayIcon.setImageAutoSize(true);
         holmesTrayIcon.setPopupMenu(popupMenu);
         try {
-            systemTray.add(holmesTrayIcon);
+            getSystemTray().add(holmesTrayIcon);
         } catch (AWTException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -164,7 +163,7 @@ public final class SystrayService implements Service {
     /**
      * Build Holmes wiki menu item.
      *
-     * @param showMenuIcon   whether to show icon
+     * @param showMenuIcon whether to show icon
      * @return Holmes wiki menu item
      */
     private JMenuItem buildWikiMenuItem(boolean showMenuIcon) {

@@ -83,26 +83,16 @@ public final class AirplayServer implements Service {
 
                 // Add Listener to manage inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
-
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void serviceAdded(ServiceEvent event) {
                         // Nothing, waiting for service to be resolved with serviceResolved method
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void serviceRemoved(ServiceEvent event) {
                         streamingManager.removeDevice(event.getInfo().getKey());
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void serviceResolved(ServiceEvent event) {
                         streamingManager.addDevice(buildDevice(event.getInfo()));

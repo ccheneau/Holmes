@@ -43,12 +43,12 @@ public interface MediaDao {
     List<AbstractNode> getChildNodes(String parentNodeId);
 
     /**
-     * Get child nodes of a sub root node.
+     * Get children of a root node.
      *
      * @param rootNode root node
      * @return child nodes
      */
-    List<AbstractNode> getSubRootChildNodes(RootNode rootNode);
+    List<AbstractNode> getRootNodeChildren(RootNode rootNode);
 
     /**
      * Clean up cache

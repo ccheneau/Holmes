@@ -111,13 +111,13 @@ public final class MediaManagerImpl implements MediaManager {
             // Get child nodes of root node
             childNodes = Lists.newArrayList();
             for (RootNode subRootNode : RootNode.values()) {
-                if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getSubRootChildNodes(subRootNode).isEmpty()) {
+                if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getRootNodeChildren(subRootNode).isEmpty()) {
                     childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));
                 }
             }
         } else if (rootNode.getParentId().equals(ROOT.getId())) {
             // Get child nodes of sub root node
-            childNodes = mediaDao.getSubRootChildNodes(rootNode);
+            childNodes = mediaDao.getRootNodeChildren(rootNode);
         } else {
             // Get child nodes
             childNodes = mediaDao.getChildNodes(request.getParentNode().getId());

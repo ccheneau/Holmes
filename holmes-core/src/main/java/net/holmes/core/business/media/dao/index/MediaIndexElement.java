@@ -102,7 +102,7 @@ public class MediaIndexElement implements Serializable {
             return false;
         }
 
-        final MediaIndexElement other = (MediaIndexElement) obj;
+        MediaIndexElement other = (MediaIndexElement) obj;
         return Objects.equal(this.parentId, other.parentId)
                 && Objects.equal(this.mediaType, other.mediaType)
                 && Objects.equal(this.mimeType, other.mimeType)

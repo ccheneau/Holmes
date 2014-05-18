@@ -80,19 +80,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         // Get available mime types
-        List<String> availableMimeTypes = Lists.newArrayList();
-        if (remoteClientInfo.getConnection() != null) {
-            for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
-                if (device instanceof UpnpDevice) {
-                    availableMimeTypes.addAll(device.getSupportedMimeTypes());
-                }
-            }
-        }
-
-        // Add subtitle
-        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE)) {
-            availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
-        }
+        List<String> availableMimeTypes = getAvailableMimeType(remoteClientInfo);
 
         // Build browse result
         DirectoryBrowseResult result;
@@ -126,6 +114,30 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         } catch (Exception e) {
             throw new ContentDirectoryException(ACTION_FAILED.getCode(), e.getMessage(), e);
         }
+    }
+
+    /**
+     * Get available mime types
+     *
+     * @param remoteClientInfo remote client info
+     * @return available mime types
+     */
+    private List<String> getAvailableMimeType(RemoteClientInfo remoteClientInfo) {
+        // Get available mime types
+        List<String> availableMimeTypes = Lists.newArrayList();
+        if (remoteClientInfo.getConnection() != null) {
+            for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
+                if (device instanceof UpnpDevice) {
+                    availableMimeTypes.addAll(device.getSupportedMimeTypes());
+                }
+            }
+        }
+
+        // Add subtitle
+        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE)) {
+            availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
+        }
+        return availableMimeTypes;
     }
 
     /**

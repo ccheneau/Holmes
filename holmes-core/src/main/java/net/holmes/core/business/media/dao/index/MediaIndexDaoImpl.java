@@ -154,20 +154,13 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
                 put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case UPDATE_FOLDER:
-                // Remove node and child nodes from mediaIndex
-                remove(configNode.getId());
-                if (rootNode != PODCAST) {
-                    removeChildren(configNode.getId());
-                }
-                // Add node to mediaIndex
+                // Remove node and child nodes from mediaIndex and add node to mediaIndex
+                remove(configNode.getId(), rootNode, configNode);
                 put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case DELETE_FOLDER:
                 // Remove node and child nodes from mediaIndex
-                remove(configNode.getId());
-                if (rootNode != PODCAST) {
-                    removeChildren(configNode.getId());
-                }
+                remove(configNode.getId(), rootNode, configNode);
                 break;
             default:
                 break;
@@ -177,11 +170,17 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
     /**
      * Remove media index element.
      *
-     * @param uuid element uuid
+     * @param uuid       element uuid
+     * @param rootNode   root node
+     * @param configNode configuration node
      */
-    private void remove(final String uuid) {
+    private void remove(final String uuid, final RootNode rootNode, final ConfigurationNode configNode) {
         if (elements.get(uuid) != null) {
             elements.remove(uuid);
+        }
+        // Remove children for non Podcast elements
+        if (rootNode != PODCAST) {
+            removeChildren(configNode.getId());
         }
     }
 }

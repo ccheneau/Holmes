@@ -153,9 +153,6 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     @Override
     public void updateStatus(final AirplayDevice device) {
         controlPoint.execute(device, new PlayStatusCommand() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void success(Map<String, String> contentParameters) {
                 if (contentParameters != null && !contentParameters.isEmpty()) {
@@ -164,15 +161,12 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
                     sendSuccess(STATUS, device.getId(), duration, position);
 
                     if (duration > 0 && position >= duration) {
-                        // If end of streaming is reached, send stop command
+                        // End of streaming is reached, send stop command
                         stop(device);
                     }
                 }
             }
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void failure(String errorMessage) {
                 sendFailure(STATUS, device.getId(), errorMessage);

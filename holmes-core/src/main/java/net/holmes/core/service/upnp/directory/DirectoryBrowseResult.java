@@ -149,7 +149,7 @@ final class DirectoryBrowseResult {
      * @throws ContentDirectoryException
      */
     private void addDidlItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) throws ContentDirectoryException {
-        Item item = null;
+        Item item;
         switch (mimeType.getType()) {
             case TYPE_VIDEO:
                 // Add video item
@@ -164,13 +164,7 @@ final class DirectoryBrowseResult {
                 item = new Photo(node.getId(), parentNodeId, name, null, null, res);
                 break;
             default:
-                if (mimeType.equals(MIME_TYPE_SUBTITLE)) {
-                    // Add subtitle item
-                    item = new TextItem(node.getId(), parentNodeId, name, null, res);
-                } else if (mimeType.equals(MIME_TYPE_OGG)) {
-                    // Add OGG item
-                    item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
-                }
+                item = getUnknownTypeItem(parentNodeId, node, name, mimeType, res);
                 break;
         }
         if (item != null) {
@@ -178,6 +172,28 @@ final class DirectoryBrowseResult {
             didl.addItem(item);
             itemCount++;
         }
+    }
+
+    /**
+     * Get DIDL item with unknown mime type.
+     *
+     * @param parentNodeId parent node id
+     * @param node         node to add
+     * @param name         node name
+     * @param mimeType     node mimeType
+     * @param res          didl resource
+     * @return DIDL item or null
+     */
+    private Item getUnknownTypeItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) {
+        Item item = null;
+        if (mimeType.equals(MIME_TYPE_SUBTITLE)) {
+            // Add subtitle item
+            item = new TextItem(node.getId(), parentNodeId, name, null, res);
+        } else if (mimeType.equals(MIME_TYPE_OGG)) {
+            // Add OGG item
+            item = new MusicTrack(node.getId(), parentNodeId, name, null, null, (String) null, res);
+        }
+        return item;
     }
 
     /**

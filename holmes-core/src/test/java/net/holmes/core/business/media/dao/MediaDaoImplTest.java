@@ -432,7 +432,7 @@ public class MediaDaoImplTest {
     }
 
     @Test
-    public void testGetSubRootChildNodesOfPodcast() {
+    public void testGetRootNodeChildrenOfPodcast() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
@@ -444,14 +444,14 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao, icecastDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
 
-        List<AbstractNode> result = mediaDao.getSubRootChildNodes(PODCAST);
+        List<AbstractNode> result = mediaDao.getRootNodeChildren(PODCAST);
         assertNotNull(result);
 
         verify(mimeTypeManager, mediaIndexDao, icecastDao);
     }
 
     @Test
-    public void testGetSubRootChildNodesOfIcecast() {
+    public void testGetRootNodeChildrenOfIcecast() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
@@ -464,7 +464,7 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao, icecastDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
 
-        List<AbstractNode> result = mediaDao.getSubRootChildNodes(ICECAST);
+        List<AbstractNode> result = mediaDao.getRootNodeChildren(ICECAST);
         assertNotNull(result);
 
         verify(mimeTypeManager, mediaIndexDao, icecastDao);
@@ -472,7 +472,7 @@ public class MediaDaoImplTest {
 
 
     @Test
-    public void testGetSubRootChildNodesOfVideo() {
+    public void testGetRootNodeChildrenNodesOfVideo() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
@@ -484,7 +484,7 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao, icecastDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
 
-        List<AbstractNode> result = mediaDao.getSubRootChildNodes(VIDEO);
+        List<AbstractNode> result = mediaDao.getRootNodeChildren(VIDEO);
         assertNotNull(result);
 
         verify(mimeTypeManager, mediaIndexDao, icecastDao);

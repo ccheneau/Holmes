@@ -159,38 +159,30 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractNode> getSubRootChildNodes(final RootNode rootNode) {
+    public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
         List<AbstractNode> nodes = Lists.newArrayList();
-        switch (rootNode) {
-            case PODCAST:
-                // Add podcast nodes stored in configuration
-                for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
-                    // Add node to mediaIndex
-                    mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
-                    // Add child node
-                    nodes.add(new PodcastNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), configNode.getPath()));
-                }
-                break;
-            case ICECAST:
-                // Add Icecast genre from Icecast dao
-                for (IcecastGenre genre : icecastDao.getGenres()) {
-                    // Upper case genre's first letter
-                    String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
-                    // Add Icecast genre to media index
-                    mediaIndexDao.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
-                    // Add child node
-                    nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
-                }
-                break;
-            default:
-                // Add folder nodes stored in configuration
-                for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
-                    // Add node to mediaIndex
-                    mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
-                    // Add child node
+        if (rootNode == ICECAST) {
+            // Add Icecast genres
+            for (IcecastGenre genre : icecastDao.getGenres()) {
+                // Upper case genre's first letter
+                String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
+                // Add Icecast genre to media index
+                mediaIndexDao.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
+                // Add child node
+                nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
+            }
+        } else {
+            // Add nodes defined in configuration
+            for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
+                // Add node to mediaIndex
+                mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
+                // Add child node
+                if (rootNode == PODCAST) {
+                    nodes.add(new PodcastNode(configNode.getId(), PODCAST.getId(), configNode.getLabel(), configNode.getPath()));
+                } else {
                     nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
                 }
-                break;
+            }
         }
         return nodes;
     }
@@ -203,7 +195,6 @@ public class MediaDaoImpl implements MediaDao {
         podcastCache.cleanUp();
         mediaIndexDao.clean();
     }
-
     /**
      * Get file or folder node
      *

@@ -21,14 +21,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
-import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.common.exception.HolmesException;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.controlpoint.ControlPoint;
-import org.fourthline.cling.model.action.ActionInvocation;
-import org.fourthline.cling.model.message.UpnpResponse;
-import org.fourthline.cling.support.avtransport.callback.*;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.*;
 import org.fourthline.cling.support.model.item.Item;
@@ -45,7 +41,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Manage streaming on Upnp device.
  */
-public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
+public final class UpnpStreamerImpl extends AbstractUpnpStreamer {
     private static final Logger LOGGER = getLogger(UpnpStreamerImpl.class);
     private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
     private final ControlPoint controlPoint;
@@ -68,58 +64,20 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
         // Get media info
-        controlPoint.execute(new GetMediaInfo(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new GetDeviceMediaInfo(device, PLAY) {
             @Override
-            public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
+            public void success(MediaInfo mediaInfo) {
                 String currentUrl = mediaInfo.getCurrentURI();
                 if (currentUrl == null) {
                     // No url set on device, set Url and play
                     setUrlAndPlay(device, contentUrl, node, PLAY);
-                } else if (contentUrl.equals(currentUrl)) {
-                    // Current Url already defined, play
+                } else if (currentUrl.equals(contentUrl)) {
+                    // Current Url already set, play
                     play(device, PLAY);
                 } else {
-                    // Another Url is already set on device, get transport info
-                    controlPoint.execute(new GetTransportInfo(device.getAvTransportService()) {
-                        /**
-                         * {@inheritDoc}
-                         */
-                        @Override
-                        public void received(ActionInvocation invocation, TransportInfo transportInfo) {
-                            switch (transportInfo.getCurrentTransportState()) {
-                                case PLAYING:
-                                case PAUSED_PLAYBACK:
-                                    // Another content is currently playing on device, stop then set Url and play
-                                    stopSetUrlAndPlay(device, contentUrl, node, PLAY);
-                                    break;
-                                default:
-                                    // No playback, set Url and play
-                                    setUrlAndPlay(device, contentUrl, node, PLAY);
-                                    break;
-                            }
-                        }
-
-                        /**
-                         * {@inheritDoc}
-                         */
-                        @Override
-                        public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                            sendFailure(PLAY, device.getId(), defaultMsg);
-                        }
-                    });
+                    // Another Url is already set
+                    getInfoSetUrlAndPlay(device, contentUrl, node);
                 }
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                // Failed to get media info
-                sendFailure(PLAY, device.getId(), defaultMsg);
             }
         });
     }
@@ -130,21 +88,10 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void stop(final UpnpDevice device) {
         // Stop content playback
-        controlPoint.execute(new Stop(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new StopOnDevice(device, STOP) {
             @Override
-            public void success(ActionInvocation invocation) {
+            public void success() {
                 sendSuccess(STOP, device.getId());
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                sendFailure(STOP, device.getId(), defaultMsg);
             }
         });
     }
@@ -155,21 +102,10 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void pause(final UpnpDevice device) {
         // Pause content playback
-        controlPoint.execute(new Pause(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new PauseOnDevice(device) {
             @Override
-            public void success(ActionInvocation invocation) {
+            public void success() {
                 sendSuccess(PAUSE, device.getId());
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                sendFailure(PAUSE, device.getId(), defaultMsg);
             }
         });
     }
@@ -189,33 +125,13 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void updateStatus(final UpnpDevice device) {
         // Get transport info
-        controlPoint.execute(new GetTransportInfo(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new GetDeviceTransportInfo(device, STATUS) {
             @Override
-            public void received(ActionInvocation invocation, TransportInfo transportInfo) {
+            public void success(TransportInfo transportInfo) {
                 switch (transportInfo.getCurrentTransportState()) {
                     case PLAYING:
                     case PAUSED_PLAYBACK:
-                        // Content is currently playing on device, get position info
-                        controlPoint.execute(new GetPositionInfo(device.getAvTransportService()) {
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public void received(ActionInvocation invocation, PositionInfo positionInfo) {
-                                sendSuccess(STATUS, device.getId(), positionInfo.getTrackDurationSeconds(), positionInfo.getTrackElapsedSeconds());
-                            }
-
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                                sendFailure(STATUS, device.getId(), defaultMsg);
-                            }
-                        });
+                        updatePlayPosition(device);
                         break;
                     case TRANSITIONING:
                         // Content playback transition, do nothing
@@ -223,16 +139,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
                     default:
                         // No playback, send stop event
                         sendSuccess(STOP, device.getId());
-                        break;
                 }
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
-                sendFailure(STATUS, device.getId(), defaultMsg);
             }
         });
     }
@@ -244,21 +151,52 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param eventType event type
      */
     private void play(final UpnpDevice device, final StreamingEventType eventType) {
-        controlPoint.execute(new Play(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new PlayOnDevice(device, eventType) {
             @Override
-            public void success(ActionInvocation invocation) {
+            public void success() {
                 sendSuccess(eventType, device.getId());
             }
+        });
+    }
 
-            /**
-             * {@inheritDoc}
-             */
+    /**
+     * Update play position on device
+     *
+     * @param device device
+     */
+    private void updatePlayPosition(final UpnpDevice device) {
+        // Content is currently playing on device, get position info
+        controlPoint.execute(new GetDevicePositionInfo(device, STATUS) {
             @Override
-            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                sendFailure(eventType, device.getId(), defaultMsg);
+            public void success(PositionInfo positionInfo) {
+                sendSuccess(STATUS, device.getId(), positionInfo.getTrackDurationSeconds(), positionInfo.getTrackElapsedSeconds());
+            }
+        });
+    }
+
+    /**
+     * Get transport info on device, set content URL and play content
+     *
+     * @param device     device
+     * @param contentUrl content url
+     * @param node       node
+     */
+    private void getInfoSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
+        // Another Url is already set on device, get transport info
+        controlPoint.execute(new GetDeviceTransportInfo(device, PLAY) {
+            @Override
+            public void success(TransportInfo transportInfo) {
+                switch (transportInfo.getCurrentTransportState()) {
+                    case PLAYING:
+                    case PAUSED_PLAYBACK:
+                        // Another content is currently playing on device, stop then set Url and play
+                        stopSetUrlAndPlay(device, contentUrl, node, PLAY);
+                        break;
+                    default:
+                        // No playback, set Url and play
+                        setUrlAndPlay(device, contentUrl, node, PLAY);
+                        break;
+                }
             }
         });
     }
@@ -273,22 +211,11 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      */
     private void stopSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
         // Stop content playback
-        controlPoint.execute(new Stop(device.getAvTransportService()) {
-            /**
-             * {@inheritDoc}
-             */
+        controlPoint.execute(new StopOnDevice(device, eventType) {
             @Override
-            public void success(ActionInvocation invocation) {
+            public void success() {
                 // Set Url and play
                 setUrlAndPlay(device, contentUrl, node, eventType);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                sendFailure(eventType, device.getId(), defaultMsg);
             }
         });
     }
@@ -304,24 +231,12 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private void setUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
         try {
             // Set content Url
-            controlPoint.execute(new SetAVTransportURI(device.getAvTransportService(), contentUrl, getNodeMetadata(node, contentUrl)) {
-                /**
-                 * {@inheritDoc}
-                 */
+            controlPoint.execute(new SetContentUrlOnDevice(device, eventType, contentUrl, getNodeMetadata(node, contentUrl)) {
                 @Override
-                public void success(ActionInvocation invocation) {
+                public void success() {
                     // Play content
                     play(device, eventType);
                 }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-                    sendFailure(eventType, device.getId(), defaultMsg);
-                }
-
             });
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

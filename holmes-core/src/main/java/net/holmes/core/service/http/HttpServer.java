@@ -100,9 +100,6 @@ public final class HttpServer implements Service {
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     protected void initChannel(final SocketChannel channel) {
                         ChannelPipeline pipeline = channel.pipeline();

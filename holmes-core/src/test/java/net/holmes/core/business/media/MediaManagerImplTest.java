@@ -144,7 +144,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getSubRootChildNodes(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
         expect(mediaDao.getChildNodes(eq("videosTest"))).andReturn(Lists.<AbstractNode>newArrayList());
 
         replay(mediaDao, mimeTypeManager, localAddress);
@@ -200,11 +200,11 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getSubRootChildNodes(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
-        expect(mediaDao.getSubRootChildNodes(eq(PICTURE))).andReturn(getRootChildNodes(PICTURE, configurationDao));
-        expect(mediaDao.getSubRootChildNodes(eq(AUDIO))).andReturn(getRootChildNodes(AUDIO, configurationDao));
-        expect(mediaDao.getSubRootChildNodes(eq(PODCAST))).andReturn(getRootChildNodes(PODCAST, configurationDao));
-        expect(mediaDao.getSubRootChildNodes(eq(ICECAST))).andReturn(getRootChildNodes(ICECAST, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(PICTURE))).andReturn(getRootChildNodes(PICTURE, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(AUDIO))).andReturn(getRootChildNodes(AUDIO, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(PODCAST))).andReturn(getRootChildNodes(PODCAST, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(ICECAST))).andReturn(getRootChildNodes(ICECAST, configurationDao));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -226,7 +226,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getSubRootChildNodes(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
+        expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
