@@ -40,7 +40,7 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 public final class Bootstrap {
 
     /**
-     * Instantiates a new bootstrap.
+     * Private constructor.
      */
     private Bootstrap() {
     }
@@ -61,11 +61,8 @@ public final class Bootstrap {
         final Service holmesServer = injector.getInstance(HolmesServer.class);
         holmesServer.start();
 
-        // Add shutdown hook
+        // Add Shutdown hook to stop Holmes server
         Runtime.getRuntime().addShutdownHook(new Thread() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void run() {
                 holmesServer.stop();
@@ -74,7 +71,7 @@ public final class Bootstrap {
     }
 
     /**
-     * Configure logging.
+     * Load logging configuration.
      *
      * @param debug activates debug mode
      */
