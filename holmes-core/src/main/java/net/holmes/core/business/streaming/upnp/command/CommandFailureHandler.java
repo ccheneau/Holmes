@@ -25,7 +25,7 @@ import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingE
 public abstract class CommandFailureHandler {
 
     /**
-     * Instantiates a new command failure handler.
+     * Handle failure for UPnP command.
      *
      * @param type         streaming event type
      * @param deviceId     device ID
