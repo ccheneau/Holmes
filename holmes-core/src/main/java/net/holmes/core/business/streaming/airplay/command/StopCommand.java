@@ -17,6 +17,8 @@
 
 package net.holmes.core.business.streaming.airplay.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
+
 import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.STOP;
 
 /**
@@ -25,8 +27,10 @@ import static net.holmes.core.business.streaming.airplay.command.Command.Command
 public abstract class StopCommand extends Command {
     /**
      * Instantiates a new Airplay stop command.
+     *
+     * @param failureHandler failure handler
      */
-    public StopCommand() {
-        super(STOP);
+    public StopCommand(final CommandFailureHandler failureHandler) {
+        super(STOP, failureHandler);
     }
 }

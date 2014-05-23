@@ -17,6 +17,8 @@
 
 package net.holmes.core.business.streaming.airplay.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
+
 import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY;
 import static net.holmes.core.business.streaming.airplay.command.Command.PostParameter.CONTENT_LOCATION;
 import static net.holmes.core.business.streaming.airplay.command.Command.PostParameter.START_POSITION;
@@ -29,11 +31,12 @@ public abstract class PlayCommand extends Command {
     /**
      * Instantiates a new Airplay play command.
      *
-     * @param contentUrl    content Url
-     * @param startPosition start position between 0 (start) and 1 (end)
+     * @param contentUrl     content Url
+     * @param startPosition  start position between 0 (start) and 1 (end)
+     * @param failureHandler failure handler
      */
-    public PlayCommand(final String contentUrl, final Double startPosition) {
-        super(PLAY);
+    public PlayCommand(final String contentUrl, final Double startPosition, final CommandFailureHandler failureHandler) {
+        super(PLAY, failureHandler);
         addPostParameter(CONTENT_LOCATION, contentUrl);
         addPostParameter(START_POSITION, String.format("%f", startPosition));
     }

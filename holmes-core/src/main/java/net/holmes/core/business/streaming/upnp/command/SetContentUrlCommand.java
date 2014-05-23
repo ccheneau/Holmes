@@ -17,34 +17,28 @@
 
 package net.holmes.core.business.streaming.upnp.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
 
-import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
-
 /**
  * Set content url on device
  */
 public abstract class SetContentUrlCommand extends SetAVTransportURI {
-    private final UpnpDevice device;
-    private final StreamingEventType eventType;
     private final CommandFailureHandler failureHandler;
 
     /**
      * Instantiates a new set content url command
      *
      * @param device         device
-     * @param eventType      event type
      * @param contentUrl     content Url
      * @param metadata       content metadata
      * @param failureHandler failure handler
      */
-    public SetContentUrlCommand(UpnpDevice device, StreamingEventType eventType, String contentUrl, String metadata, CommandFailureHandler failureHandler) {
+    public SetContentUrlCommand(UpnpDevice device, String contentUrl, String metadata, CommandFailureHandler failureHandler) {
         super(device.getAvTransportService(), contentUrl, metadata);
-        this.device = device;
-        this.eventType = eventType;
         this.failureHandler = failureHandler;
     }
 
@@ -53,7 +47,7 @@ public abstract class SetContentUrlCommand extends SetAVTransportURI {
      */
     @Override
     public final void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-        failureHandler.handle(eventType, device.getId(), defaultMsg);
+        failureHandler.handle(defaultMsg);
     }
 
 

@@ -17,33 +17,27 @@
 
 package net.holmes.core.business.streaming.upnp.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.GetPositionInfo;
 import org.fourthline.cling.support.model.PositionInfo;
 
-import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
-
 /**
  * Get position info on device
  */
 public abstract class GetPositionInfoCommand extends GetPositionInfo {
-    private final UpnpDevice device;
-    private final StreamingEventType eventType;
     private final CommandFailureHandler failureHandler;
 
     /**
      * Instantiates a new get position info command
      *
      * @param device         device
-     * @param eventType      event type
      * @param failureHandler failure handler
      */
-    public GetPositionInfoCommand(UpnpDevice device, StreamingEventType eventType, CommandFailureHandler failureHandler) {
+    public GetPositionInfoCommand(UpnpDevice device, CommandFailureHandler failureHandler) {
         super(device.getAvTransportService());
-        this.device = device;
-        this.eventType = eventType;
         this.failureHandler = failureHandler;
     }
 
@@ -52,7 +46,7 @@ public abstract class GetPositionInfoCommand extends GetPositionInfo {
      */
     @Override
     public final void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-        failureHandler.handle(eventType, device.getId(), defaultMsg);
+        failureHandler.handle(defaultMsg);
     }
 
 
@@ -61,13 +55,13 @@ public abstract class GetPositionInfoCommand extends GetPositionInfo {
      */
     @Override
     public final void received(ActionInvocation invocation, PositionInfo positionInfo) {
-        success(positionInfo);
+        received(positionInfo);
     }
 
     /**
-     * Success callback.
+     * Position info received callback.
      *
      * @param positionInfo position info
      */
-    public abstract void success(PositionInfo positionInfo);
+    public abstract void received(PositionInfo positionInfo);
 }

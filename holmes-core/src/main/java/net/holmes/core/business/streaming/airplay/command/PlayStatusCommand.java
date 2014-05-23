@@ -17,6 +17,8 @@
 
 package net.holmes.core.business.streaming.airplay.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
+
 import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY_STATUS;
 
 /**
@@ -29,8 +31,10 @@ public abstract class PlayStatusCommand extends Command {
 
     /**
      * Instantiates a new play status command.
+     *
+     * @param failureHandler failure handler
      */
-    public PlayStatusCommand() {
-        super(PLAY_STATUS);
+    public PlayStatusCommand(final CommandFailureHandler failureHandler) {
+        super(PLAY_STATUS, failureHandler);
     }
 }

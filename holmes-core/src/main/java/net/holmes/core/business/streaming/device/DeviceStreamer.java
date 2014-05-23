@@ -108,4 +108,43 @@ public abstract class DeviceStreamer<T extends Device> {
         eventBus.post(new StreamingEvent(type, deviceId, duration, position));
     }
 
+    /**
+     * Constructs a new Command!failureHandler.
+     *
+     * @param eventType event type
+     * @param device    device
+     * @return a new Command!failureHandler
+     */
+    protected CommandFailureHandler newCommandFailureHandler(StreamingEventType eventType, T device) {
+        return new DeviceStreamerCommandFailureHandler<>(eventType, device);
+    }
+
+    /**
+     * Device streamer command failure handler
+     */
+    private class DeviceStreamerCommandFailureHandler<U extends Device> extends CommandFailureHandler {
+        final StreamingEventType eventType;
+        final U device;
+
+        /**
+         * Constructs a new device streamer command failure handler.
+         *
+         * @param eventType event type
+         * @param device    device
+         */
+        DeviceStreamerCommandFailureHandler(StreamingEventType eventType, U device) {
+            this.eventType = eventType;
+            this.device = device;
+        }
+
+        /**
+         * Handle failure for streamer command.
+         *
+         * @param errorMessage error message
+         */
+        @Override
+        public void handle(String errorMessage) {
+            sendFailure(eventType, device.getId(), errorMessage);
+        }
+    }
 }

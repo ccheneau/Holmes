@@ -17,33 +17,27 @@
 
 package net.holmes.core.business.streaming.upnp.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.GetMediaInfo;
 import org.fourthline.cling.support.model.MediaInfo;
 
-import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
-
 /**
  * Get media info on device
  */
 public abstract class GetMediaInfoCommand extends GetMediaInfo {
-    private final UpnpDevice device;
-    private final StreamingEventType eventType;
     private final CommandFailureHandler failureHandler;
 
     /**
      * Instantiates a new get media info command
      *
      * @param device         device
-     * @param eventType      event type
      * @param failureHandler failure handler
      */
-    public GetMediaInfoCommand(UpnpDevice device, StreamingEventType eventType, CommandFailureHandler failureHandler) {
+    public GetMediaInfoCommand(UpnpDevice device, CommandFailureHandler failureHandler) {
         super(device.getAvTransportService());
-        this.device = device;
-        this.eventType = eventType;
         this.failureHandler = failureHandler;
     }
 
@@ -52,7 +46,7 @@ public abstract class GetMediaInfoCommand extends GetMediaInfo {
      */
     @Override
     public final void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-        failureHandler.handle(eventType, device.getId(), defaultMsg);
+        failureHandler.handle(defaultMsg);
     }
 
 
@@ -61,13 +55,13 @@ public abstract class GetMediaInfoCommand extends GetMediaInfo {
      */
     @Override
     public final void received(ActionInvocation invocation, MediaInfo mediaInfo) {
-        success(mediaInfo);
+        received(mediaInfo);
     }
 
     /**
-     * Success callback.
+     * MediaInfo received callback.
      *
      * @param mediaInfo media info
      */
-    public abstract void success(MediaInfo mediaInfo);
+    public abstract void received(MediaInfo mediaInfo);
 }

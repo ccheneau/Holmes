@@ -17,6 +17,8 @@
 
 package net.holmes.core.business.streaming.airplay.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
+
 import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.RATE;
 import static net.holmes.core.business.streaming.airplay.command.Command.UrlParameter.VALUE;
 
@@ -28,10 +30,11 @@ public abstract class RateCommand extends Command {
     /**
      * Instantiates a new Airplay rate command.
      *
-     * @param rate playback rate: 0 is paused, 1 is playing at the normal speed
+     * @param rate           playback rate: 0 is paused, 1 is playing at the normal speed
+     * @param failureHandler failure handler
      */
-    public RateCommand(final Double rate) {
-        super(RATE);
+    public RateCommand(final Double rate, final CommandFailureHandler failureHandler) {
+        super(RATE, failureHandler);
         addUrlParameter(VALUE, rate.toString());
     }
 }

@@ -15,9 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.streaming.upnp.command;
-
-import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
+package net.holmes.core.business.streaming.device;
 
 /**
  * Command failure handler
@@ -27,9 +25,7 @@ public abstract class CommandFailureHandler {
     /**
      * Handle failure for UPnP command.
      *
-     * @param type         streaming event type
-     * @param deviceId     device ID
      * @param errorMessage error message
      */
-    public abstract void handle(final StreamingEventType type, final String deviceId, final String errorMessage);
+    public abstract void handle(final String errorMessage);
 }

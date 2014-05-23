@@ -19,8 +19,8 @@ package net.holmes.core.business.streaming.airplay.command;
 
 import com.google.common.collect.Maps;
 import io.netty.handler.codec.http.HttpMethod;
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
@@ -39,16 +39,19 @@ public abstract class Command {
     private static final String SPACE = " ";
 
     private final CommandType type;
+    private final CommandFailureHandler failureHandler;
     private final Map<UrlParameter, String> urlParameters;
     private final Map<PostParameter, String> postParameters;
 
     /**
      * Instantiates a new Airplay command.
      *
-     * @param type command type
+     * @param type           command type
+     * @param failureHandler failure handler
      */
-    public Command(final CommandType type) {
+    public Command(final CommandType type, final CommandFailureHandler failureHandler) {
         this.type = type;
+        this.failureHandler = failureHandler;
         this.urlParameters = Maps.newHashMap();
         this.postParameters = Maps.newLinkedHashMap();
     }
@@ -99,12 +102,14 @@ public abstract class Command {
     }
 
     /**
-     * Failure callback.
+     * Command failure.
      *
-     * @param exception IOException
+     * @param message error message
      */
-    public void failure(IOException exception) {
-        failure(exception.getMessage());
+    public final void failure(String message) {
+        if (failureHandler != null) {
+            failureHandler.handle(message);
+        }
     }
 
     /**
@@ -113,13 +118,6 @@ public abstract class Command {
      * @param contentParameters content parameters map
      */
     public abstract void success(Map<String, String> contentParameters);
-
-    /**
-     * Failure callback.
-     *
-     * @param errorMessage error message
-     */
-    public abstract void failure(String errorMessage);
 
     /**
      * Get request Url.

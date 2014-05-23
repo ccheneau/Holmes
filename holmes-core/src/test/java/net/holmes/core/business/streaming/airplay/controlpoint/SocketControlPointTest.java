@@ -19,6 +19,7 @@ package net.holmes.core.business.streaming.airplay.controlpoint;
 
 import net.holmes.core.business.streaming.airplay.command.Command;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import org.easymock.Capture;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
@@ -166,7 +168,6 @@ public class SocketControlPointTest {
         String request = "Request";
 
         Capture<byte[]> captureRequest = new Capture<>();
-        Capture<String> captureMessage = new Capture<>();
 
         expect(device.getConnection(isA(SocketFactory.class))).andReturn(socket).atLeastOnce();
         expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
@@ -176,15 +177,12 @@ public class SocketControlPointTest {
         expectLastCall().atLeastOnce();
         socketOutputStream.flush();
         expectLastCall().atLeastOnce();
-        command.failure(capture(captureMessage));
-        expectLastCall().atLeastOnce();
 
         replay(device, command, socket, socketFactory, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint(socketFactory);
         controlPoint.execute(device, command);
 
         assertEquals(request, new String(captureRequest.getValue(), 0, request.length()));
-        assertEquals("NOT FOUND", captureMessage.getValue());
 
         verify(device, command, socket, socketFactory, socketOutputStream);
     }
@@ -193,24 +191,37 @@ public class SocketControlPointTest {
     public void testExecuteIOException() throws IOException {
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        Command command = createMock(Command.class);
+        CommandFailureHandler failureHandler = createMock(CommandFailureHandler.class);
         Socket socket = createMock(Socket.class);
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
 
-        Capture<IOException> captureMessage = new Capture<>();
-
         expect(device.getConnection(isA(SocketFactory.class))).andThrow(new IOException("IOException message"));
-        command.failure(capture(captureMessage));
+        failureHandler.handle(eq("IOException message"));
         expectLastCall();
 
-        replay(device, command, socket, socketFactory, socketOutputStream);
+        replay(device, failureHandler, socket, socketFactory, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint(socketFactory);
+        Command command = new CommandTest(PLAY, failureHandler);
         controlPoint.execute(device, command);
 
-        assertEquals("IOException message", captureMessage.getValue().getMessage());
-
-        verify(device, command, socket, socketFactory, socketOutputStream);
+        verify(device, failureHandler, socket, socketFactory, socketOutputStream);
     }
 
+    private class CommandTest extends Command {
+
+        CommandTest(CommandType type, CommandFailureHandler failureHandler) {
+            super(type, failureHandler);
+        }
+
+        /**
+         * Success callback.
+         *
+         * @param contentParameters content parameters map
+         */
+        @Override
+        public void success(Map<String, String> contentParameters) {
+
+        }
+    }
 }

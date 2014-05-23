@@ -17,32 +17,26 @@
 
 package net.holmes.core.business.streaming.upnp.command;
 
+import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.support.avtransport.callback.Play;
 
-import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
-
 /**
  * Play content on device
  */
 public abstract class PlayCommand extends Play {
-    private final UpnpDevice device;
-    private final StreamingEventType playEventType;
     private final CommandFailureHandler failureHandler;
 
     /**
      * Instantiates a new play command
      *
      * @param device         device
-     * @param playEventType  play event type
      * @param failureHandler failure handler
      */
-    public PlayCommand(UpnpDevice device, StreamingEventType playEventType, CommandFailureHandler failureHandler) {
+    public PlayCommand(UpnpDevice device, CommandFailureHandler failureHandler) {
         super(device.getAvTransportService());
-        this.device = device;
-        this.playEventType = playEventType;
         this.failureHandler = failureHandler;
     }
 
@@ -51,7 +45,7 @@ public abstract class PlayCommand extends Play {
      */
     @Override
     public final void failure(ActionInvocation invocation, UpnpResponse response, String defaultMsg) {
-        failureHandler.handle(playEventType, device.getId(), defaultMsg);
+        failureHandler.handle(defaultMsg);
     }
 
 

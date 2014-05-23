@@ -47,7 +47,6 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private static final Logger LOGGER = getLogger(UpnpStreamerImpl.class);
     private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
     private final ControlPoint controlPoint;
-    private final CommandFailureHandler failureHandler;
 
     /**
      * Instantiates a new Upnp streaming implementation.
@@ -59,12 +58,6 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     public UpnpStreamerImpl(final UpnpService upnpService, final EventBus eventBus) {
         super(eventBus);
         this.controlPoint = upnpService.getControlPoint();
-        this.failureHandler = new CommandFailureHandler() {
-            @Override
-            public void handle(StreamingEventType type, String deviceId, String errorMessage) {
-                sendFailure(type, deviceId, errorMessage);
-            }
-        };
     }
 
     /**
@@ -73,9 +66,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
         // Get media info
-        controlPoint.execute(new GetMediaInfoCommand(device, PLAY, failureHandler) {
+        controlPoint.execute(new GetMediaInfoCommand(device, newCommandFailureHandler(PLAY, device)) {
             @Override
-            public void success(MediaInfo mediaInfo) {
+            public void received(MediaInfo mediaInfo) {
                 String currentUrl = mediaInfo.getCurrentURI();
                 if (currentUrl == null) {
                     // No url set on device, set Url and play
@@ -97,7 +90,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void stop(final UpnpDevice device) {
         // Stop content playback
-        controlPoint.execute(new StopCommand(device, STOP, failureHandler) {
+        controlPoint.execute(new StopCommand(device, newCommandFailureHandler(STOP, device)) {
             @Override
             public void success() {
                 sendSuccess(STOP, device.getId());
@@ -111,7 +104,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void pause(final UpnpDevice device) {
         // Pause content playback
-        controlPoint.execute(new PauseCommand(device, failureHandler) {
+        controlPoint.execute(new PauseCommand(device, newCommandFailureHandler(PAUSE, device)) {
             @Override
             public void success() {
                 sendSuccess(PAUSE, device.getId());
@@ -134,9 +127,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     @Override
     public void updateStatus(final UpnpDevice device) {
         // Get transport info
-        controlPoint.execute(new GetTransportInfoCommand(device, STATUS, failureHandler) {
+        controlPoint.execute(new GetTransportInfoCommand(device, newCommandFailureHandler(STATUS, device)) {
             @Override
-            public void success(TransportInfo transportInfo) {
+            public void received(TransportInfo transportInfo) {
                 switch (transportInfo.getCurrentTransportState()) {
                     case PLAYING:
                     case PAUSED_PLAYBACK:
@@ -160,7 +153,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param eventType event type
      */
     private void play(final UpnpDevice device, final StreamingEventType eventType) {
-        controlPoint.execute(new PlayCommand(device, eventType, failureHandler) {
+        controlPoint.execute(new PlayCommand(device, newCommandFailureHandler(eventType, device)) {
             @Override
             public void success() {
                 sendSuccess(eventType, device.getId());
@@ -175,9 +168,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      */
     private void updatePlayPosition(final UpnpDevice device) {
         // Content is currently playing on device, get position info
-        controlPoint.execute(new GetPositionInfoCommand(device, STATUS, failureHandler) {
+        controlPoint.execute(new GetPositionInfoCommand(device, newCommandFailureHandler(STATUS, device)) {
             @Override
-            public void success(PositionInfo positionInfo) {
+            public void received(PositionInfo positionInfo) {
                 sendSuccess(STATUS, device.getId(), positionInfo.getTrackDurationSeconds(), positionInfo.getTrackElapsedSeconds());
             }
         });
@@ -192,9 +185,9 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      */
     private void getInfoSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
         // Another Url is already set on device, get transport info
-        controlPoint.execute(new GetTransportInfoCommand(device, PLAY, failureHandler) {
+        controlPoint.execute(new GetTransportInfoCommand(device, newCommandFailureHandler(PLAY, device)) {
             @Override
-            public void success(TransportInfo transportInfo) {
+            public void received(TransportInfo transportInfo) {
                 switch (transportInfo.getCurrentTransportState()) {
                     case PLAYING:
                     case PAUSED_PLAYBACK:
@@ -220,7 +213,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      */
     private void stopSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
         // Stop content playback
-        controlPoint.execute(new StopCommand(device, eventType, failureHandler) {
+        controlPoint.execute(new StopCommand(device, newCommandFailureHandler(eventType, device)) {
             @Override
             public void success() {
                 // Set Url and play
@@ -240,7 +233,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private void setUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
         try {
             // Set content Url
-            controlPoint.execute(new SetContentUrlCommand(device, eventType, contentUrl, getNodeMetadata(node, contentUrl), failureHandler) {
+            controlPoint.execute(new SetContentUrlCommand(device, contentUrl, getNodeMetadata(node, contentUrl), newCommandFailureHandler(eventType, device)) {
                 @Override
                 public void success() {
                     // Play content
