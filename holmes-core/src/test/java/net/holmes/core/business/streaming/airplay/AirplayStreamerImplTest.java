@@ -20,7 +20,7 @@ package net.holmes.core.business.streaming.airplay;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.streaming.airplay.command.Command;
+import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.controlpoint.ControlPoint;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.event.StreamingEvent;
@@ -43,7 +43,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(Maps.<String, String>newHashMap());
             }
@@ -73,7 +73,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.failure("errorMessage");
             }
@@ -104,7 +104,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(Maps.<String, String>newHashMap());
             }
@@ -133,7 +133,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.failure("errorMessage");
             }
@@ -163,7 +163,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(Maps.<String, String>newHashMap());
             }
@@ -192,7 +192,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.failure("errorMessage");
             }
@@ -222,7 +222,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(Maps.<String, String>newHashMap());
             }
@@ -251,7 +251,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.failure("errorMessage");
             }
@@ -281,7 +281,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(Maps.<String, String>newHashMap());
             }
@@ -302,7 +302,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.success(null);
             }
@@ -323,7 +323,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 Map<String, String> parameters = Maps.newHashMap();
                 parameters.put("duration", "60");
@@ -357,7 +357,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 Map<String, String> parameters = Maps.newHashMap();
                 parameters.put("duration", "60");
@@ -389,7 +389,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 Map<String, String> parameters = Maps.newHashMap();
                 parameters.put("bad_duration", "60");
@@ -421,7 +421,7 @@ public class AirplayStreamerImplTest {
              * {@inheritDoc}
              */
             @Override
-            public void execute(AirplayDevice device, Command command) {
+            public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
                 command.failure("errorMessage");
             }

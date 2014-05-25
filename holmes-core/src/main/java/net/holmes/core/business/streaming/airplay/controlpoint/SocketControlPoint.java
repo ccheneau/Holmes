@@ -18,7 +18,7 @@
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
 import com.google.common.collect.Lists;
-import net.holmes.core.business.streaming.airplay.command.Command;
+import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 
 import javax.net.SocketFactory;
@@ -49,7 +49,7 @@ public class SocketControlPoint implements ControlPoint {
      * {@inheritDoc}
      */
     @Override
-    public void execute(final AirplayDevice device, final Command command) {
+    public void execute(final AirplayDevice device, final AirplayCommand command) {
         runDeviceCommand(device, command);
     }
 
@@ -59,7 +59,7 @@ public class SocketControlPoint implements ControlPoint {
      * @param device  Airplay device
      * @param command command
      */
-    protected void runDeviceCommand(final AirplayDevice device, final Command command) {
+    protected void runDeviceCommand(final AirplayDevice device, final AirplayCommand command) {
         try {
             // Get device socket
             Socket socket = device.getConnection(socketFactory);
@@ -87,7 +87,7 @@ public class SocketControlPoint implements ControlPoint {
      * @param command command
      * @throws IOException
      */
-    protected void sendCommand(final Socket socket, final Command command) throws IOException {
+    protected void sendCommand(final Socket socket, final AirplayCommand command) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
 
         // Write request to socket

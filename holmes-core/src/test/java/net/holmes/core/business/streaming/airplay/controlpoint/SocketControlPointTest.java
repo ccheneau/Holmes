@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
-import net.holmes.core.business.streaming.airplay.command.Command;
+import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import org.easymock.Capture;
@@ -31,7 +31,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Map;
 
-import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.CommandType.PLAY;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
@@ -41,7 +41,7 @@ public class SocketControlPointTest {
     public void testExecuteOKResponse() throws IOException {
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        Command command = createMock(Command.class);
+        AirplayCommand command = createMock(AirplayCommand.class);
         Socket socket = createMock(Socket.class);
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
@@ -77,7 +77,7 @@ public class SocketControlPointTest {
     public void testExecuteOKResponseWithParameters() throws IOException {
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        Command command = createMock(Command.class);
+        AirplayCommand command = createMock(AirplayCommand.class);
         Socket socket = createMock(Socket.class);
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
@@ -118,7 +118,7 @@ public class SocketControlPointTest {
     public void testExecuteOKResponseWithNoParameters() throws IOException {
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        Command command = createMock(Command.class);
+        AirplayCommand command = createMock(AirplayCommand.class);
         Socket socket = createMock(Socket.class);
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
@@ -159,7 +159,7 @@ public class SocketControlPointTest {
     public void testExecuteKOResponse() throws IOException {
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        Command command = createMock(Command.class);
+        AirplayCommand command = createMock(AirplayCommand.class);
         Socket socket = createMock(Socket.class);
         SocketFactory socketFactory = createMock(SocketFactory.class);
         OutputStream socketOutputStream = createMock(OutputStream.class);
@@ -202,15 +202,15 @@ public class SocketControlPointTest {
 
         replay(device, failureHandler, socket, socketFactory, socketOutputStream);
         SocketControlPoint controlPoint = new SocketControlPoint(socketFactory);
-        Command command = new CommandTest(PLAY, failureHandler);
+        AirplayCommand command = new AirplayCommandTest(PLAY, failureHandler);
         controlPoint.execute(device, command);
 
         verify(device, failureHandler, socket, socketFactory, socketOutputStream);
     }
 
-    private class CommandTest extends Command {
+    private class AirplayCommandTest extends AirplayCommand {
 
-        CommandTest(CommandType type, CommandFailureHandler failureHandler) {
+        AirplayCommandTest(CommandType type, CommandFailureHandler failureHandler) {
             super(type, failureHandler);
         }
 

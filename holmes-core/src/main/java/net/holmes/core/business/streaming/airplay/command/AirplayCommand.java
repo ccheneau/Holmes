@@ -32,7 +32,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 /**
  * Airplay command.
  */
-public abstract class Command {
+public abstract class AirplayCommand {
     private static final String AIRPLAY_USER_AGENT = "MediaControl/1.0";
     private static final String PARAMETER_SEPARATOR = ": ";
     private static final String EOL = "\n";
@@ -49,7 +49,7 @@ public abstract class Command {
      * @param type           command type
      * @param failureHandler failure handler
      */
-    public Command(final CommandType type, final CommandFailureHandler failureHandler) {
+    public AirplayCommand(final CommandType type, final CommandFailureHandler failureHandler) {
         this.type = type;
         this.failureHandler = failureHandler;
         this.urlParameters = Maps.newHashMap();

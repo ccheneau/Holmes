@@ -19,7 +19,7 @@ package net.holmes.core.business.streaming.airplay.command;
 
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
-import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY_STATUS;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.CommandType.PLAY_STATUS;
 
 /**
  * Airplay play status command: Retrieve the current playback position.
@@ -27,7 +27,7 @@ import static net.holmes.core.business.streaming.airplay.command.Command.Command
  * - duration: duration in seconds
  * - position: position in seconds
  */
-public abstract class PlayStatusCommand extends Command {
+public abstract class PlayStatusCommand extends AirplayCommand {
 
     /**
      * Instantiates a new play status command.

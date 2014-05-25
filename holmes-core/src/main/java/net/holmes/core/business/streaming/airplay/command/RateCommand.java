@@ -19,13 +19,13 @@ package net.holmes.core.business.streaming.airplay.command;
 
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
-import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.RATE;
-import static net.holmes.core.business.streaming.airplay.command.Command.UrlParameter.VALUE;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.CommandType.RATE;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.UrlParameter.VALUE;
 
 /**
  * Airplay rate command: Change the playback rate
  */
-public abstract class RateCommand extends Command {
+public abstract class RateCommand extends AirplayCommand {
 
     /**
      * Instantiates a new Airplay rate command.

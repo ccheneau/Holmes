@@ -19,14 +19,14 @@ package net.holmes.core.business.streaming.airplay.command;
 
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
-import static net.holmes.core.business.streaming.airplay.command.Command.CommandType.PLAY;
-import static net.holmes.core.business.streaming.airplay.command.Command.PostParameter.CONTENT_LOCATION;
-import static net.holmes.core.business.streaming.airplay.command.Command.PostParameter.START_POSITION;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.CommandType.PLAY;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.PostParameter.CONTENT_LOCATION;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.PostParameter.START_POSITION;
 
 /**
  * Airplay play command: Start video playback
  */
-public abstract class PlayCommand extends Command {
+public abstract class PlayCommand extends AirplayCommand {
 
     /**
      * Instantiates a new Airplay play command.

@@ -25,7 +25,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class CommandResponseTest {
+public class AirplayCommandResponseTest {
 
     @Test
     public void testDecodeHttpResponse() {

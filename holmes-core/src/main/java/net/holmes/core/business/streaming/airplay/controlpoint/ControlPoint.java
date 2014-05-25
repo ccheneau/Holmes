@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
-import net.holmes.core.business.streaming.airplay.command.Command;
+import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 
 /**
@@ -31,5 +31,5 @@ public interface ControlPoint {
      * @param device  device
      * @param command command to run
      */
-    void execute(final AirplayDevice device, final Command command);
+    void execute(final AirplayDevice device, final AirplayCommand command);
 }

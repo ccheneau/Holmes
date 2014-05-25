@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
-import net.holmes.core.business.streaming.airplay.command.Command;
+import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 
 import javax.inject.Inject;
@@ -48,11 +48,8 @@ public class AsyncSocketControlPoint extends SocketControlPoint {
      * {@inheritDoc}
      */
     @Override
-    public void execute(final AirplayDevice device, final Command command) {
+    public void execute(final AirplayDevice device, final AirplayCommand command) {
         executor.execute(new Runnable() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void run() {
                 runDeviceCommand(device, command);
