@@ -63,5 +63,7 @@ public abstract class AbstractITunesObject implements ITunes, Cloneable {
      * @throws CloneNotSupportedException
      */
     @Override
-    public abstract Object clone() throws CloneNotSupportedException;
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

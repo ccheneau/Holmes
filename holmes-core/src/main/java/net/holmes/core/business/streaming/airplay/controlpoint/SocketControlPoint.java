@@ -20,6 +20,7 @@ package net.holmes.core.business.streaming.airplay.controlpoint;
 import com.google.common.collect.Lists;
 import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
+import org.slf4j.Logger;
 
 import javax.net.SocketFactory;
 import java.io.*;
@@ -28,12 +29,15 @@ import java.util.List;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Airplay socket control point
  */
 public class SocketControlPoint implements ControlPoint {
+    private static final Logger LOGGER = getLogger(SocketControlPoint.class);
     private static final String CONTENT_TYPE_PARAMETERS = "text/parameters";
+
     private final SocketFactory socketFactory;
 
     /**
@@ -76,6 +80,7 @@ public class SocketControlPoint implements ControlPoint {
             }
 
         } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
             command.failure(e.getMessage());
         }
     }
