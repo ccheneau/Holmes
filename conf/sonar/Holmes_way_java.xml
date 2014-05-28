@@ -2363,11 +2363,6 @@
         </rule>
         <rule>
             <repositoryKey>squid</repositoryKey>
-            <key>S1185</key>
-            <priority>MINOR</priority>
-        </rule>
-        <rule>
-            <repositoryKey>squid</repositoryKey>
             <key>S1174</key>
             <priority>MAJOR</priority>
         </rule>
@@ -2591,15 +2586,10 @@
                 <parameter>
                     <key>exceptions</key>
                     <value>java.lang.InterruptedException, java.lang.NumberFormatException, java.text.ParseException,
-                        java.net.MalformedURLException
+                        java.net.MalformedURLException, java.util.MissingResourceException, java.io.EOFException
                     </value>
                 </parameter>
             </parameters>
-        </rule>
-        <rule>
-            <repositoryKey>squid</repositoryKey>
-            <key>S1147</key>
-            <priority>INFO</priority>
         </rule>
         <rule>
             <repositoryKey>squid</repositoryKey>
