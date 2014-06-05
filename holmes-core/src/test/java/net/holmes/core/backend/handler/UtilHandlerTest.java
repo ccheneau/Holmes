@@ -101,6 +101,19 @@ public class UtilHandlerTest {
     }
 
     @Test
+    public void testGetChildFoldersNone() {
+        VersionManager versionManager = createMock(VersionManager.class);
+
+        replay(versionManager);
+
+        UtilHandler utilHandler = new UtilHandler(versionManager);
+        Collection<UtilHandler.Folder> folders = utilHandler.getChildFolders("none");
+        assertNotNull(folders);
+
+        verify(versionManager);
+    }
+
+    @Test
     public void testFolder() {
         UtilHandler.Folder folder = new UtilHandler.Folder("data", "path");
         assertEquals(folder.getData(), "data");
