@@ -172,7 +172,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     /**
      * Xml root node: result of Xml configuration deserialization
      */
-    private class XmlRootNode {
+    private static final class XmlRootNode {
         private Properties parameters;
         private List<ConfigurationNode> videoFolders;
         private List<ConfigurationNode> pictureFolders;
