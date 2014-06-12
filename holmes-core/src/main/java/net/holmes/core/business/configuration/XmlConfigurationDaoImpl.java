@@ -184,16 +184,16 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
          */
         public void checkDefaultValues() {
             if (this.videoFolders == null) {
-                this.videoFolders = Lists.newLinkedList();
+                this.videoFolders = Lists.newArrayList();
             }
             if (this.audioFolders == null) {
-                this.audioFolders = Lists.newLinkedList();
+                this.audioFolders = Lists.newArrayList();
             }
             if (this.pictureFolders == null) {
-                this.pictureFolders = Lists.newLinkedList();
+                this.pictureFolders = Lists.newArrayList();
             }
             if (this.podcasts == null) {
-                this.podcasts = Lists.newLinkedList();
+                this.podcasts = Lists.newArrayList();
             }
             if (this.parameters == null) {
                 this.parameters = new Properties();
