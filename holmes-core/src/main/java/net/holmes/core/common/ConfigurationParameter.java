@@ -66,7 +66,7 @@ public abstract class ConfigurationParameter<T> {
     /**
      * Enable Icecast directory support
      */
-    public static final ConfigurationBooleanParameter ICECAST_ENABLE = new ConfigurationBooleanParameter("enable_icecast_directory", true);
+    public static final ConfigurationBooleanParameter ICECAST_ENABLE = new ConfigurationBooleanParameter("enable_icecast_directory", false);
     /**
      * List of Icecast genres
      */
