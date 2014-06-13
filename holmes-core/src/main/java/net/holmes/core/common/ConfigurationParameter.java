@@ -59,6 +59,10 @@ public abstract class ConfigurationParameter<T> {
      * Duration for Http caching header (in seconds)
      */
     public static final ConfigurationIntParameter HTTP_SERVER_CACHE_SECOND = new ConfigurationIntParameter("http_server_cache_second", 60);
+    /**
+     * Number of threads used by Netty NIO worker event loop group (O means that Netty uses a default value)
+     */
+    public static final ConfigurationIntParameter HTTP_SERVER_WORKER_THREADS = new ConfigurationIntParameter("http_server_worker_threads", 0);
 
     /**
      * Icecast directory support parameters
@@ -136,6 +140,7 @@ public abstract class ConfigurationParameter<T> {
             CACHE_CLEAN_DELAY_MINUTES,
             HTTP_SERVER_PORT,
             HTTP_SERVER_CACHE_SECOND,
+            HTTP_SERVER_WORKER_THREADS,
             ICECAST_ENABLE,
             ICECAST_GENRE_LIST,
             ICECAST_MAX_DOWNLOAD_RETRY,
