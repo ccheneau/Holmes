@@ -169,9 +169,6 @@ public final class SystrayService implements Service {
     private JMenuItem buildWikiMenuItem(boolean showMenuIcon) {
         // Holmes wiki menu item
         return new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void onClick() throws HolmesException {
                 try {
@@ -191,9 +188,6 @@ public final class SystrayService implements Service {
      */
     private JMenuItem buildSiteMenuItem(boolean showMenuIcon) {
         return new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void onClick() throws HolmesException {
                 try {
@@ -214,9 +208,6 @@ public final class SystrayService implements Service {
     private JMenuItem buildUIMenuItem(boolean showMenuIcon) {
         final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
         return new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void onClick() throws HolmesException {
                 try {
@@ -236,9 +227,6 @@ public final class SystrayService implements Service {
      */
     private JMenuItem buildLogsMenuItem(boolean showMenuIcon) {
         return new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void onClick() throws HolmesException {
                 try {
@@ -258,9 +246,6 @@ public final class SystrayService implements Service {
      */
     private JMenuItem buildQuitMenuItem(boolean showMenuIcon) {
         return new SystrayMenuItem() {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void onClick() {
                 System.exit(0);
