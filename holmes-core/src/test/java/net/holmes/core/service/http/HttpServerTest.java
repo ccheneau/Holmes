@@ -25,6 +25,7 @@ import net.holmes.core.business.configuration.ConfigurationDao;
 import org.junit.Test;
 
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
+import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_WORKER_THREADS;
 import static org.easymock.EasyMock.*;
 
 public class HttpServerTest {
@@ -33,14 +34,18 @@ public class HttpServerTest {
     public void testHttpServer() {
         Injector injector = createMock(Injector.class);
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
-        HttpServer httpServer = new HttpServer(injector, configurationDao);
 
         expect(configurationDao.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
+        expect(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
         expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
 
         replay(injector, configurationDao);
-        httpServer.start();
-        httpServer.stop();
-        verify(injector, configurationDao);
+        try {
+            HttpServer httpServer = new HttpServer(injector, configurationDao);
+            httpServer.start();
+            httpServer.stop();
+        } finally {
+            verify(injector, configurationDao);
+        }
     }
 }
