@@ -17,7 +17,6 @@
 
 package net.holmes.core.service.http;
 
-import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -27,6 +26,8 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.common.MimeType;
+import net.holmes.core.service.http.route.HttpRoute;
+import net.holmes.core.service.http.route.HttpRouteManager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,10 +42,9 @@ import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
  * Decode FullHttpRequest to HttpFileRequest
  */
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
-    private static final String DEFAULT_WELCOME_FILE = "index.html";
-    private static final List<String> WELCOME_APPLICATIONS = Lists.newArrayList("", "/admin", "/play");
     private final MediaManager mediaManager;
     private final MimeTypeManager mimeTypeManager;
+    private final HttpRouteManager routeManager;
     private final String uiDirectory;
 
     /**
@@ -52,12 +52,14 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
      *
      * @param mediaManager    media manager
      * @param mimeTypeManager mime type manager
+     * @param routeManager    Http route manager
      * @param uiDirectory     UI base directory
      */
     @Inject
-    public HttpFileRequestDecoder(final MediaManager mediaManager, final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
+    public HttpFileRequestDecoder(final MediaManager mediaManager, final MimeTypeManager mimeTypeManager, final HttpRouteManager routeManager, @Named("uiDirectory") final String uiDirectory) {
         this.mediaManager = mediaManager;
         this.mimeTypeManager = mimeTypeManager;
+        this.routeManager = routeManager;
         this.uiDirectory = uiDirectory;
     }
 
@@ -108,9 +110,13 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             // Remove trailing '/'
             fileName = fileName.substring(0, fileName.length() - 1);
         }
-        if (WELCOME_APPLICATIONS.contains(fileName)) {
-            fileName += "/" + DEFAULT_WELCOME_FILE;
+
+        // Check if fileName is a default Holmes web application
+        HttpRoute route = routeManager.getHttpRoute(fileName);
+        if (route != null) {
+            fileName += route.getDefaultFile();
         }
+
         return fileName;
     }
 }
