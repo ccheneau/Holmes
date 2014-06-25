@@ -20,6 +20,7 @@ package net.holmes.core.backend;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
+import net.holmes.core.backend.exception.BackendErrorMessage;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
@@ -34,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static net.holmes.core.backend.exception.BackendErrorMessage.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
@@ -178,7 +180,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void saveSettings(final Settings settings) {
-        checkNonEmpty(settings.getServerName(), "backend.settings.server.name.error");
+        checkNonEmpty(settings.getServerName(), SETTINGS_SERVER_NAME_ERROR);
 
         configurationDao.setParameter(UPNP_SERVER_NAME, settings.getServerName());
         configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
@@ -202,16 +204,16 @@ public final class BackendManagerImpl implements BackendManager {
      */
     private void validateFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId) {
         // Check folder's name and path are not empty
-        checkNonEmpty(folder.getName(), "backend.folder.name.error");
-        checkNonEmpty(folder.getPath(), "backend.folder.path.error");
+        checkNonEmpty(folder.getName(), FOLDER_NAME_ERROR);
+        checkNonEmpty(folder.getPath(), FOLDER_PATH_ERROR);
 
         // Check folder path exists
         if (!isValidDirectory(folder.getPath())) {
-            throw new BackendException("backend.folder.path.unknown.error");
+            throw new BackendException(FOLDER_PATH_UNKNOWN_ERROR);
         }
 
         // Check for duplication
-        checkDuplicatedConfigurationFolder(folder, configNodes, excludedId, "backend.folder.already.exist.error");
+        checkDuplicatedConfigurationFolder(folder, configNodes, excludedId, FOLDER_DUPLICATED_ERROR);
     }
 
     /**
@@ -223,16 +225,16 @@ public final class BackendManagerImpl implements BackendManager {
      */
     private void validatePodcast(final ConfigurationFolder podcast, final List<ConfigurationNode> configNodes, final String excludedId) {
         // Check podcast name and path are not empty
-        checkNonEmpty(podcast.getName(), "backend.podcast.name.error");
-        checkNonEmpty(podcast.getPath(), "backend.podcast.url.error");
+        checkNonEmpty(podcast.getName(), PODCAST_NAME_ERROR);
+        checkNonEmpty(podcast.getPath(), PODCAST_URL_ERROR);
 
         // Check podcast URL is correct
         if (!URL_PATTERN.matcher(podcast.getPath()).matches()) {
-            throw new BackendException("backend.podcast.url.malformed.error");
+            throw new BackendException(PODCAST_BAD_URL_ERROR);
         }
 
         // Check for duplication
-        checkDuplicatedConfigurationFolder(podcast, configNodes, excludedId, "backend.podcast.already.exist.error");
+        checkDuplicatedConfigurationFolder(podcast, configNodes, excludedId, PODCAST_DUPLICATED_ERROR);
     }
 
     /**
@@ -250,18 +252,18 @@ public final class BackendManagerImpl implements BackendManager {
             }
         }
 
-        throw new BackendException(podcast ? "backend.podcast.unknown.error" : "backend.folder.unknown.error");
+        throw new BackendException(podcast ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR);
     }
 
     /**
      * Checks string is not null or empty.
      *
      * @param toCheck      string to check
-     * @param errorMessage error message
+     * @param message error message
      */
-    private void checkNonEmpty(String toCheck, String errorMessage) {
+    private void checkNonEmpty(String toCheck, BackendErrorMessage message) {
         if (Strings.isNullOrEmpty(toCheck)) {
-            throw new BackendException(errorMessage);
+            throw new BackendException(message);
         }
     }
 
@@ -273,7 +275,7 @@ public final class BackendManagerImpl implements BackendManager {
      * @param excludedId   folder id to exclude from duplication check
      * @param errorMessage error message
      */
-    private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final String errorMessage) {
+    private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final BackendErrorMessage errorMessage) {
         for (ConfigurationNode node : configNodes) {
             if (excludedId != null && excludedId.equals(node.getId())) {
                 continue;

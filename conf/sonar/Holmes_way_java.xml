@@ -2586,7 +2586,7 @@
                 <parameter>
                     <key>exceptions</key>
                     <value>java.lang.InterruptedException, java.lang.NumberFormatException, java.text.ParseException,
-                        java.net.MalformedURLException, java.util.MissingResourceException, java.io.EOFException
+                        java.net.MalformedURLException, java.io.EOFException
                     </value>
                 </parameter>
             </parameters>

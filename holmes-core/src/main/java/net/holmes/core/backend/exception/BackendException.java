@@ -22,6 +22,8 @@ package net.holmes.core.backend.exception;
  */
 public class BackendException extends RuntimeException {
 
+    private final BackendErrorMessage backendErrorMessage;
+
     /**
      * Instantiates a new configuration exception.
      *
@@ -29,14 +31,20 @@ public class BackendException extends RuntimeException {
      */
     public BackendException(final Throwable exception) {
         super(exception);
+        this.backendErrorMessage = null;
     }
 
     /**
      * Instantiates a new configuration exception.
      *
-     * @param message the message
+     * @param backendErrorMessage the message
      */
-    public BackendException(final String message) {
-        super(message);
+    public BackendException(final BackendErrorMessage backendErrorMessage) {
+        super();
+        this.backendErrorMessage = backendErrorMessage;
+    }
+
+    public BackendErrorMessage getBackendErrorMessage() {
+        return backendErrorMessage;
     }
 }

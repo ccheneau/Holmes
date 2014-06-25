@@ -21,8 +21,11 @@ import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
+import static net.holmes.core.backend.exception.BackendErrorMessage.FOLDER_NAME_ERROR;
+import static net.holmes.core.backend.exception.BackendErrorMessage.SETTINGS_SERVER_NAME_ERROR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -34,11 +37,11 @@ public class BackendExceptionMapperTest {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("messageTest");
         backendExceptionMapper.setResourceBundle(resourceBundle);
 
-        Response response = backendExceptionMapper.toResponse(new BackendException("messageKey"));
+        Response response = backendExceptionMapper.toResponse(new BackendException(SETTINGS_SERVER_NAME_ERROR));
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
         assertEquals(response.getMediaType(), MediaType.TEXT_PLAIN_TYPE);
-        assertEquals(response.getEntity().toString(), "messageValue");
+        assertEquals(response.getEntity().toString(), "Server name is mandatory");
     }
 
     @Test
@@ -47,10 +50,26 @@ public class BackendExceptionMapperTest {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("messageTest");
         backendExceptionMapper.setResourceBundle(resourceBundle);
 
-        Response response = backendExceptionMapper.toResponse(new BackendException("badMessageKey"));
+        Response response = backendExceptionMapper.toResponse(new BackendException(FOLDER_NAME_ERROR));
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
         assertEquals(response.getMediaType(), MediaType.TEXT_PLAIN_TYPE);
-        assertEquals(response.getEntity().toString(), "badMessageKey");
+        assertEquals(response.getEntity().toString(), "Unknown error");
     }
+
+    @Test
+    public void testBackendExceptionMapperFromException() {
+        BackendExceptionMapper backendExceptionMapper = new BackendExceptionMapper();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messageTest");
+        backendExceptionMapper.setResourceBundle(resourceBundle);
+
+        IOException ex = new IOException("some message");
+
+        Response response = backendExceptionMapper.toResponse(new BackendException(ex));
+        assertNotNull(response);
+        assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        assertEquals(response.getMediaType(), MediaType.TEXT_PLAIN_TYPE);
+        assertEquals(response.getEntity().toString(), ex.getMessage());
+    }
+
 }

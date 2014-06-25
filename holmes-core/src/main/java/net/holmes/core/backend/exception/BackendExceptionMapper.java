@@ -18,6 +18,7 @@
 package net.holmes.core.backend.exception;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -28,12 +29,14 @@ import java.util.ResourceBundle;
 
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Map backend exceptions to Http response.
  */
 @Provider
 public class BackendExceptionMapper implements ExceptionMapper<BackendException> {
+    private static final Logger LOGGER = getLogger(BackendExceptionMapper.class);
 
     @Inject
     private ResourceBundle resourceBundle;
@@ -44,10 +47,15 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
     @Override
     public Response toResponse(final BackendException e) {
         String message;
-        try {
-            message = resourceBundle.getString(e.getMessage());
-        } catch (MissingResourceException ex) {
-            message = e.getMessage();
+        if (e.getBackendErrorMessage() != null) {
+            try {
+                message = resourceBundle.getString(e.getBackendErrorMessage().getMessageKey());
+            } catch (MissingResourceException ex) {
+                LOGGER.error(ex.getMessage(), ex);
+                message = "Unknown error";
+            }
+        } else {
+            message = e.getCause().getMessage();
         }
 
         return Response.status(BAD_REQUEST)
