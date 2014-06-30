@@ -1,14 +1,14 @@
 yepnope({
 	load : {
 		// lib
-		jquery : '/js/jquery-2.1.0.min.js',
+		jquery : '/js/jquery-2.1.1.min.js',
 		jqueryUI : '/js/jquery-ui-1.10.4.custom.min.js',
 		bootstrap : '/js/bootstrap.min.js',
 		jqueryI18n : '/js/jquery.i18n.properties-min-1.0.9.js',
 		underscore : '/js/underscore-min.js',
 		backbone : '/js/backbone-min.js',
 		mustache : '/js/mustache.js',
-		bootbox : '/js/bootbox-4.1.0.min.js',
+		bootbox : '/js/bootbox-4.2.0.min.js',
 		jstree : '/js/jquery.jstree.js',
 		
 		// plugins
