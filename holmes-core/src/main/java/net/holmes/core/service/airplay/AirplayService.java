@@ -33,6 +33,7 @@ import javax.jmdns.ServiceListener;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.util.concurrent.Executors;
 
 import static net.holmes.core.common.ConfigurationParameter.AIRPLAY_STREAMING_ENABLE;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -77,9 +78,7 @@ public final class AirplayService implements Service {
                 jmDNS = JmDNS.create(localAddress);
 
                 // Look up for available devices
-                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP)) {
-                    streamingManager.addDevice(buildDevice(serviceInfo));
-                }
+                lookupAsync();
 
                 // Add Listener to manage inbound and outbound devices
                 jmDNS.addServiceListener(AIRPLAY_TCP, new ServiceListener() {
@@ -120,6 +119,20 @@ public final class AirplayService implements Service {
                 LOGGER.error(e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * Asynchronous look up for available Airplay devices
+     */
+    private void lookupAsync() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP)) {
+                    streamingManager.addDevice(buildDevice(serviceInfo));
+                }
+            }
+        });
     }
 
     /**
