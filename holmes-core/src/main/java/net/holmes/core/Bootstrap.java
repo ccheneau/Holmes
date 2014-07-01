@@ -23,7 +23,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.exception.HolmesRuntimeException;
-import net.holmes.core.service.HolmesServer;
+import net.holmes.core.service.HolmesService;
 import net.holmes.core.service.Service;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -55,17 +55,17 @@ public final class Bootstrap {
         loadLogging(args.length > 0 && "debug".equals(args[0]));
 
         // Create Guice injector
-        Injector injector = Guice.createInjector(new HolmesServerModule());
+        Injector injector = Guice.createInjector(new HolmesInjector());
 
-        // Start Holmes server
-        final Service holmesServer = injector.getInstance(HolmesServer.class);
-        holmesServer.start();
+        // Start Holmes service
+        final Service holmesService = injector.getInstance(HolmesService.class);
+        holmesService.start();
 
         // Add Shutdown hook to stop Holmes server
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                holmesServer.stop();
+                holmesService.stop();
             }
         });
     }

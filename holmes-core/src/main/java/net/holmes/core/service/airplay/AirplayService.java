@@ -40,8 +40,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Airplay service
  */
-public final class AirplayServer implements Service {
-    private static final Logger LOGGER = getLogger(AirplayServer.class);
+public final class AirplayService implements Service {
+    private static final Logger LOGGER = getLogger(AirplayService.class);
     private static final String AIRPLAY_TCP = "_airplay._tcp.local.";
     private static final String AIRPLAY_FEATURES = "features";
 
@@ -52,14 +52,14 @@ public final class AirplayServer implements Service {
     private JmDNS jmDNS = null;
 
     /**
-     * Instantiates a new Airplay server.
+     * Instantiates a new Airplay service.
      *
      * @param configurationDao configuration dao
      * @param localAddress     local address
      * @param streamingManager streaming manager
      */
     @Inject
-    public AirplayServer(final ConfigurationDao configurationDao, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
+    public AirplayService(final ConfigurationDao configurationDao, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
         this.configurationDao = configurationDao;
         this.localAddress = localAddress;
         this.streamingManager = streamingManager;
@@ -71,7 +71,7 @@ public final class AirplayServer implements Service {
     @Override
     public void start() {
         if (configurationDao.getParameter(AIRPLAY_STREAMING_ENABLE)) {
-            LOGGER.info("Starting Airplay server");
+            LOGGER.info("Starting Airplay service");
             try {
                 // Create JmDNS
                 jmDNS = JmDNS.create(localAddress);
@@ -98,7 +98,7 @@ public final class AirplayServer implements Service {
                         streamingManager.addDevice(buildDevice(event.getInfo()));
                     }
                 });
-                LOGGER.info("Airplay server started");
+                LOGGER.info("Airplay service started");
 
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
@@ -112,10 +112,10 @@ public final class AirplayServer implements Service {
     @Override
     public void stop() {
         if (jmDNS != null) {
-            LOGGER.info("Stopping Airplay server");
+            LOGGER.info("Stopping Airplay service");
             try {
                 jmDNS.close();
-                LOGGER.info("Airplay server stopped");
+                LOGGER.info("Airplay service stopped");
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }

@@ -35,7 +35,7 @@ public class TestHolmesServerModule {
 
     @Test
     public void testGetLocalIPV4() throws IOException {
-        assertNotNull(HolmesServerModule.getLocalAddress());
+        assertNotNull(HolmesInjector.getLocalAddress());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TestHolmesServerModule {
         File uiPath = new File(HOLMES_HOME.getValue(), "ui");
         if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
 
-        HolmesServerModule module = new HolmesServerModule();
+        HolmesInjector module = new HolmesInjector();
         assertNotNull(module);
         assertNotNull(Guice.createInjector(module));
     }

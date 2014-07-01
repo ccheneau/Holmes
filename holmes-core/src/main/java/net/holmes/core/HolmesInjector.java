@@ -58,10 +58,10 @@ import net.holmes.core.business.version.release.ReleaseDaoImpl;
 import net.holmes.core.common.EventBusListener;
 import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.Service;
-import net.holmes.core.service.airplay.AirplayServer;
+import net.holmes.core.service.airplay.AirplayService;
 import net.holmes.core.service.http.HttpFileRequestDecoder;
 import net.holmes.core.service.http.HttpFileRequestHandler;
-import net.holmes.core.service.http.HttpServer;
+import net.holmes.core.service.http.HttpService;
 import net.holmes.core.service.http.route.HttpRouteManager;
 import net.holmes.core.service.http.route.HttpRouteManagerProvider;
 import net.holmes.core.service.scheduled.CacheCleanerService;
@@ -69,9 +69,8 @@ import net.holmes.core.service.scheduled.HolmesSchedulerService;
 import net.holmes.core.service.scheduled.IcecastDownloadService;
 import net.holmes.core.service.scheduled.ReleaseCheckService;
 import net.holmes.core.service.systray.SystrayService;
-import net.holmes.core.service.upnp.UpnpServer;
+import net.holmes.core.service.upnp.UpnpService;
 import net.holmes.core.service.upnp.UpnpServiceProvider;
-import org.fourthline.cling.UpnpService;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
@@ -90,9 +89,9 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
 /**
- * Holmes Guice module.
+ * Holmes Guice injector.
  */
-public final class HolmesServerModule extends AbstractModule {
+public final class HolmesInjector extends AbstractModule {
     private final EventBus eventBus;
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
@@ -101,9 +100,9 @@ public final class HolmesServerModule extends AbstractModule {
     private final SocketFactory socketFactory;
 
     /**
-     * Default constructor.
+     * Instantiates Holmes injector.
      */
-    public HolmesServerModule() {
+    public HolmesInjector() {
         eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
         resourceBundle = ResourceBundle.getBundle("message");
         localHolmesDataDir = getLocalHolmesDataDir();
@@ -152,9 +151,9 @@ public final class HolmesServerModule extends AbstractModule {
         bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
 
         // Bind services
-        bind(Service.class).annotatedWith(named("http")).to(HttpServer.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("upnp")).to(UpnpServer.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("airplay")).to(AirplayServer.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("http")).to(HttpService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("airplay")).to(AirplayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
 
@@ -167,7 +166,7 @@ public final class HolmesServerModule extends AbstractModule {
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
 
         // Bind Upnp service
-        bind(UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
+        bind(org.fourthline.cling.UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
 
         // Bind Http handlers
         bind(HttpFileRequestDecoder.class);

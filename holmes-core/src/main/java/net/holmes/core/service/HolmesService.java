@@ -34,38 +34,38 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Holmes service main class.
  */
-public final class HolmesServer implements Service {
-    private static final Logger LOGGER = getLogger(HolmesServer.class);
+public final class HolmesService implements Service {
+    private static final Logger LOGGER = getLogger(HolmesService.class);
     private static final String LOCK_FILE_NAME = "holmes.lock";
 
-    private final Service httpServer;
-    private final Service upnpServer;
-    private final Service airplayServer;
-    private final Service systray;
-    private final Service scheduler;
+    private final Service httpService;
+    private final Service upnpService;
+    private final Service airplayService;
+    private final Service systrayService;
+    private final Service schedulerService;
     private final String localHolmesDataDir;
 
     private RandomAccessFile randomAccessFile = null;
     private FileLock fileLock = null;
 
     /**
-     * Instantiates a new holmes server.
+     * Instantiates a new holmes service.
      *
-     * @param httpServer         Http server
-     * @param upnpServer         UPnP server
-     * @param systray            Systray
-     * @param scheduler          Scheduler
+     * @param httpService         Http service
+     * @param upnpService         UPnP service
+     * @param systrayService            Systray service
+     * @param schedulerService          Scheduler service
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public HolmesServer(@Named("http") final Service httpServer, @Named("upnp") final Service upnpServer, @Named("airplay") final Service airplayServer,
-                        @Named("systray") final Service systray, @Named("scheduler") final Service scheduler,
-                        @Named("localHolmesDataDir") String localHolmesDataDir) {
-        this.httpServer = httpServer;
-        this.upnpServer = upnpServer;
-        this.airplayServer = airplayServer;
-        this.systray = systray;
-        this.scheduler = scheduler;
+    public HolmesService(@Named("http") final Service httpService, @Named("upnp") final Service upnpService, @Named("airplay") final Service airplayService,
+                         @Named("systray") final Service systrayService, @Named("scheduler") final Service schedulerService,
+                         @Named("localHolmesDataDir") String localHolmesDataDir) {
+        this.httpService = httpService;
+        this.upnpService = upnpService;
+        this.airplayService = airplayService;
+        this.systrayService = systrayService;
+        this.schedulerService = schedulerService;
         this.localHolmesDataDir = localHolmesDataDir;
     }
 
@@ -75,16 +75,16 @@ public final class HolmesServer implements Service {
     @Override
     public void start() {
         if (lockInstance()) {
-            LOGGER.info("Starting Holmes server");
+            LOGGER.info("Starting Holmes service");
 
-            // Start Holmes server
-            httpServer.start();
-            upnpServer.start();
-            airplayServer.start();
-            systray.start();
-            scheduler.start();
+            // Start Holmes services
+            httpService.start();
+            upnpService.start();
+            airplayService.start();
+            systrayService.start();
+            schedulerService.start();
 
-            LOGGER.info("Holmes server started");
+            LOGGER.info("Holmes service started");
         }
     }
 
@@ -93,18 +93,19 @@ public final class HolmesServer implements Service {
      */
     @Override
     public void stop() {
-        LOGGER.info("Stopping Holmes server");
+        LOGGER.info("Stopping Holmes service");
+
         // Remove lock
         unlockInstance();
 
-        // Stop Holmes server
-        scheduler.stop();
-        systray.stop();
-        airplayServer.stop();
-        upnpServer.stop();
-        httpServer.stop();
+        // Stop Holmes service
+        schedulerService.stop();
+        systrayService.stop();
+        airplayService.stop();
+        upnpService.stop();
+        httpService.stop();
 
-        LOGGER.info("Holmes server stopped");
+        LOGGER.info("Holmes service stopped");
     }
 
     /**
@@ -129,7 +130,7 @@ public final class HolmesServer implements Service {
                 randomAccessFile = new RandomAccessFile(new File(localHolmesDataDir, LOCK_FILE_NAME), "rw");
                 fileLock = randomAccessFile.getChannel().tryLock();
                 if (fileLock == null) {
-                    throw new HolmesRuntimeException("Holmes server is already running");
+                    throw new HolmesRuntimeException("Holmes service is already running");
                 }
                 return true;
             }

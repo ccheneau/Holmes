@@ -53,8 +53,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * HTTP service main class.
  */
-public final class HttpServer implements Service {
-    private static final Logger LOGGER = getLogger(HttpServer.class);
+public final class HttpService implements Service {
+    private static final Logger LOGGER = getLogger(HttpService.class);
     private static final int MAX_CONTENT_LENGTH = 65536;
     private static final int MAX_INITIAL_LINE_LENGTH = 4096;
     private static final int MAX_HEADER_SIZE = 8192;
@@ -69,13 +69,13 @@ public final class HttpServer implements Service {
     private final ResteasyDeployment deployment;
 
     /**
-     * Instantiates a new http server.
+     * Instantiates a new http service.
      *
      * @param injector         injector
      * @param configurationDao configuration dao
      */
     @Inject
-    public HttpServer(final Injector injector, final ConfigurationDao configurationDao) {
+    public HttpService(final Injector injector, final ConfigurationDao configurationDao) {
         this.injector = injector;
         this.configurationDao = configurationDao;
         this.bossGroup = new NioEventLoopGroup();
@@ -88,7 +88,7 @@ public final class HttpServer implements Service {
      */
     @Override
     public void start() {
-        LOGGER.info("Starting HTTP server");
+        LOGGER.info("Starting HTTP service");
 
         // Start RestEasy deployment
         deployment.start();
@@ -96,7 +96,7 @@ public final class HttpServer implements Service {
         // Create a RestEasy request dispatcher
         final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher) deployment.getDispatcher(), deployment.getProviderFactory(), null);
 
-        // Configure the server.
+        // Configure the service.
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -128,11 +128,11 @@ public final class HttpServer implements Service {
         ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
         processor.processInjector(injector);
 
-        // Bind and start server to accept incoming connections.
+        // Bind and start service to accept incoming connections.
         InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
         bootstrap.bind(bindAddress).syncUninterruptibly();
 
-        LOGGER.info("HTTP server bound on {}", bindAddress);
+        LOGGER.info("HTTP service bound on {}", bindAddress);
     }
 
     /**
@@ -140,8 +140,8 @@ public final class HttpServer implements Service {
      */
     @Override
     public void stop() {
-        // Stop HTTP server
-        LOGGER.info("Stopping HTTP server");
+        // Stop HTTP service
+        LOGGER.info("Stopping HTTP service");
 
         // Stop Netty event executors
         bossGroup.shutdownGracefully();
@@ -150,6 +150,6 @@ public final class HttpServer implements Service {
         // Stop resteasy
         deployment.stop();
 
-        LOGGER.info("HTTP server stopped");
+        LOGGER.info("HTTP service stopped");
     }
 }

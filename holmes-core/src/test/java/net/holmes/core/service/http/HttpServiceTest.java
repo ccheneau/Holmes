@@ -28,7 +28,7 @@ import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_WORKER_THREADS;
 import static org.easymock.EasyMock.*;
 
-public class HttpServerTest {
+public class HttpServiceTest {
 
     @Test
     public void testHttpServer() {
@@ -41,9 +41,9 @@ public class HttpServerTest {
 
         replay(injector, configurationDao);
         try {
-            HttpServer httpServer = new HttpServer(injector, configurationDao);
-            httpServer.start();
-            httpServer.stop();
+            HttpService httpService = new HttpService(injector, configurationDao);
+            httpService.start();
+            httpService.stop();
         } finally {
             verify(injector, configurationDao);
         }

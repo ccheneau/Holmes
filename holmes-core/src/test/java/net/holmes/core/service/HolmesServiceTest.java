@@ -22,13 +22,13 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 
-public class HolmesServerTest {
+public class HolmesServiceTest {
 
     @Test
     public void testHolmesServer() {
         Service service = createMock(Service.class);
 
-        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesService holmesService = new HolmesService(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
 
         service.start();
         expectLastCall().times(5);
@@ -36,8 +36,8 @@ public class HolmesServerTest {
         expectLastCall().times(5);
 
         replay(service);
-        holmesServer.start();
-        holmesServer.stop();
+        holmesService.start();
+        holmesService.stop();
         verify(service);
     }
 
@@ -45,8 +45,8 @@ public class HolmesServerTest {
     public void testHolmesServerStartTwoServers() {
         Service service = createMock(Service.class);
 
-        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
-        HolmesServer holmesServer2 = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesService holmesService = new HolmesService(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        HolmesService holmesService2 = new HolmesService(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
 
         service.start();
         expectLastCall().times(5);
@@ -55,10 +55,10 @@ public class HolmesServerTest {
 
         replay(service);
         try {
-            holmesServer.start();
-            holmesServer2.start();
+            holmesService.start();
+            holmesService2.start();
         } finally {
-            holmesServer.stop();
+            holmesService.stop();
             verify(service);
         }
     }
@@ -72,8 +72,8 @@ public class HolmesServerTest {
 
         replay(service, deadEvent);
 
-        HolmesServer holmesServer = new HolmesServer(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
-        holmesServer.handleDeadEvent(deadEvent);
+        HolmesService holmesService = new HolmesService(service, service, service, service, service, System.getProperty("java.io.tmpdir"));
+        holmesService.handleDeadEvent(deadEvent);
 
         verify(service, deadEvent);
     }

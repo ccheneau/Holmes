@@ -23,7 +23,6 @@ import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.service.Service;
-import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.LocalDevice;
@@ -51,8 +50,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * UPnP service.
  */
-public final class UpnpServer implements Service {
-    private static final Logger LOGGER = getLogger(UpnpServer.class);
+public final class UpnpService implements Service {
+    private static final Logger LOGGER = getLogger(UpnpService.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
 
@@ -60,17 +59,17 @@ public final class UpnpServer implements Service {
     private final ConfigurationDao configurationDao;
     private final StreamingManager streamingManager;
 
-    private UpnpService upnpService = null;
+    private org.fourthline.cling.UpnpService upnpService = null;
 
     /**
-     * Instantiates a new UPnP server.
+     * Instantiates a new UPnP service.
      *
      * @param injector         Guice injector
      * @param configurationDao configuration dao
      * @param streamingManager streaming manager
      */
     @Inject
-    public UpnpServer(final Injector injector, final ConfigurationDao configurationDao, final StreamingManager streamingManager) {
+    public UpnpService(final Injector injector, final ConfigurationDao configurationDao, final StreamingManager streamingManager) {
         this.injector = injector;
         this.configurationDao = configurationDao;
         this.streamingManager = streamingManager;
@@ -82,8 +81,8 @@ public final class UpnpServer implements Service {
     @Override
     public void start() {
         if (configurationDao.getParameter(UPNP_SERVER_ENABLE)) {
-            LOGGER.info("Starting UPnP server");
-            upnpService = injector.getInstance(UpnpService.class);
+            LOGGER.info("Starting UPnP service");
+            upnpService = injector.getInstance(org.fourthline.cling.UpnpService.class);
 
             // Add UPnP registry listener
             upnpService.getRegistry().addListener(new UpnpRegistryListener());
@@ -91,9 +90,9 @@ public final class UpnpServer implements Service {
             // Search for UPnpP devices
             upnpService.getControlPoint().search();
 
-            LOGGER.info("UPnP server started");
+            LOGGER.info("UPnP service started");
         } else {
-            LOGGER.info("UPnP server is disabled");
+            LOGGER.info("UPnP service is disabled");
         }
     }
 
@@ -103,9 +102,9 @@ public final class UpnpServer implements Service {
     @Override
     public void stop() {
         if (upnpService != null) {
-            LOGGER.info("Stopping UPnP server");
+            LOGGER.info("Stopping UPnP service");
             upnpService.shutdown();
-            LOGGER.info("UPnP server stopped");
+            LOGGER.info("UPnP service stopped");
         }
     }
 
