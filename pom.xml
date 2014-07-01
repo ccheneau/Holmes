@@ -49,7 +49,7 @@
         <jmdns.version>3.4.1</jmdns.version>
         <junit.version>4.11</junit.version>
         <logback.version>1.1.2</logback.version>
-        <netty.version>4.0.20.Final</netty.version>
+        <netty.version>4.0.21.Final</netty.version>
         <resteasy.version>3.0.8.Final</resteasy.version>
         <rome.version>1.0</rome.version>
         <seamless.version>1.0-alpha3</seamless.version>
