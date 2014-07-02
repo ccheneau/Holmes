@@ -79,7 +79,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
                     fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType(), false);
                 }
             } else {
-                // Request for UI static file is valid if requested file name has a correct mime type
+                // Request for UI static file is valid if requested file name has a valid mime type
                 String fileName = getFileName(decoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(fileName);
                 if (mimeType != null) {
@@ -93,8 +93,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             out.add(fileRequest);
         } else {
             // Forward request to pipeline
-            request.retain();
-            out.add(request);
+            out.add(request.retain());
         }
     }
 
@@ -105,18 +104,12 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
      * @return file name
      */
     private String getFileName(final QueryStringDecoder decoder) {
-        String fileName = decoder.path().trim();
-        if (fileName.endsWith("/")) {
-            // Remove trailing '/'
-            fileName = fileName.substring(0, fileName.length() - 1);
-        }
+        // Get path and remove trailing slashes
+        String fileName = decoder.path().replaceAll("/+$", "");
 
         // Check if fileName is a default Holmes web application
         HttpRoute route = routeManager.getHttpRoute(fileName);
-        if (route != null) {
-            fileName += route.getDefaultFile();
-        }
 
-        return fileName;
+        return route != null ? fileName + route.getDefaultFile() : fileName;
     }
 }
