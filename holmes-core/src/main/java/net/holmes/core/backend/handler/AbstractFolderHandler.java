@@ -37,7 +37,7 @@ public abstract class AbstractFolderHandler {
      * @param backendManager backend manager
      * @param rootNode       root node
      */
-    public AbstractFolderHandler(BackendManager backendManager, RootNode rootNode) {
+    protected AbstractFolderHandler(BackendManager backendManager, RootNode rootNode) {
         this.backendManager = backendManager;
         this.rootNode = rootNode;
     }

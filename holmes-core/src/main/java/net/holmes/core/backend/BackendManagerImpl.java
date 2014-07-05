@@ -68,7 +68,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-        Collection<ConfigurationFolder> folders = Lists.newArrayList();
+        Collection<ConfigurationFolder> folders = Lists.newArrayListWithCapacity(configNodes.size());
         for (ConfigurationNode node : configNodes) {
             folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
         }
@@ -258,7 +258,7 @@ public final class BackendManagerImpl implements BackendManager {
     /**
      * Checks string is not null or empty.
      *
-     * @param toCheck      string to check
+     * @param toCheck string to check
      * @param message error message
      */
     private void checkNonEmpty(String toCheck, BackendErrorMessage message) {

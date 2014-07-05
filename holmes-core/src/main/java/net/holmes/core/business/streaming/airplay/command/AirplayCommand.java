@@ -57,26 +57,6 @@ public abstract class AirplayCommand {
     }
 
     /**
-     * Add Url parameter.
-     *
-     * @param parameter Url parameter
-     * @param value     Url parameter value
-     */
-    public void addUrlParameter(final UrlParameter parameter, final String value) {
-        urlParameters.put(parameter, value);
-    }
-
-    /**
-     * Add post parameter.
-     *
-     * @param parameter post parameter
-     * @param value     post parameter value
-     */
-    public void addPostParameter(final PostParameter parameter, final String value) {
-        this.postParameters.put(parameter, value);
-    }
-
-    /**
      * Get Http request.
      *
      * @return Http request
@@ -118,6 +98,26 @@ public abstract class AirplayCommand {
      * @param contentParameters content parameters map
      */
     public abstract void success(Map<String, String> contentParameters);
+
+    /**
+     * Add Url parameter.
+     *
+     * @param parameter Url parameter
+     * @param value     Url parameter value
+     */
+    protected void addUrlParameter(final UrlParameter parameter, final String value) {
+        urlParameters.put(parameter, value);
+    }
+
+    /**
+     * Add post parameter.
+     *
+     * @param parameter post parameter
+     * @param value     post parameter value
+     */
+    protected void addPostParameter(final PostParameter parameter, final String value) {
+        this.postParameters.put(parameter, value);
+    }
 
     /**
      * Get request Url.
@@ -162,7 +162,6 @@ public abstract class AirplayCommand {
         PLAY("play", POST),
         PLAY_STATUS("scrub", GET),
         RATE("rate", POST),
-        SEEK("scrub", POST),
         STOP("stop", POST);
 
         private final String value;
