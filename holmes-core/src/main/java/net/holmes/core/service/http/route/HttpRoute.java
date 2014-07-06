@@ -18,7 +18,7 @@
 package net.holmes.core.service.http.route;
 
 /**
- * Http route for Holmes webb applications
+ * Http route for Holmes web applications
  */
 public class HttpRoute {
     private final String path;
