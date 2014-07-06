@@ -37,14 +37,22 @@ public final class Duration implements Serializable {
      * The Constant SECOND.
      */
     private static final long SECOND = 1000L;
+
     /**
      * The Constant MINUTE.
      */
     private static final long MINUTE = SECOND * 60L;
+
     /**
      * The Constant HOUR.
      */
     private static final long HOUR = MINUTE * 60L;
+
+    /**
+     * The milliseconds.
+     */
+    private final long milliseconds;
+
     /**
      * The Constant NUM_FORMAT.
      */
@@ -56,11 +64,6 @@ public final class Duration implements Serializable {
         NUM_FORMAT.setMinimumIntegerDigits(2);
         NUM_FORMAT.setGroupingUsed(false);
     }
-
-    /**
-     * The milliseconds.
-     */
-    private long milliseconds;
 
     /**
      * Creates a new instance of Duration specifying a length in milliseconds.
