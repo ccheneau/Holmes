@@ -20,19 +20,19 @@ package net.holmes.core;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.HolmesService;
 import net.holmes.core.service.Service;
-import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
+import static com.google.inject.Guice.createInjector;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Paths.get;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
+import static org.slf4j.LoggerFactory.getILoggerFactory;
 
 /**
  * Bootstrap for Holmes - main class.
@@ -55,13 +55,13 @@ public final class Bootstrap {
         loadLogging(args.length > 0 && "debug".equals(args[0]));
 
         // Create Guice injector
-        Injector injector = Guice.createInjector(new HolmesInjector());
+        Injector injector = createInjector(new HolmesInjector());
 
         // Start Holmes service
         final Service holmesService = injector.getInstance(HolmesService.class);
         holmesService.start();
 
-        // Add Shutdown hook to stop Holmes server
+        // Add Shutdown hook to stop Holmes service
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -73,15 +73,15 @@ public final class Bootstrap {
     /**
      * Load logging configuration.
      *
-     * @param debug activates debug mode
+     * @param debug enables debug mode
      */
     private static void loadLogging(final boolean debug) {
-        // Define logback configuration file name
-        Path logbackFilePath = Paths.get(HOLMES_HOME.getValue(), "conf", debug ? "logback-debug.xml" : "logback.xml");
-        if (Files.exists(logbackFilePath)) {
+        // Get logback configuration file path
+        Path logbackFilePath = get(HOLMES_HOME.getValue(), "conf", debug ? "logback-debug.xml" : "logback.xml");
+        if (exists(logbackFilePath)) {
             try {
                 // Load logback configuration
-                LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+                LoggerContext context = (LoggerContext) getILoggerFactory();
                 context.reset();
                 JoranConfigurator configurator = new JoranConfigurator();
                 configurator.setContext(context);
