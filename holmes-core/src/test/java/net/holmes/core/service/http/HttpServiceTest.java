@@ -24,8 +24,7 @@ import com.google.inject.Key;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import org.junit.Test;
 
-import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
-import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_WORKER_THREADS;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 
 public class HttpServiceTest {
@@ -36,6 +35,7 @@ public class HttpServiceTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
         expect(configurationDao.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
+        expect(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS)).andReturn(0).atLeastOnce();
         expect(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
         expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
 

@@ -56,9 +56,13 @@ public abstract class ConfigurationParameter<T> {
      */
     public static final ConfigurationIntParameter HTTP_SERVER_PORT = new ConfigurationIntParameter("http_server_port", 8085);
     /**
-     * Duration for Http caching header (in seconds)
+     * Duration for Http cache header (in seconds)
      */
     public static final ConfigurationIntParameter HTTP_SERVER_CACHE_SECOND = new ConfigurationIntParameter("http_server_cache_second", 60);
+    /**
+     * Number of threads used by Netty NIO boss event loop group (O means that Netty uses a default value)
+     */
+    public static final ConfigurationIntParameter HTTP_SERVER_BOSS_THREADS = new ConfigurationIntParameter("http_server_boss_threads", 0);
     /**
      * Number of threads used by Netty NIO worker event loop group (O means that Netty uses a default value)
      */
@@ -111,6 +115,10 @@ public abstract class ConfigurationParameter<T> {
      * Enable system tray icon
      */
     public static final ConfigurationBooleanParameter SYSTRAY_ENABLE = new ConfigurationBooleanParameter("enable_systray", true);
+    /**
+     * Whether to show icons on system tray sub menu
+     */
+    public static final ConfigurationBooleanParameter SYSTRAY_ICONS_IN_MENU = new ConfigurationBooleanParameter("icons_in_systray_menu", true);
 
     /**
      * UPnp parameters
@@ -124,10 +132,6 @@ public abstract class ConfigurationParameter<T> {
      */
     public static final ConfigurationStringParameter UPNP_SERVER_NAME = new ConfigurationStringParameter("upnp_server_name", "Holmes media server");
     /**
-     * Whether to show icons on system tray sub menu
-     */
-    public static final ConfigurationBooleanParameter SYSTRAY_ICONS_IN_MENU = new ConfigurationBooleanParameter("icons_in_systray_menu", true);
-    /**
      * Whether to add subtitle files (srt..) to Upnp server
      */
     public static final ConfigurationBooleanParameter UPNP_ADD_SUBTITLE = new ConfigurationBooleanParameter("upnp_add_subtitle", true);
@@ -136,10 +140,12 @@ public abstract class ConfigurationParameter<T> {
      */
     public static final ConfigurationIntParameter UPNP_SERVICE_PORT = new ConfigurationIntParameter("upnp_service_port", 5002);
 
-    public static final ImmutableList<? extends ConfigurationParameter> PARAMETERS = ImmutableList.of(AIRPLAY_STREAMING_ENABLE,
+    public static final ImmutableList<? extends ConfigurationParameter> PARAMETERS = ImmutableList.of(
+            AIRPLAY_STREAMING_ENABLE,
             CACHE_CLEAN_DELAY_MINUTES,
             HTTP_SERVER_PORT,
             HTTP_SERVER_CACHE_SECOND,
+            HTTP_SERVER_BOSS_THREADS,
             HTTP_SERVER_WORKER_THREADS,
             ICECAST_ENABLE,
             ICECAST_GENRE_LIST,
