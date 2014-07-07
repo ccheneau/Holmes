@@ -18,9 +18,7 @@
 package net.holmes.core;
 
 import com.google.inject.Guice;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +27,6 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static org.junit.Assert.assertNotNull;
 
 public class TestHolmesServerModule {
-
-    @Rule
-    public TestName testName = new TestName();
 
     @Test
     public void testGetLocalIPV4() throws IOException {
