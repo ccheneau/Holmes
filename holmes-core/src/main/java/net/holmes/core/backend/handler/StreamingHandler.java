@@ -79,8 +79,9 @@ public class StreamingHandler {
     @Path("/devices")
     @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
-        List<PlaybackDevice> playbackDevices = Lists.newArrayList();
-        for (Device device : streamingManager.getDevices()) {
+        Collection<Device> devices = streamingManager.getDevices();
+        List<PlaybackDevice> playbackDevices = Lists.newArrayListWithCapacity(devices.size());
+        for (Device device : devices) {
             playbackDevices.add(buildPlaybackDevice(device));
         }
 

@@ -146,7 +146,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
                 nodes = this.rootNode.getVideoFolders();
                 break;
             default:
-                nodes = Lists.newArrayList();
+                nodes = Lists.newArrayListWithCapacity(0);
                 break;
         }
         return nodes;
@@ -184,16 +184,16 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
          */
         public void checkDefaultValues() {
             if (this.videoFolders == null) {
-                this.videoFolders = Lists.newArrayList();
+                this.videoFolders = Lists.newArrayListWithCapacity(0);
             }
             if (this.audioFolders == null) {
-                this.audioFolders = Lists.newArrayList();
+                this.audioFolders = Lists.newArrayListWithCapacity(0);
             }
             if (this.pictureFolders == null) {
-                this.pictureFolders = Lists.newArrayList();
+                this.pictureFolders = Lists.newArrayListWithCapacity(0);
             }
             if (this.podcasts == null) {
-                this.podcasts = Lists.newArrayList();
+                this.podcasts = Lists.newArrayListWithCapacity(0);
             }
             if (this.parameters == null) {
                 this.parameters = new Properties();
@@ -206,7 +206,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
         @SuppressWarnings("unchecked")
         public void checkParameters() {
             // Check new parameters
-            List<String> availableParams = Lists.newArrayList();
+            List<String> availableParams = Lists.newArrayListWithCapacity(this.parameters.size());
             for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
                 availableParams.add(param.getName());
                 // If a parameter is not present in configuration, add parameter with default value

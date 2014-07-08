@@ -160,10 +160,12 @@ public class MediaDaoImpl implements MediaDao {
      */
     @Override
     public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
-        List<AbstractNode> nodes = Lists.newArrayList();
+        List<AbstractNode> nodes;
         if (rootNode == ICECAST) {
             // Add Icecast genres
-            for (IcecastGenre genre : icecastDao.getGenres()) {
+            List<IcecastGenre> genres = icecastDao.getGenres();
+            nodes = Lists.newArrayListWithCapacity(genres.size());
+            for (IcecastGenre genre : genres) {
                 // Upper case genre's first letter
                 String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
                 // Add Icecast genre to media index
@@ -173,7 +175,9 @@ public class MediaDaoImpl implements MediaDao {
             }
         } else {
             // Add nodes defined in configuration
-            for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
+            List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
+            nodes = Lists.newArrayListWithCapacity(configNodes.size());
+            for (ConfigurationNode configNode : configNodes) {
                 // Add node to mediaIndex
                 mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 // Add child node
@@ -229,16 +233,17 @@ public class MediaDaoImpl implements MediaDao {
      * @return folder child nodes matching media type
      */
     private List<AbstractNode> getFolderChildNodes(final String parentId, final String folderPath, final MediaType mediaType) {
-        List<AbstractNode> nodes = Lists.newArrayList();
-        for (File file : listChildren(folderPath, true)) {
+        List<File> children = listChildren(folderPath, true);
+        List<AbstractNode> nodes = Lists.newArrayListWithCapacity(children.size());
+        for (File child : children) {
             // Add node to mediaIndex
-            if (file.isDirectory()) {
+            if (child.isDirectory()) {
                 // Add folder node
-                String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), null, file.getAbsolutePath(), null, true, false));
-                nodes.add(new FolderNode(nodeId, parentId, file.getName(), file));
+                String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), null, child.getAbsolutePath(), null, true, false));
+                nodes.add(new FolderNode(nodeId, parentId, child.getName(), child));
             } else {
                 // Add content node
-                addContentNode(nodes, parentId, file, mediaType);
+                addContentNode(nodes, parentId, child, mediaType);
             }
         }
         return nodes;
@@ -268,12 +273,13 @@ public class MediaDaoImpl implements MediaDao {
      * @return Icecast entries
      */
     private Collection<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
-        Collection<AbstractNode> result = Lists.newArrayList();
-        for (IcecastEntry entry : icecastDao.getEntriesByGenre(genre)) {
+        Collection<IcecastEntry> icecastEntries = icecastDao.getEntriesByGenre(genre);
+        Collection<AbstractNode> result = Lists.newArrayListWithCapacity(icecastEntries.size());
+        for (IcecastEntry icecastEntry : icecastEntries) {
             // Add entry to media index
-            String nodeId = mediaIndexDao.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), entry.getType(), entry.getUrl(), entry.getName(), false, false));
+            String nodeId = mediaIndexDao.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), icecastEntry.getType(), icecastEntry.getUrl(), icecastEntry.getName(), false, false));
             // Add Raw Url to result
-            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, entry.getName(), MimeType.valueOf(entry.getType()), entry.getUrl(), null));
+            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, icecastEntry.getName(), MimeType.valueOf(icecastEntry.getType()), icecastEntry.getUrl(), null));
         }
         return result;
     }

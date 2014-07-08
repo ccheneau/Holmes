@@ -126,8 +126,7 @@ public final class IcecastDaoImpl implements IcecastDao {
             if (directory != null && directory.getEntries() != null) {
                 return Collections2.filter(directory.getEntries(), new IcecastEntryGenreFilter(genre));
             }
-
-            return Lists.newArrayList();
+            return Lists.newArrayListWithCapacity(0);
         }
     }
 
@@ -136,7 +135,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      */
     @Override
     public List<IcecastGenre> getGenres() {
-        return isLoaded() ? genres : Lists.<IcecastGenre>newArrayList();
+        return isLoaded() ? genres : Lists.<IcecastGenre>newArrayListWithCapacity(0);
     }
 
     /**
