@@ -71,6 +71,42 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveConfig() throws IOException {
+        try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
+            // Save configuration to XML
+            xstream.toXML(rootNode, out);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ConfigurationNode> getNodes(final RootNode rootNode) {
+        return this.rootNode.getConfigurationNodes(rootNode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> T getParameter(final ConfigurationParameter<T> parameter) {
+        String value = this.rootNode.getParameter(parameter.getName());
+        return value != null ? parameter.parse(value) : parameter.getDefaultValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> void setParameter(final ConfigurationParameter<T> parameter, T value) {
+        this.rootNode.setParameter(parameter.getName(), parameter.format(value));
+    }
+
+    /**
      * Get Holmes configuration file path.
      *
      * @return configuration file path
@@ -113,60 +149,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
         if (!configLoaded) {
             saveConfig();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void saveConfig() throws IOException {
-        try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
-            // Save configuration to XML
-            xstream.toXML(rootNode, out);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ConfigurationNode> getNodes(final RootNode rootNode) {
-        List<ConfigurationNode> nodes;
-        switch (rootNode) {
-            case AUDIO:
-                nodes = this.rootNode.getAudioFolders();
-                break;
-            case PICTURE:
-                nodes = this.rootNode.getPictureFolders();
-                break;
-            case PODCAST:
-                nodes = this.rootNode.getPodcasts();
-                break;
-            case VIDEO:
-                nodes = this.rootNode.getVideoFolders();
-                break;
-            default:
-                nodes = Lists.newArrayListWithCapacity(0);
-                break;
-        }
-        return nodes;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> T getParameter(final ConfigurationParameter<T> parameter) {
-        String value = this.rootNode.getParameter(parameter.getName());
-        return value != null ? parameter.parse(value) : parameter.getDefaultValue();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> void setParameter(final ConfigurationParameter<T> parameter, T value) {
-        this.rootNode.setParameter(parameter.getName(), parameter.format(value));
     }
 
     /**
@@ -230,39 +212,31 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
         }
 
         /**
-         * Gets the video folders.
+         * Gets configuration nodes.
          *
-         * @return the video folders
+         * @param rootNode root node
+         * @return configuration nodes corresponding to root node
          */
-        public List<ConfigurationNode> getVideoFolders() {
-            return this.videoFolders;
-        }
-
-        /**
-         * Gets the podcasts.
-         *
-         * @return the podcasts
-         */
-        public List<ConfigurationNode> getPodcasts() {
-            return this.podcasts;
-        }
-
-        /**
-         * Gets the audio folders.
-         *
-         * @return the audio folders
-         */
-        public List<ConfigurationNode> getAudioFolders() {
-            return this.audioFolders;
-        }
-
-        /**
-         * Gets the picture folders.
-         *
-         * @return the picture folders
-         */
-        public List<ConfigurationNode> getPictureFolders() {
-            return this.pictureFolders;
+        public List<ConfigurationNode> getConfigurationNodes(final RootNode rootNode) {
+            List<ConfigurationNode> configurationNodes;
+            switch (rootNode) {
+                case AUDIO:
+                    configurationNodes = this.audioFolders;
+                    break;
+                case PICTURE:
+                    configurationNodes = this.pictureFolders;
+                    break;
+                case PODCAST:
+                    configurationNodes = this.podcasts;
+                    break;
+                case VIDEO:
+                    configurationNodes = this.videoFolders;
+                    break;
+                default:
+                    configurationNodes = Lists.newArrayListWithCapacity(0);
+                    break;
+            }
+            return configurationNodes;
         }
 
         /**
