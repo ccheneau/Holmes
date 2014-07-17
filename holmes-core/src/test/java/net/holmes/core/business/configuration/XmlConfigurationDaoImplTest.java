@@ -29,106 +29,90 @@ import static org.junit.Assert.*;
 public class XmlConfigurationDaoImplTest {
 
     @Test
-    public void testXmlConfiguration() {
+    public void testXmlConfiguration() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getNodes(RootNode.AUDIO));
-            assertNotNull(configuration.getNodes(RootNode.VIDEO));
-            assertNotNull(configuration.getNodes(RootNode.PICTURE));
-            assertNotNull(configuration.getNodes(RootNode.PODCAST));
-            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertNotNull(configuration.getNodes(RootNode.AUDIO));
+        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(RootNode.PICTURE));
+        assertNotNull(configuration.getNodes(RootNode.PODCAST));
+        assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
     @Test
-    public void testXmlConfigurationEmpty() {
+    public void testXmlConfigurationEmpty() throws IOException {
         String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getNodes(RootNode.AUDIO));
-            assertNotNull(configuration.getNodes(RootNode.VIDEO));
-            assertNotNull(configuration.getNodes(RootNode.PICTURE));
-            assertNotNull(configuration.getNodes(RootNode.PODCAST));
-            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertNotNull(configuration.getNodes(RootNode.AUDIO));
+        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(RootNode.PICTURE));
+        assertNotNull(configuration.getNodes(RootNode.PODCAST));
+        assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
     @Test
-    public void testXmlConfigurationNull() {
+    public void testXmlConfigurationNull() throws IOException {
         String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getNodes(RootNode.AUDIO));
-            assertNotNull(configuration.getNodes(RootNode.VIDEO));
-            assertNotNull(configuration.getNodes(RootNode.PICTURE));
-            assertNotNull(configuration.getNodes(RootNode.PODCAST));
-            assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertNotNull(configuration.getNodes(RootNode.AUDIO));
+        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(RootNode.PICTURE));
+        assertNotNull(configuration.getNodes(RootNode.PODCAST));
+        assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
     @Test
-    public void testXmlConfigurationBooleanParameter() {
+    public void testGetConfigurationNode() throws IOException, UnknownNodeException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertTrue(configuration.getParameter(SYSTRAY_ENABLE));
-            configuration.setParameter(SYSTRAY_ENABLE, false);
-            assertFalse(configuration.getParameter(SYSTRAY_ENABLE));
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(RootNode.VIDEO, "video1");
+        assertNotNull(node);
+    }
+
+    @Test(expected = UnknownNodeException.class)
+    public void testGetBadConfigurationNode() throws IOException, UnknownNodeException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(RootNode.VIDEO, "badVideo");
+        assertNotNull(node);
     }
 
     @Test
-    public void testXmlConfigurationIntParameter() {
+    public void testXmlConfigurationBooleanParameter() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertEquals(Integer.valueOf(2), configuration.getParameter(PODCAST_CACHE_EXPIRE_HOURS));
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertTrue(configuration.getParameter(SYSTRAY_ENABLE));
+        configuration.setParameter(SYSTRAY_ENABLE, false);
+        assertFalse(configuration.getParameter(SYSTRAY_ENABLE));
     }
 
     @Test
-    public void testXmlConfigurationStringParameter() {
+    public void testXmlConfigurationIntParameter() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertNotNull(configuration.getParameter(UPNP_SERVER_NAME));
-            configuration.setParameter(UPNP_SERVER_NAME, "test");
-            assertEquals("test", configuration.getParameter(UPNP_SERVER_NAME));
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertEquals(Integer.valueOf(2), configuration.getParameter(PODCAST_CACHE_EXPIRE_HOURS));
     }
 
     @Test
-    public void testXmlConfigurationListParameter() {
+    public void testXmlConfigurationStringParameter() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            assertTrue(configuration.getParameter(ICECAST_GENRE_LIST).size() > 0);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertNotNull(configuration.getParameter(UPNP_SERVER_NAME));
+        configuration.setParameter(UPNP_SERVER_NAME, "test");
+        assertEquals("test", configuration.getParameter(UPNP_SERVER_NAME));
     }
 
     @Test
-    public void testXmlConfigurationSaveConfig() {
+    public void testXmlConfigurationListParameter() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        try {
-            XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-            configuration.saveConfig();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        assertTrue(configuration.getParameter(ICECAST_GENRE_LIST).size() > 0);
+    }
+
+    @Test
+    public void testXmlConfigurationSaveConfig() throws IOException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        configuration.saveConfig();
     }
 }

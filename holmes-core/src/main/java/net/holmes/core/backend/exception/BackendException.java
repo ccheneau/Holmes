@@ -44,6 +44,17 @@ public class BackendException extends RuntimeException {
         this.backendErrorMessage = backendErrorMessage;
     }
 
+    /**
+     * Instantiates a new configuration exception.
+     *
+     * @param backendErrorMessage the message
+     * @param exception           the exception
+     */
+    public BackendException(final BackendErrorMessage backendErrorMessage, final Throwable exception) {
+        super(exception);
+        this.backendErrorMessage = backendErrorMessage;
+    }
+
     public BackendErrorMessage getBackendErrorMessage() {
         return backendErrorMessage;
     }

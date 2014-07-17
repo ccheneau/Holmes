@@ -44,6 +44,16 @@ public interface ConfigurationDao {
     List<ConfigurationNode> getNodes(RootNode rootNode);
 
     /**
+     * Gets the configuration node.
+     *
+     * @param rootNode root node
+     * @param nodeId   node ID
+     * @return configuration node
+     * @throws UnknownNodeException if node is not found
+     */
+    ConfigurationNode getNode(RootNode rootNode, String nodeId) throws UnknownNodeException;
+
+    /**
      * Get parameter value.
      *
      * @param parameter parameter

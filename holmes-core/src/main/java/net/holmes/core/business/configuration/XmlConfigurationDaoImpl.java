@@ -17,6 +17,8 @@
 
 package net.holmes.core.business.configuration;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -32,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -87,6 +90,23 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
     @Override
     public List<ConfigurationNode> getNodes(final RootNode rootNode) {
         return this.rootNode.getConfigurationNodes(rootNode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
+        try {
+            return Iterables.find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
+                @Override
+                public boolean apply(ConfigurationNode node) {
+                    return node.getId().equals(nodeId);
+                }
+            });
+        } catch (NoSuchElementException e) {
+            throw new UnknownNodeException(nodeId, e);
+        }
     }
 
     /**

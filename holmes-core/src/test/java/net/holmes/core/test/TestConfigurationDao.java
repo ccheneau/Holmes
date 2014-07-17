@@ -17,10 +17,13 @@
 
 package net.holmes.core.test;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.UnknownNodeException;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
 
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class TestConfigurationDao implements ConfigurationDao {
 
@@ -97,6 +101,24 @@ public class TestConfigurationDao implements ConfigurationDao {
                 break;
         }
         return folders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
+        try {
+            return Iterables.find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
+                @Override
+                public boolean apply(ConfigurationNode node) {
+                    return node.getId().equals(nodeId);
+                }
+            });
+        } catch (NoSuchElementException e) {
+            throw new UnknownNodeException(nodeId);
+        }
+
     }
 
     /**

@@ -17,6 +17,7 @@
 
 package net.holmes.core.backend;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
@@ -26,6 +27,7 @@ import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.UnknownNodeException;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 
@@ -67,13 +69,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-        Collection<ConfigurationFolder> folders = Lists.newArrayListWithCapacity(configNodes.size());
-        for (ConfigurationNode node : configNodes) {
-            folders.add(new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath()));
-        }
-
-        return folders;
+        return Lists.transform(configurationDao.getNodes(rootNode), new ConfigurationNodeFactory());
     }
 
     /**
@@ -81,8 +77,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
-        ConfigurationNode node = findConfigurationNode(id, configurationDao.getNodes(rootNode), rootNode == RootNode.PODCAST);
-        return new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
+        return new ConfigurationNodeFactory().apply(findConfigurationNode(id, rootNode));
     }
 
     /**
@@ -121,17 +116,16 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-        boolean podcast = rootNode == RootNode.PODCAST;
 
         // Check folder
-        if (podcast) {
+        if (rootNode == RootNode.PODCAST) {
             validatePodcast(folder, configNodes, id);
         } else {
             validateFolder(folder, configNodes, id);
         }
 
         // Save config if name or path has changed
-        ConfigurationNode currentNode = findConfigurationNode(id, configNodes, podcast);
+        ConfigurationNode currentNode = findConfigurationNode(id, rootNode);
         if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
             currentNode.setLabel(folder.getName());
             currentNode.setPath(folder.getPath());
@@ -150,8 +144,8 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
+        ConfigurationNode currentNode = findConfigurationNode(id, rootNode);
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-        ConfigurationNode currentNode = findConfigurationNode(id, configNodes, rootNode == RootNode.PODCAST);
 
         // Remove node
         configNodes.remove(currentNode);
@@ -240,19 +234,16 @@ public final class BackendManagerImpl implements BackendManager {
     /**
      * Find configuration node.
      *
-     * @param id          node id
-     * @param configNodes existing config nodes
-     * @param podcast     podcast or not
+     * @param id       node id
+     * @param rootNode root configuration node
      * @return configuration node
      */
-    private ConfigurationNode findConfigurationNode(String id, List<ConfigurationNode> configNodes, boolean podcast) {
-        for (ConfigurationNode node : configNodes) {
-            if (node.getId().equals(id)) {
-                return node;
-            }
+    private ConfigurationNode findConfigurationNode(String id, RootNode rootNode) {
+        try {
+            return configurationDao.getNode(rootNode, id);
+        } catch (UnknownNodeException e) {
+            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
         }
-
-        throw new BackendException(podcast ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR);
     }
 
     /**
@@ -283,6 +274,20 @@ public final class BackendManagerImpl implements BackendManager {
             if (node.getLabel().equals(folder.getName()) || node.getPath().equals(folder.getPath())) {
                 throw new BackendException(errorMessage);
             }
+        }
+    }
+
+    /**
+     *
+     */
+    private static final class ConfigurationNodeFactory implements Function<ConfigurationNode, ConfigurationFolder> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public ConfigurationFolder apply(ConfigurationNode node) {
+            return node == null ? null : new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
     }
 }

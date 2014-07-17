@@ -16,8 +16,6 @@
   -->
 
 <config>
-    <upnpServerName></upnpServerName>
-    <httpServerPort>0</httpServerPort>
     <parameters>
         <property name="obsolete_param" value="5000"/>
     </parameters>

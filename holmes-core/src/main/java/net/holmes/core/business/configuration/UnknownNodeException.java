@@ -15,31 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common.exception;
+package net.holmes.core.business.configuration;
+
+import net.holmes.core.common.exception.HolmesException;
 
 /**
- * Homes exception
+ * Unknown node exception
  */
-public class HolmesException extends Exception {
+public class UnknownNodeException extends HolmesException {
 
     /**
      * {@inheritDoc}
      */
-    protected HolmesException(String message) {
-        super(message);
+    public UnknownNodeException(String nodeId) {
+        super("Unknown node " + nodeId);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected HolmesException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public HolmesException(Throwable cause) {
-        super(cause);
+    public UnknownNodeException(String nodeId, Throwable cause) {
+        super("Unknown node " + nodeId, cause);
     }
 }
