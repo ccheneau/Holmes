@@ -31,15 +31,6 @@ public final class MediaSearchRequest {
     /**
      * Instantiates a new media search request.
      *
-     * @param parentNode parent node
-     */
-    public MediaSearchRequest(final AbstractNode parentNode) {
-        this(parentNode, null);
-    }
-
-    /**
-     * Instantiates a new media search request.
-     *
      * @param parentNode         parent node
      * @param availableMimeTypes available mime types.
      */

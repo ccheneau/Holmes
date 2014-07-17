@@ -209,7 +209,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        MediaSearchRequest request = new MediaSearchRequest(new FolderNode(ROOT.getId(), ROOT.getParentId(), ROOT.getBundleKey()));
+        MediaSearchRequest request = new MediaSearchRequest(new FolderNode(ROOT.getId(), ROOT.getParentId(), ROOT.getBundleKey()), null);
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
