@@ -21,7 +21,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.AbstractConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.configuration.UnknownNodeException;
 import net.holmes.core.business.media.model.RootNode;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TestConfigurationDao implements ConfigurationDao {
+public class TestConfigurationDao extends AbstractConfigurationDao {
 
     private final List<ConfigurationNode> videoFolders;
     private final List<ConfigurationNode> pictureFolders;
@@ -61,7 +61,7 @@ public class TestConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public void saveConfig() throws IOException {
+    public void save() throws IOException {
         // Nothing
     }
 
@@ -119,6 +119,24 @@ public class TestConfigurationDao implements ConfigurationDao {
             throw new UnknownNodeException(nodeId);
         }
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+        return Iterables.find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
+            @Override
+            public boolean apply(ConfigurationNode node) {
+                if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
+                    return false;
+                } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
+                    return true;
+                }
+                return false;
+            }
+        }, null);
     }
 
     /**

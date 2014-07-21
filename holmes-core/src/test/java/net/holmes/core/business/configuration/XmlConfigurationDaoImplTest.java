@@ -23,6 +23,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.junit.Assert.*;
 
@@ -33,7 +34,7 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
-        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
         assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
@@ -44,7 +45,7 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configurationEmpty").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
-        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
         assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
@@ -55,7 +56,7 @@ public class XmlConfigurationDaoImplTest {
         String configDir = new File(this.getClass().getResource("/configurationNull").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
-        assertNotNull(configuration.getNodes(RootNode.VIDEO));
+        assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
         assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
@@ -65,7 +66,7 @@ public class XmlConfigurationDaoImplTest {
     public void testGetConfigurationNode() throws IOException, UnknownNodeException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-        ConfigurationNode node = configuration.getNode(RootNode.VIDEO, "video1");
+        ConfigurationNode node = configuration.getNode(VIDEO, "video1");
         assertNotNull(node);
     }
 
@@ -73,7 +74,7 @@ public class XmlConfigurationDaoImplTest {
     public void testGetBadConfigurationNode() throws IOException, UnknownNodeException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-        ConfigurationNode node = configuration.getNode(RootNode.VIDEO, "badVideo");
+        ConfigurationNode node = configuration.getNode(VIDEO, "badVideo");
         assertNotNull(node);
     }
 
@@ -113,6 +114,53 @@ public class XmlConfigurationDaoImplTest {
     public void testXmlConfigurationSaveConfig() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-        configuration.saveConfig();
+        configuration.save();
     }
+
+    @Test
+    public void testFindConfigurationNodeExcluded() throws IOException, UnknownNodeException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(VIDEO, "video1");
+        assertNotNull(node);
+
+        ConfigurationNode foundNode = configuration.findNode(VIDEO, "video1", node.getLabel(), node.getPath());
+        assertNull(foundNode);
+    }
+
+    @Test
+    public void testFindConfigurationNodeWithSameLabel() throws IOException, UnknownNodeException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(VIDEO, "video1");
+        assertNotNull(node);
+
+        ConfigurationNode foundNode = configuration.findNode(VIDEO, null, node.getLabel(), "");
+        assertNotNull(foundNode);
+        assertEquals(node, foundNode);
+    }
+
+    @Test
+    public void testFindConfigurationNodeWithSamePath() throws IOException, UnknownNodeException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(VIDEO, "video1");
+        assertNotNull(node);
+
+        ConfigurationNode foundNode = configuration.findNode(VIDEO, null, "", node.getPath());
+        assertNotNull(foundNode);
+        assertEquals(node, foundNode);
+    }
+
+    @Test
+    public void testFindConfigurationNodeUnknownNode() throws IOException, UnknownNodeException {
+        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
+        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
+        ConfigurationNode node = configuration.getNode(VIDEO, "video1");
+        assertNotNull(node);
+
+        ConfigurationNode foundNode = configuration.findNode(VIDEO, "bad_id", "", "");
+        assertNull(foundNode);
+    }
+
 }

@@ -42,7 +42,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * XML configuration dao implementation.
  */
-public final class XmlConfigurationDaoImpl implements ConfigurationDao {
+public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
     private static final Logger LOGGER = getLogger(XmlConfigurationDaoImpl.class);
 
     private static final String CONF_FILE_NAME = "config.xml";
@@ -59,6 +59,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      */
     @Inject
     public XmlConfigurationDaoImpl(@Named("localHolmesDataDir") final String localHolmesDataDir) throws IOException {
+        super();
         this.localHolmesDataDir = localHolmesDataDir;
 
         // Instantiates a new XStream
@@ -71,17 +72,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
 
         // Load configuration
         loadConfig();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void saveConfig() throws IOException {
-        try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
-            // Save configuration to XML
-            xstream.toXML(rootNode, out);
-        }
     }
 
     /**
@@ -106,6 +96,36 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             });
         } catch (NoSuchElementException e) {
             throw new UnknownNodeException(nodeId, e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+        return Iterables.find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
+            @Override
+            public boolean apply(ConfigurationNode node) {
+                if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
+                    return false;
+                } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
+                    return true;
+                }
+                return false;
+            }
+        }, null);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void save() throws IOException {
+        try (OutputStream out = new FileOutputStream(getConfigFile().toFile())) {
+            // Save configuration to XML
+            xstream.toXML(rootNode, out);
         }
     }
 
@@ -167,7 +187,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
 
         // Save default config if nothing is loaded
         if (!configLoaded) {
-            saveConfig();
+            save();
         }
     }
 

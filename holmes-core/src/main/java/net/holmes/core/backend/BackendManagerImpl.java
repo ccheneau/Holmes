@@ -34,7 +34,6 @@ import net.holmes.core.common.event.ConfigurationEvent;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static net.holmes.core.backend.exception.BackendErrorMessage.*;
@@ -77,7 +76,11 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
-        return new ConfigurationNodeFactory().apply(findConfigurationNode(id, rootNode));
+        try {
+            return new ConfigurationNodeFactory().apply(configurationDao.getNode(rootNode, id));
+        } catch (UnknownNodeException e) {
+            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
+        }
     }
 
     /**
@@ -85,29 +88,25 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-
         // Validate
         if (rootNode == RootNode.PODCAST) {
-            validatePodcast(folder, configNodes, null);
+            validatePodcast(folder, rootNode, null);
         } else {
-            validateFolder(folder, configNodes, null);
+            validateFolder(folder, rootNode, null);
         }
 
-        // Set new folder id
-        folder.setId(newUniqueId());
-
-        // Save config
-        ConfigurationNode newNode = new ConfigurationNode(folder.getId(), folder.getName(), folder.getPath());
-        configNodes.add(newNode);
+        // Build new configuration node
+        ConfigurationNode node = new ConfigurationNode(newUniqueId(), folder.getName(), folder.getPath());
         try {
-            configurationDao.saveConfig();
+            // Save config
+            if (configurationDao.addNode(rootNode, node)) {
+                // Post add folder event
+                eventBus.post(new ConfigurationEvent(ADD_FOLDER, node, rootNode));
+            }
         } catch (IOException e) {
             throw new BackendException(e);
         }
 
-        // Post event
-        eventBus.post(new ConfigurationEvent(ADD_FOLDER, newNode, rootNode));
     }
 
     /**
@@ -115,28 +114,27 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
-        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-
         // Check folder
         if (rootNode == RootNode.PODCAST) {
-            validatePodcast(folder, configNodes, id);
+            validatePodcast(folder, rootNode, id);
         } else {
-            validateFolder(folder, configNodes, id);
+            validateFolder(folder, rootNode, id);
         }
 
-        // Save config if name or path has changed
-        ConfigurationNode currentNode = findConfigurationNode(id, rootNode);
-        if (!currentNode.getLabel().equals(folder.getName()) || !currentNode.getPath().equals(folder.getPath())) {
-            currentNode.setLabel(folder.getName());
-            currentNode.setPath(folder.getPath());
-            try {
-                configurationDao.saveConfig();
-            } catch (IOException e) {
-                throw new BackendException(e);
+        try {
+            // Edit node
+            ConfigurationNode node = configurationDao.editNode(rootNode, id, folder.getName(), folder.getPath());
+
+            if (node != null) {
+                // Post update folder event
+                eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, node, rootNode));
             }
-            // Post Event
-            eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, currentNode, rootNode));
+        } catch (IOException e) {
+            throw new BackendException(e);
+        } catch (UnknownNodeException e) {
+            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
         }
+
     }
 
     /**
@@ -144,19 +142,17 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public void removeFolder(final String id, final RootNode rootNode) {
-        ConfigurationNode currentNode = findConfigurationNode(id, rootNode);
-        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-
-        // Remove node
-        configNodes.remove(currentNode);
         try {
-            // Save config
-            configurationDao.saveConfig();
+            // Remove node
+            ConfigurationNode node = configurationDao.removeNode(id, rootNode);
+
+            // Post remove folder event
+            eventBus.post(new ConfigurationEvent(DELETE_FOLDER, node, rootNode));
         } catch (IOException e) {
             throw new BackendException(e);
+        } catch (UnknownNodeException e) {
+            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
         }
-        // Post Event
-        eventBus.post(new ConfigurationEvent(DELETE_FOLDER, currentNode, rootNode));
     }
 
     /**
@@ -181,7 +177,7 @@ public final class BackendManagerImpl implements BackendManager {
         configurationDao.setParameter(ICECAST_ENABLE, settings.getEnableIcecastDirectory());
         try {
             // save settings
-            configurationDao.saveConfig();
+            configurationDao.save();
         } catch (IOException e) {
             throw new BackendException(e);
         }
@@ -192,11 +188,11 @@ public final class BackendManagerImpl implements BackendManager {
     /**
      * Validate folder.
      *
-     * @param folder      folder to validate
-     * @param configNodes existing folders
-     * @param excludedId  folder id excluded from duplication checking
+     * @param folder     folder to validate
+     * @param rootNode   root configuration node
+     * @param excludedId folder id excluded from duplication checking
      */
-    private void validateFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId) {
+    private void validateFolder(final ConfigurationFolder folder, final RootNode rootNode, final String excludedId) {
         // Check folder's name and path are not empty
         checkNonEmpty(folder.getName(), FOLDER_NAME_ERROR);
         checkNonEmpty(folder.getPath(), FOLDER_PATH_ERROR);
@@ -207,17 +203,17 @@ public final class BackendManagerImpl implements BackendManager {
         }
 
         // Check for duplication
-        checkDuplicatedConfigurationFolder(folder, configNodes, excludedId, FOLDER_DUPLICATED_ERROR);
+        checkDuplicatedConfigurationFolder(folder, rootNode, excludedId, FOLDER_DUPLICATED_ERROR);
     }
 
     /**
      * Validate podcast.
      *
-     * @param podcast     podcast to validate
-     * @param configNodes existing podcasts
-     * @param excludedId  podcast id excluded from duplication check
+     * @param podcast    podcast to validate
+     * @param rootNode   root configuration node
+     * @param excludedId podcast id excluded from duplication check
      */
-    private void validatePodcast(final ConfigurationFolder podcast, final List<ConfigurationNode> configNodes, final String excludedId) {
+    private void validatePodcast(final ConfigurationFolder podcast, final RootNode rootNode, final String excludedId) {
         // Check podcast name and path are not empty
         checkNonEmpty(podcast.getName(), PODCAST_NAME_ERROR);
         checkNonEmpty(podcast.getPath(), PODCAST_URL_ERROR);
@@ -228,22 +224,7 @@ public final class BackendManagerImpl implements BackendManager {
         }
 
         // Check for duplication
-        checkDuplicatedConfigurationFolder(podcast, configNodes, excludedId, PODCAST_DUPLICATED_ERROR);
-    }
-
-    /**
-     * Find configuration node.
-     *
-     * @param id       node id
-     * @param rootNode root configuration node
-     * @return configuration node
-     */
-    private ConfigurationNode findConfigurationNode(String id, RootNode rootNode) {
-        try {
-            return configurationDao.getNode(rootNode, id);
-        } catch (UnknownNodeException e) {
-            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
-        }
+        checkDuplicatedConfigurationFolder(podcast, rootNode, excludedId, PODCAST_DUPLICATED_ERROR);
     }
 
     /**
@@ -262,18 +243,13 @@ public final class BackendManagerImpl implements BackendManager {
      * Checks configuration does not already exist.
      *
      * @param folder       configuration folder to check
-     * @param configNodes  existing configuration nodes
+     * @param rootNode     root node
      * @param excludedId   folder id to exclude from duplication check
      * @param errorMessage error message
      */
-    private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final List<ConfigurationNode> configNodes, final String excludedId, final BackendErrorMessage errorMessage) {
-        for (ConfigurationNode node : configNodes) {
-            if (excludedId != null && excludedId.equals(node.getId())) {
-                continue;
-            }
-            if (node.getLabel().equals(folder.getName()) || node.getPath().equals(folder.getPath())) {
-                throw new BackendException(errorMessage);
-            }
+    private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final RootNode rootNode, final String excludedId, final BackendErrorMessage errorMessage) {
+        if (configurationDao.findNode(rootNode, excludedId, folder.getName(), folder.getPath()) != null) {
+            throw new BackendException(errorMessage);
         }
     }
 
