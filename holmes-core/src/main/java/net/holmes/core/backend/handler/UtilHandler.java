@@ -25,6 +25,7 @@ import net.holmes.core.business.version.VersionManager;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.io.File;
+import java.nio.file.FileSystems;
 import java.util.Collection;
 import java.util.Map;
 
@@ -94,11 +95,8 @@ public final class UtilHandler {
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add server root folders to response
-            File[] roots = File.listRoots();
-            if (roots != null) {
-                for (File root : roots) {
-                    folders.add(new Folder(root.getAbsolutePath(), root.getAbsolutePath()));
-                }
+            for (java.nio.file.Path root : FileSystems.getDefault().getRootDirectories()) {
+                folders.add(new Folder(root.toString(), root.toString()));
             }
         } else {
             // Get child folders
