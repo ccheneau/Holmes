@@ -17,15 +17,14 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import org.junit.Test;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class VideoFoldersHandlerTest {
 
@@ -33,7 +32,7 @@ public class VideoFoldersHandlerTest {
     public void testGetVideoFolders() {
         BackendManager backendManager = createMock(BackendManager.class);
 
-        expect(backendManager.getFolders(VIDEO)).andReturn(Lists.newArrayList(new ConfigurationFolder("videosTest", "videosTest", System.getProperty("java.io.tmpdir")))).atLeastOnce();
+        expect(backendManager.getFolders(VIDEO)).andReturn(newArrayList(new ConfigurationFolder("videosTest", "videosTest", System.getProperty("java.io.tmpdir")))).atLeastOnce();
 
         replay(backendManager);
         VideoFoldersHandler videoFoldersHandler = new VideoFoldersHandler(backendManager);

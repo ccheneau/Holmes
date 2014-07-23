@@ -34,10 +34,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.*;
-import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
-import static net.holmes.core.common.event.MediaEvent.MediaEventType.UNKNOWN;
+import static net.holmes.core.common.event.MediaEvent.MediaEventType.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -231,7 +231,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        MediaSearchRequest request = new MediaSearchRequest(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getBundleKey()), Lists.newArrayList("video/avi"));
+        MediaSearchRequest request = new MediaSearchRequest(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getBundleKey()), newArrayList("video/avi"));
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
@@ -249,7 +249,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        List<AbstractNode> childNodes = Lists.newArrayList();
+        List<AbstractNode> childNodes = newArrayList();
         childNodes.add(new PodcastNode("id", "parentId", "name", "url"));
         MimeType videoMimeType = MimeType.valueOf("video/avi");
         MimeType audioMimeType = MimeType.valueOf("audio/mp3");
@@ -263,7 +263,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        MediaSearchRequest request = new MediaSearchRequest(new FolderNode("folderId", "folderParentId", "folderName"), Lists.newArrayList("video/avi"));
+        MediaSearchRequest request = new MediaSearchRequest(new FolderNode("folderId", "folderParentId", "folderName"), newArrayList("video/avi"));
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
@@ -275,7 +275,7 @@ public class MediaManagerImplTest {
 
     public List<AbstractNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
         // Add folder nodes stored in configuration
-        List<AbstractNode> nodes = Lists.newArrayList();
+        List<AbstractNode> nodes = newArrayList();
         for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
             nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
         }

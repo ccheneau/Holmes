@@ -19,7 +19,6 @@ package net.holmes.core.test;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.AbstractConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
@@ -35,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class TestConfigurationDao extends AbstractConfigurationDao {
 
     private final List<ConfigurationNode> videoFolders;
@@ -46,10 +47,10 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
     @Inject
     @SuppressWarnings("unchecked")
     public TestConfigurationDao() {
-        videoFolders = Lists.newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
-        audioFolders = Lists.newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
-        pictureFolders = Lists.newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
-        podcasts = Lists.newArrayList();
+        videoFolders = newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
+        audioFolders = newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
+        pictureFolders = newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
+        podcasts = newArrayList();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
         parameters = Maps.newHashMap();
         for (ConfigurationParameter parameter : ConfigurationParameter.PARAMETERS) {
@@ -97,7 +98,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
                 folders = this.videoFolders;
                 break;
             default:
-                folders = Lists.newArrayList();
+                folders = newArrayList();
                 break;
         }
         return folders;

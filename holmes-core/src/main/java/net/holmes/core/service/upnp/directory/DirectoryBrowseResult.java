@@ -36,8 +36,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
-import static net.holmes.core.common.MimeType.MIME_TYPE_OGG;
-import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
+import static net.holmes.core.common.MimeType.*;
 import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.CANNOT_PROCESS;
 

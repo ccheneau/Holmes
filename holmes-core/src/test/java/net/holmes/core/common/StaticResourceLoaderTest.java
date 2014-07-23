@@ -23,8 +23,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
-import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.UPNP;
+import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.*;
 import static org.junit.Assert.assertNotNull;
 
 /**

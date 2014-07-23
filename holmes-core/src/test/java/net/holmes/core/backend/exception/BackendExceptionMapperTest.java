@@ -24,10 +24,8 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import static net.holmes.core.backend.exception.BackendErrorMessage.FOLDER_NAME_ERROR;
-import static net.holmes.core.backend.exception.BackendErrorMessage.SETTINGS_SERVER_NAME_ERROR;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static net.holmes.core.backend.exception.BackendErrorMessage.*;
+import static org.junit.Assert.*;
 
 public class BackendExceptionMapperTest {
 

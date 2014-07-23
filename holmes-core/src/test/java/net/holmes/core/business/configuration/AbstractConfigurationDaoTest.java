@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.PICTURE;
 import static org.easymock.EasyMock.*;
 
@@ -60,7 +61,7 @@ public class AbstractConfigurationDaoTest {
         AbstractConfigurationDao configurationDao = createMock(AbstractConfigurationDao.class);
 
         ConfigurationNode node = new ConfigurationNode("id", "label", "path");
-        expect(configurationDao.getNodes(PICTURE)).andReturn(Lists.newArrayList(node));
+        expect(configurationDao.getNodes(PICTURE)).andReturn(newArrayList(node));
 
         replay(configurationDao);
         configurationDao.addNode(PICTURE, node);
@@ -159,7 +160,7 @@ public class AbstractConfigurationDaoTest {
 
         ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         expect(configurationDao.getNode(PICTURE, "id")).andReturn(node);
-        expect(configurationDao.getNodes(PICTURE)).andReturn(Lists.newArrayList(node));
+        expect(configurationDao.getNodes(PICTURE)).andReturn(newArrayList(node));
         configurationDao.save();
         expectLastCall();
 
@@ -188,7 +189,7 @@ public class AbstractConfigurationDaoTest {
 
         ConfigurationNode node = new ConfigurationNode("id", "label", "path");
         expect(configurationDao.getNode(PICTURE, "id")).andReturn(node);
-        expect(configurationDao.getNodes(PICTURE)).andReturn(Lists.newArrayList(node));
+        expect(configurationDao.getNodes(PICTURE)).andReturn(newArrayList(node));
         configurationDao.save();
         expectLastCall().andThrow(new IOException());
 

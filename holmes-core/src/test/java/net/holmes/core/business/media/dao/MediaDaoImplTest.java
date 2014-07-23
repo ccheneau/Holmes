@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.media.dao;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
@@ -36,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.MediaType.*;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
@@ -305,7 +305,7 @@ public class MediaDaoImplTest {
 
         MediaIndexElement icecastElement = new MediaIndexElement(ICECAST.getId(), TYPE_ICECAST_GENRE.getValue(), null, "icecastGenre", "icecastGenre", ICECAST.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(icecastElement);
-        expect(icecastDao.getEntriesByGenre(eq("icecastGenre"))).andReturn(Lists.newArrayList(new IcecastEntry("name", "url", "type", "genre")));
+        expect(icecastDao.getEntriesByGenre(eq("icecastGenre"))).andReturn(newArrayList(new IcecastEntry("name", "url", "type", "genre")));
         expect(mediaIndexDao.add(isA(MediaIndexElement.class))).andReturn(UniqueIdGenerator.newUniqueId()).atLeastOnce();
 
         replay(mimeTypeManager, mediaIndexDao, icecastDao);
@@ -457,7 +457,7 @@ public class MediaDaoImplTest {
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
         IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        expect(icecastDao.getGenres()).andReturn(Lists.newArrayList(new IcecastGenre("genreId", "genreName")));
+        expect(icecastDao.getGenres()).andReturn(newArrayList(new IcecastGenre("genreId", "genreName")));
         mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
         expectLastCall().atLeastOnce();
 

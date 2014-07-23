@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.holmes.core.business.version.ReleaseInfo;
 import net.holmes.core.business.version.VersionManager;
@@ -29,8 +28,8 @@ import java.nio.file.FileSystems;
 import java.util.Collection;
 import java.util.Map;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static com.google.common.collect.Lists.newArrayList;
+import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
 
@@ -87,7 +86,7 @@ public final class UtilHandler {
     @Path("/getChildFolders")
     @Produces(APPLICATION_JSON)
     public Collection<Folder> getChildFolders(@FormParam("path") final String parentPath) {
-        Collection<Folder> folders = Lists.newArrayList();
+        Collection<Folder> folders = newArrayList();
         if (parentPath == null || "none".equals(parentPath)) {
             // No parent path specified
             // Add user home folder to response

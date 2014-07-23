@@ -17,12 +17,12 @@
 
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.*;
 
 public class AirplayCommandResponseTest {
@@ -30,7 +30,7 @@ public class AirplayCommandResponseTest {
     @Test
     public void testDecodeHttpResponse() {
         CommandResponse response = new CommandResponse();
-        List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK TEST", "Content-Type: text/parameters", "Content-Length : 10");
+        List<String> responseLines = newArrayList("HTTP/1.1 200 OK TEST", "Content-Type: text/parameters", "Content-Length : 10");
         response.decodeHttpResponse(responseLines);
         assertEquals(200, response.getCode());
         assertEquals("OK TEST", response.getMessage());
@@ -42,7 +42,7 @@ public class AirplayCommandResponseTest {
     @Test
     public void testDecodeResponseNoHeaders() {
         CommandResponse response = new CommandResponse();
-        List<String> responseLines = Lists.newArrayList("HTTP/1.1 200 OK");
+        List<String> responseLines = newArrayList("HTTP/1.1 200 OK");
         response.decodeHttpResponse(responseLines);
         assertEquals(200, response.getCode());
         assertEquals("OK", response.getMessage());
@@ -54,7 +54,7 @@ public class AirplayCommandResponseTest {
     @Test
     public void testDecodeBadResponse() {
         CommandResponse response = new CommandResponse();
-        List<String> responseLines = Lists.newArrayList("");
+        List<String> responseLines = newArrayList("");
         response.decodeHttpResponse(responseLines);
         assertEquals(0, response.getCode());
         assertNull(response.getMessage());

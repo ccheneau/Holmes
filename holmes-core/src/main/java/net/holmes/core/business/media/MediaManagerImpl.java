@@ -18,8 +18,6 @@
 package net.holmes.core.business.media;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.MediaDao;
@@ -38,10 +36,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
-import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
-import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
+import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.SCAN_NODE;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -110,7 +109,7 @@ public final class MediaManagerImpl implements MediaManager {
         if (rootNode == ROOT) {
             // Get child nodes of root node
             RootNode[] rootNodes = RootNode.values();
-            childNodes = Lists.newArrayListWithCapacity(rootNodes.length);
+            childNodes = newArrayListWithCapacity(rootNodes.length);
             for (RootNode subRootNode : rootNodes) {
                 if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getRootNodeChildren(subRootNode).isEmpty()) {
                     childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));
@@ -125,7 +124,7 @@ public final class MediaManagerImpl implements MediaManager {
         }
 
         // Filter child nodes according to available mime types
-        return Collections2.filter(childNodes, new Predicate<AbstractNode>() {
+        return filter(childNodes, new Predicate<AbstractNode>() {
             /**
              * {@inheritDoc}
              */

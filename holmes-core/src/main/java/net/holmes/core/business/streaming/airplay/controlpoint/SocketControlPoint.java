@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.streaming.airplay.controlpoint;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import org.slf4j.Logger;
@@ -27,6 +26,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -112,7 +112,7 @@ public class SocketControlPoint implements ControlPoint {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
 
         // Read Http response
-        List<String> httpResponseLines = Lists.newArrayList();
+        List<String> httpResponseLines = newArrayList();
         String line = in.readLine();
         while (line != null && line.trim().length() != 0) {
             httpResponseLines.add(line);

@@ -19,7 +19,6 @@ package net.holmes.core.business.configuration;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.media.model.RootNode;
@@ -37,6 +36,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
+import static com.google.common.collect.Lists.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -206,16 +206,16 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
          */
         public void checkDefaultValues() {
             if (this.videoFolders == null) {
-                this.videoFolders = Lists.newArrayListWithCapacity(0);
+                this.videoFolders = newArrayListWithCapacity(0);
             }
             if (this.audioFolders == null) {
-                this.audioFolders = Lists.newArrayListWithCapacity(0);
+                this.audioFolders = newArrayListWithCapacity(0);
             }
             if (this.pictureFolders == null) {
-                this.pictureFolders = Lists.newArrayListWithCapacity(0);
+                this.pictureFolders = newArrayListWithCapacity(0);
             }
             if (this.podcasts == null) {
-                this.podcasts = Lists.newArrayListWithCapacity(0);
+                this.podcasts = newArrayListWithCapacity(0);
             }
             if (this.parameters == null) {
                 this.parameters = new Properties();
@@ -228,7 +228,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
         @SuppressWarnings("unchecked")
         public void checkParameters() {
             // Check new parameters
-            List<String> availableParams = Lists.newArrayListWithCapacity(this.parameters.size());
+            List<String> availableParams = newArrayListWithCapacity(this.parameters.size());
             for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
                 availableParams.add(param.getName());
                 // If a parameter is not present in configuration, add parameter with default value
@@ -238,7 +238,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
             }
 
             // Check obsolete parameters
-            List<String> obsoleteParams = Lists.newArrayList();
+            List<String> obsoleteParams = newArrayList();
             for (Object paramKey : this.parameters.keySet()) {
                 if (!availableParams.contains(paramKey.toString())) {
                     obsoleteParams.add(paramKey.toString());
@@ -273,7 +273,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
                     configurationNodes = this.videoFolders;
                     break;
                 default:
-                    configurationNodes = Lists.newArrayListWithCapacity(0);
+                    configurationNodes = newArrayListWithCapacity(0);
                     break;
             }
             return configurationNodes;

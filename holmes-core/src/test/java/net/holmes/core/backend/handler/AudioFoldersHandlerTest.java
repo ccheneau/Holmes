@@ -17,15 +17,14 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import org.junit.Test;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.AUDIO;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class AudioFoldersHandlerTest {
 
@@ -33,7 +32,7 @@ public class AudioFoldersHandlerTest {
     public void testGetAudioFolders() {
         BackendManager backendManager = createMock(BackendManager.class);
 
-        expect(backendManager.getFolders(AUDIO)).andReturn(Lists.newArrayList(new ConfigurationFolder("audiosTest", "audiosTest", "path"))).atLeastOnce();
+        expect(backendManager.getFolders(AUDIO)).andReturn(newArrayList(new ConfigurationFolder("audiosTest", "audiosTest", "path"))).atLeastOnce();
 
         replay(backendManager);
         AudioFoldersHandler audioFoldersHandler = new AudioFoldersHandler(backendManager);

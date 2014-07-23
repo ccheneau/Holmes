@@ -51,10 +51,10 @@ public final class HolmesService implements Service {
     /**
      * Instantiates a new holmes service.
      *
-     * @param httpService         Http service
-     * @param upnpService         UPnP service
-     * @param systrayService            Systray service
-     * @param schedulerService          Scheduler service
+     * @param httpService        Http service
+     * @param upnpService        UPnP service
+     * @param systrayService     Systray service
+     * @param schedulerService   Scheduler service
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject

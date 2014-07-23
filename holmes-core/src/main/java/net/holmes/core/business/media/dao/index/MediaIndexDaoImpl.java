@@ -19,7 +19,6 @@ package net.holmes.core.business.media.dao.index;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationNode;
@@ -31,6 +30,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
@@ -88,7 +88,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
     @Override
     public synchronized void removeChildren(final String uuid) {
         MediaIndexElement elValue;
-        Collection<String> toRemove = Lists.newArrayList();
+        Collection<String> toRemove = newArrayList();
 
         // Search elements to remove
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
@@ -115,7 +115,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
         MediaIndexElement elValue;
 
         // Search elements to remove
-        Collection<String> toRemove = Lists.newArrayList();
+        Collection<String> toRemove = newArrayList();
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
             elId = indexEntry.getKey();
             elValue = indexEntry.getValue();

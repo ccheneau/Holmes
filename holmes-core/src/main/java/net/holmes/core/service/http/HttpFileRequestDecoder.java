@@ -35,8 +35,7 @@ import java.io.File;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
-import static net.holmes.core.common.Constants.HTTP_CONTENT_ID;
-import static net.holmes.core.common.Constants.HTTP_CONTENT_REQUEST_PATH;
+import static net.holmes.core.common.Constants.*;
 
 /**
  * Decode FullHttpRequest to HttpFileRequest

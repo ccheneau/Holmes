@@ -30,8 +30,7 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import java.io.IOException;
 
 import static net.holmes.core.common.Constants.*;
-import static net.holmes.core.common.StaticResourceLoader.getUpnpLargeIcon;
-import static net.holmes.core.common.StaticResourceLoader.getUpnpSmallIcon;
+import static net.holmes.core.common.StaticResourceLoader.*;
 import static org.fourthline.cling.model.types.UDN.uniqueSystemIdentifier;
 
 /**

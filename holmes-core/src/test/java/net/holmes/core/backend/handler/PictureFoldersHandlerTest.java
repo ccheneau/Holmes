@@ -17,15 +17,14 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import org.junit.Test;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.PICTURE;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class PictureFoldersHandlerTest {
 
@@ -33,7 +32,7 @@ public class PictureFoldersHandlerTest {
     public void testGetPictureFolders() {
         BackendManager backendManager = createMock(BackendManager.class);
 
-        expect(backendManager.getFolders(PICTURE)).andReturn(Lists.newArrayList(new ConfigurationFolder("imagesTest", "imagesTest", "path"))).atLeastOnce();
+        expect(backendManager.getFolders(PICTURE)).andReturn(newArrayList(new ConfigurationFolder("imagesTest", "imagesTest", "path"))).atLeastOnce();
 
         replay(backendManager);
         PictureFoldersHandler pictureFoldersHandler = new PictureFoldersHandler(backendManager);

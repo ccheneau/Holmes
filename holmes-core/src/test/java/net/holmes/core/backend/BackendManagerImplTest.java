@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend;
 
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
@@ -31,8 +30,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Collection;
 
-import static net.holmes.core.business.media.model.RootNode.AUDIO;
-import static net.holmes.core.business.media.model.RootNode.PODCAST;
+import static com.google.common.collect.Lists.newArrayList;
+import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -44,7 +43,7 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationDao.getNodes(AUDIO)).andReturn(Lists.newArrayList(new ConfigurationNode("id", "name", "path")));
+        expect(configurationDao.getNodes(AUDIO)).andReturn(newArrayList(new ConfigurationNode("id", "name", "path")));
 
         replay(configurationDao, eventBus);
 

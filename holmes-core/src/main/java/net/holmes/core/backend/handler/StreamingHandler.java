@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
@@ -41,10 +40,9 @@ import javax.ws.rs.Produces;
 import java.util.Collection;
 import java.util.List;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
-import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
+import static javax.ws.rs.core.MediaType.*;
+import static net.holmes.core.backend.response.DeviceBrowseResult.*;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -80,7 +78,7 @@ public class StreamingHandler {
     @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         Collection<Device> devices = streamingManager.getDevices();
-        List<PlaybackDevice> playbackDevices = Lists.newArrayListWithCapacity(devices.size());
+        List<PlaybackDevice> playbackDevices = newArrayListWithCapacity(devices.size());
         for (Device device : devices) {
             playbackDevices.add(buildPlaybackDevice(device));
         }

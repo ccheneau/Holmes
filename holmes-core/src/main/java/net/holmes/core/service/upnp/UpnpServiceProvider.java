@@ -34,8 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.io.IOException;
 
-import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_NAME;
-import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVICE_PORT;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.UpnpUtils.*;
 
 /**

@@ -17,15 +17,14 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import org.junit.Test;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class PodcastsHandlerTest {
 
@@ -33,7 +32,7 @@ public class PodcastsHandlerTest {
     public void testGetPodcasts() {
         BackendManager backendManager = createMock(BackendManager.class);
 
-        expect(backendManager.getFolders(PODCAST)).andReturn(Lists.newArrayList(new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr"))).atLeastOnce();
+        expect(backendManager.getFolders(PODCAST)).andReturn(newArrayList(new ConfigurationFolder("fauxRaccordsTest", "editedCastcodersTest", "http://google.fr"))).atLeastOnce();
 
         replay(backendManager);
         PodcastsHandler podcastsHandler = new PodcastsHandler(backendManager);

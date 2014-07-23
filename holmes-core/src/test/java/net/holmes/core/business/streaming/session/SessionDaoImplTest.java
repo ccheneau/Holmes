@@ -21,8 +21,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static net.holmes.core.business.streaming.session.SessionStatus.PLAYING;
-import static net.holmes.core.business.streaming.session.SessionStatus.WAITING;
+import static net.holmes.core.business.streaming.session.SessionStatus.*;
 import static org.junit.Assert.*;
 
 public class SessionDaoImplTest {

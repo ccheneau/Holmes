@@ -17,11 +17,11 @@
 
 package net.holmes.core.business.streaming.upnp.device;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.*;
 
 public class UpnpDeviceTest {
@@ -43,7 +43,7 @@ public class UpnpDeviceTest {
 
     @Test
     public void testVideoContentTypeDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("video/avi");
+        List<String> supportedMimeTypes = newArrayList("video/avi");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
         assertNotNull(device.getType());
@@ -55,7 +55,7 @@ public class UpnpDeviceTest {
 
     @Test
     public void testAudioContentTypeDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("audio/mp3");
+        List<String> supportedMimeTypes = newArrayList("audio/mp3");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
         assertNotNull(device.getType());
@@ -67,7 +67,7 @@ public class UpnpDeviceTest {
 
     @Test
     public void testImageContentTypeDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("image/jpeg");
+        List<String> supportedMimeTypes = newArrayList("image/jpeg");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
         assertNotNull(device.getType());
@@ -79,7 +79,7 @@ public class UpnpDeviceTest {
 
     @Test
     public void testUnknownContentTypeDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("application/x-subrip");
+        List<String> supportedMimeTypes = newArrayList("application/x-subrip");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
         assertNotNull(device.getType());
@@ -91,7 +91,7 @@ public class UpnpDeviceTest {
 
     @Test
     public void testAllContentTypeDevice() {
-        List<String> supportedMimeTypes = Lists.newArrayList("*/*");
+        List<String> supportedMimeTypes = newArrayList("*/*");
         UpnpDevice device = new UpnpDevice("id", "name", null, supportedMimeTypes, null);
         assertNotNull(device.getSupportedMimeTypes());
         assertNotNull(device.getType());

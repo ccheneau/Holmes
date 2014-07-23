@@ -22,8 +22,7 @@ import net.holmes.core.business.media.model.RootNode;
 import org.junit.Test;
 
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.ADD_FOLDER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * ConfigurationEvent Tester.

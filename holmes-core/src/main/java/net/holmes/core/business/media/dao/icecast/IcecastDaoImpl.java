@@ -19,7 +19,6 @@ package net.holmes.core.business.media.dao.icecast;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
@@ -46,6 +45,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.common.ConfigurationParameter.*;
@@ -89,7 +90,7 @@ public final class IcecastDaoImpl implements IcecastDao {
         this.maxDownloadRetry = max(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY), 1);
 
         List<String> genreList = configurationDao.getParameter(ICECAST_GENRE_LIST);
-        this.genres = Lists.newArrayListWithCapacity(genreList.size());
+        this.genres = newArrayListWithCapacity(genreList.size());
         for (String genre : genreList) {
             genres.add(new IcecastGenre(ICECAST_GENRE_ID_ROOT + genre, genre));
         }
@@ -124,9 +125,9 @@ public final class IcecastDaoImpl implements IcecastDao {
     public Collection<IcecastEntry> getEntriesByGenre(final String genre) {
         synchronized (directoryLock) {
             if (directory != null && directory.getEntries() != null) {
-                return Collections2.filter(directory.getEntries(), new IcecastEntryGenreFilter(genre));
+                return filter(directory.getEntries(), new IcecastEntryGenreFilter(genre));
             }
-            return Lists.newArrayListWithCapacity(0);
+            return newArrayListWithCapacity(0);
         }
     }
 

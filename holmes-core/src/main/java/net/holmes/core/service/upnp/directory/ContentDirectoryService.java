@@ -18,7 +18,6 @@
 package net.holmes.core.service.upnp.directory;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
@@ -39,14 +38,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
-import static net.holmes.core.common.ConfigurationParameter.PODCAST_PREPEND_ENTRY_NAME;
-import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
+import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
-import static org.fourthline.cling.support.model.BrowseFlag.DIRECT_CHILDREN;
-import static org.fourthline.cling.support.model.BrowseFlag.METADATA;
+import static org.fourthline.cling.support.model.BrowseFlag.*;
 
 /**
  * UPnP Content directory service.
@@ -124,7 +122,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private List<String> getAvailableMimeType(RemoteClientInfo remoteClientInfo) {
         // Get available mime types
-        List<String> availableMimeTypes = Lists.newArrayList();
+        List<String> availableMimeTypes = newArrayList();
         if (remoteClientInfo.getConnection() != null) {
             for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
                 if (device instanceof UpnpDevice) {

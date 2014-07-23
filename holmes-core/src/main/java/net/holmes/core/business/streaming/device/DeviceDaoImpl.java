@@ -18,11 +18,12 @@
 package net.holmes.core.business.streaming.device;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
 import java.util.Map;
+
+import static com.google.common.collect.Collections2.filter;
 
 /**
  * Device dao implementation.
@@ -84,7 +85,7 @@ public final class DeviceDaoImpl implements DeviceDao {
      */
     @Override
     public Collection<Device> findDevices(final String hostAddress) {
-        return Collections2.filter(devices.values(), new Predicate<Device>() {
+        return filter(devices.values(), new Predicate<Device>() {
             /**
              * {@inheritDoc}
              */

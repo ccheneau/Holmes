@@ -86,8 +86,7 @@ import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.inject.name.Names.named;
 import static java.util.Collections.list;
 import static java.util.concurrent.Executors.newCachedThreadPool;
-import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
-import static net.holmes.core.common.SystemProperty.USER_HOME;
+import static net.holmes.core.common.SystemProperty.*;
 
 /**
  * Holmes Guice injector.

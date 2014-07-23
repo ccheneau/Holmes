@@ -17,7 +17,6 @@
 
 package net.holmes.core.service.http;
 
-import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import net.holmes.core.business.media.MediaManager;
@@ -31,11 +30,10 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 
-import static io.netty.handler.codec.http.HttpMethod.GET;
-import static io.netty.handler.codec.http.HttpMethod.POST;
+import static com.google.common.collect.Lists.newArrayList;
+import static io.netty.handler.codec.http.HttpMethod.*;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class HttpFileRequestDecoderTest {
 
@@ -46,7 +44,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
@@ -71,7 +69,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/").atLeastOnce();
@@ -92,7 +90,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/index.html1").atLeastOnce();
@@ -114,7 +112,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(POST).atLeastOnce();
         expect(request.retain()).andReturn(request).atLeastOnce();
@@ -134,7 +132,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
@@ -159,7 +157,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
@@ -181,7 +179,7 @@ public class HttpFileRequestDecoderTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         HttpRouteManager routeManager = new HttpRouteManagerProvider().get();
-        List<Object> out = Lists.newArrayList();
+        List<Object> out = newArrayList();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content").atLeastOnce();

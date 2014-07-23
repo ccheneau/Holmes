@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.media.dao;
 
-import com.google.common.collect.Lists;
 import com.sun.syndication.feed.module.itunes.EntryInformation;
 import com.sun.syndication.feed.module.mediarss.MediaModule;
 import com.sun.syndication.feed.synd.SyndEnclosure;
@@ -35,8 +34,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static com.sun.syndication.feed.module.RssModule.ITUNES_URI;
-import static com.sun.syndication.feed.module.RssModule.MEDIA_RSS_URI;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.sun.syndication.feed.module.RssModule.*;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 
@@ -54,7 +53,7 @@ abstract class PodcastParser {
      */
     @SuppressWarnings("unchecked")
     public List<AbstractNode> parse(String podcastUrl, String podcastId) throws HolmesException {
-        List<AbstractNode> podcastEntryNodes = Lists.newArrayList();
+        List<AbstractNode> podcastEntryNodes = newArrayList();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();

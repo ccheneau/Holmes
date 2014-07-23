@@ -19,8 +19,7 @@ package net.holmes.core.common.event;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * MediaEvent Tester.

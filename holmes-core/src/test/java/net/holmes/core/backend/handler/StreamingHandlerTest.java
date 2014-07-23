@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.backend.response.DeviceBrowseResult;
 import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
@@ -39,8 +38,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseContent;
-import static net.holmes.core.backend.response.DeviceBrowseResult.BrowseFolder;
+import static com.google.common.collect.Lists.newArrayList;
+import static net.holmes.core.backend.response.DeviceBrowseResult.*;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -53,7 +52,7 @@ public class StreamingHandlerTest {
         StreamingManager streamingManager = createMock(StreamingManager.class);
         Device device = createMock(Device.class);
 
-        expect(streamingManager.getDevices()).andReturn(Lists.newArrayList(device)).atLeastOnce();
+        expect(streamingManager.getDevices()).andReturn(newArrayList(device)).atLeastOnce();
         expect(device.getId()).andReturn("deviceId").atLeastOnce();
         expect(device.getName()).andReturn("deviceName").atLeastOnce();
         expect(device.getType()).andReturn("deviceType").atLeastOnce();
@@ -268,7 +267,7 @@ public class StreamingHandlerTest {
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
         ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
-        Collection<AbstractNode> searchResult = Lists.newArrayList(contentNode, folderNode);
+        Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("0"))).andReturn(null).atLeastOnce();
@@ -299,7 +298,7 @@ public class StreamingHandlerTest {
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
-        Collection<AbstractNode> searchResult = Lists.newArrayList(contentNode, folderNode, podcastNode);
+        Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode, podcastNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();

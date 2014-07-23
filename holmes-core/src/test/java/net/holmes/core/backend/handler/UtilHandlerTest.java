@@ -25,8 +25,7 @@ import org.junit.Test;
 import java.util.Collection;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class UtilHandlerTest {
 

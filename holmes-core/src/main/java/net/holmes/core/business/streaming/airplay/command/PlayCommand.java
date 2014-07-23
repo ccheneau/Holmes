@@ -20,8 +20,7 @@ package net.holmes.core.business.streaming.airplay.command;
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
 import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.CommandType.PLAY;
-import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.PostParameter.CONTENT_LOCATION;
-import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.PostParameter.START_POSITION;
+import static net.holmes.core.business.streaming.airplay.command.AirplayCommand.PostParameter.*;
 
 /**
  * Airplay play command: Start video playback

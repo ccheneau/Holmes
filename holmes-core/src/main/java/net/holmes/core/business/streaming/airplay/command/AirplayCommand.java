@@ -23,10 +23,8 @@ import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.USER_AGENT;
-import static io.netty.handler.codec.http.HttpMethod.GET;
-import static io.netty.handler.codec.http.HttpMethod.POST;
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpMethod.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
