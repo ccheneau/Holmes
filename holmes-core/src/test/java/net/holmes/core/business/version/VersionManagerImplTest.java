@@ -31,8 +31,8 @@ public class VersionManagerImplTest {
         ReleaseDao releaseDao = createMock(ReleaseDao.class);
         replay(releaseDao);
 
-        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao);
-        assertNull(versionManager.getCurrentVersion());
+        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao, "0.6.3");
+        assertEquals("0.6.3", versionManager.getCurrentVersion());
 
         verify(releaseDao);
     }
@@ -50,12 +50,35 @@ public class VersionManagerImplTest {
 
         replay(releaseDao);
 
-        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao);
+        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao, "0.6.3");
         ReleaseInfo releaseInfo = versionManager.getRemoteReleaseInfo();
         assertNotNull(releaseInfo);
         assertNotNull(releaseInfo.getName());
         assertNotNull(releaseInfo.getUrl());
         assertFalse(releaseInfo.isNeedsUpdate());
+
+        verify(releaseDao);
+    }
+
+    @Test
+    public void testGetRemoteReleaseInfoNeedsUpdate() {
+        ReleaseDao releaseDao = createMock(ReleaseDao.class);
+
+        Release release = new Release();
+        release.setName("V 0.6.3");
+        release.setUrl("url");
+        release.setDraft(false);
+
+        expect(releaseDao.getLatestRelease()).andReturn(release);
+
+        replay(releaseDao);
+
+        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao, "0.6.2");
+        ReleaseInfo releaseInfo = versionManager.getRemoteReleaseInfo();
+        assertNotNull(releaseInfo);
+        assertNotNull(releaseInfo.getName());
+        assertNotNull(releaseInfo.getUrl());
+        assertTrue(releaseInfo.isNeedsUpdate());
 
         verify(releaseDao);
     }
@@ -69,7 +92,7 @@ public class VersionManagerImplTest {
 
         replay(releaseDao);
 
-        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao);
+        VersionManagerImpl versionManager = new VersionManagerImpl(releaseDao, "0.6.3");
         versionManager.updateRemoteReleaseInfo();
 
         verify(releaseDao);

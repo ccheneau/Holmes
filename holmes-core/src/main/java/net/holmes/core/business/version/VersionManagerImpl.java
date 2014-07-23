@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.version;
 
+import com.google.inject.name.Named;
 import net.holmes.core.business.version.release.Release;
 import net.holmes.core.business.version.release.ReleaseDao;
 
@@ -34,12 +35,13 @@ public final class VersionManagerImpl implements VersionManager {
     /**
      * Instantiates a new version manager implementation.
      *
-     * @param releaseDao release DAO
+     * @param releaseDao     release DAO
+     * @param currentVersion current Holmes version
      */
     @Inject
-    public VersionManagerImpl(final ReleaseDao releaseDao) {
+    public VersionManagerImpl(final ReleaseDao releaseDao, @Named("currentVersion") final String currentVersion) {
         this.releaseDao = releaseDao;
-        this.currentVersion = this.getClass().getPackage().getImplementationVersion();
+        this.currentVersion = currentVersion;
     }
 
     /**

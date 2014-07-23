@@ -38,6 +38,20 @@ public class ReleaseDaoImplTest {
     }
 
     @Test
+    public void testUpdateReleaseEmpty() {
+        String releaseApiUrl = this.getClass().getResource("/githubReleaseApiEmpty.json").toString();
+        ReleaseDaoImpl releaseDao = new ReleaseDaoImpl();
+        releaseDao.updateRelease(releaseApiUrl);
+
+        Release latestRelease = releaseDao.getLatestRelease();
+        System.out.println(latestRelease);
+        assertNotNull(latestRelease);
+        assertFalse(latestRelease.isDraft());
+        assertTrue(latestRelease.getName().isEmpty());
+        assertTrue(latestRelease.getUrl().isEmpty());
+    }
+
+    @Test
     public void testUpdateReleaseBadUrl() {
         String releaseApiUrl = "badUrl";
         ReleaseDaoImpl releaseDao = new ReleaseDaoImpl();

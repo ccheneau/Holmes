@@ -82,6 +82,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.inject.name.Names.named;
 import static java.util.Collections.list;
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -98,6 +99,7 @@ public final class HolmesInjector extends AbstractModule {
     private final String uiDirectory;
     private final InetAddress localAddress;
     private final SocketFactory socketFactory;
+    private final String currentVersion;
 
     /**
      * Instantiates Holmes injector.
@@ -108,6 +110,7 @@ public final class HolmesInjector extends AbstractModule {
         localHolmesDataDir = getLocalHolmesDataDir();
         uiDirectory = getUiDirectory();
         socketFactory = SocketFactory.getDefault();
+        currentVersion = nullToEmpty(this.getClass().getPackage().getImplementationVersion());
         try {
             localAddress = getLocalAddress();
         } catch (IOException e) {
@@ -124,6 +127,7 @@ public final class HolmesInjector extends AbstractModule {
         bindConstant().annotatedWith(named("localHolmesDataDir")).to(localHolmesDataDir);
         bindConstant().annotatedWith(named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(named("uiDirectory")).to(uiDirectory);
+        bindConstant().annotatedWith(named("currentVersion")).to(currentVersion);
         bind(InetAddress.class).annotatedWith(named("localAddress")).toInstance(localAddress);
 
         // Bind utils
