@@ -37,7 +37,7 @@ public final class FileUtils {
      * Check if file is readable.
      *
      * @param file file
-     * @return true if this is a valid file
+     * @return true if file is a valid file
      */
     public static boolean isValidFile(File file) {
         return file.isFile() && file.canRead() && !file.isHidden();
@@ -46,18 +46,8 @@ public final class FileUtils {
     /**
      * Check if file is a readable directory.
      *
-     * @param fileName file name
-     * @return true if this is a valid directory
-     */
-    public static boolean isValidDirectory(String fileName) {
-        return isValidDirectory(new File(fileName));
-    }
-
-    /**
-     * Check if file is a readable directory.
-     *
      * @param file file
-     * @return true if this is a valid directory
+     * @return true if file is a valid directory
      */
     public static boolean isValidDirectory(File file) {
         return file.isDirectory() && file.canRead() && !file.isHidden();

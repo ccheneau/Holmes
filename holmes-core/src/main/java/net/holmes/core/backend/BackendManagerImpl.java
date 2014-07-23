@@ -32,6 +32,7 @@ import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -198,7 +199,7 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(folder.getPath(), FOLDER_PATH_ERROR);
 
         // Check folder path exists
-        if (!isValidDirectory(folder.getPath())) {
+        if (!isValidDirectory(new File(folder.getPath()))) {
             throw new BackendException(FOLDER_PATH_UNKNOWN_ERROR);
         }
 
