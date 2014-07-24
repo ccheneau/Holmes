@@ -18,8 +18,6 @@
 package net.holmes.core.test;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import net.holmes.core.business.configuration.AbstractConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.configuration.UnknownNodeException;
@@ -34,7 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 
 public class TestConfigurationDao extends AbstractConfigurationDao {
 
@@ -52,7 +52,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
         pictureFolders = newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
         podcasts = newArrayList();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
-        parameters = Maps.newHashMap();
+        parameters = newHashMap();
         for (ConfigurationParameter parameter : ConfigurationParameter.PARAMETERS) {
             parameters.put(parameter.getName(), parameter.format(parameter.getDefaultValue()));
         }
@@ -110,7 +110,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
     @Override
     public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
         try {
-            return Iterables.find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
+            return find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
                 @Override
                 public boolean apply(ConfigurationNode node) {
                     return node.getId().equals(nodeId);
@@ -127,7 +127,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
      */
     @Override
     public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return Iterables.find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
+        return find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
             @Override
             public boolean apply(ConfigurationNode node) {
                 if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {

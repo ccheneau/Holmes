@@ -17,7 +17,6 @@
 
 package net.holmes.core.service.upnp;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.streaming.StreamingManager;
@@ -41,6 +40,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_ENABLE;
 import static net.holmes.core.common.UpnpUtils.*;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
@@ -224,7 +224,7 @@ public final class UpnpService implements Service {
      * @return available Mime types
      */
     private Set<String> getAvailableMimeTypes(ProtocolInfos sinkProtocolInfo) {
-        Set<String> availableMimeTypes = Sets.newHashSet();
+        Set<String> availableMimeTypes = newHashSet();
         for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
             if (protocolInfo.getProtocol() == HTTP_GET) {
                 availableMimeTypes.add(protocolInfo.getContentFormat());

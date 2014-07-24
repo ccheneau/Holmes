@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.media.dao.icecast;
 
-import com.google.common.collect.Sets;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import org.junit.Test;
@@ -29,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -85,7 +85,7 @@ public class IcecastDaoImplTest {
         expect(configurationDao.getParameter(ICECAST_GENRE_LIST)).andReturn(newArrayList("genre1", "genre2")).atLeastOnce();
         expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(true).atLeastOnce();
         expect(configurationDao.getParameter(ICECAST_MAX_DOWNLOAD_RETRY)).andReturn(3).atLeastOnce();
-        expect(directory.getEntries()).andReturn(Sets.newHashSet(new IcecastEntry("name", "url", "type", "genre"))).atLeastOnce();
+        expect(directory.getEntries()).andReturn(newHashSet(new IcecastEntry("name", "url", "type", "genre"))).atLeastOnce();
         mediaIndexDao.removeChildren(isA(String.class));
         expectLastCall().atLeastOnce();
 

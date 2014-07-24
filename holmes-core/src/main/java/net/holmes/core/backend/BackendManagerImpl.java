@@ -18,8 +18,6 @@
 package net.holmes.core.backend;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendErrorMessage;
 import net.holmes.core.backend.exception.BackendException;
@@ -37,6 +35,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.transform;
 import static net.holmes.core.backend.exception.BackendErrorMessage.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
@@ -69,7 +69,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
-        return Lists.transform(configurationDao.getNodes(rootNode), new ConfigurationNodeFactory());
+        return transform(configurationDao.getNodes(rootNode), new ConfigurationNodeFactory());
     }
 
     /**
@@ -235,7 +235,7 @@ public final class BackendManagerImpl implements BackendManager {
      * @param message error message
      */
     private void checkNonEmpty(String toCheck, BackendErrorMessage message) {
-        if (Strings.isNullOrEmpty(toCheck)) {
+        if (isNullOrEmpty(toCheck)) {
             throw new BackendException(message);
         }
     }

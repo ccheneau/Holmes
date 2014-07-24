@@ -19,7 +19,6 @@ package net.holmes.core.business.media.dao.index;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
@@ -31,6 +30,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.synchronizedBiMap;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
@@ -48,7 +48,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
      * Instantiates a new media index dao implementation.
      */
     public MediaIndexDaoImpl() {
-        this.elements = Maps.synchronizedBiMap(HashBiMap.<String, MediaIndexElement>create());
+        this.elements = synchronizedBiMap(HashBiMap.<String, MediaIndexElement>create());
     }
 
     /**

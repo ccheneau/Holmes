@@ -19,6 +19,7 @@ package net.holmes.core.backend.response;
 
 import com.google.common.base.Objects;
 
+
 /**
  * Configuration folder.
  */

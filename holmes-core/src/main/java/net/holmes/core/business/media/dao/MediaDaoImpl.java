@@ -18,7 +18,6 @@
 package net.holmes.core.business.media.dao;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.dao.icecast.IcecastDao;
@@ -41,6 +40,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.google.common.collect.Lists.*;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.*;
@@ -76,7 +76,7 @@ public class MediaDaoImpl implements MediaDao {
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexDao = mediaIndexDao;
         this.icecastDao = icecastDao;
-        this.podcastCache = CacheBuilder.newBuilder()
+        this.podcastCache = newBuilder()
                 .maximumSize(configurationDao.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
                 .expireAfterWrite(configurationDao.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
                 .build();

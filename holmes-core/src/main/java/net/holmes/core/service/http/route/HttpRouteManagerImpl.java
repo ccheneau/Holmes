@@ -17,9 +17,9 @@
 
 package net.holmes.core.service.http.route;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
+
+import static com.google.common.collect.Maps.newConcurrentMap;
 
 /**
  * Http route manager implementation
@@ -31,7 +31,7 @@ public class HttpRouteManagerImpl implements HttpRouteManager {
      * Instantiates a new Http route manager implementation
      */
     public HttpRouteManagerImpl() {
-        routes = Maps.newConcurrentMap();
+        routes = newConcurrentMap();
     }
 
     /**

@@ -19,10 +19,10 @@ package net.holmes.core.common;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
 
 import java.util.Collection;
 
+import static com.google.common.collect.Iterables.*;
 import static net.holmes.core.common.MediaType.*;
 
 /**
@@ -44,8 +44,8 @@ public final class MimeType {
     private MimeType(final String mimeType) {
         this.mimeType = mimeType;
         Iterable<String> iterable = Splitter.on('/').split(mimeType);
-        this.type = MediaType.getByValue(Iterables.getFirst(iterable, ""));
-        this.subType = Iterables.getLast(iterable, "");
+        this.type = MediaType.getByValue(getFirst(iterable, ""));
+        this.subType = getLast(iterable, "");
     }
 
     /**

@@ -20,7 +20,6 @@ package net.holmes.core.business.media.dao.icecast;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
@@ -47,6 +46,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.Math.max;
 import static java.util.Calendar.HOUR;
 import static net.holmes.core.common.ConfigurationParameter.*;
@@ -310,7 +310,7 @@ public final class IcecastDaoImpl implements IcecastDao {
      * @throws ClassNotFoundException
      */
     private Set<IcecastEntry> getIcecastEntries(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        Set<IcecastEntry> entries = Sets.newHashSet();
+        Set<IcecastEntry> entries = newHashSet();
         try {
             Object object = ois.readObject();
             while (object != null) {

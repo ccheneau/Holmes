@@ -18,7 +18,6 @@
 package net.holmes.core.business.configuration;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.media.model.RootNode;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -88,7 +88,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
     @Override
     public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
         try {
-            return Iterables.find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
+            return find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
                 @Override
                 public boolean apply(ConfigurationNode node) {
                     return node.getId().equals(nodeId);
@@ -104,7 +104,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
      */
     @Override
     public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return Iterables.find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
+        return find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
             @Override
             public boolean apply(ConfigurationNode node) {
                 if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {

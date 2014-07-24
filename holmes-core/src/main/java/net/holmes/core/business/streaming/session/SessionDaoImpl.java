@@ -17,9 +17,9 @@
 
 package net.holmes.core.business.streaming.session;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
+
+import static com.google.common.collect.Maps.newConcurrentMap;
 
 
 /**
@@ -32,7 +32,7 @@ public final class SessionDaoImpl implements SessionDao {
      * Instantiates a new streaming session dao implementation.
      */
     public SessionDaoImpl() {
-        this.sessions = Maps.newConcurrentMap();
+        this.sessions = newConcurrentMap();
     }
 
     /**

@@ -18,11 +18,12 @@
 package net.holmes.core.business.configuration;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import net.holmes.core.business.media.model.RootNode;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.google.common.collect.Iterables.find;
 
 /**
  * Abstract class for configuration DAO
@@ -39,7 +40,7 @@ public abstract class AbstractConfigurationDao implements ConfigurationDao {
         List<ConfigurationNode> nodes = getNodes(rootNode);
 
         // Search for duplicate node
-        ConfigurationNode existingNode = Iterables.find(nodes, new Predicate<ConfigurationNode>() {
+        ConfigurationNode existingNode = find(nodes, new Predicate<ConfigurationNode>() {
             @Override
             public boolean apply(ConfigurationNode aNode) {
                 return node.equals(aNode);

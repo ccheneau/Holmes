@@ -17,8 +17,6 @@
 
 package net.holmes.core.business.mimetype;
 
-import com.google.common.base.Strings;
-import com.google.common.io.Files;
 import net.holmes.core.common.MimeType;
 import net.holmes.core.common.exception.HolmesRuntimeException;
 
@@ -28,6 +26,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Properties;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.io.Files.getFileExtension;
 
 /**
  * Mime type manager implementation.
@@ -55,7 +56,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     @Override
     public MimeType getMimeType(final String fileName) {
         // Get file extension
-        String ext = Files.getFileExtension(fileName).toLowerCase();
+        String ext = getFileExtension(fileName).toLowerCase();
 
         // Get mime type
         return properties.getProperty(ext) == null ? null : MimeType.valueOf(properties.getProperty(ext));
@@ -66,7 +67,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
      */
     @Override
     public boolean isMimeTypeCompliant(final MimeType mimeType, final Collection<String> availableMimeTypes) {
-        return mimeType == null || Strings.isNullOrEmpty(mimeType.getMimeType())
+        return mimeType == null || isNullOrEmpty(mimeType.getMimeType())
                 || mimeType.isCompliant(availableMimeTypes)
                 || isAliasMimeTypeCompliant(mimeType, availableMimeTypes);
     }

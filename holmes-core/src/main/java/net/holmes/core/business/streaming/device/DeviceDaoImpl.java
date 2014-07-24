@@ -18,12 +18,12 @@
 package net.holmes.core.business.streaming.device;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
 
 import java.util.Collection;
 import java.util.Map;
 
 import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * Device dao implementation.
@@ -35,7 +35,7 @@ public final class DeviceDaoImpl implements DeviceDao {
      * Instantiates a new device dao implementation.
      */
     public DeviceDaoImpl() {
-        this.devices = Maps.newHashMap();
+        this.devices = newHashMap();
     }
 
     /**

@@ -23,14 +23,14 @@ package net.holmes.core.business.streaming.airplay.controlpoint;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Maps.newHashMap;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 
 /**
@@ -43,8 +43,8 @@ public final class CommandResponse {
 
     private int code;
     private String message;
-    private final Map<String, String> httpHeaders = Maps.newHashMap();
-    private final Map<String, String> contentParameters = Maps.newHashMap();
+    private final Map<String, String> httpHeaders = newHashMap();
+    private final Map<String, String> contentParameters = newHashMap();
 
     public int getCode() {
         return code;
@@ -92,7 +92,7 @@ public final class CommandResponse {
         // Decode http headers on next lines
         for (int i = 1; i < responseLines.size(); i++) {
             Iterable<String> it = Splitter.on(PARAMETER_SEPARATOR).trimResults().split(responseLines.get(i));
-            httpHeaders.put(Iterables.get(it, 0), Iterables.getLast(it));
+            httpHeaders.put(get(it, 0), getLast(it));
         }
     }
 
@@ -104,8 +104,8 @@ public final class CommandResponse {
     public void decodeContentParameters(String content) {
         for (String line : Splitter.on(EOL).split(content)) {
             Iterable<String> it = Splitter.on(PARAMETER_SEPARATOR).trimResults().split(line);
-            if (Iterables.size(it) > 1) {
-                contentParameters.put(Iterables.get(it, 0), Iterables.getLast(it));
+            if (size(it) > 1) {
+                contentParameters.put(get(it, 0), getLast(it));
             }
         }
     }

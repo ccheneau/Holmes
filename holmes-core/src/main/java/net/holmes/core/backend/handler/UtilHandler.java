@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend.handler;
 
-import com.google.common.collect.Maps;
 import net.holmes.core.business.version.ReleaseInfo;
 import net.holmes.core.business.version.VersionManager;
 
@@ -29,6 +28,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
@@ -122,7 +122,7 @@ public final class UtilHandler {
          */
         public Folder(final String data, final String path) {
             this.data = data;
-            this.metadata = Maps.newHashMap();
+            this.metadata = newHashMap();
             this.metadata.put("path", path);
             this.state = "closed";
         }

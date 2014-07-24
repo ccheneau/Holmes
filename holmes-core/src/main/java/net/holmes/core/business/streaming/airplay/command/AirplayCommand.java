@@ -17,15 +17,16 @@
 
 package net.holmes.core.business.streaming.airplay.command;
 
-import com.google.common.collect.Maps;
 import io.netty.handler.codec.http.HttpMethod;
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
 import java.util.Map;
 
+import static com.google.common.collect.Maps.*;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpMethod.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static java.util.Map.Entry;
 
 /**
  * Airplay command.
@@ -50,8 +51,8 @@ public abstract class AirplayCommand {
     public AirplayCommand(final CommandType type, final CommandFailureHandler failureHandler) {
         this.type = type;
         this.failureHandler = failureHandler;
-        this.urlParameters = Maps.newHashMap();
-        this.postParameters = Maps.newLinkedHashMap();
+        this.urlParameters = newHashMap();
+        this.postParameters = newLinkedHashMap();
     }
 
     /**
@@ -64,7 +65,7 @@ public abstract class AirplayCommand {
         String requestContent = getRequestContent();
 
         // Http command
-        sbCommand.append(type.getMethod()).append(SPACE).append(getRequestUrl()).append(SPACE).append(HTTP_1_1.text()).append(EOL);
+        sbCommand.append(type.getMethod()).append(SPACE).append(buildRequestUrl()).append(SPACE).append(HTTP_1_1.text()).append(EOL);
 
         // Http headers
         sbCommand.append(CONTENT_LENGTH).append(PARAMETER_SEPARATOR).append(requestContent == null ? 0 : requestContent.length()).append(EOL);
@@ -118,17 +119,17 @@ public abstract class AirplayCommand {
     }
 
     /**
-     * Get request Url.
+     * Build request Url.
      *
      * @return request Url
      */
-    private String getRequestUrl() {
+    private String buildRequestUrl() {
         StringBuilder sbUrl = new StringBuilder();
         sbUrl.append("/").append(type.getValue());
         if (!urlParameters.isEmpty()) {
             sbUrl.append("?");
-            for (UrlParameter param : urlParameters.keySet()) {
-                sbUrl.append(param.getValue()).append("=").append(urlParameters.get(param)).append("&");
+            for (Entry<UrlParameter, String> paramEntry : urlParameters.entrySet()) {
+                sbUrl.append(paramEntry.getKey().getValue()).append("=").append(paramEntry.getValue()).append("&");
             }
             sbUrl.deleteCharAt(sbUrl.length() - 1);
         }
