@@ -79,11 +79,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.inject.name.Names.named;
+import static java.nio.file.Paths.get;
 import static java.util.Collections.list;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static net.holmes.core.common.SystemProperty.*;
@@ -199,7 +199,7 @@ public final class HolmesInjector extends AbstractModule {
      */
     private static String getLocalHolmesDataDir() {
         // Check directory and create it if it does not exist
-        Path holmesDataPath = Paths.get(USER_HOME.getValue(), ".holmes");
+        Path holmesDataPath = get(USER_HOME.getValue(), ".holmes");
         if ((Files.exists(holmesDataPath) && Files.isDirectory(holmesDataPath)) || holmesDataPath.toFile().mkdirs()) {
             return holmesDataPath.toString();
         }
@@ -213,7 +213,7 @@ public final class HolmesInjector extends AbstractModule {
      * @return UI directory
      */
     private static String getUiDirectory() {
-        Path uiPath = Paths.get(HOLMES_HOME.getValue(), "ui");
+        Path uiPath = get(HOLMES_HOME.getValue(), "ui");
         if (!Files.exists(uiPath)) {
             throw new HolmesRuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
         }

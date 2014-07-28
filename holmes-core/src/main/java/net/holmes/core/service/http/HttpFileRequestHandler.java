@@ -18,13 +18,11 @@
 package net.holmes.core.service.http;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
-import io.netty.util.CharsetUtil;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.common.MimeType;
 
@@ -39,6 +37,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.netty.buffer.Unpooled.copiedBuffer;
 import static io.netty.channel.ChannelFutureListener.CLOSE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.*;
@@ -46,6 +45,8 @@ import static io.netty.handler.codec.http.HttpHeaders.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
+import static io.netty.util.CharsetUtil.UTF_8;
+import static java.util.TimeZone.getTimeZone;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
 import static net.holmes.core.common.FileUtils.isValidFile;
@@ -56,8 +57,8 @@ import static net.holmes.core.common.FileUtils.isValidFile;
 public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<HttpFileRequest> {
     private static final Pattern PATTERN_RANGE_START_OFFSET = Pattern.compile("^(?i)\\s*bytes\\s*=\\s*(\\d+)\\s*-.*$");
     private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
-    private static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
     private static final int CHUNK_SIZE = 8192;
+    private static final TimeZone GMT_TIMEZONE = getTimeZone("GMT");
     private final int httpCacheSecond;
 
     /**
@@ -93,7 +94,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
 
         // Add HTTP headers to response
         addContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        addDateHeader(response, file, request.isStaticFile());
+        addDateHeader(response, file, request.isStaticResource());
         boolean keepAlive = addKeepAliveHeader(response, request.getHttpRequest());
 
         // Write the response
@@ -146,7 +147,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
             response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else {
             // Start offset is not correct
-            throw new HttpFileRequestException("Invalid start offset", REQUESTED_RANGE_NOT_SATISFIABLE);
+            throw new HttpFileRequestException("Invalid start offset:" + startOffset, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
         // Add server header
@@ -191,23 +192,24 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     /**
      * Add date header.
      *
-     * @param response   HTTP response
-     * @param file       requested file
-     * @param staticFile whether file is a static resource
+     * @param response       HTTP response
+     * @param file           requested file
+     * @param staticResource whether file is a static resource
      */
-    private void addDateHeader(final HttpResponse response, final File file, final boolean staticFile) {
+    private void addDateHeader(final HttpResponse response, final File file, final boolean staticResource) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
-        dateFormatter.setTimeZone(TimeZone.getTimeZone(HTTP_DATE_GMT_TIMEZONE));
-        Calendar time = Calendar.getInstance();
+        dateFormatter.setTimeZone(GMT_TIMEZONE);
+
+        Calendar calendar = Calendar.getInstance();
 
         // Add date header
-        response.headers().set(DATE, dateFormatter.format(time.getTime()));
+        response.headers().set(DATE, dateFormatter.format(calendar.getTime()));
         response.headers().set(LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
 
         // Add cache header for static resources
-        if (staticFile && httpCacheSecond > 0) {
-            time.add(Calendar.SECOND, httpCacheSecond);
-            response.headers().set(EXPIRES, dateFormatter.format(time.getTime()));
+        if (staticResource && httpCacheSecond > 0) {
+            calendar.add(Calendar.SECOND, httpCacheSecond);
+            response.headers().set(EXPIRES, dateFormatter.format(calendar.getTime()));
             response.headers().set(CACHE_CONTROL, "private, max-age=" + httpCacheSecond);
         }
     }
@@ -237,7 +239,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      */
     private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
         // Build error response
-        ByteBuf buffer = Unpooled.copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", CharsetUtil.UTF_8);
+        ByteBuf buffer = copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", UTF_8);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
         response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 
