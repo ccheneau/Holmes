@@ -40,7 +40,8 @@ import java.util.regex.Pattern;
 import static io.netty.buffer.Unpooled.copiedBuffer;
 import static io.netty.channel.ChannelFutureListener.CLOSE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
-import static io.netty.handler.codec.http.HttpHeaders.Values.*;
+import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
+import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
 import static io.netty.handler.codec.http.HttpHeaders.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -59,6 +60,20 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
     private static final int CHUNK_SIZE = 8192;
     private static final TimeZone GMT_TIMEZONE = getTimeZone("GMT");
+
+    private static final CharSequence X_SERVER = newEntity(SERVER);
+    private static final CharSequence X_SERVER_NAME = newEntity(HOLMES_HTTP_SERVER_NAME.toString());
+    private static final CharSequence X_ACCEPT_RANGES = newEntity(ACCEPT_RANGES);
+    private static final CharSequence X_CONTENT_RANGE = newEntity(CONTENT_RANGE);
+    private static final CharSequence X_BYTES = newEntity(BYTES);
+    private static final CharSequence X_DATE = newEntity(DATE);
+    private static final CharSequence X_LAST_MODIFIED = newEntity(LAST_MODIFIED);
+    private static final CharSequence X_EXPIRES = newEntity(EXPIRES);
+    private static final CharSequence X_CACHE_CONTROL = newEntity(CACHE_CONTROL);
+    private static final CharSequence X_CONTENT_TYPE = newEntity(CONTENT_TYPE);
+    private static final CharSequence X_CONNECTION = newEntity(CONNECTION);
+    private static final CharSequence X_KEEP_ALIVE = newEntity(KEEP_ALIVE);
+
     private final int httpCacheSecond;
 
     /**
@@ -139,19 +154,19 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         HttpResponse response;
         if (startOffset == 0) {
             // Instantiates a new response
-            response = new DefaultHttpResponse(HTTP_1_1, OK);
-            response.headers().set(ACCEPT_RANGES, BYTES);
+            response = new DefaultHttpResponse(HTTP_1_1, OK, false);
+            response.headers().set(X_ACCEPT_RANGES, X_BYTES);
         } else if (startOffset < fileLength) {
             // Instantiates a new response with content range
-            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT);
-            response.headers().set(CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
+            response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT, false);
+            response.headers().set(X_CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else {
             // Start offset is not correct
             throw new HttpFileRequestException("Invalid start offset:" + startOffset, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
         // Add server header
-        response.headers().set(SERVER, HOLMES_HTTP_SERVER_NAME.toString());
+        response.headers().set(X_SERVER, X_SERVER_NAME);
 
         return response;
     }
@@ -163,7 +178,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @return start offset
      * @throws HttpFileRequestException
      */
-    private long getStartOffset(final FullHttpRequest httpRequest) throws HttpFileRequestException {
+    private long getStartOffset(final HttpRequest httpRequest) throws HttpFileRequestException {
         long startOffset = 0;
         String range = httpRequest.headers().get(RANGE);
         if (range != null) {
@@ -186,7 +201,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      */
     private void addContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
         setContentLength(response, fileLength);
-        response.headers().set(CONTENT_TYPE, mimeType.getMimeType());
+        response.headers().set(X_CONTENT_TYPE, mimeType.getMimeType());
     }
 
     /**
@@ -203,14 +218,14 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         Calendar calendar = Calendar.getInstance();
 
         // Add date header
-        response.headers().set(DATE, dateFormatter.format(calendar.getTime()));
-        response.headers().set(LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
+        response.headers().set(X_DATE, dateFormatter.format(calendar.getTime()));
+        response.headers().set(X_LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
 
         // Add cache header for static resources
         if (staticResource && httpCacheSecond > 0) {
             calendar.add(Calendar.SECOND, httpCacheSecond);
-            response.headers().set(EXPIRES, dateFormatter.format(calendar.getTime()));
-            response.headers().set(CACHE_CONTROL, "private, max-age=" + httpCacheSecond);
+            response.headers().set(X_EXPIRES, dateFormatter.format(calendar.getTime()));
+            response.headers().set(X_CACHE_CONTROL, "private, max-age=" + httpCacheSecond);
         }
     }
 
@@ -224,7 +239,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private boolean addKeepAliveHeader(final HttpResponse response, final HttpMessage request) {
         boolean keepAlive = isKeepAlive(request);
         if (keepAlive) {
-            response.headers().set(CONNECTION, KEEP_ALIVE);
+            response.headers().set(X_CONNECTION, X_KEEP_ALIVE);
         }
 
         return keepAlive;
@@ -241,7 +256,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Build error response
         ByteBuf buffer = copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", UTF_8);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.headers().set(X_CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         // Close the connection as soon as the error message is sent.
         context.channel().writeAndFlush(response).addListener(CLOSE);
