@@ -78,7 +78,21 @@ public class SystemTrayIcon extends TrayIcon {
      */
     private void showPopupMenu(final MouseEvent event) {
         if (popupMenu != null) {
-            DIALOG.setLocation(event.getX(), event.getY() - popupMenu.getPreferredSize().height);
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            int maxWindowHeight = env.getMaximumWindowBounds().height;
+
+            // Get y location for popup menu
+            int yLocation;
+            if (event.getY() > maxWindowHeight) {
+                // TaskBar is on bottom of the screen
+                yLocation = maxWindowHeight - popupMenu.getPreferredSize().height;
+            } else {
+                // TaskBar is on top of the screen
+                yLocation = env.getDefaultScreenDevice().getDisplayMode().getHeight() - env.getMaximumWindowBounds().height;
+            }
+
+            // Show popup menu
+            DIALOG.setLocation(event.getX(), yLocation);
             DIALOG.setVisible(true);
             popupMenu.show(DIALOG.getContentPane(), 0, 0);
             DIALOG.toFront();
