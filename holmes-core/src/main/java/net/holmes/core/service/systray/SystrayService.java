@@ -132,19 +132,17 @@ public final class SystrayService implements Service {
             return;
         }
 
-        boolean showMenuIcon = configurationDao.getParameter(SYSTRAY_ICONS_IN_MENU);
-
         // Create a popup menu
         final JPopupMenu popupMenu = new JPopupMenu();
 
         // Add items to popup menu
-        popupMenu.add(buildUIMenuItem(showMenuIcon));
+        popupMenu.add(buildUIMenuItem());
         popupMenu.addSeparator();
-        popupMenu.add(buildSiteMenuItem(showMenuIcon));
-        popupMenu.add(buildWikiMenuItem(showMenuIcon));
-        popupMenu.add(buildLogsMenuItem(showMenuIcon));
+        popupMenu.add(buildSiteMenuItem());
+        popupMenu.add(buildWikiMenuItem());
+        popupMenu.add(buildLogsMenuItem());
         popupMenu.addSeparator();
-        popupMenu.add(buildQuitMenuItem(showMenuIcon));
+        popupMenu.add(buildQuitMenuItem());
 
         // Add tray icon
         SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(sysTrayImage, resourceBundle.getString("systray.title"));
@@ -160,10 +158,9 @@ public final class SystrayService implements Service {
     /**
      * Build Holmes wiki menu item.
      *
-     * @param showMenuIcon whether to show icon
      * @return Holmes wiki menu item
      */
-    private JMenuItem buildWikiMenuItem(boolean showMenuIcon) {
+    private JMenuItem buildWikiMenuItem() {
         // Holmes wiki menu item
         return new SystrayMenuItem() {
             @Override
@@ -174,16 +171,15 @@ public final class SystrayService implements Service {
                     throw new HolmesException(e);
                 }
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", showMenuIcon, null);
+        }.getMenuItem(resourceBundle.getString("systray.holmes.wiki"), "icon-info.png", null);
     }
 
     /**
      * Build Holmes site menu item.
      *
-     * @param showMenuIcon whether to show icon
      * @return Holmes site menu item
      */
-    private JMenuItem buildSiteMenuItem(boolean showMenuIcon) {
+    private JMenuItem buildSiteMenuItem() {
         return new SystrayMenuItem() {
             @Override
             public void onClick() throws HolmesException {
@@ -193,16 +189,15 @@ public final class SystrayService implements Service {
                     throw new HolmesException(e);
                 }
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", showMenuIcon, null);
+        }.getMenuItem(resourceBundle.getString("systray.holmes.home"), "icon-site.png", null);
     }
 
     /**
      * Build Holmes UI menu item.
      *
-     * @param showMenuIcon whether to show icon
      * @return Holmes UI menu item
      */
-    private JMenuItem buildUIMenuItem(boolean showMenuIcon) {
+    private JMenuItem buildUIMenuItem() {
         final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
         return new SystrayMenuItem() {
             @Override
@@ -213,16 +208,15 @@ public final class SystrayService implements Service {
                     throw new HolmesException(e);
                 }
             }
-        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", showMenuIcon, getFont(MENU_ITEM_BOLD_FONT));
+        }.getMenuItem(resourceBundle.getString("systray.holmes.ui"), "icon-logo.png", getFont(MENU_ITEM_BOLD_FONT));
     }
 
     /**
      * Build Holmes logs menu item.
      *
-     * @param showMenuIcon whether to show icon
      * @return Holmes logs menu item
      */
-    private JMenuItem buildLogsMenuItem(boolean showMenuIcon) {
+    private JMenuItem buildLogsMenuItem() {
         return new SystrayMenuItem() {
             @Override
             public void onClick() throws HolmesException {
@@ -232,22 +226,21 @@ public final class SystrayService implements Service {
                     throw new HolmesException(e);
                 }
             }
-        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", showMenuIcon, null);
+        }.getMenuItem(resourceBundle.getString("systray.logs"), "icon-logs.png", null);
     }
 
     /**
      * Build Holmes quit menu item.
      *
-     * @param showMenuIcon whether to show icon
      * @return Holmes quit menu item
      */
-    private JMenuItem buildQuitMenuItem(boolean showMenuIcon) {
+    private JMenuItem buildQuitMenuItem() {
         return new SystrayMenuItem() {
             @Override
             public void onClick() {
                 System.exit(0);
             }
-        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", showMenuIcon, null);
+        }.getMenuItem(resourceBundle.getString("systray.quit"), "icon-exit.png", null);
     }
 
     /**
@@ -260,18 +253,15 @@ public final class SystrayService implements Service {
          *
          * @param text     menu item text
          * @param iconPath path to icon resource
-         * @param showIcon whether to show icon
          * @param font     menu item font
          * @return menu item
          */
-        public JMenuItem getMenuItem(final String text, final String iconPath, final boolean showIcon, final Font font) {
+        public JMenuItem getMenuItem(final String text, final String iconPath, final Font font) {
             Icon icon = null;
-            if (showIcon) {
-                try {
-                    icon = new ImageIcon(getData(SYSTRAY, iconPath));
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+            try {
+                icon = new ImageIcon(getData(SYSTRAY, iconPath));
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage(), e);
             }
 
             JMenuItem menuItem = new JMenuItem(text, icon);

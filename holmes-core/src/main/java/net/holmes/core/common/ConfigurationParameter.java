@@ -115,28 +115,24 @@ public abstract class ConfigurationParameter<T> {
      * Enable system tray icon
      */
     public static final ConfigurationBooleanParameter SYSTRAY_ENABLE = new ConfigurationBooleanParameter("enable_systray", true);
-    /**
-     * Whether to show icons on system tray sub menu
-     */
-    public static final ConfigurationBooleanParameter SYSTRAY_ICONS_IN_MENU = new ConfigurationBooleanParameter("icons_in_systray_menu", true);
 
     /**
-     * UPnp parameters
+     * UPnP parameters
      */
     /**
-     * Enable Upnp server
+     * Enable UPnP server
      */
     public static final ConfigurationBooleanParameter UPNP_SERVER_ENABLE = new ConfigurationBooleanParameter("enable_upnp_server", true);
     /**
-     * Upnp server name
+     * UPnP server name
      */
     public static final ConfigurationStringParameter UPNP_SERVER_NAME = new ConfigurationStringParameter("upnp_server_name", "Holmes media server");
     /**
-     * Whether to add subtitle files (srt..) to Upnp server
+     * Whether to add subtitle files (srt..) to UPnP server
      */
     public static final ConfigurationBooleanParameter UPNP_ADD_SUBTITLE = new ConfigurationBooleanParameter("upnp_add_subtitle", true);
     /**
-     * Upnp service port
+     * UPnP service port
      */
     public static final ConfigurationIntParameter UPNP_SERVICE_PORT = new ConfigurationIntParameter("upnp_service_port", 5002);
 
@@ -158,7 +154,6 @@ public abstract class ConfigurationParameter<T> {
             RELEASE_CHECK_DELAY_HOURS,
             STREAMING_STATUS_UPDATE_DELAY_SECONDS,
             SYSTRAY_ENABLE,
-            SYSTRAY_ICONS_IN_MENU,
             UPNP_ADD_SUBTITLE,
             UPNP_SERVER_ENABLE,
             UPNP_SERVER_NAME,
@@ -215,7 +210,7 @@ public abstract class ConfigurationParameter<T> {
     }
 
     /**
-     * String implementation for configuration parameter.
+     * String configuration parameter.
      */
     public static final class ConfigurationStringParameter extends ConfigurationParameter<String> {
 
@@ -239,7 +234,7 @@ public abstract class ConfigurationParameter<T> {
     }
 
     /**
-     * Boolean implementation for configuration parameter.
+     * Boolean configuration parameter.
      */
     public static final class ConfigurationBooleanParameter extends ConfigurationParameter<Boolean> {
 
@@ -263,7 +258,7 @@ public abstract class ConfigurationParameter<T> {
     }
 
     /**
-     * Integer implementation for configuration parameter.
+     * Integer configuration parameter.
      */
     public static final class ConfigurationIntParameter extends ConfigurationParameter<Integer> {
 
@@ -287,7 +282,7 @@ public abstract class ConfigurationParameter<T> {
     }
 
     /**
-     * String list implementation for configuration parameter.
+     * String list configuration parameter.
      */
     public static final class ConfigurationListParameter extends ConfigurationParameter<List<String>> {
         private static final char SEPARATOR = ',';
