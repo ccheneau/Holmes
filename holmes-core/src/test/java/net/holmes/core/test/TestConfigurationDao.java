@@ -117,7 +117,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
                 }
             });
         } catch (NoSuchElementException e) {
-            throw new UnknownNodeException(nodeId);
+            throw new UnknownNodeException(nodeId, e);
         }
 
     }

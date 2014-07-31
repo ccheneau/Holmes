@@ -131,7 +131,7 @@ public class AbstractConfigurationDaoTest {
     public void testEditUnknownNode() throws IOException, UnknownNodeException {
         AbstractConfigurationDao configurationDao = createMock(AbstractConfigurationDao.class);
 
-        expect(configurationDao.getNode(PICTURE, "id")).andThrow(new UnknownNodeException("id"));
+        expect(configurationDao.getNode(PICTURE, "id")).andThrow(new UnknownNodeException("id", null));
 
         replay(configurationDao);
         configurationDao.editNode(PICTURE, "id", "newLabel", "newPath");
@@ -174,7 +174,7 @@ public class AbstractConfigurationDaoTest {
     public void testRemoveUnknownNode() throws IOException, UnknownNodeException {
         AbstractConfigurationDao configurationDao = createMock(AbstractConfigurationDao.class);
 
-        expect(configurationDao.getNode(PICTURE, "id")).andThrow(new UnknownNodeException("id"));
+        expect(configurationDao.getNode(PICTURE, "id")).andThrow(new UnknownNodeException("id", null));
 
         replay(configurationDao);
         configurationDao.removeNode("id", PICTURE);

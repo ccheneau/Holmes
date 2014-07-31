@@ -90,7 +90,7 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationDao.getNode(eq(AUDIO), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id"));
+        expect(configurationDao.getNode(eq(AUDIO), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id", null));
 
         replay(configurationDao, eventBus);
 
@@ -107,7 +107,7 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationDao.getNode(eq(PODCAST), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id"));
+        expect(configurationDao.getNode(eq(PODCAST), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id", null));
 
         replay(configurationDao, eventBus);
 
@@ -419,7 +419,7 @@ public class BackendManagerImplTest {
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationDao.findNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(null);
-        expect(configurationDao.editNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new UnknownNodeException("bad_id"));
+        expect(configurationDao.editNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new UnknownNodeException("bad_id", null));
 
         replay(configurationDao, eventBus);
 
@@ -437,7 +437,7 @@ public class BackendManagerImplTest {
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationDao.findNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andReturn(null);
-        expect(configurationDao.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id"));
+        expect(configurationDao.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id", null));
 
         replay(configurationDao, eventBus);
 
@@ -529,7 +529,7 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationDao.removeNode("bad_folder", AUDIO)).andThrow(new UnknownNodeException("bad_folder"));
+        expect(configurationDao.removeNode("bad_folder", AUDIO)).andThrow(new UnknownNodeException("bad_folder", null));
 
         replay(configurationDao, eventBus);
 
@@ -546,7 +546,7 @@ public class BackendManagerImplTest {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationDao.removeNode("bad_id", PODCAST)).andThrow(new UnknownNodeException("bad_id"));
+        expect(configurationDao.removeNode("bad_id", PODCAST)).andThrow(new UnknownNodeException("bad_id", null));
 
         replay(configurationDao, eventBus);
 
