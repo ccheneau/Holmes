@@ -137,11 +137,11 @@ public final class SystrayService implements Service {
 
         // Add items to popup menu
         popupMenu.add(buildUIMenuItem());
-        popupMenu.addSeparator();
+        popupMenu.add(new JSeparatorEx());
         popupMenu.add(buildSiteMenuItem());
         popupMenu.add(buildWikiMenuItem());
         popupMenu.add(buildLogsMenuItem());
-        popupMenu.addSeparator();
+        popupMenu.add(new JSeparatorEx());
         popupMenu.add(buildQuitMenuItem());
 
         // Add tray icon
@@ -270,9 +270,6 @@ public final class SystrayService implements Service {
             }
 
             menuItem.addActionListener(new ActionListener() {
-                /**
-                 * {@inheritDoc}
-                 */
                 @Override
                 public void actionPerformed(ActionEvent event) {
                     try {
@@ -291,5 +288,20 @@ public final class SystrayService implements Service {
          * @throws HolmesException
          */
         public abstract void onClick() throws HolmesException;
+    }
+
+    /**
+     * Extends JSeparator with minimum height
+     */
+    private static final class JSeparatorEx extends JSeparator {
+        private static final int SEPARATOR_MIN_HEIGHT = 4;
+
+        public Dimension getPreferredSize() {
+            Dimension dimension = super.getPreferredSize();
+            if (dimension.height == 0) {
+                dimension.height = SEPARATOR_MIN_HEIGHT;
+            }
+            return dimension;
+        }
     }
 }
