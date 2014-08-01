@@ -62,8 +62,6 @@ import net.holmes.core.service.airplay.AirplayService;
 import net.holmes.core.service.http.HttpFileRequestDecoder;
 import net.holmes.core.service.http.HttpFileRequestHandler;
 import net.holmes.core.service.http.HttpService;
-import net.holmes.core.service.http.route.HttpRouteManager;
-import net.holmes.core.service.http.route.HttpRouteManagerProvider;
 import net.holmes.core.service.scheduled.CacheCleanerService;
 import net.holmes.core.service.scheduled.HolmesSchedulerService;
 import net.holmes.core.service.scheduled.IcecastDownloadService;
@@ -147,7 +145,6 @@ public final class HolmesInjector extends AbstractModule {
         bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
 
         // Bind business managers
-        bind(HttpRouteManager.class).toProvider(HttpRouteManagerProvider.class).in(Singleton.class);
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
         bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
         bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);

@@ -25,9 +25,8 @@ import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
+import net.holmes.core.common.Application;
 import net.holmes.core.common.MimeType;
-import net.holmes.core.service.http.route.HttpRoute;
-import net.holmes.core.service.http.route.HttpRouteManager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,7 +42,6 @@ import static net.holmes.core.common.Constants.*;
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
     private final MediaManager mediaManager;
     private final MimeTypeManager mimeTypeManager;
-    private final HttpRouteManager routeManager;
     private final String uiDirectory;
 
     /**
@@ -51,14 +49,12 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
      *
      * @param mediaManager    media manager
      * @param mimeTypeManager mime type manager
-     * @param routeManager    Http route manager
      * @param uiDirectory     UI base directory
      */
     @Inject
-    public HttpFileRequestDecoder(final MediaManager mediaManager, final MimeTypeManager mimeTypeManager, final HttpRouteManager routeManager, @Named("uiDirectory") final String uiDirectory) {
+    public HttpFileRequestDecoder(final MediaManager mediaManager, final MimeTypeManager mimeTypeManager, @Named("uiDirectory") final String uiDirectory) {
         this.mediaManager = mediaManager;
         this.mimeTypeManager = mimeTypeManager;
-        this.routeManager = routeManager;
         this.uiDirectory = uiDirectory;
     }
 
@@ -106,9 +102,9 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         // Get path and remove trailing slashes
         String fileName = decoder.path().replaceAll("/+$", "");
 
-        // Check if fileName is a default Holmes web application
-        HttpRoute route = routeManager.getHttpRoute(fileName);
+        // Check if fileName is a Holmes web application
+        Application application = Application.findByPath(fileName);
 
-        return route != null ? fileName + route.getDefaultFile() : fileName;
+        return application != null ? fileName + application.getWelcomeFile() : fileName;
     }
 }

@@ -40,6 +40,7 @@ import static java.awt.Font.BOLD;
 import static java.awt.SystemTray.*;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.UIManager.getFont;
+import static net.holmes.core.common.Application.ADMIN;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
@@ -198,7 +199,7 @@ public final class SystrayService implements Service {
      * @return Holmes UI menu item
      */
     private JMenuItem buildUIMenuItem() {
-        final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + "/admin";
+        final String holmesAdminUrl = "http://localhost:" + configurationDao.getParameter(HTTP_SERVER_PORT) + ADMIN.getPath();
         return new SystrayMenuItem() {
             @Override
             public void onClick() throws HolmesException {
@@ -296,6 +297,10 @@ public final class SystrayService implements Service {
     private static final class JSeparatorEx extends JSeparator {
         private static final int SEPARATOR_MIN_HEIGHT = 4;
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public Dimension getPreferredSize() {
             Dimension dimension = super.getPreferredSize();
             if (dimension.height == 0) {
