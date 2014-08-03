@@ -88,7 +88,7 @@ public class SystemTrayIcon extends TrayIcon {
                 yLocation = maxWindowHeight - popupMenu.getPreferredSize().height;
             } else {
                 // TaskBar is on top of the screen
-                yLocation = env.getDefaultScreenDevice().getDisplayMode().getHeight() - env.getMaximumWindowBounds().height;
+                yLocation = env.getDefaultScreenDevice().getDisplayMode().getHeight() - maxWindowHeight;
             }
 
             // Show popup menu
