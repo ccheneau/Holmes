@@ -123,15 +123,15 @@ public final class HttpService implements Service {
                 .childOption(ALLOCATOR, DEFAULT)
                 .childOption(SO_KEEPALIVE, true);
 
-        // Register backend JAX-RS handlers declared in Guice injector
+        // Register backend JAX-RS handlers (declared in Guice injector) to RestEasy
         ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
         processor.processInjector(injector);
 
         // Bind and start service to accept incoming connections.
-        InetSocketAddress bindAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
-        bootstrap.bind(bindAddress).syncUninterruptibly();
+        InetSocketAddress boundAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
+        bootstrap.bind(boundAddress).syncUninterruptibly();
 
-        LOGGER.info("HTTP service bound on {}", bindAddress);
+        LOGGER.info("HTTP service bound on {}", boundAddress);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class HttpService implements Service {
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
 
-        // Stop resteasy
+        // Stop RestEasy
         deployment.stop();
 
         LOGGER.info("HTTP service stopped");

@@ -33,7 +33,7 @@ public final class EventBusListener implements TypeListener {
     private final EventBus eventBus;
 
     /**
-     * Instantiates a new custom type listener.
+     * Instantiates a new eventBus listener.
      *
      * @param eventBus event bus
      */

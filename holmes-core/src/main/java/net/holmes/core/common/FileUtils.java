@@ -31,6 +31,7 @@ public final class FileUtils {
      * Private constructor
      */
     private FileUtils() {
+        // Nothing
     }
 
     /**

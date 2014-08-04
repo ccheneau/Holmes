@@ -113,10 +113,10 @@ public final class UpnpUtils {
     }
 
     /**
-     * Get UPnp icons.
+     * Get Upnp icons.
      *
-     * @return icons or null
-     * @throws java.io.IOException
+     * @return icons
+     * @throws IOException
      */
     public static Icon[] getIcons() throws IOException {
         return new Icon[]{getUpnpLargeIcon(), getUpnpSmallIcon()};
