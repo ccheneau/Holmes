@@ -25,7 +25,7 @@ import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
-import net.holmes.core.common.Application;
+import net.holmes.core.common.ClientApplication;
 import net.holmes.core.common.MimeType;
 
 import javax.inject.Inject;
@@ -102,9 +102,9 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         // Get path and remove trailing slashes
         String fileName = decoder.path().replaceAll("/+$", "");
 
-        // Check if fileName is a Holmes web application
-        Application application = Application.findByPath(fileName);
+        // Check if fileName is a Holmes client web application
+        ClientApplication clientApplication = ClientApplication.findByPath(fileName);
 
-        return application != null ? fileName + application.getWelcomeFile() : fileName;
+        return clientApplication != null ? fileName + clientApplication.getWelcomeFile() : fileName;
     }
 }
