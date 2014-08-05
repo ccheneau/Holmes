@@ -108,7 +108,7 @@ public final class SystrayService implements Service {
                 UIManager.put(MENU_ITEM_BOLD_FONT, new FontUIResource(menuItemFont.getFamily(), BOLD, menuItemFont.getSize()));
             }
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException e) {
             LOGGER.error(e.getMessage(), e);
             result = false;
         }
@@ -134,7 +134,7 @@ public final class SystrayService implements Service {
         }
 
         // Create a popup menu
-        final JPopupMenu popupMenu = new JPopupMenu();
+        JPopupMenu popupMenu = new JPopupMenu();
 
         // Add items to popup menu
         popupMenu.add(buildUIMenuItem());
@@ -145,12 +145,9 @@ public final class SystrayService implements Service {
         popupMenu.add(new JSeparatorEx());
         popupMenu.add(buildQuitMenuItem());
 
-        // Add tray icon
-        SystemTrayIcon holmesTrayIcon = new SystemTrayIcon(sysTrayImage, resourceBundle.getString("systray.title"));
-        holmesTrayIcon.setImageAutoSize(true);
-        holmesTrayIcon.setPopupMenu(popupMenu);
         try {
-            getSystemTray().add(holmesTrayIcon);
+            // Add system tray icon
+            getSystemTray().add(new SystemTrayIcon(sysTrayImage, resourceBundle.getString("systray.title"), popupMenu));
         } catch (AWTException e) {
             LOGGER.error(e.getMessage(), e);
         }

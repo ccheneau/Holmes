@@ -28,42 +28,50 @@ import java.awt.event.MouseEvent;
  * System tray icon.
  * Freely inspired from <a href="http://grepcode.com/file/repo1.maven.org/maven2/org.jvnet.hudson.plugins.hudsontrayapp/client-jdk16/0.7.3/org/jdesktop/swinghelper/tray/JXTrayIcon.java">org.jdesktop.swinghelper.tray.JXTrayIcon</a> class (under LGPL v2.1 license)
  */
-public class SystemTrayIcon extends TrayIcon {
-    private static final JDialog DIALOG;
-
-    static {
-        DIALOG = new JDialog((Frame) null, "HolmesSysTray");
-        DIALOG.setUndecorated(true);
-        DIALOG.setAlwaysOnTop(true);
-    }
-
-    private static final PopupMenuListener POPUP_LISTENER = new PopupMenuListener() {
-        @Override
-        public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
-            // Nothing
-        }
-
-        @Override
-        public void popupMenuWillBecomeInvisible(final PopupMenuEvent event) {
-            DIALOG.setVisible(false);
-        }
-
-        @Override
-        public void popupMenuCanceled(final PopupMenuEvent event) {
-            DIALOG.setVisible(false);
-        }
-    };
-    private JPopupMenu popupMenu;
+public final class SystemTrayIcon extends TrayIcon {
+    private final JDialog popupDialog;
+    private final JPopupMenu popupMenu;
 
     /**
      * Instantiates a new system tray icon.
      *
-     * @param image   icon image
-     * @param tooltip icon tooltip
+     * @param image     system tray image
+     * @param tooltip   system tray tooltip
+     * @param popupMenu popup menu
      */
-    public SystemTrayIcon(final Image image, final String tooltip) {
+    public SystemTrayIcon(final Image image, final String tooltip, final JPopupMenu popupMenu) {
         super(image, tooltip);
-        addMouseListener(new MouseAdapter() {
+
+        setImageAutoSize(true);
+
+        // Initialize popup dialog
+        this.popupDialog = new JDialog((Frame) null, "HolmesSysTray");
+        this.popupDialog.setUndecorated(true);
+        this.popupDialog.setAlwaysOnTop(true);
+
+        // Initialize popup menu
+        this.popupMenu = popupMenu;
+        this.popupMenu.addPopupMenuListener(
+                new PopupMenuListener() {
+                    @Override
+                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                        // Nothing
+                    }
+
+                    @Override
+                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                        popupDialog.setVisible(false);
+                    }
+
+                    @Override
+                    public void popupMenuCanceled(PopupMenuEvent e) {
+                        popupDialog.setVisible(false);
+                    }
+                }
+        );
+
+        // Add mouse listener
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent event) {
                 showPopupMenu(event);
@@ -77,41 +85,23 @@ public class SystemTrayIcon extends TrayIcon {
      * @param event mouse event
      */
     private void showPopupMenu(final MouseEvent event) {
-        if (popupMenu != null) {
-            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            int maxWindowHeight = env.getMaximumWindowBounds().height;
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        int maxWindowHeight = env.getMaximumWindowBounds().height;
 
-            // Get y location for popup menu
-            int yLocation;
-            if (event.getY() > maxWindowHeight) {
-                // TaskBar is on bottom of the screen
-                yLocation = maxWindowHeight - popupMenu.getPreferredSize().height;
-            } else {
-                // TaskBar is on top of the screen
-                yLocation = env.getDefaultScreenDevice().getDisplayMode().getHeight() - maxWindowHeight;
-            }
-
-            // Show popup menu
-            DIALOG.setLocation(event.getX(), yLocation);
-            DIALOG.setVisible(true);
-            popupMenu.show(DIALOG.getContentPane(), 0, 0);
-            DIALOG.toFront();
-        }
-    }
-
-    /**
-     * Set popup menu.
-     *
-     * @param popupMenu popup menu
-     */
-    public void setPopupMenu(final JPopupMenu popupMenu) {
-        if (this.popupMenu != null) {
-            this.popupMenu.removePopupMenuListener(POPUP_LISTENER);
+        // Get y location for popup menu
+        int yLocation;
+        if (event.getY() > maxWindowHeight) {
+            // TaskBar is on bottom of the screen
+            yLocation = maxWindowHeight - popupMenu.getPreferredSize().height;
+        } else {
+            // TaskBar is on top of the screen
+            yLocation = env.getDefaultScreenDevice().getDisplayMode().getHeight() - maxWindowHeight;
         }
 
-        if (popupMenu != null) {
-            this.popupMenu = popupMenu;
-            this.popupMenu.addPopupMenuListener(POPUP_LISTENER);
-        }
+        // Show popup menu
+        popupDialog.setLocation(event.getX(), yLocation);
+        popupDialog.setVisible(true);
+        popupMenu.show(popupDialog.getContentPane(), 0, 0);
+        popupDialog.toFront();
     }
 }
