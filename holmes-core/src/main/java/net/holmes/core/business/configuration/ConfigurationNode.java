@@ -19,6 +19,7 @@ package net.holmes.core.business.configuration;
 
 import com.google.common.base.Objects;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Configuration node.
@@ -91,7 +92,7 @@ public final class ConfigurationNode {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("label", label)
                 .add("path", path)

@@ -19,6 +19,8 @@ package net.holmes.core.business.media.model;
 
 import com.google.common.base.Objects;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Podcast node.
  */
@@ -71,7 +73,7 @@ public final class PodcastNode extends AbstractNode {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("type", type)
                 .add("parentId", parentId)

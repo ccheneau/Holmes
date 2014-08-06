@@ -22,6 +22,7 @@ import com.google.common.base.Splitter;
 
 import java.util.Collection;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Iterables.*;
 import static net.holmes.core.common.MediaType.*;
 
@@ -151,7 +152,7 @@ public final class MimeType {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("type", type)
                 .add("subType", subType)
                 .add("mimeType", mimeType)

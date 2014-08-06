@@ -21,6 +21,8 @@ import com.google.common.base.Objects;
 
 import java.io.File;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Folder node represents a folder on file system.
  */
@@ -89,7 +91,7 @@ public final class FolderNode extends AbstractNode {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("type", type)
                 .add("parentId", parentId)

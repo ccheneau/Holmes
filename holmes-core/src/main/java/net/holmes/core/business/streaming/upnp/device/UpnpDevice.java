@@ -17,13 +17,14 @@
 
 package net.holmes.core.business.streaming.upnp.device;
 
-import com.google.common.base.Objects;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.common.MimeType;
 import org.fourthline.cling.model.meta.RemoteService;
 
 import java.net.InetAddress;
 import java.util.Collection;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Upnp streaming device.
@@ -120,7 +121,7 @@ public class UpnpDevice extends Device {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("name", name)
                 .add("address", address)

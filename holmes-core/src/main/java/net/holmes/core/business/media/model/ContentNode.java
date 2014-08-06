@@ -22,6 +22,8 @@ import net.holmes.core.common.MimeType;
 
 import java.io.File;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Content node represents a content stored on file system.
  */
@@ -98,7 +100,7 @@ public final class ContentNode extends MimeTypeNode {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("type", type)
                 .add("parentId", parentId)

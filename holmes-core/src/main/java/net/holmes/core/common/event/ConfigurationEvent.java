@@ -17,10 +17,10 @@
 
 package net.holmes.core.common.event;
 
-import com.google.common.base.Objects;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static net.holmes.core.business.media.model.RootNode.NONE;
 
 /**
@@ -71,7 +71,7 @@ public class ConfigurationEvent {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("type", type)
                 .add("node", node)
                 .add("rootNode", rootNode)

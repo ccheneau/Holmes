@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming.event;
 
-import com.google.common.base.Objects;
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Streaming event.
@@ -92,7 +92,7 @@ public final class StreamingEvent {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("type", type)
                 .add("deviceId", deviceId)
                 .add("success", success)

@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.streaming.airplay.device;
 
-import com.google.common.base.Objects;
 import net.holmes.core.business.streaming.device.Device;
 import org.slf4j.Logger;
 
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -128,7 +128,7 @@ public class AirplayDevice extends Device {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("name", name)
                 .add("address", address)

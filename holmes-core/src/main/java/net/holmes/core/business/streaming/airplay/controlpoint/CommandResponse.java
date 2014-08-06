@@ -21,7 +21,6 @@ package net.holmes.core.business.streaming.airplay.controlpoint;
  * Control point command response
  */
 
-import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 
 import java.util.List;
@@ -29,6 +28,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Iterables.*;
 import static com.google.common.collect.Maps.newHashMap;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
@@ -115,7 +115,7 @@ public final class CommandResponse {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("code", code)
                 .add("message", message)
                 .add("httpHeaders", httpHeaders)

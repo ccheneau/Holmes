@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming.session;
 
-import com.google.common.base.Objects;
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Streaming session
@@ -77,7 +77,7 @@ public final class StreamingSession {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("status", status)
                 .add("contentUrl", contentUrl)
                 .add("contentName", contentName)

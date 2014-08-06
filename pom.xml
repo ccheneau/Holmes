@@ -41,7 +41,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cling.version>2.0-alpha3</cling.version>
         <easymock.version>3.2</easymock.version>
-        <guava.version>17.0</guava.version>
+        <guava.version>18.0-rc1</guava.version>
         <guice.version>3.0</guice.version>
         <jackson.version>2.4.1</jackson.version>
         <javassist.version>3.18.2-GA</javassist.version>

@@ -19,7 +19,8 @@ package net.holmes.core.business.version.release;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Represents a Github release of Holmes
@@ -79,7 +80,7 @@ public class Release {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("name", name)
                 .add("url", url)
                 .add("draft", draft)

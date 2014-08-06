@@ -20,6 +20,8 @@ package net.holmes.core.business.media.model;
 import com.google.common.base.Objects;
 import net.holmes.core.common.MimeType;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Raw Url node represents a link to external Url.
  */
@@ -86,7 +88,7 @@ public final class RawUrlNode extends MimeTypeNode {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("id", id)
                 .add("type", type)
                 .add("parentId", parentId)

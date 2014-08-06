@@ -17,9 +17,9 @@
 
 package net.holmes.core.business.streaming.airplay.device;
 
-import com.google.common.base.Objects;
-
 import java.math.BigInteger;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Airplay device features
@@ -81,7 +81,7 @@ public final class AirplayDeviceFeatures {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("videoSupported", videoSupported)
                 .add("audioSupported", audioSupported)
                 .add("imageSupported", imageSupported)

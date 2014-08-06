@@ -21,6 +21,8 @@ import com.google.common.base.Objects;
 
 import java.io.Serializable;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Media index element.
  */
@@ -117,7 +119,7 @@ public class MediaIndexElement implements Serializable {
      */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return toStringHelper(this)
                 .add("parentId", parentId)
                 .add("mediaType", mediaType)
                 .add("mimeType", mimeType)
