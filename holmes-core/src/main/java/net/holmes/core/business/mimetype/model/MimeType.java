@@ -15,12 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common;
+package net.holmes.core.business.mimetype.model;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
-
-import java.util.Collection;
+import net.holmes.core.common.MediaType;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Iterables.*;
@@ -102,25 +101,6 @@ public final class MimeType {
      */
     public boolean isSubTitle() {
         return this.equals(MIME_TYPE_SUBTITLE);
-    }
-
-    /**
-     * Check mime type is compliant with available mime types.
-     *
-     * @param availableMimeTypes available mime types
-     * @return true is mime type is compliant
-     */
-    public boolean isCompliant(final Collection<String> availableMimeTypes) {
-        if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType)) {
-            return true;
-        } else {
-            for (String availableMimeType : availableMimeTypes) {
-                if ("*/*".equals(availableMimeType) || availableMimeType.equals(type.getValue() + "/*")) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**

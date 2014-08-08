@@ -41,8 +41,8 @@ import java.net.UnknownHostException;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static net.holmes.core.business.streaming.upnp.UpnpUtils.*;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_ENABLE;
-import static net.holmes.core.common.UpnpUtils.*;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
 import static org.slf4j.LoggerFactory.getLogger;
 

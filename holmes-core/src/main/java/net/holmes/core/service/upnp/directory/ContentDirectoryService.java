@@ -40,8 +40,8 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.ConfigurationParameter.*;
-import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.*;

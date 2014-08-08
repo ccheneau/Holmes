@@ -22,7 +22,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import org.junit.Test;
 
 import java.io.File;

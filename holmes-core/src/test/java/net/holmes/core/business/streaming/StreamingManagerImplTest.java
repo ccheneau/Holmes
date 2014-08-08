@@ -20,6 +20,7 @@ package net.holmes.core.business.streaming;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.DeviceDao;
@@ -29,7 +30,6 @@ import net.holmes.core.business.streaming.event.StreamingEvent;
 import net.holmes.core.business.streaming.session.SessionDao;
 import net.holmes.core.business.streaming.session.UnknownSessionException;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
-import net.holmes.core.common.MimeType;
 import org.junit.Test;
 
 import java.io.File;

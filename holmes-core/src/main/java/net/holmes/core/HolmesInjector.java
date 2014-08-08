@@ -40,6 +40,8 @@ import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDaoImpl;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.MimeTypeManagerImpl;
+import net.holmes.core.business.mimetype.dao.MimeTypeDao;
+import net.holmes.core.business.mimetype.dao.MimeTypeDaoImpl;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.StreamingManagerImpl;
 import net.holmes.core.business.streaming.airplay.AirplayStreamerImpl;
@@ -143,6 +145,7 @@ public final class HolmesInjector extends AbstractModule {
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
         bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
         bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
+        bind(MimeTypeDao.class).to(MimeTypeDaoImpl.class).in(Singleton.class);
 
         // Bind business managers
         bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);

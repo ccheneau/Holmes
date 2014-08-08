@@ -20,7 +20,7 @@ package net.holmes.core.service.upnp.directory;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.RawUrlNode;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.BrowseResult;
@@ -36,8 +36,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 
-import static net.holmes.core.common.MimeType.*;
-import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
+import static net.holmes.core.business.mimetype.model.MimeType.*;
+import static net.holmes.core.business.streaming.upnp.UpnpUtils.getUpnpMimeType;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.CANNOT_PROCESS;
 
 /**

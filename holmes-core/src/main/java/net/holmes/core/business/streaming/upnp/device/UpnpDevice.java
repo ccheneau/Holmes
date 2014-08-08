@@ -17,8 +17,8 @@
 
 package net.holmes.core.business.streaming.upnp.device;
 
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.business.streaming.device.Device;
-import net.holmes.core.common.MimeType;
 import org.fourthline.cling.model.meta.RemoteService;
 
 import java.net.InetAddress;

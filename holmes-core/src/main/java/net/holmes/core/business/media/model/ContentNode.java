@@ -18,7 +18,7 @@
 package net.holmes.core.business.media.model;
 
 import com.google.common.base.Objects;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 
 import java.io.File;
 

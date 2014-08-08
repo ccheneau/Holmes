@@ -17,8 +17,8 @@
 package net.holmes.core.business.mimetype;
 
 import com.google.common.collect.Lists;
-import net.holmes.core.common.MediaType;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.dao.MimeTypeDaoImpl;
+import net.holmes.core.business.mimetype.model.MimeType;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -26,52 +26,17 @@ import static org.junit.Assert.*;
 
 public class MimeTypeManagerImplTest {
 
-    /**
-     * Test mime type.
-     */
     @Test
-    public void testMimeType() {
-        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
+    public void testGetMimeType() {
+        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl(new MimeTypeDaoImpl("/mimetypes.properties"));
 
-        String fileName = "movie.avi";
-        MimeType mimeType = mimeTypeManager.getMimeType(fileName);
-
-        assertNotNull(mimeType);
-        assertEquals(MediaType.TYPE_VIDEO, mimeType.getType());
-        assertEquals("avi", mimeType.getSubType());
-        assertEquals("video/avi", mimeType.getMimeType());
-    }
-
-    /**
-     * Test bad mime type.
-     */
-    @Test
-    public void testBadMimeType() {
-        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
-        String fileName = "movie.blabla";
-        MimeType mimeType = mimeTypeManager.getMimeType(fileName);
-        assertNull(mimeType);
-    }
-
-    /**
-     * Test bad mime type path.
-     */
-    @Test(expected = RuntimeException.class)
-    public void testBadMimePath() {
-        new MimeTypeManagerImpl("/badMimeTypePath");
-    }
-
-    /**
-     * Test null mime type path.
-     */
-    @Test(expected = RuntimeException.class)
-    public void testNullMimePath() {
-        new MimeTypeManagerImpl(null);
+        assertNotNull(mimeTypeManager.getMimeType("someVideo.avi"));
+        assertNull(mimeTypeManager.getMimeType("someVideo.badExtension"));
     }
 
     @Test
-    public void testIsCompliant() {
-        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl("/mimetypes.properties");
+    public void testIsMimeTypeCompliant() {
+        MimeTypeManager mimeTypeManager = new MimeTypeManagerImpl(new MimeTypeDaoImpl("/mimetypes.properties"));
 
         MimeType mimeType = MimeType.valueOf("video/avi");
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, newArrayList("video/avi")));

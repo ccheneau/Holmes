@@ -18,7 +18,7 @@
 package net.holmes.core.service.http;
 
 import io.netty.handler.codec.http.FullHttpRequest;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 
 import java.io.File;
 
@@ -34,10 +34,10 @@ public final class HttpFileRequest {
     /**
      * Instantiates a new HttpFileRequest.
      *
-     * @param httpRequest HTTP request
-     * @param file        file
-     * @param mimeType    mime type
-     * @param staticResource  request for a static resource
+     * @param httpRequest    HTTP request
+     * @param file           file
+     * @param mimeType       mime type
+     * @param staticResource request for a static resource
      */
     public HttpFileRequest(final FullHttpRequest httpRequest, final File file, final MimeType mimeType, final boolean staticResource) {
         this.httpRequest = httpRequest;

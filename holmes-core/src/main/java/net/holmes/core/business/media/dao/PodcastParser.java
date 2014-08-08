@@ -27,7 +27,7 @@ import com.sun.syndication.io.XmlReader;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.RawUrlNode;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.exception.HolmesException;
 
 import java.io.IOException;

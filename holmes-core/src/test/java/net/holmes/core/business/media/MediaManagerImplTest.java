@@ -23,7 +23,7 @@ import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.event.MediaEvent;
 import net.holmes.core.test.TestConfigurationDao;
 import org.junit.Test;

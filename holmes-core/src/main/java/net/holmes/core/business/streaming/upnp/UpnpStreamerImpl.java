@@ -37,7 +37,7 @@ import org.slf4j.Logger;
 
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
-import static net.holmes.core.common.UpnpUtils.getUpnpMimeType;
+import static net.holmes.core.business.streaming.upnp.UpnpUtils.getUpnpMimeType;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

@@ -25,8 +25,8 @@ import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.ClientApplication;
-import net.holmes.core.common.MimeType;
 
 import javax.inject.Inject;
 import javax.inject.Named;

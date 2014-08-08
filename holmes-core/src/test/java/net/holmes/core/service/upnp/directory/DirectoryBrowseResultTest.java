@@ -20,7 +20,7 @@ package net.holmes.core.service.upnp.directory;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.FolderNode;
 import net.holmes.core.business.media.model.RawUrlNode;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.junit.Rule;

@@ -15,31 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.mimetype;
+package net.holmes.core.business.mimetype.dao;
 
 import net.holmes.core.business.mimetype.model.MimeType;
 
-import java.util.Collection;
-
 /**
- * Mime type manager.
+ * Mime type dao.
  */
-public interface MimeTypeManager {
-
+public interface MimeTypeDao {
     /**
      * Gets mime type according to file name.
      *
      * @param fileName file name
-     * @return mime type
+     * @return mime type or null
      */
     MimeType getMimeType(String fileName);
 
     /**
-     * Check mime type is compliant with available mimeTypes.
+     * Gets alias mime type linked to given mime type.
      *
-     * @param mimeType           mime type to check
-     * @param availableMimeTypes list of available mime types
-     * @return true if mime type is compliant with available mimeTypes
+     * @param mimeType mime type
+     * @return alias mime type or null
      */
-    boolean isMimeTypeCompliant(MimeType mimeType, Collection<String> availableMimeTypes);
+    MimeType getAliasMimeType(MimeType mimeType);
 }

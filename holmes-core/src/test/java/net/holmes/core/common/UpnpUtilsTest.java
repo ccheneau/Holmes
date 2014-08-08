@@ -17,6 +17,8 @@
 
 package net.holmes.core.common;
 
+import net.holmes.core.business.mimetype.model.MimeType;
+import net.holmes.core.business.streaming.upnp.UpnpUtils;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.model.meta.*;
 import org.fourthline.cling.model.types.UDN;

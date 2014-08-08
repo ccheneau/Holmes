@@ -17,37 +17,26 @@
 
 package net.holmes.core.business.mimetype;
 
-import net.holmes.core.common.MimeType;
-import net.holmes.core.common.exception.HolmesRuntimeException;
+import net.holmes.core.business.mimetype.dao.MimeTypeDao;
+import net.holmes.core.business.mimetype.model.MimeType;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
-import java.util.Properties;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.io.Files.getFileExtension;
 
 /**
  * Mime type manager implementation.
  */
 public final class MimeTypeManagerImpl implements MimeTypeManager {
-    private final Properties properties;
+    private final MimeTypeDao mimeTypeDao;
 
     /**
      * Instantiates a new mime type manager implementation.
      */
     @Inject
-    public MimeTypeManagerImpl(@Named("mimeTypePath") final String mimeTypePath) {
-        // Load mime types from property file
-        properties = new Properties();
-        try (InputStream in = this.getClass().getResourceAsStream(mimeTypePath)) {
-            properties.load(in);
-        } catch (IOException e) {
-            throw new HolmesRuntimeException(e);
-        }
+    public MimeTypeManagerImpl(final MimeTypeDao mimeTypeDao) {
+        this.mimeTypeDao = mimeTypeDao;
     }
 
     /**
@@ -55,11 +44,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
      */
     @Override
     public MimeType getMimeType(final String fileName) {
-        // Get file extension
-        String ext = getFileExtension(fileName).toLowerCase();
-
-        // Get mime type
-        return properties.getProperty(ext) == null ? null : MimeType.valueOf(properties.getProperty(ext));
+        return mimeTypeDao.getMimeType(fileName);
     }
 
     /**
@@ -68,7 +53,7 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
     @Override
     public boolean isMimeTypeCompliant(final MimeType mimeType, final Collection<String> availableMimeTypes) {
         return mimeType == null || isNullOrEmpty(mimeType.getMimeType())
-                || mimeType.isCompliant(availableMimeTypes)
+                || isCompliant(mimeType, availableMimeTypes)
                 || isAliasMimeTypeCompliant(mimeType, availableMimeTypes);
     }
 
@@ -80,7 +65,29 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
      * @return true if alias mime type is compliant
      */
     private boolean isAliasMimeTypeCompliant(final MimeType mimeType, final Collection<String> availableMimeTypes) {
-        MimeType aliasMimeType = properties.getProperty(mimeType.getMimeType()) == null ? null : MimeType.valueOf(properties.getProperty(mimeType.getMimeType()));
-        return aliasMimeType != null && aliasMimeType.isCompliant(availableMimeTypes);
+        MimeType aliasMimeType = mimeTypeDao.getAliasMimeType(mimeType);
+        return aliasMimeType != null && isCompliant(aliasMimeType, availableMimeTypes);
     }
+
+    /**
+     * Check mime type is compliant with available mime types.
+     *
+     * @param mimeType           mime type
+     * @param availableMimeTypes available mime type strings video/avi (mime type may contains wildcard)
+     * @return true is mime type is compliant
+     */
+    private boolean isCompliant(final MimeType mimeType, final Collection<String> availableMimeTypes) {
+        if (availableMimeTypes == null || availableMimeTypes.isEmpty() || availableMimeTypes.contains(mimeType.getMimeType())) {
+            return true;
+        } else {
+            for (String availableMimeType : availableMimeTypes) {
+                if ("*/*".equals(availableMimeType) || availableMimeType.equals(mimeType.getType().getValue() + "/*")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }

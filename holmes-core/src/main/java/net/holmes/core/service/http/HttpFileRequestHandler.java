@@ -24,7 +24,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -40,8 +40,7 @@ import java.util.regex.Pattern;
 import static io.netty.buffer.Unpooled.copiedBuffer;
 import static io.netty.channel.ChannelFutureListener.CLOSE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
-import static io.netty.handler.codec.http.HttpHeaders.Values.BYTES;
-import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
+import static io.netty.handler.codec.http.HttpHeaders.Values.*;
 import static io.netty.handler.codec.http.HttpHeaders.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;

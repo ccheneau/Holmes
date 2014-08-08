@@ -26,12 +26,12 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.FolderNode;
 import net.holmes.core.business.media.model.PodcastNode;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
 import net.holmes.core.business.streaming.session.StreamingSession;
 import net.holmes.core.business.streaming.session.UnknownSessionException;
-import net.holmes.core.common.MimeType;
 import org.junit.Test;
 
 import java.io.File;

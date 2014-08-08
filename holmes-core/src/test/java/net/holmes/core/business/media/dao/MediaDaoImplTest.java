@@ -26,7 +26,7 @@ import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.UniqueIdGenerator;
 import net.holmes.core.test.TestConfigurationDao;
 import org.junit.Test;
@@ -37,8 +37,8 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.*;
+import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.MediaType.*;
-import static net.holmes.core.common.MimeType.MIME_TYPE_SUBTITLE;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 

@@ -34,8 +34,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import java.io.IOException;
 
+import static net.holmes.core.business.streaming.upnp.UpnpUtils.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
-import static net.holmes.core.common.UpnpUtils.*;
 
 /**
  * Guice provider for UPnP service.

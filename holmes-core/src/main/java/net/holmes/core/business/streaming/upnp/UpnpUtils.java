@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common;
+package net.holmes.core.business.streaming.upnp;
 
+import net.holmes.core.business.mimetype.model.MimeType;
 import org.fourthline.cling.DefaultUpnpServiceConfiguration;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;

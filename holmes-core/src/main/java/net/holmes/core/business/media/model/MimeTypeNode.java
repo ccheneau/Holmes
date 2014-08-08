@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media.model;
 
-import net.holmes.core.common.MimeType;
+import net.holmes.core.business.mimetype.model.MimeType;
 
 /**
  * Abstract node with mime type (i.e. url or content)
