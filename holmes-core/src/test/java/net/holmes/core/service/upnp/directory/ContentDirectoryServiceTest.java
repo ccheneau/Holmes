@@ -42,7 +42,7 @@ import java.net.InetAddress;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.*;
+import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
@@ -227,8 +227,6 @@ public class ContentDirectoryServiceTest {
 
         List<AbstractNode> children = newArrayList();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        children.add(new RawUrlNode(TYPE_ICECAST_ENTRY, "id2", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        children.add(new IcecastGenreNode("id3", "parentId", "name", "genre"));
         children.add(new PodcastNode("id4", "parentId", "name", "url"));
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();

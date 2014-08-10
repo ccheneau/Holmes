@@ -168,8 +168,6 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         TYPE_CONTENT,
         TYPE_PODCAST,
         TYPE_PODCAST_ENTRY,
-        TYPE_ICECAST_GENRE,
-        TYPE_ICECAST_ENTRY,
         TYPE_UNKNOWN
     }
 }

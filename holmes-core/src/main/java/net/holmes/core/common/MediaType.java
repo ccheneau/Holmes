@@ -26,7 +26,6 @@ public enum MediaType {
     TYPE_IMAGE("image"),
     TYPE_PODCAST("podcast"),
     TYPE_APPLICATION("application"),
-    TYPE_ICECAST_GENRE("icecast_genre"),
     TYPE_RAW_URL("raw_url"),
     TYPE_ANY("*"),
     TYPE_NONE("none");

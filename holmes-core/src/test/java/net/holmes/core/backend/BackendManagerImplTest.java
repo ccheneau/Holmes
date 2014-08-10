@@ -565,7 +565,6 @@ public class BackendManagerImplTest {
 
         expect(configurationDao.getParameter(UPNP_SERVER_NAME)).andReturn("serverName");
         expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true);
-        expect(configurationDao.getParameter(ICECAST_ENABLE)).andReturn(false);
 
         replay(configurationDao, eventBus);
 
@@ -587,8 +586,6 @@ public class BackendManagerImplTest {
         expectLastCall();
         configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
         expectLastCall();
-        configurationDao.setParameter(ICECAST_ENABLE, true);
-        expectLastCall();
         configurationDao.save();
         expectLastCall();
         eventBus.post(isA(ConfigurationEvent.class));
@@ -598,7 +595,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationDao, eventBus);
-            backendManager.saveSettings(new Settings("holmes", true, true));
+            backendManager.saveSettings(new Settings("holmes", true));
         } finally {
             verify(configurationDao, eventBus);
         }
@@ -613,7 +610,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationDao, eventBus);
-            backendManager.saveSettings(new Settings(null, true, true));
+            backendManager.saveSettings(new Settings(null, true));
         } finally {
             verify(configurationDao, eventBus);
         }
@@ -628,8 +625,6 @@ public class BackendManagerImplTest {
         expectLastCall();
         configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
         expectLastCall();
-        configurationDao.setParameter(ICECAST_ENABLE, true);
-        expectLastCall();
         configurationDao.save();
         expectLastCall().andThrow(new IOException());
 
@@ -637,7 +632,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationDao, eventBus);
-            backendManager.saveSettings(new Settings("holmes", true, true));
+            backendManager.saveSettings(new Settings("holmes", true));
         } finally {
             verify(configurationDao, eventBus);
         }
@@ -652,7 +647,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationDao, eventBus);
-            backendManager.saveSettings(new Settings("", true, true));
+            backendManager.saveSettings(new Settings("", true));
         } finally {
             verify(configurationDao, eventBus);
         }

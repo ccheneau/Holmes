@@ -17,11 +17,7 @@
 
 package net.holmes.core.common;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
 
 /**
  * Configuration parameters
@@ -67,30 +63,6 @@ public abstract class ConfigurationParameter<T> {
      * Number of threads used by Netty NIO worker event loop group (O means that Netty uses a default value)
      */
     public static final ConfigurationIntParameter HTTP_SERVER_WORKER_THREADS = new ConfigurationIntParameter("http_server_worker_threads", 0);
-
-    /**
-     * Icecast directory support parameters
-     */
-    /**
-     * Enable Icecast directory support
-     */
-    public static final ConfigurationBooleanParameter ICECAST_ENABLE = new ConfigurationBooleanParameter("enable_icecast_directory", false);
-    /**
-     * List of Icecast genres
-     */
-    public static final ConfigurationListParameter ICECAST_GENRE_LIST = new ConfigurationListParameter("icecast_genre_list", "70s,80s,90s,adult,alternative,ambient,anime,bass,best,blues,chill,christian,classic,classical,club,college,community,contemporary,country,dance,deep,disco,dj,downtempo,drum,dubstep,eclectic,electro,folk,fun,funk,game,gospel,hip hop,hiphop,hit,house,indie,instrumental,international,jazz,jpop,jrock,latin,live,lounge,metal,minecraft,minimal,misc,mix,mixed,music,musique,news,oldies,pop,progressive,promodj,punk,radio,rap,reggae,religious,rnb,rock,salsa,scanner,smooth,soul,sport,sports,talk,techno,top,trance,urban,various,webradio,world");
-    /**
-     * Maximum attempts to download Icecast directory
-     */
-    public static final ConfigurationIntParameter ICECAST_MAX_DOWNLOAD_RETRY = new ConfigurationIntParameter("icecast_max_download_retry", 3);
-    /**
-     * Delay between Icecast directory downloads (in hours)
-     */
-    public static final ConfigurationIntParameter ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS = new ConfigurationIntParameter("icecast_yellow_page_download_delay_hours", 24);
-    /**
-     * URL used to download Icecast directory
-     */
-    public static final ConfigurationStringParameter ICECAST_YELLOW_PAGE_URL = new ConfigurationStringParameter("icecast_yellow_page_url", "http://dir.xiph.org/yp.xml");
 
     /**
      * Podcast management parameters
@@ -143,11 +115,6 @@ public abstract class ConfigurationParameter<T> {
             HTTP_SERVER_CACHE_SECOND,
             HTTP_SERVER_BOSS_THREADS,
             HTTP_SERVER_WORKER_THREADS,
-            ICECAST_ENABLE,
-            ICECAST_GENRE_LIST,
-            ICECAST_MAX_DOWNLOAD_RETRY,
-            ICECAST_YELLOW_PAGE_DOWNLOAD_DELAY_HOURS,
-            ICECAST_YELLOW_PAGE_URL,
             PODCAST_CACHE_EXPIRE_HOURS,
             PODCAST_CACHE_MAX_ELEMENTS,
             PODCAST_PREPEND_ENTRY_NAME,
@@ -278,39 +245,6 @@ public abstract class ConfigurationParameter<T> {
         @Override
         public Integer parse(String stringValue) {
             return Integer.valueOf(stringValue);
-        }
-    }
-
-    /**
-     * String list configuration parameter.
-     */
-    public static final class ConfigurationListParameter extends ConfigurationParameter<List<String>> {
-        private static final char SEPARATOR = ',';
-
-        /**
-         * Instantiates a new String list configuration parameter.
-         *
-         * @param name         parameter name
-         * @param defaultValue default value
-         */
-        ConfigurationListParameter(String name, String defaultValue) {
-            super(name, Splitter.on(SEPARATOR).splitToList(defaultValue));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<String> parse(String stringValue) {
-            return Splitter.on(SEPARATOR).splitToList(stringValue);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String format(List<String> value) {
-            return Joiner.on(SEPARATOR).join(value);
         }
     }
 }

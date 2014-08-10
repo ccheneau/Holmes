@@ -19,9 +19,6 @@ package net.holmes.core.business.media.dao;
 
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.media.dao.icecast.IcecastDao;
-import net.holmes.core.business.media.dao.icecast.IcecastEntry;
-import net.holmes.core.business.media.dao.icecast.IcecastGenre;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.*;
@@ -35,7 +32,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.MediaType.*;
@@ -49,17 +45,16 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(null);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNull(result);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -67,39 +62,18 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, "path", "name", PODCAST.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(podcastElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertEquals(result.getClass(), PodcastNode.class);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
-    }
-
-    @Test
-    public void testGetIcecastGenreNode() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
-
-        MediaIndexElement icecastGenreElement = new MediaIndexElement(ICECAST.getId(), TYPE_ICECAST_GENRE.getValue(), null, "path", "name", ICECAST.isLocalPath(), true);
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(icecastGenreElement);
-
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
-
-        AbstractNode result = mediaDao.getNode("nodeId");
-        assertNotNull(result);
-        assertEquals(result.getClass(), IcecastGenreNode.class);
-
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -107,19 +81,18 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        MediaIndexElement rawUrlElement = new MediaIndexElement(VIDEO.getId(), TYPE_RAW_URL.getValue(), "video/avi", "path", "name", ICECAST.isLocalPath(), true);
+        MediaIndexElement rawUrlElement = new MediaIndexElement(VIDEO.getId(), TYPE_RAW_URL.getValue(), "video/avi", "path", "name", false, true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(rawUrlElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertEquals(result.getClass(), RawUrlNode.class);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -127,18 +100,17 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", "path", "name", VIDEO.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNull(result);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -146,21 +118,20 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoNode.getPath(), "name", VIDEO.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertEquals(result.getClass(), FolderNode.class);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -168,21 +139,20 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
 
         MediaIndexElement videoElement = new MediaIndexElement(VIDEO.getId(), TYPE_VIDEO.getValue(), "video/avi", videoNode.getPath(), null, VIDEO.isLocalPath(), true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertEquals(result.getClass(), FolderNode.class);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -190,7 +160,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFilePath = Paths.get(videoNode.getPath(), "video.avi");
@@ -199,14 +168,14 @@ public class MediaDaoImplTest {
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
         expect(mimeTypeManager.getMimeType(eq("video.avi"))).andReturn(MimeType.valueOf("video/avi"));
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertEquals(result.getClass(), ContentNode.class);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -214,7 +183,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFilePath = Paths.get(videoNode.getPath(), "video.avi");
@@ -223,13 +191,13 @@ public class MediaDaoImplTest {
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
         expect(mimeTypeManager.getMimeType(eq("video.avi"))).andReturn(null);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         AbstractNode result = mediaDao.getNode("nodeId");
         assertNull(result);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -237,17 +205,16 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(null);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertTrue(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -255,7 +222,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode podcastNode = configurationDao.getNodes(PODCAST).get(0);
         MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, podcastNode.getPath(), podcastNode.getLabel(), PODCAST.isLocalPath(), true);
@@ -265,13 +231,13 @@ public class MediaDaoImplTest {
         expectLastCall();
         expect(mediaIndexDao.add(isA(MediaIndexElement.class))).andReturn(UniqueIdGenerator.newUniqueId()).atLeastOnce();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertFalse(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -279,7 +245,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, "badPath", "badLabel", PODCAST.isLocalPath(), true);
 
@@ -287,34 +252,13 @@ public class MediaDaoImplTest {
         mediaIndexDao.removeChildren(eq("nodeId"));
         expectLastCall();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertTrue(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
-    }
-
-    @Test
-    public void testGetChildNodesOfIcecastGenre() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
-
-        MediaIndexElement icecastElement = new MediaIndexElement(ICECAST.getId(), TYPE_ICECAST_GENRE.getValue(), null, "icecastGenre", "icecastGenre", ICECAST.isLocalPath(), true);
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(icecastElement);
-        expect(icecastDao.getEntriesByGenre(eq("icecastGenre"))).andReturn(newArrayList(new IcecastEntry("name", "url", "type", "genre")));
-        expect(mediaIndexDao.add(isA(MediaIndexElement.class))).andReturn(UniqueIdGenerator.newUniqueId()).atLeastOnce();
-
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
-
-        List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
-        assertFalse(result.isEmpty());
-
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -322,18 +266,17 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
-        MediaIndexElement rawUrlElement = new MediaIndexElement(ICECAST.getId(), TYPE_RAW_URL.getValue(), null, "rawUrl", "rawUrl", ICECAST.isLocalPath(), true);
+        MediaIndexElement rawUrlElement = new MediaIndexElement("id", TYPE_RAW_URL.getValue(), null, "rawUrl", "rawUrl", false, true);
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(rawUrlElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertTrue(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -341,7 +284,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "subFolder");
@@ -354,13 +296,13 @@ public class MediaDaoImplTest {
         expect(mimeTypeManager.getMimeType(eq("video.unknown"))).andReturn(null).atLeastOnce();
         expect(mimeTypeManager.getMimeType(eq("video.srt"))).andReturn(MIME_TYPE_SUBTITLE).atLeastOnce();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertFalse(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -368,7 +310,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "video.avi");
@@ -377,13 +318,13 @@ public class MediaDaoImplTest {
 
         expect(mediaIndexDao.get(eq("nodeId"))).andReturn(videoElement);
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertTrue(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -391,7 +332,6 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         ConfigurationNode videoNode = configurationDao.getNodes(VIDEO).get(0);
         Path videoFolderPath = Paths.get(videoNode.getPath(), "subFolder");
@@ -404,13 +344,13 @@ public class MediaDaoImplTest {
         expect(mimeTypeManager.getMimeType(eq("video.unknown"))).andReturn(null).atLeastOnce();
         expect(mimeTypeManager.getMimeType(eq("video.srt"))).andReturn(MIME_TYPE_SUBTITLE).atLeastOnce();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getChildNodes("nodeId");
         assertFalse(result.isEmpty());
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -418,17 +358,16 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         mediaIndexDao.clean();
         expectLastCall();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         mediaDao.cleanUpCache();
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
 
     @Test
@@ -436,58 +375,34 @@ public class MediaDaoImplTest {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
         expectLastCall().atLeastOnce();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getRootNodeChildren(PODCAST);
         assertNotNull(result);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
-
-    @Test
-    public void testGetRootNodeChildrenOfIcecast() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
-
-        expect(icecastDao.getGenres()).andReturn(newArrayList(new IcecastGenre("genreId", "genreName")));
-        mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
-        expectLastCall().atLeastOnce();
-
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
-
-        List<AbstractNode> result = mediaDao.getRootNodeChildren(ICECAST);
-        assertNotNull(result);
-
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
-    }
-
 
     @Test
     public void testGetRootNodeChildrenNodesOfVideo() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-        IcecastDao icecastDao = createMock(IcecastDao.class);
 
         mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
         expectLastCall().atLeastOnce();
 
-        replay(mimeTypeManager, mediaIndexDao, icecastDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao, icecastDao);
+        replay(mimeTypeManager, mediaIndexDao);
+        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationDao, mimeTypeManager, mediaIndexDao);
 
         List<AbstractNode> result = mediaDao.getRootNodeChildren(VIDEO);
         assertNotNull(result);
 
-        verify(mimeTypeManager, mediaIndexDao, icecastDao);
+        verify(mimeTypeManager, mediaIndexDao);
     }
-
 }

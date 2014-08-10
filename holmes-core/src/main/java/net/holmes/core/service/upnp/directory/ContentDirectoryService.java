@@ -171,9 +171,6 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 }
 
                 result.addUrlItem(nodeId, rawUrlNode, entryName);
-            } else if (node instanceof IcecastGenreNode) {
-                // Add Icecast genre to result
-                result.addContainer(nodeId, node, 1);
             }
         }
     }

@@ -25,10 +25,9 @@ public class HolmesSchedulerServiceTest {
     @Test
     public void testHolmesSchedulerService() {
         AbstractScheduledService cacheCleanerService = new AbstractScheduledServiceTester();
-        AbstractScheduledService icecastDownloadService = new AbstractScheduledServiceTester();
         AbstractScheduledService releaseCheckService = new AbstractScheduledServiceTester();
 
-        HolmesSchedulerService service = new HolmesSchedulerService(cacheCleanerService, icecastDownloadService, releaseCheckService);
+        HolmesSchedulerService service = new HolmesSchedulerService(cacheCleanerService, releaseCheckService);
         try {
             service.start();
         } finally {

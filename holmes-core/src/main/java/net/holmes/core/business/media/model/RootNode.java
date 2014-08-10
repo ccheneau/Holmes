@@ -30,7 +30,6 @@ public enum RootNode {
     PICTURE("2_PICTURES", ROOT.getId(), true, TYPE_IMAGE),
     AUDIO("3_AUDIOS", ROOT.getId(), true, TYPE_AUDIO),
     PODCAST("4_PODCASTS", ROOT.getId(), false, TYPE_PODCAST),
-    ICECAST("5_ICECAST", ROOT.getId(), false, TYPE_ICECAST_GENRE),
     NONE("ROOT_NODE_NONE", "", false, TYPE_NONE);
 
     private final String id;
@@ -43,7 +42,7 @@ public enum RootNode {
      *
      * @param id        node id
      * @param parentId  parent node id
-     * @param localPath whether to look for child elements in local path. False for Podcast and Icecast entries
+     * @param localPath whether to look for child elements in local path. False for Podcast entries
      * @param mediaType media type
      */
     private RootNode(final String id, final String parentId, final boolean localPath, final MediaType mediaType) {

@@ -104,13 +104,6 @@ public class XmlConfigurationDaoImplTest {
     }
 
     @Test
-    public void testXmlConfigurationListParameter() throws IOException {
-        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-        assertTrue(configuration.getParameter(ICECAST_GENRE_LIST).size() > 0);
-    }
-
-    @Test
     public void testXmlConfigurationSaveConfig() throws IOException {
         String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
         XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);

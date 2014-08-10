@@ -34,8 +34,6 @@ import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaManagerImpl;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.dao.MediaDaoImpl;
-import net.holmes.core.business.media.dao.icecast.IcecastDao;
-import net.holmes.core.business.media.dao.icecast.IcecastDaoImpl;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexDaoImpl;
 import net.holmes.core.business.mimetype.MimeTypeManager;
@@ -66,7 +64,6 @@ import net.holmes.core.service.http.HttpFileRequestHandler;
 import net.holmes.core.service.http.HttpService;
 import net.holmes.core.service.scheduled.CacheCleanerService;
 import net.holmes.core.service.scheduled.HolmesSchedulerService;
-import net.holmes.core.service.scheduled.IcecastDownloadService;
 import net.holmes.core.service.scheduled.ReleaseCheckService;
 import net.holmes.core.service.systray.SystrayService;
 import net.holmes.core.service.upnp.UpnpService;
@@ -140,7 +137,6 @@ public final class HolmesInjector extends AbstractModule {
         // Bind dao
         bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(IcecastDao.class).to(IcecastDaoImpl.class).in(Singleton.class);
         bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
         bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
         bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
@@ -162,7 +158,6 @@ public final class HolmesInjector extends AbstractModule {
 
         // Bind scheduled services
         bind(AbstractScheduledService.class).annotatedWith(named("cacheCleaner")).to(CacheCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(named("icecast")).to(IcecastDownloadService.class);
         bind(AbstractScheduledService.class).annotatedWith(named("release")).to(ReleaseCheckService.class);
 
         // Bind backend

@@ -13,7 +13,6 @@ var Application = (function(application) {
 					title : $.i18n.prop("msg.admin.settings.title"),
 					settingsServerName : $.i18n.prop("msg.admin.settings.serverName"),
 					settingsPrependPodcastItem : $.i18n.prop("msg.admin.settings.prependPodcastItem"),
-					settingsEnableIcecastDirectory : $.i18n.prop("msg.admin.settings.enableIcecastDirectory"),
 					cancel : $.i18n.prop("msg.admin.cancel"),
 					save : $.i18n.prop("msg.admin.save")
 				});
@@ -27,8 +26,7 @@ var Application = (function(application) {
 		onSettingsSave : function() {
 			new Application.Models.Settings().save({
 				"serverName" : $("#settingsServerName").val().trim(),
-				"prependPodcastItem" : $("#chkPrependPodcastItem").is(':checked') ? "true" : "false",
-				"enableIcecastDirectory" : $("#chkEnableIcecastDirectory").is(':checked') ? "true" : "false"
+				"prependPodcastItem" : $("#chkPrependPodcastItem").is(':checked') ? "true" : "false"
 			}, {
 				success : function() {
 					$("#messagebox").message({

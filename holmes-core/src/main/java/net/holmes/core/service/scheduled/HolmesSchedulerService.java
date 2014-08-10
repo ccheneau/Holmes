@@ -28,7 +28,6 @@ import javax.inject.Named;
  */
 public class HolmesSchedulerService implements Service {
     private final AbstractScheduledService cacheCleanerService;
-    private final AbstractScheduledService icecastDownloadService;
     private final AbstractScheduledService releaseCheckService;
 
     /**
@@ -38,10 +37,8 @@ public class HolmesSchedulerService implements Service {
      */
     @Inject
     public HolmesSchedulerService(@Named("cacheCleaner") final AbstractScheduledService cacheCleanerService,
-                                  @Named("icecast") final AbstractScheduledService icecastDownloadService,
                                   @Named("release") final AbstractScheduledService releaseCheckService) {
         this.cacheCleanerService = cacheCleanerService;
-        this.icecastDownloadService = icecastDownloadService;
         this.releaseCheckService = releaseCheckService;
     }
 
@@ -51,7 +48,6 @@ public class HolmesSchedulerService implements Service {
     @Override
     public void start() {
         cacheCleanerService.startAsync();
-        icecastDownloadService.startAsync();
         releaseCheckService.startAsync();
     }
 
@@ -60,7 +56,6 @@ public class HolmesSchedulerService implements Service {
      */
     @Override
     public void stop() {
-        icecastDownloadService.stopAsync();
         cacheCleanerService.stopAsync();
         releaseCheckService.stopAsync();
     }

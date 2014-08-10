@@ -24,7 +24,6 @@ public final class Settings {
 
     private String serverName;
     private Boolean prependPodcastItem;
-    private Boolean enableIcecastDirectory;
 
     /**
      * Instantiates a new settings.
@@ -35,14 +34,12 @@ public final class Settings {
     /**
      * Instantiates a new settings.
      *
-     * @param serverName             server name
-     * @param prependPodcastItem     prepend pod-cast item
-     * @param enableIcecastDirectory enable Icecast directory
+     * @param serverName         server name
+     * @param prependPodcastItem prepend pod-cast item
      */
-    public Settings(final String serverName, final Boolean prependPodcastItem, final Boolean enableIcecastDirectory) {
+    public Settings(final String serverName, final Boolean prependPodcastItem) {
         this.serverName = serverName;
         this.prependPodcastItem = prependPodcastItem;
-        this.enableIcecastDirectory = enableIcecastDirectory;
     }
 
     public String getServerName() {
@@ -59,13 +56,5 @@ public final class Settings {
 
     public void setPrependPodcastItem(final Boolean prependPodcastItem) {
         this.prependPodcastItem = prependPodcastItem;
-    }
-
-    public Boolean getEnableIcecastDirectory() {
-        return enableIcecastDirectory;
-    }
-
-    public void setEnableIcecastDirectory(Boolean enableIcecastDirectory) {
-        this.enableIcecastDirectory = enableIcecastDirectory;
     }
 }

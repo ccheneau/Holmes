@@ -20,9 +20,6 @@ package net.holmes.core.business.media.dao;
 import com.google.common.cache.Cache;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.media.dao.icecast.IcecastDao;
-import net.holmes.core.business.media.dao.icecast.IcecastEntry;
-import net.holmes.core.business.media.dao.icecast.IcecastGenre;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.*;
@@ -34,7 +31,6 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -43,11 +39,10 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.*;
-import static net.holmes.core.business.media.model.RootNode.*;
+import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
+import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.*;
-import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -58,7 +53,6 @@ public class MediaDaoImpl implements MediaDao {
     private final ConfigurationDao configurationDao;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;
-    private final IcecastDao icecastDao;
     private final Cache<String, List<AbstractNode>> podcastCache;
 
     /**
@@ -67,15 +61,12 @@ public class MediaDaoImpl implements MediaDao {
      * @param configurationDao configuration dao
      * @param mimeTypeManager  mime type manager
      * @param mediaIndexDao    media index dao
-     * @param icecastDao       Icecast dao
      */
     @Inject
-    public MediaDaoImpl(final ConfigurationDao configurationDao, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao,
-                        final IcecastDao icecastDao) {
+    public MediaDaoImpl(final ConfigurationDao configurationDao, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao) {
         this.configurationDao = configurationDao;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexDao = mediaIndexDao;
-        this.icecastDao = icecastDao;
         this.podcastCache = newBuilder()
                 .maximumSize(configurationDao.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
                 .expireAfterWrite(configurationDao.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
@@ -96,10 +87,6 @@ public class MediaDaoImpl implements MediaDao {
                 case TYPE_PODCAST:
                     // Podcast node
                     node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
-                    break;
-                case TYPE_ICECAST_GENRE:
-                    // Icecast genre node
-                    node = new IcecastGenreNode(nodeId, ICECAST.getId(), indexElement.getName(), indexElement.getPath());
                     break;
                 case TYPE_RAW_URL:
                     // Raw Url node
@@ -133,10 +120,6 @@ public class MediaDaoImpl implements MediaDao {
                     // Get podcast entries
                     childNodes = getPodcastEntries(parentNodeId, indexElement.getPath());
                     break;
-                case TYPE_ICECAST_GENRE:
-                    // Get Icecast entries
-                    childNodes = getIcecastEntries(parentNodeId, indexElement.getPath());
-                    break;
                 case TYPE_RAW_URL:
                     // Nothing
                     childNodes = newArrayListWithCapacity(0);
@@ -159,32 +142,17 @@ public class MediaDaoImpl implements MediaDao {
      */
     @Override
     public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
-        List<AbstractNode> nodes;
-        if (rootNode == ICECAST) {
-            // Add Icecast genres
-            List<IcecastGenre> genres = icecastDao.getGenres();
-            nodes = newArrayListWithCapacity(genres.size());
-            for (IcecastGenre genre : genres) {
-                // Upper case genre's first letter
-                String genreName = Character.toUpperCase(genre.getName().charAt(0)) + genre.getName().substring(1);
-                // Add Icecast genre to media index
-                mediaIndexDao.put(genre.getId(), new MediaIndexElement(rootNode.getId(), rootNode.getMediaType().getValue(), null, genre.getName(), genre.getName(), rootNode.isLocalPath(), true));
-                // Add child node
-                nodes.add(new IcecastGenreNode(genre.getId(), rootNode.getId(), genreName, genre.getName()));
-            }
-        } else {
-            // Add nodes defined in configuration
-            List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-            nodes = newArrayListWithCapacity(configNodes.size());
-            for (ConfigurationNode configNode : configNodes) {
-                // Add node to mediaIndex
-                mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
-                // Add child node
-                if (rootNode == PODCAST) {
-                    nodes.add(new PodcastNode(configNode.getId(), PODCAST.getId(), configNode.getLabel(), configNode.getPath()));
-                } else {
-                    nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
-                }
+        // Add nodes defined in configuration
+        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
+        List<AbstractNode> nodes = newArrayListWithCapacity(configNodes.size());
+        for (ConfigurationNode configNode : configNodes) {
+            // Add node to mediaIndex
+            mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
+            // Add child node
+            if (rootNode == PODCAST) {
+                nodes.add(new PodcastNode(configNode.getId(), PODCAST.getId(), configNode.getLabel(), configNode.getPath()));
+            } else {
+                nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
             }
         }
         return nodes;
@@ -264,24 +232,6 @@ public class MediaDaoImpl implements MediaDao {
             LOGGER.error(e.getMessage(), e);
         }
         return newArrayListWithCapacity(0);
-    }
-
-    /**
-     * Gets Icecast entries by genre.
-     *
-     * @param genre genre
-     * @return Icecast entries
-     */
-    private List<AbstractNode> getIcecastEntries(final String parentNodeId, final String genre) {
-        Collection<IcecastEntry> icecastEntries = icecastDao.getEntriesByGenre(genre);
-        List<AbstractNode> result = newArrayListWithCapacity(icecastEntries.size());
-        for (IcecastEntry icecastEntry : icecastEntries) {
-            // Add entry to media index
-            String nodeId = mediaIndexDao.add(new MediaIndexElement(parentNodeId, TYPE_RAW_URL.getValue(), icecastEntry.getType(), icecastEntry.getUrl(), icecastEntry.getName(), false, false));
-            // Add Raw Url to result
-            result.add(new RawUrlNode(TYPE_ICECAST_ENTRY, nodeId, parentNodeId, icecastEntry.getName(), MimeType.valueOf(icecastEntry.getType()), icecastEntry.getUrl(), null));
-        }
-        return result;
     }
 
     /**

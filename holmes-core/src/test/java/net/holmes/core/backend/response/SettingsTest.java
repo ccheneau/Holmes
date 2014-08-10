@@ -20,7 +20,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetServerName() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
+        Settings settings = new Settings("serverName", true);
         assertEquals(settings.getServerName(), "serverName");
     }
 
@@ -29,7 +29,7 @@ public class SettingsTest {
      */
     @Test
     public void testSetServerName() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
+        Settings settings = new Settings("serverName", true);
         settings.setServerName("newServerName");
         assertEquals(settings.getServerName(), "newServerName");
     }
@@ -39,7 +39,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
+        Settings settings = new Settings("serverName", true);
         assertTrue(settings.getPrependPodcastItem());
     }
 
@@ -48,27 +48,8 @@ public class SettingsTest {
      */
     @Test
     public void testSetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
+        Settings settings = new Settings("serverName", true);
         settings.setPrependPodcastItem(false);
         assertFalse(settings.getPrependPodcastItem());
-    }
-
-    /**
-     * Method: getEnableIcecastDirectory()
-     */
-    @Test
-    public void testGetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
-        assertTrue(settings.getEnableIcecastDirectory());
-    }
-
-    /**
-     * Method: setEnableIcecastDirectory(final Boolean enableIcecastDirectory)
-     */
-    @Test
-    public void testSetEnableIcecastDirectory() throws Exception {
-        Settings settings = new Settings("serverName", true, true);
-        settings.setEnableIcecastDirectory(false);
-        assertFalse(settings.getEnableIcecastDirectory());
     }
 }
