@@ -34,6 +34,7 @@ public class HolmesSchedulerService implements Service {
      * Instantiates a new holmes scheduler service.
      *
      * @param cacheCleanerService cache cleaner
+     * @param releaseCheckService release check service
      */
     @Inject
     public HolmesSchedulerService(@Named("cacheCleaner") final AbstractScheduledService cacheCleanerService,
