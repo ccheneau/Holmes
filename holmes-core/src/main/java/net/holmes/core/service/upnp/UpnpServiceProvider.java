@@ -90,8 +90,11 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
      */
     @SuppressWarnings("unchecked")
     private LocalService<ContentDirectoryService> buildContentDirectoryService() {
+        // Instantiates a new contentDirectoryService
         LocalService<ContentDirectoryService> contentDirectoryService = new AnnotationLocalServiceBinder().read(ContentDirectoryService.class);
         contentDirectoryService.setManager(new DefaultServiceManager<>(contentDirectoryService, ContentDirectoryService.class));
+
+        // Inject members to contentDirectoryService instance
         injector.injectMembers(contentDirectoryService.getManager().getImplementation());
         return contentDirectoryService;
     }
