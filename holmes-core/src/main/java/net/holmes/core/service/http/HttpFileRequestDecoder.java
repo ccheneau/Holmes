@@ -40,6 +40,7 @@ import static net.holmes.core.common.Constants.*;
  * Decode FullHttpRequest to HttpFileRequest
  */
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
+
     private final MediaManager mediaManager;
     private final MimeTypeManager mimeTypeManager;
     private final String uiDirectory;
@@ -64,20 +65,23 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
     @Override
     protected void decode(ChannelHandlerContext context, FullHttpRequest request, List<Object> out) {
         HttpFileRequest fileRequest = null;
+
         if (request.getMethod().equals(GET)) {
             QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
             if (decoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && decoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
                 // Request for a content file is valid if content is found in media index
                 AbstractNode node = mediaManager.getNode(decoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node instanceof ContentNode) {
+                    // Content found in media index
                     ContentNode contentNode = (ContentNode) node;
                     fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType(), false);
                 }
             } else {
-                // Request for UI static file is valid if requested file name has a valid mime type
+                // Request for static file is valid if requested file name has a valid mime type
                 String fileName = getFileName(decoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(fileName);
                 if (mimeType != null) {
+                    // Static file with valid mime type
                     fileRequest = new HttpFileRequest(request, new File(uiDirectory, fileName), mimeType, true);
                 }
             }
@@ -105,6 +109,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         // Check if fileName is a Holmes client web application
         ClientApplication clientApplication = ClientApplication.findByPath(fileName);
 
+        // Return web application welcome file or file name
         return clientApplication != null ? fileName + clientApplication.getWelcomeFile() : fileName;
     }
 }

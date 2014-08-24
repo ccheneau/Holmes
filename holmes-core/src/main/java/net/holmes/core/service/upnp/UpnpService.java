@@ -36,8 +36,8 @@ import org.fourthline.cling.support.model.ProtocolInfos;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -50,6 +50,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * UPnP service.
  */
 public final class UpnpService implements Service {
+
     private static final Logger LOGGER = getLogger(UpnpService.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
@@ -142,9 +143,6 @@ public final class UpnpService implements Service {
                     final String deviceId = getDeviceId(device);
                     final String deviceName = getDeviceName(device);
                     final InetAddress deviceHost = InetAddress.getByName(device.getIdentity().getDescriptorURL().getHost());
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Remote device added {} : {} [{}]", deviceId, deviceName, deviceHost);
-                    }
 
                     // Get protocol info on remote UPnP device
                     upnpService.getControlPoint().execute(new GetProtocolInfo(connectionService) {
@@ -154,6 +152,9 @@ public final class UpnpService implements Service {
                             Set<String> availableMimeTypes = getAvailableMimeTypes(sinkProtocolInfo);
 
                             // Add device
+                            if (LOGGER.isDebugEnabled()) {
+                                LOGGER.debug("Remote device added {} : {} [{}]", deviceId, deviceName, deviceHost);
+                            }
                             streamingManager.addDevice(new UpnpDevice(deviceId, deviceName, deviceHost, availableMimeTypes, avTransportService));
                         }
 
@@ -162,7 +163,7 @@ public final class UpnpService implements Service {
                             LOGGER.error("Failed to get protocol info for {}: {}", deviceName, defaultMsg);
                         }
                     });
-                } catch (UnknownHostException e) {
+                } catch (IOException e) {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
@@ -220,12 +221,12 @@ public final class UpnpService implements Service {
     /**
      * Get available Mime types.
      *
-     * @param sinkProtocolInfo UPnP protocol info
+     * @param upnpProtocolInfo UPnP protocol info
      * @return available Mime types
      */
-    private Set<String> getAvailableMimeTypes(ProtocolInfos sinkProtocolInfo) {
+    private Set<String> getAvailableMimeTypes(ProtocolInfos upnpProtocolInfo) {
         Set<String> availableMimeTypes = newHashSet();
-        for (ProtocolInfo protocolInfo : sinkProtocolInfo) {
+        for (ProtocolInfo protocolInfo : upnpProtocolInfo) {
             if (protocolInfo.getProtocol() == HTTP_GET) {
                 availableMimeTypes.add(protocolInfo.getContentFormat());
             }
