@@ -108,7 +108,7 @@ public abstract class ConfigurationParameter<T> {
      */
     public static final ConfigurationIntParameter UPNP_SERVICE_PORT = new ConfigurationIntParameter("upnp_service_port", 5002);
 
-    public static final ImmutableList<? extends ConfigurationParameter> PARAMETERS = ImmutableList.of(
+    public static final ImmutableList<ConfigurationParameter> PARAMETERS = ImmutableList.<ConfigurationParameter>of(
             AIRPLAY_STREAMING_ENABLE,
             CACHE_CLEAN_DELAY_MINUTES,
             HTTP_SERVER_PORT,
