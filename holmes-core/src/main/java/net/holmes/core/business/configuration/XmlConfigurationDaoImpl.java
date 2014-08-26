@@ -228,7 +228,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
         @SuppressWarnings("unchecked")
         public void checkParameters() {
             // Check new parameters
-            List<String> availableParams = newArrayListWithCapacity(this.parameters.size());
+            List<String> availableParams = newArrayListWithCapacity(ConfigurationParameter.PARAMETERS.size());
             for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
                 availableParams.add(param.getName());
                 // If a parameter is not present in configuration, add parameter with default value
