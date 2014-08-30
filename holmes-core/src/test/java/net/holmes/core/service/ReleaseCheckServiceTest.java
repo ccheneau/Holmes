@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.scheduled;
+package net.holmes.core.service;
 
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.version.VersionManager;
@@ -44,7 +44,7 @@ public class ReleaseCheckServiceTest {
         ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationDao);
 
         try {
-            service.startAsync();
+            service.start();
             service.awaitRunning(10, SECONDS);
             service.run();
         } catch (TimeoutException e) {
@@ -52,7 +52,7 @@ public class ReleaseCheckServiceTest {
         } finally {
             verify(versionManager, configurationDao);
             if (service.isRunning()) {
-                service.stopAsync();
+                service.stop();
                 service.awaitTerminated();
             }
         }
@@ -70,14 +70,14 @@ public class ReleaseCheckServiceTest {
         ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationDao);
 
         try {
-            service.startAsync();
+            service.start();
             service.awaitRunning(10, SECONDS);
         } catch (TimeoutException e) {
             fail(e.getMessage());
         } finally {
             verify(versionManager, configurationDao);
             if (service.isRunning()) {
-                service.stopAsync();
+                service.stop();
                 service.awaitTerminated();
             }
         }

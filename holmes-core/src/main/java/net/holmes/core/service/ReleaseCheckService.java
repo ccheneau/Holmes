@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.scheduled;
+package net.holmes.core.service;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.business.configuration.ConfigurationDao;
@@ -29,7 +29,7 @@ import static net.holmes.core.common.ConfigurationParameter.RELEASE_CHECK_DELAY_
 /**
  * Scheduled service used to check for new Holmes releases.
  */
-public class ReleaseCheckService extends AbstractScheduledService {
+public class ReleaseCheckService extends AbstractScheduledService implements Service {
 
     private final VersionManager versionManager;
     private final Integer checkDelayHours;
@@ -60,5 +60,21 @@ public class ReleaseCheckService extends AbstractScheduledService {
     @Override
     protected Scheduler scheduler() {
         return checkDelayHours > 0 ? Scheduler.newFixedDelaySchedule(0, checkDelayHours, HOURS) : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void start() {
+        startAsync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void stop() {
+        stopAsync();
     }
 }

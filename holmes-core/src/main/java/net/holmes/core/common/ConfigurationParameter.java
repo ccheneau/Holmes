@@ -32,10 +32,6 @@ public abstract class ConfigurationParameter<T> {
      */
     public static final ConfigurationBooleanParameter AIRPLAY_STREAMING_ENABLE = new ConfigurationBooleanParameter("enable_airplay_streaming", true);
     /**
-     * Delay between cache clean attempts (in minutes)
-     */
-    public static final ConfigurationIntParameter CACHE_CLEAN_DELAY_MINUTES = new ConfigurationIntParameter("cache_clean_delay_minutes", 30);
-    /**
      * Delay between Holmes release checks (in hours)
      */
     public static final ConfigurationIntParameter RELEASE_CHECK_DELAY_HOURS = new ConfigurationIntParameter("release_check_delay_hours", 30);
@@ -110,7 +106,6 @@ public abstract class ConfigurationParameter<T> {
 
     public static final ImmutableList<ConfigurationParameter> PARAMETERS = ImmutableList.<ConfigurationParameter>of(
             AIRPLAY_STREAMING_ENABLE,
-            CACHE_CLEAN_DELAY_MINUTES,
             HTTP_SERVER_PORT,
             HTTP_SERVER_CACHE_SECOND,
             HTTP_SERVER_BOSS_THREADS,

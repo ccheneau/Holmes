@@ -20,7 +20,6 @@ package net.holmes.core;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AbstractScheduledService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
@@ -57,14 +56,12 @@ import net.holmes.core.business.version.release.ReleaseDao;
 import net.holmes.core.business.version.release.ReleaseDaoImpl;
 import net.holmes.core.common.EventBusListener;
 import net.holmes.core.common.exception.HolmesRuntimeException;
+import net.holmes.core.service.ReleaseCheckService;
 import net.holmes.core.service.Service;
 import net.holmes.core.service.airplay.AirplayService;
 import net.holmes.core.service.http.HttpFileRequestDecoder;
 import net.holmes.core.service.http.HttpFileRequestHandler;
 import net.holmes.core.service.http.HttpService;
-import net.holmes.core.service.scheduled.CacheCleanerService;
-import net.holmes.core.service.scheduled.HolmesSchedulerService;
-import net.holmes.core.service.scheduled.ReleaseCheckService;
 import net.holmes.core.service.systray.SystrayService;
 import net.holmes.core.service.upnp.UpnpService;
 import net.holmes.core.service.upnp.UpnpServiceProvider;
@@ -154,11 +151,7 @@ public final class HolmesInjector extends AbstractModule {
         bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(named("airplay")).to(AirplayService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("scheduler")).to(HolmesSchedulerService.class).in(Singleton.class);
-
-        // Bind scheduled services
-        bind(AbstractScheduledService.class).annotatedWith(named("cacheCleaner")).to(CacheCleanerService.class);
-        bind(AbstractScheduledService.class).annotatedWith(named("release")).to(ReleaseCheckService.class);
+        bind(Service.class).annotatedWith(named("release")).to(ReleaseCheckService.class).in(Singleton.class);
 
         // Bind backend
         bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);

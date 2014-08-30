@@ -42,7 +42,7 @@ public final class HolmesService implements Service {
     private final Service upnpService;
     private final Service airplayService;
     private final Service systrayService;
-    private final Service schedulerService;
+    private final Service releaseCheckService;
     private final String localHolmesDataDir;
 
     private RandomAccessFile randomAccessFile = null;
@@ -51,21 +51,21 @@ public final class HolmesService implements Service {
     /**
      * Instantiates a new holmes service.
      *
-     * @param httpService        Http service
-     * @param upnpService        UPnP service
-     * @param systrayService     Systray service
-     * @param schedulerService   Scheduler service
-     * @param localHolmesDataDir local Holmes data directory
+     * @param httpService         Http service
+     * @param upnpService         UPnP service
+     * @param systrayService      Systray service
+     * @param releaseCheckService Check for new release service
+     * @param localHolmesDataDir  local Holmes data directory
      */
     @Inject
     public HolmesService(@Named("http") final Service httpService, @Named("upnp") final Service upnpService, @Named("airplay") final Service airplayService,
-                         @Named("systray") final Service systrayService, @Named("scheduler") final Service schedulerService,
+                         @Named("systray") final Service systrayService, @Named("release") final Service releaseCheckService,
                          @Named("localHolmesDataDir") String localHolmesDataDir) {
         this.httpService = httpService;
         this.upnpService = upnpService;
         this.airplayService = airplayService;
         this.systrayService = systrayService;
-        this.schedulerService = schedulerService;
+        this.releaseCheckService = releaseCheckService;
         this.localHolmesDataDir = localHolmesDataDir;
     }
 
@@ -82,7 +82,7 @@ public final class HolmesService implements Service {
             upnpService.start();
             airplayService.start();
             systrayService.start();
-            schedulerService.start();
+            releaseCheckService.start();
 
             LOGGER.info("Holmes service started");
         }
@@ -99,7 +99,7 @@ public final class HolmesService implements Service {
         unlockInstance();
 
         // Stop Holmes service
-        schedulerService.stop();
+        releaseCheckService.stop();
         systrayService.stop();
         airplayService.stop();
         upnpService.stop();
