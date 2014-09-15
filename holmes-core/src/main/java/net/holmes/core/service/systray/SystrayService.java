@@ -40,11 +40,11 @@ import static java.awt.Font.BOLD;
 import static java.awt.SystemTray.*;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.UIManager.getFont;
-import static net.holmes.core.common.ClientApplication.ADMIN;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.Constants.*;
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.SYSTRAY;
 import static net.holmes.core.common.StaticResourceLoader.getData;
+import static net.holmes.core.common.WebApplication.ADMIN;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

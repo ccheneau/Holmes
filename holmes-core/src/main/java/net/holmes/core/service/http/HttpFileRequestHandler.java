@@ -24,7 +24,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.mimetype.model.MimeType;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -74,6 +73,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final CharSequence X_KEEP_ALIVE = newEntity(KEEP_ALIVE);
 
     private final int httpCacheSecond;
+    private final SimpleDateFormat httpDateFormatter;
 
     /**
      * Instantiates a new Http file request handler.
@@ -83,6 +83,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     @Inject
     public HttpFileRequestHandler(ConfigurationDao configurationDao) {
         httpCacheSecond = configurationDao.getParameter(HTTP_SERVER_CACHE_SECOND);
+        httpDateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
+        httpDateFormatter.setTimeZone(GMT_TIMEZONE);
     }
 
     /**
@@ -107,11 +109,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
 
         // Add HTTP headers to response
-        addContentHeaders(response, fileLength - startOffset, request.getMimeType());
-        addDateHeader(response, file, request.isStaticResource());
-        boolean keepAlive = addKeepAliveHeader(response, request.getHttpRequest());
+        addContentHeaders(response, fileLength - startOffset, request);
+        addDateAndCacheHeaders(response, request);
+        boolean keepAlive = addKeepAliveHeader(response, request);
 
-        // Write the response
+        // Write the response headers
         context.write(response);
 
         // Write the content
@@ -147,20 +149,20 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @param startOffset start offset
      * @param fileLength  file length
      * @return HTTP response
-     * @throws HttpFileRequestException
+     * @throws HttpFileRequestException indicates that start offset is invalid
      */
     private HttpResponse buildHttpResponse(final long startOffset, final long fileLength) throws HttpFileRequestException {
         HttpResponse response;
         if (startOffset == 0) {
-            // Instantiates a new response
+            // Instantiates a new default HTTP response
             response = new DefaultHttpResponse(HTTP_1_1, OK, false);
             response.headers().set(X_ACCEPT_RANGES, X_BYTES);
         } else if (startOffset < fileLength) {
-            // Instantiates a new response with content range
+            // Instantiates a new default HTTP response with content range
             response = new DefaultHttpResponse(HTTP_1_1, PARTIAL_CONTENT, false);
             response.headers().set(X_CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else {
-            // Start offset is not correct
+            // Invalid start offset
             throw new HttpFileRequestException("Invalid start offset:" + startOffset, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
@@ -175,7 +177,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      *
      * @param httpRequest Http request
      * @return start offset
-     * @throws HttpFileRequestException
+     * @throws HttpFileRequestException indicates that start offset is invalid
      */
     private long getStartOffset(final HttpRequest httpRequest) throws HttpFileRequestException {
         long startOffset = 0;
@@ -196,34 +198,30 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      *
      * @param response   HTTP response
      * @param fileLength file length
-     * @param mimeType   mime type
+     * @param request    file request
      */
-    private void addContentHeaders(final HttpResponse response, final long fileLength, final MimeType mimeType) {
+    private void addContentHeaders(final HttpResponse response, final long fileLength, final HttpFileRequest request) {
         setContentLength(response, fileLength);
-        response.headers().set(X_CONTENT_TYPE, mimeType.getMimeType());
+        response.headers().set(X_CONTENT_TYPE, request.getMimeType().getMimeType());
     }
 
     /**
-     * Add date header.
+     * Add date and cache headers to response.
      *
-     * @param response       HTTP response
-     * @param file           requested file
-     * @param staticResource whether file is a static resource
+     * @param response HTTP response
+     * @param request  file request
      */
-    private void addDateHeader(final HttpResponse response, final File file, final boolean staticResource) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
-        dateFormatter.setTimeZone(GMT_TIMEZONE);
-
+    private void addDateAndCacheHeaders(final HttpResponse response, final HttpFileRequest request) {
         Calendar calendar = Calendar.getInstance();
 
         // Add date header
-        response.headers().set(X_DATE, dateFormatter.format(calendar.getTime()));
-        response.headers().set(X_LAST_MODIFIED, dateFormatter.format(new Date(file.lastModified())));
+        response.headers().set(X_DATE, httpDateFormatter.format(calendar.getTime()));
+        response.headers().set(X_LAST_MODIFIED, httpDateFormatter.format(new Date(request.getFile().lastModified())));
 
         // Add cache header for static resources
-        if (staticResource && httpCacheSecond > 0) {
+        if (request.isStaticResource() && httpCacheSecond > 0) {
             calendar.add(Calendar.SECOND, httpCacheSecond);
-            response.headers().set(X_EXPIRES, dateFormatter.format(calendar.getTime()));
+            response.headers().set(X_EXPIRES, httpDateFormatter.format(calendar.getTime()));
             response.headers().set(X_CACHE_CONTROL, "private, max-age=" + httpCacheSecond);
         }
     }
@@ -235,8 +233,8 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @param request  HTTP request
      * @return true if keep alive is requested
      */
-    private boolean addKeepAliveHeader(final HttpResponse response, final HttpMessage request) {
-        boolean keepAlive = isKeepAlive(request);
+    private boolean addKeepAliveHeader(final HttpResponse response, final HttpFileRequest request) {
+        boolean keepAlive = isKeepAlive(request.getHttpRequest());
         if (keepAlive) {
             response.headers().set(X_CONNECTION, X_KEEP_ALIVE);
         }

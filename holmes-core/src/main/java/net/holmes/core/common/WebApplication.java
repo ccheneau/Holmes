@@ -20,62 +20,62 @@ package net.holmes.core.common;
 import static net.holmes.core.common.Constants.HOLMES_APPLICATION_WELCOME_FILE;
 
 /**
- * Holmes client web applications
+ * Holmes web applications
  */
-public enum ClientApplication {
+public enum WebApplication {
     DEFAULT("", HOLMES_APPLICATION_WELCOME_FILE.toString()),
     ADMIN("/admin", HOLMES_APPLICATION_WELCOME_FILE.toString()),
     PLAY("/play", HOLMES_APPLICATION_WELCOME_FILE.toString());
 
     /**
-     * Client application path on file system.
+     * Web application path on file system.
      */
     private final String path;
 
     /**
-     * Client application welcome file name.
+     * Web application welcome file name.
      */
     private final String welcomeFile;
 
     /**
-     * Instantiates a new Holmes client application.
+     * Instantiates a new web application.
      *
-     * @param path        client application path on file system
-     * @param welcomeFile client application welcome file
+     * @param path        web application path on file system
+     * @param welcomeFile web application welcome file
      */
-    private ClientApplication(final String path, final String welcomeFile) {
+    private WebApplication(final String path, final String welcomeFile) {
         this.path = path;
         this.welcomeFile = welcomeFile;
     }
 
     /**
-     * Get client application path.
+     * Get web application path.
      *
-     * @return client application path
+     * @return web application path
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * Get client application welcome file.
+     * Get web application welcome file.
      *
-     * @return client application welcome file
+     * @return web application welcome file
      */
     public String getWelcomeFile() {
         return welcomeFile;
     }
 
     /**
-     * Find client application by path.
+     * Find web application by path.
      *
-     * @param path application path to find
-     * @return found application or null
+     * @param path web application path to find
+     * @return found web application or null
      */
-    public static ClientApplication findByPath(final String path) {
-        for (ClientApplication clientApplication : values()) {
-            if (clientApplication.getPath().equals(path)) {
-                return clientApplication;
+    public static WebApplication findByPath(final String path) {
+        for (WebApplication webApplication : values()) {
+            if (webApplication.getPath().equals(path)) {
+                return webApplication;
             }
         }
         return null;

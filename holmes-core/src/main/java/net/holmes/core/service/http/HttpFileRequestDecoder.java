@@ -26,7 +26,7 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.model.MimeType;
-import net.holmes.core.common.ClientApplication;
+import net.holmes.core.common.WebApplication;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -67,22 +67,22 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
         HttpFileRequest fileRequest = null;
 
         if (request.getMethod().equals(GET)) {
-            QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
-            if (decoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && decoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
+            QueryStringDecoder requestDecoder = new QueryStringDecoder(request.getUri());
+            if (requestDecoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
                 // Request for a content file is valid if content is found in media index
-                AbstractNode node = mediaManager.getNode(decoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
+                AbstractNode node = mediaManager.getNode(requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node instanceof ContentNode) {
-                    // Content found in media index
+                    // Content found in media index, build a file request based on this content
                     ContentNode contentNode = (ContentNode) node;
                     fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType(), false);
                 }
             } else {
                 // Request for static file is valid if requested file name has a valid mime type
-                String fileName = getFileName(decoder);
-                MimeType mimeType = mimeTypeManager.getMimeType(fileName);
+                String requestedFileName = getRequestedFileName(requestDecoder);
+                MimeType mimeType = mimeTypeManager.getMimeType(requestedFileName);
                 if (mimeType != null) {
-                    // Static file with valid mime type
-                    fileRequest = new HttpFileRequest(request, new File(uiDirectory, fileName), mimeType, true);
+                    // Found valid mime type, build a static file request for requested file name
+                    fileRequest = new HttpFileRequest(request, new File(uiDirectory, requestedFileName), mimeType, true);
                 }
             }
         }
@@ -97,19 +97,19 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
     }
 
     /**
-     * Get file name from query.
+     * Get requested file name.
      *
-     * @param decoder query string decoder
-     * @return file name
+     * @param requestDecoder request decoder
+     * @return requested file name
      */
-    private String getFileName(final QueryStringDecoder decoder) {
-        // Get path and remove trailing slashes
-        String fileName = decoder.path().replaceAll("/+$", "");
+    private String getRequestedFileName(final QueryStringDecoder requestDecoder) {
+        // Get request path and remove trailing slashes
+        String fileName = requestDecoder.path().replaceAll("/+$", "");
 
-        // Check if fileName is a Holmes client web application
-        ClientApplication clientApplication = ClientApplication.findByPath(fileName);
+        // Check if fileName is a web application
+        WebApplication webApplication = WebApplication.findByPath(fileName);
 
-        // Return web application welcome file or file name
-        return clientApplication != null ? fileName + clientApplication.getWelcomeFile() : fileName;
+        // Return web application welcome file or requested file name
+        return webApplication != null ? fileName + webApplication.getWelcomeFile() : fileName;
     }
 }
