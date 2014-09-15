@@ -26,7 +26,7 @@ import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 public interface ControlPoint {
 
     /**
-     * Execute command on device;
+     * Execute command on device.
      *
      * @param device  device
      * @param command command to run
