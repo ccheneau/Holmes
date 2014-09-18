@@ -105,7 +105,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Get start offset
         long startOffset = getStartOffset(request.getHttpRequest());
 
-        // Build response
+        // Build HTTP response
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
 
         // Add HTTP headers to response
@@ -163,7 +163,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
             response.headers().set(X_CONTENT_RANGE, startOffset + "-" + (fileLength - 1) + "/" + fileLength);
         } else {
             // Invalid start offset
-            throw new HttpFileRequestException("Invalid start offset:" + startOffset, REQUESTED_RANGE_NOT_SATISFIABLE);
+            throw new HttpFileRequestException("Invalid start offset: " + startOffset, REQUESTED_RANGE_NOT_SATISFIABLE);
         }
 
         // Add server header
@@ -238,7 +238,6 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         if (keepAlive) {
             response.headers().set(X_CONNECTION, X_KEEP_ALIVE);
         }
-
         return keepAlive;
     }
 

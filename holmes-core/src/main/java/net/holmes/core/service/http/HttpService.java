@@ -63,12 +63,12 @@ public final class HttpService implements Service {
 
     private final Injector injector;
     private final ConfigurationDao configurationDao;
-    private final EventLoopGroup bossGroup;
-    private final EventLoopGroup workerGroup;
-    private final ResteasyDeployment deployment;
+    private final EventLoopGroup nettyBossGroup;
+    private final EventLoopGroup nettyWorkerGroup;
+    private final ResteasyDeployment resteasy;
 
     /**
-     * Instantiates a new http service.
+     * Instantiates a new HTTP service.
      *
      * @param injector         injector
      * @param configurationDao configuration dao
@@ -77,9 +77,9 @@ public final class HttpService implements Service {
     public HttpService(final Injector injector, final ConfigurationDao configurationDao) {
         this.injector = injector;
         this.configurationDao = configurationDao;
-        this.bossGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS));
-        this.workerGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS));
-        this.deployment = new ResteasyDeployment();
+        this.nettyBossGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS));
+        this.nettyWorkerGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS));
+        this.resteasy = new ResteasyDeployment();
     }
 
     /**
@@ -90,14 +90,14 @@ public final class HttpService implements Service {
         LOGGER.info("Starting HTTP service");
 
         // Start RestEasy deployment
-        deployment.start();
+        resteasy.start();
 
         // Create a RestEasy request dispatcher
-        final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher) deployment.getDispatcher(), deployment.getProviderFactory(), null);
+        final RequestDispatcher resteasyDispatcher = new RequestDispatcher((SynchronousDispatcher) resteasy.getDispatcher(), resteasy.getProviderFactory(), null);
 
         // Configure the service.
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup)
+        ServerBootstrap serverBootstrap = new ServerBootstrap();
+        serverBootstrap.group(nettyBossGroup, nettyWorkerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -114,9 +114,9 @@ public final class HttpService implements Service {
                                 .addLast("httpFileRequestHandler", injector.getInstance(HttpFileRequestHandler.class));
 
                         // Add RestEasy handlers
-                        pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), RESTEASY_MAPPING_PREFIX, HTTP))
-                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(dispatcher))
-                                .addLast("restEasyRequestHandler", new RequestHandler(dispatcher));
+                        pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(resteasyDispatcher.getDispatcher(), RESTEASY_MAPPING_PREFIX, HTTP))
+                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(resteasyDispatcher))
+                                .addLast("restEasyRequestHandler", new RequestHandler(resteasyDispatcher));
                     }
                 })
                 .option(SO_BACKLOG, BACKLOG)
@@ -124,12 +124,12 @@ public final class HttpService implements Service {
                 .childOption(SO_KEEPALIVE, true);
 
         // Register backend JAX-RS handlers (declared in Guice injector) to RestEasy
-        ModuleProcessor processor = new ModuleProcessor(deployment.getRegistry(), deployment.getProviderFactory());
-        processor.processInjector(injector);
+        ModuleProcessor guiceProcessor = new ModuleProcessor(resteasy.getRegistry(), resteasy.getProviderFactory());
+        guiceProcessor.processInjector(injector);
 
-        // Bind and start service to accept incoming connections.
+        // Bind and start service to accept incoming connections
         InetSocketAddress boundAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
-        bootstrap.bind(boundAddress).syncUninterruptibly();
+        serverBootstrap.bind(boundAddress).syncUninterruptibly();
 
         LOGGER.info("HTTP service bound on {}", boundAddress);
     }
@@ -143,11 +143,11 @@ public final class HttpService implements Service {
         LOGGER.info("Stopping HTTP service");
 
         // Stop Netty event executors
-        bossGroup.shutdownGracefully();
-        workerGroup.shutdownGracefully();
+        nettyBossGroup.shutdownGracefully();
+        nettyWorkerGroup.shutdownGracefully();
 
         // Stop RestEasy
-        deployment.stop();
+        resteasy.stop();
 
         LOGGER.info("HTTP service stopped");
     }
