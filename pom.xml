@@ -38,23 +38,27 @@
     </issueManagement>
 
     <properties>
+        <!-- common properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cling.version>2.0-alpha3</cling.version>
-        <easymock.version>3.2</easymock.version>
-        <guava.version>18.0</guava.version>
-        <guice.version>3.0</guice.version>
-        <jackson.version>2.4.2</jackson.version>
-        <javassist.version>3.18.2-GA</javassist.version>
-        <javax.inject.version>1</javax.inject.version>
-        <jmdns.version>3.4.1</jmdns.version>
-        <junit.version>4.12-beta-1</junit.version>
-        <logback.version>1.1.2</logback.version>
-        <netty.version>4.0.23.Final</netty.version>
-        <resteasy.version>3.0.8.Final</resteasy.version>
-        <rome.version>1.0</rome.version>
-        <seamless.version>1.0-alpha3</seamless.version>
-        <slf4j.version>1.7.7</slf4j.version>
-        <xstream.version>1.4.7</xstream.version>
+        <java.version>1.7</java.version>
+
+        <!-- Dependencies version -->
+        <dep.cling.version>2.0-alpha3</dep.cling.version>
+        <dep.easymock.version>3.2</dep.easymock.version>
+        <dep.guava.version>18.0</dep.guava.version>
+        <dep.guice.version>3.0</dep.guice.version>
+        <dep.jackson.version>2.4.2</dep.jackson.version>
+        <dep.javassist.version>3.18.2-GA</dep.javassist.version>
+        <dep.javax.inject.version>1</dep.javax.inject.version>
+        <dep.jmdns.version>3.4.1</dep.jmdns.version>
+        <dep.junit.version>4.12-beta-1</dep.junit.version>
+        <dep.logback.version>1.1.2</dep.logback.version>
+        <dep.netty.version>4.0.23.Final</dep.netty.version>
+        <dep.resteasy.version>3.0.8.Final</dep.resteasy.version>
+        <dep.rome.version>1.0</dep.rome.version>
+        <dep.seamless.version>1.0-alpha3</dep.seamless.version>
+        <dep.slf4j.version>1.7.7</dep.slf4j.version>
+        <dep.xstream.version>1.4.7</dep.xstream.version>
     </properties>
 
     <build>
@@ -64,8 +68,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.1</version>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -137,7 +141,7 @@
                     <artifactId>modernizer-maven-plugin</artifactId>
                     <version>1.0.0</version>
                     <configuration>
-                        <javaVersion>1.7</javaVersion>
+                        <javaVersion>${java.version}</javaVersion>
                     </configuration>
                 </plugin>
             </plugins>
@@ -187,39 +191,39 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-common</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-buffer</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-codec</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-handler</artifactId>
-                <version>${netty.version}</version>
+                <version>${dep.netty.version}</version>
             </dependency>
 
             <!-- javassist -->
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
-                <version>${javassist.version}</version>
+                <version>${dep.javassist.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -227,59 +231,59 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <version>${dep.slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
-                <version>${slf4j.version}</version>
+                <version>${dep.slf4j.version}</version>
             </dependency>
 
             <!-- logback -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
+                <version>${dep.logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
+                <version>${dep.logback.version}</version>
             </dependency>
 
             <!-- xstream -->
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>${xstream.version}</version>
+                <version>${dep.xstream.version}</version>
             </dependency>
 
             <!-- inject -->
             <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
-                <version>${javax.inject.version}</version>
+                <version>${dep.javax.inject.version}</version>
             </dependency>
 
             <!-- guice -->
             <dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
-                <version>${guice.version}</version>
+                <version>${dep.guice.version}</version>
             </dependency>
 
             <!-- seamless -->
             <dependency>
                 <groupId>org.seamless</groupId>
                 <artifactId>seamless-util</artifactId>
-                <version>${seamless.version}</version>
+                <version>${dep.seamless.version}</version>
             </dependency>
 
             <!-- cling -->
             <dependency>
                 <groupId>org.fourthline.cling</groupId>
                 <artifactId>cling-core</artifactId>
-                <version>${cling.version}</version>
+                <version>${dep.cling.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.sun</groupId>
@@ -290,7 +294,7 @@
             <dependency>
                 <groupId>org.fourthline.cling</groupId>
                 <artifactId>cling-support</artifactId>
-                <version>${cling.version}</version>
+                <version>${dep.cling.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.seamless</groupId>
@@ -303,14 +307,14 @@
             <dependency>
                 <groupId>rome</groupId>
                 <artifactId>rome</artifactId>
-                <version>${rome.version}</version>
+                <version>${dep.rome.version}</version>
             </dependency>
 
             <!-- restEasy -->
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${dep.resteasy.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.slf4j</groupId>
@@ -325,22 +329,22 @@
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>jaxrs-api</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${dep.resteasy.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-guice</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${dep.resteasy.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-netty4</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${dep.resteasy.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jackson2-provider</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${dep.resteasy.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -348,22 +352,22 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
+                <version>${dep.jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
+                <version>${dep.jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <version>${dep.jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${jackson.version}</version>
+                <version>${dep.jackson.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -371,14 +375,14 @@
             <dependency>
                 <groupId>javax.jmdns</groupId>
                 <artifactId>jmdns</artifactId>
-                <version>${jmdns.version}</version>
+                <version>${dep.jmdns.version}</version>
             </dependency>
 
             <!-- guava -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
+                <version>${dep.guava.version}</version>
             </dependency>
 
             <!-- test dependencies -->
@@ -386,7 +390,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <version>${dep.junit.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -394,7 +398,7 @@
             <dependency>
                 <groupId>org.easymock</groupId>
                 <artifactId>easymock</artifactId>
-                <version>${easymock.version}</version>
+                <version>${dep.easymock.version}</version>
                 <scope>test</scope>
             </dependency>
 
