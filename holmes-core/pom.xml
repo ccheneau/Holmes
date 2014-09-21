@@ -57,6 +57,19 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.gaul</groupId>
+                <artifactId>modernizer-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>modernizer</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>modernizer</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

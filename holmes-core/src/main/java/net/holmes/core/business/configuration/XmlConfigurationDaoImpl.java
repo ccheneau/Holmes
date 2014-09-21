@@ -30,12 +30,12 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Lists.*;
 
 /**
  * XML configuration dao implementation.
@@ -203,16 +203,16 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
          */
         public void checkDefaultValues() {
             if (this.videoFolders == null) {
-                this.videoFolders = newArrayListWithCapacity(0);
+                this.videoFolders = new ArrayList<>(0);
             }
             if (this.audioFolders == null) {
-                this.audioFolders = newArrayListWithCapacity(0);
+                this.audioFolders = new ArrayList<>(0);
             }
             if (this.pictureFolders == null) {
-                this.pictureFolders = newArrayListWithCapacity(0);
+                this.pictureFolders = new ArrayList<>(0);
             }
             if (this.podcasts == null) {
-                this.podcasts = newArrayListWithCapacity(0);
+                this.podcasts = new ArrayList<>(0);
             }
             if (this.parameters == null) {
                 this.parameters = new Properties();
@@ -225,7 +225,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
         @SuppressWarnings("unchecked")
         public void checkParameters() {
             // Check new parameters
-            List<String> availableParams = newArrayListWithCapacity(ConfigurationParameter.PARAMETERS.size());
+            List<String> availableParams = new ArrayList<>(ConfigurationParameter.PARAMETERS.size());
             for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
                 availableParams.add(param.getName());
                 // If a parameter is not present in configuration, add parameter with default value
@@ -235,7 +235,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
             }
 
             // Check obsolete parameters
-            List<String> obsoleteParams = newArrayList();
+            List<String> obsoleteParams = new ArrayList<>();
             for (Object paramKey : this.parameters.keySet()) {
                 if (!availableParams.contains(paramKey.toString())) {
                     obsoleteParams.add(paramKey.toString());
@@ -270,7 +270,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
                     configurationNodes = this.videoFolders;
                     break;
                 default:
-                    configurationNodes = newArrayListWithCapacity(0);
+                    configurationNodes = new ArrayList<>(0);
                     break;
             }
             return configurationNodes;

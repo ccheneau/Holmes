@@ -18,9 +18,8 @@
 package net.holmes.core.common;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 
 /**
  * File utility class.
@@ -65,7 +64,7 @@ public final class FileUtils {
         List<File> fileList;
         File[] children = new File(parentPath).listFiles();
         if (children != null) {
-            fileList = newArrayListWithCapacity(children.length);
+            fileList = new ArrayList<>(children.length);
             for (File child : children) {
                 if (includeFiles && isValidFile(child)) {
                     fileList.add(child);
@@ -74,7 +73,7 @@ public final class FileUtils {
                 }
             }
         } else {
-            fileList = newArrayListWithCapacity(0);
+            fileList = new ArrayList<>(0);
         }
         return fileList;
     }

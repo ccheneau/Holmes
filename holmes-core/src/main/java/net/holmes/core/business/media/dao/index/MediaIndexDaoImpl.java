@@ -26,10 +26,10 @@ import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.synchronizedBiMap;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
@@ -88,7 +88,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
     @Override
     public synchronized void removeChildren(final String uuid) {
         MediaIndexElement elValue;
-        Collection<String> toRemove = newArrayList();
+        Collection<String> toRemove = new ArrayList<>();
 
         // Search elements to remove
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
@@ -115,7 +115,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
         MediaIndexElement elValue;
 
         // Search elements to remove
-        Collection<String> toRemove = newArrayList();
+        Collection<String> toRemove = new ArrayList<>();
         for (Entry<String, MediaIndexElement> indexEntry : elements.entrySet()) {
             elId = indexEntry.getKey();
             elValue = indexEntry.getValue();

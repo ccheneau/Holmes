@@ -31,13 +31,13 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
@@ -122,7 +122,7 @@ public class MediaDaoImpl implements MediaDao {
                     break;
                 case TYPE_RAW_URL:
                     // Nothing
-                    childNodes = newArrayListWithCapacity(0);
+                    childNodes = new ArrayList<>(0);
                     break;
                 default:
                     // Get folder child nodes
@@ -130,7 +130,7 @@ public class MediaDaoImpl implements MediaDao {
                     break;
             }
         } else {
-            childNodes = newArrayListWithCapacity(0);
+            childNodes = new ArrayList<>(0);
             LOGGER.error("[getChildNodes] {} node not found in media index", parentNodeId);
         }
 
@@ -144,7 +144,7 @@ public class MediaDaoImpl implements MediaDao {
     public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
         // Add nodes defined in configuration
         List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
-        List<AbstractNode> nodes = newArrayListWithCapacity(configNodes.size());
+        List<AbstractNode> nodes = new ArrayList<>(configNodes.size());
         for (ConfigurationNode configNode : configNodes) {
             // Add node to mediaIndex
             mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
@@ -202,7 +202,7 @@ public class MediaDaoImpl implements MediaDao {
      */
     private List<AbstractNode> getFolderChildNodes(final String parentId, final String folderPath, final MediaType mediaType) {
         List<File> children = listChildren(folderPath, true);
-        List<AbstractNode> nodes = newArrayListWithCapacity(children.size());
+        List<AbstractNode> nodes = new ArrayList<>(children.size());
         for (File child : children) {
             // Add node to mediaIndex
             if (child.isDirectory()) {
@@ -231,7 +231,7 @@ public class MediaDaoImpl implements MediaDao {
         } catch (ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return newArrayListWithCapacity(0);
+        return new ArrayList<>(0);
     }
 
     /**

@@ -32,12 +32,12 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static net.holmes.core.common.Constants.*;
@@ -109,7 +109,7 @@ public final class MediaManagerImpl implements MediaManager {
         if (rootNode == ROOT) {
             // Get child nodes of root node
             RootNode[] rootNodes = RootNode.values();
-            childNodes = newArrayListWithCapacity(rootNodes.length);
+            childNodes = new ArrayList<>(rootNodes.length);
             for (RootNode subRootNode : rootNodes) {
                 if (subRootNode.getParentId().equals(ROOT.getId()) && !mediaDao.getRootNodeChildren(subRootNode).isEmpty()) {
                     childNodes.add(new FolderNode(subRootNode.getId(), ROOT.getId(), resourceBundle.getString(subRootNode.getBundleKey())));

@@ -32,9 +32,9 @@ import net.holmes.core.common.exception.HolmesException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.sun.syndication.feed.module.RssModule.*;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
@@ -53,7 +53,7 @@ abstract class PodcastParser {
      */
     @SuppressWarnings("unchecked")
     public List<AbstractNode> parse(String podcastUrl, String podcastId) throws HolmesException {
-        List<AbstractNode> podcastEntryNodes = newArrayList();
+        List<AbstractNode> podcastEntryNodes = new ArrayList<>();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();

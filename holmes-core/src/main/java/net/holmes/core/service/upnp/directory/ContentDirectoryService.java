@@ -34,11 +34,11 @@ import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.SortCriterion;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.ConfigurationParameter.*;
@@ -122,7 +122,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     private List<String> getAvailableMimeType(RemoteClientInfo remoteClientInfo) {
         // Get available mime types
-        List<String> availableMimeTypes = newArrayList();
+        List<String> availableMimeTypes = new ArrayList<>();
         if (remoteClientInfo.getConnection() != null) {
             for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
                 if (device instanceof UpnpDevice) {

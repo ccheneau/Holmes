@@ -17,9 +17,9 @@
 
 package net.holmes.core.backend.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Device browse result
@@ -27,8 +27,8 @@ import static com.google.common.collect.Lists.newArrayList;
 public class DeviceBrowseResult {
     private String parentNodeId;
     private String errorMessage;
-    private final List<BrowseFolder> folders = newArrayList();
-    private final List<BrowseContent> contents = newArrayList();
+    private final List<BrowseFolder> folders = new ArrayList<>();
+    private final List<BrowseContent> contents = new ArrayList<>();
 
     public String getParentNodeId() {
         return parentNodeId;

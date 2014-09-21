@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import javax.net.SocketFactory;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -112,7 +112,7 @@ public class SocketControlPoint implements ControlPoint {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
 
         // Read Http response
-        List<String> httpResponseLines = newArrayList();
+        List<String> httpResponseLines = new ArrayList<>();
         String line = in.readLine();
         while (line != null && line.trim().length() != 0) {
             httpResponseLines.add(line);

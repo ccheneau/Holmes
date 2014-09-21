@@ -37,10 +37,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.backend.response.DeviceBrowseResult.*;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
@@ -78,7 +78,7 @@ public class StreamingHandler {
     @Produces(APPLICATION_JSON)
     public List<PlaybackDevice> getDevices() {
         Collection<Device> devices = streamingManager.getDevices();
-        List<PlaybackDevice> playbackDevices = newArrayListWithCapacity(devices.size());
+        List<PlaybackDevice> playbackDevices = new ArrayList<>(devices.size());
         for (Device device : devices) {
             playbackDevices.add(buildPlaybackDevice(device));
         }

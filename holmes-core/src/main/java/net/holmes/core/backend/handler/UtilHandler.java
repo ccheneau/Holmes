@@ -24,10 +24,10 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.io.File;
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
@@ -86,7 +86,7 @@ public final class UtilHandler {
     @Path("/getChildFolders")
     @Produces(APPLICATION_JSON)
     public Collection<Folder> getChildFolders(@FormParam("path") final String parentPath) {
-        Collection<Folder> folders = newArrayList();
+        Collection<Folder> folders = new ArrayList<>();
         if (parentPath == null || "none".equals(parentPath)) {
             // No parent path specified
             // Add user home folder to response
