@@ -59,11 +59,8 @@ public final class MimeTypeDaoImpl implements MimeTypeDao {
      */
     @Override
     public MimeType getMimeType(String fileName) {
-        // Get file extension
-        String ext = getFileExtension(fileName).toLowerCase();
-
-        // Get mime type
-        return properties.getProperty(ext) == null ? null : MimeType.valueOf(properties.getProperty(ext));
+        // Get mime type from fileName extension
+        return MimeType.valueOf(properties.getProperty(getFileExtension(fileName).toLowerCase()));
     }
 
     /**
@@ -71,6 +68,6 @@ public final class MimeTypeDaoImpl implements MimeTypeDao {
      */
     @Override
     public MimeType getAliasMimeType(MimeType mimeType) {
-        return properties.getProperty(mimeType.getMimeType()) == null ? null : MimeType.valueOf(properties.getProperty(mimeType.getMimeType()));
+        return MimeType.valueOf(properties.getProperty(mimeType.getMimeType()));
     }
 }

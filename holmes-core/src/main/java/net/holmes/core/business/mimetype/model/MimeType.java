@@ -52,10 +52,10 @@ public final class MimeType {
      * Get mime type
      *
      * @param mimeType mime type string
-     * @return mime type
+     * @return mime type or null
      */
     public static MimeType valueOf(final String mimeType) {
-        return new MimeType(mimeType);
+        return mimeType == null ? null : new MimeType(mimeType);
     }
 
     /**
