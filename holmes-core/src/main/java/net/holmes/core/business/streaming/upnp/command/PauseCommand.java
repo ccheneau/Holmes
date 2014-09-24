@@ -26,7 +26,7 @@ import org.fourthline.cling.support.avtransport.callback.Pause;
 /**
  * Suspend playing content on device
  */
-public abstract class PauseCommand extends Pause {
+public abstract class PauseCommand extends Pause implements UpnpSetCommand {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -56,9 +56,4 @@ public abstract class PauseCommand extends Pause {
     public final void success(ActionInvocation invocation) {
         success();
     }
-
-    /**
-     * Success callback.
-     */
-    public abstract void success();
 }

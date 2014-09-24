@@ -27,7 +27,7 @@ import org.fourthline.cling.support.model.PositionInfo;
 /**
  * Get position info on device
  */
-public abstract class GetPositionInfoCommand extends GetPositionInfo {
+public abstract class GetPositionInfoCommand extends GetPositionInfo implements UpnpGetCommand<PositionInfo> {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -57,11 +57,4 @@ public abstract class GetPositionInfoCommand extends GetPositionInfo {
     public final void received(ActionInvocation invocation, PositionInfo positionInfo) {
         received(positionInfo);
     }
-
-    /**
-     * Position info received callback.
-     *
-     * @param positionInfo position info
-     */
-    public abstract void received(PositionInfo positionInfo);
 }

@@ -26,7 +26,7 @@ import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
 /**
  * Set content url on device
  */
-public abstract class SetContentUrlCommand extends SetAVTransportURI {
+public abstract class SetContentUrlCommand extends SetAVTransportURI implements UpnpSetCommand {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -58,10 +58,5 @@ public abstract class SetContentUrlCommand extends SetAVTransportURI {
     public final void success(ActionInvocation invocation) {
         success();
     }
-
-    /**
-     * Success callback.
-     */
-    public abstract void success();
 }
 

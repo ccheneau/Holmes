@@ -26,7 +26,7 @@ import org.fourthline.cling.support.avtransport.callback.Play;
 /**
  * Play content on device
  */
-public abstract class PlayCommand extends Play {
+public abstract class PlayCommand extends Play implements UpnpSetCommand {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -56,9 +56,4 @@ public abstract class PlayCommand extends Play {
     public final void success(ActionInvocation invocation) {
         success();
     }
-
-    /**
-     * Success callback.
-     */
-    public abstract void success();
 }

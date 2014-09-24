@@ -27,7 +27,7 @@ import org.fourthline.cling.support.model.MediaInfo;
 /**
  * Get media info on device
  */
-public abstract class GetMediaInfoCommand extends GetMediaInfo {
+public abstract class GetMediaInfoCommand extends GetMediaInfo implements UpnpGetCommand<MediaInfo> {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -57,11 +57,4 @@ public abstract class GetMediaInfoCommand extends GetMediaInfo {
     public final void received(ActionInvocation invocation, MediaInfo mediaInfo) {
         received(mediaInfo);
     }
-
-    /**
-     * MediaInfo received callback.
-     *
-     * @param mediaInfo media info
-     */
-    public abstract void received(MediaInfo mediaInfo);
 }

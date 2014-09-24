@@ -26,7 +26,7 @@ import org.fourthline.cling.support.avtransport.callback.Stop;
 /**
  * Stop playing content on device
  */
-public abstract class StopCommand extends Stop {
+public abstract class StopCommand extends Stop implements UpnpSetCommand {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -56,9 +56,4 @@ public abstract class StopCommand extends Stop {
     public final void success(ActionInvocation invocation) {
         success();
     }
-
-    /**
-     * Success callback.
-     */
-    public abstract void success();
 }

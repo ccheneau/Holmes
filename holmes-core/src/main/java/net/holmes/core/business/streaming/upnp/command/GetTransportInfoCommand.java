@@ -27,7 +27,7 @@ import org.fourthline.cling.support.model.TransportInfo;
 /**
  * Get transport info on device
  */
-public abstract class GetTransportInfoCommand extends GetTransportInfo {
+public abstract class GetTransportInfoCommand extends GetTransportInfo implements UpnpGetCommand<TransportInfo> {
     private final CommandFailureHandler failureHandler;
 
     /**
@@ -57,11 +57,4 @@ public abstract class GetTransportInfoCommand extends GetTransportInfo {
     public final void received(ActionInvocation invocation, TransportInfo transportInfo) {
         received(transportInfo);
     }
-
-    /**
-     * TransportInfo received callback.
-     *
-     * @param transportInfo transport info
-     */
-    public abstract void received(TransportInfo transportInfo);
 }
