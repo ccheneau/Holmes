@@ -103,7 +103,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         long fileLength = randomFile.length();
 
         // Get start offset
-        long startOffset = getStartOffset(request.getHttpRequest());
+        long startOffset = getStartOffset(request.getHttpMessage());
 
         // Build HTTP response
         HttpResponse response = buildHttpResponse(startOffset, fileLength);
@@ -173,15 +173,15 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     }
 
     /**
-     * Get start offset from Http request.
+     * Get start offset from Http message.
      *
-     * @param httpRequest Http request
+     * @param httpMessage Http message
      * @return start offset
      * @throws HttpFileRequestException indicates that start offset is invalid
      */
-    private long getStartOffset(final HttpRequest httpRequest) throws HttpFileRequestException {
+    private long getStartOffset(final HttpMessage httpMessage) throws HttpFileRequestException {
         long startOffset = 0;
-        String range = httpRequest.headers().get(RANGE);
+        String range = httpMessage.headers().get(RANGE);
         if (range != null) {
             Matcher matcher = PATTERN_RANGE_START_OFFSET.matcher(range);
             if (matcher.find()) {
@@ -234,7 +234,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @return true if keep alive is requested
      */
     private boolean addKeepAliveHeader(final HttpResponse response, final HttpFileRequest request) {
-        boolean keepAlive = isKeepAlive(request.getHttpRequest());
+        boolean keepAlive = isKeepAlive(request.getHttpMessage());
         if (keepAlive) {
             response.headers().set(X_CONNECTION, X_KEEP_ALIVE);
         }
@@ -251,7 +251,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private void sendError(final ChannelHandlerContext context, final String message, final HttpResponseStatus status) {
         // Build error response
         ByteBuf buffer = copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", UTF_8);
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
+        HttpMessage response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
         response.headers().set(X_CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         // Close the connection as soon as the error message is sent.

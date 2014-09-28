@@ -55,7 +55,7 @@ public class HttpFileRequestDecoderTest {
         HttpFileRequest fileRequest = (HttpFileRequest) out.get(0);
         assertNotNull(fileRequest.getFile());
         assertNotNull(fileRequest.getMimeType());
-        assertNotNull(fileRequest.getHttpRequest());
+        assertNotNull(fileRequest.getHttpMessage());
         verify(context, request, mediaManager, mimeTypeManager);
     }
 
@@ -139,7 +139,7 @@ public class HttpFileRequestDecoderTest {
         HttpFileRequest fileRequest = (HttpFileRequest) out.get(0);
         assertNotNull(fileRequest.getFile());
         assertNotNull(fileRequest.getMimeType());
-        assertNotNull(fileRequest.getHttpRequest());
+        assertNotNull(fileRequest.getHttpMessage());
         verify(context, request, mediaManager, mimeTypeManager);
     }
 

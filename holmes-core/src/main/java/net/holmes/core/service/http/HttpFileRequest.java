@@ -17,7 +17,7 @@
 
 package net.holmes.core.service.http;
 
-import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpMessage;
 import net.holmes.core.business.mimetype.model.MimeType;
 
 import java.io.File;
@@ -26,7 +26,7 @@ import java.io.File;
  * Http file request.
  */
 public final class HttpFileRequest {
-    private final FullHttpRequest httpRequest;
+    private final HttpMessage httpMessage;
     private final File file;
     private final MimeType mimeType;
     private final boolean staticResource;
@@ -34,13 +34,13 @@ public final class HttpFileRequest {
     /**
      * Instantiates a new HttpFileRequest.
      *
-     * @param httpRequest    HTTP request
+     * @param httpMessage    original HTTP message
      * @param file           file
      * @param mimeType       mime type
      * @param staticResource request for a static resource
      */
-    public HttpFileRequest(final FullHttpRequest httpRequest, final File file, final MimeType mimeType, final boolean staticResource) {
-        this.httpRequest = httpRequest;
+    public HttpFileRequest(final HttpMessage httpMessage, final File file, final MimeType mimeType, final boolean staticResource) {
+        this.httpMessage = httpMessage;
         this.file = file;
         this.mimeType = mimeType;
         this.staticResource = staticResource;
@@ -54,8 +54,8 @@ public final class HttpFileRequest {
         return mimeType;
     }
 
-    public FullHttpRequest getHttpRequest() {
-        return httpRequest;
+    public HttpMessage getHttpMessage() {
+        return httpMessage;
     }
 
     public boolean isStaticResource() {

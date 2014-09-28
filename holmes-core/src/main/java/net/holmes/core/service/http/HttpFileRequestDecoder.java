@@ -37,10 +37,15 @@ import static io.netty.handler.codec.http.HttpMethod.GET;
 import static net.holmes.core.common.Constants.*;
 
 /**
- * Decode FullHttpRequest to HttpFileRequest
+ * Decode FullHttpRequest messages to HttpFileRequest.
+ * Two kinds of files are handled:
+ * <ul>
+ *   <li>static files for messages with requested file name having a valid mime type.</li>
+ *   <li>content files for messages with request parameter "id" matching content in media index.</li>
+ * </ul>
+ * If message does not fit previous criteria, message is forwarded to the Netty pipeline.
  */
 public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
-
     private final MediaManager mediaManager;
     private final MimeTypeManager mimeTypeManager;
     private final String uiDirectory;
@@ -66,10 +71,11 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
     protected void decode(ChannelHandlerContext context, FullHttpRequest request, List<Object> out) {
         HttpFileRequest fileRequest = null;
 
+        // only GET requests are handled
         if (request.getMethod().equals(GET)) {
             QueryStringDecoder requestDecoder = new QueryStringDecoder(request.getUri());
             if (requestDecoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
-                // Request for a content file is valid if content is found in media index
+                // Content file request is valid if content is found in media index
                 AbstractNode node = mediaManager.getNode(requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node instanceof ContentNode) {
                     // Content found in media index, build a file request based on this content
@@ -77,11 +83,11 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
                     fileRequest = new HttpFileRequest(request, new File(contentNode.getPath()), contentNode.getMimeType(), false);
                 }
             } else {
-                // Request for static file is valid if requested file name has a valid mime type
+                // Static file request is valid if requested file name has a valid mime type
                 String requestedFileName = getRequestedFileName(requestDecoder);
                 MimeType mimeType = mimeTypeManager.getMimeType(requestedFileName);
                 if (mimeType != null) {
-                    // Found valid mime type, build a static file request for requested file name
+                    // Found valid mime type, build a static file request
                     fileRequest = new HttpFileRequest(request, new File(uiDirectory, requestedFileName), mimeType, true);
                 }
             }
