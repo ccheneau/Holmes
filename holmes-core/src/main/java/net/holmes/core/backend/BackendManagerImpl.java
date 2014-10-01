@@ -253,7 +253,7 @@ public final class BackendManagerImpl implements BackendManager {
     }
 
     /**
-     *
+     * Configuration node factory
      */
     private static final class ConfigurationNodeFactory implements Function<ConfigurationNode, ConfigurationFolder> {
 
