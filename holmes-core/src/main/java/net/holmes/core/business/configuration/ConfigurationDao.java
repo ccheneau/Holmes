@@ -29,7 +29,7 @@ import java.util.List;
 public interface ConfigurationDao {
 
     /**
-     * Gets the configuration nodes.
+     * Gets the root node child configuration nodes.
      *
      * @param rootNode root node
      * @return configuration nodes
@@ -40,7 +40,7 @@ public interface ConfigurationDao {
      * Gets the configuration node.
      *
      * @param rootNode root node
-     * @param nodeId   node ID
+     * @param nodeId   node ID to find
      * @return configuration node
      * @throws UnknownNodeException if node is not found
      */
@@ -50,7 +50,7 @@ public interface ConfigurationDao {
      * Find configuration node with same label or path.
      *
      * @param rootNode       root node
-     * @param excludedNodeId exclude this node id from search (can be null)
+     * @param excludedNodeId exclude this node ID from search (can be null)
      * @param label          node label to search
      * @param path           node path to search
      * @return null or configuration node with same label or path
@@ -58,59 +58,59 @@ public interface ConfigurationDao {
     ConfigurationNode findNode(RootNode rootNode, String excludedNodeId, String label, String path);
 
     /**
-     * Remove node.
+     * Add configuration node.
      *
      * @param rootNode root node
      * @param node     node to add
      * @return true if node is added
-     * @throws IOException
+     * @throws IOException Signals that an I/O exception has occurred
      */
     boolean addNode(RootNode rootNode, ConfigurationNode node) throws IOException;
 
     /**
-     * Find configuration node with same label or path.
+     * Edit configuration node.
      *
      * @param rootNode root node
-     * @param nodeId   exclude this node id to edit
+     * @param nodeId   node ID to edit
      * @param label    new node label
      * @param path     new node path
-     * @return edited configuration node
-     * @throws IOException
-     * @throws UnknownNodeException
+     * @return updated configuration node or null if node is not modified
+     * @throws IOException  Signals that an I/O exception has occurred
+     * @throws UnknownNodeException Signals configuration node was not found
      */
     ConfigurationNode editNode(RootNode rootNode, String nodeId, String label, String path) throws IOException, UnknownNodeException;
 
     /**
      * Save configuration.
      *
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred
      */
     void save() throws IOException;
 
     /**
      * Remove node.
      *
-     * @param nodeId   Id of node to remove
+     * @param nodeId   node ID to remove
      * @param rootNode root node
      * @return removed node
-     * @throws IOException
-     * @throws UnknownNodeException
+     * @throws IOException Signals that an I/O exception has occurred
+     * @throws UnknownNodeException Signals configuration node was not found
      */
     ConfigurationNode removeNode(String nodeId, RootNode rootNode) throws IOException, UnknownNodeException;
 
     /**
      * Get parameter value.
      *
-     * @param parameter parameter
+     * @param parameter parameter to get
      * @return parameter value
      */
-    <T> T getParameter(final ConfigurationParameter<T> parameter);
+    <T> T getParameter(ConfigurationParameter<T> parameter);
 
     /**
      * Sets parameter value.
      *
-     * @param parameter parameter
+     * @param parameter parameter to set
      * @param value     parameter value
      */
-    <T> void setParameter(final ConfigurationParameter<T> parameter, T value);
+    <T> void setParameter(ConfigurationParameter<T> parameter, T value);
 }
