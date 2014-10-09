@@ -101,7 +101,7 @@ public final class CommandResponse {
      *
      * @param content content
      */
-    public void decodeContentParameters(String content) {
+    public void decodeContentParameters(final String content) {
         for (String line : Splitter.on(EOL).split(content)) {
             Iterable<String> it = Splitter.on(PARAMETER_SEPARATOR).trimResults().split(line);
             if (size(it) > 1) {

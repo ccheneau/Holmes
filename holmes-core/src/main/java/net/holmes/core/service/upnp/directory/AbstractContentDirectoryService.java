@@ -60,7 +60,7 @@ public abstract class AbstractContentDirectoryService {
     @UpnpStateVariable(sendEvents = true, defaultValue = "0", eventMaximumRateMilliseconds = 200)
     private final UnsignedIntegerFourBytes systemUpdateID = new UnsignedIntegerFourBytes(0);
 
-    protected AbstractContentDirectoryService(List<String> searchCapabilities, List<String> sortCapabilities) {
+    protected AbstractContentDirectoryService(final List<String> searchCapabilities, final List<String> sortCapabilities) {
         this.searchCapabilities = new CSVString();
         this.searchCapabilities.addAll(searchCapabilities);
         this.sortCapabilities = new CSVString();
@@ -112,12 +112,12 @@ public abstract class AbstractContentDirectoryService {
             @UpnpOutputArgument(name = "UpdateID", stateVariable = "A_ARG_TYPE_UpdateID", getterName = "getContainerUpdateID")
     })
     public BrowseResult search(
-            @UpnpInputArgument(name = "ContainerID", stateVariable = "A_ARG_TYPE_ObjectID") String containerId,
-            @UpnpInputArgument(name = "SearchCriteria") String searchCriteria,
-            @UpnpInputArgument(name = "Filter") String filter,
-            @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
-            @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") String orderBy,
+            @UpnpInputArgument(name = "ContainerID", stateVariable = "A_ARG_TYPE_ObjectID") final String containerId,
+            @UpnpInputArgument(name = "SearchCriteria") final String searchCriteria,
+            @UpnpInputArgument(name = "Filter") final String filter,
+            @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") final UnsignedIntegerFourBytes firstResult,
+            @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") final UnsignedIntegerFourBytes maxResults,
+            @UpnpInputArgument(name = "SortCriteria") final String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         try {
             return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
@@ -152,7 +152,7 @@ public abstract class AbstractContentDirectoryService {
      * @return sort criteria
      * @throws ContentDirectoryException
      */
-    private SortCriterion[] getSortCriteria(String orderBy) throws ContentDirectoryException {
+    private SortCriterion[] getSortCriteria(final String orderBy) throws ContentDirectoryException {
         try {
             return SortCriterion.valueOf(orderBy);
         } catch (Exception e) {

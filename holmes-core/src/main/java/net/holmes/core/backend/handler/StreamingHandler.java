@@ -94,7 +94,7 @@ public class StreamingHandler {
     @GET
     @Path("/play/{deviceId}/{contentId}")
     @Produces(TEXT_PLAIN)
-    public String play(@PathParam("deviceId") String deviceId, @PathParam("contentId") String contentId) {
+    public String play(@PathParam("deviceId") final String deviceId, @PathParam("contentId") final String contentId) {
         AbstractNode contentNode = mediaManager.getNode(contentId);
         String url = mediaManager.getNodeUrl(contentNode);
         try {
@@ -114,7 +114,7 @@ public class StreamingHandler {
     @GET
     @Path("/pause/{deviceId}")
     @Produces(TEXT_PLAIN)
-    public String pause(@PathParam("deviceId") String deviceId) {
+    public String pause(@PathParam("deviceId") final String deviceId) {
         try {
             streamingManager.pause(deviceId);
         } catch (UnknownDeviceException e) {
@@ -132,7 +132,7 @@ public class StreamingHandler {
     @GET
     @Path("/stop/{deviceId}")
     @Produces(TEXT_PLAIN)
-    public String stop(@PathParam("deviceId") String deviceId) {
+    public String stop(@PathParam("deviceId") final String deviceId) {
         try {
             streamingManager.stop(deviceId);
         } catch (UnknownDeviceException e) {
@@ -150,7 +150,7 @@ public class StreamingHandler {
     @GET
     @Path("/resume/{deviceId}")
     @Produces(TEXT_PLAIN)
-    public String resume(@PathParam("deviceId") String deviceId) {
+    public String resume(@PathParam("deviceId") final String deviceId) {
         try {
             streamingManager.resume(deviceId);
         } catch (UnknownDeviceException e) {
@@ -168,7 +168,7 @@ public class StreamingHandler {
     @GET
     @Path("/status/{deviceId}")
     @Produces(APPLICATION_JSON)
-    public PlaybackStatus status(@PathParam("deviceId") String deviceId) {
+    public PlaybackStatus status(@PathParam("deviceId") final String deviceId) {
         PlaybackStatus status = new PlaybackStatus();
         try {
             StreamingSession session = streamingManager.getSession(deviceId);
@@ -192,7 +192,7 @@ public class StreamingHandler {
     @GET
     @Path("/browse/{deviceId}/{nodeId}")
     @Produces(APPLICATION_JSON)
-    public DeviceBrowseResult browse(@PathParam("deviceId") String deviceId, @PathParam("nodeId") String nodeId) {
+    public DeviceBrowseResult browse(@PathParam("deviceId") final String deviceId, @PathParam("nodeId") final String nodeId) {
         DeviceBrowseResult result = new DeviceBrowseResult();
         result.setParentNodeId(nodeId);
         try {
@@ -223,7 +223,7 @@ public class StreamingHandler {
      * @param device device
      * @param node   node
      */
-    private void addBrowseResult(DeviceBrowseResult result, Device device, AbstractNode node) {
+    private void addBrowseResult(final DeviceBrowseResult result, final Device device, final AbstractNode node) {
         // Get child nodes
         Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
         // Build browse result

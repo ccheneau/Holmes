@@ -58,7 +58,7 @@ public final class MimeTypeDaoImpl implements MimeTypeDao {
      * {@inheritDoc}
      */
     @Override
-    public MimeType getMimeType(String fileName) {
+    public MimeType getMimeType(final String fileName) {
         // Get mime type from fileName extension
         return MimeType.valueOf(properties.getProperty(getFileExtension(fileName).toLowerCase()));
     }
@@ -67,7 +67,7 @@ public final class MimeTypeDaoImpl implements MimeTypeDao {
      * {@inheritDoc}
      */
     @Override
-    public MimeType getAliasMimeType(MimeType mimeType) {
+    public MimeType getAliasMimeType(final MimeType mimeType) {
         return MimeType.valueOf(properties.getProperty(mimeType.getMimeType()));
     }
 }

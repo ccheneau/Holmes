@@ -232,7 +232,7 @@ public final class BackendManagerImpl implements BackendManager {
      * @param toCheck string to check
      * @param message error message
      */
-    private void checkNonEmpty(String toCheck, BackendErrorMessage message) {
+    private void checkNonEmpty(final String toCheck, final BackendErrorMessage message) {
         if (isNullOrEmpty(toCheck)) {
             throw new BackendException(message);
         }
@@ -261,7 +261,7 @@ public final class BackendManagerImpl implements BackendManager {
          * {@inheritDoc}
          */
         @Override
-        public ConfigurationFolder apply(ConfigurationNode node) {
+        public ConfigurationFolder apply(final ConfigurationNode node) {
             return node == null ? null : new ConfigurationFolder(node.getId(), node.getLabel(), node.getPath());
         }
     }

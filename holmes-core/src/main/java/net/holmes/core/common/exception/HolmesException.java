@@ -25,21 +25,21 @@ public class HolmesException extends Exception {
     /**
      * {@inheritDoc}
      */
-    protected HolmesException(String message) {
+    protected HolmesException(final String message) {
         super(message);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected HolmesException(String message, Throwable cause) {
+    protected HolmesException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * {@inheritDoc}
      */
-    public HolmesException(Throwable cause) {
+    public HolmesException(final Throwable cause) {
         super(cause);
     }
 }

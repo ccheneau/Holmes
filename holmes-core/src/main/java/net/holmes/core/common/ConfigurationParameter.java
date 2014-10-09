@@ -130,7 +130,7 @@ public abstract class ConfigurationParameter<T> {
      * @param name         parameter name
      * @param defaultValue default value
      */
-    protected ConfigurationParameter(String name, T defaultValue) {
+    protected ConfigurationParameter(final String name, final T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
     }
@@ -158,7 +158,7 @@ public abstract class ConfigurationParameter<T> {
      * @param value value to format
      * @return String value
      */
-    public String format(T value) {
+    public String format(final T value) {
         return value.toString();
     }
 
@@ -182,7 +182,7 @@ public abstract class ConfigurationParameter<T> {
          * @param name         parameter name
          * @param defaultValue default value
          */
-        ConfigurationStringParameter(String name, String defaultValue) {
+        ConfigurationStringParameter(final String name, final String defaultValue) {
             super(name, defaultValue);
         }
 
@@ -190,7 +190,7 @@ public abstract class ConfigurationParameter<T> {
          * {@inheritDoc}
          */
         @Override
-        public String parse(String stringValue) {
+        public String parse(final String stringValue) {
             return stringValue;
         }
     }
@@ -206,7 +206,7 @@ public abstract class ConfigurationParameter<T> {
          * @param name         parameter name
          * @param defaultValue default value
          */
-        ConfigurationBooleanParameter(String name, Boolean defaultValue) {
+        ConfigurationBooleanParameter(final String name, final Boolean defaultValue) {
             super(name, defaultValue);
         }
 
@@ -214,7 +214,7 @@ public abstract class ConfigurationParameter<T> {
          * {@inheritDoc}
          */
         @Override
-        public Boolean parse(String stringValue) {
+        public Boolean parse(final String stringValue) {
             return Boolean.valueOf(stringValue);
         }
     }
@@ -230,7 +230,7 @@ public abstract class ConfigurationParameter<T> {
          * @param name         parameter name
          * @param defaultValue default value
          */
-        ConfigurationIntParameter(String name, Integer defaultValue) {
+        ConfigurationIntParameter(final String name, final Integer defaultValue) {
             super(name, defaultValue);
         }
 
@@ -238,7 +238,7 @@ public abstract class ConfigurationParameter<T> {
          * {@inheritDoc}
          */
         @Override
-        public Integer parse(String stringValue) {
+        public Integer parse(final String stringValue) {
             return Integer.valueOf(stringValue);
         }
     }

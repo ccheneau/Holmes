@@ -50,7 +50,7 @@ public final class VersionComparator implements Comparator<String>, Serializable
      * @param version version string
      * @return number representation on version string
      */
-    private Integer convertVersion(String version) {
+    private Integer convertVersion(final String version) {
         Integer versionNumber = null;
         if (version != null) {
             Matcher matcher = VERSION_PATTERN.matcher(version);
@@ -67,7 +67,7 @@ public final class VersionComparator implements Comparator<String>, Serializable
      * @param matcher version pattern matcher
      * @return version number
      */
-    private Integer getVersionNumber(Matcher matcher) {
+    private Integer getVersionNumber(final Matcher matcher) {
         Integer versionNumber;
         versionNumber = 0;
         for (int i = 1; i <= matcher.groupCount(); i++) {

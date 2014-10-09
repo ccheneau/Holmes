@@ -60,7 +60,7 @@ public final class HolmesService implements Service {
     @Inject
     public HolmesService(@Named("http") final Service httpService, @Named("upnp") final Service upnpService, @Named("airplay") final Service airplayService,
                          @Named("systray") final Service systrayService, @Named("release") final Service releaseCheckService,
-                         @Named("localHolmesDataDir") String localHolmesDataDir) {
+                         @Named("localHolmesDataDir") final String localHolmesDataDir) {
         this.httpService = httpService;
         this.upnpService = upnpService;
         this.airplayService = airplayService;

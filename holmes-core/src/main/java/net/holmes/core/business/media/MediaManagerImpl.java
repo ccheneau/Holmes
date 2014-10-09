@@ -94,7 +94,7 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public String getNodeUrl(AbstractNode node) {
+    public String getNodeUrl(final AbstractNode node) {
         return "http://" + localAddress.getHostAddress() + ":" + httpServerPort +
                 HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }

@@ -64,7 +64,7 @@ public class BackendExceptionMapper implements ExceptionMapper<BackendException>
     }
 
     @VisibleForTesting
-    void setResourceBundle(ResourceBundle resourceBundle) {
+    void setResourceBundle(final ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 }

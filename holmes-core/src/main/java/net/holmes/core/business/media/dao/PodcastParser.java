@@ -52,7 +52,7 @@ abstract class PodcastParser {
      * @throws HolmesException
      */
     @SuppressWarnings("unchecked")
-    public List<AbstractNode> parse(String podcastUrl, String podcastId) throws HolmesException {
+    public List<AbstractNode> parse(final String podcastUrl, final String podcastId) throws HolmesException {
         List<AbstractNode> podcastEntryNodes = new ArrayList<>();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
@@ -77,7 +77,7 @@ abstract class PodcastParser {
      * @param rssEntry          RSS entry
      * @param enclosure         RSS enclosure
      */
-    private void addPodcastEntry(String podcastId, List<AbstractNode> podcastEntryNodes, SyndEntry rssEntry, SyndEnclosure enclosure) {
+    private void addPodcastEntry(final String podcastId, final List<AbstractNode> podcastEntryNodes, final SyndEntry rssEntry, final SyndEnclosure enclosure) {
         MimeType mimeType = MimeType.valueOf(enclosure.getType());
         if (mimeType != null && mimeType.isMedia()) {
             // Add to media index
@@ -107,7 +107,7 @@ abstract class PodcastParser {
      * @param rssEntry RSS entry
      * @return duration
      */
-    private String getDuration(SyndEntry rssEntry) {
+    private String getDuration(final SyndEntry rssEntry) {
         EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITUNES_URI));
         return itunesInfo != null ? itunesInfo.getDurationString() : null;
     }
@@ -118,7 +118,7 @@ abstract class PodcastParser {
      * @param rssEntry RSS entry
      * @return icon Url
      */
-    private String getIconUrl(SyndEntry rssEntry) {
+    private String getIconUrl(final SyndEntry rssEntry) {
         MediaModule mediaInfo = (MediaModule) (rssEntry.getModule(MEDIA_RSS_URI));
         return mediaInfo != null ? mediaInfo.getThumbnailUrl() : null;
     }
@@ -129,7 +129,7 @@ abstract class PodcastParser {
      * @param rssEntry RSS entry
      * @return published date
      */
-    private Long getPublishedDate(SyndEntry rssEntry) {
+    private Long getPublishedDate(final SyndEntry rssEntry) {
         return rssEntry.getPublishedDate() != null ? rssEntry.getPublishedDate().getTime() : null;
     }
 }

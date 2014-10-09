@@ -120,7 +120,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @param remoteClientInfo remote client info
      * @return available mime types
      */
-    private List<String> getAvailableMimeType(RemoteClientInfo remoteClientInfo) {
+    private List<String> getAvailableMimeType(final RemoteClientInfo remoteClientInfo) {
         // Get available mime types
         List<String> availableMimeTypes = new ArrayList<>();
         if (remoteClientInfo.getConnection() != null) {
@@ -198,17 +198,17 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     @VisibleForTesting
-    void setConfigurationDao(ConfigurationDao configurationDao) {
+    void setConfigurationDao(final ConfigurationDao configurationDao) {
         this.configurationDao = configurationDao;
     }
 
     @VisibleForTesting
-    void setMediaManager(MediaManager mediaManager) {
+    void setMediaManager(final MediaManager mediaManager) {
         this.mediaManager = mediaManager;
     }
 
     @VisibleForTesting
-    void setStreamingManager(StreamingManager streamingManager) {
+    void setStreamingManager(final StreamingManager streamingManager) {
         this.streamingManager = streamingManager;
     }
 }

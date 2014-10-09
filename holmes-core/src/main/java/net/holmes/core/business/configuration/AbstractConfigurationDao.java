@@ -61,7 +61,7 @@ public abstract class AbstractConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public final ConfigurationNode editNode(RootNode rootNode, String nodeId, String label, String path) throws IOException, UnknownNodeException {
+    public final ConfigurationNode editNode(final RootNode rootNode, final String nodeId, final String label, String path) throws IOException, UnknownNodeException {
         // Get node to edit
         ConfigurationNode currentNode = getNode(rootNode, nodeId);
 
@@ -82,7 +82,7 @@ public abstract class AbstractConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public final ConfigurationNode removeNode(String nodeId, RootNode rootNode) throws IOException, UnknownNodeException {
+    public final ConfigurationNode removeNode(final String nodeId, final RootNode rootNode) throws IOException, UnknownNodeException {
         // Get node
         ConfigurationNode node = getNode(rootNode, nodeId);
 

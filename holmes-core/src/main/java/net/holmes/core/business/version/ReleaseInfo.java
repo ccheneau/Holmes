@@ -32,7 +32,7 @@ public final class ReleaseInfo {
      * @param needsUpdate needs update
      * @param url         update URL
      */
-    public ReleaseInfo(String name, boolean needsUpdate, String url) {
+    public ReleaseInfo(final String name, final boolean needsUpdate, final String url) {
         this.name = name;
         this.needsUpdate = needsUpdate;
         this.url = url;

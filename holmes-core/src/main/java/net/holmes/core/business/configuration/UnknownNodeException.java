@@ -27,7 +27,7 @@ public class UnknownNodeException extends HolmesException {
     /**
      * {@inheritDoc}
      */
-    public UnknownNodeException(String nodeId, Throwable cause) {
+    public UnknownNodeException(final String nodeId, final Throwable cause) {
         super("Unknown node " + nodeId, cause);
     }
 }

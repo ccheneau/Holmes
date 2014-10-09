@@ -40,7 +40,7 @@ public enum BackendErrorMessage {
      *
      * @param messageKey message key
      */
-    private BackendErrorMessage(String messageKey) {
+    private BackendErrorMessage(final String messageKey) {
         this.messageKey = messageKey;
     }
 

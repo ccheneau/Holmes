@@ -85,7 +85,7 @@ public abstract class AirplayCommand {
      *
      * @param message error message
      */
-    public final void failure(String message) {
+    public final void failure(final String message) {
         if (failureHandler != null) {
             failureHandler.handle(message);
         }

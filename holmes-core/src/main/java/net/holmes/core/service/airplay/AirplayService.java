@@ -142,7 +142,7 @@ public final class AirplayService implements Service {
      * @param serviceInfo jmDNS service information
      * @return Airplay device
      */
-    private AirplayDevice buildDevice(ServiceInfo serviceInfo) {
+    private AirplayDevice buildDevice(final ServiceInfo serviceInfo) {
         if (serviceInfo != null && serviceInfo.getInet4Addresses() != null) {
             for (Inet4Address inet4Address : serviceInfo.getInet4Addresses()) {
                 if (!inet4Address.isLoopbackAddress()) {

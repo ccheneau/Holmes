@@ -102,7 +102,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+    public ConfigurationNode findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
         return find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
             @Override
             public boolean apply(ConfigurationNode node) {
@@ -141,7 +141,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public <T> void setParameter(final ConfigurationParameter<T> parameter, T value) {
+    public <T> void setParameter(final ConfigurationParameter<T> parameter, final T value) {
         this.rootNode.setParameter(parameter.getName(), parameter.format(value));
     }
 

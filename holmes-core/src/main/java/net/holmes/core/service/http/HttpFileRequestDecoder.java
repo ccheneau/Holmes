@@ -40,8 +40,8 @@ import static net.holmes.core.common.Constants.*;
  * Decode FullHttpRequest messages to HttpFileRequest.
  * Two kinds of files are handled:
  * <ul>
- *   <li>static files for messages with requested file name having a valid mime type.</li>
- *   <li>content files for messages with request parameter "id" matching content in media index.</li>
+ * <li>static files for messages with requested file name having a valid mime type.</li>
+ * <li>content files for messages with request parameter "id" matching content in media index.</li>
  * </ul>
  * If message does not fit previous criteria, message is forwarded to the Netty pipeline.
  */
@@ -68,7 +68,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
      * {@inheritDoc}
      */
     @Override
-    protected void decode(ChannelHandlerContext context, FullHttpRequest request, List<Object> out) {
+    protected void decode(final ChannelHandlerContext context, final FullHttpRequest request, final List<Object> out) {
         HttpFileRequest fileRequest = null;
 
         // only GET requests are handled

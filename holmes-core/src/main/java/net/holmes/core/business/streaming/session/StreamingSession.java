@@ -44,7 +44,7 @@ public final class StreamingSession {
         return status;
     }
 
-    public void setStatus(SessionStatus status) {
+    public void setStatus(final SessionStatus status) {
         this.status = status;
     }
 
@@ -60,7 +60,7 @@ public final class StreamingSession {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(final Long duration) {
         this.duration = duration;
     }
 
@@ -68,7 +68,7 @@ public final class StreamingSession {
         return position;
     }
 
-    public void setPosition(Long position) {
+    public void setPosition(final Long position) {
         this.position = position;
     }
 

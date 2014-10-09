@@ -100,7 +100,7 @@ final class DirectoryBrowseResult {
      * @return browse result
      * @throws ContentDirectoryException
      */
-    public BrowseResult buildBrowseResult(DIDLParser didlParser) throws ContentDirectoryException {
+    public BrowseResult buildBrowseResult(final DIDLParser didlParser) throws ContentDirectoryException {
         try {
             return new BrowseResult(didlParser.generate(didl), itemCount, totalCount);
         } catch (Exception e) {
@@ -147,7 +147,7 @@ final class DirectoryBrowseResult {
      * @param res          didl resource
      * @throws ContentDirectoryException
      */
-    private void addDidlItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) throws ContentDirectoryException {
+    private void addDidlItem(final String parentNodeId, final AbstractNode node, final String name, final MimeType mimeType, final Res res) throws ContentDirectoryException {
         Item item;
         switch (mimeType.getType()) {
             case TYPE_VIDEO:
@@ -183,7 +183,7 @@ final class DirectoryBrowseResult {
      * @param res          didl resource
      * @return DIDL item or null
      */
-    private Item getUnknownTypeItem(String parentNodeId, AbstractNode node, String name, MimeType mimeType, Res res) {
+    private Item getUnknownTypeItem(final String parentNodeId, final AbstractNode node, final String name, final MimeType mimeType, final Res res) {
         Item item = null;
         if (mimeType.equals(MIME_TYPE_SUBTITLE)) {
             // Add subtitle item

@@ -30,7 +30,7 @@ public class HolmesRuntimeException extends RuntimeException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public HolmesRuntimeException(String message) {
+    public HolmesRuntimeException(final String message) {
         super(message);
     }
 
@@ -46,7 +46,7 @@ public class HolmesRuntimeException extends RuntimeException {
      *              permitted, and indicates that the cause is nonexistent or
      *              unknown.)
      */
-    public HolmesRuntimeException(Throwable cause) {
+    public HolmesRuntimeException(final Throwable cause) {
         super(cause);
     }
 }

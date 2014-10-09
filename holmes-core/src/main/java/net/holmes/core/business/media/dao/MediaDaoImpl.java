@@ -77,7 +77,7 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public AbstractNode getNode(String nodeId) {
+    public AbstractNode getNode(final String nodeId) {
         AbstractNode node = null;
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(nodeId);
@@ -107,7 +107,7 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractNode> getChildNodes(String parentNodeId) {
+    public List<AbstractNode> getChildNodes(final String parentNodeId) {
         List<AbstractNode> childNodes;
 
         // Get node in mediaIndex
@@ -175,7 +175,7 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaType    media type
      * @return file or folder node
      */
-    private AbstractNode getFileNode(String nodeId, MediaIndexElement indexElement, MediaType mediaType) {
+    private AbstractNode getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
         AbstractNode node = null;
         File nodeFile = new File(indexElement.getPath());
         if (isValidFile(nodeFile)) {

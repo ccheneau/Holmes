@@ -45,7 +45,7 @@ public class Release {
      * @param url   release URL
      * @param draft whether release is a draft
      */
-    public Release(String name, String url, boolean draft) {
+    public Release(final String name, String url, final boolean draft) {
         this.name = name;
         this.url = url;
         this.draft = draft;
@@ -55,7 +55,7 @@ public class Release {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -63,7 +63,7 @@ public class Release {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 
@@ -71,7 +71,7 @@ public class Release {
         return draft;
     }
 
-    public void setDraft(boolean draft) {
+    public void setDraft(final boolean draft) {
         this.draft = draft;
     }
 

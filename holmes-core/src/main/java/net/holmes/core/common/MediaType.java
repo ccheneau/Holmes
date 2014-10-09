@@ -56,7 +56,7 @@ public enum MediaType {
      * @param mediaTypeValue media type value
      * @return MediaType corresponding to mediaTypeValue or MediaType.TYPE_NONE
      */
-    public static MediaType getByValue(String mediaTypeValue) {
+    public static MediaType getByValue(final String mediaTypeValue) {
         for (MediaType mediaType : values()) {
             if (mediaType.value.equals(mediaTypeValue)) {
                 return mediaType;

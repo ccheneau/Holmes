@@ -39,7 +39,7 @@ public final class FileUtils {
      * @param file file
      * @return true if file is a valid file
      */
-    public static boolean isValidFile(File file) {
+    public static boolean isValidFile(final File file) {
         return file.isFile() && file.canRead() && !file.isHidden();
     }
 
@@ -49,7 +49,7 @@ public final class FileUtils {
      * @param file file
      * @return true if file is a valid directory
      */
-    public static boolean isValidDirectory(File file) {
+    public static boolean isValidDirectory(final File file) {
         return file.isDirectory() && file.canRead() && !file.isHidden();
     }
 
@@ -60,7 +60,7 @@ public final class FileUtils {
      * @param includeFiles include files in result
      * @return child files
      */
-    public static List<File> listChildren(String parentPath, boolean includeFiles) {
+    public static List<File> listChildren(final String parentPath, final boolean includeFiles) {
         List<File> fileList;
         File[] children = new File(parentPath).listFiles();
         if (children != null) {

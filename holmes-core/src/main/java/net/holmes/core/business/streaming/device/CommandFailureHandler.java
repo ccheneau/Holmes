@@ -27,5 +27,5 @@ public abstract class CommandFailureHandler {
      *
      * @param errorMessage error message
      */
-    public abstract void handle(final String errorMessage);
+    public abstract void handle(String errorMessage);
 }

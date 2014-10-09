@@ -81,7 +81,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
      * @param configurationDao configuration DAO
      */
     @Inject
-    public HttpFileRequestHandler(ConfigurationDao configurationDao) {
+    public HttpFileRequestHandler(final ConfigurationDao configurationDao) {
         httpCacheSecond = configurationDao.getParameter(HTTP_SERVER_CACHE_SECOND);
         httpDateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         httpDateFormatter.setTimeZone(GMT_TIMEZONE);

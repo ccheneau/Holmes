@@ -67,7 +67,7 @@ public final class SystrayService implements Service {
      * @param localHolmesDataDir local Holmes data directory
      */
     @Inject
-    public SystrayService(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, @Named("localHolmesDataDir") String localHolmesDataDir) {
+    public SystrayService(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, @Named("localHolmesDataDir") final String localHolmesDataDir) {
         this.configurationDao = configurationDao;
         this.resourceBundle = resourceBundle;
         this.localHolmesDataDir = localHolmesDataDir;
