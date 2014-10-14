@@ -39,8 +39,9 @@
 
     <properties>
         <!-- common properties -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.profile>Holmes way</sonar.profile>
 
         <!-- Dependencies version -->
         <dep.cling.version>2.0-alpha3</dep.cling.version>
@@ -120,7 +121,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.3</version>
+                    <version>1.3.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
