@@ -39,6 +39,7 @@ import org.junit.rules.TestName;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -225,7 +226,7 @@ public class ContentDirectoryServiceTest {
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("url");
         expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
-        List<AbstractNode> children = newArrayList();
+        List<AbstractNode> children = new ArrayList<>();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
         children.add(new PodcastNode("id4", "parentId", "name", "url"));
         File file = File.createTempFile(testName.getMethodName(), "avi");
@@ -262,7 +263,7 @@ public class ContentDirectoryServiceTest {
         expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         MimeType mimeType = MimeType.valueOf("video/avi");
-        List<AbstractNode> children = newArrayList();
+        List<AbstractNode> children = new ArrayList<>();
         for (int i = 0; i <= 101; i++) {
             children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id" + i, "parentId", "name", mimeType, "url", "duration"));
         }
@@ -292,7 +293,7 @@ public class ContentDirectoryServiceTest {
         expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
         expect(configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
 
-        List<AbstractNode> children = newArrayList();
+        List<AbstractNode> children = new ArrayList<>();
         children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
 

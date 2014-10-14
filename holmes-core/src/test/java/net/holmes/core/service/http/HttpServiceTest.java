@@ -17,12 +17,13 @@
 
 package net.holmes.core.service.http;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.easymock.EasyMock.*;
@@ -37,7 +38,7 @@ public class HttpServiceTest {
         expect(configurationDao.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
         expect(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS)).andReturn(0).atLeastOnce();
         expect(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
-        expect(injector.getBindings()).andReturn(Maps.<Key<?>, Binding<?>>newHashMap()).atLeastOnce();
+        expect(injector.getBindings()).andReturn(new HashMap<Key<?>, Binding<?>>(0)).atLeastOnce();
 
         replay(injector, configurationDao);
         try {

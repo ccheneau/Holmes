@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.configuration;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -68,7 +68,7 @@ public final class ConfigurationNode {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, label, path);
+        return Objects.hash(id, label, path);
     }
 
     /**
@@ -84,7 +84,9 @@ public final class ConfigurationNode {
         }
 
         final ConfigurationNode other = (ConfigurationNode) obj;
-        return Objects.equal(this.id, other.id) && Objects.equal(this.label, other.label) && Objects.equal(this.path, other.path);
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.label, other.label)
+                && Objects.equals(this.path, other.path);
     }
 
     /**

@@ -26,9 +26,9 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
@@ -122,7 +122,7 @@ public final class UtilHandler {
          */
         public Folder(final String data, final String path) {
             this.data = data;
-            this.metadata = newHashMap();
+            this.metadata = new HashMap<>();
             this.metadata.put("path", path);
             this.state = "closed";
         }

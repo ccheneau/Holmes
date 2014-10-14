@@ -16,10 +16,11 @@
  */
 package net.holmes.core.business.mimetype;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.business.mimetype.dao.MimeTypeDaoImpl;
 import net.holmes.core.business.mimetype.model.MimeType;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.*;
@@ -41,7 +42,7 @@ public class MimeTypeManagerImplTest {
         MimeType mimeType = MimeType.valueOf("video/avi");
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, newArrayList("video/avi")));
         assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, newArrayList("audio/mpeg")));
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, Lists.<String>newArrayList()));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, new ArrayList<String>(0)));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, null));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(null, null));
 

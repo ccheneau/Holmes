@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media.model;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 /**
  * Abstract node.
@@ -137,7 +137,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl);
+        return Objects.hash(id, parentId, name, type, modifiedDate, iconUrl);
     }
 
     /**
@@ -153,11 +153,11 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
         }
 
         final AbstractNode other = (AbstractNode) obj;
-        return Objects.equal(this.id, other.id)
-                && Objects.equal(this.parentId, other.parentId)
-                && Objects.equal(this.name, other.name)
-                && Objects.equal(this.type, other.type)
-                && Objects.equal(this.modifiedDate, other.modifiedDate);
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.parentId, other.parentId)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.type, other.type)
+                && Objects.equals(this.modifiedDate, other.modifiedDate);
     }
 
     /**

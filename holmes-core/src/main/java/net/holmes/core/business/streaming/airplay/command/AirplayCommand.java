@@ -20,9 +20,10 @@ package net.holmes.core.business.streaming.airplay.command;
 import io.netty.handler.codec.http.HttpMethod;
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.*;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpMethod.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -51,8 +52,8 @@ public abstract class AirplayCommand {
     public AirplayCommand(final CommandType type, final CommandFailureHandler failureHandler) {
         this.type = type;
         this.failureHandler = failureHandler;
-        this.urlParameters = newHashMap();
-        this.postParameters = newLinkedHashMap();
+        this.urlParameters = new HashMap<>();
+        this.postParameters = new LinkedHashMap<>();
     }
 
     /**

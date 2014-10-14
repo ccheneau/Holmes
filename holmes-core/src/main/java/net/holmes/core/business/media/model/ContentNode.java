@@ -17,10 +17,10 @@
 
 package net.holmes.core.business.media.model;
 
-import com.google.common.base.Objects;
 import net.holmes.core.business.mimetype.model.MimeType;
 
 import java.io.File;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -71,7 +71,7 @@ public final class ContentNode extends MimeTypeNode {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path);
+        return Objects.hash(id, parentId, name, type, modifiedDate, iconUrl, mimeType, size, path);
     }
 
     /**
@@ -90,9 +90,9 @@ public final class ContentNode extends MimeTypeNode {
         }
 
         final ContentNode other = (ContentNode) obj;
-        return Objects.equal(this.mimeType, other.mimeType)
-                && Objects.equal(this.size, other.size)
-                && Objects.equal(this.path, other.path);
+        return Objects.equals(this.mimeType, other.mimeType)
+                && Objects.equals(this.size, other.size)
+                && Objects.equals(this.path, other.path);
     }
 
     /**

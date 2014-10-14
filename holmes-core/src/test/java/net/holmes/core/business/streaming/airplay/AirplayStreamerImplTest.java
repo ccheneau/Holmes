@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.streaming.airplay;
 
-import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
@@ -27,6 +26,7 @@ import net.holmes.core.business.streaming.event.StreamingEvent;
 import org.easymock.Capture;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
@@ -45,7 +45,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                command.success(Maps.<String, String>newHashMap());
+                command.success(new HashMap<String, String>(0));
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
@@ -106,7 +106,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                command.success(Maps.<String, String>newHashMap());
+                command.success(new HashMap<String, String>(0));
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
@@ -165,7 +165,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                command.success(Maps.<String, String>newHashMap());
+                command.success(new HashMap<String, String>(0));
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
@@ -224,7 +224,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                command.success(Maps.<String, String>newHashMap());
+                command.success(new HashMap<String, String>());
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
@@ -283,7 +283,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                command.success(Maps.<String, String>newHashMap());
+                command.success(new HashMap<String, String>());
             }
         };
         AirplayDevice device = createMock(AirplayDevice.class);
@@ -325,7 +325,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                Map<String, String> parameters = Maps.newHashMap();
+                Map<String, String> parameters = new HashMap<>(2);
                 parameters.put("duration", "60");
                 parameters.put("position", "3");
                 command.success(parameters);
@@ -359,7 +359,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                Map<String, String> parameters = Maps.newHashMap();
+                Map<String, String> parameters = new HashMap<>(2);
                 parameters.put("duration", "60");
                 parameters.put("position", "70");
                 command.success(parameters);
@@ -391,7 +391,7 @@ public class AirplayStreamerImplTest {
             @Override
             public void execute(AirplayDevice device, AirplayCommand command) {
                 assertNotNull(command.getRequest());
-                Map<String, String> parameters = Maps.newHashMap();
+                Map<String, String> parameters = new HashMap<>(2);
                 parameters.put("bad_duration", "60");
                 parameters.put("bad_position", "70");
                 command.success(parameters);

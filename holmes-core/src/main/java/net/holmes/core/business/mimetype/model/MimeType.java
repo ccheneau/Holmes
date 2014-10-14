@@ -17,9 +17,10 @@
 
 package net.holmes.core.business.mimetype.model;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import net.holmes.core.common.MediaType;
+
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Iterables.*;
@@ -108,7 +109,7 @@ public final class MimeType {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(mimeType);
+        return Objects.hash(mimeType);
     }
 
     /**
@@ -124,7 +125,7 @@ public final class MimeType {
         }
 
         final MimeType other = (MimeType) obj;
-        return Objects.equal(this.mimeType, other.mimeType);
+        return Objects.equals(this.mimeType, other.mimeType);
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media.model;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -46,7 +46,7 @@ public final class PodcastNode extends AbstractNode {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, url);
+        return Objects.hash(id, parentId, name, type, modifiedDate, iconUrl, url);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class PodcastNode extends AbstractNode {
         }
 
         final PodcastNode other = (PodcastNode) obj;
-        return Objects.equal(this.url, other.url);
+        return Objects.equals(this.url, other.url);
     }
 
     /**

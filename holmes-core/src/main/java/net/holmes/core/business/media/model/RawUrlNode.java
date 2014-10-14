@@ -17,8 +17,9 @@
 
 package net.holmes.core.business.media.model;
 
-import com.google.common.base.Objects;
 import net.holmes.core.business.mimetype.model.MimeType;
+
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -61,7 +62,7 @@ public final class RawUrlNode extends MimeTypeNode {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url, duration);
+        return Objects.hash(id, parentId, name, type, modifiedDate, iconUrl, mimeType, url, duration);
     }
 
     /**
@@ -80,7 +81,9 @@ public final class RawUrlNode extends MimeTypeNode {
         }
 
         final RawUrlNode other = (RawUrlNode) obj;
-        return Objects.equal(this.mimeType, other.mimeType) && Objects.equal(this.url, other.url) && Objects.equal(this.duration, other.duration);
+        return Objects.equals(this.mimeType, other.mimeType)
+                && Objects.equals(this.url, other.url)
+                && Objects.equals(this.duration, other.duration);
     }
 
     /**

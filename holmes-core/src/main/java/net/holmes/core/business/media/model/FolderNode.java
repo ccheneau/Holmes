@@ -17,9 +17,8 @@
 
 package net.holmes.core.business.media.model;
 
-import com.google.common.base.Objects;
-
 import java.io.File;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -64,7 +63,7 @@ public final class FolderNode extends AbstractNode {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, parentId, name, type, modifiedDate, iconUrl, path);
+        return Objects.hash(id, parentId, name, type, modifiedDate, iconUrl, path);
     }
 
     /**
@@ -83,7 +82,7 @@ public final class FolderNode extends AbstractNode {
         }
 
         final FolderNode other = (FolderNode) obj;
-        return Objects.equal(this.path, other.path);
+        return Objects.equals(this.path, other.path);
     }
 
     /**

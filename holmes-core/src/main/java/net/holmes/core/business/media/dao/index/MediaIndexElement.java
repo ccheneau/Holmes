@@ -17,9 +17,8 @@
 
 package net.holmes.core.business.media.dao.index;
 
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -89,7 +88,7 @@ public class MediaIndexElement implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(parentId, mediaType, mimeType, name, path, localPath, locked);
+        return Objects.hash(parentId, mediaType, mimeType, name, path, localPath, locked);
     }
 
     /**
@@ -105,13 +104,13 @@ public class MediaIndexElement implements Serializable {
         }
 
         MediaIndexElement other = (MediaIndexElement) obj;
-        return Objects.equal(this.parentId, other.parentId)
-                && Objects.equal(this.mediaType, other.mediaType)
-                && Objects.equal(this.mimeType, other.mimeType)
-                && Objects.equal(this.name, other.name)
-                && Objects.equal(this.path, other.path)
-                && Objects.equal(this.localPath, other.localPath)
-                && Objects.equal(this.locked, other.locked);
+        return Objects.equals(this.parentId, other.parentId)
+                && Objects.equals(this.mediaType, other.mediaType)
+                && Objects.equals(this.mimeType, other.mimeType)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.path, other.path)
+                && Objects.equals(this.localPath, other.localPath)
+                && Objects.equals(this.locked, other.locked);
     }
 
     /**

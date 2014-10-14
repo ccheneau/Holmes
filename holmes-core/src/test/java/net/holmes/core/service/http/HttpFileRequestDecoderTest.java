@@ -26,9 +26,9 @@ import net.holmes.core.business.mimetype.model.MimeType;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static io.netty.handler.codec.http.HttpMethod.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -41,7 +41,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/index.html").atLeastOnce();
@@ -65,7 +65,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/").atLeastOnce();
@@ -85,7 +85,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/index.html1").atLeastOnce();
@@ -106,7 +106,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(POST).atLeastOnce();
         expect(request.retain()).andReturn(request).atLeastOnce();
@@ -125,7 +125,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
@@ -149,7 +149,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
@@ -170,7 +170,7 @@ public class HttpFileRequestDecoderTest {
         ChannelHandlerContext context = createMock(ChannelHandlerContext.class);
         MediaManager mediaManager = createMock(MediaManager.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        List<Object> out = newArrayList();
+        List<Object> out = new ArrayList<>();
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content").atLeastOnce();

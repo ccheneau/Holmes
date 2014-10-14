@@ -17,8 +17,8 @@
 
 package net.holmes.core.backend.response;
 
-import com.google.common.base.Objects;
 
+import java.util.Objects;
 
 /**
  * Configuration folder.
@@ -77,7 +77,7 @@ public final class ConfigurationFolder {
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, path);
+        return Objects.hash(id, name, path);
     }
 
     /**
@@ -93,6 +93,8 @@ public final class ConfigurationFolder {
         }
 
         final ConfigurationFolder other = (ConfigurationFolder) obj;
-        return Objects.equal(this.id, other.id) && Objects.equal(this.name, other.name) && Objects.equal(this.path, other.path);
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.path, other.path);
     }
 }

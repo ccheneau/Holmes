@@ -17,10 +17,10 @@
 
 package net.holmes.core.business.configuration;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.PICTURE;
@@ -32,7 +32,7 @@ public class AbstractConfigurationDaoTest {
     public void testAddNode() throws IOException {
         AbstractConfigurationDao configurationDao = createMock(AbstractConfigurationDao.class);
 
-        expect(configurationDao.getNodes(PICTURE)).andReturn(Lists.<ConfigurationNode>newArrayList());
+        expect(configurationDao.getNodes(PICTURE)).andReturn(new ArrayList<ConfigurationNode>(0));
         configurationDao.save();
         expectLastCall();
 
@@ -46,7 +46,7 @@ public class AbstractConfigurationDaoTest {
     public void testAddNodeIOException() throws IOException {
         AbstractConfigurationDao configurationDao = createMock(AbstractConfigurationDao.class);
 
-        expect(configurationDao.getNodes(PICTURE)).andReturn(Lists.<ConfigurationNode>newArrayList());
+        expect(configurationDao.getNodes(PICTURE)).andReturn(new ArrayList<ConfigurationNode>(0));
         configurationDao.save();
         expectLastCall().andThrow(new IOException());
 

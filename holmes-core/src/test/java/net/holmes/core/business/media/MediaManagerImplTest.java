@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.media;
 
-import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationDao;
 import net.holmes.core.business.configuration.ConfigurationNode;
 import net.holmes.core.business.media.dao.MediaDao;
@@ -30,6 +29,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -145,7 +145,7 @@ public class MediaManagerImplTest {
         InetAddress localAddress = createMock(InetAddress.class);
 
         expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
-        expect(mediaDao.getChildNodes(eq("videosTest"))).andReturn(Lists.<AbstractNode>newArrayList());
+        expect(mediaDao.getChildNodes(eq("videosTest"))).andReturn(new ArrayList<AbstractNode>());
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -248,7 +248,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        List<AbstractNode> childNodes = newArrayList();
+        List<AbstractNode> childNodes = new ArrayList<>();
         childNodes.add(new PodcastNode("id", "parentId", "name", "url"));
         MimeType videoMimeType = MimeType.valueOf("video/avi");
         MimeType audioMimeType = MimeType.valueOf("audio/mp3");
@@ -274,7 +274,7 @@ public class MediaManagerImplTest {
 
     public List<AbstractNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
         // Add folder nodes stored in configuration
-        List<AbstractNode> nodes = newArrayList();
+        List<AbstractNode> nodes = new ArrayList<>();
         for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
             nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
         }

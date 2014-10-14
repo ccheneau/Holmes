@@ -28,13 +28,10 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 public class TestConfigurationDao extends AbstractConfigurationDao {
 
@@ -50,9 +47,9 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
         videoFolders = newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
         pictureFolders = newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
-        podcasts = newArrayList();
+        podcasts = new ArrayList<>();
         podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
-        parameters = newHashMap();
+        parameters = new HashMap<>();
         for (ConfigurationParameter parameter : ConfigurationParameter.PARAMETERS) {
             parameters.put(parameter.getName(), parameter.format(parameter.getDefaultValue()));
         }
@@ -98,7 +95,7 @@ public class TestConfigurationDao extends AbstractConfigurationDao {
                 folders = this.videoFolders;
                 break;
             default:
-                folders = newArrayList();
+                folders = new ArrayList<>(0);
                 break;
         }
         return folders;

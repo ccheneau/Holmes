@@ -23,6 +23,7 @@ package net.holmes.core.business.streaming.airplay.controlpoint;
 
 import com.google.common.base.Splitter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -30,7 +31,6 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Iterables.*;
-import static com.google.common.collect.Maps.newHashMap;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 
 /**
@@ -43,8 +43,9 @@ public final class CommandResponse {
 
     private int code;
     private String message;
-    private final Map<String, String> httpHeaders = newHashMap();
-    private final Map<String, String> contentParameters = newHashMap();
+
+    private final Map<String, String> httpHeaders = new HashMap<>();
+    private final Map<String, String> contentParameters = new HashMap<>();
 
     public int getCode() {
         return code;
