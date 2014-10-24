@@ -68,18 +68,38 @@ final class DirectoryBrowseResult {
         this.totalCount = 0L;
     }
 
+    /**
+     * Get item count.
+     *
+     * @return item count
+     */
     public long getItemCount() {
         return itemCount;
     }
 
+    /**
+     * Get total count.
+     *
+     * @return total count
+     */
     public long getTotalCount() {
         return totalCount;
     }
 
+    /**
+     * Get first result.
+     *
+     * @return first result
+     */
     public long getFirstResult() {
         return firstResult;
     }
 
+    /**
+     * Get DIDL.
+     *
+     * @return DIDL
+     */
     public DIDLContent getDidl() {
         return didl;
     }

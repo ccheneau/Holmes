@@ -60,18 +60,38 @@ public final class AirplayDeviceFeatures {
         return featuresBit.length() > bitIndex && featuresBit.charAt(featuresBit.length() - 1 - bitIndex) == '1';
     }
 
+    /**
+     * Check if video is supported.
+     *
+     * @return true if video is supported
+     */
     public boolean isVideoSupported() {
         return videoSupported;
     }
 
+    /**
+     * Check if audio is supported.
+     *
+     * @return true if audio is supported
+     */
     public boolean isAudioSupported() {
         return audioSupported;
     }
 
+    /**
+     * Check if image is supported.
+     *
+     * @return true if image is supported
+     */
     public boolean isImageSupported() {
         return imageSupported;
     }
 
+    /**
+     * Check if slide show is supported.
+     *
+     * @return true if slide show is supported
+     */
     public boolean isSlideShowSupported() {
         return slideShowSupported;
     }

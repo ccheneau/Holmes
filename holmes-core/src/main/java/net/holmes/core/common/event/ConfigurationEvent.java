@@ -54,14 +54,29 @@ public class ConfigurationEvent {
         this(type, null, NONE);
     }
 
+    /**
+     * Get configuration event type.
+     *
+     * @return configuration event type
+     */
     public EventType getType() {
         return type;
     }
 
+    /**
+     * Get node.
+     *
+     * @return node
+     */
     public ConfigurationNode getNode() {
         return node;
     }
 
+    /**
+     * Get root node.
+     *
+     * @return root node
+     */
     public RootNode getRootNode() {
         return rootNode;
     }

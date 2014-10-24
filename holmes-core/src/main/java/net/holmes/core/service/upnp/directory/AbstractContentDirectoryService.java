@@ -67,16 +67,31 @@ public abstract class AbstractContentDirectoryService {
         this.sortCapabilities.addAll(sortCapabilities);
     }
 
+    /**
+     * Get search capabilities.
+     *
+     * @return search capabilities
+     */
     @UpnpAction(out = @UpnpOutputArgument(name = "SearchCaps"))
     public CSV<String> getSearchCapabilities() {
         return searchCapabilities;
     }
 
+    /**
+     * Get sor capabilities.
+     *
+     * @return sort capabilities
+     */
     @UpnpAction(out = @UpnpOutputArgument(name = "SortCaps"))
     public CSV<String> getSortCapabilities() {
         return sortCapabilities;
     }
 
+    /**
+     * Get system update id.
+     *
+     * @return system update id
+     */
     @UpnpAction(out = @UpnpOutputArgument(name = "Id"))
     public synchronized UnsignedIntegerFourBytes getSystemUpdateID() {
         return systemUpdateID;

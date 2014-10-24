@@ -42,18 +42,38 @@ public final class Settings {
         this.prependPodcastItem = prependPodcastItem;
     }
 
+    /**
+     * Get server name.
+     *
+     * @return server name
+     */
     public String getServerName() {
         return serverName;
     }
 
+    /**
+     * Set server name.
+     *
+     * @param serverName new server name
+     */
     public void setServerName(final String serverName) {
         this.serverName = serverName;
     }
 
+    /**
+     * Check if podcast number should be added to podcast name.
+     *
+     * @return true if podcast number should be added to podcast name
+     */
     public Boolean getPrependPodcastItem() {
         return prependPodcastItem;
     }
 
+    /**
+     * Set whether podcast number should be added to podcast name.
+     *
+     * @param prependPodcastItem prepend podcast item
+     */
     public void setPrependPodcastItem(final Boolean prependPodcastItem) {
         this.prependPodcastItem = prependPodcastItem;
     }

@@ -48,26 +48,56 @@ public final class ConfigurationFolder {
         this.path = path;
     }
 
+    /**
+     * Get folder id.
+     *
+     * @return folder id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Set folder id.
+     *
+     * @param id new folder id
+     */
     public void setId(final String id) {
         this.id = id;
     }
 
+    /**
+     * Get folder name.
+     *
+     * @return folder name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set folder name.
+     *
+     * @param name folder name
+     */
     public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * Get folder path.
+     *
+     * @return folder path
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Set folder path.
+     *
+     * @param path new folder path
+     */
     public void setPath(final String path) {
         this.path = path;
     }

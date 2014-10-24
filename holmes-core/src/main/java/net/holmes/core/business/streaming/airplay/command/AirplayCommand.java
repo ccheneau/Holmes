@@ -186,6 +186,11 @@ public abstract class AirplayCommand {
             return value;
         }
 
+        /**
+         * Get HTTP method.
+         *
+         * @return HTTP method
+         */
         public HttpMethod getMethod() {
             return method;
         }

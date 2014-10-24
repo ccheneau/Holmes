@@ -40,34 +40,74 @@ public final class StreamingSession {
         this.contentUrl = contentUrl;
     }
 
+    /**
+     * Get status.
+     *
+     * @return status
+     */
     public SessionStatus getStatus() {
         return status;
     }
 
+    /**
+     * Set status.
+     *
+     * @param status new status
+     */
     public void setStatus(final SessionStatus status) {
         this.status = status;
     }
 
+    /**
+     * Get content URL.
+     *
+     * @return content URL
+     */
     public String getContentUrl() {
         return contentUrl;
     }
 
+    /**
+     * Get content name.
+     *
+     * @return content name
+     */
     public String getContentName() {
         return contentName;
     }
 
+    /**
+     * Get duration.
+     *
+     * @return duration
+     */
     public Long getDuration() {
         return duration;
     }
 
+    /**
+     * Set duration.
+     *
+     * @param duration new duration
+     */
     public void setDuration(final Long duration) {
         this.duration = duration;
     }
 
+    /**
+     * Get position.
+     *
+     * @return position
+     */
     public Long getPosition() {
         return position;
     }
 
+    /**
+     * Set position.
+     *
+     * @param position new position
+     */
     public void setPosition(final Long position) {
         this.position = position;
     }

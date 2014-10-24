@@ -55,6 +55,11 @@ public class BackendException extends RuntimeException {
         this.backendErrorMessage = backendErrorMessage;
     }
 
+    /**
+     * Get backend error message.
+     *
+     * @return backend error message
+     */
     public BackendErrorMessage getBackendErrorMessage() {
         return backendErrorMessage;
     }

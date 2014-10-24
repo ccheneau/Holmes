@@ -72,6 +72,11 @@ public class UpnpDevice extends Device {
         }
     }
 
+    /**
+     * Get Audio/Video transport service.
+     *
+     * @return Audio/Video transport service
+     */
     public RemoteService getAvTransportService() {
         return avTransportService;
     }

@@ -51,26 +51,56 @@ public class Release {
         this.draft = draft;
     }
 
+    /**
+     * Get release name.
+     *
+     * @return release name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set release name.
+     *
+     * @param name release name
+     */
     public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * Get release URL.
+     *
+     * @return release URL
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set release URL.
+     *
+     * @param url release URL
+     */
     public void setUrl(final String url) {
         this.url = url;
     }
 
+    /**
+     * Check if release is a draft.
+     *
+     * @return true if release is a draft
+     */
     public boolean isDraft() {
         return draft;
     }
 
+    /**
+     * Set whether release is a draft.
+     *
+     * @param draft draft release
+     */
     public void setDraft(final boolean draft) {
         this.draft = draft;
     }

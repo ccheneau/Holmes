@@ -55,30 +55,65 @@ public class MediaIndexElement implements Serializable {
         this.locked = locked;
     }
 
+    /**
+     * Get parent id.
+     *
+     * @return parent id
+     */
     public String getParentId() {
         return parentId;
     }
 
+    /**
+     * Get media type.
+     *
+     * @return media type
+     */
     public String getMediaType() {
         return mediaType;
     }
 
+    /**
+     * Ge path.
+     *
+     * @return path
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Get name.
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Check if element is a local path.
+     *
+     * @return true if element is a local path
+     */
     public boolean isLocalPath() {
         return localPath;
     }
 
+    /**
+     * Get mime type.
+     *
+     * @return mime type
+     */
     public String getMimeType() {
         return mimeType;
     }
 
+    /**
+     * Check if element is locked.
+     *
+     * @return true if if element is locked
+     */
     public boolean isLocked() {
         return locked;
     }

@@ -49,10 +49,20 @@ public final class RawUrlNode extends MimeTypeNode {
         this.duration = duration;
     }
 
+    /**
+     * Get URL.
+     *
+     * @return URL
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Get duration.
+     *
+     * @return duration
+     */
     public String getDuration() {
         return duration;
     }

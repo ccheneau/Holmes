@@ -30,26 +30,56 @@ public class DeviceBrowseResult {
     private final List<BrowseFolder> folders = new ArrayList<>();
     private final List<BrowseContent> contents = new ArrayList<>();
 
+    /**
+     * Get parent node id.
+     *
+     * @return parent node id
+     */
     public String getParentNodeId() {
         return parentNodeId;
     }
 
+    /**
+     * Set parent node id.
+     *
+     * @param parentNodeId new parent node id
+     */
     public void setParentNodeId(String parentNodeId) {
         this.parentNodeId = parentNodeId;
     }
 
+    /**
+     * Get error message.
+     *
+     * @return error message
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Set error message.
+     *
+     * @param errorMessage new error message
+     */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * Get folders.
+     *
+     * @return folders
+     */
     public List<BrowseFolder> getFolders() {
         return folders;
     }
 
+    /**
+     * Get contents.
+     *
+     * @return contents
+     */
     public List<BrowseContent> getContents() {
         return contents;
     }
@@ -61,18 +91,38 @@ public class DeviceBrowseResult {
         private String nodeId;
         private String folderName;
 
+        /**
+         * Get node id.
+         *
+         * @return node id
+         */
         public String getNodeId() {
             return nodeId;
         }
 
+        /**
+         * Set node id.
+         *
+         * @param nodeId new node id
+         */
         public void setNodeId(String nodeId) {
             this.nodeId = nodeId;
         }
 
+        /**
+         * Get folder name.
+         *
+         * @return folder name
+         */
         public String getFolderName() {
             return folderName;
         }
 
+        /**
+         * Set folder name.
+         *
+         * @param folderName new folder name
+         */
         public void setFolderName(String folderName) {
             this.folderName = folderName;
         }
@@ -86,26 +136,56 @@ public class DeviceBrowseResult {
         private String contentName;
         private String contentUrl;
 
+        /**
+         * Get node id.
+         *
+         * @return node id
+         */
         public String getNodeId() {
             return nodeId;
         }
 
+        /**
+         * Set node id.
+         *
+         * @param nodeId new node id
+         */
         public void setNodeId(String nodeId) {
             this.nodeId = nodeId;
         }
 
+        /**
+         * Get content name.
+         *
+         * @return content namme
+         */
         public String getContentName() {
             return contentName;
         }
 
+        /**
+         * Set content name
+         *
+         * @param contentName new content name
+         */
         public void setContentName(String contentName) {
             this.contentName = contentName;
         }
 
+        /**
+         * Get content URL.
+         *
+         * @return content URL
+         */
         public String getContentUrl() {
             return contentUrl;
         }
 
+        /**
+         * Set Content URL.
+         *
+         * @param contentUrl new content URL
+         */
         public void setContentUrl(String contentUrl) {
             this.contentUrl = contentUrl;
         }

@@ -38,10 +38,20 @@ public class MediaEvent {
         this.parameter = parameter;
     }
 
+    /**
+     * Get media event type.
+     *
+     * @return media event type
+     */
     public MediaEventType getType() {
         return type;
     }
 
+    /**
+     * Get media event parameter.
+     *
+     * @return media event parameter
+     */
     public String getParameter() {
         return parameter;
     }

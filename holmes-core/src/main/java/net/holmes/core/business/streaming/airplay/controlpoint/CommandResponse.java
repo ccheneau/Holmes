@@ -47,14 +47,29 @@ public final class CommandResponse {
     private final Map<String, String> httpHeaders = new HashMap<>();
     private final Map<String, String> contentParameters = new HashMap<>();
 
+    /**
+     * Gt response code.
+     *
+     * @return response code
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * Get response message.
+     *
+     * @return response message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Get content parameters.
+     *
+     * @return content parameters
+     */
     public Map<String, String> getContentParameters() {
         return contentParameters;
     }

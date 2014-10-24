@@ -63,26 +63,56 @@ public final class StreamingEvent {
         this.position = null;
     }
 
+    /**
+     * Get streaming event type.
+     *
+     * @return streaming event type
+     */
     public StreamingEventType getType() {
         return type;
     }
 
+    /**
+     * Get device id.
+     *
+     * @return device id
+     */
     public String getDeviceId() {
         return deviceId;
     }
 
+    /**
+     * Check if streaming event is success.
+     *
+     * @return true if streaming event is success
+     */
     public boolean isSuccess() {
         return success;
     }
 
+    /**
+     * Get error message.
+     *
+     * @return error message
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Get duration.
+     *
+     * @return duration
+     */
     public Long getDuration() {
         return duration;
     }
 
+    /**
+     * Get position.
+     *
+     * @return position
+     */
     public Long getPosition() {
         return position;
     }

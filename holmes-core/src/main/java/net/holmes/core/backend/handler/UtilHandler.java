@@ -127,14 +127,29 @@ public final class UtilHandler {
             this.state = "closed";
         }
 
+        /**
+         * Get folder state.
+         *
+         * @return folder state
+         */
         public String getState() {
             return state;
         }
 
+        /**
+         * Get folder data.
+         *
+         * @return folder data
+         */
         public String getData() {
             return data;
         }
 
+        /**
+         * Get folder meta data.
+         *
+         * @return folder meta data
+         */
         public Map<String, String> getMetadata() {
             return metadata;
         }

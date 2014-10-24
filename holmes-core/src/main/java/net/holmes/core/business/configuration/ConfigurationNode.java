@@ -43,22 +43,47 @@ public final class ConfigurationNode {
         this.path = path;
     }
 
+    /**
+     * Get configuration node id.
+     *
+     * @return configuration node id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Get configuration node name.
+     *
+     * @return configuration node name
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Set configuration node label.
+     *
+     * @param label configuration node label
+     */
     public void setLabel(final String label) {
         this.label = label;
     }
 
+    /**
+     * Get configuration node path.
+     *
+     * @return configuration node path
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Set configuration node path.
+     *
+     * @param path configuration node path
+     */
     public void setPath(final String path) {
         this.path = path;
     }

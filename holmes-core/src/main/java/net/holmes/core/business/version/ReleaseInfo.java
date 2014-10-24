@@ -38,14 +38,29 @@ public final class ReleaseInfo {
         this.url = url;
     }
 
+    /**
+     * Get release name.
+     *
+     * @return release name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Check if release needs update.
+     *
+     * @return true if release needs update
+     */
     public boolean isNeedsUpdate() {
         return needsUpdate;
     }
 
+    /**
+     * Get release URL.
+     *
+     * @return release URL
+     */
     public String getUrl() {
         return url;
     }

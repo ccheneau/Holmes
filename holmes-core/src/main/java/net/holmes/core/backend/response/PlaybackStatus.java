@@ -32,34 +32,74 @@ public class PlaybackStatus {
     public PlaybackStatus() {
     }
 
+    /**
+     * Get content name.
+     *
+     * @return content name
+     */
     public String getContentName() {
         return contentName;
     }
 
+    /**
+     * Set content name.
+     *
+     * @param contentName new content name
+     */
     public void setContentName(String contentName) {
         this.contentName = contentName;
     }
 
+    /**
+     * Get duration.
+     *
+     * @return duration
+     */
     public long getDuration() {
         return duration;
     }
 
+    /**
+     * Set duration.
+     *
+     * @param duration new duration
+     */
     public void setDuration(long duration) {
         this.duration = duration;
     }
 
+    /**
+     * Get position.
+     *
+     * @return position
+     */
     public long getPosition() {
         return position;
     }
 
+    /**
+     * Set position.
+     *
+     * @param position new position
+     */
     public void setPosition(long position) {
         this.position = position;
     }
 
+    /**
+     * Get error message.
+     *
+     * @return error message
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Set error message.
+     *
+     * @param errorMessage new error message
+     */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }

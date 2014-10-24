@@ -44,6 +44,11 @@ public enum BackendErrorMessage {
         this.messageKey = messageKey;
     }
 
+    /**
+     * Get message key.
+     *
+     * @return message key
+     */
     public String getMessageKey() {
         return messageKey;
     }

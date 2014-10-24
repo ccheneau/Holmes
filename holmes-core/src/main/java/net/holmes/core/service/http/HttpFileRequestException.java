@@ -37,6 +37,11 @@ public final class HttpFileRequestException extends HolmesException {
         this.status = status;
     }
 
+    /**
+     * Get HTTP response status.
+     *
+     * @return HTTP response status
+     */
     public HttpResponseStatus getStatus() {
         return status;
     }

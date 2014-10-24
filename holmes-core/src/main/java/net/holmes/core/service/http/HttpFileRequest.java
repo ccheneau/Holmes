@@ -46,18 +46,38 @@ public final class HttpFileRequest {
         this.staticResource = staticResource;
     }
 
+    /**
+     * Get requested file.
+     *
+     * @return requested file
+     */
     public File getFile() {
         return file;
     }
 
+    /**
+     * Get requested mime type.
+     *
+     * @return requested mime type
+     */
     public MimeType getMimeType() {
         return mimeType;
     }
 
+    /**
+     * Get HTTP message.
+     *
+     * @return HTTP message
+     */
     public HttpMessage getHttpMessage() {
         return httpMessage;
     }
 
+    /**
+     * Check if request is a static resource.
+     *
+     * @return true id request is a static resource
+     */
     public boolean isStaticResource() {
         return staticResource;
     }
