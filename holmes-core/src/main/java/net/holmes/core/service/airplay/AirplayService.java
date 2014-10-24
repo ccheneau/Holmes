@@ -60,7 +60,7 @@ public final class AirplayService implements Service {
      * @param streamingManager streaming manager
      */
     @Inject
-    public AirplayService(final ConfigurationDao configurationDao, final @Named("localAddress") InetAddress localAddress, final StreamingManager streamingManager) {
+    public AirplayService(final ConfigurationDao configurationDao, @Named("localAddress") final InetAddress localAddress, final StreamingManager streamingManager) {
         this.configurationDao = configurationDao;
         this.localAddress = localAddress;
         this.streamingManager = streamingManager;
