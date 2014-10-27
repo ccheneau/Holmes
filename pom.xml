@@ -55,7 +55,7 @@
         <dep.junit.version>4.12-beta-2</dep.junit.version>
         <dep.logback.version>1.1.2</dep.logback.version>
         <dep.netty.version>4.0.23.Final</dep.netty.version>
-        <dep.resteasy.version>3.0.8.Final</dep.resteasy.version>
+        <dep.resteasy.version>3.0.10.Final</dep.resteasy.version>
         <dep.rome.version>1.0</dep.rome.version>
         <dep.seamless.version>1.0-alpha3</dep.seamless.version>
         <dep.slf4j.version>1.7.7</dep.slf4j.version>

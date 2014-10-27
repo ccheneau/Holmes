@@ -115,7 +115,7 @@ public final class HttpService implements Service {
 
                         // Add RestEasy handlers
                         pipeline.addLast("restEasyHttpRequestDecoder", new RestEasyHttpRequestDecoder(resteasyDispatcher.getDispatcher(), RESTEASY_MAPPING_PREFIX, HTTP))
-                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder(resteasyDispatcher))
+                                .addLast("restEasyHttpResponseEncoder", new RestEasyHttpResponseEncoder())
                                 .addLast("restEasyRequestHandler", new RequestHandler(resteasyDispatcher));
                     }
                 })
