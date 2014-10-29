@@ -3057,5 +3057,33 @@
                 </parameter>
             </parameters>
         </rule>
+        <rule>
+            <repositoryKey>checkstyle</repositoryKey>
+            <key>com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck</key>
+            <priority>MAJOR</priority>
+            <parameters/>
+        </rule>
+        <rule>
+            <repositoryKey>checkstyle</repositoryKey>
+            <key>com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck</key>
+            <priority>MAJOR</priority>
+            <parameters>
+                <parameter>
+                    <key>javaFiveCompatibility</key>
+                    <value>true</value>
+                </parameter>
+            </parameters>
+        </rule>
+        <rule>
+            <repositoryKey>squid</repositoryKey>
+            <key>UndocumentedApi</key>
+            <priority>MAJOR</priority>
+            <parameters>
+                <parameter>
+                    <key>forClasses</key>
+                    <value>**</value>
+                </parameter>
+            </parameters>
+        </rule>
     </rules>
 </profile>

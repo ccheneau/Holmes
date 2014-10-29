@@ -18,6 +18,8 @@ package net.holmes.core.business.streaming.upnp.command;
 
 /**
  * UPnP GET command interface
+ *
+ * @param <T> command result type
  */
 public interface UpnpGetCommand<T> {
 

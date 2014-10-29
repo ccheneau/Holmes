@@ -62,6 +62,7 @@ public final class MediaManagerImpl implements MediaManager {
      * @param resourceBundle   resource bundle
      * @param mediaDao         media dao
      * @param mimeTypeManager  mime type manager
+     * @param localAddress     local IP address
      */
     @Inject
     public MediaManagerImpl(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, final MediaDao mediaDao,

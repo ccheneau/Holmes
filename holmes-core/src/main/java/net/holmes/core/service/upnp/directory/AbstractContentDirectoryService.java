@@ -99,6 +99,16 @@ public abstract class AbstractContentDirectoryService {
 
     /**
      * Browse for content.
+     *
+     * @param objectId         object id
+     * @param browseFlag       browse flag
+     * @param filter           filter
+     * @param firstResult      first result
+     * @param maxResults       max results
+     * @param orderBy          order by
+     * @param remoteClientInfo remote client info
+     * @return
+     * @throws ContentDirectoryException
      */
     @UpnpAction(out = {
             @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
@@ -119,6 +129,16 @@ public abstract class AbstractContentDirectoryService {
 
     /**
      * Search for content.
+     *
+     * @param containerId      container id
+     * @param searchCriteria   search criteria
+     * @param filter           filter
+     * @param firstResult      first result
+     * @param maxResults       max results
+     * @param orderBy          order by
+     * @param remoteClientInfo remote client info
+     * @return found contents
+     * @throws ContentDirectoryException
      */
     @UpnpAction(out = {
             @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
@@ -150,12 +170,32 @@ public abstract class AbstractContentDirectoryService {
      * You should wrap any exception into a {@link ContentDirectoryException}, so a property
      * error message can be returned to control points.
      * </p>
+     *
+     * @param objectID         object id
+     * @param browseFlag       browse flag
+     * @param filter           filter
+     * @param firstResult      first results
+     * @param maxResults       max result
+     * @param orderBy          order by
+     * @param remoteClientInfo remote client info
+     * @return browse result
+     * @throws ContentDirectoryException
      */
     public abstract BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults,
                                         SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 
     /**
      * Implement this method to implement searching of your content.
+     *
+     * @param containerId      container id
+     * @param searchCriteria   search criteria
+     * @param filter           filter
+     * @param firstResult      first result
+     * @param maxResults       max results
+     * @param orderBy          order by
+     * @param remoteClientInfo remote client info
+     * @return
+     * @throws ContentDirectoryException
      */
     public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
                                         long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;

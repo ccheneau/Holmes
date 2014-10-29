@@ -89,6 +89,8 @@ public class StreamingHandler {
     /**
      * Play content.
      *
+     * @param deviceId  device id
+     * @param contentId content id
      * @return error message or null
      */
     @GET
@@ -109,6 +111,7 @@ public class StreamingHandler {
     /**
      * Pause content playback.
      *
+     * @param deviceId device id
      * @return error message or null
      */
     @GET
@@ -127,6 +130,7 @@ public class StreamingHandler {
     /**
      * Stop content play back.
      *
+     * @param deviceId device id
      * @return error message or null
      */
     @GET
@@ -145,6 +149,7 @@ public class StreamingHandler {
     /**
      * Resume content playback.
      *
+     * @param deviceId device id
      * @return error message or null
      */
     @GET
@@ -163,6 +168,7 @@ public class StreamingHandler {
     /**
      * Update content playback status.
      *
+     * @param deviceId device id
      * @return playback status
      */
     @GET

@@ -25,6 +25,8 @@ import net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventTyp
 
 /**
  * Device streamer.
+ *
+ * @param <T> device type
  */
 public abstract class DeviceStreamer<T extends Device> {
     private final EventBus eventBus;

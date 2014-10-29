@@ -104,6 +104,8 @@ public final class UpnpUtils {
     /**
      * Build a new device details.
      *
+     * @param serverName server name
+     * @param version    version
      * @return device details
      */
     public static DeviceDetails buildDeviceDetails(final String serverName, final String version) {

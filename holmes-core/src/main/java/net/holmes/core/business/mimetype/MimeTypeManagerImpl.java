@@ -33,6 +33,8 @@ public final class MimeTypeManagerImpl implements MimeTypeManager {
 
     /**
      * Instantiates a new mime type manager implementation.
+     *
+     * @param mimeTypeDao mime type DAO
      */
     @Inject
     public MimeTypeManagerImpl(final MimeTypeDao mimeTypeDao) {

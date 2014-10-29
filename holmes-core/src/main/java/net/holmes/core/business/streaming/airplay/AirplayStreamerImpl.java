@@ -43,7 +43,8 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     /**
      * Instantiates a new Airplay streamer implementation.
      *
-     * @param eventBus event bus
+     * @param eventBus     event bus
+     * @param controlPoint control point
      */
     @Inject
     public AirplayStreamerImpl(final EventBus eventBus, final ControlPoint controlPoint) {

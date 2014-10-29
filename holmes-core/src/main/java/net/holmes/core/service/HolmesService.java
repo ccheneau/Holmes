@@ -53,6 +53,7 @@ public final class HolmesService implements Service {
      *
      * @param httpService         Http service
      * @param upnpService         UPnP service
+     * @param airplayService      Airplay service
      * @param systrayService      Systray service
      * @param releaseCheckService Check for new release service
      * @param localHolmesDataDir  local Holmes data directory

@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Configuration parameters
+ *
+ * @param <T> parameter type
  */
 public abstract class ConfigurationParameter<T> {
 
@@ -149,6 +151,7 @@ public abstract class ConfigurationParameter<T> {
      * Parse parameter value from String.
      *
      * @param stringValue string value
+     * @return parameter value
      */
     public abstract T parse(String stringValue);
 

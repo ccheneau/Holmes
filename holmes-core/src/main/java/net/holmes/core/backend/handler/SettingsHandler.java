@@ -58,6 +58,7 @@ public final class SettingsHandler {
      * Save settings.
      *
      * @param settings settings to save
+     * @return saved settings
      */
     @POST
     @Consumes(APPLICATION_JSON)
