@@ -1,0 +1,22 @@
+<configuration scan="true">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%-5level] - %d{HH:mm:ss.SSS} [%thread] [%logger:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <File>${user.home}/.holmes/log/holmes.log</File>
+        <append>false</append>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%-5level] - %d{HH:mm:ss.SSS} [%thread] [%logger:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

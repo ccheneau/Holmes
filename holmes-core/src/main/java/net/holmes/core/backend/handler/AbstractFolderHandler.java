@@ -17,7 +17,7 @@
 
 package net.holmes.core.backend.handler;
 
-import net.holmes.core.backend.BackendManager;
+import net.holmes.core.backend.manager.BackendManager;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.business.media.model.RootNode;
 

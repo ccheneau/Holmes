@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.common;
+package net.holmes.core.common.inject;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;

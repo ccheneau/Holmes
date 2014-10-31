@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.backend;
+package net.holmes.core.backend.manager;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendException;

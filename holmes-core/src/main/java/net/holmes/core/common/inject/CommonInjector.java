@@ -15,56 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core;
+package net.holmes.core.common.inject;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
-import net.holmes.core.backend.BackendManager;
-import net.holmes.core.backend.BackendManagerImpl;
-import net.holmes.core.backend.exception.BackendExceptionMapper;
-import net.holmes.core.backend.handler.*;
-import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.XmlConfigurationDaoImpl;
-import net.holmes.core.business.media.MediaManager;
-import net.holmes.core.business.media.MediaManagerImpl;
-import net.holmes.core.business.media.dao.MediaDao;
-import net.holmes.core.business.media.dao.MediaDaoImpl;
-import net.holmes.core.business.media.dao.index.MediaIndexDao;
-import net.holmes.core.business.media.dao.index.MediaIndexDaoImpl;
-import net.holmes.core.business.mimetype.MimeTypeManager;
-import net.holmes.core.business.mimetype.MimeTypeManagerImpl;
-import net.holmes.core.business.mimetype.dao.MimeTypeDao;
-import net.holmes.core.business.mimetype.dao.MimeTypeDaoImpl;
-import net.holmes.core.business.streaming.StreamingManager;
-import net.holmes.core.business.streaming.StreamingManagerImpl;
-import net.holmes.core.business.streaming.airplay.AirplayStreamerImpl;
-import net.holmes.core.business.streaming.airplay.controlpoint.AsyncSocketControlPoint;
-import net.holmes.core.business.streaming.airplay.controlpoint.ControlPoint;
-import net.holmes.core.business.streaming.device.DeviceDao;
-import net.holmes.core.business.streaming.device.DeviceDaoImpl;
-import net.holmes.core.business.streaming.device.DeviceStreamer;
-import net.holmes.core.business.streaming.session.SessionDao;
-import net.holmes.core.business.streaming.session.SessionDaoImpl;
-import net.holmes.core.business.streaming.upnp.UpnpStreamerImpl;
-import net.holmes.core.business.version.VersionManager;
-import net.holmes.core.business.version.VersionManagerImpl;
-import net.holmes.core.business.version.release.ReleaseDao;
-import net.holmes.core.business.version.release.ReleaseDaoImpl;
-import net.holmes.core.common.EventBusListener;
 import net.holmes.core.common.exception.HolmesRuntimeException;
-import net.holmes.core.service.ReleaseCheckService;
-import net.holmes.core.service.Service;
-import net.holmes.core.service.airplay.AirplayService;
-import net.holmes.core.service.http.HttpFileRequestDecoder;
-import net.holmes.core.service.http.HttpFileRequestHandler;
-import net.holmes.core.service.http.HttpService;
-import net.holmes.core.service.systray.SystrayService;
-import net.holmes.core.service.upnp.UpnpService;
-import net.holmes.core.service.upnp.UpnpServiceProvider;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
@@ -84,9 +42,9 @@ import static net.holmes.core.common.Constants.HOLMES_HOME_UI_DIRECTORY;
 import static net.holmes.core.common.SystemProperty.*;
 
 /**
- * Holmes Guice injector.
+ * Holmes common Guice injector.
  */
-public final class HolmesInjector extends AbstractModule {
+public class CommonInjector extends AbstractModule {
     private final EventBus eventBus;
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
@@ -96,9 +54,9 @@ public final class HolmesInjector extends AbstractModule {
     private final String currentVersion;
 
     /**
-     * Instantiates Holmes injector.
+     * Instantiates a new common injector
      */
-    public HolmesInjector() {
+    public CommonInjector() {
         eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
         resourceBundle = ResourceBundle.getBundle("message");
         localHolmesDataDir = getLocalHolmesDataDir();
@@ -131,53 +89,6 @@ public final class HolmesInjector extends AbstractModule {
         // Bind event bus
         bind(EventBus.class).toInstance(eventBus);
         bindListener(Matchers.any(), new EventBusListener(eventBus));
-
-        // Bind dao
-        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
-        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
-        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
-        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
-        bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
-        bind(MimeTypeDao.class).to(MimeTypeDaoImpl.class).in(Singleton.class);
-
-        // Bind business managers
-        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
-        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
-        bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
-
-        // Bind services
-        bind(Service.class).annotatedWith(named("http")).to(HttpService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("airplay")).to(AirplayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("release")).to(ReleaseCheckService.class).in(Singleton.class);
-
-        // Bind backend
-        bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
-
-        // Bind Upnp service
-        bind(org.fourthline.cling.UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);
-
-        // Bind Http handlers
-        bind(HttpFileRequestDecoder.class);
-        bind(HttpFileRequestHandler.class);
-
-        // Bind streaming utils
-        bind(DeviceStreamer.class).annotatedWith(named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
-        bind(DeviceStreamer.class).annotatedWith(named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
-        bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
-
-        // Bind Rest handlers
-        bind(AudioFoldersHandler.class);
-        bind(PictureFoldersHandler.class);
-        bind(PodcastsHandler.class);
-        bind(SettingsHandler.class);
-        bind(UtilHandler.class);
-        bind(VideoFoldersHandler.class);
-        bind(BackendExceptionMapper.class);
-        bind(StreamingHandler.class);
     }
 
     /**
@@ -228,4 +139,5 @@ public final class HolmesInjector extends AbstractModule {
         }
         return InetAddress.getLocalHost();
     }
+
 }

@@ -1,0 +1,32 @@
+<configuration scan="true">
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${user.home}/.holmes/log/holmes.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${user.home}/.holmes/log/holmes.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 3 days' worth of history -->
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%-5level] - %d{HH:mm:ss.SSS} [%logger{35}:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.jboss.resteasy">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.fourthline.cling">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="io.netty">
+        <level value="ERROR"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

@@ -17,43 +17,41 @@
 
 package net.holmes.core;
 
-import com.google.inject.Guice;
-import net.holmes.core.common.exception.HolmesRuntimeException;
+import com.google.inject.Injector;
+import net.holmes.core.backend.inject.BackendInjector;
+import net.holmes.core.business.inject.BusinessInjector;
+import net.holmes.core.common.inject.CommonInjector;
+import net.holmes.core.service.inject.ServiceInjector;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
+import static com.google.inject.Guice.createInjector;
+import static net.holmes.core.Bootstrap.loadLogging;
+import static net.holmes.core.common.Constants.HOLMES_HOME_UI_DIRECTORY;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static org.junit.Assert.assertNotNull;
 
-public class HolmesInjectorTest {
+public class BootstrapTest {
 
     @Test
-    public void testGetLocalIPV4() throws IOException {
-        assertNotNull(HolmesInjector.getLocalAddress());
-    }
-
-    @Test
-    public void testGetHolmesHomeSubDir() {
-        File uiPath = new File(HOLMES_HOME.getValue(), "ui");
+    public void testCreateInjectors() {
+        File uiPath = new File(HOLMES_HOME.getValue(), HOLMES_HOME_UI_DIRECTORY.toString());
         if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
 
-        assertNotNull(HolmesInjector.getHolmesHomeSubDirectory("ui"));
-    }
+        Injector injector = createInjector(new CommonInjector(), new BusinessInjector(),
+                new ServiceInjector(), new BackendInjector());
 
-    @Test(expected = HolmesRuntimeException.class)
-    public void testGetBadHolmesHomeSubDir() {
-        assertNotNull(HolmesInjector.getHolmesHomeSubDirectory("bad_subDir"));
+        assertNotNull(injector);
     }
 
     @Test
-    public void testHolmesServerModule() {
-        File uiPath = new File(HOLMES_HOME.getValue(), "ui");
-        if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
+    public void testLoadLogging() {
+        loadLogging(false);
+    }
 
-        HolmesInjector module = new HolmesInjector();
-        assertNotNull(module);
-        assertNotNull(Guice.createInjector(module));
+    @Test
+    public void testLoadDebugLogging() {
+        loadLogging(true);
     }
 }
