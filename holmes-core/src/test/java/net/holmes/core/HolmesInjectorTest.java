@@ -18,6 +18,7 @@
 package net.holmes.core;
 
 import com.google.inject.Guice;
+import net.holmes.core.common.exception.HolmesRuntimeException;
 import org.junit.Test;
 
 import java.io.File;
@@ -26,11 +27,24 @@ import java.io.IOException;
 import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static org.junit.Assert.assertNotNull;
 
-public class TestHolmesServerModule {
+public class HolmesInjectorTest {
 
     @Test
     public void testGetLocalIPV4() throws IOException {
         assertNotNull(HolmesInjector.getLocalAddress());
+    }
+
+    @Test
+    public void testGetHolmesHomeSubDir() {
+        File uiPath = new File(HOLMES_HOME.getValue(), "ui");
+        if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
+
+        assertNotNull(HolmesInjector.getHolmesHomeSubDirectory("ui"));
+    }
+
+    @Test(expected = HolmesRuntimeException.class)
+    public void testGetBadHolmesHomeSubDir() {
+        assertNotNull(HolmesInjector.getHolmesHomeSubDirectory("bad_subDir"));
     }
 
     @Test

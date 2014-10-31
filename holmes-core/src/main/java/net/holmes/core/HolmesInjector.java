@@ -80,6 +80,7 @@ import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
 import static java.util.Collections.list;
 import static java.util.concurrent.Executors.newCachedThreadPool;
+import static net.holmes.core.common.Constants.HOLMES_HOME_UI_DIRECTORY;
 import static net.holmes.core.common.SystemProperty.*;
 
 /**
@@ -101,7 +102,7 @@ public final class HolmesInjector extends AbstractModule {
         eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
         resourceBundle = ResourceBundle.getBundle("message");
         localHolmesDataDir = getLocalHolmesDataDir();
-        uiDirectory = getUiDirectory();
+        uiDirectory = getHolmesHomeSubDirectory(HOLMES_HOME_UI_DIRECTORY.toString());
         socketFactory = SocketFactory.getDefault();
         currentVersion = nullToEmpty(this.getClass().getPackage().getImplementationVersion());
         try {
@@ -196,12 +197,14 @@ public final class HolmesInjector extends AbstractModule {
     }
 
     /**
-     * Get UI base directory.
+     * Get Holmes home sub directory.
      *
-     * @return UI directory
+     * @param subDirName name of sub directory
+     * @return Holmes home sub directory path.
      */
-    private static String getUiDirectory() {
-        Path uiPath = get(HOLMES_HOME.getValue(), "ui");
+    @VisibleForTesting
+    static String getHolmesHomeSubDirectory(final String subDirName) {
+        Path uiPath = get(HOLMES_HOME.getValue(), subDirName);
         if (!exists(uiPath)) {
             throw new HolmesRuntimeException(uiPath + " does not exist. Check " + HOLMES_HOME.getName() + " [" + HOLMES_HOME.getValue() + "] system property");
         }
