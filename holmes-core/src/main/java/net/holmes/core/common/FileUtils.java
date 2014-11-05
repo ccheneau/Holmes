@@ -58,7 +58,7 @@ public final class FileUtils {
      *
      * @param parentPath   parent directory path
      * @param includeFiles include files in result
-     * @return child files
+     * @return child files or empty list
      */
     public static List<File> listChildren(final String parentPath, final boolean includeFiles) {
         List<File> fileList;
