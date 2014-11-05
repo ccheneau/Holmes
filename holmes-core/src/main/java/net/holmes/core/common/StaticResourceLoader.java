@@ -29,16 +29,16 @@ import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
  * Loader for Holmes static resources
  */
 public final class StaticResourceLoader {
+    /**
+     * Resource directory name under HOLMES_HOME directory
+     */
     private static final String RESOURCE_PATH = "resources";
-    private static final int LARGE_ICON_SIZE = 120;
-    private static final int SMALL_ICON_SIZE = 32;
-    private static final int ICON_DEPTH = 8;
-    private static final String ICON_MIME_TYPE = "image/png";
 
     /**
      * Private constructor
      */
     private StaticResourceLoader() {
+        // Nothing
     }
 
     /**
@@ -54,23 +54,14 @@ public final class StaticResourceLoader {
     }
 
     /**
-     * Get UPnP large icon.
+     * Get UPnP icon.
      *
-     * @return large icon
+     * @param icon icon
+     * @return UPnP icon
      * @throws IOException
      */
-    public static Icon getUpnpLargeIcon() throws IOException {
-        return new Icon(ICON_MIME_TYPE, LARGE_ICON_SIZE, LARGE_ICON_SIZE, ICON_DEPTH, "upnp-icon-256.png", getData(StaticResourceDir.UPNP, "icon-256.png"));
-    }
-
-    /**
-     * Get UPnP small icon.
-     *
-     * @return small icon
-     * @throws IOException
-     */
-    public static Icon getUpnpSmallIcon() throws IOException {
-        return new Icon(ICON_MIME_TYPE, SMALL_ICON_SIZE, SMALL_ICON_SIZE, ICON_DEPTH, "upnp-icon-32.png", getData(StaticResourceDir.UPNP, "icon-32.png"));
+    public static Icon getUpnpIcon(final UpnpIcon icon) throws IOException {
+        return new Icon(icon.getMimeType(), icon.getSize(), icon.getSize(), icon.getDepth(), icon.getName(), getData(StaticResourceDir.UPNP, icon.getPath()));
     }
 
     /**
@@ -98,6 +89,81 @@ public final class StaticResourceLoader {
          */
         public String getValue() {
             return value;
+        }
+    }
+
+    /**
+     * UPnP icon.
+     */
+    public enum UpnpIcon {
+        SMALL("icon-32.png", "image/png", 32, 8),
+        LARGE("icon-256.png", "image/png", 256, 8);
+
+        private final String name;
+        private final String path;
+        private final String mimeType;
+        private final int size;
+        private final int depth;
+
+        /**
+         * Instantiates a new UPnP icon.
+         *
+         * @param path     icon file path
+         * @param mimeType icon mime type
+         * @param size     icon size
+         * @param depth    icon depth
+         */
+        private UpnpIcon(String path, String mimeType, int size, int depth) {
+            this.name = "upnp-" + path;
+            this.path = path;
+            this.mimeType = mimeType;
+            this.size = size;
+            this.depth = depth;
+        }
+
+        /**
+         * Get icon name.
+         *
+         * @return icon name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Get icon path.
+         *
+         * @return icon path
+         */
+        public String getPath() {
+            return path;
+        }
+
+        /**
+         * Get icon mime type.
+         *
+         * @return icon mime type
+         */
+        public String getMimeType() {
+            return mimeType;
+        }
+
+        /**
+         * Get icon size.
+         *
+         * @return icon size
+         */
+        public int getSize() {
+            return size;
+        }
+
+        /**
+         * Get icon depth.
+         *
+         * @return icon depth
+         */
+        public int getDepth() {
+            return depth;
         }
     }
 }

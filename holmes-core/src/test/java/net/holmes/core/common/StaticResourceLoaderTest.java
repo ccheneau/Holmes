@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import static net.holmes.core.common.StaticResourceLoader.StaticResourceDir.*;
+import static net.holmes.core.common.StaticResourceLoader.UpnpIcon.*;
+import static net.holmes.core.common.StaticResourceLoader.getUpnpIcon;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -51,13 +53,13 @@ public class StaticResourceLoaderTest {
 
     @Test
     public void testGetUpnpLargeIcon() throws IOException {
-        Icon icon = StaticResourceLoader.getUpnpLargeIcon();
+        Icon icon = getUpnpIcon(LARGE);
         assertNotNull(icon);
     }
 
     @Test
     public void testGetUpnpSmallIcon() throws IOException {
-        Icon icon = StaticResourceLoader.getUpnpSmallIcon();
+        Icon icon = getUpnpIcon(SMALL);
         assertNotNull(icon);
     }
 }

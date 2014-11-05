@@ -31,7 +31,8 @@ import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import java.io.IOException;
 
 import static net.holmes.core.common.Constants.*;
-import static net.holmes.core.common.StaticResourceLoader.*;
+import static net.holmes.core.common.StaticResourceLoader.UpnpIcon.*;
+import static net.holmes.core.common.StaticResourceLoader.getUpnpIcon;
 import static org.fourthline.cling.model.types.UDN.uniqueSystemIdentifier;
 
 /**
@@ -122,7 +123,7 @@ public final class UpnpUtils {
      * @throws IOException
      */
     public static Icon[] getIcons() throws IOException {
-        return new Icon[]{getUpnpLargeIcon(), getUpnpSmallIcon()};
+        return new Icon[]{getUpnpIcon(LARGE), getUpnpIcon(SMALL)};
     }
 
 }
