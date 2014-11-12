@@ -23,9 +23,9 @@ import static net.holmes.core.common.Constants.HOLMES_APPLICATION_WELCOME_FILE;
  * Holmes web applications
  */
 public enum WebApplication {
-    DEFAULT("", HOLMES_APPLICATION_WELCOME_FILE.toString()),
-    ADMIN("/admin", HOLMES_APPLICATION_WELCOME_FILE.toString()),
-    PLAY("/play", HOLMES_APPLICATION_WELCOME_FILE.toString());
+    DEFAULT("", HOLMES_APPLICATION_WELCOME_FILE),
+    ADMIN("/admin", HOLMES_APPLICATION_WELCOME_FILE),
+    PLAY("/play", HOLMES_APPLICATION_WELCOME_FILE);
 
     /**
      * Web application path on file system.
@@ -43,9 +43,9 @@ public enum WebApplication {
      * @param path        web application path on file system
      * @param welcomeFile web application welcome file
      */
-    private WebApplication(final String path, final String welcomeFile) {
+    private WebApplication(final String path, final Constants welcomeFile) {
         this.path = path;
-        this.welcomeFile = welcomeFile;
+        this.welcomeFile = welcomeFile.toString();
     }
 
     /**
