@@ -27,20 +27,32 @@ import net.holmes.core.service.http.HttpFileRequestHandler;
 import net.holmes.core.service.http.HttpService;
 import net.holmes.core.service.systray.SystrayService;
 import net.holmes.core.service.upnp.UpnpService;
-import net.holmes.core.service.upnp.UpnpServiceProvider;
+
+import javax.net.SocketFactory;
 
 import static com.google.inject.name.Names.named;
 
 /**
- * Holmes business Guice injector.
+ * Holmes service Guice injector.
  */
 public class ServiceInjector extends AbstractModule {
+    private final SocketFactory socketFactory;
+
+    /**
+     * Instantiates a new service injector.
+     */
+    public ServiceInjector() {
+        socketFactory = SocketFactory.getDefault();
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void configure() {
+        // Bind socket factory
+        bind(SocketFactory.class).toInstance(socketFactory);
+
         // Bind services
         bind(Service.class).annotatedWith(named("http")).to(HttpService.class).in(Singleton.class);
         bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class).in(Singleton.class);

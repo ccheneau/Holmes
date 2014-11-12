@@ -21,14 +21,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import net.holmes.core.common.exception.HolmesRuntimeException;
 
-import javax.net.SocketFactory;
-import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
@@ -36,7 +33,6 @@ import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.inject.name.Names.named;
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
-import static java.util.Collections.list;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static net.holmes.core.common.Constants.HOLMES_HOME_UI_DIRECTORY;
 import static net.holmes.core.common.SystemProperty.*;
@@ -49,8 +45,6 @@ public class CommonInjector extends AbstractModule {
     private final ResourceBundle resourceBundle;
     private final String localHolmesDataDir;
     private final String uiDirectory;
-    private final InetAddress localAddress;
-    private final SocketFactory socketFactory;
     private final String currentVersion;
 
     /**
@@ -61,13 +55,7 @@ public class CommonInjector extends AbstractModule {
         resourceBundle = ResourceBundle.getBundle("message");
         localHolmesDataDir = getLocalHolmesDataDir();
         uiDirectory = getHolmesHomeSubDirectory(HOLMES_HOME_UI_DIRECTORY.toString());
-        socketFactory = SocketFactory.getDefault();
         currentVersion = nullToEmpty(this.getClass().getPackage().getImplementationVersion());
-        try {
-            localAddress = getLocalAddress();
-        } catch (IOException e) {
-            throw new HolmesRuntimeException(e);
-        }
     }
 
     /**
@@ -80,11 +68,11 @@ public class CommonInjector extends AbstractModule {
         bindConstant().annotatedWith(named("mimeTypePath")).to("/mimetypes.properties");
         bindConstant().annotatedWith(named("uiDirectory")).to(uiDirectory);
         bindConstant().annotatedWith(named("currentVersion")).to(currentVersion);
-        bind(InetAddress.class).annotatedWith(named("localAddress")).toInstance(localAddress);
 
-        // Bind utils
+        bind(InetAddress.class).annotatedWith(named("localAddress")).toProvider(LocalAddressProvider.class).in(Singleton.class);
+
+        // Bind resource bundle
         bind(ResourceBundle.class).toInstance(resourceBundle);
-        bind(SocketFactory.class).toInstance(socketFactory);
 
         // Bind event bus
         bind(EventBus.class).toInstance(eventBus);
@@ -122,22 +110,4 @@ public class CommonInjector extends AbstractModule {
 
         return uiPath.toString();
     }
-
-    /**
-     * Get local IPv4 address (InetAddress.getLocalHost() does not work on Linux).
-     *
-     * @return local IPv4 address
-     */
-    @VisibleForTesting
-    static InetAddress getLocalAddress() throws IOException {
-        for (NetworkInterface networkInterface : list(NetworkInterface.getNetworkInterfaces())) {
-            for (InetAddress inetAddress : list(networkInterface.getInetAddresses())) {
-                if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
-                    return inetAddress;
-                }
-            }
-        }
-        return InetAddress.getLocalHost();
-    }
-
 }

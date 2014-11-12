@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.service.upnp;
+package net.holmes.core.service.inject;
 
 import com.google.inject.Injector;
 import net.holmes.core.business.configuration.ConfigurationDao;
@@ -47,7 +47,7 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     private final String version;
 
     /**
-     * Instantiates a new upnp service provider.
+     * Instantiates a new UPnP service provider.
      *
      * @param injector         Guice injector
      * @param configurationDao configuration dao

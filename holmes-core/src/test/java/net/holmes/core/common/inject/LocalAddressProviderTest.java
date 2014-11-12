@@ -17,25 +17,16 @@
 
 package net.holmes.core.common.inject;
 
-import net.holmes.core.common.exception.HolmesRuntimeException;
 import org.junit.Test;
 
-import java.io.File;
-
-import static net.holmes.core.common.SystemProperty.HOLMES_HOME;
 import static org.junit.Assert.assertNotNull;
 
-public class CommonInjectorTest {
+public class LocalAddressProviderTest {
+
     @Test
-    public void testGetHolmesHomeSubDir() {
-        File uiPath = new File(HOLMES_HOME.getValue(), "ui");
-        if (!uiPath.exists() && uiPath.mkdirs()) uiPath.deleteOnExit();
+    public void testGetLocalAddress() {
+        LocalAddressProvider localAddressProvider = new LocalAddressProvider();
 
-        assertNotNull(CommonInjector.getHolmesHomeSubDirectory("ui"));
-    }
-
-    @Test(expected = HolmesRuntimeException.class)
-    public void testGetBadHolmesHomeSubDir() {
-        assertNotNull(CommonInjector.getHolmesHomeSubDirectory("bad_subDir"));
+        assertNotNull(localAddressProvider.get());
     }
 }
