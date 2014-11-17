@@ -25,6 +25,7 @@ public enum SystemProperty {
     USER_HOME("user.home");
 
     private final String name;
+    private final String value;
 
     /**
      * Instantiates a new system property.
@@ -33,6 +34,7 @@ public enum SystemProperty {
      */
     private SystemProperty(final String name) {
         this.name = name;
+        this.value = System.getProperty(name);
     }
 
     /**
@@ -50,6 +52,6 @@ public enum SystemProperty {
      * @return the system property value
      */
     public String getValue() {
-        return System.getProperty(name);
+        return this.value;
     }
 }
