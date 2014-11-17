@@ -195,23 +195,23 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Get children of a folder node.
      *
-     * @param parentId   parent node id
-     * @param folderPath folder path
-     * @param mediaType  media type
+     * @param folderNodeId folder node id
+     * @param folderPath   folder path
+     * @param mediaType    media type
      * @return folder child nodes matching media type
      */
-    private List<AbstractNode> getFolderChildNodes(final String parentId, final String folderPath, final MediaType mediaType) {
+    private List<AbstractNode> getFolderChildNodes(final String folderNodeId, final String folderPath, final MediaType mediaType) {
         List<File> children = listChildren(folderPath, true);
         List<AbstractNode> nodes = new ArrayList<>(children.size());
         for (File child : children) {
             // Add node to mediaIndex
             if (child.isDirectory()) {
                 // Add folder node
-                String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), null, child.getAbsolutePath(), null, true, false));
-                nodes.add(new FolderNode(nodeId, parentId, child.getName(), child));
+                String nodeId = mediaIndexDao.add(new MediaIndexElement(folderNodeId, mediaType.getValue(), null, child.getAbsolutePath(), null, true, false));
+                nodes.add(new FolderNode(nodeId, folderNodeId, child.getName(), child));
             } else {
                 // Add content node
-                addContentNode(nodes, parentId, child, mediaType);
+                addContentNode(nodes, folderNodeId, child, mediaType);
             }
         }
         return nodes;
@@ -220,14 +220,14 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Gets pod-cast entries. A pod-cast is a RSS.
      *
-     * @param podcastId  podcast id
-     * @param podcastUrl podcast url
-     * @return entries parsed from pod-cast RSS feed
+     * @param podcastNodeId podcast node id
+     * @param podcastUrl    podcast url
+     * @return entries parsed from podcast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastEntries(final String podcastId, final String podcastUrl) {
+    private List<AbstractNode> getPodcastEntries(final String podcastNodeId, final String podcastUrl) {
         try {
-            return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastId, podcastUrl));
+            return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastNodeId, podcastUrl));
         } catch (ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
         }
