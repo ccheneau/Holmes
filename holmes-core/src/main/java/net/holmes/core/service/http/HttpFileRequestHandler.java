@@ -44,7 +44,7 @@ import static io.netty.handler.codec.http.HttpHeaders.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import static io.netty.handler.codec.http.LastHttpContent.EMPTY_LAST_CONTENT;
-import static io.netty.util.CharsetUtil.UTF_8;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.TimeZone.getTimeZone;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_CACHE_SECOND;
 import static net.holmes.core.common.Constants.HOLMES_HTTP_SERVER_NAME;
@@ -69,6 +69,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     private static final CharSequence X_EXPIRES = newEntity(EXPIRES);
     private static final CharSequence X_CACHE_CONTROL = newEntity(CACHE_CONTROL);
     private static final CharSequence X_CONTENT_TYPE = newEntity(CONTENT_TYPE);
+    private static final CharSequence X_CONTENT_TYPE_UTF8 = newEntity("text/plain; charset=" + UTF_8);
     private static final CharSequence X_CONNECTION = newEntity(CONNECTION);
     private static final CharSequence X_KEEP_ALIVE = newEntity(KEEP_ALIVE);
 
@@ -252,7 +253,7 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
         // Build error response
         ByteBuf buffer = copiedBuffer("Failure: " + message + " " + status.toString() + "\r\n", UTF_8);
         HttpMessage response = new DefaultFullHttpResponse(HTTP_1_1, status, buffer);
-        response.headers().set(X_CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.headers().set(X_CONTENT_TYPE, X_CONTENT_TYPE_UTF8);
 
         // Close the connection as soon as the error message is sent.
         context.channel().writeAndFlush(response).addListener(CLOSE);

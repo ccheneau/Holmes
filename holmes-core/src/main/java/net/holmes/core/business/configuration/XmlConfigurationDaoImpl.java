@@ -36,6 +36,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import static com.google.common.collect.Iterables.find;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * XML configuration dao implementation.
@@ -62,7 +63,7 @@ public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
         this.localHolmesDataDir = localHolmesDataDir;
 
         // Instantiates a new XStream
-        this.xstream = new XStream(new DomDriver("UTF-8"));
+        this.xstream = new XStream(new DomDriver(UTF_8.name()));
 
         // Define XStream aliases
         this.xstream.alias("config", XmlRootNode.class);
