@@ -18,26 +18,33 @@
 package net.holmes.core.common.exception;
 
 /**
- * Homes exception
+ * Holmes exception
  */
 public class HolmesException extends Exception {
 
     /**
-     * {@inheritDoc}
+     * Constructs a new Holmes exception.
+     *
+     * @param message exception message
      */
     protected HolmesException(final String message) {
         super(message);
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs a new Holmes exception.
+     *
+     * @param message exception message
+     * @param cause   original exception
      */
     protected HolmesException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs a new Holmes exception.
+     *
+     * @param cause original exception
      */
     public HolmesException(final Throwable cause) {
         super(cause);
