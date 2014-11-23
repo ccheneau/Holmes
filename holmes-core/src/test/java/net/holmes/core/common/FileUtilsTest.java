@@ -23,7 +23,6 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 
 import static net.holmes.core.common.FileUtils.*;
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 public class FileUtilsTest {
@@ -37,116 +36,148 @@ public class FileUtilsTest {
 
     @Test
     public void testIsValidFile() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean isFile() {
+                return true;
+            }
 
-        expect(file.isFile()).andReturn(true);
-        expect(file.canRead()).andReturn(true);
-        expect(file.isHidden()).andReturn(false);
+            @Override
+            public boolean canRead() {
+                return true;
+            }
 
-        replay(file);
+            @Override
+            public boolean isHidden() {
+                return false;
+            }
+        };
 
         assertTrue(isValidFile(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidFileNotFile() {
-        File file = createMock(File.class);
-
-        expect(file.isFile()).andReturn(false);
-
-        replay(file);
+        File file = new File("file") {
+            @Override
+            public boolean isFile() {
+                return false;
+            }
+        };
 
         assertFalse(isValidFile(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidFileNotReadable() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean isFile() {
+                return true;
+            }
 
-        expect(file.isFile()).andReturn(true);
-        expect(file.canRead()).andReturn(false);
-
-        replay(file);
+            @Override
+            public boolean canRead() {
+                return false;
+            }
+        };
 
         assertFalse(isValidFile(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidFileHidden() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean canRead() {
+                return true;
+            }
 
-        expect(file.isFile()).andReturn(true);
-        expect(file.canRead()).andReturn(true);
-        expect(file.isHidden()).andReturn(true);
+            @Override
+            public boolean isFile() {
+                return true;
+            }
 
-        replay(file);
+            @Override
+            public boolean isHidden() {
+                return true;
+            }
+        };
 
         assertFalse(isValidFile(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidDirectory() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean isDirectory() {
+                return true;
+            }
 
-        expect(file.isDirectory()).andReturn(true);
-        expect(file.canRead()).andReturn(true);
-        expect(file.isHidden()).andReturn(false);
+            @Override
+            public boolean canRead() {
+                return true;
+            }
 
-        replay(file);
+            @Override
+            public boolean isHidden() {
+                return false;
+            }
+        };
 
         assertTrue(isValidDirectory(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidDirectoryNotDirectory() {
-        File file = createMock(File.class);
-
-        expect(file.isDirectory()).andReturn(false);
-
-        replay(file);
+        File file = new File("file") {
+            @Override
+            public boolean isDirectory() {
+                return false;
+            }
+        };
 
         assertFalse(isValidDirectory(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidDirectoryNotReadable() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean isDirectory() {
+                return true;
+            }
 
-        expect(file.isDirectory()).andReturn(true);
-        expect(file.canRead()).andReturn(false);
-
-        replay(file);
+            @Override
+            public boolean canRead() {
+                return false;
+            }
+        };
 
         assertFalse(isValidDirectory(file));
-
-        verify(file);
     }
 
     @Test
     public void testIsValidDirectoryHidden() {
-        File file = createMock(File.class);
+        File file = new File("file") {
+            @Override
+            public boolean isDirectory() {
+                return true;
+            }
 
-        expect(file.isDirectory()).andReturn(true);
-        expect(file.canRead()).andReturn(true);
-        expect(file.isHidden()).andReturn(true);
+            @Override
+            public boolean canRead() {
+                return true;
+            }
 
-        replay(file);
+            @Override
+            public boolean isHidden() {
+                return true;
+            }
+        };
 
         assertFalse(isValidDirectory(file));
-
-        verify(file);
     }
 
 }

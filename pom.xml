@@ -45,7 +45,7 @@
 
         <!-- Dependencies version -->
         <dep.cling.version>2.0.1</dep.cling.version>
-        <dep.easymock.version>3.2</dep.easymock.version>
+        <dep.easymock.version>3.3</dep.easymock.version>
         <dep.guava.version>18.0</dep.guava.version>
         <dep.guice.version>4.0-beta5</dep.guice.version>
         <dep.jackson.version>2.4.3</dep.jackson.version>
