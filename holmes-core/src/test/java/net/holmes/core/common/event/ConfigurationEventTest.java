@@ -17,7 +17,7 @@
 
 package net.holmes.core.common.event;
 
-import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import org.junit.Test;
 

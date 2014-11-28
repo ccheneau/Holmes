@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.configuration;
+package net.holmes.core.business.configuration.dao;
 
 import com.google.common.base.Predicate;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import net.holmes.core.business.configuration.exception.UnknownNodeException;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
 import net.holmes.core.common.exception.HolmesRuntimeException;
@@ -41,7 +43,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * XML configuration dao implementation.
  */
-public final class XmlConfigurationDaoImpl extends AbstractConfigurationDao {
+public final class XmlConfigurationDaoImpl implements ConfigurationDao {
 
     private static final String CONF_FILE_NAME = "config.xml";
     private static final String CONF_DIR = "conf";

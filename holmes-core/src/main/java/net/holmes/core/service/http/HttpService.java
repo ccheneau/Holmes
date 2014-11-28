@@ -29,7 +29,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.service.Service;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.guice.ModuleProcessor;
@@ -62,7 +62,7 @@ public final class HttpService implements Service {
     private static final String RESTEASY_MAPPING_PREFIX = "/";
 
     private final Injector injector;
-    private final ConfigurationDao configurationDao;
+    private final ConfigurationManager configurationManager;
     private final EventLoopGroup nettyBossGroup;
     private final EventLoopGroup nettyWorkerGroup;
     private final ResteasyDeployment resteasy;
@@ -70,15 +70,15 @@ public final class HttpService implements Service {
     /**
      * Instantiates a new HTTP service.
      *
-     * @param injector         injector
-     * @param configurationDao configuration dao
+     * @param injector             injector
+     * @param configurationManager configuration manager
      */
     @Inject
-    public HttpService(final Injector injector, final ConfigurationDao configurationDao) {
+    public HttpService(final Injector injector, final ConfigurationManager configurationManager) {
         this.injector = injector;
-        this.configurationDao = configurationDao;
-        this.nettyBossGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS));
-        this.nettyWorkerGroup = new NioEventLoopGroup(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS));
+        this.configurationManager = configurationManager;
+        this.nettyBossGroup = new NioEventLoopGroup(configurationManager.getParameter(HTTP_SERVER_BOSS_THREADS));
+        this.nettyWorkerGroup = new NioEventLoopGroup(configurationManager.getParameter(HTTP_SERVER_WORKER_THREADS));
         this.resteasy = new ResteasyDeployment();
     }
 
@@ -128,7 +128,7 @@ public final class HttpService implements Service {
         guiceProcessor.processInjector(injector);
 
         // Bind and start service to accept incoming connections
-        InetSocketAddress boundAddress = new InetSocketAddress(configurationDao.getParameter(HTTP_SERVER_PORT));
+        InetSocketAddress boundAddress = new InetSocketAddress(configurationManager.getParameter(HTTP_SERVER_PORT));
         serverBootstrap.bind(boundAddress).syncUninterruptibly();
 
         LOGGER.info("HTTP service bound on {}", boundAddress);

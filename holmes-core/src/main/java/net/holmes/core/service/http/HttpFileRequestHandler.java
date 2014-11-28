@@ -23,7 +23,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -79,11 +79,11 @@ public final class HttpFileRequestHandler extends SimpleChannelInboundHandler<Ht
     /**
      * Instantiates a new Http file request handler.
      *
-     * @param configurationDao configuration DAO
+     * @param configurationManager configuration manager
      */
     @Inject
-    public HttpFileRequestHandler(final ConfigurationDao configurationDao) {
-        httpCacheSecond = configurationDao.getParameter(HTTP_SERVER_CACHE_SECOND);
+    public HttpFileRequestHandler(final ConfigurationManager configurationManager) {
+        httpCacheSecond = configurationManager.getParameter(HTTP_SERVER_CACHE_SECOND);
         httpDateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT);
         httpDateFormatter.setTimeZone(GMT_TIMEZONE);
     }

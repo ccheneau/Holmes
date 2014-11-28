@@ -19,7 +19,7 @@ package net.holmes.core.business.media;
 
 import com.google.common.base.Predicate;
 import com.google.common.eventbus.Subscribe;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.FolderNode;
@@ -58,20 +58,20 @@ public final class MediaManagerImpl implements MediaManager {
     /**
      * Instantiates a new media manager implementation.
      *
-     * @param configurationDao configuration dao
-     * @param resourceBundle   resource bundle
-     * @param mediaDao         media dao
-     * @param mimeTypeManager  mime type manager
-     * @param localAddress     local IP address
+     * @param configurationManager configuration manager
+     * @param resourceBundle       resource bundle
+     * @param mediaDao             media dao
+     * @param mimeTypeManager      mime type manager
+     * @param localAddress         local IP address
      */
     @Inject
-    public MediaManagerImpl(final ConfigurationDao configurationDao, final ResourceBundle resourceBundle, final MediaDao mediaDao,
+    public MediaManagerImpl(final ConfigurationManager configurationManager, final ResourceBundle resourceBundle, final MediaDao mediaDao,
                             final MimeTypeManager mimeTypeManager, @Named("localAddress") final InetAddress localAddress) {
         this.resourceBundle = resourceBundle;
         this.mediaDao = mediaDao;
         this.mimeTypeManager = mimeTypeManager;
         this.localAddress = localAddress;
-        this.httpServerPort = configurationDao.getParameter(HTTP_SERVER_PORT);
+        this.httpServerPort = configurationManager.getParameter(HTTP_SERVER_PORT);
     }
 
     /**

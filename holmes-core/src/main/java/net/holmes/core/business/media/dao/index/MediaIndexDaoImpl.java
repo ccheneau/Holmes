@@ -20,7 +20,7 @@ package net.holmes.core.business.media.dao.index;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.eventbus.Subscribe;
-import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;

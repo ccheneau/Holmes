@@ -19,8 +19,10 @@ package net.holmes.core.business.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.XmlConfigurationDaoImpl;
+import net.holmes.core.business.configuration.ConfigurationManager;
+import net.holmes.core.business.configuration.ConfigurationManagerImpl;
+import net.holmes.core.business.configuration.dao.ConfigurationDao;
+import net.holmes.core.business.configuration.dao.XmlConfigurationDaoImpl;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaManagerImpl;
 import net.holmes.core.business.media.dao.MediaDao;
@@ -59,6 +61,14 @@ public class BusinessInjector extends AbstractModule {
      */
     @Override
     protected void configure() {
+
+        // Bind managers
+        bind(ConfigurationManager.class).to(ConfigurationManagerImpl.class).in(Singleton.class);
+        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
+        bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
+        bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
+
         // Bind dao
         bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
         bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
@@ -67,13 +77,6 @@ public class BusinessInjector extends AbstractModule {
         bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
         bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
         bind(MimeTypeDao.class).to(MimeTypeDaoImpl.class).in(Singleton.class);
-
-        // Bind business managers
-        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
-        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
-        bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
-
 
         // Bind streaming utils
         bind(DeviceStreamer.class).annotatedWith(named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);

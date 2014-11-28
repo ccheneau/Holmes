@@ -23,9 +23,9 @@ import net.holmes.core.backend.exception.BackendErrorMessage;
 import net.holmes.core.backend.exception.BackendException;
 import net.holmes.core.backend.response.ConfigurationFolder;
 import net.holmes.core.backend.response.Settings;
-import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.configuration.UnknownNodeException;
+import net.holmes.core.business.configuration.ConfigurationManager;
+import net.holmes.core.business.configuration.exception.UnknownNodeException;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 
@@ -49,18 +49,18 @@ import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
 public final class BackendManagerImpl implements BackendManager {
     private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
 
-    private final ConfigurationDao configurationDao;
+    private final ConfigurationManager configurationManager;
     private final EventBus eventBus;
 
     /**
      * Instantiates a new backend manager implementation.
      *
-     * @param configurationDao configuration dao
-     * @param eventBus         event bus
+     * @param configurationManager configuration manager
+     * @param eventBus             event bus
      */
     @Inject
-    public BackendManagerImpl(final ConfigurationDao configurationDao, final EventBus eventBus) {
-        this.configurationDao = configurationDao;
+    public BackendManagerImpl(final ConfigurationManager configurationManager, final EventBus eventBus) {
+        this.configurationManager = configurationManager;
         this.eventBus = eventBus;
     }
 
@@ -69,7 +69,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
-        return transform(configurationDao.getNodes(rootNode), new ConfigurationNodeFactory());
+        return transform(configurationManager.getNodes(rootNode), new ConfigurationNodeFactory());
     }
 
     /**
@@ -78,7 +78,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public ConfigurationFolder getFolder(final String id, final RootNode rootNode) {
         try {
-            return new ConfigurationNodeFactory().apply(configurationDao.getNode(rootNode, id));
+            return new ConfigurationNodeFactory().apply(configurationManager.getNode(rootNode, id));
         } catch (UnknownNodeException e) {
             throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
         }
@@ -100,7 +100,7 @@ public final class BackendManagerImpl implements BackendManager {
         ConfigurationNode node = new ConfigurationNode(newUniqueId(), folder.getName(), folder.getPath());
         try {
             // Save config
-            if (configurationDao.addNode(rootNode, node)) {
+            if (configurationManager.addNode(rootNode, node)) {
                 // Post add folder event
                 eventBus.post(new ConfigurationEvent(ADD_FOLDER, node, rootNode));
             }
@@ -124,7 +124,7 @@ public final class BackendManagerImpl implements BackendManager {
 
         try {
             // Edit node
-            ConfigurationNode node = configurationDao.editNode(rootNode, id, folder.getName(), folder.getPath());
+            ConfigurationNode node = configurationManager.editNode(rootNode, id, folder.getName(), folder.getPath());
 
             if (node != null) {
                 // Post update folder event
@@ -145,7 +145,7 @@ public final class BackendManagerImpl implements BackendManager {
     public void removeFolder(final String id, final RootNode rootNode) {
         try {
             // Remove node
-            ConfigurationNode node = configurationDao.removeNode(id, rootNode);
+            ConfigurationNode node = configurationManager.removeNode(id, rootNode);
 
             // Post remove folder event
             eventBus.post(new ConfigurationEvent(DELETE_FOLDER, node, rootNode));
@@ -161,8 +161,8 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Settings getSettings() {
-        return new Settings(configurationDao.getParameter(UPNP_SERVER_NAME),
-                configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME));
+        return new Settings(configurationManager.getParameter(UPNP_SERVER_NAME),
+                configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME));
     }
 
     /**
@@ -172,11 +172,11 @@ public final class BackendManagerImpl implements BackendManager {
     public void saveSettings(final Settings settings) {
         checkNonEmpty(settings.getServerName(), SETTINGS_SERVER_NAME_ERROR);
 
-        configurationDao.setParameter(UPNP_SERVER_NAME, settings.getServerName());
-        configurationDao.setParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
+        configurationManager.setParameter(UPNP_SERVER_NAME, settings.getServerName());
+        configurationManager.setParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
         try {
             // save settings
-            configurationDao.save();
+            configurationManager.save();
         } catch (IOException e) {
             throw new BackendException(e);
         }
@@ -247,7 +247,7 @@ public final class BackendManagerImpl implements BackendManager {
      * @param errorMessage error message
      */
     private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final RootNode rootNode, final String excludedId, final BackendErrorMessage errorMessage) {
-        if (configurationDao.findNode(rootNode, excludedId, folder.getName(), folder.getPath()) != null) {
+        if (configurationManager.findNode(rootNode, excludedId, folder.getName(), folder.getPath()) != null) {
             throw new BackendException(errorMessage);
         }
     }

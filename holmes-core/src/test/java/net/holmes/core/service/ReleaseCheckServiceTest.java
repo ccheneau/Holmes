@@ -17,7 +17,7 @@
 
 package net.holmes.core.service;
 
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.version.VersionManager;
 import org.junit.Test;
 
@@ -33,15 +33,15 @@ public class ReleaseCheckServiceTest {
     @Test
     public void testReleaseCheckService() {
         VersionManager versionManager = createMock(VersionManager.class);
-        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
 
-        expect(configurationDao.getParameter(RELEASE_CHECK_DELAY_HOURS)).andReturn(1);
+        expect(configurationManager.getParameter(RELEASE_CHECK_DELAY_HOURS)).andReturn(1);
         versionManager.updateRemoteReleaseInfo();
         expectLastCall().atLeastOnce();
 
-        replay(versionManager, configurationDao);
+        replay(versionManager, configurationManager);
 
-        ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationDao);
+        ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationManager);
 
         try {
             service.start();
@@ -50,7 +50,7 @@ public class ReleaseCheckServiceTest {
         } catch (TimeoutException e) {
             fail(e.getMessage());
         } finally {
-            verify(versionManager, configurationDao);
+            verify(versionManager, configurationManager);
             if (service.isRunning()) {
                 service.stop();
                 service.awaitTerminated();
@@ -61,13 +61,13 @@ public class ReleaseCheckServiceTest {
     @Test(expected = IllegalStateException.class)
     public void testReleaseCheckServiceNoDelay() {
         VersionManager versionManager = createMock(VersionManager.class);
-        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
 
-        expect(configurationDao.getParameter(RELEASE_CHECK_DELAY_HOURS)).andReturn(0);
+        expect(configurationManager.getParameter(RELEASE_CHECK_DELAY_HOURS)).andReturn(0);
 
-        replay(versionManager, configurationDao);
+        replay(versionManager, configurationManager);
 
-        ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationDao);
+        ReleaseCheckServiceTester service = new ReleaseCheckServiceTester(versionManager, configurationManager);
 
         try {
             service.start();
@@ -75,7 +75,7 @@ public class ReleaseCheckServiceTest {
         } catch (TimeoutException e) {
             fail(e.getMessage());
         } finally {
-            verify(versionManager, configurationDao);
+            verify(versionManager, configurationManager);
             if (service.isRunning()) {
                 service.stop();
                 service.awaitTerminated();
@@ -85,8 +85,8 @@ public class ReleaseCheckServiceTest {
 
     private class ReleaseCheckServiceTester extends ReleaseCheckService {
 
-        public ReleaseCheckServiceTester(final VersionManager versionManager, final ConfigurationDao configurationDao) {
-            super(versionManager, configurationDao);
+        public ReleaseCheckServiceTester(final VersionManager versionManager, final ConfigurationManager configurationManager) {
+            super(versionManager, configurationManager);
         }
 
         public void run() {

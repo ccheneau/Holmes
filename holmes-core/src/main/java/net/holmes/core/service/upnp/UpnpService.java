@@ -18,7 +18,7 @@
 package net.holmes.core.service.upnp;
 
 import com.google.inject.Injector;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import net.holmes.core.service.Service;
@@ -50,13 +50,12 @@ import static org.slf4j.LoggerFactory.getLogger;
  * UPnP service.
  */
 public final class UpnpService implements Service {
-
     private static final Logger LOGGER = getLogger(UpnpService.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");
     private static final ServiceType AV_TRANSPORT_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:AVTransport:1");
 
     private final Injector injector;
-    private final ConfigurationDao configurationDao;
+    private final ConfigurationManager configurationManager;
     private final StreamingManager streamingManager;
 
     private org.fourthline.cling.UpnpService upnpService = null;
@@ -64,14 +63,14 @@ public final class UpnpService implements Service {
     /**
      * Instantiates a new UPnP service.
      *
-     * @param injector         Guice injector
-     * @param configurationDao configuration dao
-     * @param streamingManager streaming manager
+     * @param injector             Guice injector
+     * @param configurationManager configuration manager
+     * @param streamingManager     streaming manager
      */
     @Inject
-    public UpnpService(final Injector injector, final ConfigurationDao configurationDao, final StreamingManager streamingManager) {
+    public UpnpService(final Injector injector, final ConfigurationManager configurationManager, final StreamingManager streamingManager) {
         this.injector = injector;
-        this.configurationDao = configurationDao;
+        this.configurationManager = configurationManager;
         this.streamingManager = streamingManager;
     }
 
@@ -80,7 +79,7 @@ public final class UpnpService implements Service {
      */
     @Override
     public void start() {
-        if (configurationDao.getParameter(UPNP_SERVER_ENABLE)) {
+        if (configurationManager.getParameter(UPNP_SERVER_ENABLE)) {
             LOGGER.info("Starting UPnP service");
             upnpService = injector.getInstance(org.fourthline.cling.UpnpService.class);
 

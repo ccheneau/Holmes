@@ -20,7 +20,7 @@ package net.holmes.core.service.http;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -33,20 +33,20 @@ public class HttpServiceTest {
     @Test
     public void testHttpServer() {
         Injector injector = createMock(Injector.class);
-        ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
+        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
 
-        expect(configurationDao.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
-        expect(configurationDao.getParameter(HTTP_SERVER_BOSS_THREADS)).andReturn(0).atLeastOnce();
-        expect(configurationDao.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
+        expect(configurationManager.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
+        expect(configurationManager.getParameter(HTTP_SERVER_BOSS_THREADS)).andReturn(0).atLeastOnce();
+        expect(configurationManager.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
         expect(injector.getBindings()).andReturn(new HashMap<Key<?>, Binding<?>>(0)).atLeastOnce();
 
-        replay(injector, configurationDao);
+        replay(injector, configurationManager);
         try {
-            HttpService httpService = new HttpService(injector, configurationDao);
+            HttpService httpService = new HttpService(injector, configurationManager);
             httpService.start();
             httpService.stop();
         } finally {
-            verify(injector, configurationDao);
+            verify(injector, configurationManager);
         }
     }
 }

@@ -18,8 +18,8 @@
 package net.holmes.core.business.media.dao;
 
 import com.google.common.cache.Cache;
-import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.ConfigurationManager;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
 import net.holmes.core.business.media.model.*;
@@ -50,7 +50,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MediaDaoImpl implements MediaDao {
     private static final Logger LOGGER = getLogger(MediaDaoImpl.class);
-    private final ConfigurationDao configurationDao;
+
+    private final ConfigurationManager configurationManager;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;
     private final Cache<String, List<AbstractNode>> podcastCache;
@@ -58,18 +59,18 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Instantiates a new media dao implementation.
      *
-     * @param configurationDao configuration dao
-     * @param mimeTypeManager  mime type manager
-     * @param mediaIndexDao    media index dao
+     * @param configurationManager configuration dao
+     * @param mimeTypeManager      mime type manager
+     * @param mediaIndexDao        media index dao
      */
     @Inject
-    public MediaDaoImpl(final ConfigurationDao configurationDao, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao) {
-        this.configurationDao = configurationDao;
+    public MediaDaoImpl(final ConfigurationManager configurationManager, final MimeTypeManager mimeTypeManager, final MediaIndexDao mediaIndexDao) {
+        this.configurationManager = configurationManager;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexDao = mediaIndexDao;
         this.podcastCache = newBuilder()
-                .maximumSize(configurationDao.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
-                .expireAfterWrite(configurationDao.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
+                .maximumSize(configurationManager.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
+                .expireAfterWrite(configurationManager.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
                 .build();
     }
 
@@ -143,7 +144,7 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
         // Add nodes defined in configuration
-        List<ConfigurationNode> configNodes = configurationDao.getNodes(rootNode);
+        List<ConfigurationNode> configNodes = configurationManager.getNodes(rootNode);
         List<AbstractNode> nodes = new ArrayList<>(configNodes.size());
         for (ConfigurationNode configNode : configNodes) {
             // Add node to mediaIndex

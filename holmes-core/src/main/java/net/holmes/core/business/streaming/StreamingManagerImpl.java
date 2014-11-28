@@ -19,7 +19,7 @@ package net.holmes.core.business.streaming;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.Device;
@@ -57,14 +57,14 @@ public final class StreamingManagerImpl implements StreamingManager {
     /**
      * Instantiates a new streaming manager implementation.
      *
-     * @param configurationDao configuration dao
-     * @param deviceDao        device dao
-     * @param sessionDao       session dao
-     * @param upnpStreamer     upnp streamer
-     * @param airplayStreamer  airplay streamer
+     * @param configurationManager configuration manager
+     * @param deviceDao            device dao
+     * @param sessionDao           session dao
+     * @param upnpStreamer         upnp streamer
+     * @param airplayStreamer      airplay streamer
      */
     @Inject
-    public StreamingManagerImpl(final ConfigurationDao configurationDao, final DeviceDao deviceDao, final SessionDao sessionDao,
+    public StreamingManagerImpl(final ConfigurationManager configurationManager, final DeviceDao deviceDao, final SessionDao sessionDao,
                                 @Named("upnp") final DeviceStreamer upnpStreamer,
                                 @Named("airplay") final DeviceStreamer airplayStreamer) {
         this.deviceDao = deviceDao;
@@ -73,7 +73,7 @@ public final class StreamingManagerImpl implements StreamingManager {
         this.airplayStreamer = airplayStreamer;
 
         // Start session status update task
-        new UpdateSessionStatusService(configurationDao.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
+        new UpdateSessionStatusService(configurationManager.getParameter(STREAMING_STATUS_UPDATE_DELAY_SECONDS)).startAsync();
     }
 
     /**

@@ -18,7 +18,7 @@
 package net.holmes.core.service.upnp.directory;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
 import net.holmes.core.business.media.model.*;
@@ -51,7 +51,7 @@ import static org.fourthline.cling.support.model.BrowseFlag.*;
  */
 public final class ContentDirectoryService extends AbstractContentDirectoryService {
     @Inject
-    private ConfigurationDao configurationDao;
+    private ConfigurationManager configurationManager;
     @Inject
     private MediaManager mediaManager;
     @Inject
@@ -132,7 +132,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         }
 
         // Add subtitle
-        if (!availableMimeTypes.isEmpty() && configurationDao.getParameter(UPNP_ADD_SUBTITLE)) {
+        if (!availableMimeTypes.isEmpty() && configurationManager.getParameter(UPNP_ADD_SUBTITLE)) {
             availableMimeTypes.add(MIME_TYPE_SUBTITLE.getMimeType());
         }
         return availableMimeTypes;
@@ -186,7 +186,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @return post-cast entry name
      */
     private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configurationDao.getParameter(PODCAST_PREPEND_ENTRY_NAME)) {
+        if (configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)) {
             if (totalCount > 99) {
                 return String.format("%03d - %s", count + 1, title);
             } else {
@@ -198,8 +198,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     }
 
     @VisibleForTesting
-    void setConfigurationDao(final ConfigurationDao configurationDao) {
-        this.configurationDao = configurationDao;
+    void setConfigurationManager(final ConfigurationManager configurationManager) {
+        this.configurationManager = configurationManager;
     }
 
     @VisibleForTesting

@@ -15,8 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.configuration;
+package net.holmes.core.business.configuration.dao;
 
+import net.holmes.core.business.configuration.exception.UnknownNodeException;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
 
@@ -42,7 +44,7 @@ public interface ConfigurationDao {
      * @param rootNode root node
      * @param nodeId   node ID to find
      * @return configuration node
-     * @throws UnknownNodeException if node is not found
+     * @throws net.holmes.core.business.configuration.exception.UnknownNodeException if node is not found
      */
     ConfigurationNode getNode(RootNode rootNode, String nodeId) throws UnknownNodeException;
 
@@ -58,45 +60,11 @@ public interface ConfigurationDao {
     ConfigurationNode findNode(RootNode rootNode, String excludedNodeId, String label, String path);
 
     /**
-     * Add configuration node.
-     *
-     * @param rootNode root node
-     * @param node     node to add
-     * @return true if node is added
-     * @throws IOException Signals that an I/O exception has occurred
-     */
-    boolean addNode(RootNode rootNode, ConfigurationNode node) throws IOException;
-
-    /**
-     * Edit configuration node.
-     *
-     * @param rootNode root node
-     * @param nodeId   node ID to edit
-     * @param label    new node label
-     * @param path     new node path
-     * @return updated configuration node or null if node is not modified
-     * @throws IOException  Signals that an I/O exception has occurred
-     * @throws UnknownNodeException Signals configuration node was not found
-     */
-    ConfigurationNode editNode(RootNode rootNode, String nodeId, String label, String path) throws IOException, UnknownNodeException;
-
-    /**
      * Save configuration.
      *
      * @throws IOException Signals that an I/O exception has occurred
      */
     void save() throws IOException;
-
-    /**
-     * Remove node.
-     *
-     * @param nodeId   node ID to remove
-     * @param rootNode root node
-     * @return removed node
-     * @throws IOException Signals that an I/O exception has occurred
-     * @throws UnknownNodeException Signals configuration node was not found
-     */
-    ConfigurationNode removeNode(String nodeId, RootNode rootNode) throws IOException, UnknownNodeException;
 
     /**
      * Get parameter value.

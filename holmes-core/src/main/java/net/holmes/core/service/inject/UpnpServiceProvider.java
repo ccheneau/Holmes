@@ -18,7 +18,7 @@
 package net.holmes.core.service.inject;
 
 import com.google.inject.Injector;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.version.VersionManager;
 import net.holmes.core.common.exception.HolmesRuntimeException;
 import net.holmes.core.service.upnp.directory.ContentDirectoryService;
@@ -43,20 +43,20 @@ import static net.holmes.core.common.ConfigurationParameter.*;
 public class UpnpServiceProvider implements Provider<UpnpService> {
 
     private final Injector injector;
-    private final ConfigurationDao configurationDao;
+    private final ConfigurationManager configurationManager;
     private final String version;
 
     /**
      * Instantiates a new UPnP service provider.
      *
-     * @param injector         Guice injector
-     * @param configurationDao configuration dao
-     * @param versionManager   Holmes version manager
+     * @param injector             Guice injector
+     * @param configurationManager configuration manager
+     * @param versionManager       Holmes version manager
      */
     @Inject
-    public UpnpServiceProvider(final Injector injector, final ConfigurationDao configurationDao, final VersionManager versionManager) {
+    public UpnpServiceProvider(final Injector injector, final ConfigurationManager configurationManager, final VersionManager versionManager) {
         this.injector = injector;
-        this.configurationDao = configurationDao;
+        this.configurationManager = configurationManager;
         this.version = versionManager.getCurrentVersion();
     }
 
@@ -66,10 +66,10 @@ public class UpnpServiceProvider implements Provider<UpnpService> {
     @Override
     public UpnpService get() {
         // Upnp service
-        UpnpService upnpService = buildUpnpService(configurationDao.getParameter(UPNP_SERVICE_PORT));
+        UpnpService upnpService = buildUpnpService(configurationManager.getParameter(UPNP_SERVICE_PORT));
 
         // Device details
-        DeviceDetails deviceDetails = buildDeviceDetails(configurationDao.getParameter(UPNP_SERVER_NAME), version);
+        DeviceDetails deviceDetails = buildDeviceDetails(configurationManager.getParameter(UPNP_SERVER_NAME), version);
 
         // Create local services
         LocalService<?>[] localServices = new LocalService[]{buildContentDirectoryService(), buildConnectionManagerService()};

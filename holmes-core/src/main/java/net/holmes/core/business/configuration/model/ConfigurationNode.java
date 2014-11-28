@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.holmes.core.business.configuration;
+package net.holmes.core.business.configuration.model;
 
 import java.util.Objects;
 

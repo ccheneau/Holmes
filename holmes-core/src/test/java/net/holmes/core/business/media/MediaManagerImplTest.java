@@ -17,8 +17,10 @@
 
 package net.holmes.core.business.media;
 
-import net.holmes.core.business.configuration.ConfigurationDao;
-import net.holmes.core.business.configuration.ConfigurationNode;
+import net.holmes.core.business.configuration.ConfigurationManager;
+import net.holmes.core.business.configuration.ConfigurationManagerImpl;
+import net.holmes.core.business.configuration.dao.ConfigurationDao;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
@@ -45,7 +47,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testGetNodeRoot() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -53,7 +55,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         AbstractNode result = mediaManager.getNode(VIDEO.getId());
         assertNotNull(result);
 
@@ -62,7 +64,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testGetNode() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -72,7 +74,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         AbstractNode result = mediaManager.getNode("nodeId");
         assertNotNull(result);
 
@@ -81,7 +83,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testGetNodeNull() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -89,7 +91,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         AbstractNode result = mediaManager.getNode(null);
         assertNull(result);
 
@@ -98,7 +100,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testGetNodeUrl() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -108,7 +110,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         PodcastNode podcastNode = new PodcastNode("id", "parentId", "name", "url");
         String result = mediaManager.getNodeUrl(podcastNode);
 
@@ -119,7 +121,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testCleanupCache() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -130,7 +132,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         mediaManager.cleanUpCache();
 
         verify(mediaDao, mimeTypeManager, localAddress);
@@ -139,6 +141,7 @@ public class MediaManagerImplTest {
     @Test
     public void testHandleMediaEvent() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -149,7 +152,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaEvent mediaEvent = new MediaEvent(SCAN_NODE, VIDEO.getId());
         mediaManager.handleMediaEvent(mediaEvent);
 
@@ -158,7 +161,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testHandleBadMediaEvent() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -166,7 +169,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaEvent mediaEvent = new MediaEvent(UNKNOWN, VIDEO.getId());
         mediaManager.handleMediaEvent(mediaEvent);
 
@@ -175,7 +178,7 @@ public class MediaManagerImplTest {
 
     @Test
     public void testHandleMediaEventBadFolder() {
-        ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -185,7 +188,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaEvent mediaEvent = new MediaEvent(SCAN_NODE, "nodeId");
         mediaManager.handleMediaEvent(mediaEvent);
 
@@ -195,6 +198,7 @@ public class MediaManagerImplTest {
     @Test
     public void testSearchChildNodesOfRoot() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -207,7 +211,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(ROOT.getId(), ROOT.getParentId(), ROOT.getBundleKey()), null);
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
@@ -220,6 +224,7 @@ public class MediaManagerImplTest {
     @Test
     public void testSearchChildNodesOfVideoRoot() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -229,7 +234,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getBundleKey()), newArrayList("video/avi"));
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 
@@ -243,6 +248,7 @@ public class MediaManagerImplTest {
     @SuppressWarnings("unchecked")
     public void testSearchChildNodesOfFolder() {
         ConfigurationDao configurationDao = new TestConfigurationDao();
+        ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
         MediaDao mediaDao = createMock(MediaDao.class);
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
@@ -261,7 +267,7 @@ public class MediaManagerImplTest {
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
-        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationDao, resourceBundle, mediaDao, mimeTypeManager, localAddress);
+        MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode("folderId", "folderParentId", "folderName"), newArrayList("video/avi"));
         Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
 

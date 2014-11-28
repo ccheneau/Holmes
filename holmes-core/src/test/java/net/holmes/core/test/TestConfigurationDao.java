@@ -18,9 +18,9 @@
 package net.holmes.core.test;
 
 import com.google.common.base.Predicate;
-import net.holmes.core.business.configuration.AbstractConfigurationDao;
-import net.holmes.core.business.configuration.ConfigurationNode;
-import net.holmes.core.business.configuration.UnknownNodeException;
+import net.holmes.core.business.configuration.dao.ConfigurationDao;
+import net.holmes.core.business.configuration.exception.UnknownNodeException;
+import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
 
@@ -33,7 +33,7 @@ import java.util.*;
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class TestConfigurationDao extends AbstractConfigurationDao {
+public class TestConfigurationDao implements ConfigurationDao {
 
     private final List<ConfigurationNode> videoFolders;
     private final List<ConfigurationNode> pictureFolders;

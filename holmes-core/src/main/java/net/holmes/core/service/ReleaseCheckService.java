@@ -18,7 +18,7 @@
 package net.holmes.core.service;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import net.holmes.core.business.configuration.ConfigurationDao;
+import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.version.VersionManager;
 
 import javax.inject.Inject;
@@ -37,13 +37,13 @@ public class ReleaseCheckService extends AbstractScheduledService implements Ser
     /**
      * Instantiates a new release check service.
      *
-     * @param versionManager   version manager
-     * @param configurationDao configuration DAO
+     * @param versionManager       version manager
+     * @param configurationManager configuration manager
      */
     @Inject
-    public ReleaseCheckService(final VersionManager versionManager, final ConfigurationDao configurationDao) {
+    public ReleaseCheckService(final VersionManager versionManager, final ConfigurationManager configurationManager) {
         this.versionManager = versionManager;
-        this.checkDelayHours = configurationDao.getParameter(RELEASE_CHECK_DELAY_HOURS);
+        this.checkDelayHours = configurationManager.getParameter(RELEASE_CHECK_DELAY_HOURS);
     }
 
     /**
