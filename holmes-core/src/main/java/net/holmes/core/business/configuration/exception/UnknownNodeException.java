@@ -25,7 +25,10 @@ import net.holmes.core.common.exception.HolmesException;
 public class UnknownNodeException extends HolmesException {
 
     /**
-     * {@inheritDoc}
+     * Instantiates a new UnknownNodeException.
+     *
+     * @param nodeId node ID
+     * @param cause  root cause
      */
     public UnknownNodeException(final String nodeId, final Throwable cause) {
         super("Unknown node " + nodeId, cause);
