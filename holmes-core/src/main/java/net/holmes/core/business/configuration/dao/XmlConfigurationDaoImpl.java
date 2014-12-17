@@ -28,6 +28,7 @@ import net.holmes.core.common.exception.HolmesRuntimeException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +44,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * XML configuration dao implementation.
  */
+@Singleton
 public final class XmlConfigurationDaoImpl implements ConfigurationDao {
 
     private static final String CONF_FILE_NAME = "config.xml";

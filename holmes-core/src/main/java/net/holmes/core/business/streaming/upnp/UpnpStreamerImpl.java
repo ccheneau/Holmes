@@ -35,6 +35,8 @@ import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
 import org.slf4j.Logger;
 
+import javax.inject.Singleton;
+
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
 import static net.holmes.core.business.streaming.upnp.UpnpUtils.getUpnpMimeType;
@@ -43,6 +45,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Manage streaming on Upnp device.
  */
+@Singleton
 public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
     private static final Logger LOGGER = getLogger(UpnpStreamerImpl.class);
     private static final String NOT_IMPLEMENTED = "NOT_IMPLEMENTED";

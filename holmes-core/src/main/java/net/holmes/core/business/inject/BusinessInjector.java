@@ -18,7 +18,6 @@
 package net.holmes.core.business.inject;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.configuration.ConfigurationManagerImpl;
 import net.holmes.core.business.configuration.dao.ConfigurationDao;
@@ -63,24 +62,24 @@ public class BusinessInjector extends AbstractModule {
     protected void configure() {
 
         // Bind managers
-        bind(ConfigurationManager.class).to(ConfigurationManagerImpl.class).in(Singleton.class);
-        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class).in(Singleton.class);
-        bind(MediaManager.class).to(MediaManagerImpl.class).in(Singleton.class);
-        bind(StreamingManager.class).to(StreamingManagerImpl.class).in(Singleton.class);
-        bind(VersionManager.class).to(VersionManagerImpl.class).in(Singleton.class);
+        bind(ConfigurationManager.class).to(ConfigurationManagerImpl.class);
+        bind(MimeTypeManager.class).to(MimeTypeManagerImpl.class);
+        bind(MediaManager.class).to(MediaManagerImpl.class);
+        bind(StreamingManager.class).to(StreamingManagerImpl.class);
+        bind(VersionManager.class).to(VersionManagerImpl.class);
 
         // Bind dao
-        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class).in(Singleton.class);
-        bind(MediaDao.class).to(MediaDaoImpl.class).in(Singleton.class);
-        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class).in(Singleton.class);
-        bind(DeviceDao.class).to(DeviceDaoImpl.class).in(Singleton.class);
-        bind(SessionDao.class).to(SessionDaoImpl.class).in(Singleton.class);
-        bind(ReleaseDao.class).to(ReleaseDaoImpl.class).in(Singleton.class);
-        bind(MimeTypeDao.class).to(MimeTypeDaoImpl.class).in(Singleton.class);
+        bind(ConfigurationDao.class).to(XmlConfigurationDaoImpl.class);
+        bind(MediaDao.class).to(MediaDaoImpl.class);
+        bind(MediaIndexDao.class).to(MediaIndexDaoImpl.class);
+        bind(DeviceDao.class).to(DeviceDaoImpl.class);
+        bind(SessionDao.class).to(SessionDaoImpl.class);
+        bind(ReleaseDao.class).to(ReleaseDaoImpl.class);
+        bind(MimeTypeDao.class).to(MimeTypeDaoImpl.class);
 
         // Bind streaming utils
-        bind(DeviceStreamer.class).annotatedWith(named("upnp")).to(UpnpStreamerImpl.class).in(Singleton.class);
-        bind(DeviceStreamer.class).annotatedWith(named("airplay")).to(AirplayStreamerImpl.class).in(Singleton.class);
+        bind(DeviceStreamer.class).annotatedWith(named("upnp")).to(UpnpStreamerImpl.class);
+        bind(DeviceStreamer.class).annotatedWith(named("airplay")).to(AirplayStreamerImpl.class);
         bind(ControlPoint.class).to(AsyncSocketControlPoint.class);
     }
 }

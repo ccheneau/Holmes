@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Streaming manager implementation.
  */
+@Singleton
 public final class StreamingManagerImpl implements StreamingManager {
     private static final Logger LOGGER = getLogger(StreamingManagerImpl.class);
 

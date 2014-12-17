@@ -21,6 +21,7 @@ import net.holmes.core.business.mimetype.dao.MimeTypeDao;
 import net.holmes.core.business.mimetype.model.MimeType;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -28,6 +29,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Mime type manager implementation.
  */
+@Singleton
 public final class MimeTypeManagerImpl implements MimeTypeManager {
     private final MimeTypeDao mimeTypeDao;
 

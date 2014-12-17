@@ -19,6 +19,7 @@ package net.holmes.core.business.streaming.device;
 
 import com.google.common.base.Predicate;
 
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,7 @@ import static com.google.common.collect.Collections2.filter;
 /**
  * Device dao implementation.
  */
+@Singleton
 public final class DeviceDaoImpl implements DeviceDao {
     private final Map<String, Device> devices;
 

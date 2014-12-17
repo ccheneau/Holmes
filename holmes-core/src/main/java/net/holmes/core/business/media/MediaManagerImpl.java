@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +48,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Media manager implementation.
  */
+@Singleton
 public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = getLogger(MediaManagerImpl.class);
     private final ResourceBundle resourceBundle;

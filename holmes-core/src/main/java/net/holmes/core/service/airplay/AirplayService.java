@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
@@ -41,6 +42,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Airplay service
  */
+@Singleton
 public final class AirplayService implements Service {
     private static final Logger LOGGER = getLogger(AirplayService.class);
     private static final String AIRPLAY_TCP = "_airplay._tcp.local.";

@@ -54,11 +54,11 @@ public class ServiceInjector extends AbstractModule {
         bind(SocketFactory.class).toInstance(socketFactory);
 
         // Bind services
-        bind(Service.class).annotatedWith(named("http")).to(HttpService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("airplay")).to(AirplayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class).in(Singleton.class);
-        bind(Service.class).annotatedWith(named("release")).to(ReleaseCheckService.class).in(Singleton.class);
+        bind(Service.class).annotatedWith(named("http")).to(HttpService.class);
+        bind(Service.class).annotatedWith(named("upnp")).to(UpnpService.class);
+        bind(Service.class).annotatedWith(named("airplay")).to(AirplayService.class);
+        bind(Service.class).annotatedWith(named("systray")).to(SystrayService.class);
+        bind(Service.class).annotatedWith(named("release")).to(ReleaseCheckService.class);
 
         // Bind Upnp service
         bind(org.fourthline.cling.UpnpService.class).toProvider(UpnpServiceProvider.class).in(Singleton.class);

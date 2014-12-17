@@ -36,6 +36,7 @@ import org.fourthline.cling.support.model.ProtocolInfos;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashSet;
@@ -49,6 +50,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * UPnP service.
  */
+@Singleton
 public final class UpnpService implements Service {
     private static final Logger LOGGER = getLogger(UpnpService.class);
     private static final ServiceType CONNECTION_MANAGER_SERVICE_TYPE = ServiceType.valueOf("urn:schemas-upnp-org:service:ConnectionManager:1");

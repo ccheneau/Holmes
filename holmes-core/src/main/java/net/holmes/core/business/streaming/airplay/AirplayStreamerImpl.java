@@ -28,6 +28,7 @@ import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.DeviceStreamer;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Map;
 
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType.*;
@@ -35,6 +36,7 @@ import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingE
 /**
  * Manage streaming on Airplay device.
  */
+@Singleton
 public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
     private static final String CONTENT_PARAMETER_DURATION = "duration";
     private static final String CONTENT_PARAMETER_POSITION = "position";

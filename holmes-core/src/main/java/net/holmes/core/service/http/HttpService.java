@@ -41,6 +41,7 @@ import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.InetSocketAddress;
 
 import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
@@ -52,6 +53,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * HTTP service main class.
  */
+@Singleton
 public final class HttpService implements Service {
     private static final Logger LOGGER = getLogger(HttpService.class);
     private static final int MAX_CONTENT_LENGTH = 65536;

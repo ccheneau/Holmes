@@ -25,6 +25,7 @@ import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.ConfigurationParameter;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import static com.google.common.collect.Iterables.find;
 /**
  * Configuration manager implementation.
  */
+@Singleton
 public class ConfigurationManagerImpl implements ConfigurationManager {
 
     private final ConfigurationDao configurationDao;

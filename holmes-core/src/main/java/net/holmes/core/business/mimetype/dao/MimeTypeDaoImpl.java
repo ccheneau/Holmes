@@ -22,6 +22,7 @@ import net.holmes.core.common.exception.HolmesRuntimeException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -31,6 +32,7 @@ import static com.google.common.io.Files.getFileExtension;
 /**
  * Mime type dao implementation.
  */
+@Singleton
 public final class MimeTypeDaoImpl implements MimeTypeDao {
     private final Properties properties;
 

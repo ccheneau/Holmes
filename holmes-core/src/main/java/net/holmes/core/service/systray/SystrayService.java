@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
@@ -50,6 +51,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Manages system tray icon.
  */
+@Singleton
 public final class SystrayService implements Service {
     private static final Logger LOGGER = getLogger(SystrayService.class);
     private static final String MENU_ITEM_FONT = "MenuItem.font";

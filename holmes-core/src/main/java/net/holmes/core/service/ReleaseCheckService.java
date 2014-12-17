@@ -22,6 +22,7 @@ import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.version.VersionManager;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import static java.util.concurrent.TimeUnit.HOURS;
 import static net.holmes.core.common.ConfigurationParameter.RELEASE_CHECK_DELAY_HOURS;
@@ -29,6 +30,7 @@ import static net.holmes.core.common.ConfigurationParameter.RELEASE_CHECK_DELAY_
 /**
  * Scheduled service used to check for new Holmes releases.
  */
+@Singleton
 public class ReleaseCheckService extends AbstractScheduledService implements Service {
 
     private final VersionManager versionManager;

@@ -30,6 +30,7 @@ import net.holmes.core.common.exception.HolmesException;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Media dao implementation.
  */
+@Singleton
 public class MediaDaoImpl implements MediaDao {
     private static final Logger LOGGER = getLogger(MediaDaoImpl.class);
 

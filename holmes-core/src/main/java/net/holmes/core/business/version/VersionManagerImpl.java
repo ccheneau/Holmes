@@ -22,12 +22,14 @@ import net.holmes.core.business.version.release.Release;
 import net.holmes.core.business.version.release.ReleaseDao;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import static net.holmes.core.common.Constants.HOLMES_GITHUB_RELEASE_API_URL;
 
 /**
  * Holmes version manager implementation
  */
+@Singleton
 public final class VersionManagerImpl implements VersionManager {
     private final ReleaseDao releaseDao;
     private final String currentVersion;

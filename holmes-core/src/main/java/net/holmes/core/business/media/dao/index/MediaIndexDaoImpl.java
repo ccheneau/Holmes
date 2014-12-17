@@ -25,6 +25,7 @@ import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.common.event.ConfigurationEvent;
 import org.slf4j.Logger;
 
+import javax.inject.Singleton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +40,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Media index dao implementation.
  */
+@Singleton
 public class MediaIndexDaoImpl implements MediaIndexDao {
     private static final Logger LOGGER = getLogger(MediaIndexDaoImpl.class);
 

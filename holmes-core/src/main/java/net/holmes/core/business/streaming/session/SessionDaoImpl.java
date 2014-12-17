@@ -17,6 +17,7 @@
 
 package net.holmes.core.business.streaming.session;
 
+import javax.inject.Singleton;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Streaming session dao implementation.
  */
+@Singleton
 public final class SessionDaoImpl implements SessionDao {
     private final Map<String, StreamingSession> sessions;
 

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -30,6 +31,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Release DAO implementation
  */
+@Singleton
 public final class ReleaseDaoImpl implements ReleaseDao {
     private static final Logger LOGGER = getLogger(ReleaseDaoImpl.class);
 

@@ -44,7 +44,7 @@ public interface ConfigurationManager {
      * @param rootNode root node
      * @param nodeId   node ID to find
      * @return configuration node
-     * @throws net.holmes.core.business.configuration.exception.UnknownNodeException if node is not found
+     * @throws UnknownNodeException if node is not found
      */
     ConfigurationNode getNode(RootNode rootNode, String nodeId) throws UnknownNodeException;
 
@@ -65,7 +65,7 @@ public interface ConfigurationManager {
      * @param rootNode root node
      * @param node     node to add
      * @return true if node is added
-     * @throws java.io.IOException Signals that an I/O exception has occurred
+     * @throws IOException Signals that an I/O exception has occurred
      */
     boolean addNode(RootNode rootNode, ConfigurationNode node) throws IOException;
 
