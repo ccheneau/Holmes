@@ -58,7 +58,7 @@
         <dep.resteasy.version>3.0.10.Final</dep.resteasy.version>
         <dep.rome.version>1.0</dep.rome.version>
         <dep.seamless.version>1.1.0</dep.seamless.version>
-        <dep.slf4j.version>1.7.7</dep.slf4j.version>
+        <dep.slf4j.version>1.7.9</dep.slf4j.version>
         <dep.xstream.version>1.4.7</dep.xstream.version>
     </properties>
 
