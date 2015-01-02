@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.streaming.upnp.command;
 
-import junit.framework.TestCase;
 import net.holmes.core.business.streaming.device.CommandFailureHandler;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -31,8 +30,10 @@ import org.junit.Test;
 
 import static java.lang.Boolean.TRUE;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
-public class GetMediaInfoCommandTest extends TestCase {
+@SuppressWarnings("unchecked")
+public class GetMediaInfoCommandTest {
 
     @Test
     public void testGetMediaInfoCommandReceived() {
