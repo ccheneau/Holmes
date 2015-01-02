@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014  Cedric Cheneau
+ * Copyright (C) 2012-2015  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class RomeTest {

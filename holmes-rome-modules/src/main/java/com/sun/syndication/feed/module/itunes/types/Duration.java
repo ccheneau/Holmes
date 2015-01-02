@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014  Cedric Cheneau
+ * Copyright (C) 2012-2015  Cedric Cheneau
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,7 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
-import static com.sun.syndication.io.impl.NumberParser.parseFloat;
-import static com.sun.syndication.io.impl.NumberParser.parseLong;
+import static com.sun.syndication.io.impl.NumberParser.*;
 import static java.text.NumberFormat.getNumberInstance;
 
 /**
