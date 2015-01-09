@@ -49,7 +49,7 @@
         <dep.guava.version>18.0</dep.guava.version>
         <dep.guice.version>4.0-beta5</dep.guice.version>
         <dep.jackson.version>2.5.0</dep.jackson.version>
-        <dep.javassist.version>3.18.2-GA</dep.javassist.version>
+        <dep.javassist.version>3.19.0-GA</dep.javassist.version>
         <dep.javax.inject.version>1</dep.javax.inject.version>
         <dep.jmdns.version>3.4.1</dep.jmdns.version>
         <dep.junit.version>4.12</dep.junit.version>
@@ -58,7 +58,7 @@
         <dep.resteasy.version>3.0.10.Final</dep.resteasy.version>
         <dep.rome.version>1.0</dep.rome.version>
         <dep.seamless.version>1.1.0</dep.seamless.version>
-        <dep.slf4j.version>1.7.9</dep.slf4j.version>
+        <dep.slf4j.version>1.7.10</dep.slf4j.version>
         <dep.xstream.version>1.4.7</dep.xstream.version>
     </properties>
 
