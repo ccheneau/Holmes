@@ -76,7 +76,7 @@ public final class HttpFileRequest {
     /**
      * Check if request is a static resource.
      *
-     * @return true id request is a static resource
+     * @return true if request is a static resource
      */
     public boolean isStaticResource() {
         return staticResource;
