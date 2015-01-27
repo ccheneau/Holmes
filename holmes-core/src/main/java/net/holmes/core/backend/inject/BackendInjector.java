@@ -18,7 +18,6 @@
 package net.holmes.core.backend.inject;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 import net.holmes.core.backend.exception.BackendExceptionMapper;
 import net.holmes.core.backend.handler.*;
 import net.holmes.core.backend.manager.BackendManager;
@@ -35,7 +34,7 @@ public class BackendInjector extends AbstractModule {
     @Override
     protected void configure() {
         // Bind backend
-        bind(BackendManager.class).to(BackendManagerImpl.class).in(Singleton.class);
+        bind(BackendManager.class).to(BackendManagerImpl.class);
 
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);
