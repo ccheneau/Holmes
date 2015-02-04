@@ -132,7 +132,7 @@ public abstract class ConfigurationParameter<T> {
      * @param name         parameter name
      * @param defaultValue default value
      */
-    protected ConfigurationParameter(final String name, final T defaultValue) {
+    ConfigurationParameter(final String name, final T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
     }

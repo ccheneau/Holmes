@@ -40,7 +40,7 @@ import static net.holmes.core.common.ConfigurationParameter.*;
 /**
  * Guice provider for UPnP service.
  */
-public class UpnpServiceProvider implements Provider<UpnpService> {
+class UpnpServiceProvider implements Provider<UpnpService> {
 
     private final Injector injector;
     private final ConfigurationManager configurationManager;

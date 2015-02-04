@@ -108,8 +108,8 @@ abstract class PodcastParser {
      * @return duration
      */
     private String getDuration(final SyndEntry rssEntry) {
-        EntryInformation itunesInfo = (EntryInformation) (rssEntry.getModule(ITUNES_URI));
-        return itunesInfo != null ? itunesInfo.getDurationString() : null;
+        EntryInformation iTunesInfo = (EntryInformation) (rssEntry.getModule(ITUNES_URI));
+        return iTunesInfo != null ? iTunesInfo.getDurationString() : null;
     }
 
     /**

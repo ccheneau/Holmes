@@ -25,12 +25,8 @@ import org.fourthline.cling.model.types.csv.CSVString;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
-import org.fourthline.cling.support.model.SortCriterion;
 
 import java.util.List;
-
-import static org.fourthline.cling.model.types.ErrorCode.ACTION_FAILED;
-import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.UNSUPPORTED_SORT_CRITERIA;
 
 /**
  * Simple ContentDirectory service skeleton.
@@ -102,12 +98,10 @@ public abstract class AbstractContentDirectoryService {
      *
      * @param objectId         object id
      * @param browseFlag       browse flag
-     * @param filter           filter
      * @param firstResult      first result
      * @param maxResults       max results
-     * @param orderBy          order by
      * @param remoteClientInfo remote client info
-     * @return
+     * @return browse result
      * @throws ContentDirectoryException
      */
     @UpnpAction(out = {
@@ -118,47 +112,11 @@ public abstract class AbstractContentDirectoryService {
     public BrowseResult browse(
             @UpnpInputArgument(name = "ObjectID", aliases = "ContainerID") String objectId,
             @UpnpInputArgument(name = "BrowseFlag") String browseFlag,
-            @UpnpInputArgument(name = "Filter") String filter,
             @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
 
-        return browse(objectId, BrowseFlag.valueOrNullOf(browseFlag), filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
-    }
-
-    /**
-     * Search for content.
-     *
-     * @param containerId      container id
-     * @param searchCriteria   search criteria
-     * @param filter           filter
-     * @param firstResult      first result
-     * @param maxResults       max results
-     * @param orderBy          order by
-     * @param remoteClientInfo remote client info
-     * @return found contents
-     * @throws ContentDirectoryException
-     */
-    @UpnpAction(out = {
-            @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
-            @UpnpOutputArgument(name = "NumberReturned", stateVariable = "A_ARG_TYPE_Count", getterName = "getCount"),
-            @UpnpOutputArgument(name = "TotalMatches", stateVariable = "A_ARG_TYPE_Count", getterName = "getTotalMatches"),
-            @UpnpOutputArgument(name = "UpdateID", stateVariable = "A_ARG_TYPE_UpdateID", getterName = "getContainerUpdateID")
-    })
-    public BrowseResult search(
-            @UpnpInputArgument(name = "ContainerID", stateVariable = "A_ARG_TYPE_ObjectID") final String containerId,
-            @UpnpInputArgument(name = "SearchCriteria") final String searchCriteria,
-            @UpnpInputArgument(name = "Filter") final String filter,
-            @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") final UnsignedIntegerFourBytes firstResult,
-            @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") final UnsignedIntegerFourBytes maxResults,
-            @UpnpInputArgument(name = "SortCriteria") final String orderBy,
-            RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
-        try {
-            return search(containerId, searchCriteria, filter, firstResult.getValue(), maxResults.getValue(), getSortCriteria(orderBy), remoteClientInfo);
-        } catch (Exception e) {
-            throw new ContentDirectoryException(ACTION_FAILED.getCode(), e.getMessage(), e);
-        }
+        return browse(objectId, BrowseFlag.valueOrNullOf(browseFlag), firstResult.getValue(), maxResults.getValue(), remoteClientInfo);
     }
 
     /**
@@ -173,45 +131,12 @@ public abstract class AbstractContentDirectoryService {
      *
      * @param objectID         object id
      * @param browseFlag       browse flag
-     * @param filter           filter
      * @param firstResult      first results
      * @param maxResults       max result
-     * @param orderBy          order by
      * @param remoteClientInfo remote client info
      * @return browse result
      * @throws ContentDirectoryException
      */
-    public abstract BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults,
-                                        SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
-
-    /**
-     * Implement this method to implement searching of your content.
-     *
-     * @param containerId      container id
-     * @param searchCriteria   search criteria
-     * @param filter           filter
-     * @param firstResult      first result
-     * @param maxResults       max results
-     * @param orderBy          order by
-     * @param remoteClientInfo remote client info
-     * @return
-     * @throws ContentDirectoryException
-     */
-    public abstract BrowseResult search(String containerId, String searchCriteria, String filter,
-                                        long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
-
-    /**
-     * Get sort criteria
-     *
-     * @param orderBy order by string
-     * @return sort criteria
-     * @throws ContentDirectoryException
-     */
-    private SortCriterion[] getSortCriteria(final String orderBy) throws ContentDirectoryException {
-        try {
-            return SortCriterion.valueOf(orderBy);
-        } catch (Exception e) {
-            throw new ContentDirectoryException(UNSUPPORTED_SORT_CRITERIA.getCode(), e.getMessage(), e);
-        }
-    }
+    protected abstract BrowseResult browse(String objectID, BrowseFlag browseFlag, long firstResult, long maxResults,
+                                           RemoteClientInfo remoteClientInfo) throws ContentDirectoryException;
 }

@@ -31,7 +31,6 @@ import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
-import org.fourthline.cling.support.model.SortCriterion;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -63,13 +62,6 @@ public class ContentDirectoryServiceTest {
     }
 
     @Test
-    public void testSearch() throws Exception {
-        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
-        BrowseResult result = contentDirectoryService.search("0", "", "", 0l, 1l, SortCriterion.valueOf("+name"), null);
-        assertNotNull(result);
-    }
-
-    @Test
     public void testBrowseMetadata() throws ContentDirectoryException {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         MediaManager mediaManager = createMock(MediaManager.class);
@@ -97,7 +89,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, 0, 100, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationManager);
@@ -131,7 +123,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, 0, 100, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, connection, inetAddress, upnpDevice, airplayDevice, configurationManager);
@@ -156,7 +148,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, 0, 100, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
@@ -179,7 +171,7 @@ public class ContentDirectoryServiceTest {
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
         try {
-            BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+            BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.METADATA, 0, 100, remoteClientInfo);
             assertNotNull(result);
         } finally {
             verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
@@ -203,7 +195,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", null, "", 0, 100, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", null, 0, 100, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
@@ -240,7 +232,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, 0, 6, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationManager);
@@ -271,7 +263,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, 0, 6, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
@@ -299,7 +291,7 @@ public class ContentDirectoryServiceTest {
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, "", 0, 6, SortCriterion.valueOf("+name"), remoteClientInfo);
+        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, 0, 6, remoteClientInfo);
         assertNotNull(result);
 
         verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);

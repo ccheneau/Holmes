@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
 import static io.netty.buffer.UnpooledByteBufAllocator.DEFAULT;
 import static io.netty.channel.ChannelOption.*;
@@ -130,7 +131,7 @@ public final class HttpService implements Service {
         guiceProcessor.processInjector(injector);
 
         // Bind and start service to accept incoming connections
-        InetSocketAddress boundAddress = new InetSocketAddress(configurationManager.getParameter(HTTP_SERVER_PORT));
+        SocketAddress boundAddress = new InetSocketAddress(configurationManager.getParameter(HTTP_SERVER_PORT));
         serverBootstrap.bind(boundAddress).syncUninterruptibly();
 
         LOGGER.info("HTTP service bound on {}", boundAddress);

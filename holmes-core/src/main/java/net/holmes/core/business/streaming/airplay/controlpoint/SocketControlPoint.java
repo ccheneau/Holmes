@@ -63,7 +63,7 @@ public class SocketControlPoint implements ControlPoint {
      * @param device  Airplay device
      * @param command command
      */
-    protected void runDeviceCommand(final AirplayDevice device, final AirplayCommand command) {
+    void runDeviceCommand(final AirplayDevice device, final AirplayCommand command) {
         try {
             // Get device socket
             Socket socket = device.getConnection(socketFactory);
@@ -92,7 +92,7 @@ public class SocketControlPoint implements ControlPoint {
      * @param command command
      * @throws IOException
      */
-    protected void sendCommand(final Socket socket, final AirplayCommand command) throws IOException {
+    void sendCommand(final Socket socket, final AirplayCommand command) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
 
         // Write request to socket
@@ -107,7 +107,7 @@ public class SocketControlPoint implements ControlPoint {
      * @return command response
      * @throws IOException
      */
-    protected CommandResponse readCommandResponse(final Socket socket) throws IOException {
+    CommandResponse readCommandResponse(final Socket socket) throws IOException {
         CommandResponse response = new CommandResponse();
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
 

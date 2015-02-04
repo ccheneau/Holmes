@@ -105,7 +105,7 @@ public abstract class AirplayCommand {
      * @param parameter Url parameter
      * @param value     Url parameter value
      */
-    protected void addUrlParameter(final UrlParameter parameter, final String value) {
+    void addUrlParameter(final UrlParameter parameter, final String value) {
         urlParameters.put(parameter, value);
     }
 
@@ -115,7 +115,7 @@ public abstract class AirplayCommand {
      * @param parameter post parameter
      * @param value     post parameter value
      */
-    protected void addPostParameter(final PostParameter parameter, final String value) {
+    void addPostParameter(final PostParameter parameter, final String value) {
         this.postParameters.put(parameter, value);
     }
 

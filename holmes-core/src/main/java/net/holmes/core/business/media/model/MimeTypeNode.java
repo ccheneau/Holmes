@@ -24,7 +24,7 @@ import net.holmes.core.business.mimetype.model.MimeType;
  */
 public abstract class MimeTypeNode extends AbstractNode {
 
-    protected final MimeType mimeType;
+    final MimeType mimeType;
 
     /**
      * Instantiates a new MimeTyeNode.

@@ -157,7 +157,7 @@ public class DeviceBrowseResult {
         /**
          * Get content name.
          *
-         * @return content namme
+         * @return content name
          */
         public String getContentName() {
             return contentName;

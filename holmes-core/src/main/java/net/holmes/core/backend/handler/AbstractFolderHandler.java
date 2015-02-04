@@ -26,7 +26,7 @@ import java.util.Collection;
 /**
  * Abstract handler for configuration folders REST requests.
  */
-public abstract class AbstractFolderHandler {
+abstract class AbstractFolderHandler {
 
     private final BackendManager backendManager;
     private final RootNode rootNode;
@@ -37,7 +37,7 @@ public abstract class AbstractFolderHandler {
      * @param backendManager backend manager
      * @param rootNode       root node
      */
-    protected AbstractFolderHandler(final BackendManager backendManager, final RootNode rootNode) {
+    AbstractFolderHandler(final BackendManager backendManager, final RootNode rootNode) {
         this.backendManager = backendManager;
         this.rootNode = rootNode;
     }
@@ -47,7 +47,7 @@ public abstract class AbstractFolderHandler {
      *
      * @return configuration folders
      */
-    protected Collection<ConfigurationFolder> getFolders() {
+    Collection<ConfigurationFolder> getFolders() {
         return backendManager.getFolders(rootNode);
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractFolderHandler {
      * @param id folder id
      * @return configuration folder
      */
-    protected ConfigurationFolder getFolder(final String id) {
+    ConfigurationFolder getFolder(final String id) {
         return backendManager.getFolder(id, rootNode);
     }
 
@@ -67,7 +67,7 @@ public abstract class AbstractFolderHandler {
      * @param folder folder to add
      * @return added folder
      */
-    protected ConfigurationFolder addFolder(final ConfigurationFolder folder) {
+    ConfigurationFolder addFolder(final ConfigurationFolder folder) {
         backendManager.addFolder(folder, rootNode);
         return folder;
     }
@@ -79,7 +79,7 @@ public abstract class AbstractFolderHandler {
      * @param folder new folder value
      * @return edited folder
      */
-    protected ConfigurationFolder editFolder(final String id, final ConfigurationFolder folder) {
+    ConfigurationFolder editFolder(final String id, final ConfigurationFolder folder) {
         backendManager.editFolder(id, folder, rootNode);
         return folder;
     }
@@ -90,7 +90,7 @@ public abstract class AbstractFolderHandler {
      * @param id folder id to remove
      * @return removed folder
      */
-    protected ConfigurationFolder removeFolder(final String id) {
+    ConfigurationFolder removeFolder(final String id) {
         backendManager.removeFolder(id, rootNode);
         return new ConfigurationFolder(id, null, null);
     }

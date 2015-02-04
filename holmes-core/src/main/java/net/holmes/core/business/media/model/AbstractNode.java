@@ -24,12 +24,12 @@ import java.util.Objects;
  */
 public abstract class AbstractNode implements Comparable<AbstractNode> {
 
-    protected final String id;
-    protected final String parentId;
-    protected final String name;
-    protected final NodeType type;
-    protected Long modifiedDate;
-    protected String iconUrl;
+    final String id;
+    final String parentId;
+    final String name;
+    final NodeType type;
+    Long modifiedDate;
+    String iconUrl;
 
     /**
      * Instantiates a new abstract node.
@@ -122,6 +122,7 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("NullableProblems")
     public int compareTo(final AbstractNode o) {
         if (this.getType() == o.getType()) {
             return this.name.compareTo(o.name);

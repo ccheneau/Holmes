@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 /**
  * Guice type listener: automatically register class to eventBus when a method is annotated with @Subscribe
  */
-public final class EventBusListener implements TypeListener {
+final class EventBusListener implements TypeListener {
     private final EventBus eventBus;
 
     /**
@@ -74,8 +74,8 @@ public final class EventBusListener implements TypeListener {
          * {@inheritDoc}
          */
         @Override
-        public void afterInjection(final T injectee) {
-            eventBus.register(injectee);
+        public void afterInjection(final T injected) {
+            eventBus.register(injected);
         }
     }
 }

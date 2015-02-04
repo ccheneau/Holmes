@@ -44,9 +44,9 @@ public final class MimeType {
      */
     private MimeType(final String mimeType) {
         this.mimeType = mimeType;
-        Iterable<String> iterable = Splitter.on('/').split(mimeType);
-        this.type = MediaType.getByValue(getFirst(iterable, ""));
-        this.subType = getLast(iterable, "");
+        Iterable<String> mimeTypePart = Splitter.on('/').split(mimeType);
+        this.type = MediaType.getByValue(getFirst(mimeTypePart, ""));
+        this.subType = getLast(mimeTypePart, "");
     }
 
     /**

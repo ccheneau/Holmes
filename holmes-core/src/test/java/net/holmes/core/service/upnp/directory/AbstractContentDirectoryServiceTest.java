@@ -22,7 +22,6 @@ import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
-import org.fourthline.cling.support.model.SortCriterion;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -31,22 +30,7 @@ public class AbstractContentDirectoryServiceTest {
 
     @Test
     public void testBrowse() throws ContentDirectoryException {
-        new AbstractContentDirectoryServiceTester().browse("0", "BrowseMetadata", "", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), "+name", null);
-    }
-
-    @Test(expected = ContentDirectoryException.class)
-    public void testBrowseBadSortCriteria() throws ContentDirectoryException {
-        new AbstractContentDirectoryServiceTester().browse("0", "BrowseMetadata", "", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), "bad_criteria", null);
-    }
-
-    @Test
-    public void testSearch() throws ContentDirectoryException {
-        new AbstractContentDirectoryServiceTester().search("0", "BrowseMetadata", "", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), "+name", null);
-    }
-
-    @Test(expected = ContentDirectoryException.class)
-    public void testSearchBadSortCriteria() throws ContentDirectoryException {
-        new AbstractContentDirectoryServiceTester().search("0", "BrowseMetadata", "", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), "bad_criteria", null);
+        new AbstractContentDirectoryServiceTester().browse("0", "BrowseMetadata", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), null);
     }
 
     private class AbstractContentDirectoryServiceTester extends AbstractContentDirectoryService {
@@ -57,12 +41,7 @@ public class AbstractContentDirectoryServiceTest {
         }
 
         @Override
-        public BrowseResult browse(String objectID, BrowseFlag browseFlag, String filter, long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
-            return null;
-        }
-
-        @Override
-        public BrowseResult search(String containerId, String searchCriteria, String filter, long firstResult, long maxResults, SortCriterion[] orderBy, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
+        public BrowseResult browse(String objectID, BrowseFlag browseFlag, long firstResult, long maxResults, RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
             return null;
         }
     }
