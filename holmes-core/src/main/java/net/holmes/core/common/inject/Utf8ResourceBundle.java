@@ -29,6 +29,12 @@ import static java.nio.charset.StandardCharsets.*;
 abstract class Utf8ResourceBundle {
 
     /**
+     * Private constructor.
+     */
+    private Utf8ResourceBundle() {
+    }
+
+    /**
      * Gets the unicode friendly resource bundle
      *
      * @param baseName base name of the resource bundle
@@ -42,7 +48,7 @@ abstract class Utf8ResourceBundle {
     /**
      * Resource Bundle that does the hard work
      */
-    private static class Utf8PropertyResourceBundle extends ResourceBundle {
+    private static final class Utf8PropertyResourceBundle extends ResourceBundle {
 
         /**
          * Bundle with unicode data
