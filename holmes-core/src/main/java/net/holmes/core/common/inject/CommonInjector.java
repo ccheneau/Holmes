@@ -36,6 +36,7 @@ import static java.nio.file.Paths.get;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static net.holmes.core.common.Constants.HOLMES_HOME_UI_DIRECTORY;
 import static net.holmes.core.common.SystemProperty.*;
+import static net.holmes.core.common.inject.Utf8ResourceBundle.getUtf8Bundle;
 
 /**
  * Holmes common Guice injector.
@@ -52,7 +53,7 @@ public class CommonInjector extends AbstractModule {
      */
     public CommonInjector() {
         eventBus = new AsyncEventBus("Holmes EventBus", newCachedThreadPool());
-        resourceBundle = ResourceBundle.getBundle("message");
+        resourceBundle = getUtf8Bundle("message");
         localHolmesDataDir = getLocalHolmesDataDir();
         uiDirectory = getHolmesHomeSubDirectory(HOLMES_HOME_UI_DIRECTORY.toString());
         currentVersion = nullToEmpty(this.getClass().getPackage().getImplementationVersion());
