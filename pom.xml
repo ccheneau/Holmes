@@ -41,7 +41,6 @@
         <!-- common properties -->
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.profile>Holmes way</sonar.profile>
 
         <!-- Dependencies version -->
         <dep.cling.version>2.0.1</dep.cling.version>
