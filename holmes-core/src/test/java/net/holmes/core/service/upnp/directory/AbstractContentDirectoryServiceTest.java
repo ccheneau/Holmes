@@ -30,7 +30,7 @@ public class AbstractContentDirectoryServiceTest {
 
     @Test
     public void testBrowse() throws ContentDirectoryException {
-        new AbstractContentDirectoryServiceTester().browse("0", "BrowseMetadata", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), null);
+        new AbstractContentDirectoryServiceTester().browse("0", "BrowseMetadata", "", new UnsignedIntegerFourBytes(0), new UnsignedIntegerFourBytes(1), "+name", null);
     }
 
     private class AbstractContentDirectoryServiceTester extends AbstractContentDirectoryService {

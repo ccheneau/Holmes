@@ -98,12 +98,15 @@ public abstract class AbstractContentDirectoryService {
      *
      * @param objectId         object id
      * @param browseFlag       browse flag
+     * @param filter           filter
      * @param firstResult      first result
      * @param maxResults       max results
+     * @param orderBy          order by
      * @param remoteClientInfo remote client info
      * @return browse result
      * @throws ContentDirectoryException
      */
+    @SuppressWarnings("UnusedParameters")
     @UpnpAction(out = {
             @UpnpOutputArgument(name = "Result", stateVariable = "A_ARG_TYPE_Result", getterName = "getResult"),
             @UpnpOutputArgument(name = "NumberReturned", stateVariable = "A_ARG_TYPE_Count", getterName = "getCount"),
@@ -112,8 +115,10 @@ public abstract class AbstractContentDirectoryService {
     public BrowseResult browse(
             @UpnpInputArgument(name = "ObjectID", aliases = "ContainerID") String objectId,
             @UpnpInputArgument(name = "BrowseFlag") String browseFlag,
+            @UpnpInputArgument(name = "Filter") String filter,
             @UpnpInputArgument(name = "StartingIndex", stateVariable = "A_ARG_TYPE_Index") UnsignedIntegerFourBytes firstResult,
             @UpnpInputArgument(name = "RequestedCount", stateVariable = "A_ARG_TYPE_Count") UnsignedIntegerFourBytes maxResults,
+            @UpnpInputArgument(name = "SortCriteria") String orderBy,
             RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
 
         return browse(objectId, BrowseFlag.valueOrNullOf(browseFlag), firstResult.getValue(), maxResults.getValue(), remoteClientInfo);
