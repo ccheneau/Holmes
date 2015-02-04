@@ -17,9 +17,10 @@
 
 package net.holmes.core.common.inject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
+
+import static java.nio.charset.StandardCharsets.*;
 
 
 /**
@@ -72,11 +73,7 @@ abstract class Utf8ResourceBundle {
         @Override
         @SuppressWarnings("NullableProblems")
         protected Object handleGetObject(final String key) {
-            try {
-                return new String(bundle.getString(key).getBytes("ISO-8859-1"), "UTF-8");
-            } catch (final UnsupportedEncodingException e) {
-                throw new RuntimeException("Encoding not supported", e);
-            }
+            return new String(bundle.getString(key).getBytes(ISO_8859_1), UTF_8);
         }
     }
 }
