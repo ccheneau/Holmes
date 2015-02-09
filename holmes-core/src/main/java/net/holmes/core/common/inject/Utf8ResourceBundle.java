@@ -68,8 +68,7 @@ abstract class Utf8ResourceBundle {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings(value = {"unchecked", "NullableProblems"})
-        public Enumeration getKeys() {
+        public Enumeration<String> getKeys() {
             return bundle.getKeys();
         }
 
@@ -77,7 +76,6 @@ abstract class Utf8ResourceBundle {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("NullableProblems")
         protected Object handleGetObject(final String key) {
             return new String(bundle.getString(key).getBytes(ISO_8859_1), UTF_8);
         }
