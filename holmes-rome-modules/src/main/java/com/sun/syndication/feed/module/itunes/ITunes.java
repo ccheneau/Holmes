@@ -25,5 +25,5 @@ import com.sun.syndication.feed.module.Module;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @version $Revision: 1.3 $
  */
-public interface ITunes extends Module {
+interface ITunes extends Module {
 }
