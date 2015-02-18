@@ -127,7 +127,7 @@ public final class MediaManagerImpl implements MediaManager {
         }
 
         // Filter child nodes according to available mime types
-        Predicate<AbstractNode> p = (node) -> !(node instanceof MimeTypeNode)
+        Predicate<AbstractNode> p = node -> !(node instanceof MimeTypeNode)
                 || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
 
         return childNodes.stream().filter(p).collect(Collectors.toList());

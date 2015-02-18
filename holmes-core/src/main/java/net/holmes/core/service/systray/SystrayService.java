@@ -267,7 +267,7 @@ public final class SystrayService implements Service {
                 menuItem.setFont(font);
             }
 
-            menuItem.addActionListener((event) -> {
+            menuItem.addActionListener(event -> {
                 try {
                     onClick();
                 } catch (HolmesException e) {

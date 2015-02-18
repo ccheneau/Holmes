@@ -85,7 +85,7 @@ public final class DeviceDaoImpl implements DeviceDao {
      */
     @Override
     public Collection<Device> findDevices(final String hostAddress) {
-        Predicate<Device> p = (device) -> device.getAddress().getHostAddress().equals(hostAddress);
+        Predicate<Device> p = device -> device.getAddress().getHostAddress().equals(hostAddress);
         return devices.values().stream()
                 .filter(p)
                 .collect(Collectors.<Device>toList());
