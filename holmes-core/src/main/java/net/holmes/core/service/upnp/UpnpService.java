@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.holmes.core.business.streaming.upnp.UpnpUtils.*;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_ENABLE;
@@ -227,11 +228,10 @@ public final class UpnpService implements Service {
      */
     private Set<String> getAvailableMimeTypes(ProtocolInfos upnpProtocolInfo) {
         Set<String> availableMimeTypes = new HashSet<>(upnpProtocolInfo.size());
-        for (ProtocolInfo protocolInfo : upnpProtocolInfo) {
-            if (protocolInfo.getProtocol() == HTTP_GET) {
-                availableMimeTypes.add(protocolInfo.getContentFormat());
-            }
-        }
+        availableMimeTypes.addAll(upnpProtocolInfo.stream()
+                .filter(protocolInfo -> protocolInfo.getProtocol() == HTTP_GET)
+                .map(ProtocolInfo::getContentFormat)
+                .collect(Collectors.toList()));
         return availableMimeTypes;
     }
 }

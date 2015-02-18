@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
@@ -99,9 +100,9 @@ public final class UtilHandler {
             }
         } else {
             // Get child folders
-            for (File child : listChildren(parentPath, false)) {
-                folders.add(new Folder(child.getName(), child.getAbsolutePath()));
-            }
+            folders.addAll(listChildren(parentPath, false).stream()
+                    .map(child -> new Folder(child.getName(), child.getAbsolutePath()))
+                    .collect(Collectors.toList()));
         }
         return folders;
     }

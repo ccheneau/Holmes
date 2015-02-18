@@ -17,7 +17,6 @@
 
 package net.holmes.core.test;
 
-import com.google.common.base.Predicate;
 import net.holmes.core.business.configuration.dao.ConfigurationDao;
 import net.holmes.core.business.configuration.exception.UnknownNodeException;
 import net.holmes.core.business.configuration.model.ConfigurationNode;
@@ -28,9 +27,12 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 
-import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class TestConfigurationDao implements ConfigurationDao {
@@ -106,17 +108,10 @@ public class TestConfigurationDao implements ConfigurationDao {
      */
     @Override
     public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
-        try {
-            return find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
-                @Override
-                public boolean apply(ConfigurationNode node) {
-                    return node.getId().equals(nodeId);
-                }
-            });
-        } catch (NoSuchElementException e) {
-            throw new UnknownNodeException(nodeId, e);
-        }
-
+        return getNodes(rootNode).stream()
+                .filter(node -> node.getId().equals(nodeId))
+                .findFirst()
+                .orElseThrow(() -> new UnknownNodeException(nodeId));
     }
 
     /**
@@ -124,9 +119,9 @@ public class TestConfigurationDao implements ConfigurationDao {
      */
     @Override
     public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return find(getNodes(rootNode), new Predicate<ConfigurationNode>() {
+        return getNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
             @Override
-            public boolean apply(ConfigurationNode node) {
+            public boolean test(ConfigurationNode node) {
                 if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
                     return false;
                 } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
@@ -134,7 +129,7 @@ public class TestConfigurationDao implements ConfigurationDao {
                 }
                 return false;
             }
-        }, null);
+        }).findFirst().orElse(null);
     }
 
     /**

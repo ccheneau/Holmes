@@ -28,8 +28,6 @@ import javax.inject.Singleton;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -269,14 +267,11 @@ public final class SystrayService implements Service {
                 menuItem.setFont(font);
             }
 
-            menuItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    try {
-                        onClick();
-                    } catch (HolmesException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
+            menuItem.addActionListener((event) -> {
+                try {
+                    onClick();
+                } catch (HolmesException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
             });
             return menuItem;

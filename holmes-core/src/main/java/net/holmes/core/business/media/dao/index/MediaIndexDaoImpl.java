@@ -103,9 +103,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
         }
 
         // Remove elements
-        for (String id : toRemove) {
-            elements.remove(id);
-        }
+        toRemove.forEach(elements::remove);
     }
 
     /**
@@ -136,9 +134,7 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
         }
 
         // Remove elements
-        for (String id : toRemove) {
-            elements.remove(id);
-        }
+        toRemove.forEach(elements::remove);
     }
 
     /**

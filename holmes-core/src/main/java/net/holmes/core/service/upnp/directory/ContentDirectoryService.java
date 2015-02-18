@@ -23,7 +23,6 @@ import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.streaming.StreamingManager;
-import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -107,11 +106,9 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         // Get available mime types
         List<String> availableMimeTypes = new ArrayList<>();
         if (remoteClientInfo.getConnection() != null) {
-            for (Device device : streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress())) {
-                if (device instanceof UpnpDevice) {
-                    availableMimeTypes.addAll(device.getSupportedMimeTypes());
-                }
-            }
+            streamingManager.findDevices(remoteClientInfo.getRemoteAddress().getHostAddress()).stream()
+                    .filter(device -> device instanceof UpnpDevice)
+                    .forEach(device -> availableMimeTypes.addAll(device.getSupportedMimeTypes()));
         }
 
         // Add subtitle

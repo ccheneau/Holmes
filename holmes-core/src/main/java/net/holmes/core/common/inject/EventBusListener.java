@@ -49,7 +49,7 @@ final class EventBusListener implements TypeListener {
         // Register to event bus
         for (Method method : type.getRawType().getMethods()) {
             if (method.isAnnotationPresent(Subscribe.class)) {
-                encounter.register(new EventBusRegisterListener<T>(eventBus));
+                encounter.register(new EventBusRegisterListener<>(eventBus));
                 break;
             }
         }

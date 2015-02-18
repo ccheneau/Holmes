@@ -28,9 +28,8 @@ public class UnknownNodeException extends HolmesException {
      * Instantiates a new UnknownNodeException.
      *
      * @param nodeId node ID
-     * @param cause  root cause
      */
-    public UnknownNodeException(final String nodeId, final Throwable cause) {
-        super("Unknown node " + nodeId, cause);
+    public UnknownNodeException(final String nodeId) {
+        super("Unknown node " + nodeId);
     }
 }

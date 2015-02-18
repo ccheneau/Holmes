@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.media;
 
-import com.google.common.base.Predicate;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.dao.MediaDao;
@@ -37,8 +36,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static com.google.common.collect.Collections2.filter;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static net.holmes.core.common.Constants.*;
@@ -127,17 +127,10 @@ public final class MediaManagerImpl implements MediaManager {
         }
 
         // Filter child nodes according to available mime types
-        return filter(childNodes, new Predicate<AbstractNode>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean apply(AbstractNode node) {
-                return !(node instanceof MimeTypeNode)
-                        || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
+        Predicate<AbstractNode> p = (node) -> !(node instanceof MimeTypeNode)
+                || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
 
-            }
-        });
+        return childNodes.stream().filter(p).collect(Collectors.toList());
     }
 
     /**
@@ -169,10 +162,7 @@ public final class MediaManagerImpl implements MediaManager {
      */
     private void scanNode(final AbstractNode node) {
         if (node instanceof FolderNode) {
-            Collection<AbstractNode> result = searchChildNodes(new MediaSearchRequest(node, null));
-            for (AbstractNode childNode : result) {
-                scanNode(childNode);
-            }
+            searchChildNodes(new MediaSearchRequest(node, null)).forEach(this::scanNode);
         }
     }
 }

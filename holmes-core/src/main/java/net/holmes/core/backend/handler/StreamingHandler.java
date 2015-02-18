@@ -40,6 +40,7 @@ import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.backend.response.DeviceBrowseResult.*;
@@ -79,9 +80,7 @@ public class StreamingHandler {
     public List<PlaybackDevice> getDevices() {
         Collection<Device> devices = streamingManager.getDevices();
         List<PlaybackDevice> playbackDevices = new ArrayList<>(devices.size());
-        for (Device device : devices) {
-            playbackDevices.add(buildPlaybackDevice(device));
-        }
+        playbackDevices.addAll(devices.stream().map(this::buildPlaybackDevice).collect(Collectors.toList()));
 
         return playbackDevices;
     }

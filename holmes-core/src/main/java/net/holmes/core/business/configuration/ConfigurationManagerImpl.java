@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.configuration;
 
-import com.google.common.base.Predicate;
 import net.holmes.core.business.configuration.dao.ConfigurationDao;
 import net.holmes.core.business.configuration.exception.UnknownNodeException;
 import net.holmes.core.business.configuration.model.ConfigurationNode;
@@ -28,8 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
-
-import static com.google.common.collect.Iterables.find;
 
 /**
  * Configuration manager implementation.
@@ -83,14 +80,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
         List<ConfigurationNode> nodes = getNodes(rootNode);
 
         // Search for duplicate node
-        ConfigurationNode existingNode = find(nodes, new Predicate<ConfigurationNode>() {
-            @Override
-            public boolean apply(ConfigurationNode aNode) {
-                return node.equals(aNode);
-            }
-        }, null);
-
-        if (existingNode == null) {
+        if (nodes.stream().noneMatch(node::equals)) {
             // Add node
             nodes.add(node);
             // Save configuration

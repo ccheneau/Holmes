@@ -49,11 +49,6 @@ public class AsyncSocketControlPoint extends SocketControlPoint {
      */
     @Override
     public void execute(final AirplayDevice device, final AirplayCommand command) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                runDeviceCommand(device, command);
-            }
-        });
+        executor.execute(() -> runDeviceCommand(device, command));
     }
 }

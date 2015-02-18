@@ -17,7 +17,6 @@
 
 package net.holmes.core.backend.manager;
 
-import com.google.common.base.Function;
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.backend.exception.BackendErrorMessage;
 import net.holmes.core.backend.exception.BackendException;
@@ -34,10 +33,11 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Lists.transform;
 import static net.holmes.core.backend.exception.BackendErrorMessage.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
@@ -71,7 +71,8 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
-        return transform(configurationManager.getNodes(rootNode), new ConfigurationNodeFactory());
+        return configurationManager.getNodes(rootNode).stream()
+                .map(new ConfigurationNodeFactory()).collect(Collectors.toList());
     }
 
     /**

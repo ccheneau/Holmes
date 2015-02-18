@@ -17,7 +17,6 @@
 
 package net.holmes.core.business.configuration.dao;
 
-import com.google.common.base.Predicate;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import net.holmes.core.business.configuration.exception.UnknownNodeException;
@@ -35,10 +34,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static com.google.common.collect.Iterables.find;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -91,16 +90,10 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      */
     @Override
     public ConfigurationNode getNode(final RootNode rootNode, final String nodeId) throws UnknownNodeException {
-        try {
-            return find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
-                @Override
-                public boolean apply(ConfigurationNode node) {
-                    return node.getId().equals(nodeId);
-                }
-            });
-        } catch (NoSuchElementException e) {
-            throw new UnknownNodeException(nodeId, e);
-        }
+        return this.rootNode.getConfigurationNodes(rootNode).stream()
+                .filter(node -> node.getId().equals(nodeId))
+                .findFirst()
+                .orElseThrow(() -> new UnknownNodeException(nodeId));
     }
 
     /**
@@ -108,9 +101,9 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      */
     @Override
     public ConfigurationNode findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return find(this.rootNode.getConfigurationNodes(rootNode), new Predicate<ConfigurationNode>() {
+        return this.rootNode.getConfigurationNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
             @Override
-            public boolean apply(ConfigurationNode node) {
+            public boolean test(ConfigurationNode node) {
                 if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
                     return false;
                 } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
@@ -118,7 +111,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
                 }
                 return false;
             }
-        }, null);
+        }).findFirst().orElse(null);
     }
 
 
@@ -240,17 +233,13 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             }
 
             // Check obsolete parameters
-            List<String> obsoleteParams = new ArrayList<>();
-            for (Object paramKey : this.parameters.keySet()) {
-                if (!availableParams.contains(paramKey.toString())) {
-                    obsoleteParams.add(paramKey.toString());
-                }
-            }
+            List<String> obsoleteParams = this.parameters.keySet().stream()
+                    .filter(paramKey -> !availableParams.contains(paramKey.toString()))
+                    .map(Object::toString)
+                    .collect(Collectors.toList());
 
             // Remove obsolete parameters
-            for (String obsoleteParam : obsoleteParams) {
-                this.parameters.remove(obsoleteParam);
-            }
+            obsoleteParams.forEach(this.parameters::remove);
         }
 
         /**

@@ -34,16 +34,6 @@ public class HolmesException extends Exception {
     /**
      * Constructs a new Holmes exception.
      *
-     * @param message exception message
-     * @param cause   original exception
-     */
-    protected HolmesException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructs a new Holmes exception.
-     *
      * @param cause original exception
      */
     public HolmesException(final Throwable cause) {

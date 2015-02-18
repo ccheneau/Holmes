@@ -71,7 +71,7 @@ public class ConfigurationManagerImplTest {
     public void testGetUnknownNode() throws UnknownNodeException {
         ConfigurationDao configurationDao = createMock(ConfigurationDao.class);
 
-        expect(configurationDao.getNode(eq(ROOT), eq("nodeId"))).andThrow(new UnknownNodeException("nodeId", null));
+        expect(configurationDao.getNode(eq(ROOT), eq("nodeId"))).andThrow(new UnknownNodeException("nodeId"));
 
         replay(configurationDao);
 
@@ -229,7 +229,7 @@ public class ConfigurationManagerImplTest {
 
         ConfigurationNode newNode = new ConfigurationNode("nodeId", "label", "path");
 
-        expect(configurationDao.getNode(eq(ROOT), eq(newNode.getId()))).andThrow(new UnknownNodeException("nodeId", null));
+        expect(configurationDao.getNode(eq(ROOT), eq(newNode.getId()))).andThrow(new UnknownNodeException("nodeId"));
 
         replay(configurationDao);
         try {
@@ -350,7 +350,7 @@ public class ConfigurationManagerImplTest {
 
         ConfigurationNode configurationNode = new ConfigurationNode("nodeId", "label", "path");
 
-        expect(configurationDao.getNode(eq(ROOT), eq(configurationNode.getId()))).andThrow(new UnknownNodeException("nodeId", null));
+        expect(configurationDao.getNode(eq(ROOT), eq(configurationNode.getId()))).andThrow(new UnknownNodeException("nodeId"));
 
         replay(configurationDao);
 

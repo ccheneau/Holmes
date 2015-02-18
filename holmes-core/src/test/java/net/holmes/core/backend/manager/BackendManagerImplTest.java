@@ -90,7 +90,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.getNode(eq(AUDIO), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id", null));
+        expect(configurationManager.getNode(eq(AUDIO), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
 
@@ -107,7 +107,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.getNode(eq(PODCAST), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id", null));
+        expect(configurationManager.getNode(eq(PODCAST), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
 
@@ -419,7 +419,7 @@ public class BackendManagerImplTest {
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationManager.findNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(null);
-        expect(configurationManager.editNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new UnknownNodeException("bad_id", null));
+        expect(configurationManager.editNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
 
@@ -437,7 +437,7 @@ public class BackendManagerImplTest {
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationManager.findNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andReturn(null);
-        expect(configurationManager.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id", null));
+        expect(configurationManager.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
 
@@ -529,7 +529,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.removeNode("bad_folder", AUDIO)).andThrow(new UnknownNodeException("bad_folder", null));
+        expect(configurationManager.removeNode("bad_folder", AUDIO)).andThrow(new UnknownNodeException("bad_folder"));
 
         replay(configurationManager, eventBus);
 
@@ -546,7 +546,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.removeNode("bad_id", PODCAST)).andThrow(new UnknownNodeException("bad_id", null));
+        expect(configurationManager.removeNode("bad_id", PODCAST)).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
 

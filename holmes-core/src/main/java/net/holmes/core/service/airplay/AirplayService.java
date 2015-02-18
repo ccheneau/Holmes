@@ -127,12 +127,9 @@ public final class AirplayService implements Service {
      * Asynchronous look up for available Airplay devices
      */
     private void lookupAsync() {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP)) {
-                    streamingManager.addDevice(buildDevice(serviceInfo));
-                }
+        Executors.newSingleThreadExecutor().execute(() -> {
+            for (ServiceInfo serviceInfo : jmDNS.list(AIRPLAY_TCP)) {
+                streamingManager.addDevice(buildDevice(serviceInfo));
             }
         });
     }
