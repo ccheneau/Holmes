@@ -17,9 +17,7 @@
 
 package net.holmes.core.service.http;
 
-import com.google.inject.Binding;
 import com.google.inject.Injector;
-import com.google.inject.Key;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import org.junit.Test;
 
@@ -38,7 +36,7 @@ public class HttpServiceTest {
         expect(configurationManager.getParameter(HTTP_SERVER_PORT)).andReturn(8080).atLeastOnce();
         expect(configurationManager.getParameter(HTTP_SERVER_BOSS_THREADS)).andReturn(0).atLeastOnce();
         expect(configurationManager.getParameter(HTTP_SERVER_WORKER_THREADS)).andReturn(0).atLeastOnce();
-        expect(injector.getBindings()).andReturn(new HashMap<Key<?>, Binding<?>>(0)).atLeastOnce();
+        expect(injector.getBindings()).andReturn(new HashMap<>(0)).atLeastOnce();
 
         replay(injector, configurationManager);
         try {

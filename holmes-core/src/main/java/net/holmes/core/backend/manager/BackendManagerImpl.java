@@ -33,6 +33,7 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -127,11 +128,11 @@ public final class BackendManagerImpl implements BackendManager {
 
         try {
             // Edit node
-            ConfigurationNode node = configurationManager.editNode(rootNode, id, folder.getName(), folder.getPath());
+            Optional<ConfigurationNode> node = configurationManager.editNode(rootNode, id, folder.getName(), folder.getPath());
 
-            if (node != null) {
+            if (node.isPresent()) {
                 // Post update folder event
-                eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, node, rootNode));
+                eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, node.get(), rootNode));
             }
         } catch (IOException e) {
             throw new BackendException(e);
@@ -250,7 +251,7 @@ public final class BackendManagerImpl implements BackendManager {
      * @param errorMessage error message
      */
     private void checkDuplicatedConfigurationFolder(final ConfigurationFolder folder, final RootNode rootNode, final String excludedId, final BackendErrorMessage errorMessage) {
-        if (configurationManager.findNode(rootNode, excludedId, folder.getName(), folder.getPath()) != null) {
+        if (configurationManager.findNode(rootNode, excludedId, folder.getName(), folder.getPath()).isPresent()) {
             throw new BackendException(errorMessage);
         }
     }

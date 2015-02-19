@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.RootNode.*;
@@ -124,7 +125,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.addNode(eq(AUDIO), isA(ConfigurationNode.class))).andReturn(true);
         eventBus.post(isA(ConfigurationEvent.class));
         expectLastCall();
@@ -144,7 +145,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.addNode(eq(AUDIO), isA(ConfigurationNode.class))).andReturn(false);
 
         replay(configurationManager, eventBus);
@@ -162,7 +163,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
         configurationManager.addNode(eq(AUDIO), isA(ConfigurationNode.class));
         expectLastCall().andThrow(new IOException());
 
@@ -181,7 +182,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, null, "name", System.getProperty("java.io.tmpdir"))).andReturn(new ConfigurationNode("id", "name", "path"));
+        expect(configurationManager.findNode(AUDIO, null, "name", System.getProperty("java.io.tmpdir"))).andReturn(Optional.of(new ConfigurationNode("id", "name", "path")));
 
         replay(configurationManager, eventBus);
 
@@ -198,7 +199,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(new ConfigurationNode("id", "name", System.getProperty("java.io.tmpdir")));
+        expect(configurationManager.findNode(AUDIO, null, "newAudioFolder", System.getProperty("java.io.tmpdir"))).andReturn(Optional.of(new ConfigurationNode("id", "name", System.getProperty("java.io.tmpdir"))));
 
         replay(configurationManager, eventBus);
 
@@ -215,7 +216,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(null);
+        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.addNode(eq(PODCAST), isA(ConfigurationNode.class))).andReturn(true);
         eventBus.post(isA(ConfigurationEvent.class));
         expectLastCall();
@@ -235,7 +236,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(PODCAST, null, "name", "http://google.com")).andReturn(new ConfigurationNode("id", "name", "http://google.com"));
+        expect(configurationManager.findNode(PODCAST, null, "name", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "name", "http://google.com")));
 
         replay(configurationManager, eventBus);
 
@@ -252,7 +253,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(new ConfigurationNode("id", "name", "http://google.com"));
+        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "name", "http://google.com")));
 
         replay(configurationManager, eventBus);
 
@@ -360,7 +361,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, "id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, "id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.editNode(AUDIO, "id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new IOException());
 
         replay(configurationManager, eventBus);
@@ -378,8 +379,8 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(null);
-        expect(configurationManager.editNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(new ConfigurationNode("id", "name", System.getProperty("java.io.tmpdir")));
+        expect(configurationManager.findNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
+        expect(configurationManager.editNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(Optional.of(new ConfigurationNode("id", "name", System.getProperty("java.io.tmpdir"))));
         eventBus.post(isA(ConfigurationEvent.class));
         expectLastCall();
 
@@ -398,8 +399,8 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(null);
-        expect(configurationManager.editNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(new ConfigurationNode("id", "editedPodcast", "http://google.com"));
+        expect(configurationManager.findNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
+        expect(configurationManager.editNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "editedPodcast", "http://google.com")));
         eventBus.post(isA(ConfigurationEvent.class));
         expectLastCall();
 
@@ -418,7 +419,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.editNode(AUDIO, "bad_id", "editedAudiosTest", System.getProperty("java.io.tmpdir"))).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
@@ -436,7 +437,7 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andReturn(null);
+        expect(configurationManager.findNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
         expect(configurationManager.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id"));
 
         replay(configurationManager, eventBus);
@@ -454,8 +455,8 @@ public class BackendManagerImplTest {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
-        expect(configurationManager.findNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(null);
-        expect(configurationManager.editNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(null);
+        expect(configurationManager.findNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
+        expect(configurationManager.editNode(AUDIO, "id", "name", System.getProperty("java.io.tmpdir"))).andReturn(Optional.<ConfigurationNode>empty());
 
         replay(configurationManager, eventBus);
 

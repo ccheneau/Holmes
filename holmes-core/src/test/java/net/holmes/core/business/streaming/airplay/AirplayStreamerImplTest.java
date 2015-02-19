@@ -19,7 +19,6 @@ package net.holmes.core.business.streaming.airplay;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.streaming.airplay.command.AirplayCommand;
 import net.holmes.core.business.streaming.airplay.controlpoint.ControlPoint;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.event.StreamingEvent;
@@ -38,19 +37,14 @@ public class AirplayStreamerImplTest {
     @Test
     public void testPlaySuccess() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(new HashMap<String, String>(0));
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(new HashMap<>(0));
         };
+
         AirplayDevice device = createMock(AirplayDevice.class);
         AbstractNode node = createMock(AbstractNode.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -68,19 +62,13 @@ public class AirplayStreamerImplTest {
     @Test
     public void testPlayFailure() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.failure("errorMessage");
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
         AbstractNode node = createMock(AbstractNode.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -99,18 +87,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testStopSuccess() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(new HashMap<String, String>(0));
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(new HashMap<>(0));
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -128,18 +110,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testStopFailure() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.failure("errorMessage");
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -158,18 +134,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testPauseSuccess() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(new HashMap<String, String>(0));
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(new HashMap<>(0));
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -187,18 +157,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testPauseFailure() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.failure("errorMessage");
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -217,18 +181,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testResumeSuccess() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(new HashMap<String, String>());
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(new HashMap<>());
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -246,18 +204,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testResumeFailure() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.failure("errorMessage");
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -276,15 +228,9 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusSuccessEmptyParameters() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(new HashMap<String, String>());
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(new HashMap<>());
         };
         AirplayDevice device = createMock(AirplayDevice.class);
 
@@ -297,15 +243,9 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusSuccessNullParameters() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.success(null);
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.success(null);
         };
         AirplayDevice device = createMock(AirplayDevice.class);
 
@@ -318,21 +258,15 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusSuccessWithParameters() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                Map<String, String> parameters = new HashMap<>(2);
-                parameters.put("duration", "60");
-                parameters.put("position", "3");
-                command.success(parameters);
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            Map<String, String> parameters = new HashMap<>(2);
+            parameters.put("duration", "60");
+            parameters.put("position", "3");
+            command.success(parameters);
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -352,21 +286,15 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusSuccessWithStopParameters() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                Map<String, String> parameters = new HashMap<>(2);
-                parameters.put("duration", "60");
-                parameters.put("position", "70");
-                command.success(parameters);
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            Map<String, String> parameters = new HashMap<>(2);
+            parameters.put("duration", "60");
+            parameters.put("position", "70");
+            command.success(parameters);
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -384,21 +312,15 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusSuccessWithBadParameters() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                Map<String, String> parameters = new HashMap<>(2);
-                parameters.put("bad_duration", "60");
-                parameters.put("bad_position", "70");
-                command.success(parameters);
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            Map<String, String> parameters = new HashMap<>(2);
+            parameters.put("bad_duration", "60");
+            parameters.put("bad_position", "70");
+            command.success(parameters);
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 
@@ -416,18 +338,12 @@ public class AirplayStreamerImplTest {
     @Test
     public void testUpdateStatusFailure() {
         EventBus eventBus = createMock(EventBus.class);
-        ControlPoint controlPoint = new ControlPoint() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void execute(AirplayDevice device, AirplayCommand command) {
-                assertNotNull(command.getRequest());
-                command.failure("errorMessage");
-            }
+        ControlPoint controlPoint = (device, command) -> {
+            assertNotNull(command.getRequest());
+            command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        Capture<StreamingEvent> captureStreamingEvent = new Capture<>();
+        Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
 

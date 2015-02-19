@@ -34,6 +34,7 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -80,8 +81,8 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public AbstractNode getNode(final String nodeId) {
-        AbstractNode node = null;
+    public Optional<AbstractNode> getNode(final String nodeId) {
+        Optional<AbstractNode> node;
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(nodeId);
         if (indexElement != null) {
@@ -89,11 +90,11 @@ public class MediaDaoImpl implements MediaDao {
             switch (mediaType) {
                 case TYPE_PODCAST:
                     // Podcast node
-                    node = new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath());
+                    node = Optional.of(new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath()));
                     break;
                 case TYPE_RAW_URL:
                     // Raw Url node
-                    node = new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), MimeType.valueOf(indexElement.getMimeType()), indexElement.getPath(), null);
+                    node = Optional.of(new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), MimeType.valueOf(indexElement.getMimeType()), indexElement.getPath(), null));
                     break;
                 default:
                     // File node
@@ -102,6 +103,7 @@ public class MediaDaoImpl implements MediaDao {
             }
         } else {
             LOGGER.warn("[getNode] {} not found in media index", nodeId);
+            node = Optional.empty();
         }
         return node;
     }
@@ -178,19 +180,19 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaType    media type
      * @return file or folder node
      */
-    private AbstractNode getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
-        AbstractNode node = null;
+    private Optional<AbstractNode> getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
+        Optional<AbstractNode> node = Optional.empty();
         File nodeFile = new File(indexElement.getPath());
         if (isValidFile(nodeFile)) {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
             if (mimeType != null) {
-                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
+                node = Optional.ofNullable(buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType));
             }
         } else if (isValidDirectory(nodeFile)) {
             // Folder node
             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
-            node = new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile);
+            node = Optional.of(new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile));
         }
         return node;
     }

@@ -24,6 +24,7 @@ import net.holmes.core.common.ConfigurationParameter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Holmes configuration dao.
@@ -44,7 +45,7 @@ public interface ConfigurationDao {
      * @param rootNode root node
      * @param nodeId   node ID to find
      * @return configuration node
-     * @throws net.holmes.core.business.configuration.exception.UnknownNodeException if node is not found
+     * @throws UnknownNodeException if node is not found
      */
     ConfigurationNode getNode(RootNode rootNode, String nodeId) throws UnknownNodeException;
 
@@ -55,9 +56,9 @@ public interface ConfigurationDao {
      * @param excludedNodeId exclude this node ID from search (can be null)
      * @param label          node label to search
      * @param path           node path to search
-     * @return null or configuration node with same label or path
+     * @return optional configuration node with same label or path
      */
-    ConfigurationNode findNode(RootNode rootNode, String excludedNodeId, String label, String path);
+    Optional<ConfigurationNode> findNode(RootNode rootNode, String excludedNodeId, String label, String path);
 
     /**
      * Save configuration.

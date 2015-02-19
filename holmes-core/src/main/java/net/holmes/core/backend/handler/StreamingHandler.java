@@ -40,6 +40,7 @@ import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.*;
@@ -96,10 +97,10 @@ public class StreamingHandler {
     @Path("/play/{deviceId}/{contentId}")
     @Produces(TEXT_PLAIN)
     public String play(@PathParam("deviceId") final String deviceId, @PathParam("contentId") final String contentId) {
-        AbstractNode contentNode = mediaManager.getNode(contentId);
-        String url = mediaManager.getNodeUrl(contentNode);
+        Optional<AbstractNode> contentNode = mediaManager.getNode(contentId);
+        String url = mediaManager.getNodeUrl(contentNode.get());
         try {
-            streamingManager.play(deviceId, url, contentNode);
+            streamingManager.play(deviceId, url, contentNode.get());
         } catch (UnknownDeviceException e) {
             LOGGER.error(e.getMessage(), e);
             return e.getMessage();
@@ -205,13 +206,13 @@ public class StreamingHandler {
             Device device = streamingManager.getDevice(deviceId);
 
             // Get browse node
-            AbstractNode node = mediaManager.getNode(nodeId);
-            if (node == null && device.isVideoSupported()) {
+            Optional<AbstractNode> node = mediaManager.getNode(nodeId);
+            if (!node.isPresent() && device.isVideoSupported()) {
                 node = mediaManager.getNode(VIDEO.getId());
             }
 
-            if (node != null) {
-                addBrowseResult(result, device, node);
+            if (node.isPresent()) {
+                addBrowseResult(result, device, node.get());
 
             }
         } catch (UnknownDeviceException e) {

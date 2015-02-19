@@ -42,7 +42,7 @@ public class MimeTypeManagerImplTest {
         MimeType mimeType = MimeType.valueOf("video/avi");
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, newArrayList("video/avi")));
         assertFalse(mimeTypeManager.isMimeTypeCompliant(mimeType, newArrayList("audio/mpeg")));
-        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, new ArrayList<String>(0)));
+        assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, new ArrayList<>(0)));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(mimeType, null));
         assertTrue(mimeTypeManager.isMimeTypeCompliant(null, null));
 

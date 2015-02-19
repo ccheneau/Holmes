@@ -68,10 +68,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final long firstResult, final long maxResults,
                                final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         // Get browse node
-        AbstractNode browseNode = mediaManager.getNode(objectID);
-        if (browseNode == null) {
-            throw new ContentDirectoryException(NO_SUCH_OBJECT, objectID);
-        }
+        AbstractNode browseNode = mediaManager.getNode(objectID)
+                .orElseThrow(() -> new ContentDirectoryException(NO_SUCH_OBJECT, objectID));
 
         // Get available mime types
         List<String> availableMimeTypes = getAvailableMimeType(remoteClientInfo);

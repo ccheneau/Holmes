@@ -20,6 +20,7 @@ package net.holmes.core.business.media;
 import net.holmes.core.business.media.model.AbstractNode;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Media manager.
@@ -31,7 +32,7 @@ public interface MediaManager {
      * @param nodeId node id
      * @return node
      */
-    AbstractNode getNode(String nodeId);
+    Optional<AbstractNode> getNode(String nodeId);
 
     /**
      * Get node URL.

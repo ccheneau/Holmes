@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -100,7 +101,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public ConfigurationNode findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+    public Optional<ConfigurationNode> findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
         return this.rootNode.getConfigurationNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
             @Override
             public boolean test(ConfigurationNode node) {
@@ -111,7 +112,7 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
                 }
                 return false;
             }
-        }).findFirst().orElse(null);
+        }).findFirst();
     }
 
 

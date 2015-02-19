@@ -21,6 +21,7 @@ import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.RootNode;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Media dao.
@@ -32,7 +33,7 @@ public interface MediaDao {
      * @param nodeId node id
      * @return node
      */
-    AbstractNode getNode(String nodeId);
+    Optional<AbstractNode> getNode(String nodeId);
 
     /**
      * Get child nodes.

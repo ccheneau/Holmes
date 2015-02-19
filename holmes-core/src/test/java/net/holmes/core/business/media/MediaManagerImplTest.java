@@ -20,7 +20,6 @@ package net.holmes.core.business.media;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.configuration.ConfigurationManagerImpl;
 import net.holmes.core.business.configuration.dao.ConfigurationDao;
-import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.dao.MediaDao;
 import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.MimeTypeManager;
@@ -31,10 +30,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
@@ -56,8 +53,9 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        AbstractNode result = mediaManager.getNode(VIDEO.getId());
+        Optional<AbstractNode> result = mediaManager.getNode(VIDEO.getId());
         assertNotNull(result);
+        assertTrue(result.isPresent());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }
@@ -70,13 +68,14 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getNode(eq("nodeId"))).andReturn(new FolderNode("id", "parentId", "name"));
+        expect(mediaDao.getNode(eq("nodeId"))).andReturn(Optional.of(new FolderNode("id", "parentId", "name")));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        AbstractNode result = mediaManager.getNode("nodeId");
+        Optional<AbstractNode> result = mediaManager.getNode("nodeId");
         assertNotNull(result);
+        assertTrue(result.isPresent());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }
@@ -92,8 +91,9 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        AbstractNode result = mediaManager.getNode(null);
-        assertNull(result);
+        Optional<AbstractNode> result = mediaManager.getNode(null);
+        assertNotNull(result);
+        assertFalse(result.isPresent());
 
         verify(mediaDao, mimeTypeManager, localAddress);
     }
@@ -148,7 +148,7 @@ public class MediaManagerImplTest {
         InetAddress localAddress = createMock(InetAddress.class);
 
         expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
-        expect(mediaDao.getChildNodes(eq("videosTest"))).andReturn(new ArrayList<AbstractNode>());
+        expect(mediaDao.getChildNodes(eq("videosTest"))).andReturn(new ArrayList<>());
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -184,7 +184,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getNode(eq("nodeId"))).andReturn(new PodcastNode("id", "parentId", "name", "url"));
+        expect(mediaDao.getNode(eq("nodeId"))).andReturn(Optional.of(new PodcastNode("id", "parentId", "name", "url")));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -280,10 +280,8 @@ public class MediaManagerImplTest {
 
     public List<AbstractNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
         // Add folder nodes stored in configuration
-        List<AbstractNode> nodes = new ArrayList<>();
-        for (ConfigurationNode configNode : configurationDao.getNodes(rootNode)) {
-            nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
-        }
-        return nodes;
+        return configurationDao.getNodes(rootNode).stream()
+                .map(configNode -> new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())))
+                .collect(Collectors.toList());
     }
 }

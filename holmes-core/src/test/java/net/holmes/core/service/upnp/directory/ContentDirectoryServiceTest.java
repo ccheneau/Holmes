@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
@@ -82,7 +83,7 @@ public class ContentDirectoryServiceTest {
         expect(inetAddress.getHostAddress()).andReturn("localhost");
         expect(streamingManager.findDevices(eq("localhost"))).andReturn(newArrayList(upnpDevice, airplayDevice));
         expect(upnpDevice.getSupportedMimeTypes()).andReturn(newArrayList("video/avi"));
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
         expect(configurationManager.getParameter(UPNP_ADD_SUBTITLE)).andReturn(true);
@@ -116,7 +117,7 @@ public class ContentDirectoryServiceTest {
         expect(inetAddress.getHostAddress()).andReturn("localhost");
         expect(streamingManager.findDevices(eq("localhost"))).andReturn(newArrayList(upnpDevice, airplayDevice));
         expect(upnpDevice.getSupportedMimeTypes()).andReturn(newArrayList("video/avi"));
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
         expect(configurationManager.getParameter(UPNP_ADD_SUBTITLE)).andReturn(false);
@@ -142,7 +143,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setStreamingManager(streamingManager);
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         List<AbstractNode> rootChildren = Lists.<AbstractNode>newArrayList(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.name()));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(rootChildren);
 
@@ -166,7 +167,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setMediaManager(mediaManager);
         contentDirectoryService.setStreamingManager(streamingManager);
 
-        expect(mediaManager.getNode(eq("0"))).andReturn(null);
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.empty());
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
@@ -191,7 +192,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setStreamingManager(streamingManager);
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
 
         replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
 
@@ -214,7 +215,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setStreamingManager(streamingManager);
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("url");
         expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
@@ -251,7 +252,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setStreamingManager(streamingManager);
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         MimeType mimeType = MimeType.valueOf("video/avi");
@@ -282,7 +283,7 @@ public class ContentDirectoryServiceTest {
         contentDirectoryService.setStreamingManager(streamingManager);
 
         expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(new FolderNode("0", "-1", "root"));
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
 
         List<AbstractNode> children = new ArrayList<>();

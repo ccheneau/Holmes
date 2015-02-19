@@ -24,6 +24,7 @@ import net.holmes.core.common.ConfigurationParameter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Configuration manager
@@ -55,9 +56,9 @@ public interface ConfigurationManager {
      * @param excludedNodeId exclude this node ID from search (can be null)
      * @param label          node label to search
      * @param path           node path to search
-     * @return null or configuration node with same label or path
+     * @return optional configuration node with same label or path
      */
-    ConfigurationNode findNode(RootNode rootNode, String excludedNodeId, String label, String path);
+    Optional<ConfigurationNode> findNode(RootNode rootNode, String excludedNodeId, String label, String path);
 
     /**
      * Add configuration node.
@@ -76,11 +77,11 @@ public interface ConfigurationManager {
      * @param nodeId   node ID to edit
      * @param label    new node label
      * @param path     new node path
-     * @return updated configuration node or null if node is not modified
+     * @return optional updated configuration node or empty if node is not modified
      * @throws IOException          Signals that an I/O exception has occurred
      * @throws UnknownNodeException Signals configuration node was not found
      */
-    ConfigurationNode editNode(RootNode rootNode, String nodeId, String label, String path) throws IOException, UnknownNodeException;
+    Optional<ConfigurationNode> editNode(RootNode rootNode, String nodeId, String label, String path) throws IOException, UnknownNodeException;
 
     /**
      * Save configuration.

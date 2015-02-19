@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Configuration manager implementation.
@@ -66,7 +67,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
      * {@inheritDoc}
      */
     @Override
-    public ConfigurationNode findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+    public Optional<ConfigurationNode> findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
         return configurationDao.findNode(rootNode, excludedNodeId, label, path);
     }
 
@@ -94,7 +95,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
      * {@inheritDoc}
      */
     @Override
-    public ConfigurationNode editNode(final RootNode rootNode, final String nodeId, final String label, final String path) throws IOException, UnknownNodeException {
+    public Optional<ConfigurationNode> editNode(final RootNode rootNode, final String nodeId, final String label, final String path) throws IOException, UnknownNodeException {
         // Get node to edit
         ConfigurationNode currentNode = getNode(rootNode, nodeId);
 
@@ -106,9 +107,9 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
             // Save configuration
             save();
 
-            return currentNode;
+            return Optional.of(currentNode);
         }
-        return null;
+        return Optional.empty();
     }
 
     /**

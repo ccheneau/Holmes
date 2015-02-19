@@ -37,6 +37,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static net.holmes.core.backend.response.DeviceBrowseResult.*;
@@ -82,7 +83,8 @@ public class StreamingHandlerTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
 
-        expect(mediaManager.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
+        ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
+        expect(mediaManager.getNode(eq("contentId"))).andReturn(Optional.of(contentNode)).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("contentUrl").atLeastOnce();
         streamingManager.play(eq("deviceId"), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall().atLeastOnce();
@@ -99,7 +101,8 @@ public class StreamingHandlerTest {
         MediaManager mediaManager = createMock(MediaManager.class);
         StreamingManager streamingManager = createMock(StreamingManager.class);
 
-        expect(mediaManager.getNode(eq("contentId"))).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
+        ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
+        expect(mediaManager.getNode(eq("contentId"))).andReturn(Optional.of(contentNode)).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("contentUrl").atLeastOnce();
         streamingManager.play(eq("deviceId"), eq("contentUrl"), isA(AbstractNode.class));
         expectLastCall().andThrow(new UnknownDeviceException("deviceId")).atLeastOnce();
@@ -246,7 +249,7 @@ public class StreamingHandlerTest {
         Device device = createMock(Device.class);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
-        expect(mediaManager.getNode(eq("0"))).andReturn(null).atLeastOnce();
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.empty()).atLeastOnce();
         expect(device.isVideoSupported()).andReturn(false).atLeastOnce();
 
         replay(mediaManager, streamingManager, device);
@@ -270,8 +273,8 @@ public class StreamingHandlerTest {
         Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
-        expect(mediaManager.getNode(eq("0"))).andReturn(null).atLeastOnce();
-        expect(mediaManager.getNode(eq(VIDEO.getId()))).andReturn(videoRootNode).atLeastOnce();
+        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.empty()).atLeastOnce();
+        expect(mediaManager.getNode(eq(VIDEO.getId()))).andReturn(Optional.of(videoRootNode)).atLeastOnce();
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(searchResult).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("nodeUrl").atLeastOnce();
         expect(device.isVideoSupported()).andReturn(true).atLeastOnce();
@@ -301,7 +304,7 @@ public class StreamingHandlerTest {
         Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode, podcastNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
-        expect(mediaManager.getNode(eq("nodeId"))).andReturn(node).atLeastOnce();
+        expect(mediaManager.getNode(eq("nodeId"))).andReturn(Optional.of(node)).atLeastOnce();
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(searchResult).atLeastOnce();
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("nodeUrl").atLeastOnce();
         expect(device.getSupportedMimeTypes()).andReturn(null).atLeastOnce();

@@ -27,10 +27,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -41,7 +38,7 @@ public class TestConfigurationDao implements ConfigurationDao {
     private final List<ConfigurationNode> pictureFolders;
     private final List<ConfigurationNode> audioFolders;
     private final List<ConfigurationNode> podcasts;
-    private Map<String, String> parameters;
+    private final Map<String, String> parameters;
 
     @Inject
     @SuppressWarnings("unchecked")
@@ -118,7 +115,7 @@ public class TestConfigurationDao implements ConfigurationDao {
      * {@inheritDoc}
      */
     @Override
-    public ConfigurationNode findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
+    public Optional<ConfigurationNode> findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
         return getNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
             @Override
             public boolean test(ConfigurationNode node) {
@@ -129,7 +126,7 @@ public class TestConfigurationDao implements ConfigurationDao {
                 }
                 return false;
             }
-        }).findFirst().orElse(null);
+        }).findFirst();
     }
 
     /**

@@ -27,6 +27,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static net.holmes.core.business.media.model.RootNode.ROOT;
 import static org.easymock.EasyMock.*;
@@ -89,16 +90,17 @@ public class ConfigurationManagerImplTest {
 
         ConfigurationNode configurationNode = new ConfigurationNode("nodeId", "label", "path");
 
-        expect(configurationDao.findNode(eq(ROOT), eq("excludedNodeId"), eq("label"), eq("path"))).andReturn(configurationNode);
+        expect(configurationDao.findNode(eq(ROOT), eq("excludedNodeId"), eq("label"), eq("path"))).andReturn(Optional.of(configurationNode));
 
         replay(configurationDao);
 
         ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
-        ConfigurationNode result = configurationManager.findNode(ROOT, "excludedNodeId", "label", "path");
+        Optional<ConfigurationNode> result = configurationManager.findNode(ROOT, "excludedNodeId", "label", "path");
 
         verify(configurationDao);
 
-        assertEquals(result, configurationNode);
+        assertTrue(result.isPresent());
+        assertEquals(result.get(), configurationNode);
     }
 
     @Test
@@ -173,7 +175,7 @@ public class ConfigurationManagerImplTest {
 
         ConfigurationNode configurationNode = new ConfigurationNode("nodeId", "label", "path");
 
-        expect(configurationDao.getNodes(eq(ROOT))).andReturn(new ArrayList<ConfigurationNode>(0));
+        expect(configurationDao.getNodes(eq(ROOT))).andReturn(new ArrayList<>(0));
         configurationDao.save();
         expectLastCall();
 
@@ -215,10 +217,11 @@ public class ConfigurationManagerImplTest {
         replay(configurationDao);
 
         ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
-        ConfigurationNode result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
+        Optional<ConfigurationNode> result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
 
         assertNotNull(result);
-        assertEquals(result, newNode);
+        assertTrue(result.isPresent());
+        assertEquals(result.get(), newNode);
 
         verify(configurationDao);
     }
@@ -273,10 +276,11 @@ public class ConfigurationManagerImplTest {
         replay(configurationDao);
 
         ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
-        ConfigurationNode result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
+        Optional<ConfigurationNode> result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
 
         assertNotNull(result);
-        assertEquals(result, newNode);
+        assertTrue(result.isPresent());
+        assertEquals(result.get(), newNode);
 
         verify(configurationDao);
     }
@@ -295,10 +299,11 @@ public class ConfigurationManagerImplTest {
         replay(configurationDao);
 
         ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
-        ConfigurationNode result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
+        Optional<ConfigurationNode> result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
 
         assertNotNull(result);
-        assertEquals(result, newNode);
+        assertTrue(result.isPresent());
+        assertEquals(result.get(), newNode);
 
         verify(configurationDao);
     }
@@ -315,9 +320,10 @@ public class ConfigurationManagerImplTest {
         replay(configurationDao);
 
         ConfigurationManager configurationManager = new ConfigurationManagerImpl(configurationDao);
-        ConfigurationNode result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
+        Optional<ConfigurationNode> result = configurationManager.editNode(ROOT, newNode.getId(), newNode.getLabel(), newNode.getPath());
 
-        assertNull(result);
+        assertNotNull(result);
+        assertFalse(result.isPresent());
 
         verify(configurationDao);
     }

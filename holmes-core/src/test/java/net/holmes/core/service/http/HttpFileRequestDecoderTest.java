@@ -28,6 +28,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static io.netty.handler.codec.http.HttpMethod.*;
 import static org.easymock.EasyMock.*;
@@ -129,7 +130,8 @@ public class HttpFileRequestDecoderTest {
 
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=1234").atLeastOnce();
-        expect(mediaManager.getNode("1234")).andReturn(new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"))).atLeastOnce();
+        ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
+        expect(mediaManager.getNode("1234")).andReturn(Optional.of(contentNode)).atLeastOnce();
 
         replay(context, request, mediaManager, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));
@@ -154,7 +156,7 @@ public class HttpFileRequestDecoderTest {
         expect(request.getMethod()).andReturn(GET).atLeastOnce();
         expect(request.getUri()).andReturn("/content?id=").atLeastOnce();
         expect(request.retain()).andReturn(request).atLeastOnce();
-        expect(mediaManager.getNode("")).andReturn(null).atLeastOnce();
+        expect(mediaManager.getNode("")).andReturn(Optional.empty()).atLeastOnce();
 
         replay(context, request, mediaManager, mimeTypeManager);
         HttpFileRequestDecoder decoder = new HttpFileRequestDecoder(mediaManager, mimeTypeManager, System.getProperty("java.io.tmpdir"));

@@ -49,8 +49,8 @@ public class SocketControlPointTest {
 
         String request = "Request";
 
-        Capture<byte[]> captureRequest = new Capture<>();
-        Capture<Map<String, String>> captureContentParameters = new Capture<>();
+        Capture<byte[]> captureRequest = newCapture();
+        Capture<Map<String, String>> captureContentParameters = newCapture();
 
         expect(device.getConnection(isA(SocketFactory.class))).andReturn(socket).atLeastOnce();
         expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
@@ -90,8 +90,8 @@ public class SocketControlPointTest {
 
         String request = "Request";
 
-        Capture<byte[]> captureRequest = new Capture<>();
-        Capture<Map<String, String>> captureContentParameters = new Capture<>();
+        Capture<byte[]> captureRequest = newCapture();
+        Capture<Map<String, String>> captureContentParameters = newCapture();
 
         expect(device.getConnection(isA(SocketFactory.class))).andReturn(socket).atLeastOnce();
         expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
@@ -131,8 +131,8 @@ public class SocketControlPointTest {
 
         String request = "Request";
 
-        Capture<byte[]> captureRequest = new Capture<>();
-        Capture<Map<String, String>> captureContentParameters = new Capture<>();
+        Capture<byte[]> captureRequest = newCapture();
+        Capture<Map<String, String>> captureContentParameters = newCapture();
 
         expect(device.getConnection(isA(SocketFactory.class))).andReturn(socket).atLeastOnce();
         expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();
@@ -167,7 +167,7 @@ public class SocketControlPointTest {
 
         String request = "Request";
 
-        Capture<byte[]> captureRequest = new Capture<>();
+        Capture<byte[]> captureRequest = newCapture();
 
         expect(device.getConnection(isA(SocketFactory.class))).andReturn(socket).atLeastOnce();
         expect(socket.getOutputStream()).andReturn(socketOutputStream).atLeastOnce();

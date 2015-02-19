@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static net.holmes.core.common.ConfigurationParameter.*;
@@ -119,8 +120,8 @@ public class XmlConfigurationDaoImplTest {
         ConfigurationNode node = configuration.getNode(VIDEO, "video1");
         assertNotNull(node);
 
-        ConfigurationNode foundNode = configuration.findNode(VIDEO, "video1", node.getLabel(), node.getPath());
-        assertNull(foundNode);
+        Optional<ConfigurationNode> foundNode = configuration.findNode(VIDEO, "video1", node.getLabel(), node.getPath());
+        assertFalse(foundNode.isPresent());
     }
 
     @Test
@@ -130,9 +131,10 @@ public class XmlConfigurationDaoImplTest {
         ConfigurationNode node = configuration.getNode(VIDEO, "video1");
         assertNotNull(node);
 
-        ConfigurationNode foundNode = configuration.findNode(VIDEO, null, node.getLabel(), "");
+        Optional<ConfigurationNode> foundNode = configuration.findNode(VIDEO, null, node.getLabel(), "");
         assertNotNull(foundNode);
-        assertEquals(node, foundNode);
+        assertTrue(foundNode.isPresent());
+        assertEquals(node, foundNode.get());
     }
 
     @Test
@@ -142,9 +144,10 @@ public class XmlConfigurationDaoImplTest {
         ConfigurationNode node = configuration.getNode(VIDEO, "video1");
         assertNotNull(node);
 
-        ConfigurationNode foundNode = configuration.findNode(VIDEO, null, "", node.getPath());
+        Optional<ConfigurationNode> foundNode = configuration.findNode(VIDEO, null, "", node.getPath());
         assertNotNull(foundNode);
-        assertEquals(node, foundNode);
+        assertTrue(foundNode.isPresent());
+        assertEquals(node, foundNode.get());
     }
 
     @Test
@@ -154,8 +157,8 @@ public class XmlConfigurationDaoImplTest {
         ConfigurationNode node = configuration.getNode(VIDEO, "video1");
         assertNotNull(node);
 
-        ConfigurationNode foundNode = configuration.findNode(VIDEO, "bad_id", "", "");
-        assertNull(foundNode);
+        Optional<ConfigurationNode> foundNode = configuration.findNode(VIDEO, "bad_id", "", "");
+        assertFalse(foundNode.isPresent());
     }
 
 }

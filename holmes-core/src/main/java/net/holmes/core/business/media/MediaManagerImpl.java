@@ -32,10 +32,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -51,6 +48,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Singleton
 public final class MediaManagerImpl implements MediaManager {
     private static final Logger LOGGER = getLogger(MediaManagerImpl.class);
+
     private final ResourceBundle resourceBundle;
     private final MediaDao mediaDao;
     private final MimeTypeManager mimeTypeManager;
@@ -80,12 +78,12 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public AbstractNode getNode(final String nodeId) {
-        AbstractNode node = null;
+    public Optional<AbstractNode> getNode(final String nodeId) {
+        Optional<AbstractNode> node = Optional.empty();
         RootNode rootNode = getById(nodeId);
         if (rootNode != NONE) {
             // Get Root node
-            node = new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId()));
+            node = Optional.of(new FolderNode(rootNode.getId(), rootNode.getParentId(), resourceBundle.getString("rootNode." + rootNode.getId())));
         } else if (nodeId != null) {
             node = mediaDao.getNode(nodeId);
         }
@@ -149,7 +147,7 @@ public final class MediaManagerImpl implements MediaManager {
     @Subscribe
     public void handleMediaEvent(final MediaEvent mediaEvent) {
         if (mediaEvent.getType() == SCAN_NODE) {
-            scanNode(getNode(mediaEvent.getParameter()));
+            getNode(mediaEvent.getParameter()).ifPresent(this::scanNode);
         } else {
             LOGGER.error("Unknown media event {}", mediaEvent);
         }

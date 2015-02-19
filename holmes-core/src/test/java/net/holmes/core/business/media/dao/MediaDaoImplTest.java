@@ -32,6 +32,7 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
@@ -52,8 +53,9 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
-        assertNull(result);
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
+        assertNotNull(result);
+        assertFalse(result.isPresent());
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -70,9 +72,10 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
-        assertEquals(result.getClass(), PodcastNode.class);
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getClass(), PodcastNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -89,9 +92,10 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
-        assertEquals(result.getClass(), RawUrlNode.class);
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getClass(), RawUrlNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -108,8 +112,9 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
-        assertNull(result);
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
+        assertNotNull(result);
+        assertFalse(result.isPresent());
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -128,9 +133,10 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
-        assertEquals(result.getClass(), FolderNode.class);
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getClass(), FolderNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -149,9 +155,10 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
-        assertEquals(result.getClass(), FolderNode.class);
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getClass(), FolderNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -172,9 +179,10 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
-        assertEquals(result.getClass(), ContentNode.class);
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getClass(), ContentNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -195,8 +203,9 @@ public class MediaDaoImplTest {
         replay(mimeTypeManager, mediaIndexDao);
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
-        AbstractNode result = mediaDao.getNode("nodeId");
-        assertNull(result);
+        Optional<AbstractNode> result = mediaDao.getNode("nodeId");
+        assertNotNull(result);
+        assertFalse(result.isPresent());
 
         verify(mimeTypeManager, mediaIndexDao);
     }
