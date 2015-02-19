@@ -58,7 +58,7 @@
         <dep.rome.version>1.0</dep.rome.version>
         <dep.seamless.version>1.1.0</dep.seamless.version>
         <dep.slf4j.version>1.7.10</dep.slf4j.version>
-        <dep.xstream.version>1.4.7</dep.xstream.version>
+        <dep.xstream.version>1.4.8</dep.xstream.version>
     </properties>
 
     <build>
