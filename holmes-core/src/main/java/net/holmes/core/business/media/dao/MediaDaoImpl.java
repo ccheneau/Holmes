@@ -181,20 +181,19 @@ public class MediaDaoImpl implements MediaDao {
      * @return file or folder node
      */
     private Optional<AbstractNode> getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
-        Optional<AbstractNode> node = Optional.empty();
         File nodeFile = new File(indexElement.getPath());
         if (isValidFile(nodeFile)) {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
             if (mimeType != null) {
-                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
+                return buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
             }
         } else if (isValidDirectory(nodeFile)) {
             // Folder node
             String nodeName = indexElement.getName() != null ? indexElement.getName() : nodeFile.getName();
-            node = Optional.of(new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile));
+            return Optional.of(new FolderNode(nodeId, indexElement.getParentId(), nodeName, nodeFile));
         }
-        return node;
+        return Optional.empty();
     }
 
     /**
