@@ -33,7 +33,6 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -127,13 +126,10 @@ public final class BackendManagerImpl implements BackendManager {
         }
 
         try {
-            // Edit node
-            Optional<ConfigurationNode> node = configurationManager.editNode(rootNode, id, folder.getName(), folder.getPath());
+            // Edit node and post update folder event
+            configurationManager.editNode(rootNode, id, folder.getName(), folder.getPath())
+                    .ifPresent(node -> eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, node, rootNode)));
 
-            if (node.isPresent()) {
-                // Post update folder event
-                eventBus.post(new ConfigurationEvent(UPDATE_FOLDER, node.get(), rootNode));
-            }
         } catch (IOException e) {
             throw new BackendException(e);
         } catch (UnknownNodeException e) {
