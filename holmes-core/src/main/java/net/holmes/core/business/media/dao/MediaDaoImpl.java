@@ -187,7 +187,7 @@ public class MediaDaoImpl implements MediaDao {
             // Content node
             MimeType mimeType = mimeTypeManager.getMimeType(nodeFile.getName());
             if (mimeType != null) {
-                node = Optional.ofNullable(buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType));
+                node = buildContentNode(nodeId, indexElement.getParentId(), nodeFile, mediaType, mimeType);
             }
         } else if (isValidDirectory(nodeFile)) {
             // Folder node
@@ -252,10 +252,7 @@ public class MediaDaoImpl implements MediaDao {
         if (mimeType != null) {
             // Add file node
             String nodeId = mediaIndexDao.add(new MediaIndexElement(parentId, mediaType.getValue(), mimeType.getMimeType(), file.getAbsolutePath(), null, true, false));
-            ContentNode node = buildContentNode(nodeId, parentId, file, mediaType, mimeType);
-            if (node != null) {
-                nodes.add(node);
-            }
+            buildContentNode(nodeId, parentId, file, mediaType, mimeType).ifPresent(nodes::add);
         }
     }
 
@@ -266,11 +263,11 @@ public class MediaDaoImpl implements MediaDao {
      * @param parentId  parent id
      * @param file      file
      * @param mediaType media type
-     * @return content node
+     * @return optional content node
      */
-    private ContentNode buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
+    private Optional<AbstractNode> buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         // Check mime type
-        return mimeType.getType() == mediaType || mimeType.isSubTitle() ? new ContentNode(nodeId, parentId, file.getName(), file, mimeType) : null;
+        return Optional.ofNullable(mimeType.getType() == mediaType || mimeType.isSubTitle() ? new ContentNode(nodeId, parentId, file.getName(), file, mimeType) : null);
     }
 
     /**
