@@ -37,9 +37,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.toList;
+import static net.holmes.core.common.ConfigurationParameter.PARAMETERS;
 
 /**
  * XML configuration dao implementation.
@@ -223,21 +224,21 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
          */
         @SuppressWarnings("unchecked")
         public void checkParameters() {
-            // Check new parameters
-            List<String> availableParams = new ArrayList<>(ConfigurationParameter.PARAMETERS.size());
-            for (ConfigurationParameter param : ConfigurationParameter.PARAMETERS) {
-                availableParams.add(param.getName());
-                // If a parameter is not present in configuration, add parameter with default value
-                if (this.parameters.getProperty(param.getName()) == null) {
-                    this.parameters.put(param.getName(), param.format(param.getDefaultValue()));
-                }
-            }
+            // If a parameter is not present in configuration, add parameter with default value
+            PARAMETERS.stream()
+                    .filter(param -> this.parameters.getProperty(param.getName()) == null)
+                    .forEach(param -> this.parameters.put(param.getName(), param.format(param.getDefaultValue())));
 
-            // Check obsolete parameters
+            // Get available parameters
+            List<String> availableParams = PARAMETERS.stream()
+                    .map(ConfigurationParameter::getName)
+                    .collect(toList());
+
+            // Get obsolete parameters
             List<String> obsoleteParams = this.parameters.keySet().stream()
                     .filter(paramKey -> !availableParams.contains(paramKey.toString()))
                     .map(Object::toString)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
             // Remove obsolete parameters
             obsoleteParams.forEach(this.parameters::remove);
