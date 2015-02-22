@@ -19,6 +19,7 @@ package net.holmes.core.business.streaming.session;
 
 import javax.inject.Singleton;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -83,11 +84,7 @@ public final class SessionDaoImpl implements SessionDao {
      */
     @Override
     public StreamingSession getSession(final String deviceId) throws UnknownSessionException {
-        StreamingSession session = sessions.get(deviceId);
-        if (session == null) {
-            throw new UnknownSessionException(deviceId);
-        }
-        return session;
+        return Optional.ofNullable(sessions.get(deviceId)).orElseThrow(() -> new UnknownSessionException(deviceId));
     }
 
     /**

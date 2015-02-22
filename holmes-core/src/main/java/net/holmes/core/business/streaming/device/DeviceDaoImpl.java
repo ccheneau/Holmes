@@ -21,6 +21,7 @@ import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -65,11 +66,7 @@ public final class DeviceDaoImpl implements DeviceDao {
      */
     @Override
     public Device getDevice(final String deviceId) throws UnknownDeviceException {
-        Device device = devices.get(deviceId);
-        if (device == null) {
-            throw new UnknownDeviceException(deviceId);
-        }
-        return device;
+        return Optional.ofNullable(devices.get(deviceId)).orElseThrow(() -> new UnknownDeviceException(deviceId));
     }
 
     /**
