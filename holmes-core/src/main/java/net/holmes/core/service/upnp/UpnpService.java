@@ -39,10 +39,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.HashSet;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static net.holmes.core.business.streaming.upnp.UpnpUtils.*;
 import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_ENABLE;
 import static org.fourthline.cling.support.model.Protocol.HTTP_GET;
@@ -227,11 +226,9 @@ public final class UpnpService implements Service {
      * @return available Mime types
      */
     private Set<String> getAvailableMimeTypes(ProtocolInfos upnpProtocolInfo) {
-        Set<String> availableMimeTypes = new HashSet<>(upnpProtocolInfo.size());
-        availableMimeTypes.addAll(upnpProtocolInfo.stream()
+        return upnpProtocolInfo.stream()
                 .filter(protocolInfo -> protocolInfo.getProtocol() == HTTP_GET)
                 .map(ProtocolInfo::getContentFormat)
-                .collect(toList()));
-        return availableMimeTypes;
+                .collect(toSet());
     }
 }
