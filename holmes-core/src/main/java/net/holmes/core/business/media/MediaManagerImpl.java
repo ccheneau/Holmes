@@ -34,8 +34,8 @@ import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.ConfigurationParameter.HTTP_SERVER_PORT;
 import static net.holmes.core.common.Constants.*;
@@ -128,7 +128,7 @@ public final class MediaManagerImpl implements MediaManager {
         Predicate<AbstractNode> p = node -> !(node instanceof MimeTypeNode)
                 || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
 
-        return childNodes.stream().filter(p).collect(Collectors.toList());
+        return childNodes.stream().filter(p).collect(toList());
     }
 
     /**

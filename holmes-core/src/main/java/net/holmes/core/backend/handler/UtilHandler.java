@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.common.FileUtils.listChildren;
 import static net.holmes.core.common.SystemProperty.USER_HOME;
@@ -95,14 +95,13 @@ public final class UtilHandler {
             folders.add(new Folder(userHomeDir.getName(), userHomeDir.getAbsolutePath()));
 
             // Add server root folders to response
-            for (java.nio.file.Path root : FileSystems.getDefault().getRootDirectories()) {
-                folders.add(new Folder(root.toString(), root.toString()));
-            }
+            FileSystems.getDefault().getRootDirectories()
+                    .forEach(root -> folders.add(new Folder(root.toString(), root.toString())));
         } else {
             // Get child folders
             folders.addAll(listChildren(parentPath, false).stream()
                     .map(child -> new Folder(child.getName(), child.getAbsolutePath()))
-                    .collect(Collectors.toList()));
+                    .collect(toList()));
         }
         return folders;
     }

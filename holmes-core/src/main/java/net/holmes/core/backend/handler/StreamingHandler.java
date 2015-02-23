@@ -41,8 +41,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.MediaType.*;
 import static net.holmes.core.backend.response.DeviceBrowseResult.*;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
@@ -81,7 +81,7 @@ public class StreamingHandler {
     public List<PlaybackDevice> getDevices() {
         Collection<Device> devices = streamingManager.getDevices();
         List<PlaybackDevice> playbackDevices = new ArrayList<>(devices.size());
-        playbackDevices.addAll(devices.stream().map(this::buildPlaybackDevice).collect(Collectors.toList()));
+        playbackDevices.addAll(devices.stream().map(this::buildPlaybackDevice).collect(toList()));
 
         return playbackDevices;
     }

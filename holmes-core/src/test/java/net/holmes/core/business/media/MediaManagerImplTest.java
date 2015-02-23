@@ -31,9 +31,9 @@ import org.junit.Test;
 import java.io.File;
 import java.net.InetAddress;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.stream.Collectors.toList;
 import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.*;
@@ -282,6 +282,6 @@ public class MediaManagerImplTest {
         // Add folder nodes stored in configuration
         return configurationDao.getNodes(rootNode).stream()
                 .map(configNode -> new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 }

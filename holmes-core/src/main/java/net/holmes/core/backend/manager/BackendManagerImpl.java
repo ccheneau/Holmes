@@ -35,9 +35,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.stream.Collectors.toList;
 import static net.holmes.core.backend.exception.BackendErrorMessage.*;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
@@ -72,7 +72,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public Collection<ConfigurationFolder> getFolders(final RootNode rootNode) {
         return configurationManager.getNodes(rootNode).stream()
-                .map(new ConfigurationNodeFactory()).collect(Collectors.toList());
+                .map(new ConfigurationNodeFactory()).collect(toList());
     }
 
     /**

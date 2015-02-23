@@ -22,8 +22,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Device dao implementation.
@@ -82,9 +82,8 @@ public final class DeviceDaoImpl implements DeviceDao {
      */
     @Override
     public Collection<Device> findDevices(final String hostAddress) {
-        Predicate<Device> p = device -> device.getAddress().getHostAddress().equals(hostAddress);
         return devices.values().stream()
-                .filter(p)
-                .collect(Collectors.<Device>toList());
+                .filter(device -> device.getAddress().getHostAddress().equals(hostAddress))
+                .collect(toList());
     }
 }
