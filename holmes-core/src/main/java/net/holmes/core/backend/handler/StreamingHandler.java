@@ -22,9 +22,9 @@ import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
-import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
@@ -97,7 +97,7 @@ public class StreamingHandler {
     @Path("/play/{deviceId}/{contentId}")
     @Produces(TEXT_PLAIN)
     public String play(@PathParam("deviceId") final String deviceId, @PathParam("contentId") final String contentId) {
-        Optional<AbstractNode> contentNode = mediaManager.getNode(contentId);
+        Optional<MediaNode> contentNode = mediaManager.getNode(contentId);
         String url = mediaManager.getNodeUrl(contentNode.get());
         try {
             streamingManager.play(deviceId, url, contentNode.get());
@@ -206,7 +206,7 @@ public class StreamingHandler {
             Device device = streamingManager.getDevice(deviceId);
 
             // Get browse node
-            Optional<AbstractNode> node = mediaManager.getNode(nodeId);
+            Optional<MediaNode> node = mediaManager.getNode(nodeId);
             if (!node.isPresent() && device.isVideoSupported()) {
                 node = mediaManager.getNode(VIDEO.getId());
             }
@@ -229,15 +229,15 @@ public class StreamingHandler {
      * @param device device
      * @param node   node
      */
-    private void addBrowseResult(final DeviceBrowseResult result, final Device device, final AbstractNode node) {
+    private void addBrowseResult(final DeviceBrowseResult result, final Device device, final MediaNode node) {
         // Get child nodes
-        Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
+        Collection<MediaNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, device.getSupportedMimeTypes()));
         // Build browse result
-        for (AbstractNode abstractNode : searchResult) {
-            if (abstractNode instanceof FolderNode) {
-                result.getFolders().add(buildBrowseFolder(abstractNode));
-            } else if (abstractNode instanceof ContentNode) {
-                result.getContents().add(buildBrowseContent(abstractNode));
+        for (MediaNode mediaNode : searchResult) {
+            if (mediaNode instanceof FolderNode) {
+                result.getFolders().add(buildBrowseFolder(mediaNode));
+            } else if (mediaNode instanceof ContentNode) {
+                result.getContents().add(buildBrowseContent(mediaNode));
             }
         }
     }
@@ -266,7 +266,7 @@ public class StreamingHandler {
      * @param node node
      * @return browse folder
      */
-    private BrowseFolder buildBrowseFolder(final AbstractNode node) {
+    private BrowseFolder buildBrowseFolder(final MediaNode node) {
         BrowseFolder browseFolder = new BrowseFolder();
         browseFolder.setNodeId(node.getId());
         browseFolder.setFolderName(node.getName());
@@ -279,7 +279,7 @@ public class StreamingHandler {
      * @param node node
      * @return browse content
      */
-    private BrowseContent buildBrowseContent(final AbstractNode node) {
+    private BrowseContent buildBrowseContent(final MediaNode node) {
         BrowseContent browseContent = new BrowseContent();
         browseContent.setNodeId(node.getId());
         browseContent.setContentName(node.getName());

@@ -17,8 +17,8 @@
 
 package net.holmes.core.service.upnp.directory;
 
-import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.business.mimetype.model.MimeType;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
@@ -167,7 +167,7 @@ final class DirectoryBrowseResult {
      * @param res          didl resource
      * @throws ContentDirectoryException
      */
-    private void addDidlItem(final String parentNodeId, final AbstractNode node, final String name, final MimeType mimeType, final Res res) throws ContentDirectoryException {
+    private void addDidlItem(final String parentNodeId, final MediaNode node, final String name, final MimeType mimeType, final Res res) throws ContentDirectoryException {
         Item item;
         switch (mimeType.getType()) {
             case TYPE_VIDEO:
@@ -203,7 +203,7 @@ final class DirectoryBrowseResult {
      * @param res          didl resource
      * @return DIDL item or null
      */
-    private Item getUnknownTypeItem(final String parentNodeId, final AbstractNode node, final String name, final MimeType mimeType, final Res res) {
+    private Item getUnknownTypeItem(final String parentNodeId, final MediaNode node, final String name, final MimeType mimeType, final Res res) {
         Item item = null;
         if (mimeType.equals(MIME_TYPE_SUBTITLE)) {
             // Add subtitle item
@@ -223,7 +223,7 @@ final class DirectoryBrowseResult {
      * @param childCount   child count
      * @throws ContentDirectoryException
      */
-    public void addContainer(final String parentNodeId, final AbstractNode node, final int childCount) throws ContentDirectoryException {
+    public void addContainer(final String parentNodeId, final MediaNode node, final int childCount) throws ContentDirectoryException {
         Container container = new Container(node.getId(), parentNodeId, node.getName(), null, CONTAINER_CLASS, childCount);
         container.setSearchable(true);
         setDidlMetadata(container, node);
@@ -249,7 +249,7 @@ final class DirectoryBrowseResult {
      * @param node       node
      * @throws ContentDirectoryException
      */
-    private void setDidlMetadata(final DIDLObject didlObject, final AbstractNode node) throws ContentDirectoryException {
+    private void setDidlMetadata(final DIDLObject didlObject, final MediaNode node) throws ContentDirectoryException {
         if (node.getModifiedDate() != null) {
             didlObject.replaceFirstProperty(new DC.DATE(new SimpleDateFormat(UPNP_DATE_FORMAT).format(node.getModifiedDate())));
         }

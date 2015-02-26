@@ -25,7 +25,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.exception.HolmesException;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.sun.syndication.feed.module.RssModule.*;
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.common.MediaType.TYPE_RAW_URL;
 
 /**
@@ -52,8 +52,8 @@ abstract class PodcastParser {
      * @throws HolmesException
      */
     @SuppressWarnings("unchecked")
-    public List<AbstractNode> parse(final String podcastUrl, final String podcastId) throws HolmesException {
-        List<AbstractNode> podcastEntryNodes = new ArrayList<>();
+    public List<MediaNode> parse(final String podcastUrl, final String podcastId) throws HolmesException {
+        List<MediaNode> podcastEntryNodes = new ArrayList<>();
         try (XmlReader reader = new XmlReader(new URL(podcastUrl))) {
             // Get RSS feed entries
             List<SyndEntry> rssEntries = new SyndFeedInput().build(reader).getEntries();
@@ -77,7 +77,7 @@ abstract class PodcastParser {
      * @param rssEntry          RSS entry
      * @param enclosure         RSS enclosure
      */
-    private void addPodcastEntry(final String podcastId, final List<AbstractNode> podcastEntryNodes, final SyndEntry rssEntry, final SyndEnclosure enclosure) {
+    private void addPodcastEntry(final String podcastId, final List<MediaNode> podcastEntryNodes, final SyndEntry rssEntry, final SyndEnclosure enclosure) {
         MimeType mimeType = MimeType.valueOf(enclosure.getType());
         if (mimeType != null && mimeType.isMedia()) {
             // Add to media index

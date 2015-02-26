@@ -34,7 +34,7 @@ import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.*;
 import static org.easymock.EasyMock.*;
@@ -53,7 +53,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        Optional<AbstractNode> result = mediaManager.getNode(VIDEO.getId());
+        Optional<MediaNode> result = mediaManager.getNode(VIDEO.getId());
         assertNotNull(result);
         assertTrue(result.isPresent());
 
@@ -73,7 +73,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        Optional<AbstractNode> result = mediaManager.getNode("nodeId");
+        Optional<MediaNode> result = mediaManager.getNode("nodeId");
         assertNotNull(result);
         assertTrue(result.isPresent());
 
@@ -91,7 +91,7 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        Optional<AbstractNode> result = mediaManager.getNode(null);
+        Optional<MediaNode> result = mediaManager.getNode(null);
         assertNotNull(result);
         assertFalse(result.isPresent());
 
@@ -213,7 +213,7 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(ROOT.getId(), ROOT.getParentId(), ROOT.getBundleKey()), null);
-        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
+        Collection<MediaNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -236,7 +236,7 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getBundleKey()), newArrayList("video/avi"));
-        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
+        Collection<MediaNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -254,7 +254,7 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        List<AbstractNode> childNodes = new ArrayList<>();
+        List<MediaNode> childNodes = new ArrayList<>();
         childNodes.add(new PodcastNode("id", "parentId", "name", "url"));
         MimeType videoMimeType = MimeType.valueOf("video/avi");
         MimeType audioMimeType = MimeType.valueOf("audio/mp3");
@@ -269,7 +269,7 @@ public class MediaManagerImplTest {
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
         MediaSearchRequest request = new MediaSearchRequest(new FolderNode("folderId", "folderParentId", "folderName"), newArrayList("video/avi"));
-        Collection<AbstractNode> result = mediaManager.searchChildNodes(request);
+        Collection<MediaNode> result = mediaManager.searchChildNodes(request);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -278,7 +278,7 @@ public class MediaManagerImplTest {
         verify(mediaDao, mimeTypeManager, localAddress);
     }
 
-    public List<AbstractNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
+    public List<MediaNode> getRootChildNodes(RootNode rootNode, ConfigurationDao configurationDao) {
         // Add folder nodes stored in configuration
         return configurationDao.getNodes(rootNode).stream()
                 .map(configNode -> new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())))

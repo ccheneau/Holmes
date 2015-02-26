@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * Abstract node.
  */
-public abstract class AbstractNode implements Comparable<AbstractNode> {
+public abstract class AbstractNode implements MediaNode {
 
     final String id;
     final String parentId;
@@ -47,73 +47,65 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
     }
 
     /**
-     * Gets the node id.
-     *
-     * @return the node id
+     * {@inheritDoc}
      */
+    @Override
     public String getId() {
         return id;
     }
 
     /**
-     * Gets the parent node id.
-     *
-     * @return the parent node id
+     * {@inheritDoc}
      */
+    @Override
     public String getParentId() {
         return parentId;
     }
 
     /**
-     * Gets the node name.
-     *
-     * @return the node name
+     * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
 
     /**
-     * Gets the node type.
-     *
-     * @return the node type
+     * {@inheritDoc}
      */
+    @Override
     public NodeType getType() {
         return type;
     }
 
     /**
-     * Gets the node modified date.
-     *
-     * @return the node modified date
+     * {@inheritDoc}
      */
+    @Override
     public Long getModifiedDate() {
         return modifiedDate;
     }
 
     /**
-     * Sets the node modified date.
-     *
-     * @param modifiedDate the new node modified date
+     * {@inheritDoc}
      */
+    @Override
     public void setModifiedDate(final Long modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
     /**
-     * Gets the node icon url.
-     *
-     * @return the node icon url
+     * {@inheritDoc}
      */
+    @Override
     public String getIconUrl() {
         return iconUrl;
     }
 
     /**
-     * Sets the node icon url.
-     *
-     * @param iconUrl the new node icon url
+     * {@inheritDoc}
      */
+    @Override
     public void setIconUrl(final String iconUrl) {
         this.iconUrl = iconUrl;
     }
@@ -123,9 +115,9 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
      */
     @Override
     @SuppressWarnings("NullableProblems")
-    public int compareTo(final AbstractNode o) {
+    public int compareTo(final MediaNode o) {
         if (this.getType() == o.getType()) {
-            return this.name.compareTo(o.name);
+            return this.name.compareTo(o.getName());
         } else if (this.getType() == NodeType.TYPE_FOLDER) {
             return -1;
         } else {
@@ -159,16 +151,5 @@ public abstract class AbstractNode implements Comparable<AbstractNode> {
                 && Objects.equals(this.name, other.name)
                 && Objects.equals(this.type, other.type)
                 && Objects.equals(this.modifiedDate, other.modifiedDate);
-    }
-
-    /**
-     * Node type.
-     */
-    public enum NodeType {
-        TYPE_FOLDER,
-        TYPE_CONTENT,
-        TYPE_PODCAST,
-        TYPE_PODCAST_ENTRY,
-        TYPE_UNKNOWN
     }
 }

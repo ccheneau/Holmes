@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
@@ -68,7 +68,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
     public BrowseResult browse(final String objectID, final BrowseFlag browseFlag, final long firstResult, final long maxResults,
                                final RemoteClientInfo remoteClientInfo) throws ContentDirectoryException {
         // Get browse node
-        AbstractNode browseNode = mediaManager.getNode(objectID)
+        MediaNode browseNode = mediaManager.getNode(objectID)
                 .orElseThrow(() -> new ContentDirectoryException(NO_SUCH_OBJECT, objectID));
 
         // Get available mime types
@@ -79,8 +79,8 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
         if (DIRECT_CHILDREN == browseFlag) {
             result = new DirectoryBrowseResult(firstResult, maxResults);
             // Add child nodes
-            Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
-            for (AbstractNode childNode : searchResult) {
+            Collection<MediaNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
+            for (MediaNode childNode : searchResult) {
                 addNode(objectID, childNode, result, searchResult.size(), availableMimeTypes);
             }
         } else if (METADATA == browseFlag) {
@@ -126,14 +126,14 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @param availableMimeTypes availableMimeTypes
      * @throws ContentDirectoryException
      */
-    private void addNode(final String nodeId, final AbstractNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
+    private void addNode(final String nodeId, final MediaNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Add item to result
                 result.addItem(nodeId, (ContentNode) node, mediaManager.getNodeUrl(node));
             } else if (node instanceof FolderNode) {
                 // Get child counts
-                Collection<AbstractNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
+                Collection<MediaNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
                 // Add container to result
                 result.addContainer(nodeId, node, searchResult.size());
             } else if (node instanceof PodcastNode) {

@@ -20,7 +20,7 @@ package net.holmes.core.business.streaming;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import net.holmes.core.business.configuration.ConfigurationManager;
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.DeviceDao;
@@ -135,7 +135,7 @@ public final class StreamingManagerImpl implements StreamingManager {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void play(final String deviceId, final String contentUrl, final AbstractNode node) throws UnknownDeviceException {
+    public void play(final String deviceId, final String contentUrl, final MediaNode node) throws UnknownDeviceException {
         Device device = deviceDao.getDevice(deviceId);
         sessionDao.initSession(deviceId, contentUrl, node.getName());
         getStreamer(device).play(device, contentUrl, node);

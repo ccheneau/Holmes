@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media.dao;
 
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.media.model.RootNode;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public interface MediaDao {
      * @param nodeId node id
      * @return node
      */
-    Optional<AbstractNode> getNode(String nodeId);
+    Optional<MediaNode> getNode(String nodeId);
 
     /**
      * Get child nodes.
@@ -41,7 +41,7 @@ public interface MediaDao {
      * @param parentNodeId parent node id
      * @return child nodes
      */
-    List<AbstractNode> getChildNodes(String parentNodeId);
+    List<MediaNode> getChildNodes(String parentNodeId);
 
     /**
      * Get children of a root node.
@@ -49,7 +49,7 @@ public interface MediaDao {
      * @param rootNode root node
      * @return child nodes
      */
-    List<AbstractNode> getRootNodeChildren(RootNode rootNode);
+    List<MediaNode> getRootNodeChildren(RootNode rootNode);
 
     /**
      * Clean up cache

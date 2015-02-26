@@ -19,8 +19,8 @@ package net.holmes.core.business.streaming.upnp;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.device.DeviceStreamer;
 import net.holmes.core.business.streaming.upnp.command.*;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
@@ -67,7 +67,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * {@inheritDoc}
      */
     @Override
-    public void play(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
+    public void play(final UpnpDevice device, final String contentUrl, final MediaNode node) {
         // Get media info
         controlPoint.execute(new GetMediaInfoCommand(device, newCommandFailureHandler(PLAY, device)) {
             @Override
@@ -186,7 +186,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param contentUrl content url
      * @param node       node
      */
-    private void getInfoSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node) {
+    private void getInfoSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final MediaNode node) {
         // Another Url is already set on device, get transport info
         controlPoint.execute(new GetTransportInfoCommand(device, newCommandFailureHandler(PLAY, device)) {
             @Override
@@ -214,7 +214,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param node       node
      * @param eventType  event type
      */
-    private void stopSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
+    private void stopSetUrlAndPlay(final UpnpDevice device, final String contentUrl, final MediaNode node, final StreamingEventType eventType) {
         // Stop content playback
         controlPoint.execute(new StopCommand(device, newCommandFailureHandler(eventType, device)) {
             @Override
@@ -233,7 +233,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @param node       node
      * @param eventType  event type
      */
-    private void setUrlAndPlay(final UpnpDevice device, final String contentUrl, final AbstractNode node, final StreamingEventType eventType) {
+    private void setUrlAndPlay(final UpnpDevice device, final String contentUrl, final MediaNode node, final StreamingEventType eventType) {
         try {
             // Set content Url
             controlPoint.execute(new SetContentUrlCommand(device, contentUrl, getNodeMetadata(node, contentUrl), newCommandFailureHandler(eventType, device)) {
@@ -257,7 +257,7 @@ public final class UpnpStreamerImpl extends DeviceStreamer<UpnpDevice> {
      * @return DIDL metadata or "NOT_IMPLEMENTED"
      * @throws HolmesException
      */
-    private String getNodeMetadata(final AbstractNode node, final String contentUrl) throws HolmesException {
+    private String getNodeMetadata(final MediaNode node, final String contentUrl) throws HolmesException {
         try {
             return node instanceof ContentNode ? getContentNodeMetadata((ContentNode) node, contentUrl) : NOT_IMPLEMENTED;
         } catch (Exception e) {

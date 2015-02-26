@@ -19,6 +19,7 @@ package net.holmes.core.business.streaming.airplay;
 
 import com.google.common.eventbus.EventBus;
 import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.airplay.controlpoint.ControlPoint;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
 import net.holmes.core.business.streaming.event.StreamingEvent;
@@ -43,7 +44,7 @@ public class AirplayStreamerImplTest {
         };
 
         AirplayDevice device = createMock(AirplayDevice.class);
-        AbstractNode node = createMock(AbstractNode.class);
+        MediaNode node = createMock(AbstractNode.class);
         Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();
@@ -67,7 +68,7 @@ public class AirplayStreamerImplTest {
             command.failure("errorMessage");
         };
         AirplayDevice device = createMock(AirplayDevice.class);
-        AbstractNode node = createMock(AbstractNode.class);
+        MediaNode node = createMock(AbstractNode.class);
         Capture<StreamingEvent> captureStreamingEvent = newCapture();
         eventBus.post(capture(captureStreamingEvent));
         expectLastCall().atLeastOnce();

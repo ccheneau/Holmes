@@ -30,7 +30,7 @@ import org.junit.rules.TestName;
 import java.io.File;
 import java.io.IOException;
 
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.junit.Assert.*;
 
 public class DirectoryBrowseResultTest {

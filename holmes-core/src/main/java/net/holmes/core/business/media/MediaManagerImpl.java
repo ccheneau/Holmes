@@ -20,8 +20,8 @@ package net.holmes.core.business.media;
 import com.google.common.eventbus.Subscribe;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.dao.MediaDao;
-import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.media.model.MimeTypeNode;
 import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
@@ -78,8 +78,8 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public Optional<AbstractNode> getNode(final String nodeId) {
-        Optional<AbstractNode> node = Optional.empty();
+    public Optional<MediaNode> getNode(final String nodeId) {
+        Optional<MediaNode> node = Optional.empty();
         RootNode rootNode = getById(nodeId);
         if (rootNode != NONE) {
             // Get Root node
@@ -95,7 +95,7 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public String getNodeUrl(final AbstractNode node) {
+    public String getNodeUrl(final MediaNode node) {
         return "http://" + localAddress.getHostAddress() + ":" + httpServerPort +
                 HTTP_CONTENT_REQUEST_PATH + "?" + HTTP_CONTENT_ID + "=" + node.getId();
     }
@@ -104,8 +104,8 @@ public final class MediaManagerImpl implements MediaManager {
      * {@inheritDoc}
      */
     @Override
-    public Collection<AbstractNode> searchChildNodes(final MediaSearchRequest request) {
-        List<AbstractNode> childNodes;
+    public Collection<MediaNode> searchChildNodes(final MediaSearchRequest request) {
+        List<MediaNode> childNodes;
         RootNode rootNode = getById(request.getParentNode().getId());
         if (rootNode == ROOT) {
             // Get child nodes of root node
@@ -125,7 +125,7 @@ public final class MediaManagerImpl implements MediaManager {
         }
 
         // Filter child nodes according to available mime types
-        Predicate<AbstractNode> p = node -> !(node instanceof MimeTypeNode)
+        Predicate<MediaNode> p = node -> !(node instanceof MimeTypeNode)
                 || mimeTypeManager.isMimeTypeCompliant(((MimeTypeNode) node).getMimeType(), request.getAvailableMimeTypes());
 
         return childNodes.stream().filter(p).collect(toList());
@@ -158,7 +158,7 @@ public final class MediaManagerImpl implements MediaManager {
      *
      * @param node node to scan
      */
-    private void scanNode(final AbstractNode node) {
+    private void scanNode(final MediaNode node) {
         if (node instanceof FolderNode) {
             searchChildNodes(new MediaSearchRequest(node, null)).forEach(this::scanNode);
         }

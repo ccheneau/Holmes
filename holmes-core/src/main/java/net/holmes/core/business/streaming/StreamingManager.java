@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.streaming;
 
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.device.Device;
 import net.holmes.core.business.streaming.device.UnknownDeviceException;
 import net.holmes.core.business.streaming.session.StreamingSession;
@@ -87,7 +87,7 @@ public interface StreamingManager {
      * @param node       node
      * @throws UnknownDeviceException
      */
-    void play(String deviceId, String contentUrl, AbstractNode node) throws UnknownDeviceException;
+    void play(String deviceId, String contentUrl, MediaNode node) throws UnknownDeviceException;
 
     /**
      * Stop playback on device.

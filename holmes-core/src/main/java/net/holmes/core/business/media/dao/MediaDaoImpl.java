@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_UNKNOWN;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_UNKNOWN;
 import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.*;
@@ -57,7 +57,7 @@ public class MediaDaoImpl implements MediaDao {
     private final ConfigurationManager configurationManager;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;
-    private final Cache<String, List<AbstractNode>> podcastCache;
+    private final Cache<String, List<MediaNode>> podcastCache;
 
     /**
      * Instantiates a new media dao implementation.
@@ -81,8 +81,8 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public Optional<AbstractNode> getNode(final String nodeId) {
-        Optional<AbstractNode> node;
+    public Optional<MediaNode> getNode(final String nodeId) {
+        Optional<MediaNode> node;
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(nodeId);
         if (indexElement != null) {
@@ -112,8 +112,8 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractNode> getChildNodes(final String parentNodeId) {
-        List<AbstractNode> childNodes;
+    public List<MediaNode> getChildNodes(final String parentNodeId) {
+        List<MediaNode> childNodes;
 
         // Get node in mediaIndex
         MediaIndexElement indexElement = mediaIndexDao.get(parentNodeId);
@@ -146,10 +146,10 @@ public class MediaDaoImpl implements MediaDao {
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractNode> getRootNodeChildren(final RootNode rootNode) {
+    public List<MediaNode> getRootNodeChildren(final RootNode rootNode) {
         // Add nodes defined in configuration
         List<ConfigurationNode> configNodes = configurationManager.getNodes(rootNode);
-        List<AbstractNode> nodes = new ArrayList<>(configNodes.size());
+        List<MediaNode> nodes = new ArrayList<>(configNodes.size());
         for (ConfigurationNode configNode : configNodes) {
             // Add node to mediaIndex
             mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
@@ -180,7 +180,7 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaType    media type
      * @return file or folder node
      */
-    private Optional<AbstractNode> getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
+    private Optional<MediaNode> getFileNode(final String nodeId, final MediaIndexElement indexElement, final MediaType mediaType) {
         File nodeFile = new File(indexElement.getPath());
         if (isValidFile(nodeFile)) {
             // Content node
@@ -204,9 +204,9 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaType    media type
      * @return folder child nodes matching media type
      */
-    private List<AbstractNode> getFolderChildNodes(final String folderNodeId, final String folderPath, final MediaType mediaType) {
+    private List<MediaNode> getFolderChildNodes(final String folderNodeId, final String folderPath, final MediaType mediaType) {
         List<File> children = listChildren(folderPath, true);
-        List<AbstractNode> nodes = new ArrayList<>(children.size());
+        List<MediaNode> nodes = new ArrayList<>(children.size());
         for (File child : children) {
             // Add node to mediaIndex
             if (child.isDirectory()) {
@@ -229,7 +229,7 @@ public class MediaDaoImpl implements MediaDao {
      * @return entries parsed from podcast RSS feed
      */
     @SuppressWarnings("unchecked")
-    private List<AbstractNode> getPodcastEntries(final String podcastNodeId, final String podcastUrl) {
+    private List<MediaNode> getPodcastEntries(final String podcastNodeId, final String podcastUrl) {
         try {
             return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastNodeId, podcastUrl));
         } catch (ExecutionException e) {
@@ -246,7 +246,7 @@ public class MediaDaoImpl implements MediaDao {
      * @param file      file
      * @param mediaType media type
      */
-    private void addContentNode(final List<AbstractNode> nodes, final String parentId, final File file, final MediaType mediaType) {
+    private void addContentNode(final List<MediaNode> nodes, final String parentId, final File file, final MediaType mediaType) {
         MimeType mimeType = mimeTypeManager.getMimeType(file.getName());
         if (mimeType != null) {
             // Add file node
@@ -264,7 +264,7 @@ public class MediaDaoImpl implements MediaDao {
      * @param mediaType media type
      * @return optional content node
      */
-    private Optional<AbstractNode> buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
+    private Optional<MediaNode> buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         // Check mime type
         return Optional.ofNullable(mimeType.getType() == mediaType || mimeType.isSubTitle() ? new ContentNode(nodeId, parentId, file.getName(), file, mimeType) : null);
     }
@@ -272,7 +272,7 @@ public class MediaDaoImpl implements MediaDao {
     /**
      * Podcast cache callable
      */
-    private class PodcastCacheCallable implements Callable<List<AbstractNode>> {
+    private class PodcastCacheCallable implements Callable<List<MediaNode>> {
         private final String podcastId;
         private final String podcastUrl;
 
@@ -291,7 +291,7 @@ public class MediaDaoImpl implements MediaDao {
          * {@inheritDoc}
          */
         @Override
-        public List<AbstractNode> call() throws HolmesException {
+        public List<MediaNode> call() throws HolmesException {
             // No entries in cache, read them from RSS feed
             // First remove children from media index
             mediaIndexDao.removeChildren(podcastId);

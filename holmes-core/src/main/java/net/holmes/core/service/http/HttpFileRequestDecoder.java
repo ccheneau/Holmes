@@ -22,8 +22,8 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import net.holmes.core.business.media.MediaManager;
-import net.holmes.core.business.media.model.AbstractNode;
 import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.WebApplication;
@@ -77,7 +77,7 @@ public final class HttpFileRequestDecoder extends MessageToMessageDecoder<FullHt
             QueryStringDecoder requestDecoder = new QueryStringDecoder(request.getUri());
             if (requestDecoder.path().startsWith(HTTP_CONTENT_REQUEST_PATH.toString()) && requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()) != null) {
                 // Content file request is valid if content is found in media index
-                Optional<AbstractNode> node = mediaManager.getNode(requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
+                Optional<MediaNode> node = mediaManager.getNode(requestDecoder.parameters().get(HTTP_CONTENT_ID.toString()).get(0));
                 if (node.isPresent() && node.get() instanceof ContentNode) {
                     // Content found in media index, build a file request based on this content
                     ContentNode contentNode = (ContentNode) node.get();

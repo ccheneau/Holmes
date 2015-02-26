@@ -18,7 +18,7 @@
 package net.holmes.core.business.streaming.airplay;
 
 import com.google.common.eventbus.EventBus;
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.airplay.command.PlayCommand;
 import net.holmes.core.business.streaming.airplay.command.PlayStatusCommand;
 import net.holmes.core.business.streaming.airplay.command.RateCommand;
@@ -58,7 +58,7 @@ public class AirplayStreamerImpl extends DeviceStreamer<AirplayDevice> {
      * {@inheritDoc}
      */
     @Override
-    public void play(final AirplayDevice device, final String contentUrl, final AbstractNode node) {
+    public void play(final AirplayDevice device, final String contentUrl, final MediaNode node) {
         controlPoint.execute(device, new PlayCommand(contentUrl, 0d, newCommandFailureHandler(PLAY, device)) {
             @Override
             public void success(Map<String, String> contentParameters) {

@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media;
 
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -32,7 +32,7 @@ public interface MediaManager {
      * @param nodeId node id
      * @return node
      */
-    Optional<AbstractNode> getNode(String nodeId);
+    Optional<MediaNode> getNode(String nodeId);
 
     /**
      * Get node URL.
@@ -40,7 +40,7 @@ public interface MediaManager {
      * @param node node
      * @return node URL
      */
-    String getNodeUrl(AbstractNode node);
+    String getNodeUrl(MediaNode node);
 
     /**
      * Search child nodes.
@@ -48,7 +48,7 @@ public interface MediaManager {
      * @param request media search request
      * @return media search result
      */
-    Collection<AbstractNode> searchChildNodes(MediaSearchRequest request);
+    Collection<MediaNode> searchChildNodes(MediaSearchRequest request);
 
     /**
      * Clean up cache

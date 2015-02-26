@@ -20,7 +20,7 @@ package net.holmes.core.business.media.model;
 import net.holmes.core.business.mimetype.model.MimeType;
 import org.junit.Test;
 
-import static net.holmes.core.business.media.model.AbstractNode.NodeType.TYPE_PODCAST_ENTRY;
+import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static org.junit.Assert.*;
 
 /**

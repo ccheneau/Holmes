@@ -17,7 +17,7 @@
 
 package net.holmes.core.business.media;
 
-import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.MediaNode;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ import java.util.Collection;
  * Media search request
  */
 public final class MediaSearchRequest {
-    private final AbstractNode parentNode;
+    private final MediaNode parentNode;
     private final Collection<String> availableMimeTypes;
 
     /**
@@ -34,7 +34,7 @@ public final class MediaSearchRequest {
      * @param parentNode         parent node
      * @param availableMimeTypes available mime types.
      */
-    public MediaSearchRequest(final AbstractNode parentNode, final Collection<String> availableMimeTypes) {
+    public MediaSearchRequest(final MediaNode parentNode, final Collection<String> availableMimeTypes) {
         this.parentNode = parentNode;
         this.availableMimeTypes = availableMimeTypes;
     }
@@ -44,7 +44,7 @@ public final class MediaSearchRequest {
      *
      * @return parent node
      */
-    public AbstractNode getParentNode() {
+    public MediaNode getParentNode() {
         return parentNode;
     }
 

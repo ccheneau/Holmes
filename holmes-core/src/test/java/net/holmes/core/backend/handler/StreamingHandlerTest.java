@@ -22,10 +22,7 @@ import net.holmes.core.backend.response.PlaybackDevice;
 import net.holmes.core.backend.response.PlaybackStatus;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
-import net.holmes.core.business.media.model.AbstractNode;
-import net.holmes.core.business.media.model.ContentNode;
-import net.holmes.core.business.media.model.FolderNode;
-import net.holmes.core.business.media.model.PodcastNode;
+import net.holmes.core.business.media.model.*;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.device.Device;
@@ -270,7 +267,7 @@ public class StreamingHandlerTest {
         FolderNode videoRootNode = new FolderNode(VIDEO.getId(), VIDEO.getParentId(), VIDEO.getId());
         ContentNode contentNode = new ContentNode("id", "parentId", "name", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("id", "parentId", "name");
-        Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode);
+        Collection<MediaNode> searchResult = newArrayList(contentNode, folderNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("0"))).andReturn(Optional.empty()).atLeastOnce();
@@ -301,7 +298,7 @@ public class StreamingHandlerTest {
         ContentNode contentNode = new ContentNode("idContent", "parentId", "nameContent", new File("file"), MimeType.valueOf("video/x-msvideo"));
         FolderNode folderNode = new FolderNode("idFolder", "parentId", "nameFolder");
         PodcastNode podcastNode = new PodcastNode("idPodcast", "parentId", "namePodcast", "podcastUrl");
-        Collection<AbstractNode> searchResult = newArrayList(contentNode, folderNode, podcastNode);
+        Collection<MediaNode> searchResult = newArrayList(contentNode, folderNode, podcastNode);
 
         expect(streamingManager.getDevice(eq("deviceId"))).andReturn(device).atLeastOnce();
         expect(mediaManager.getNode(eq("nodeId"))).andReturn(Optional.of(node)).atLeastOnce();
