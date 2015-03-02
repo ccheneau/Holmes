@@ -53,7 +53,7 @@
         <dep.jmdns.version>3.4.1</dep.jmdns.version>
         <dep.junit.version>4.12</dep.junit.version>
         <dep.logback.version>1.1.2</dep.logback.version>
-        <dep.netty.version>4.0.25.Final</dep.netty.version>
+        <dep.netty.version>4.0.26.Final</dep.netty.version>
         <dep.resteasy.version>3.0.10.Final</dep.resteasy.version>
         <dep.rome.version>1.0</dep.rome.version>
         <dep.seamless.version>1.1.0</dep.seamless.version>
