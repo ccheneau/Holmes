@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.function.Predicate;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
@@ -103,16 +102,13 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
      */
     @Override
     public Optional<ConfigurationNode> findNode(final RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return this.rootNode.getConfigurationNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
-            @Override
-            public boolean test(ConfigurationNode node) {
-                if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
-                    return false;
-                } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
-                    return true;
-                }
+        return this.rootNode.getConfigurationNodes(rootNode).stream().filter(node -> {
+            if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
                 return false;
+            } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
+                return true;
             }
+            return false;
         }).findFirst();
     }
 

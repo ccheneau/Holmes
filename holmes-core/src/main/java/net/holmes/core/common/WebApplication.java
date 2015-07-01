@@ -43,7 +43,7 @@ public enum WebApplication {
      * @param path        web application path on file system
      * @param welcomeFile web application welcome file
      */
-    private WebApplication(final String path, final Constants welcomeFile) {
+    WebApplication(final String path, final Constants welcomeFile) {
         this.path = path;
         this.welcomeFile = welcomeFile.toString();
     }

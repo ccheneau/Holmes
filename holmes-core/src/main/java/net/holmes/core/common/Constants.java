@@ -43,7 +43,7 @@ public enum Constants {
      *
      * @param value constant value
      */
-    private Constants(final String value) {
+    Constants(final String value) {
         this.value = value;
     }
 

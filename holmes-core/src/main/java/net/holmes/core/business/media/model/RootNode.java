@@ -45,7 +45,7 @@ public enum RootNode {
      * @param localPath whether to look for child elements in local path. False for Podcast entries
      * @param mediaType media type
      */
-    private RootNode(final String id, final String parentId, final boolean localPath, final MediaType mediaType) {
+    RootNode(final String id, final String parentId, final boolean localPath, final MediaType mediaType) {
         this.id = id;
         this.parentId = parentId;
         this.localPath = localPath;

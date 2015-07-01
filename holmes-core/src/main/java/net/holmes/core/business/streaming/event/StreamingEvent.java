@@ -135,7 +135,7 @@ public final class StreamingEvent {
     /**
      * Streaming event type.
      */
-    public static enum StreamingEventType {
+    public enum StreamingEventType {
         PLAY, STOP, PAUSE, RESUME, STATUS, UNKNOWN
     }
 }

@@ -31,10 +31,7 @@ import org.fourthline.cling.support.model.BrowseFlag;
 import org.fourthline.cling.support.model.BrowseResult;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
@@ -58,7 +55,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      */
     public ContentDirectoryService() {
         // search caps, sort caps
-        super(Arrays.asList("dc:title"), Arrays.asList("dc:title", "dc:date"));
+        super(Collections.singletonList("dc:title"), Arrays.asList("dc:title", "dc:date"));
     }
 
     /**

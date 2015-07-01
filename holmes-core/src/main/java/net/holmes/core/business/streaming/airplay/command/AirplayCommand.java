@@ -158,7 +158,7 @@ public abstract class AirplayCommand {
     /**
      * Airplay command type
      */
-    public static enum CommandType {
+    public enum CommandType {
         PLAY("play", POST),
         PLAY_STATUS("scrub", GET),
         RATE("rate", POST),
@@ -199,7 +199,7 @@ public abstract class AirplayCommand {
     /**
      * Url parameter
      */
-    public static enum UrlParameter {
+    public enum UrlParameter {
         VALUE("value"),
         POSITION("position");
         private final String value;
@@ -209,7 +209,7 @@ public abstract class AirplayCommand {
          *
          * @param value value
          */
-        private UrlParameter(final String value) {
+        UrlParameter(final String value) {
             this.value = value;
         }
 
@@ -226,7 +226,7 @@ public abstract class AirplayCommand {
     /**
      * Post parameter
      */
-    public static enum PostParameter {
+    public enum PostParameter {
         CONTENT_LOCATION("Content-Location"),
         START_POSITION("Start-Position");
         private final String value;
@@ -236,7 +236,7 @@ public abstract class AirplayCommand {
          *
          * @param value value
          */
-        private PostParameter(final String value) {
+        PostParameter(final String value) {
             this.value = value;
         }
 

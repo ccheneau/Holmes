@@ -78,7 +78,7 @@ public final class StaticResourceLoader {
          *
          * @param value value
          */
-        private StaticResourceDir(final String value) {
+        StaticResourceDir(final String value) {
             this.value = value;
         }
 
@@ -113,7 +113,7 @@ public final class StaticResourceLoader {
          * @param size     icon size
          * @param depth    icon depth
          */
-        private UpnpIcon(String path, String mimeType, int size, int depth) {
+        UpnpIcon(String path, String mimeType, int size, int depth) {
             this.name = "upnp-" + path;
             this.path = path;
             this.mimeType = mimeType;
