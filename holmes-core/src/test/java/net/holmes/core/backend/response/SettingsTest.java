@@ -20,7 +20,7 @@ public class SettingsTest {
      */
     @Test
     public void testGetServerName() throws Exception {
-        Settings settings = new Settings("serverName", true);
+        Settings settings = new Settings("serverName");
         assertEquals(settings.getServerName(), "serverName");
     }
 
@@ -29,27 +29,8 @@ public class SettingsTest {
      */
     @Test
     public void testSetServerName() throws Exception {
-        Settings settings = new Settings("serverName", true);
+        Settings settings = new Settings("serverName");
         settings.setServerName("newServerName");
         assertEquals(settings.getServerName(), "newServerName");
-    }
-
-    /**
-     * Method: getPrependPodcastItem()
-     */
-    @Test
-    public void testGetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", true);
-        assertTrue(settings.getPrependPodcastItem());
-    }
-
-    /**
-     * Method: setPrependPodcastItem(final Boolean prependPodcastItem)
-     */
-    @Test
-    public void testSetPrependPodcastItem() throws Exception {
-        Settings settings = new Settings("serverName", true);
-        settings.setPrependPodcastItem(false);
-        assertFalse(settings.getPrependPodcastItem());
     }
 }

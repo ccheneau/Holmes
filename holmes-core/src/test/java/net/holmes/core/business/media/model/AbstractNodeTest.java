@@ -84,7 +84,6 @@ public class AbstractNodeTest {
         assertEquals(node.compareTo(node1), 0);
         assertNotEquals(node.compareTo(node2), 0);
         assertNotEquals(node.compareTo(buildAbstractNodeTesterFolder("")), 0);
-        assertNotEquals(node.compareTo(buildAbstractNodeTesterPodcast("")), 0);
     }
 
     @Test
@@ -115,10 +114,6 @@ public class AbstractNodeTest {
 
     private AbstractNodeTester buildAbstractNodeTesterFolder(String suffix) {
         return new AbstractNodeTester(AbstractNode.NodeType.TYPE_FOLDER, "id" + suffix, "parentId" + suffix, "name" + suffix);
-    }
-
-    private AbstractNodeTester buildAbstractNodeTesterPodcast(String suffix) {
-        return new AbstractNodeTester(AbstractNode.NodeType.TYPE_PODCAST, "id" + suffix, "parentId" + suffix, "name" + suffix);
     }
 
     private class AbstractNodeTester extends AbstractNode {

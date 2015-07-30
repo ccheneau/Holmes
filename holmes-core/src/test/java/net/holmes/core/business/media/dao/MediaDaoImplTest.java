@@ -22,7 +22,9 @@ import net.holmes.core.business.configuration.ConfigurationManagerImpl;
 import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.UniqueIdGenerator;
@@ -34,7 +36,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
-import static net.holmes.core.business.media.model.RootNode.*;
+import static net.holmes.core.business.media.model.RootNode.VIDEO;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
 import static net.holmes.core.common.MediaType.*;
 import static org.easymock.EasyMock.*;
@@ -56,46 +58,6 @@ public class MediaDaoImplTest {
         Optional<MediaNode> result = mediaDao.getNode("nodeId");
         assertNotNull(result);
         assertFalse(result.isPresent());
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
-
-    @Test
-    public void testGetPodcastNode() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, "path", "name", PODCAST.isLocalPath(), true);
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(podcastElement);
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        Optional<MediaNode> result = mediaDao.getNode("nodeId");
-        assertNotNull(result);
-        assertTrue(result.isPresent());
-        assertEquals(result.get().getClass(), PodcastNode.class);
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
-
-    @Test
-    public void testGetRawUrlNode() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        MediaIndexElement rawUrlElement = new MediaIndexElement(VIDEO.getId(), TYPE_RAW_URL.getValue(), "video/avi", "path", "name", false, true);
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(rawUrlElement);
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        Optional<MediaNode> result = mediaDao.getNode("nodeId");
-        assertNotNull(result);
-        assertTrue(result.isPresent());
-        assertEquals(result.get().getClass(), RawUrlNode.class);
 
         verify(mimeTypeManager, mediaIndexDao);
     }
@@ -227,67 +189,6 @@ public class MediaDaoImplTest {
         verify(mimeTypeManager, mediaIndexDao);
     }
 
-    @Test
-    public void testGetChildNodesOfPodcast() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        ConfigurationNode podcastNode = configurationManager.getNodes(PODCAST).get(0);
-        MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, podcastNode.getPath(), podcastNode.getLabel(), PODCAST.isLocalPath(), true);
-
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(podcastElement);
-        mediaIndexDao.removeChildren(eq("nodeId"));
-        expectLastCall();
-        expect(mediaIndexDao.add(isA(MediaIndexElement.class))).andReturn(UniqueIdGenerator.newUniqueId()).atLeastOnce();
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        List<MediaNode> result = mediaDao.getChildNodes("nodeId");
-        assertFalse(result.isEmpty());
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
-
-    @Test
-    public void testGetChildNodesOfBadPodcast() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        MediaIndexElement podcastElement = new MediaIndexElement(PODCAST.getId(), TYPE_PODCAST.getValue(), null, "badPath", "badLabel", PODCAST.isLocalPath(), true);
-
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(podcastElement);
-        mediaIndexDao.removeChildren(eq("nodeId"));
-        expectLastCall();
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        List<MediaNode> result = mediaDao.getChildNodes("nodeId");
-        assertTrue(result.isEmpty());
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
-
-    @Test
-    public void testGetChildNodesOfRawUrl() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        MediaIndexElement rawUrlElement = new MediaIndexElement("id", TYPE_RAW_URL.getValue(), null, "rawUrl", "rawUrl", false, true);
-        expect(mediaIndexDao.get(eq("nodeId"))).andReturn(rawUrlElement);
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        List<MediaNode> result = mediaDao.getChildNodes("nodeId");
-        assertTrue(result.isEmpty());
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
 
     @Test
     public void testGetChildNodesOfVideoFolder() {
@@ -376,24 +277,6 @@ public class MediaDaoImplTest {
         MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
 
         mediaDao.cleanUpCache();
-
-        verify(mimeTypeManager, mediaIndexDao);
-    }
-
-    @Test
-    public void testGetRootNodeChildrenOfPodcast() {
-        ConfigurationManager configurationManager = new ConfigurationManagerImpl(new TestConfigurationDao());
-        MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
-        MediaIndexDao mediaIndexDao = createMock(MediaIndexDao.class);
-
-        mediaIndexDao.put(isA(String.class), isA(MediaIndexElement.class));
-        expectLastCall().atLeastOnce();
-
-        replay(mimeTypeManager, mediaIndexDao);
-        MediaDaoImpl mediaDao = new MediaDaoImpl(configurationManager, mimeTypeManager, mediaIndexDao);
-
-        List<MediaNode> result = mediaDao.getRootNodeChildren(PODCAST);
-        assertNotNull(result);
 
         verify(mimeTypeManager, mediaIndexDao);
     }

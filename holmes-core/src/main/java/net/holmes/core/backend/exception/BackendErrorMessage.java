@@ -26,11 +26,6 @@ public enum BackendErrorMessage {
     FOLDER_PATH_UNKNOWN_ERROR("backend.folder.path.unknown.error"),
     FOLDER_UNKNOWN_ERROR("backend.folder.unknown.error"),
     FOLDER_DUPLICATED_ERROR("backend.folder.already.exist.error"),
-    PODCAST_NAME_ERROR("backend.podcast.name.error"),
-    PODCAST_URL_ERROR("backend.podcast.url.error"),
-    PODCAST_BAD_URL_ERROR("backend.podcast.url.malformed.error"),
-    PODCAST_DUPLICATED_ERROR("backend.podcast.already.exist.error"),
-    PODCAST_UNKNOWN_ERROR("backend.podcast.unknown.error"),
     SETTINGS_SERVER_NAME_ERROR("backend.settings.server.name.error");
 
     private final String messageKey;

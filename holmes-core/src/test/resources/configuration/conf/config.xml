@@ -3,12 +3,9 @@
         <property name="image_cache_max_elements" value="5000"/>
         <property name="local_cache_clean_delay_minutes" value="60"/>
         <property name="enable_upnp" value="true"/>
-        <property name="podcast_cache_expire_hours" value="2"/>
         <property name="enable_content_resolution" value="true"/>
-        <property name="podcast_cache_max_elements" value="50"/>
         <property name="hide_empty_root_nodes" value="true"/>
         <property name="media_scan_all_delay_minutes" value="0"/>
-        <property name="prepend_podcast_entry_name" value="true"/>
         <property name="enable_external_subtitles" value="true"/>
         <property name="enable_systray" value="true"/>
         <property name="media_index_clean_delay_minutes" value="15"/>
@@ -39,16 +36,4 @@
         </node>
     </pictureFolders>
     <audioFolders/>
-    <podcasts>
-        <node>
-            <id>podcast1</id>
-            <label>Cast coders</label>
-            <path>http://lescastcodeurs.libsyn.com/rss</path>
-        </node>
-        <node>
-            <id>podcast2</id>
-            <label>Allociné Bandes annonces</label>
-            <path>http://rss.allocine.fr/bandesannonces/ipod</path>
-        </node>
-    </podcasts>
 </config>

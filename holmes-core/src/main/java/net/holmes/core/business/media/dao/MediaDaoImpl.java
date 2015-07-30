@@ -17,16 +17,17 @@
 
 package net.holmes.core.business.media.dao;
 
-import com.google.common.cache.Cache;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.configuration.model.ConfigurationNode;
 import net.holmes.core.business.media.dao.index.MediaIndexDao;
 import net.holmes.core.business.media.dao.index.MediaIndexElement;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
+import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.MediaType;
-import net.holmes.core.common.exception.HolmesException;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -35,15 +36,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
-import static com.google.common.cache.CacheBuilder.newBuilder;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
-import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_UNKNOWN;
-import static net.holmes.core.business.media.model.RootNode.PODCAST;
-import static net.holmes.core.common.ConfigurationParameter.*;
 import static net.holmes.core.common.FileUtils.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -57,7 +51,6 @@ public class MediaDaoImpl implements MediaDao {
     private final ConfigurationManager configurationManager;
     private final MimeTypeManager mimeTypeManager;
     private final MediaIndexDao mediaIndexDao;
-    private final Cache<String, List<MediaNode>> podcastCache;
 
     /**
      * Instantiates a new media dao implementation.
@@ -71,10 +64,6 @@ public class MediaDaoImpl implements MediaDao {
         this.configurationManager = configurationManager;
         this.mimeTypeManager = mimeTypeManager;
         this.mediaIndexDao = mediaIndexDao;
-        this.podcastCache = newBuilder()
-                .maximumSize(configurationManager.getParameter(PODCAST_CACHE_MAX_ELEMENTS))
-                .expireAfterWrite(configurationManager.getParameter(PODCAST_CACHE_EXPIRE_HOURS), TimeUnit.HOURS)
-                .build();
     }
 
     /**
@@ -87,20 +76,8 @@ public class MediaDaoImpl implements MediaDao {
         MediaIndexElement indexElement = mediaIndexDao.get(nodeId);
         if (indexElement != null) {
             MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
-            switch (mediaType) {
-                case TYPE_PODCAST:
-                    // Podcast node
-                    node = Optional.of(new PodcastNode(nodeId, PODCAST.getId(), indexElement.getName(), indexElement.getPath()));
-                    break;
-                case TYPE_RAW_URL:
-                    // Raw Url node
-                    node = Optional.of(new RawUrlNode(TYPE_UNKNOWN, nodeId, indexElement.getParentId(), indexElement.getName(), MimeType.valueOf(indexElement.getMimeType()), indexElement.getPath(), null));
-                    break;
-                default:
-                    // File node
-                    node = getFileNode(nodeId, indexElement, mediaType);
-                    break;
-            }
+            // File node
+            node = getFileNode(nodeId, indexElement, mediaType);
         } else {
             LOGGER.warn("[getNode] {} not found in media index", nodeId);
             node = Optional.empty();
@@ -120,20 +97,8 @@ public class MediaDaoImpl implements MediaDao {
         if (indexElement != null) {
             // Get media type
             MediaType mediaType = MediaType.getByValue(indexElement.getMediaType());
-            switch (mediaType) {
-                case TYPE_PODCAST:
-                    // Get podcast entries
-                    childNodes = getPodcastEntries(parentNodeId, indexElement.getPath());
-                    break;
-                case TYPE_RAW_URL:
-                    // Nothing
-                    childNodes = new ArrayList<>(0);
-                    break;
-                default:
-                    // Get folder child nodes
-                    childNodes = getFolderChildNodes(parentNodeId, indexElement.getPath(), mediaType);
-                    break;
-            }
+            // Get folder child nodes
+            childNodes = getFolderChildNodes(parentNodeId, indexElement.getPath(), mediaType);
         } else {
             childNodes = new ArrayList<>(0);
             LOGGER.error("[getChildNodes] {} node not found in media index", parentNodeId);
@@ -153,12 +118,7 @@ public class MediaDaoImpl implements MediaDao {
         for (ConfigurationNode configNode : configNodes) {
             // Add node to mediaIndex
             mediaIndexDao.put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
-            // Add child node
-            if (rootNode == PODCAST) {
-                nodes.add(new PodcastNode(configNode.getId(), PODCAST.getId(), configNode.getLabel(), configNode.getPath()));
-            } else {
-                nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
-            }
+            nodes.add(new FolderNode(configNode.getId(), rootNode.getId(), configNode.getLabel(), new File(configNode.getPath())));
         }
         return nodes;
     }
@@ -168,7 +128,6 @@ public class MediaDaoImpl implements MediaDao {
      */
     @Override
     public void cleanUpCache() {
-        podcastCache.cleanUp();
         mediaIndexDao.clean();
     }
 
@@ -222,23 +181,6 @@ public class MediaDaoImpl implements MediaDao {
     }
 
     /**
-     * Gets pod-cast entries. A pod-cast is a RSS.
-     *
-     * @param podcastNodeId podcast node id
-     * @param podcastUrl    podcast url
-     * @return entries parsed from podcast RSS feed
-     */
-    @SuppressWarnings("unchecked")
-    private List<MediaNode> getPodcastEntries(final String podcastNodeId, final String podcastUrl) {
-        try {
-            return podcastCache.get(podcastUrl, new PodcastCacheCallable(podcastNodeId, podcastUrl));
-        } catch (ExecutionException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return new ArrayList<>(0);
-    }
-
-    /**
      * Add content node to node list.
      *
      * @param nodes     node list
@@ -267,43 +209,5 @@ public class MediaDaoImpl implements MediaDao {
     private Optional<MediaNode> buildContentNode(final String nodeId, final String parentId, final File file, final MediaType mediaType, final MimeType mimeType) {
         // Check mime type
         return Optional.ofNullable(mimeType.getType() == mediaType || mimeType.isSubTitle() ? new ContentNode(nodeId, parentId, file.getName(), file, mimeType) : null);
-    }
-
-    /**
-     * Podcast cache callable
-     */
-    private class PodcastCacheCallable implements Callable<List<MediaNode>> {
-        private final String podcastId;
-        private final String podcastUrl;
-
-        /**
-         * Instantiates a new podcast cache callable.
-         *
-         * @param podcastId  podcast id
-         * @param podcastUrl podcast URL
-         */
-        PodcastCacheCallable(final String podcastId, final String podcastUrl) {
-            this.podcastId = podcastId;
-            this.podcastUrl = podcastUrl;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<MediaNode> call() throws HolmesException {
-            // No entries in cache, read them from RSS feed
-            // First remove children from media index
-            mediaIndexDao.removeChildren(podcastId);
-
-            // Then parse podcast
-            return new PodcastParser() {
-                @Override
-                public String addMediaIndexElement(MediaIndexElement mediaIndexElement) {
-                    // Add element to media index
-                    return mediaIndexDao.add(mediaIndexElement);
-                }
-            }.parse(podcastUrl, podcastId);
-        }
     }
 }

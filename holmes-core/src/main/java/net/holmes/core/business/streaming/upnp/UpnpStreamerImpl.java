@@ -18,7 +18,6 @@
 package net.holmes.core.business.streaming.upnp;
 
 import com.google.common.eventbus.EventBus;
-import com.google.inject.Inject;
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.device.DeviceStreamer;
@@ -35,6 +34,7 @@ import org.fourthline.cling.support.model.item.MusicTrack;
 import org.fourthline.cling.support.model.item.Photo;
 import org.slf4j.Logger;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import static net.holmes.core.business.streaming.event.StreamingEvent.StreamingEventType;

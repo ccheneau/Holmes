@@ -39,7 +39,6 @@ public class XmlConfigurationDaoImplTest {
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
         assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
-        assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
@@ -50,7 +49,6 @@ public class XmlConfigurationDaoImplTest {
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
         assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
-        assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
@@ -61,7 +59,6 @@ public class XmlConfigurationDaoImplTest {
         assertNotNull(configuration.getNodes(RootNode.AUDIO));
         assertNotNull(configuration.getNodes(VIDEO));
         assertNotNull(configuration.getNodes(RootNode.PICTURE));
-        assertNotNull(configuration.getNodes(RootNode.PODCAST));
         assertTrue(configuration.getNodes(RootNode.ROOT).isEmpty());
     }
 
@@ -88,13 +85,6 @@ public class XmlConfigurationDaoImplTest {
         assertTrue(configuration.getParameter(SYSTRAY_ENABLE));
         configuration.setParameter(SYSTRAY_ENABLE, false);
         assertFalse(configuration.getParameter(SYSTRAY_ENABLE));
-    }
-
-    @Test
-    public void testXmlConfigurationIntParameter() throws IOException {
-        String configDir = new File(this.getClass().getResource("/configuration").getPath()).getAbsolutePath();
-        XmlConfigurationDaoImpl configuration = new XmlConfigurationDaoImpl(configDir);
-        assertEquals(Integer.valueOf(2), configuration.getParameter(PODCAST_CACHE_EXPIRE_HOURS));
     }
 
     @Test

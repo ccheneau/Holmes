@@ -192,7 +192,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
         private List<ConfigurationNode> videoFolders;
         private List<ConfigurationNode> pictureFolders;
         private List<ConfigurationNode> audioFolders;
-        private List<ConfigurationNode> podcasts;
 
         /**
          * Check config default values.
@@ -206,9 +205,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
             }
             if (this.pictureFolders == null) {
                 this.pictureFolders = new ArrayList<>(0);
-            }
-            if (this.podcasts == null) {
-                this.podcasts = new ArrayList<>(0);
             }
             if (this.parameters == null) {
                 this.parameters = new Properties();
@@ -254,9 +250,6 @@ public final class XmlConfigurationDaoImpl implements ConfigurationDao {
                     break;
                 case PICTURE:
                     configurationNodes = this.pictureFolders;
-                    break;
-                case PODCAST:
-                    configurationNodes = this.podcasts;
                     break;
                 case VIDEO:
                     configurationNodes = this.videoFolders;

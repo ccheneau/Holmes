@@ -21,7 +21,10 @@ import com.google.common.collect.Lists;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.AbstractNode;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.airplay.device.AirplayDevice;
@@ -43,9 +46,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.VIDEO;
-import static net.holmes.core.common.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 
@@ -217,18 +219,13 @@ public class ContentDirectoryServiceTest {
         expect(remoteClientInfo.getConnection()).andReturn(null);
         expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
         expect(mediaManager.getNodeUrl(isA(AbstractNode.class))).andReturn("url");
-        expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
 
         List<MediaNode> children = new ArrayList<>();
-        children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        children.add(new PodcastNode("id4", "parentId", "name", "url"));
         File file = File.createTempFile(testName.getMethodName(), "avi");
         file.deleteOnExit();
         children.add(new ContentNode("id5", "parentId", "name", file, MimeType.valueOf("video/avi")));
         MediaNode dummyNode = createMock(AbstractNode.class);
         children.add(dummyNode);
-        children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id6", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id7", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
         expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
 
         replay(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationManager);
@@ -238,64 +235,4 @@ public class ContentDirectoryServiceTest {
 
         verify(mediaManager, streamingManager, remoteClientInfo, dummyNode, configurationManager);
     }
-
-    @Test
-    public void testBrowseDirectChildrenWithManyPodcast() throws ContentDirectoryException, IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
-        StreamingManager streamingManager = createMock(StreamingManager.class);
-        RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
-
-        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
-        contentDirectoryService.setConfigurationManager(configurationManager);
-        contentDirectoryService.setMediaManager(mediaManager);
-        contentDirectoryService.setStreamingManager(streamingManager);
-
-        expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
-        expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true).atLeastOnce();
-
-        MimeType mimeType = MimeType.valueOf("video/avi");
-        List<MediaNode> children = new ArrayList<>();
-        for (int i = 0; i <= 101; i++) {
-            children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id" + i, "parentId", "name", mimeType, "url", "duration"));
-        }
-        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
-
-        replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
-
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, 0, 6, remoteClientInfo);
-        assertNotNull(result);
-
-        verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
-    }
-
-    @Test
-    public void testBrowseDirectChildrenNoPodcastPrependEntryName() throws ContentDirectoryException, IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        MediaManager mediaManager = createMock(MediaManager.class);
-        StreamingManager streamingManager = createMock(StreamingManager.class);
-        RemoteClientInfo remoteClientInfo = createMock(RemoteClientInfo.class);
-
-        ContentDirectoryService contentDirectoryService = new ContentDirectoryService();
-        contentDirectoryService.setConfigurationManager(configurationManager);
-        contentDirectoryService.setMediaManager(mediaManager);
-        contentDirectoryService.setStreamingManager(streamingManager);
-
-        expect(remoteClientInfo.getConnection()).andReturn(null);
-        expect(mediaManager.getNode(eq("0"))).andReturn(Optional.of(new FolderNode("0", "-1", "root")));
-        expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(false).atLeastOnce();
-
-        List<MediaNode> children = new ArrayList<>();
-        children.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", MimeType.valueOf("video/avi"), "url", "duration"));
-        expect(mediaManager.searchChildNodes(isA(MediaSearchRequest.class))).andReturn(children).atLeastOnce();
-
-        replay(mediaManager, streamingManager, remoteClientInfo, configurationManager);
-
-        BrowseResult result = contentDirectoryService.browse("0", BrowseFlag.DIRECT_CHILDREN, 0, 6, remoteClientInfo);
-        assertNotNull(result);
-
-        verify(mediaManager, streamingManager, remoteClientInfo, configurationManager);
-    }
-
 }

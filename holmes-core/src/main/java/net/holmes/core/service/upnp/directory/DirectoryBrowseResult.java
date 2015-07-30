@@ -19,7 +19,6 @@ package net.holmes.core.service.upnp.directory;
 
 import net.holmes.core.business.media.model.ContentNode;
 import net.holmes.core.business.media.model.MediaNode;
-import net.holmes.core.business.media.model.RawUrlNode;
 import net.holmes.core.business.mimetype.model.MimeType;
 import org.fourthline.cling.support.contentdirectory.ContentDirectoryException;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
@@ -139,22 +138,6 @@ final class DirectoryBrowseResult {
     public void addItem(final String parentNodeId, final ContentNode contentNode, final String url) throws ContentDirectoryException {
         Res res = new Res(getUpnpMimeType(contentNode.getMimeType()), contentNode.getSize(), url);
         addDidlItem(parentNodeId, contentNode, contentNode.getName(), contentNode.getMimeType(), res);
-    }
-
-    /**
-     * Add raw Url item to result.
-     *
-     * @param parentNodeId parent node id
-     * @param rawUrlNode   Url node
-     * @param entryName    entry name
-     * @throws ContentDirectoryException
-     */
-    public void addUrlItem(final String parentNodeId, final RawUrlNode rawUrlNode, final String entryName) throws ContentDirectoryException {
-        MimeType mimeType = rawUrlNode.getMimeType();
-        Res res = new Res(getUpnpMimeType(mimeType), null, rawUrlNode.getUrl());
-        res.setDuration(rawUrlNode.getDuration());
-
-        addDidlItem(parentNodeId, rawUrlNode, entryName, mimeType, res);
     }
 
     /**

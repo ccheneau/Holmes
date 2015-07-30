@@ -32,7 +32,6 @@ var Application = (function() {
 			this.videoFolders = args.videoFolders;
 			this.audioFolders = args.audioFolders;
 			this.pictureFolders = args.pictureFolders;
-			this.podcasts = args.podcasts;
 			this.defaultView = args.defaultView;
 			this.settingsView = args.settingsView;
 		},
@@ -40,7 +39,6 @@ var Application = (function() {
 			"videoFolders" : "videoFolders",
 			"audioFolders" : "audioFolders",
 			"pictureFolders" : "pictureFolders",
-			"podcasts" : "podcasts",
 			"settings" : "settings",
 			"*path" : "root"
 		},
@@ -57,10 +55,6 @@ var Application = (function() {
 		pictureFolders : function() {
 			toggleMenu('picture_folders_menu');
 			this.pictureFolders.fetch({reset: true});
-		},
-		podcasts : function() {
-			toggleMenu('podcasts_menu');
-			this.podcasts.fetch({reset: true});
 		},
 		settings : function() {
 			toggleMenu('settings_menu');

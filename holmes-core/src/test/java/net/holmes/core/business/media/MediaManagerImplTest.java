@@ -21,7 +21,10 @@ import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.configuration.ConfigurationManagerImpl;
 import net.holmes.core.business.configuration.dao.ConfigurationDao;
 import net.holmes.core.business.media.dao.MediaDao;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
+import net.holmes.core.business.media.model.RootNode;
 import net.holmes.core.business.mimetype.MimeTypeManager;
 import net.holmes.core.business.mimetype.model.MimeType;
 import net.holmes.core.common.event.MediaEvent;
@@ -34,7 +37,6 @@ import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
-import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.media.model.RootNode.*;
 import static net.holmes.core.common.event.MediaEvent.MediaEventType.*;
 import static org.easymock.EasyMock.*;
@@ -111,8 +113,8 @@ public class MediaManagerImplTest {
         replay(mediaDao, mimeTypeManager, localAddress);
 
         MediaManagerImpl mediaManager = new MediaManagerImpl(configurationManager, resourceBundle, mediaDao, mimeTypeManager, localAddress);
-        PodcastNode podcastNode = new PodcastNode("id", "parentId", "name", "url");
-        String result = mediaManager.getNodeUrl(podcastNode);
+        FolderNode node = new FolderNode("id", "parentId", "name");
+        String result = mediaManager.getNodeUrl(node);
 
         assertNotNull(result);
 
@@ -184,7 +186,9 @@ public class MediaManagerImplTest {
         MimeTypeManager mimeTypeManager = createMock(MimeTypeManager.class);
         InetAddress localAddress = createMock(InetAddress.class);
 
-        expect(mediaDao.getNode(eq("nodeId"))).andReturn(Optional.of(new PodcastNode("id", "parentId", "name", "url")));
+        MimeType audioMimeType = MimeType.valueOf("audio/mp3");
+
+        expect(mediaDao.getNode(eq("nodeId"))).andReturn(Optional.of(new ContentNode("id", "parentId", "name", new File(""), audioMimeType)));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -207,7 +211,6 @@ public class MediaManagerImplTest {
         expect(mediaDao.getRootNodeChildren(eq(VIDEO))).andReturn(getRootChildNodes(VIDEO, configurationDao));
         expect(mediaDao.getRootNodeChildren(eq(PICTURE))).andReturn(getRootChildNodes(PICTURE, configurationDao));
         expect(mediaDao.getRootNodeChildren(eq(AUDIO))).andReturn(getRootChildNodes(AUDIO, configurationDao));
-        expect(mediaDao.getRootNodeChildren(eq(PODCAST))).andReturn(getRootChildNodes(PODCAST, configurationDao));
 
         replay(mediaDao, mimeTypeManager, localAddress);
 
@@ -255,11 +258,11 @@ public class MediaManagerImplTest {
         InetAddress localAddress = createMock(InetAddress.class);
 
         List<MediaNode> childNodes = new ArrayList<>();
-        childNodes.add(new PodcastNode("id", "parentId", "name", "url"));
+        childNodes.add(new FolderNode("id", "parentId", "name"));
         MimeType videoMimeType = MimeType.valueOf("video/avi");
         MimeType audioMimeType = MimeType.valueOf("audio/mp3");
-        childNodes.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id1", "parentId", "name", videoMimeType, "url", "duration"));
-        childNodes.add(new RawUrlNode(TYPE_PODCAST_ENTRY, "id2", "parentId", "name", audioMimeType, "url", "duration"));
+        childNodes.add(new ContentNode("id1", "parentId", "name", new File(""), videoMimeType));
+        childNodes.add(new ContentNode("id2", "parentId", "name", new File(""), audioMimeType));
 
         expect(mediaDao.getChildNodes(eq("folderId"))).andReturn(childNodes);
         expect(mimeTypeManager.isMimeTypeCompliant(eq(videoMimeType), isA(List.class))).andReturn(true);

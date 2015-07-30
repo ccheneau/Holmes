@@ -33,7 +33,6 @@ import java.util.Map.Entry;
 
 import static com.google.common.collect.Maps.synchronizedBiMap;
 import static net.holmes.core.business.media.dao.index.MediaIndexElementFactory.buildConfigMediaIndexElement;
-import static net.holmes.core.business.media.model.RootNode.PODCAST;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -153,12 +152,12 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
                 break;
             case UPDATE_FOLDER:
                 // Remove node and child nodes from mediaIndex and add node to mediaIndex
-                remove(configNode.getId(), rootNode, configNode);
+                remove(configNode.getId(), configNode);
                 put(configNode.getId(), buildConfigMediaIndexElement(rootNode, configNode));
                 break;
             case DELETE_FOLDER:
                 // Remove node and child nodes from mediaIndex
-                remove(configNode.getId(), rootNode, configNode);
+                remove(configNode.getId(), configNode);
                 break;
             default:
                 break;
@@ -169,16 +168,13 @@ public class MediaIndexDaoImpl implements MediaIndexDao {
      * Remove media index element.
      *
      * @param uuid       element uuid
-     * @param rootNode   root node
      * @param configNode configuration node
      */
-    private void remove(final String uuid, final RootNode rootNode, final ConfigurationNode configNode) {
+    private void remove(final String uuid, final ConfigurationNode configNode) {
         if (elements.get(uuid) != null) {
             elements.remove(uuid);
         }
-        // Remove children for non Podcast elements
-        if (rootNode != PODCAST) {
-            removeChildren(configNode.getId());
-        }
+        // Remove children
+        removeChildren(configNode.getId());
     }
 }

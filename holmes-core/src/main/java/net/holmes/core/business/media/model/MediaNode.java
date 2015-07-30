@@ -84,8 +84,6 @@ public interface MediaNode extends Comparable<MediaNode> {
     enum NodeType {
         TYPE_FOLDER,
         TYPE_CONTENT,
-        TYPE_PODCAST,
-        TYPE_PODCAST_ENTRY,
         TYPE_UNKNOWN
     }
 }

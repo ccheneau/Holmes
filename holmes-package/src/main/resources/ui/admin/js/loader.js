@@ -24,7 +24,6 @@ yepnope({
 		videoFolder : '/admin/js/models/videoFolder.js',
 		audioFolder : '/admin/js/models/audioFolder.js',
 		pictureFolder : '/admin/js/models/pictureFolder.js',
-		podcast : '/admin/js/models/podcast.js',
 		settings : '/admin/js/models/settings.js',
 
 		// view controllers
@@ -33,7 +32,6 @@ yepnope({
 		videoFolderListView : '/admin/js/views/videoFolderListView.js',
 		audioFolderListView : '/admin/js/views/audioFolderListView.js',
 		pictureFolderListView : '/admin/js/views/pictureFolderListView.js',
-		podcastListView : '/admin/js/views/podcastListView.js',
 	},
 	callback : {
 		"jquery" : function() {
@@ -82,16 +80,10 @@ yepnope({
 			collection : pictureFolders
 		});
 
-		window.podcasts = new Application.Collections.Podcasts();
-		window.podcastListView = new Application.Views.PodcastListView({
-			collection : podcasts
-		});
-
 		window.router = new Application.Router.RoutesManager({
 			videoFolders : videoFolders,
 			audioFolders : audioFolders,
 			pictureFolders : pictureFolders,
-			podcasts : podcasts,
 			defaultView : defaultView,
 			settingsView : settingsView
 		});

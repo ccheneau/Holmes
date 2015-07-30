@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -37,7 +36,6 @@ public class TestConfigurationDao implements ConfigurationDao {
     private final List<ConfigurationNode> videoFolders;
     private final List<ConfigurationNode> pictureFolders;
     private final List<ConfigurationNode> audioFolders;
-    private final List<ConfigurationNode> podcasts;
     private final Map<String, String> parameters;
 
     @Inject
@@ -46,8 +44,6 @@ public class TestConfigurationDao implements ConfigurationDao {
         videoFolders = newArrayList(getTestContentFolder("videosTest", "/videosTest/"));
         audioFolders = newArrayList(getTestContentFolder("audiosTest", "/audiosTest/"));
         pictureFolders = newArrayList(getTestContentFolder("imagesTest", "/imagesTest/"));
-        podcasts = new ArrayList<>();
-        podcasts.add(new ConfigurationNode("fauxRaccordsTest", "fauxRaccordsTest", this.getClass().getResource("/allocineFauxRaccordRss.xml").toString()));
         parameters = new HashMap<>();
         for (ConfigurationParameter parameter : ConfigurationParameter.PARAMETERS) {
             parameters.put(parameter.getName(), parameter.format(parameter.getDefaultValue()));
@@ -87,9 +83,6 @@ public class TestConfigurationDao implements ConfigurationDao {
             case PICTURE:
                 folders = this.pictureFolders;
                 break;
-            case PODCAST:
-                folders = this.podcasts;
-                break;
             case VIDEO:
                 folders = this.videoFolders;
                 break;
@@ -116,16 +109,13 @@ public class TestConfigurationDao implements ConfigurationDao {
      */
     @Override
     public Optional<ConfigurationNode> findNode(RootNode rootNode, final String excludedNodeId, final String label, final String path) {
-        return getNodes(rootNode).stream().filter(new Predicate<ConfigurationNode>() {
-            @Override
-            public boolean test(ConfigurationNode node) {
-                if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
-                    return false;
-                } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
-                    return true;
-                }
+        return getNodes(rootNode).stream().filter(node -> {
+            if (excludedNodeId != null && excludedNodeId.equals(node.getId())) {
                 return false;
+            } else if (node.getLabel().equals(label) || node.getPath().equals(path)) {
+                return true;
             }
+            return false;
         }).findFirst();
     }
 

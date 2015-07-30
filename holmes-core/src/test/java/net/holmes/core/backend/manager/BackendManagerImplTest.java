@@ -32,8 +32,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static net.holmes.core.business.media.model.RootNode.*;
-import static net.holmes.core.common.ConfigurationParameter.*;
+import static net.holmes.core.business.media.model.RootNode.AUDIO;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_NAME;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
@@ -98,23 +98,6 @@ public class BackendManagerImplTest {
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
             backendManager.getFolder("bad_id", AUDIO);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testGetBadPodcast() throws UnknownNodeException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.getNode(eq(PODCAST), eq("bad_id"))).andThrow(new UnknownNodeException("bad_id"));
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            assertNotNull(backendManager.getFolder("bad_id", PODCAST));
         } finally {
             verify(configurationManager, eventBus);
         }
@@ -211,60 +194,6 @@ public class BackendManagerImplTest {
         }
     }
 
-    @Test
-    public void testAddPodcast() throws IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
-        expect(configurationManager.addNode(eq(PODCAST), isA(ConfigurationNode.class))).andReturn(true);
-        eventBus.post(isA(ConfigurationEvent.class));
-        expectLastCall();
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "http://google.com"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testAddPodcastWithSameName() throws IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.findNode(PODCAST, null, "name", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "name", "http://google.com")));
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, "name", "http://google.com"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testAddPodcastWithSameUrl() {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.findNode(PODCAST, null, "newPodcast", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "name", "http://google.com")));
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "http://google.com"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
     @Test(expected = BackendException.class)
     public void testAddFolderWithoutName() throws IOException {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
@@ -311,52 +240,6 @@ public class BackendManagerImplTest {
     }
 
     @Test(expected = BackendException.class)
-    public void testAddPodcastWithoutName() throws IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, null, "http://google.com"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testAddPodcastWithoutUrl() {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", null), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testAddPodcastWithBadUrl() {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.addFolder(new ConfigurationFolder(null, "newPodcast", "bad_url"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-
-    @Test(expected = BackendException.class)
     public void testEditFolderIOException() throws IOException, UnknownNodeException {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
@@ -394,26 +277,6 @@ public class BackendManagerImplTest {
         }
     }
 
-    @Test
-    public void testEditPodcast() throws IOException, UnknownNodeException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.findNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
-        expect(configurationManager.editNode(PODCAST, "id", "editedPodcast", "http://google.com")).andReturn(Optional.of(new ConfigurationNode("id", "editedPodcast", "http://google.com")));
-        eventBus.post(isA(ConfigurationEvent.class));
-        expectLastCall();
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.editFolder("id", new ConfigurationFolder("id", "editedPodcast", "http://google.com"), PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
     @Test(expected = BackendException.class)
     public void testEditBadFolder() throws IOException, UnknownNodeException {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
@@ -427,24 +290,6 @@ public class BackendManagerImplTest {
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
             backendManager.editFolder("bad_id", new ConfigurationFolder("id", "editedAudiosTest", System.getProperty("java.io.tmpdir")), AUDIO);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
-    @Test(expected = BackendException.class)
-    public void testEditBadPodcast() throws IOException, UnknownNodeException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.findNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andReturn(Optional.<ConfigurationNode>empty());
-        expect(configurationManager.editNode(PODCAST, "bad_id", "editedPodcast", "http://google.com")).andThrow(new UnknownNodeException("bad_id"));
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.editFolder("bad_id", new ConfigurationFolder("id", "editedPodcast", "http://google.com"), PODCAST);
         } finally {
             verify(configurationManager, eventBus);
         }
@@ -506,25 +351,6 @@ public class BackendManagerImplTest {
         }
     }
 
-    @Test
-    public void testRemovePodcast() throws IOException, UnknownNodeException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.removeNode("id", PODCAST)).andReturn(new ConfigurationNode("id", "label", "path"));
-        eventBus.post(isA(ConfigurationEvent.class));
-        expectLastCall();
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.removeFolder("id", PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
     @Test(expected = BackendException.class)
     public void testRemoveBadFolder() throws UnknownNodeException, IOException {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
@@ -542,30 +368,12 @@ public class BackendManagerImplTest {
         }
     }
 
-    @Test(expected = BackendException.class)
-    public void testRemoveBadPodcast() throws UnknownNodeException, IOException {
-        ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
-        EventBus eventBus = createMock(EventBus.class);
-
-        expect(configurationManager.removeNode("bad_id", PODCAST)).andThrow(new UnknownNodeException("bad_id"));
-
-        replay(configurationManager, eventBus);
-
-        try {
-            BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.removeFolder("bad_id", PODCAST);
-        } finally {
-            verify(configurationManager, eventBus);
-        }
-    }
-
     @Test
     public void testGetSettings() {
         ConfigurationManager configurationManager = createMock(ConfigurationManager.class);
         EventBus eventBus = createMock(EventBus.class);
 
         expect(configurationManager.getParameter(UPNP_SERVER_NAME)).andReturn("serverName");
-        expect(configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)).andReturn(true);
 
         replay(configurationManager, eventBus);
 
@@ -585,8 +393,6 @@ public class BackendManagerImplTest {
 
         configurationManager.setParameter(UPNP_SERVER_NAME, "holmes");
         expectLastCall();
-        configurationManager.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
-        expectLastCall();
         configurationManager.save();
         expectLastCall();
         eventBus.post(isA(ConfigurationEvent.class));
@@ -596,7 +402,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.saveSettings(new Settings("holmes", true));
+            backendManager.saveSettings(new Settings("holmes"));
         } finally {
             verify(configurationManager, eventBus);
         }
@@ -611,7 +417,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.saveSettings(new Settings(null, true));
+            backendManager.saveSettings(new Settings(null));
         } finally {
             verify(configurationManager, eventBus);
         }
@@ -624,8 +430,6 @@ public class BackendManagerImplTest {
 
         configurationManager.setParameter(UPNP_SERVER_NAME, "holmes");
         expectLastCall();
-        configurationManager.setParameter(PODCAST_PREPEND_ENTRY_NAME, true);
-        expectLastCall();
         configurationManager.save();
         expectLastCall().andThrow(new IOException());
 
@@ -633,7 +437,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.saveSettings(new Settings("holmes", true));
+            backendManager.saveSettings(new Settings("holmes"));
         } finally {
             verify(configurationManager, eventBus);
         }
@@ -648,7 +452,7 @@ public class BackendManagerImplTest {
 
         try {
             BackendManagerImpl backendManager = new BackendManagerImpl(configurationManager, eventBus);
-            backendManager.saveSettings(new Settings("", true));
+            backendManager.saveSettings(new Settings(""));
         } finally {
             verify(configurationManager, eventBus);
         }

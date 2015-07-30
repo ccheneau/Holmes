@@ -154,17 +154,6 @@
             <artifactId>guice</artifactId>
         </dependency>
 
-        <!-- rome -->
-        <dependency>
-            <groupId>rome</groupId>
-            <artifactId>rome</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.holmes</groupId>
-            <artifactId>holmes-rome-modules</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- guava -->
         <dependency>
             <groupId>com.google.guava</groupId>

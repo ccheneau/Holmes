@@ -24,9 +24,7 @@ public enum MediaType {
     TYPE_VIDEO("video"),
     TYPE_AUDIO("audio"),
     TYPE_IMAGE("image"),
-    TYPE_PODCAST("podcast"),
     TYPE_APPLICATION("application"),
-    TYPE_RAW_URL("raw_url"),
     TYPE_ANY("*"),
     TYPE_NONE("none");
 

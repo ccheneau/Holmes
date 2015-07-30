@@ -21,7 +21,9 @@ import com.google.common.annotations.VisibleForTesting;
 import net.holmes.core.business.configuration.ConfigurationManager;
 import net.holmes.core.business.media.MediaManager;
 import net.holmes.core.business.media.MediaSearchRequest;
-import net.holmes.core.business.media.model.*;
+import net.holmes.core.business.media.model.ContentNode;
+import net.holmes.core.business.media.model.FolderNode;
+import net.holmes.core.business.media.model.MediaNode;
 import net.holmes.core.business.streaming.StreamingManager;
 import net.holmes.core.business.streaming.upnp.device.UpnpDevice;
 import org.fourthline.cling.model.profile.RemoteClientInfo;
@@ -33,9 +35,8 @@ import org.fourthline.cling.support.model.BrowseResult;
 import javax.inject.Inject;
 import java.util.*;
 
-import static net.holmes.core.business.media.model.MediaNode.NodeType.TYPE_PODCAST_ENTRY;
 import static net.holmes.core.business.mimetype.model.MimeType.MIME_TYPE_SUBTITLE;
-import static net.holmes.core.common.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_ADD_SUBTITLE;
 import static org.fourthline.cling.support.contentdirectory.ContentDirectoryErrorCode.NO_SUCH_OBJECT;
 import static org.fourthline.cling.support.model.BrowseFlag.*;
 
@@ -78,12 +79,12 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
             // Add child nodes
             Collection<MediaNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(browseNode, availableMimeTypes));
             for (MediaNode childNode : searchResult) {
-                addNode(objectID, childNode, result, searchResult.size(), availableMimeTypes);
+                addNode(objectID, childNode, result, availableMimeTypes);
             }
         } else if (METADATA == browseFlag) {
             result = new DirectoryBrowseResult(0, 1);
             // Get node
-            addNode(browseNode.getParentId(), browseNode, result, 0, availableMimeTypes);
+            addNode(browseNode.getParentId(), browseNode, result, availableMimeTypes);
         } else {
             result = new DirectoryBrowseResult(0, 1);
         }
@@ -119,11 +120,10 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
      * @param nodeId             node id
      * @param node               node
      * @param result             result
-     * @param totalCount         total count
      * @param availableMimeTypes availableMimeTypes
      * @throws ContentDirectoryException
      */
-    private void addNode(final String nodeId, final MediaNode node, final DirectoryBrowseResult result, final long totalCount, final List<String> availableMimeTypes) throws ContentDirectoryException {
+    private void addNode(final String nodeId, final MediaNode node, final DirectoryBrowseResult result, final List<String> availableMimeTypes) throws ContentDirectoryException {
         if (result.acceptNode()) {
             if (node instanceof ContentNode) {
                 // Add item to result
@@ -133,42 +133,7 @@ public final class ContentDirectoryService extends AbstractContentDirectoryServi
                 Collection<MediaNode> searchResult = mediaManager.searchChildNodes(new MediaSearchRequest(node, availableMimeTypes));
                 // Add container to result
                 result.addContainer(nodeId, node, searchResult.size());
-            } else if (node instanceof PodcastNode) {
-                // Add podcast to result
-                result.addContainer(nodeId, node, 1);
-            } else if (node instanceof RawUrlNode) {
-                // Add raw URL to result
-                RawUrlNode rawUrlNode = (RawUrlNode) node;
-                String entryName = node.getName();
-                if (rawUrlNode.getType() == TYPE_PODCAST_ENTRY) {
-                    // Format podcast entry name
-                    entryName = formatPodcastEntryName(result.getResultCount(), totalCount, node.getName());
-                }
-
-                result.addUrlItem(nodeId, rawUrlNode, entryName);
             }
-        }
-    }
-
-    /**
-     * Format post-cast entry name.
-     * If prepend_podcast_entry_name configuration parameter is set to true,
-     * item number is added to title.
-     *
-     * @param count      post-cast entry count
-     * @param totalCount post-cast entry total count
-     * @param title      title
-     * @return post-cast entry name
-     */
-    private String formatPodcastEntryName(final long count, final long totalCount, final String title) {
-        if (configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME)) {
-            if (totalCount > 99) {
-                return String.format("%03d - %s", count + 1, title);
-            } else {
-                return String.format("%02d - %s", count + 1, title);
-            }
-        } else {
-            return title;
         }
     }
 

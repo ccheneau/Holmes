@@ -34,12 +34,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.stream.Collectors.toList;
 import static net.holmes.core.backend.exception.BackendErrorMessage.*;
-import static net.holmes.core.common.ConfigurationParameter.*;
+import static net.holmes.core.common.ConfigurationParameter.UPNP_SERVER_NAME;
 import static net.holmes.core.common.FileUtils.isValidDirectory;
 import static net.holmes.core.common.UniqueIdGenerator.newUniqueId;
 import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
@@ -49,8 +48,6 @@ import static net.holmes.core.common.event.ConfigurationEvent.EventType.*;
  */
 @Singleton
 public final class BackendManagerImpl implements BackendManager {
-    private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://.+$", Pattern.CASE_INSENSITIVE);
-
     private final ConfigurationManager configurationManager;
     private final EventBus eventBus;
 
@@ -83,7 +80,7 @@ public final class BackendManagerImpl implements BackendManager {
         try {
             return new ConfigurationNodeFactory().apply(configurationManager.getNode(rootNode, id));
         } catch (UnknownNodeException e) {
-            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
+            throw new BackendException(FOLDER_UNKNOWN_ERROR, e);
         }
     }
 
@@ -93,11 +90,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void addFolder(final ConfigurationFolder folder, final RootNode rootNode) {
         // Validate
-        if (rootNode == RootNode.PODCAST) {
-            validatePodcast(folder, rootNode, null);
-        } else {
-            validateFolder(folder, rootNode, null);
-        }
+        validateFolder(folder, rootNode, null);
 
         // Build new configuration node
         ConfigurationNode node = new ConfigurationNode(newUniqueId(), folder.getName(), folder.getPath());
@@ -119,11 +112,7 @@ public final class BackendManagerImpl implements BackendManager {
     @Override
     public void editFolder(final String id, final ConfigurationFolder folder, final RootNode rootNode) {
         // Check folder
-        if (rootNode == RootNode.PODCAST) {
-            validatePodcast(folder, rootNode, id);
-        } else {
-            validateFolder(folder, rootNode, id);
-        }
+        validateFolder(folder, rootNode, id);
 
         try {
             // Edit node and post update folder event
@@ -133,7 +122,7 @@ public final class BackendManagerImpl implements BackendManager {
         } catch (IOException e) {
             throw new BackendException(e);
         } catch (UnknownNodeException e) {
-            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
+            throw new BackendException(FOLDER_UNKNOWN_ERROR, e);
         }
 
     }
@@ -152,7 +141,7 @@ public final class BackendManagerImpl implements BackendManager {
         } catch (IOException e) {
             throw new BackendException(e);
         } catch (UnknownNodeException e) {
-            throw new BackendException(rootNode == RootNode.PODCAST ? PODCAST_UNKNOWN_ERROR : FOLDER_UNKNOWN_ERROR, e);
+            throw new BackendException(FOLDER_UNKNOWN_ERROR, e);
         }
     }
 
@@ -161,8 +150,7 @@ public final class BackendManagerImpl implements BackendManager {
      */
     @Override
     public Settings getSettings() {
-        return new Settings(configurationManager.getParameter(UPNP_SERVER_NAME),
-                configurationManager.getParameter(PODCAST_PREPEND_ENTRY_NAME));
+        return new Settings(configurationManager.getParameter(UPNP_SERVER_NAME));
     }
 
     /**
@@ -173,7 +161,6 @@ public final class BackendManagerImpl implements BackendManager {
         checkNonEmpty(settings.getServerName(), SETTINGS_SERVER_NAME_ERROR);
 
         configurationManager.setParameter(UPNP_SERVER_NAME, settings.getServerName());
-        configurationManager.setParameter(PODCAST_PREPEND_ENTRY_NAME, settings.getPrependPodcastItem());
         try {
             // save settings
             configurationManager.save();
@@ -203,27 +190,6 @@ public final class BackendManagerImpl implements BackendManager {
 
         // Check for duplication
         checkDuplicatedConfigurationFolder(folder, rootNode, excludedId, FOLDER_DUPLICATED_ERROR);
-    }
-
-    /**
-     * Validate podcast.
-     *
-     * @param podcast    podcast to validate
-     * @param rootNode   root configuration node
-     * @param excludedId podcast id excluded from duplication check
-     */
-    private void validatePodcast(final ConfigurationFolder podcast, final RootNode rootNode, final String excludedId) {
-        // Check podcast name and path are not empty
-        checkNonEmpty(podcast.getName(), PODCAST_NAME_ERROR);
-        checkNonEmpty(podcast.getPath(), PODCAST_URL_ERROR);
-
-        // Check podcast URL is correct
-        if (!URL_PATTERN.matcher(podcast.getPath()).matches()) {
-            throw new BackendException(PODCAST_BAD_URL_ERROR);
-        }
-
-        // Check for duplication
-        checkDuplicatedConfigurationFolder(podcast, rootNode, excludedId, PODCAST_DUPLICATED_ERROR);
     }
 
     /**

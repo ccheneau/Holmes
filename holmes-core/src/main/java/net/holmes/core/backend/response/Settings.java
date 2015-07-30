@@ -23,7 +23,6 @@ package net.holmes.core.backend.response;
 public final class Settings {
 
     private String serverName;
-    private Boolean prependPodcastItem;
 
     /**
      * Instantiates a new settings.
@@ -35,11 +34,9 @@ public final class Settings {
      * Instantiates a new settings.
      *
      * @param serverName         server name
-     * @param prependPodcastItem prepend pod-cast item
      */
-    public Settings(final String serverName, final Boolean prependPodcastItem) {
+    public Settings(final String serverName) {
         this.serverName = serverName;
-        this.prependPodcastItem = prependPodcastItem;
     }
 
     /**
@@ -58,23 +55,5 @@ public final class Settings {
      */
     public void setServerName(final String serverName) {
         this.serverName = serverName;
-    }
-
-    /**
-     * Check if podcast number should be added to podcast name.
-     *
-     * @return true if podcast number should be added to podcast name
-     */
-    public Boolean getPrependPodcastItem() {
-        return prependPodcastItem;
-    }
-
-    /**
-     * Set whether podcast number should be added to podcast name.
-     *
-     * @param prependPodcastItem prepend podcast item
-     */
-    public void setPrependPodcastItem(final Boolean prependPodcastItem) {
-        this.prependPodcastItem = prependPodcastItem;
     }
 }

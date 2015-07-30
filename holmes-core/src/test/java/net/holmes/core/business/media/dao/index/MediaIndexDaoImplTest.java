@@ -77,27 +77,6 @@ public class MediaIndexDaoImplTest {
         mediaIndexDao.clean();
         assertNull(mediaIndexDao.get(uuid1));
     }
-
-    @Test
-    public void testCleanMediaIndexNonLocalPath() {
-        MediaIndexDaoImpl mediaIndexDao = new MediaIndexDaoImpl();
-
-        String uuid1 = mediaIndexDao.add(new MediaIndexElement("4_PODCASTS", "mediaType", "mimeType", "path", "name", false, false));
-        assertNotNull(mediaIndexDao.get(uuid1));
-        mediaIndexDao.clean();
-        assertNull(mediaIndexDao.get(uuid1));
-    }
-
-    @Test
-    public void testCleanMediaIndexLocked() {
-        MediaIndexDaoImpl mediaIndexDao = new MediaIndexDaoImpl();
-
-        String uuid1 = mediaIndexDao.add(new MediaIndexElement("4_PODCASTS", "mediaType", "mimeType", "path", "name", false, true));
-        assertNotNull(mediaIndexDao.get(uuid1));
-        mediaIndexDao.clean();
-        assertNotNull(mediaIndexDao.get(uuid1));
-    }
-
     @Test
     public void testHandleConfigEventAdd() {
         MediaIndexDaoImpl mediaIndexDao = new MediaIndexDaoImpl();

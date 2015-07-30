@@ -63,22 +63,6 @@ public abstract class ConfigurationParameter<T> {
     public static final ConfigurationIntParameter HTTP_SERVER_WORKER_THREADS = new ConfigurationIntParameter("http_server_worker_threads", 0);
 
     /**
-     * Podcast management parameters
-     */
-    /**
-     * TTL for podcasts in cache
-     */
-    public static final ConfigurationIntParameter PODCAST_CACHE_EXPIRE_HOURS = new ConfigurationIntParameter("podcast_cache_expire_hours", 2);
-    /**
-     * Max number of elements in podcast cache
-     */
-    public static final ConfigurationIntParameter PODCAST_CACHE_MAX_ELEMENTS = new ConfigurationIntParameter("podcast_cache_max_elements", 50);
-    /**
-     * Whether to add podcast item number to podcast element name (prevent Upnp server to sort elements by name)
-     */
-    public static final ConfigurationBooleanParameter PODCAST_PREPEND_ENTRY_NAME = new ConfigurationBooleanParameter("podcast_prepend_entry_name", true);
-
-    /**
      * System Tray parameters
      */
     /**
@@ -112,9 +96,6 @@ public abstract class ConfigurationParameter<T> {
             HTTP_SERVER_CACHE_SECOND,
             HTTP_SERVER_BOSS_THREADS,
             HTTP_SERVER_WORKER_THREADS,
-            PODCAST_CACHE_EXPIRE_HOURS,
-            PODCAST_CACHE_MAX_ELEMENTS,
-            PODCAST_PREPEND_ENTRY_NAME,
             RELEASE_CHECK_DELAY_HOURS,
             STREAMING_STATUS_UPDATE_DELAY_SECONDS,
             SYSTRAY_ENABLE,

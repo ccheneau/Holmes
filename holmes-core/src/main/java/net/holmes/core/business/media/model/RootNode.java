@@ -29,7 +29,6 @@ public enum RootNode {
     VIDEO("1_VIDEOS", ROOT.getId(), true, TYPE_VIDEO),
     PICTURE("2_PICTURES", ROOT.getId(), true, TYPE_IMAGE),
     AUDIO("3_AUDIOS", ROOT.getId(), true, TYPE_AUDIO),
-    PODCAST("4_PODCASTS", ROOT.getId(), false, TYPE_PODCAST),
     NONE("ROOT_NODE_NONE", "", false, TYPE_NONE);
 
     private final String id;

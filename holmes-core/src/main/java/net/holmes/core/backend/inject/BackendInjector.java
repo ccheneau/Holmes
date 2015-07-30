@@ -39,7 +39,6 @@ public class BackendInjector extends AbstractModule {
         // Bind Rest handlers
         bind(AudioFoldersHandler.class);
         bind(PictureFoldersHandler.class);
-        bind(PodcastsHandler.class);
         bind(SettingsHandler.class);
         bind(UtilHandler.class);
         bind(VideoFoldersHandler.class);
